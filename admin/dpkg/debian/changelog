@@ -1,3 +1,9 @@
+dpkg (40-0-0) unstable; urgency=low
+
+  * Package for NCP4.
+
+ -- Andrew Stormont (astormont) <andyjstormont@googlemail.com>  Sat, 11 Jun 2011 16:29:28 +0100
+
 dpkg (1.15.8.10) unstable; urgency=low
 
   * Do not segfault on “update-alternatives --auto” when the link group only

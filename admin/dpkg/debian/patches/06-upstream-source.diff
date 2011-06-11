@@ -1,18 +1,7 @@
-diff -Nur ./scripts/Dpkg/Control/Fields.pm.bak ./scripts/Dpkg/Control/Fields.pm
---- ./scripts/Dpkg/Control/Fields.pm.bak	2010-11-04 05:36:05.000000000 +0000
-+++ ./scripts/Dpkg/Control/Fields.pm		2011-06-07 12:14:47.112253668 +0100
-@@ -264,6 +264,10 @@
-         allowed => (ALL_PKG | ALL_SRC | ALL_CHANGES) &
-                     (~(CTRL_INFO_SRC | CTRL_INFO_PKG)),
-     },
-+    'Upstream-Version' => {
-+        allowed => (ALL_PKG | ALL_SRC | ALL_CHANGES) &
-+                    (~(CTRL_INFO_SRC | CTRL_INFO_PKG)),
-+    },
- );
- 
- my @checksum_fields = map { field_capitalize("Checksums-$_") } checksums_get_list();
-@@ -274,20 +278,20 @@
+diff -ur ./scripts/Dpkg/Control/Fields.pm.bak ./scripts/Dpkg/Control/Fields.pm
+--- ./scripts/Dpkg/Control/Fields.pm.bak	2011-06-11 18:01:24.198837926 +0100
++++ ./scripts/Dpkg/Control/Fields.pm	2011-06-11 15:54:12.000000000 +0100
+@@ -278,20 +278,20 @@
  
  our %FIELD_ORDER = (
      CTRL_PKG_DEB() => [
@@ -40,7 +29,7 @@ diff -Nur ./scripts/Dpkg/Control/Fields.pm.bak ./scripts/Dpkg/Control/Fields.pm
          @checksum_fields, qw(Files)
      ],
      CTRL_CHANGELOG() => [
-@@ -297,10 +301,10 @@
+@@ -301,10 +301,10 @@
      ],
      CTRL_FILE_STATUS() => [ # Same as fieldinfos in lib/dpkg/parse.c
          qw(Package Essential Status Priority Section Installed-Size Origin
@@ -55,7 +44,7 @@ diff -Nur ./scripts/Dpkg/Control/Fields.pm.bak ./scripts/Dpkg/Control/Fields.pm
      ],
  );
  # Order for CTRL_INDEX_PKG is derived from CTRL_PKG_DEB
-@@ -310,7 +314,7 @@
+@@ -314,7 +314,7 @@
  $FIELD_ORDER{CTRL_INDEX_SRC()} = [ @{$FIELD_ORDER{CTRL_PKG_SRC()}} ];
  @{$FIELD_ORDER{CTRL_INDEX_SRC()}} = map { $_ eq "Source" ? "Package" : $_ }
                                    @{$FIELD_ORDER{CTRL_PKG_SRC()}};
@@ -64,9 +53,11 @@ diff -Nur ./scripts/Dpkg/Control/Fields.pm.bak ./scripts/Dpkg/Control/Fields.pm
  &field_insert_before(CTRL_INDEX_SRC, "Checksums-Md5", "Directory");
  
  # Register vendor specifics fields
-diff -Nur ./scripts/Dpkg/Source/Package/V2.pm.bak ./scripts/Dpkg/Source/Package/V2.pm
---- ./scripts/Dpkg/Source/Package/V2.pm.bak	2010-11-04 05:36:05.000000000 +0000
-+++ ./scripts/Dpkg/Source/Package/V2.pm		2011-06-07 12:59:41.266923859 +0100
+Only in scripts/Dpkg/Control: Fields.pm.orig
+Only in scripts/Dpkg/Control: Fields.pm.rej
+diff -ur ./scripts/Dpkg/Source/scripts/V2.pm.bak ./scripts/Dpkg/Source/Package/V2.pm
+--- ./scripts/Dpkg/Source/Package/V2.pm.bak	2011-06-11 18:01:24.199478339 +0100
++++ ./scripts/Dpkg/Source/Package/V2.pm		2011-06-11 15:54:12.000000000 +0100
 @@ -102,6 +102,7 @@
  
      my $dscdir = $self->{'basedir'};
@@ -88,33 +79,42 @@ diff -Nur ./scripts/Dpkg/Source/Package/V2.pm.bak ./scripts/Dpkg/Source/Package/
              $tarfile = $file;
          } elsif ($file =~ /^\Q$basename\E\.orig-([[:alnum:]-]+)\.tar\.$re_ext$/) {
              $origtar{$1} = $file;
-diff -Nur ./scripts/Dpkg/Source/Package.pm.bak ./scripts/Dpkg/Source/Package.pm
---- ./scripts/Dpkg/Source/Package.pm.bak	2010-11-04 05:36:05.000000000 +0000
-+++ ./scripts/Dpkg/Source/Package.pm		2011-06-07 12:59:58.876289629 +0100
-@@ -219,17 +219,55 @@
+diff -ur ./scripts/Dpkg/Source/Package.pm.bak ./scripts/Dpkg/Source/Package.pm
+--- ./scripts/Dpkg/Source/Package.pm.bak	2011-06-11 18:01:24.200076387 +0100
++++ ./scripts/Dpkg/Source/Package.pm	2011-06-11 18:00:06.453123449 +0100
+@@ -219,17 +219,64 @@
      return $basename;
  }
  
 +sub get_upstream_version {
-+    my ($self, $with_revision) = @_;
++    my ($self, $with_revision) = @_; 
 +    my $v = Dpkg::Version->new($self->{'fields'}{'Version'});
-+    my $cf = Dpkg::Control->new(type => CTRL_PKG_DEB);
 +    my $uv = undef;
 +    my $fn = $self->{'fields'}{'Source'} . "-" . $v->version() . "/debian/control";
-+    if (-f $fn) {
-+        $cf->load($fn);
-+        if (exists $cf->{'Upstream-Version'}) {
-+            $v = Dpkg::Version->new($cf->{'Upstream-Version'});
-+            $uv = $v->version();
++    # Try and find our control file (without the version, we don't know for sure)
++    my @fns = <*/debian/control>;
++    if (@fns) {
++        foreach my $fn (@fns) {
++            my $cf = Dpkg::Control->new(type => CTRL_PKG_DEB);
++            $cf->load($fn);
++            if (exists $cf->{'Source'} and $cf->{'Source'} eq $self->{'fields'}{'Source'} ) {
++                # This is our control file, so this must be our Upstream-Version
++                if (exists $cf->{'Upstream-Version'}) {
++                    $v = Dpkg::Version->new($cf->{'Upstream-Version'});
++                    $uv = $v->version();
++                    last;
++                }
++            }
 +        }
 +    }
++    # Fall back to dsc file if control is a no-go
 +    if (!$uv and exists $self->{'fields'}{'Upstream-Version'}) {
 +        $v = Dpkg::Version->new($self->{'fields'}{'Upstream-Version'});
 +        $uv = $v->version();
-+    }
++    } 
 +    if ($uv and $with_revision) {
 +        $uv .= "-" . $v->revision();
-+    } 
++    }
 +    return $uv;
 +}
 +
@@ -147,7 +147,7 @@ diff -Nur ./scripts/Dpkg/Source/Package.pm.bak ./scripts/Dpkg/Source/Package.pm
  		($opts{include_main} and
  		 /^\Q$basename\E\.orig\.tar\.$opts{extension}$/) or
  		($opts{include_supplementary} and
-@@ -437,6 +475,11 @@
+@@ -437,6 +484,11 @@
  	delete $fields->{$f};
      }
  
