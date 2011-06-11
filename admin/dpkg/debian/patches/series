@@ -2,5 +2,5 @@
 02-dselect-iquote-fix.diff
 03-dselect-resizeterm-fix.diff
 04-help-ldconfig-fix.diff
-#05-zones-fix.diff
+05-zones-support.diff
 06-upstream-source.diff
