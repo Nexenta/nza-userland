@@ -9,6 +9,7 @@ WEBARCHIVE_PATH="http://ftp.uk.debian.org/debian/pool/main/d/dpkg/"
 PKGNAME=dpkg
 PKGVERS=1.15.8.10
 PKGARCH="$PKGNAME"_"$PKGVERS.tar.bz2"
+PKGORIG="$PKGNAME"_"$PKGVERS.orig.tar.bz2"
 PKGDSC="$PKGNAME"_"$PKGVERS.dsc"
 PKGDIR="$PKGNAME-$PKGVERS"
 
@@ -37,15 +38,21 @@ fi
 
 cd ../build
 
-echo "Unpacking upstream source ...\c"
-tar -xf "../cache/$PKGARCH" --exclude "debian"
-echo " done" 
-
-echo "Creating $PKGNAME"_"$PKGVERS.orig.tar.bz2 ...\c"
-tar -cjf "$PKGNAME"_"$PKGVERS.orig.tar.bz2" "$PKGDIR"
-echo " done"
+if [ -f "../cache/$PKGORIG" ]; then
+  echo "Unpacking $PKGORIG ...\c"
+  tar -xf "../cache/$PKGORIG"
+  echo " done"
+else
+  echo "Unpacking $PKGARCH ...\c"
+  tar -xf "../cache/$PKGARCH" --exclude "debian"
+  echo " done"
+  echo "Creating $PKGORIG ...\c"
+  tar -cjf "../cache/$PKGORIG" "$PKGDIR"
+  echo " done"
+fi
 
 echo "Applying our changes ...\c"
+cp "../cache/$PKGORIG" .
 cp -r ../debian "$PKGDIR/" && cd "$PKGDIR"
 QUILT_PATCHES=debian/patches quilt push -a
 echo " done"
