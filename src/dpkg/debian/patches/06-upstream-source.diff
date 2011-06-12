@@ -1,7 +1,17 @@
 diff -ur ./scripts/Dpkg/Control/Fields.pm.bak ./scripts/Dpkg/Control/Fields.pm
 --- ./scripts/Dpkg/Control/Fields.pm.bak	2011-06-11 18:01:24.198837926 +0100
 +++ ./scripts/Dpkg/Control/Fields.pm	2011-06-11 15:54:12.000000000 +0100
-@@ -278,20 +278,20 @@
+@@ -264,6 +264,9 @@
+         allowed => (ALL_PKG | ALL_SRC | ALL_CHANGES) &
+                     (~(CTRL_INFO_SRC | CTRL_INFO_PKG)),
+     },
++    'Upstream-Version' => {
++        allowed => (ALL_PKG | ALL_SRC | ALL_CHANGES),
++    },
+ );
+ 
+ my @checksum_fields = map { field_capitalize("Checksums-$_") } checksums_get_list();
+@@ -274,20 +277,20 @@
  
  our %FIELD_ORDER = (
      CTRL_PKG_DEB() => [
@@ -29,7 +39,7 @@ diff -ur ./scripts/Dpkg/Control/Fields.pm.bak ./scripts/Dpkg/Control/Fields.pm
          @checksum_fields, qw(Files)
      ],
      CTRL_CHANGELOG() => [
-@@ -301,10 +301,10 @@
+@@ -297,10 +300,10 @@
      ],
      CTRL_FILE_STATUS() => [ # Same as fieldinfos in lib/dpkg/parse.c
          qw(Package Essential Status Priority Section Installed-Size Origin
@@ -44,7 +54,7 @@ diff -ur ./scripts/Dpkg/Control/Fields.pm.bak ./scripts/Dpkg/Control/Fields.pm
      ],
  );
  # Order for CTRL_INDEX_PKG is derived from CTRL_PKG_DEB
-@@ -314,7 +314,7 @@
+@@ -310,7 +313,7 @@
  $FIELD_ORDER{CTRL_INDEX_SRC()} = [ @{$FIELD_ORDER{CTRL_PKG_SRC()}} ];
  @{$FIELD_ORDER{CTRL_INDEX_SRC()}} = map { $_ eq "Source" ? "Package" : $_ }
                                    @{$FIELD_ORDER{CTRL_PKG_SRC()}};
@@ -159,3 +169,13 @@ diff -ur ./scripts/Dpkg/Source/Package.pm.bak ./scripts/Dpkg/Source/Package.pm
      my $filename = $opts{'filename'};
      unless (defined $filename) {
          $filename = $self->get_basename(1) . ".dsc";
+--- ./dpkg-deb/build.c.bak	2011-06-12 19:25:02.696877929 +0100
++++ ./dpkg-deb/build.c	2011-06-12 19:24:43.486775407 +0100
+@@ -57,6 +57,7 @@
+ };
+ 
+ static const char *arbitrary_fields[] = {
++  "Upstream-Version",
+   "Package-Type",
+   "Subarchitecture",
+   "Kernel-Version",

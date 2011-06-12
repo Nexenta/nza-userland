@@ -1,0 +1,8 @@
+--- ./scripts/dpkg-maintscript-helper.sh.bak	2011-06-12 17:48:02.620551756 +0100
++++ ./scripts/dpkg-maintscript-helper.sh	2011-06-12 17:48:16.164956464 +0100
+@@ -1,4 +1,4 @@
+-#!/bin/sh
++#!/bin/bash
+ #
+ # Copyright © 2010 Raphaël Hertzog <hertzog@debian.org>
+ # Copyright © 2008 Joey Hess <joeyh@debian.org>

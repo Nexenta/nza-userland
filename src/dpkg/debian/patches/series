@@ -1,5 +1,5 @@
 01-nexenta-support.diff
-02-dselect-iquote-fix.diff
+02-dpkg-maintscript-bash.diff
 03-dselect-resizeterm-fix.diff
 04-help-ldconfig-fix.diff
 05-zones-support.diff

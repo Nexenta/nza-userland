@@ -1,3 +1,11 @@
+dpkg (40-1-0) unstable; urgency=low
+
+  * Fix warnings about Upstream-Version. Closes: #5513
+  * dpkg-maintscript should use bash.  Closes: #5153
+  * Add Solaris 64bit lib paths to dpkg-shlibdep. Closes: #4146
+
+ -- Andrew Stormont (astormont) <andyjstormont@googlemail.com>  Sun, 12 Jun 2011 19:43:48 +0100
+
 dpkg (40-0-0) unstable; urgency=low
 
   * Package for NCP4.

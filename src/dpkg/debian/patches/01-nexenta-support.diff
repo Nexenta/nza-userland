@@ -48,3 +48,15 @@
  	f = fopen(buf, "r");
  	if (!f)
  		return false;
+--- ./scripts/Dpkg/Shlibs.pm.bak	2011-06-12 17:30:43.360586562 +0100
++++ ./scripts/Dpkg/Shlibs.pm	2011-06-12 17:36:38.162549569 +0100
+@@ -33,7 +33,8 @@
+ 
+ use constant DEFAULT_LIBRARY_PATH =>
+     qw(/lib /usr/lib /lib32 /usr/lib32 /lib64 /usr/lib64
+-       /emul/ia32-linux/lib /emul/ia32-linux/usr/lib);
++       /emul/ia32-linux/lib /emul/ia32-linux/usr/lib
++       /lib/amd64 /usr/lib/amd64 /usr/gnu/lib /usr/gnu/lib/amd64);
+ 
+ # Adjust set of directories to consider when we're in a situation of a
+ # cross-build or a build of a cross-compiler
