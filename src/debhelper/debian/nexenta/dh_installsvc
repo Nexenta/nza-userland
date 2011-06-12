@@ -31,8 +31,8 @@ needed to set up and to start and stop the service.
 
 =item debian/I<package>.xml
 
-SMF manifest, used as B<svccfg -v import I<package>.xml>.
-Installed into I</lib/svc/manifest>.
+SMF manifest, used as C<svccfg -v import I<package>.xml>.
+Installed into F</lib/svc/manifest>.
 
 =item debian/I<package>.method
 
@@ -42,33 +42,6 @@ SMF method to start/stop/refresh/etc.
 Maybe used in manifest debian/I<package>.xml.
 Installed into I</lib/svc/method>.
 It will be renamed to the name specified in debian/I<package>.xml.
-
-=back
-
-=head1 OPTIONS
-
-=over 4
-
-=item B<-n>, B<--noscripts>
-
-Do not modify F<postinst>/F<postrm>/F<prerm> scripts.
-
-
-=item B<-R>, B<--restart-after-upgrade>
-
-Do not stop the service until after the package upgrade has been
-completed. This is different than the default behavior, which stops the
-service in the F<prerm>, and starts it again in the F<postinst>.
-
-This can be useful for daemons that should not have a possibly long
-downtime during upgrade. But you should make sure that the daemon will not
-get confused by the package being upgraded while it's running before using
-this option.
-
-=item B<--no-start>
-
-Do not start the service on install or upgrade, or stop it on removal.
-
 
 =back
 
@@ -161,30 +134,16 @@ foreach my $package (@{$dh{DOPACKAGES}}) {
 
     # make scripts
     if (! $dh{NOSCRIPTS}) {
-        # import manifest
-        autoscript($package, "postinst", "postinst-svc-import",
-            "s|#MANIFEST#|/$pkg_manifest|");
 
-        if (! $dh{NO_START}) {
-            # start/restart/clear service
-            autoscript($package, "postinst", "postinst-svc",
-                "s|#SERVICES#|$services|;s|#MANIFEST#|/$pkg_manifest|");
-        
-            if ($dh{RESTART_AFTER_UPGRADE}) {
-                # Do not stop on upgrade, stop only on remove
-                autoscript($package, "prerm", "prerm-svc-stop-on-remove",
-                    "s|#SERVICES#|$services|");
-            }
-            else {
-                # always stop
-                autoscript($package, "prerm", "prerm-svc-stop",
-                    "s|#SERVICES#|$services|");
-            }
-        }
+        autoscript($package, "postinst", "postinst-svc",
+            "s|#MANIFESTS#|/$pkg_manifest|;s|#SERVICES#|$services|");
 
-        # delete service on purge
+        autoscript($package, "prerm", "prerm-svc",
+            "s|#MANIFESTS#|/$pkg_manifest|;s|#SERVICES#|$services|");
+
         autoscript($package, "postrm", "postrm-svc",
-                "s|#SERVICES#|$services|");
+            "s|#MANIFESTS#|/$pkg_manifest|;s|#SERVICES#|$services|");
+
     }
 }
 

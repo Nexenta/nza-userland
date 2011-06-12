@@ -1,5 +1,5 @@
-if [ "$1" = "purge" ] ; then
-    for s in #SERVICES#; do
-        /usr/sbin/svccfg -v delete $s  || true
+if [ "$1" = purge ] ; then
+    for service in #SERVICES#; do
+        svccfg -v delete $service || true
     done
 fi

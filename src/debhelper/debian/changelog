@@ -1,3 +1,17 @@
+debhelper (40-0-0) unstable; urgency=low
+
+  * New version scheme
+  * dh_installsvc: more SMF compliant
+
+ -- Igor Pashev <igor.pashev@nexenta.com>  Thu, 16 Jun 2011 13:18:55 +0400
+
+debhelper (8.1.6-9) unstable; urgency=low
+
+  * Remove unnecessary dependency on developer-object-file
+  * Depend on either mandb or text-doctools
+
+ -- Andrew Stormont (astormont) <andyjstormont@googlemail.com>  Tue, 31 May 2011 17:46:26 +0100
+
 debhelper (8.1.6-8) unstable; urgency=low
 
   * dh_isaexec: don't print any message if file is not 32 or 64 bit ELF
