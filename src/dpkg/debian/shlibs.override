@@ -6,4 +6,3 @@
 # For more information see the dpkg-shlibdeps(1) manual page. 
 #
 # <library name>	<version/soname>	<dependencies>
-libc	libc.so.1	dpkg-deb

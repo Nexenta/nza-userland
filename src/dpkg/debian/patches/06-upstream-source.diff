@@ -1,0 +1,161 @@
+diff -ur ./scripts/Dpkg/Control/Fields.pm.bak ./scripts/Dpkg/Control/Fields.pm
+--- ./scripts/Dpkg/Control/Fields.pm.bak	2011-06-11 18:01:24.198837926 +0100
++++ ./scripts/Dpkg/Control/Fields.pm	2011-06-11 15:54:12.000000000 +0100
+@@ -278,20 +278,20 @@
+ 
+ our %FIELD_ORDER = (
+     CTRL_PKG_DEB() => [
+-        qw(Package Package-Type Source Version Kernel-Version Architecture
+-        Subarchitecture Installer-Menu-Item Essential Origin Bugs
+-        Maintainer Installed-Size), &field_list_pkg_dep(),
++        qw(Package Package-Type Source Version Upstream-Version
++        Kernel-Version Architecture Subarchitecture Installer-Menu-Item 
++        Essential Origin Bugs Maintainer Installed-Size), &field_list_pkg_dep(),
+         qw(Section Priority Multi-Arch Homepage Description Tag Task)
+     ],
+     CTRL_PKG_SRC() => [
+-        qw(Format Source Binary Architecture Version Origin Maintainer
+-        Uploaders Homepage Standards-Version Vcs-Browser
++        qw(Format Source Binary Architecture Version Upstream-Version
++        Origin Maintainer Uploaders Homepage Standards-Version Vcs-Browser
+         Vcs-Arch Vcs-Bzr Vcs-Cvs Vcs-Darcs Vcs-Git Vcs-Hg Vcs-Mtn
+         Vcs-Svn), &field_list_src_dep(), @checksum_fields, qw(Files)
+     ],
+     CTRL_FILE_CHANGES() => [
+-        qw(Format Date Source Binary Architecture Version Distribution
+-        Urgency Maintainer Changed-By Description Closes Changes),
++        qw(Format Date Source Binary Architecture Version Upstream-Version
++        Distribution Urgency Maintainer Changed-By Description Closes Changes),
+         @checksum_fields, qw(Files)
+     ],
+     CTRL_CHANGELOG() => [
+@@ -301,10 +301,10 @@
+     ],
+     CTRL_FILE_STATUS() => [ # Same as fieldinfos in lib/dpkg/parse.c
+         qw(Package Essential Status Priority Section Installed-Size Origin
+-        Maintainer Bugs Architecture Source Version Config-Version
+-        Replaces Provides Depends Pre-Depends Recommends Suggests Breaks
+-        Conflicts Enhances Conffiles Description Triggers-Pending
+-        Triggers-Awaited)
++        Maintainer Bugs Architecture Source Version Upstream-Version
++        Config-Version Replaces Provides Depends Pre-Depends Recommends
++        Suggests Breaks Conflicts Enhances Conffiles Description 
++        Triggers-Pending Triggers-Awaited)
+     ],
+ );
+ # Order for CTRL_INDEX_PKG is derived from CTRL_PKG_DEB
+@@ -314,7 +314,7 @@
+ $FIELD_ORDER{CTRL_INDEX_SRC()} = [ @{$FIELD_ORDER{CTRL_PKG_SRC()}} ];
+ @{$FIELD_ORDER{CTRL_INDEX_SRC()}} = map { $_ eq "Source" ? "Package" : $_ }
+                                   @{$FIELD_ORDER{CTRL_PKG_SRC()}};
+-&field_insert_after(CTRL_INDEX_SRC, "Version", "Priority", "Section");
++&field_insert_after(CTRL_INDEX_SRC, "Version", "Upstream-Version", "Priority", "Section");
+ &field_insert_before(CTRL_INDEX_SRC, "Checksums-Md5", "Directory");
+ 
+ # Register vendor specifics fields
+Only in scripts/Dpkg/Control: Fields.pm.orig
+Only in scripts/Dpkg/Control: Fields.pm.rej
+diff -ur ./scripts/Dpkg/Source/scripts/V2.pm.bak ./scripts/Dpkg/Source/Package/V2.pm
+--- ./scripts/Dpkg/Source/Package/V2.pm.bak	2011-06-11 18:01:24.199478339 +0100
++++ ./scripts/Dpkg/Source/Package/V2.pm		2011-06-11 15:54:12.000000000 +0100
+@@ -102,6 +102,7 @@
+ 
+     my $dscdir = $self->{'basedir'};
+ 
++    my $upstream = $self->get_upstream();
+     my $basename = $self->get_basename();
+     my $basenamerev = $self->get_basename(1);
+ 
+@@ -112,7 +113,11 @@
+         error(_g("duplicate files in %s source package: %s.*"), "v2.0",
+               $uncompressed) if $seen{$uncompressed};
+         $seen{$uncompressed} = 1;
+-        if ($file =~ /^\Q$basename\E\.orig\.tar\.$re_ext$/) {
++        if ($upstream and $file =~ /^\Q$upstream\E\.orig\.tar\.$re_ext$/) {
++            $tarfile = $file;
++        } elsif ($upstream and $file =~ /^\Q$upstream\E\.orig-([[:alnum:]-]+)\.tar\.$re_ext$/) {
++            $origtar{$1} = $file;
++        } elsif ($file =~ /^\Q$basename\E\.orig\.tar\.$re_ext$/) {
+             $tarfile = $file;
+         } elsif ($file =~ /^\Q$basename\E\.orig-([[:alnum:]-]+)\.tar\.$re_ext$/) {
+             $origtar{$1} = $file;
+diff -ur ./scripts/Dpkg/Source/Package.pm.bak ./scripts/Dpkg/Source/Package.pm
+--- ./scripts/Dpkg/Source/Package.pm.bak	2011-06-11 18:01:24.200076387 +0100
++++ ./scripts/Dpkg/Source/Package.pm	2011-06-11 18:00:06.453123449 +0100
+@@ -219,17 +219,64 @@
+     return $basename;
+ }
+ 
++sub get_upstream_version {
++    my ($self, $with_revision) = @_; 
++    my $v = Dpkg::Version->new($self->{'fields'}{'Version'});
++    my $uv = undef;
++    my $fn = $self->{'fields'}{'Source'} . "-" . $v->version() . "/debian/control";
++    # Try and find our control file (without the version, we don't know for sure)
++    my @fns = <*/debian/control>;
++    if (@fns) {
++        foreach my $fn (@fns) {
++            my $cf = Dpkg::Control->new(type => CTRL_PKG_DEB);
++            $cf->load($fn);
++            if (exists $cf->{'Source'} and $cf->{'Source'} eq $self->{'fields'}{'Source'} ) {
++                # This is our control file, so this must be our Upstream-Version
++                if (exists $cf->{'Upstream-Version'}) {
++                    $v = Dpkg::Version->new($cf->{'Upstream-Version'});
++                    $uv = $v->version();
++                    last;
++                }
++            }
++        }
++    }
++    # Fall back to dsc file if control is a no-go
++    if (!$uv and exists $self->{'fields'}{'Upstream-Version'}) {
++        $v = Dpkg::Version->new($self->{'fields'}{'Upstream-Version'});
++        $uv = $v->version();
++    } 
++    if ($uv and $with_revision) {
++        $uv .= "-" . $v->revision();
++    }
++    return $uv;
++}
++
++sub get_upstream {
++    my ($self, $with_revision) = @_;
++    my $uv = $self->get_upstream_version($with_revision);
++    my $us = undef;
++    if ($uv) {
++       $us = $self->{'fields'}{'Source'} . "_" . $uv;
++    }
++    return $us;
++}
++
+ sub find_original_tarballs {
+     my ($self, %opts) = @_;
+     $opts{extension} = $compression_re_file_ext unless exists $opts{extension};
+     $opts{include_main} = 1 unless exists $opts{include_main};
+     $opts{include_supplementary} = 1 unless exists $opts{include_supplementary};
++    my $upstream = $self->get_upstream();
+     my $basename = $self->get_basename();
+     my @tar;
+     foreach my $dir (".", $self->{'basedir'}, $self->{'options'}{'origtardir'}) {
+         next unless defined($dir) and -d $dir;
+         opendir(DIR, $dir) || syserr(_g("cannot opendir %s"), $dir);
+         push @tar, map { "$dir/$_" } grep {
++		($upstream and $opts{include_main} and
++		 /^\Q$upstream\E\.orig\.tar\.$opts{extension}$/) or
++		($upstream and $opts{include_supplementary} and
++		 /^\Q$upstream\E\.orig-[[:alnum:]-]+\.tar\.$opts{extension}$/) or
+ 		($opts{include_main} and
+ 		 /^\Q$basename\E\.orig\.tar\.$opts{extension}$/) or
+ 		($opts{include_supplementary} and
+@@ -437,6 +484,11 @@
+ 	delete $fields->{$f};
+     }
+ 
++    my $uv = $self->get_upstream_version();
++    if ($uv) {
++        $fields->{'Upstream-Version'} = $uv;
++    }
++
+     my $filename = $opts{'filename'};
+     unless (defined $filename) {
+         $filename = $self->get_basename(1) . ".dsc";

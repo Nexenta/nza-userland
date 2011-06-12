@@ -9,8 +9,10 @@ Homepage: http://wiki.debian.org/Teams/Dpkg
 Vcs-Browser: http://git.debian.org/?p=dpkg/dpkg.git
 Vcs-Git: git://git.debian.org/git/dpkg/dpkg.git
 Standards-Version: 3.9.1
-Build-Depends: debhelper (>= 6), pkg-config, po4a (>= 0.23.1), system-library-install-libinstzones,
- package-svr4, libncursesw5-dev, zlib1g-dev (>= 1:1.1.3-19.1), libbz2-dev, flex,
+Upstream-Version: 1.15.8.10
+Build-Depends: debhelper (>= 6.0.7), pkg-config,
+ gettext (>= 0.18), po4a (>= 0.33.1),
+ libncursesw5-dev, zlib1g-dev (>= 1:1.1.3-19.1), libbz2-dev, flex,
  libselinux1-dev (>= 1.28-4) [linux-any],
  libtimedate-perl, libio-string-perl
 
@@ -29,18 +31,13 @@ Description: Debian package management static library
 Package: dpkg
 Architecture: any
 Essential: yes
-#Pre-Depends: ${shlibs:Depends}, coreutils (>= 5.93-1), xz-utils
-Pre-Depends: ${shlibs:Depends}
-Depends: ${shlibs:Depends}, ${misc:Depends}, system-library-install-libinstzones, package-svr4
+Pre-Depends: ${shlibs:Depends}, coreutils (>= 5.93-1), xz-utils
+Depends: ${misc:Depends}
 Breaks: dpkg-dev (<< 1.15.8), libdpkg-perl (<< 1.15.8),
  apt (<< 0.7.7), aptitude (<< 0.4.7-1),
 # install-info transition
 # see http://wiki.debian.org/Transitions/DpkgToGnuInstallInfo
- jed (<< 1:0.99.18+dfsg.1-13), xjed (<< 1:0.99.18+dfsg.1-13),
- konqueror (<= 4:4.2.96-1), xemacs21-support (<< 21.4.22-2),
- emacs22 (<= 22.3+1-1), emacs22-gtk (<= 22.3+1-1), emacs22-nox (<= 22.3+1-1),
- emacs21 (<< 21.4a+1-5.7), emacs21-nox (<< 21.4a+1-5.7),
- tkinfo (<< 2.8-3.1), pinfo (<< 0.6.9-3.1), jed-extra (<= 2.5.3-2)
+ tkinfo (<< 2.8-3.1), pinfo (<< 0.6.9-3.1)
 Suggests: apt
 Description: Debian package management system
  This package provides the low-level infrastructure for handling the
@@ -52,9 +49,8 @@ Package: dpkg-dev
 Section: utils
 Priority: optional
 Architecture: all
-#Depends: libdpkg-perl (= ${source:Version}), bzip2, xz-utils,
-# base-files (>= 4.0.0), ${misc:Depends}
-Depends: libdpkg-perl (= ${source:Version})
+Depends: libdpkg-perl (= ${source:Version}), bzip2, xz-utils,
+ patch, make, binutils, base-files (>= 4.0.0), ${misc:Depends}
 Recommends: gcc | c-compiler, build-essential, fakeroot, gnupg, gpgv, libalgorithm-merge-perl
 Suggests: debian-keyring
 Breaks: dpkg-cross (<< 2.0.0), devscripts (<< 2.10.26)
@@ -69,8 +65,7 @@ Package: libdpkg-perl
 Section: perl
 Priority: optional
 Architecture: all
-#Depends: dpkg (>= 1.15.8), perl, libtimedate-perl, ${misc:Depends}
-Depends: dpkg (>= 1.15.8), ${misc:Depends}
+Depends: dpkg (>= 1.15.8), perl, libtimedate-perl, ${misc:Depends}
 Recommends: bzip2, xz-utils
 Suggests: debian-keyring, gnupg, gpgv, binutils, patch
 Breaks: dpkg-dev (<< 1.15.6)

@@ -2,11 +2,10 @@
 # debian/rules for the dpkg suite.
 # Copyright © 2004 Scott James Remnant <scott@netsplit.com>
 
-WFLAGS := -Wall -Wextra -Wno-unused-parameter
+WFLAGS := -Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers
 
 CFLAGS = -g $(WFLAGS)
 CXXFLAGS = -g $(WFLAGS)
-LDFLAGS =
 
 # Disable optimisations if ‘noopt’ found in $DEB_BUILD_OPTIONS
 ifneq (,$(filter noopt,$(DEB_BUILD_OPTIONS)))
@@ -31,9 +30,10 @@ endif
 # Don't enable everything on all platforms
 DEB_HOST_ARCH_OS  ?= $(shell dpkg-architecture -qDEB_HOST_ARCH_OS)
 
-#ifeq ($(DEB_HOST_ARCH_OS),linux)
-#	confflags += --with-selinux
-#endif
+ifeq ($(DEB_HOST_ARCH_OS),linux)
+	confflags += --with-selinux
+endif
+
 
 # Create configure script if necessary, automake handles rebuilding it.
 configure:
@@ -47,7 +47,7 @@ build-tree/config.status: configure
 
 	install -d build-tree
 	cd build-tree && ../configure $(confflags) \
-		CFLAGS="$(CFLAGS)" CXXFLAGS="$(CXXFLAGS)" LDFLAGS="$(LDFLAGS)"\
+		CFLAGS="$(CFLAGS)" CXXFLAGS="$(CXXFLAGS)" \
 		--disable-silent-rules \
 		--prefix=/usr \
 		--mandir=\$${datadir}/man \
@@ -55,9 +55,7 @@ build-tree/config.status: configure
 		--sysconfdir=/etc \
 		--localstatedir=/var \
 		--with-zlib \
-		--with-bz2 
-#		--disable-linker-optimisations \
-#		--without-start-stop-daemon
+		--with-bz2
 
 # Build the package in build-tree
 build: build-tree/config.status
@@ -69,9 +67,9 @@ build: build-tree/config.status
 check: build
 	dh_testdir
 
-#ifeq (,$(filter nocheck,$(DEB_BUILD_OPTIONS)))
-#	cd build-tree && $(MAKE) check
-#endif
+ifeq (,$(filter nocheck,$(DEB_BUILD_OPTIONS)))
+	cd build-tree && $(MAKE) check
+endif
 
 # Install the package underneath debian/tmp
 install: check
@@ -92,7 +90,6 @@ binary-arch: install
 
 	install -d debian/dpkg/sbin
 	mv debian/dpkg/usr/sbin/start-stop-daemon debian/dpkg/sbin
-	ln -sf ../../sbin/start-stop-daemon debian/dpkg/usr/sbin/start-stop-daemon
 
 	dh_installchangelogs -a ChangeLog*
 	dh_installdocs -a
