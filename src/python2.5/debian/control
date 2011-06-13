@@ -1,0 +1,102 @@
+Source: python2.5
+Section: python
+Priority: optional
+Maintainer: Matthias Klose <doko@debian.org>
+Build-Depends: debhelper (>= 5), autoconf, libreadline-dev, libncursesw5-dev (>= 5.3), tk8.5-dev, libdb4.8-dev, zlib1g-dev, libgdbm-dev, blt-dev (>= 2.4z), libssl-dev, libbz2-dev, libbluetooth-dev [!hurd-i386 !kfreebsd-i386 !kfreebsd-amd64 !solaris-i386], locales [!avr32 !m68k], libsqlite3-dev, libffi-dev (>= 3.0.5-2), mime-support, libgpm2 [!hurd-i386 !kfreebsd-i386 !kfreebsd-amd64 !solaris-i386], netbase, lsb-release, bzip2, netbase, sharutils
+Build-Depends-Indep: libhtml-tree-perl, texlive-latex-recommended, texinfo, emacs23, debiandoc-sgml, latex2html
+Build-Conflicts: tcl8.4-dev, tk8.4-dev, tcl8.3-dev, tk8.3-dev, python2.5-xml, python-xml
+XS-Python-Version: 2.5
+Standards-Version: 3.9.1
+Homepage: http://python.org/
+Vcs-Browser: https://code.launchpad.net/~doko/python/pkg2.5
+Vcs-Bzr: http://bazaar.launchpad.net/~doko/python/pkg2.5
+
+Package: python2.5
+Architecture: any
+Priority: optional
+Depends: python2.5-minimal (= ${binary:Version}), mime-support, ${shlibs:Depends}, ${misc:Depends}
+Suggests: python2.5-doc, python-profiler
+Provides: python2.5-cjkcodecs, python2.5-ctypes, python2.5-elementtree, python2.5-celementtree, python2.5-wsgiref, python2.5-plistlib
+Replaces: python2.5-minimal (<< 2.5), python2.5-dev (<< 2.5.1), idle-python2.5 (<< 2.4.3+2.5b2-2), python-tk (<< 2.4.3-2)
+Conflicts: python-central (<< 0.5.9), idle-python2.5 (<< 2.4.3+2.5b2-2), python-tk (<< 2.4.3-2)
+XB-Python-Version: 2.5
+Description: An interactive high-level object-oriented language (version 2.5)
+ Version 2.5 of the high-level, interactive object oriented language,
+ includes an extensive class library with lots of goodies for
+ network programming, system administration, sounds and graphics.
+
+Package: python2.5-minimal
+Architecture: any
+Priority: optional
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Replaces: python2.5 (<< 2.5.5-7)
+Suggests: binfmt-support
+Conflicts: binfmt-support (<< 1.1.2)
+Recommends: python2.5
+XB-Python-Runtime: python2.5
+XB-Python-Version: 2.5
+Description: A minimal subset of the Python language (version 2.5)
+ This package contains the interpreter and some essential modules.  It can
+ be used in the boot process for some basic tasks.
+ See /usr/share/doc/python2.5-minimal/README.Debian for a list of the modules
+ contained in this package.
+
+Package: python2.5-examples
+Architecture: all
+Depends: python2.5 (>= ${binary:Version}), ${misc:Depends}
+Description: Examples for the Python language (v2.5)
+ Examples, Demos and Tools for Python (v2.5). These are files included in
+ the upstream Python distribution (v2.5).
+
+Package: python2.5-dev
+Architecture: any
+Depends: python2.5 (= ${binary:Version}), ${misc:Depends}
+Replaces: python2.5 (<< 2.5.1-6)
+Recommends: libc6-dev | libc-dev, gcc
+Suggests: python-old-doctools
+Description: Header files and a static library for Python (v2.5)
+ Header files, a static library and development tools for building
+ Python (v2.5) modules, extending the Python interpreter or embedding
+ Python (v2.5) in applications.
+ .
+ Maintainers of Python packages should read README.maintainers.
+
+Package: idle-python2.5
+Architecture: all
+Depends: python2.5, python-tk (>= 2.4.3-2), python2.5-tk, ${misc:Depends}
+Enhances: python2.5
+XB-Python-Version: 2.5
+Description: An IDE for Python (v2.5) using Tkinter
+ IDLE is an Integrated Development Environment for Python (v2.5).
+ IDLE is written using Tkinter and therefore quite platform-independent.
+
+Package: python2.5-dbg
+Section: debug
+Architecture: any
+Priority: extra
+Depends: python2.5 (>= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
+Suggests: python-gdbm-dbg, python-tk-dbg
+Description: Debug Build of the Python Interpreter (version 2.5)
+ Python interpreter configured with --pydebug. Dynamically loaded modules are
+ searched in /usr/lib/python2.5/lib-dynload/debug first.
+
+Package: python2.5-doc
+Section: doc
+Architecture: all
+Depends: ${misc:Depends}, dpkg (>= 1.15.4) | install-info
+Suggests: python2.5
+Description: Documentation for the high-level object-oriented language Python (v2.5)
+ These is the official set of documentation for the interactive high-level
+ object-oriented language Python (v2.5). All documents are provided
+ in HTML format, some in info format. The package consists of ten documents:
+ .
+   * What's New in Python2.5
+   * Tutorial
+   * Python Library Reference
+   * Macintosh Module Reference
+   * Python Language Reference
+   * Extending and Embedding Python
+   * Python/C API Reference
+   * Installing Python Modules
+   * Documenting Python
+   * Distributing Python Modules

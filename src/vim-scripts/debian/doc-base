@@ -1,0 +1,9 @@
+Document: vim-scripts
+Title: vim-scripts' scripts web pages
+Author: Various
+Abstract: Web pages of vim scripts shipped by vim-scripts
+Section: Editors
+
+Format: HTML
+Index: /usr/share/doc/vim-scripts/html/index.html
+Files: /usr/share/doc/vim-scripts/html/*

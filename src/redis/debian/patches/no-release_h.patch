@@ -1,0 +1,40 @@
+Index: redis-2.2.7/src/Makefile
+===================================================================
+--- redis-2.2.7.orig/src/Makefile	2011-05-13 20:12:27.880562035 +0400
++++ redis-2.2.7/src/Makefile	2011-05-13 20:18:06.634159204 +0400
+@@ -2,7 +2,6 @@
+ # Copyright (C) 2009 Salvatore Sanfilippo <antirez at gmail dot com>
+ # This file is released under the BSD license, see the COPYING file
+ 
+-release_hdr := $(shell sh -c './mkreleasehdr.sh')
+ uname_S := $(shell sh -c 'uname -s 2>/dev/null || echo not')
+ OPTIMIZATION?=-O2
+ ifeq ($(uname_S),SunOS)
+@@ -80,7 +79,7 @@
+ redis-cli.o: redis-cli.c fmacros.h version.h sds.h adlist.h zmalloc.h
+ redis.o: redis.c redis.h fmacros.h config.h ae.h sds.h dict.h adlist.h \
+   zmalloc.h anet.h zipmap.h ziplist.h intset.h version.h
+-release.o: release.c release.h
++release.o: release.c
+ replication.o: replication.c redis.h fmacros.h config.h ae.h sds.h dict.h \
+   adlist.h zmalloc.h anet.h zipmap.h ziplist.h intset.h version.h
+ sds.o: sds.c sds.h zmalloc.h
+Index: redis-2.2.7/src/release.c
+===================================================================
+--- redis-2.2.7.orig/src/release.c	2011-05-13 20:12:30.680102432 +0400
++++ redis-2.2.7/src/release.c	2011-05-13 20:16:50.957535728 +0400
+@@ -2,12 +2,10 @@
+  * small file is recompiled, as we access this information in all the other
+  * files using this functions. */
+ 
+-#include "release.h"
+-
+ char *redisGitSHA1(void) {
+-    return REDIS_GIT_SHA1;
++    return "00000000";
+ }
+ 
+ char *redisGitDirty(void) {
+-    return REDIS_GIT_DIRTY;
++    return "0";
+ }

@@ -1,0 +1,147 @@
+Description: Suppress locale warnings if DPKG_RUNNING_VERSION is set
+ The system locales are often out of sync with the C library in this case.
+Origin: backport, http://bazaar.launchpad.net/~cjwatson/man-db/trunk/revision/1250
+Bug-Debian: http://bugs.debian.org/605790
+Forwarded: yes
+Last-Update: 2010-12-04
+
+Index: b/src/accessdb.c
+===================================================================
+--- a/src/accessdb.c
++++ b/src/accessdb.c
+@@ -113,7 +113,8 @@
+ 
+ 	init_debug ();
+ 
+-	if (!setlocale (LC_ALL, "") && !getenv ("MAN_NO_LOCALE_WARNING"))
++	if (!setlocale (LC_ALL, "") && !getenv ("MAN_NO_LOCALE_WARNING") &&
++	    !getenv ("DPKG_RUNNING_VERSION"))
+ 		/* Obviously can't translate this. */
+ 		error (0, 0, "can't set the locale; make sure $LC_* and $LANG "
+ 			     "are correct");
+Index: b/src/catman.c
+===================================================================
+--- a/src/catman.c
++++ b/src/catman.c
+@@ -417,7 +417,8 @@
+ 	locale = xstrdup (setlocale (LC_ALL, ""));
+ 	if (!locale) {
+ 		/* Obviously can't translate this. */
+-		if (!getenv ("MAN_NO_LOCALE_WARNING"))
++		if (!getenv ("MAN_NO_LOCALE_WARNING") &&
++		    !getenv ("DPKG_RUNNING_VERSION"))
+ 			error (0, 0, "can't set the locale; make sure $LC_* "
+ 				     "and $LANG are correct");
+ 		locale = xstrdup ("C");
+Index: b/src/globbing_test.c
+===================================================================
+--- a/src/globbing_test.c
++++ b/src/globbing_test.c
+@@ -110,7 +110,8 @@
+ 
+ 	init_debug ();
+ 
+-	if (!setlocale (LC_ALL, "") && !getenv ("MAN_NO_LOCALE_WARNING"))
++	if (!setlocale (LC_ALL, "") && !getenv ("MAN_NO_LOCALE_WARNING") &&
++	    !getenv ("DPKG_RUNNING_VERSION"))
+ 		/* Obviously can't translate this. */
+ 		error (0, 0, "can't set the locale; make sure $LC_* and $LANG "
+ 			     "are correct");
+Index: b/src/lexgrog_test.c
+===================================================================
+--- a/src/lexgrog_test.c
++++ b/src/lexgrog_test.c
+@@ -136,7 +136,8 @@
+ 
+ 	init_debug ();
+ 
+-	if (!setlocale (LC_ALL, "") && !getenv ("MAN_NO_LOCALE_WARNING"))
++	if (!setlocale (LC_ALL, "") && !getenv ("MAN_NO_LOCALE_WARNING") &&
++	    !getenv ("DPKG_RUNNING_VERSION"))
+ 		/* Obviously can't translate this. */
+ 		error (0, 0, "can't set the locale; make sure $LC_* and $LANG "
+ 			     "are correct");
+Index: b/src/man.c
+===================================================================
+--- a/src/man.c
++++ b/src/man.c
+@@ -985,7 +985,8 @@
+ 
+ 	umask (022);
+ 	/* initialise the locale */
+-	if (!setlocale (LC_ALL, "") && !getenv ("MAN_NO_LOCALE_WARNING"))
++	if (!setlocale (LC_ALL, "") && !getenv ("MAN_NO_LOCALE_WARNING") &&
++	    !getenv ("DPKG_RUNNING_VERSION"))
+ 		/* Obviously can't translate this. */
+ 		error (0, 0, "can't set the locale; make sure $LC_* and $LANG "
+ 			     "are correct");
+Index: b/src/manconv_main.c
+===================================================================
+--- a/src/manconv_main.c
++++ b/src/manconv_main.c
+@@ -154,7 +154,8 @@
+ 
+ 	init_debug ();
+ 
+-	if (!setlocale (LC_ALL, "") && !getenv ("MAN_NO_LOCALE_WARNING"))
++	if (!setlocale (LC_ALL, "") && !getenv ("MAN_NO_LOCALE_WARNING") &&
++	    !getenv ("DPKG_RUNNING_VERSION"))
+ 		/* Obviously can't translate this. */
+ 		error (0, 0, "can't set the locale; make sure $LC_* and $LANG "
+ 			     "are correct");
+Index: b/src/mandb.c
+===================================================================
+--- a/src/mandb.c
++++ b/src/mandb.c
+@@ -582,7 +582,8 @@
+ 	init_debug ();
+ 
+ 	/* initialise the locale */
+-	if (!setlocale (LC_ALL, "") && !getenv ("MAN_NO_LOCALE_WARNING"))
++	if (!setlocale (LC_ALL, "") && !getenv ("MAN_NO_LOCALE_WARNING") &&
++	    !getenv ("DPKG_RUNNING_VERSION"))
+ 		/* Obviously can't translate this. */
+ 		error (0, 0, "can't set the locale; make sure $LC_* and $LANG "
+ 			     "are correct");
+Index: b/src/manpath.c
+===================================================================
+--- a/src/manpath.c
++++ b/src/manpath.c
+@@ -115,7 +115,8 @@
+ 	init_debug ();
+ 
+ 	/* initialise the locale */
+-	if (!setlocale (LC_ALL, "") && !getenv ("MAN_NO_LOCALE_WARNING"))
++	if (!setlocale (LC_ALL, "") && !getenv ("MAN_NO_LOCALE_WARNING") &&
++	    !getenv ("DPKG_RUNNING_VERSION"))
+ 		/* Obviously can't translate this. */
+ 		error (0, 0, "can't set the locale; make sure $LC_* and $LANG "
+ 			     "are correct");
+Index: b/src/whatis.c
+===================================================================
+--- a/src/whatis.c
++++ b/src/whatis.c
+@@ -704,7 +704,8 @@
+ 	init_debug ();
+ 
+ 	/* initialise the locale */
+-	if (!setlocale (LC_ALL, "") && !getenv ("MAN_NO_LOCALE_WARNING"))
++	if (!setlocale (LC_ALL, "") && !getenv ("MAN_NO_LOCALE_WARNING") &&
++	    !getenv ("DPKG_RUNNING_VERSION"))
+ 		/* Obviously can't translate this. */
+ 		error (0, 0, "can't set the locale; make sure $LC_* and $LANG "
+ 			     "are correct");
+Index: b/src/zsoelim_main.c
+===================================================================
+--- a/src/zsoelim_main.c
++++ b/src/zsoelim_main.c
+@@ -99,7 +99,8 @@
+ 
+ 	init_debug ();
+ 
+-	if (!setlocale (LC_ALL, "") && !getenv ("MAN_NO_LOCALE_WARNING"))
++	if (!setlocale (LC_ALL, "") && !getenv ("MAN_NO_LOCALE_WARNING") &&
++	    !getenv ("DPKG_RUNNING_VERSION"))
+ 		/* Obviously can't translate this. */
+ 		error (0, 0, "can't set the locale; make sure $LC_* and $LANG "
+ 			     "are correct");

@@ -1,0 +1,82 @@
+#! /bin/sh -e
+
+# DP: Fix issues with readline6
+
+dir=
+if [ $# -eq 3 -a "$2" = '-d' ]; then
+    pdir="-d $3"
+    dir="$3/"
+elif [ $# -ne 1 ]; then
+    echo >&2 "usage: `basename $0`: -patch|-unpatch [-d <srcdir>]"
+    exit 1
+fi
+case "$1" in
+    -patch)
+        patch $pdir -f --no-backup-if-mismatch -p0 < $0
+        ;;
+    -unpatch)
+        patch $pdir -f --no-backup-if-mismatch -R -p0 < $0
+        ;;
+    *)
+	echo >&2 "usage: `basename $0`: -patch|-unpatch [-d <srcdir>]"
+        exit 1
+esac
+exit 0
+
+Index: configure.in
+===================================================================
+--- configure.in	(Revision 75746)
++++ configure.in	(Revision 75747)
+@@ -3499,6 +3499,10 @@
+   [readline/readline.h],
+   AC_DEFINE(HAVE_RL_COMPLETION_APPEND_CHARACTER, 1,
+   [Define if you have readline 2.2]), )
++  AC_EGREP_HEADER([extern int rl_completion_suppress_append;],
++  [readline/readline.h],
++  AC_DEFINE(HAVE_RL_COMPLETION_SUPPRESS_APPEND, 1,
++  [Define if you have rl_completion_suppress_append]), )
+ fi
+ 
+ # check for readline 4.0
+Index: Modules/readline.c
+===================================================================
+--- Modules/readline.c	(Revision 75746)
++++ Modules/readline.c	(Revision 75747)
+@@ -759,6 +759,12 @@
+ static char **
+ flex_complete(char *text, int start, int end)
+ {
++#ifdef HAVE_RL_COMPLETION_APPEND_CHARACTER
++	rl_completion_append_character ='\0';
++#endif
++#ifdef HAVE_RL_COMPLETION_SUPPRESS_APPEND
++	rl_completion_suppress_append = 0;
++#endif
+ 	Py_XDECREF(begidx);
+ 	Py_XDECREF(endidx);
+ 	begidx = PyInt_FromLong((long) start);
+@@ -801,9 +807,6 @@
+ 	rl_completer_word_break_characters =
+ 		strdup(" \t\n`~!@#$%^&*()-=+[{]}\\|;:'\",<>/?");
+ 		/* All nonalphanums except '.' */
+-#ifdef HAVE_RL_COMPLETION_APPEND_CHARACTER
+-	rl_completion_append_character ='\0';
+-#endif
+ 
+ 	begidx = PyInt_FromLong(0L);
+ 	endidx = PyInt_FromLong(0L);
+Index: pyconfig.h.in
+===================================================================
+--- pyconfig.h.in	(Revision 75746)
++++ pyconfig.h.in	(Revision 75747)
+@@ -498,6 +498,9 @@
+ /* Define if you have readline 4.2 */
+ #undef HAVE_RL_COMPLETION_MATCHES
+ 
++/* Define if you have rl_completion_suppress_append */
++#undef HAVE_RL_COMPLETION_SUPPRESS_APPEND
++
+ /* Define if you have readline 4.0 */
+ #undef HAVE_RL_PRE_INPUT_HOOK
+ 
+

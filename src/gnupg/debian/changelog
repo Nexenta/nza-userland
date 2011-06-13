@@ -1,3 +1,23 @@
+gnupg (40-0-0) unstable; urgency=low
+
+  * Rebuilt aginst new libgcrypt11 (#5538)
+  * Use source format 3.0 (quilt).
+  * Adopted new version scheme.
+  * debian/control:
+    + Cleanup. Removed udeb sections.
+    + Added missing Build-Depends: libksba-dev libassuan-dev libpth-dev.
+    + Removed Build-depends on dpatch, not needed.
+    + Enabled gnupg-curl binary.
+  * debian/rules:
+    + Cleanup. Removed udeb sections.
+    + Enabled gnupg-curl build.
+    + Fixed installation for some documents.
+    + Corrected executable libpath
+  * debian/gnupg-curl{preinst,postrm}:
+    + Fixed name for binaries.
+
+ -- Kartik Mistry <kartik.mistry@nexenta.com>  Thu, 23 Jun 2011 21:21:19 +0530
+
 gnupg (2.0.3-1nexenta1) unstable; urgency=low
 
   * Updated to NCP4 from SFW

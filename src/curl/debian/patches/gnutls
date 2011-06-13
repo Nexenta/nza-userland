@@ -1,66 +1,24 @@
-Index: curl/lib/Makefile.am
-===================================================================
---- curl.orig/lib/Makefile.am	2010-02-09 13:49:49.000000000 +0100
-+++ curl/lib/Makefile.am	2010-02-09 13:49:49.000000000 +0100
-@@ -42,7 +42,7 @@
+diff --git a/configure.ac b/configure.ac
+index e746902..edba59d 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -1700,9 +1700,9 @@ if test "$OPENSSL_ENABLED" != "1"; then
  
- CLEANFILES = $(DSP) $(VCPROJ)
+       CLEANLIBS="$LIBS"
+       CLEANCPPFLAGS="$CPPFLAGS"
+-      CLEADLDFLAGS="$LDFLAGS"
++      CLEANLDFLAGS="$LDFLAGS"
  
--lib_LTLIBRARIES = libcurl.la
-+lib_LTLIBRARIES = libcurl-gnutls.la
- LIBCURL_LIBS = @LIBCURL_LIBS@
- 
- # Specify our include paths here, and do it relative to $(top_srcdir) and
-@@ -117,12 +117,12 @@
- VERSIONED_SYMBOLS = -Wl,--version-script=libcurl.vers
- endif
- 
--libcurl_la_LDFLAGS = $(UNDEF) $(VERSIONINFO) $(MIMPURE) $(LIBCURL_LIBS) $(VERSIONED_SYMBOLS)
-+libcurl_gnutls_la_LDFLAGS = $(UNDEF) $(VERSIONINFO) $(MIMPURE) $(LIBCURL_LIBS) $(VERSIONED_SYMBOLS)
- 
- # Makefile.inc provides the CSOURCES and HHEADERS defines
- include Makefile.inc
- 
--libcurl_la_SOURCES = $(CSOURCES) $(HHEADERS)
-+libcurl_gnutls_la_SOURCES = $(CSOURCES) $(HHEADERS)
- 
- WIN32SOURCES = $(CSOURCES)
- WIN32HEADERS = $(HHEADERS) config-win32.h
-Index: curl/src/Makefile.am
-===================================================================
---- curl.orig/src/Makefile.am	2010-02-09 13:49:49.000000000 +0100
-+++ curl/src/Makefile.am	2010-02-09 13:49:49.000000000 +0100
-@@ -47,8 +47,8 @@
- 
- include Makefile.inc
- 
--curl_LDADD = $(top_builddir)/lib/libcurl.la -lrt @CURL_LIBS@
--curl_DEPENDENCIES = $(top_builddir)/lib/libcurl.la
-+curl_LDADD = $(top_builddir)/lib/libcurl-gnutls.la -lrt @CURL_LIBS@
-+curl_DEPENDENCIES = $(top_builddir)/lib/libcurl-gnutls.la
- BUILT_SOURCES = hugehelp.c
- CLEANFILES = hugehelp.c
- # Use the C locale to ensure that only ASCII characters appear in the
-Index: curl/tests/libtest/Makefile.am
-===================================================================
---- curl.orig/tests/libtest/Makefile.am	2010-02-09 13:05:59.000000000 +0100
-+++ curl/tests/libtest/Makefile.am	2010-02-09 13:49:49.000000000 +0100
-@@ -55,8 +55,8 @@
- test1022.pl Makefile.inc
- 
- # Dependencies (may need to be overriden)
--LDADD = $(top_builddir)/lib/libcurl.la
--DEPENDENCIES = $(top_builddir)/lib/libcurl.la
-+LDADD = $(top_builddir)/lib/libcurl-gnutls.la
-+DEPENDENCIES = $(top_builddir)/lib/libcurl-gnutls.la
- 
- # Makefile.inc provides the source defines (TESTUTIL, SUPPORTFILES, noinst_PROGRAMS, lib*_SOURCES, and lib*_CFLAGS)
- include Makefile.inc
-Index: curl/docs/examples/Makefile.am
-===================================================================
---- curl.orig/docs/examples/Makefile.am	2010-02-09 13:05:41.000000000 +0100
-+++ curl/docs/examples/Makefile.am	2010-02-09 13:49:49.000000000 +0100
-@@ -30,7 +30,7 @@
+-      LIBS="$LIBS $addlib"
++      LIBS="$LIBS $addlib -lgcrypt"
+       LDFLAGS="$LDFLAGS $addld"
+       if test "$addcflags" != "-I/usr/include"; then
+          CPPFLAGS="$CPPFLAGS $addcflags"
+diff --git a/docs/examples/Makefile.am b/docs/examples/Makefile.am
+index c5f9785..22612bc 100644
+--- a/docs/examples/Makefile.am
++++ b/docs/examples/Makefile.am
+@@ -29,7 +29,7 @@ endif
  CPPFLAGS = -DCURL_NO_OLDIES $(STATICCPPFLAGS)
  
  # Dependencies
@@ -69,16 +27,64 @@ Index: curl/docs/examples/Makefile.am
  
  # Makefile.inc provides the check_PROGRAMS and COMPLICATED_EXAMPLES defines
  include Makefile.inc
-Index: curl/configure.ac
-===================================================================
---- curl.orig/configure.ac	2010-02-09 13:49:49.000000000 +0100
-+++ curl/configure.ac	2010-02-09 13:49:49.000000000 +0100
-@@ -1658,7 +1658,7 @@
-       CLEANCPPFLAGS="$CPPFLAGS"
-       CLEADLDFLAGS="$LDFLAGS"
+diff --git a/lib/Makefile.am b/lib/Makefile.am
+index 1eccb9e..0b1b829 100644
+--- a/lib/Makefile.am
++++ b/lib/Makefile.am
+@@ -42,7 +42,7 @@ EXTRA_DIST = Makefile.b32 Makefile.m32 Makefile.vc6 $(DSP)                 \
  
--      LIBS="$LIBS $addlib"
-+      LIBS="$LIBS $addlib -lgcrypt"
-       LDFLAGS="$LDFLAGS $addld"
-       if test "$addcflags" != "-I/usr/include"; then
-          CPPFLAGS="$CPPFLAGS $addcflags"
+ CLEANFILES = $(DSP) $(VCPROJ)
+ 
+-lib_LTLIBRARIES = libcurl.la
++lib_LTLIBRARIES = libcurl-gnutls.la
+ LIBCURL_LIBS = @LIBCURL_LIBS@
+ 
+ # This might hold -Werror
+@@ -122,7 +122,7 @@ if VERSIONED_SYMBOLS
+ VERSIONED_SYMBOLS = -Wl,--version-script=libcurl.vers
+ endif
+ 
+-libcurl_la_LDFLAGS = $(LINKFLAGS) $(VERSIONINFO) $(VERSIONED_SYMBOLS)
++libcurl_gnutls_la_LDFLAGS = $(LINKFLAGS) $(VERSIONINFO) $(VERSIONED_SYMBOLS)
+ 
+ # as unit testing will compile and link everything an extra time, we only
+ # do it if debug is enabled
+@@ -135,7 +135,7 @@ endif
+ # Makefile.inc provides the CSOURCES and HHEADERS defines
+ include Makefile.inc
+ 
+-libcurl_la_SOURCES = $(CSOURCES) $(HHEADERS)
++libcurl_gnutls_la_SOURCES = $(CSOURCES) $(HHEADERS)
+ libcurlu_la_SOURCES = $(CSOURCES) $(HHEADERS)
+ 
+ WIN32SOURCES = $(CSOURCES)
+diff --git a/src/Makefile.am b/src/Makefile.am
+index 9188e82..b8c0a9a 100644
+--- a/src/Makefile.am
++++ b/src/Makefile.am
+@@ -49,8 +49,8 @@ include Makefile.inc
+ # This might hold -Werror
+ CFLAGS += @CURL_CFLAG_EXTRAS@
+ 
+-curl_LDADD = $(top_builddir)/lib/libcurl.la -lrt @CURL_LIBS@
+-curl_DEPENDENCIES = $(top_builddir)/lib/libcurl.la
++curl_LDADD = $(top_builddir)/lib/libcurl-gnutls.la -lrt @CURL_LIBS@
++curl_DEPENDENCIES = $(top_builddir)/lib/libcurl-gnutls.la
+ BUILT_SOURCES = hugehelp.c
+ CLEANFILES = hugehelp.c
+ # Use the C locale to ensure that only ASCII characters appear in the
+diff --git a/tests/libtest/Makefile.am b/tests/libtest/Makefile.am
+index 9c0d595..c4338e4 100644
+--- a/tests/libtest/Makefile.am
++++ b/tests/libtest/Makefile.am
+@@ -54,8 +54,8 @@ EXTRA_DIST = test75.pl test307.pl test610.pl test613.pl test1013.pl	\
+ test1022.pl Makefile.inc
+ 
+ # Dependencies (may need to be overriden)
+-LDADD = $(top_builddir)/lib/libcurl.la @CURL_LIBS@
+-DEPENDENCIES = $(top_builddir)/lib/libcurl.la
++LDADD = $(top_builddir)/lib/libcurl-gnutls.la @CURL_LIBS@
++DEPENDENCIES = $(top_builddir)/lib/libcurl-gnutls.la
+ 
+ # Makefile.inc provides the source defines (TESTUTIL, SUPPORTFILES,
+ # noinst_PROGRAMS, lib*_SOURCES, and lib*_CFLAGS)

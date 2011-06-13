@@ -1,8 +1,8 @@
-Index: curl/tests/runtests.pl
-===================================================================
---- curl.orig/tests/runtests.pl	2010-02-09 13:05:49.000000000 +0100
-+++ curl/tests/runtests.pl	2010-02-09 13:49:38.000000000 +0100
-@@ -2621,10 +2621,10 @@
+diff --git a/tests/runtests.pl b/tests/runtests.pl
+index e372415..00c68aa 100755
+--- a/tests/runtests.pl
++++ b/tests/runtests.pl
+@@ -2905,10 +2905,10 @@ sub singletest {
      # run the command line we built
      if ($torture) {
          $cmdres = torture($CMDLINE,
@@ -15,7 +15,7 @@ Index: curl/tests/runtests.pl
          $cmdres=0; # makes it always continue after a debugged run
      }
      else {
-@@ -2658,7 +2658,7 @@
+@@ -2942,7 +2942,7 @@ sub singletest {
              open(GDBCMD, ">$LOGDIR/gdbcmd2");
              print GDBCMD "bt\n";
              close(GDBCMD);

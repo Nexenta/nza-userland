@@ -1,0 +1,18 @@
+## disabledby-whatdomain.diff by Stefano Zacchiroli <zack@debian.org>
+
+Index: vim-scripts/plugin/whatdomain.vim
+===================================================================
+--- vim-scripts.orig/plugin/whatdomain.vim
++++ vim-scripts/plugin/whatdomain.vim
+@@ -3,6 +3,11 @@
+ " Licence:	Public Domain
+ " Last Change:	2001 September 19
+ 
++if exists("loaded_whatdomain")
++  finish
++endif
++let loaded_whatdomain = 1
++
+ " This function returns the meaning of a Top Level Domain
+ " Usage: :call WhatDomain('de') will print 'DE: Germany'
+ function! WhatDomain(...)

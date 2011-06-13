@@ -1,0 +1,200 @@
+#! /bin/sh -e
+
+# DP: Backport new function signal.set_wakeup_fd from the trunk
+
+dir=
+if [ $# -eq 3 -a "$2" = '-d' ]; then
+    pdir="-d $3"
+    dir="$3/"
+elif [ $# -ne 1 ]; then
+    echo >&2 "usage: `basename $0`: -patch|-unpatch [-d <srcdir>]"
+    exit 1
+fi
+case "$1" in
+    -patch)
+        patch $pdir -f --no-backup-if-mismatch -p0 < $0
+        ;;
+    -unpatch)
+        patch $pdir -f --no-backup-if-mismatch -R -p0 < $0
+        ;;
+    *)
+	echo >&2 "usage: `basename $0`: -patch|-unpatch [-d <srcdir>]"
+        exit 1
+esac
+exit 0
+
+Index: Include/pyerrors.h
+===================================================================
+--- Include/pyerrors.h	(revision 60376)
++++ Include/pyerrors.h	(working copy)
+@@ -239,6 +239,9 @@
+ PyAPI_FUNC(int) PyErr_CheckSignals(void);
+ PyAPI_FUNC(void) PyErr_SetInterrupt(void);
+ 
++/* In signalmodule.c */
++int PySignal_SetWakeupFd(int fd);
++
+ /* Support for adding program text to SyntaxErrors */
+ PyAPI_FUNC(void) PyErr_SyntaxLocation(const char *, int);
+ PyAPI_FUNC(PyObject *) PyErr_ProgramText(const char *, int);
+Index: Lib/test/test_signal.py
+===================================================================
+--- Lib/test/test_signal.py	(revision 60376)
++++ Lib/test/test_signal.py	(working copy)
+@@ -165,3 +165,60 @@
+     signal.signal(signal.SIGUSR1, usr1)
+     signal.signal(signal.SIGUSR2, usr2)
+     signal.signal(signal.SIGALRM, alrm)
++
++class WakeupSignalTests(unittest.TestCase):
++    TIMEOUT_FULL = 10
++    TIMEOUT_HALF = 5
++
++    def test_wakeup_fd_early(self):
++        import select
++
++        signal.alarm(1)
++        before_time = time.time()
++        # We attempt to get a signal during the sleep,
++        # before select is called
++        time.sleep(self.TIMEOUT_FULL)
++        mid_time = time.time()
++        self.assert_(mid_time - before_time < self.TIMEOUT_HALF)
++        select.select([self.read], [], [], self.TIMEOUT_FULL)
++        after_time = time.time()
++        self.assert_(after_time - mid_time < self.TIMEOUT_HALF)
++
++    def test_wakeup_fd_during(self):
++        import select
++
++        signal.alarm(1)
++        before_time = time.time()
++        # We attempt to get a signal during the select call
++        self.assertRaises(select.error, select.select,
++            [self.read], [], [], self.TIMEOUT_FULL)
++        after_time = time.time()
++        self.assert_(after_time - before_time < self.TIMEOUT_HALF)
++
++    def setUp(self):
++        import fcntl
++
++        self.alrm = signal.signal(signal.SIGALRM, lambda x,y:None)
++        self.read, self.write = os.pipe()
++        flags = fcntl.fcntl(self.write, fcntl.F_GETFL, 0)
++        flags = flags | os.O_NONBLOCK
++        fcntl.fcntl(self.write, fcntl.F_SETFL, flags)
++        self.old_wakeup = signal.set_wakeup_fd(self.write)
++
++    def tearDown(self):
++        signal.set_wakeup_fd(self.old_wakeup)
++        os.close(self.read)
++        os.close(self.write)
++        signal.signal(signal.SIGALRM, self.alrm)
++
++
++def test_main():
++    if sys.platform[:3] in ('win', 'os2') or sys.platform == 'riscos':
++        raise test_support.TestSkipped("Can't test signal on %s" % \
++                                       sys.platform)
++ 
++    test_support.run_unittest(WakeupSignalTests)
++ 
++ 
++if __name__ == "__main__":
++    test_main()
+Index: Modules/signalmodule.c
+===================================================================
+--- Modules/signalmodule.c	(revision 60376)
++++ Modules/signalmodule.c	(working copy)
+@@ -12,6 +12,8 @@
+ 
+ #include <signal.h>
+ 
++#include <sys/stat.h>
++
+ #ifndef SIG_ERR
+ #define SIG_ERR ((PyOS_sighandler_t)(-1))
+ #endif
+@@ -75,6 +77,8 @@
+         PyObject *func;
+ } Handlers[NSIG];
+ 
++static sig_atomic_t wakeup_fd = -1;
++
+ /* Speed up sigcheck() when none tripped */
+ static volatile sig_atomic_t is_tripped = 0;
+ 
+@@ -128,6 +132,8 @@
+                    cleared in PyErr_CheckSignals() before .tripped. */
+ 		is_tripped = 1;
+ 		Py_AddPendingCall(checksignals_witharg, NULL);
++		if (wakeup_fd != -1)
++			write(wakeup_fd, "\0", 1);
+ #ifdef WITH_THREAD
+ 	}
+ #endif
+@@ -267,6 +273,50 @@
+ anything else -- the callable Python object used as a handler");
+ 
+ 
++static PyObject *
++signal_set_wakeup_fd(PyObject *self, PyObject *args)
++{
++	struct stat buf;
++	int fd, old_fd;
++	if (!PyArg_ParseTuple(args, "i:set_wakeup_fd", &fd))
++		return NULL;
++#ifdef WITH_THREAD
++	if (PyThread_get_thread_ident() != main_thread) {
++		PyErr_SetString(PyExc_ValueError,
++				"set_wakeup_fd only works in main thread");
++		return NULL;
++	}
++#endif
++	if (fd != -1 && fstat(fd, &buf) != 0) {
++		PyErr_SetString(PyExc_ValueError, "invalid fd");
++		return NULL;
++	}
++	old_fd = wakeup_fd;
++	wakeup_fd = fd;
++	return PyLong_FromLong(old_fd);
++}
++
++PyDoc_STRVAR(set_wakeup_fd_doc,
++"set_wakeup_fd(fd) -> fd\n\
++\n\
++Sets the fd to be written to (with '\\0') when a signal\n\
++comes in.  A library can use this to wakeup select or poll.\n\
++The previous fd is returned.\n\
++\n\
++The fd must be non-blocking.");
++
++/* C API for the same, without all the error checking */
++int
++PySignal_SetWakeupFd(int fd)
++{
++	int old_fd = wakeup_fd;
++	if (fd < 0)
++		fd = -1;
++	wakeup_fd = fd;
++	return old_fd;
++}
++
++
+ /* List of functions defined in the module */
+ static PyMethodDef signal_methods[] = {
+ #ifdef HAVE_ALARM
+@@ -274,11 +324,12 @@
+ #endif
+ 	{"signal",	        signal_signal, METH_VARARGS, signal_doc},
+ 	{"getsignal",	        signal_getsignal, METH_VARARGS, getsignal_doc},
++	{"set_wakeup_fd",	signal_set_wakeup_fd, METH_VARARGS, set_wakeup_fd_doc},
+ #ifdef HAVE_PAUSE
+ 	{"pause",	        (PyCFunction)signal_pause,
+ 	 METH_NOARGS,pause_doc},
+ #endif
+-	{"default_int_handler", signal_default_int_handler, 
++	{"default_int_handler", signal_default_int_handler,
+ 	 METH_VARARGS, default_int_handler_doc},
+ 	{NULL,			NULL}		/* sentinel */
+ };

@@ -1,0 +1,47 @@
+#! /bin/sh -e
+
+# DP: Fix Lib/calendar.py, broken title tag
+
+dir=
+if [ $# -eq 3 -a "$2" = '-d' ]; then
+    pdir="-d $3"
+    dir="$3/"
+elif [ $# -ne 1 ]; then
+    echo >&2 "usage: `basename $0`: -patch|-unpatch [-d <srcdir>]"
+    exit 1
+fi
+case "$1" in
+    -patch)
+        patch $pdir -f --no-backup-if-mismatch -p0 < $0
+        ;;
+    -unpatch)
+        patch $pdir -f --no-backup-if-mismatch -R -p0 < $0
+        ;;
+    *)
+	echo >&2 "usage: `basename $0`: -patch|-unpatch [-d <srcdir>]"
+        exit 1
+esac
+exit 0
+
+--- Lib/calendar.py~	2009-11-19 14:56:22.880001804 +0000
++++ Lib/calendar.py	2009-11-19 14:56:34.656003508 +0000
+@@ -473,7 +473,7 @@
+         a('<meta http-equiv="Content-Type" content="text/html; charset=%s" />\n' % encoding)
+         if css is not None:
+             a('<link rel="stylesheet" type="text/css" href="%s" />\n' % css)
+-        a('<title>Calendar for %d</title\n' % theyear)
++        a('<title>Calendar for %d</title>\n' % theyear)
+         a('</head>\n')
+         a('<body>\n')
+         a(self.formatyear(theyear, width))
+--- Lib/test/test_calendar.py~	2006-04-12 05:09:16.000000000 -0500
++++ Lib/test/test_calendar.py	2009-11-19 12:55:47.905170952 -0600
+@@ -49,7 +49,7 @@
+ <head>
+ <meta http-equiv="Content-Type" content="text/html; charset=ascii" />
+ <link rel="stylesheet" type="text/css" href="calendar.css" />
+-<title>Calendar for 2004</title
++<title>Calendar for 2004</title>
+ </head>
+ <body>
+ <table border="0" cellpadding="0" cellspacing="0" class="year">

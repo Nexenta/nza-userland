@@ -1,0 +1,39 @@
+#! /bin/sh -e
+
+# DP: suggest installation of python-tk package on failing _tkinter import
+
+dir=
+if [ $# -eq 3 -a "$2" = '-d' ]; then
+    pdir="-d $3"
+    dir="$3/"
+elif [ $# -ne 1 ]; then
+    echo >&2 "usage: `basename $0`: -patch|-unpatch [-d <srcdir>]"
+    exit 1
+fi
+case "$1" in
+    -patch)
+        patch $pdir -f --no-backup-if-mismatch -p0 < $0
+        ;;
+    -unpatch)
+        patch $pdir -f --no-backup-if-mismatch -R -p0 < $0
+        ;;
+    *)
+	echo >&2 "usage: `basename $0`: -patch|-unpatch [-d <srcdir>]"
+        exit 1
+esac
+exit 0
+
+--- Lib/lib-tk/Tkinter.py~	2006-06-19 09:45:16.000000000 +0200
++++ Lib/lib-tk/Tkinter.py	2006-07-19 14:57:24.119956600 +0200
+@@ -35,7 +35,10 @@
+ import sys
+ if sys.platform == "win32":
+     import FixTk # Attempt to configure Tcl/Tk without requiring PATH
+-import _tkinter # If this fails your Python may not be configured for Tk
++try:
++    import _tkinter
++except ImportError, msg:
++    raise ImportError, str(msg) + ', please install the python-tk package'
+ tkinter = _tkinter # b/w compat for export
+ TclError = _tkinter.TclError
+ from types import *

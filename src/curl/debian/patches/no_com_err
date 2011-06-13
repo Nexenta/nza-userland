@@ -1,8 +1,8 @@
 diff --git a/configure.ac b/configure.ac
-index 2d394e1..fc78bf2 100644
+index 55f4ea7..4f5a86b 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -1203,7 +1203,8 @@ if test x"$want_gss" = xyes; then
+@@ -1245,7 +1245,8 @@ if test x"$want_gss" = xyes; then
             dnl krb5-config doesn't have --libs-only-L or similar, put everything
             dnl into LIBS
             gss_libs=`$GSSAPI_ROOT/bin/krb5-config --libs gssapi`

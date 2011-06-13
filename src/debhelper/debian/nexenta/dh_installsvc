@@ -15,7 +15,7 @@ use File::Spec qw/ catfile /;
 
 =head1 SYNOPSIS
 
-B<dh_installsvc> [S<I<debhelper options>>] [B<-n>] [B<-R>] [B<-r>]
+B<dh_installsvc> [S<I<debhelper options>>] [B<--smf-manifest> I<some-file.xml> [B<--smf-method> I<some-script.sh>]]
 
 =head1 DESCRIPTION
 
@@ -25,7 +25,12 @@ SMF manifests and scripts files into package build directories.
 It also automatically generates the F<postinst> and F<postrm> and F<prerm> commands
 needed to set up and to start and stop the service.
 
+
+
 =head1 FILES
+
+Unless options B<--smf-manifest> or B<--smf-method> are specified
+these files are used by B<dh_installsvc>:
 
 =over 4
 
@@ -36,12 +41,26 @@ Installed into F</lib/svc/manifest>.
 
 =item debian/I<package>.method
 
-=item debian/I<package>.method.I<instance>
-
 SMF method to start/stop/refresh/etc.
-Maybe used in manifest debian/I<package>.xml.
-Installed into I</lib/svc/method>.
-It will be renamed to the name specified in debian/I<package>.xml.
+Maybe used in manifest F<debian/I<package>.xml>.
+Installed into F</lib/svc/method>.
+It will be renamed to the name specified in F<debian/I<package>.xml>.
+
+=back
+
+
+=head1 OPTIONS
+
+=over 4
+
+=item B<--smf-manifest> I<some-file.xml>
+
+=item B<--smf-method> I<some-script.sh>
+
+Use these manifest and method instead of guessing them by a package name (see L<"FILES">).
+Useful when SMF manifest or method are provided by upstream sources.
+Also make sure to provide a debhelper option B<-p> specifying
+a package which will have these files.
 
 =back
 
@@ -54,8 +73,8 @@ instances of the same text to be added to maintainer scripts.
 =cut
 
 init(options => {
-	"no-start" => \$dh{NO_START},
-	"R|restart-after-upgrade" => \$dh{RESTART_AFTER_UPGRADE},
+	"smf-manifest=s" => \$dh{SMF_MANIFEST},
+	"smf-method=s" => \$dh{SMF_METHOD},
 });
 
 my $MANIFEST = 'lib/svc/manifest';
@@ -67,7 +86,12 @@ foreach my $package (@{$dh{DOPACKAGES}}) {
 	my $tmp = tmpdir($package);
 
     # get SMF manifest file name if any
-    my $manifest = pkgfile($package, "xml");
+    my $manifest = '';
+    if ($dh{SMF_MANIFEST}) {
+        $manifest = $dh{SMF_MANIFEST}
+    } else {
+        $manifest = pkgfile($package, "xml")
+    }
     next if ($manifest eq '');
 
     # parse manifest
@@ -112,8 +136,11 @@ foreach my $package (@{$dh{DOPACKAGES}}) {
             my ($method_name, $method_dir) = fileparse($method_xml);
             if (! -f "$tmp/$METHOD/$method_dir/$method_name") {
                 my $method = '';
-                $method = pkgfile($package, "method.$i") unless $method;
-                $method = pkgfile($package, "method") unless $method;
+                if ($dh{SMF_METHOD}) {
+                    $method = $dh{SMF_METHOD}
+                } else {
+                    $method = pkgfile($package, "method") unless $method;
+                }
                 die "No SMF method found.\n" if !$method;
                 if (! -d "$tmp/$METHOD/$method_dir") {
                     doit("install", "-d", "-oroot", "-gbin", "-m755", "$tmp/$METHOD/$method_dir");

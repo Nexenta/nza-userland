@@ -1,0 +1,21 @@
+Index: vim-7.3.230/runtime/syntax/debcontrol.vim
+===================================================================
+--- vim-7.3.230.orig/runtime/syntax/debcontrol.vim	2011-06-21 18:53:51.544372614 +0400
++++ vim-7.3.230/runtime/syntax/debcontrol.vim	2011-06-21 18:54:33.522395907 +0400
+@@ -49,7 +49,7 @@
+ syn case ignore
+ 
+ " List of all legal keys
+-syn match debcontrolKey contained "^\%(Source\|Package\|Section\|Priority\|\%(XSBC-Original-\)\=Maintainer\|Uploaders\|Build-\%(Conflicts\|Depends\)\%(-Indep\)\=\|Standards-Version\|\%(Pre-\)\=Depends\|Recommends\|Suggests\|Provides\|Replaces\|Conflicts\|Enhances\|Breaks\|Essential\|Architecture\|Description\|Bugs\|Origin\|X[SB]-Python-Version\|Homepage\|\(XS-\)\=Vcs-\(Browser\|Arch\|Bzr\|Cvs\|Darcs\|Git\|Hg\|Mtn\|Svn\)\|XC-Package-Type\|\%(XS-\)\=DM-Upload-Allowed\): *"
++syn match debcontrolKey contained "^\%(Source\|Upstream-Version\|Package\|Section\|Priority\|\%(XSBC-Original-\)\=Maintainer\|Uploaders\|Build-\%(Conflicts\|Depends\)\%(-Indep\)\=\|Standards-Version\|\%(Pre-\)\=Depends\|Recommends\|Suggests\|Provides\|Replaces\|Conflicts\|Enhances\|Breaks\|Essential\|Architecture\|Description\|Bugs\|Origin\|X[SB]-Python-Version\|Homepage\|\(XS-\)\=Vcs-\(Browser\|Arch\|Bzr\|Cvs\|Darcs\|Git\|Hg\|Mtn\|Svn\)\|XC-Package-Type\|\%(XS-\)\=DM-Upload-Allowed\): *"
+ 
+ " Fields for which we do strict syntax checking
+ syn region debcontrolStrictField start="^Architecture" end="$" contains=debcontrolKey,debcontrolArchitecture,debcontrolSpace oneline
+@@ -58,6 +58,7 @@
+ syn region debcontrolStrictField start="^Section" end="$" contains=debcontrolKey,debcontrolSection oneline
+ syn region debcontrolStrictField start="^XC-Package-Type" end="$" contains=debcontrolKey,debcontrolPackageType oneline
+ syn region debcontrolStrictField start="^Homepage" end="$" contains=debcontrolKey,debcontrolHTTPUrl oneline keepend
++syn region debcontrolStrictField start="^Upstream-Version" end="$" contains=debcontrolKey,debcontrolName oneline
+ syn region debcontrolStrictField start="^\%(XS-\)\=Vcs-\%(Browser\|Arch\|Bzr\|Darcs\|Hg\)" end="$" contains=debcontrolKey,debcontrolHTTPUrl oneline keepend
+ syn region debcontrolStrictField start="^\%(XS-\)\=Vcs-Svn" end="$" contains=debcontrolKey,debcontrolVcsSvn,debcontrolHTTPUrl oneline keepend
+ syn region debcontrolStrictField start="^\%(XS-\)\=Vcs-Cvs" end="$" contains=debcontrolKey,debcontrolVcsCvs oneline keepend

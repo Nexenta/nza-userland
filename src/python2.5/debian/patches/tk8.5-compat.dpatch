@@ -1,0 +1,42 @@
+#! /bin/sh -e
+
+dir=
+if [ $# -eq 3 -a "$2" = '-d' ]; then
+    pdir="-d $3"
+    dir="$3/"
+elif [ $# -ne 1 ]; then
+    echo >&2 "usage: `basename $0`: -patch|-unpatch [-d <srcdir>]"
+    exit 1
+fi
+case "$1" in
+    -patch)
+        patch $pdir -f --no-backup-if-mismatch -p0 < $0
+        ;;
+    -unpatch)
+        patch $pdir -f --no-backup-if-mismatch -R -p0 < $0
+        ;;
+    *)
+	echo >&2 "usage: `basename $0`: -patch|-unpatch [-d <srcdir>]"
+        exit 1
+esac
+exit 0
+
+# DP: Fix python2.5 / tk8.5 incompatibility (http://bugs.python.org/issue2693)
+
+--- Lib/idlelib/WidgetRedirector.py.orig	2009-07-24
+18:43:57.000000000 +0200
++++ Lib/idlelib/WidgetRedirector.py	2009-07-24
+18:49:39.000000000 +0200
+@@ -53,7 +53,10 @@
+             if m:
+                 return m(*args)
+             else:
+-                return self.tk.call((self.orig, cmd) + args)
++                result = self.tk.call((self.orig, cmd) + args)
++                if isinstance(result, tuple):
++                    result = '{%s}' % '} {'.join(map(str, result))
++                return result
+         except TclError:
+             return ""
+
+

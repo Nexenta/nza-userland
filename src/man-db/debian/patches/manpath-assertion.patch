@@ -1,0 +1,53 @@
+Description: Avoid assertion if no path elements with manpaths were found
+Author: Colin Watson <cjwatson@debian.org>
+Origin: backport, http://bazaar.launchpad.net/~cjwatson/man-db/trunk/revision/1300
+Bug-Debian: http://bugs.debian.org/608490
+Forwarded: not-needed
+Last-Update: 2011-01-03
+
+Index: b/src/man.c
+===================================================================
+--- a/src/man.c
++++ b/src/man.c
+@@ -921,8 +921,13 @@
+ 				debug ("recalculating manpath for executable "
+ 				       "in %s\n", argv_dir);
+ 
+-				new_manp = locale_manpath (
+-					get_manpath_from_path (argv_dir, 0));
++				new_manp = get_manpath_from_path (argv_dir, 0);
++				if (!new_manp || !*new_manp) {
++					debug ("no useful manpath for "
++					       "executable\n");
++					goto executable_out;
++				}
++				new_manp = locale_manpath (new_manp);
+ 
+ 				old_manpathlist = XNMALLOC (MAXDIRS, char *);
+ 				for (i = 0; i < MAXDIRS; ++i)
+@@ -936,6 +941,7 @@
+ 					manpathlist[i] = old_manpathlist[i];
+ 				}
+ 				free (old_manpathlist);
++executable_out:
+ 				free (new_manp);
+ 				free (argv_base);
+ 			}
+Index: b/src/manp.c
+===================================================================
+--- a/src/manp.c
++++ b/src/manp.c
+@@ -1042,7 +1042,12 @@
+ 		lp++;
+ 	}
+ 
+-	assert (len);
++	if (!len)
++		/* No path elements in configuration file or with
++		 * appropriate subdirectories.
++		 */
++		return xstrdup ("");
++
+ 	manpathlist = xmalloc (len);
+ 	*manpathlist = '\0';
+ 

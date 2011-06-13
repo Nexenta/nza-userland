@@ -1,0 +1,12 @@
+Document: @PVER@-mac
+Title: Python Macintosh Library Modules (v@VER@)
+Author: Guido van Rossum
+Abstract: This library reference manual documents Python's extensions for the
+ Macintosh.  It should be used in conjunction with the *Python
+ Library Reference*, which documents the standard library and
+ built-in types.
+Section: Programming/Python
+
+Format: HTML
+Index: /usr/share/doc/@PVER@/html/mac/index.html
+Files: /usr/share/doc/@PVER@/html/mac/*.html

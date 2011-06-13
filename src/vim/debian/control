@@ -1,0 +1,38 @@
+Source: vim
+Upstream-Version: 7.3.230
+Section: editors
+Priority: optional
+Maintainer: Debian Vim Maintainers <pkg-vim-maintainers@lists.alioth.debian.org>
+Uploaders: James Vega <jamessan@debian.org>
+Standards-Version: 3.8.3.0
+Build-Depends: debhelper, bzip2, libncurses5-dev
+Homepage: http://www.vim.org/
+
+Package: vim
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Replaces: vim-common, vim-runtime, vim-nox, vim-tiny, vim-full
+Conflicts: vim-common, vim-runtime, vim-nox, vim-tiny, vim-full
+Suggests: ctags, vim-scripts
+Provides: editor
+Description: Vi IMproved - enhanced vi editor
+ Vim is an almost compatible version of the UNIX editor Vi.
+ .
+ Many new features have been added: multi level undo, syntax
+ highlighting, command line history, on-line help, filename
+ completion, block operations, folding, Unicode support, etc.
+
+Package: vim-doc
+Section: doc
+Architecture: all
+Depends: ${misc:Depends}
+Description: Vi IMproved - HTML documentation
+ Vim is an almost compatible version of the UNIX editor Vi.
+ .
+ Many new features have been added: multi level undo, syntax
+ highlighting, command line history, on-line help, filename
+ completion, block operations, folding, Unicode support, etc.
+ .
+ This package contains the HTML version of the online
+ documentation.
+

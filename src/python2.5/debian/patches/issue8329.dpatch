@@ -1,0 +1,45 @@
+#! /bin/sh -e
+
+# DP: Fix issue #8329: Don't return the same lists from select.select
+# DP: when no fds are changed.
+
+dir=
+if [ $# -eq 3 -a "$2" = '-d' ]; then
+    pdir="-d $3"
+    dir="$3/"
+elif [ $# -ne 1 ]; then
+    echo >&2 "usage: `basename $0`: -patch|-unpatch [-d <srcdir>]"
+    exit 1
+fi
+case "$1" in
+    -patch)
+        patch $pdir -f --no-backup-if-mismatch -p0 < $0
+        ;;
+    -unpatch)
+        patch $pdir -f --no-backup-if-mismatch -R -p0 < $0
+        ;;
+    *)
+	echo >&2 "usage: `basename $0`: -patch|-unpatch [-d <srcdir>]"
+        exit 1
+esac
+exit 0
+
+Index: Modules/selectmodule.c
+===================================================================
+--- Modules/selectmodule.c	(Revision 79866)
++++ Modules/selectmodule.c	(Revision 79867)
+@@ -287,14 +287,6 @@
+ 		PyErr_SetFromErrno(SelectError);
+ 	}
+ #endif
+-	else if (n == 0) {
+-                /* optimization */
+-		ifdlist = PyList_New(0);
+-		if (ifdlist) {
+-			ret = PyTuple_Pack(3, ifdlist, ifdlist, ifdlist);
+-			Py_DECREF(ifdlist);
+-		}
+-	}
+ 	else {
+ 		/* any of these three calls can raise an exception.  it's more
+ 		   convenient to test for this after all three calls... but

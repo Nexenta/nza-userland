@@ -1,0 +1,16 @@
+## sokoban_path.diff by  <zack@debian.org>
+##
+## set SokobanLevelDirectory so that levels are shared among users
+
+Index: vim-scripts/plugin/sokoban.vim
+===================================================================
+--- vim-scripts.orig/plugin/sokoban.vim
++++ vim-scripts/plugin/sokoban.vim
+@@ -71,6 +71,7 @@
+     finish
+ endif
+ let loaded_VimSokoban = 1
++let g:SokobanLevelDirectory = "/usr/share/vim-scripts/sokoban-levels/"
+ 
+ " Allow the user to specify the location of the sokoban levels
+ if (!exists("g:SokobanLevelDirectory"))

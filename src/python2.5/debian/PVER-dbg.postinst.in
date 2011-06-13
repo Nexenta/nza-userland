@@ -1,0 +1,29 @@
+#! /bin/sh -e
+
+PACKAGE=@PVER@-dbg
+
+case "$1" in
+    configure|abort-upgrade|abort-remove|abort-deconfigure)
+
+        # Create empty debug directories in /usr/local
+        if [ ! -e /usr/local/lib/@PVER@ ]; then
+            mkdir -p /usr/local/lib/@PVER@ 2> /dev/null || true
+            chmod 2775 /usr/local/lib/@PVER@ 2> /dev/null || true
+            chown root:staff /usr/local/lib/@PVER@ 2> /dev/null || true
+        fi
+        if [ ! -e /usr/local/lib/@PVER@/site-packages/debug ]; then
+            mkdir -p /usr/local/lib/@PVER@/site-packages/debug 2> /dev/null || true
+            chmod 2775 /usr/local/lib/@PVER@/site-packages/debug 2> /dev/null || true
+            chown root:staff /usr/local/lib/@PVER@/site-packages/debug 2> /dev/null || true
+        fi
+    ;;
+
+    *)
+        echo "postinst called with unknown argument \`$1'" >&2
+        exit 1
+    ;;
+esac
+
+#DEBHELPER#
+
+exit 0

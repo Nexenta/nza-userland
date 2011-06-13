@@ -1,0 +1,17 @@
+## disabledby-omnicppcomplete.diff by Stefano Zacchiroli <zack@debian.org>
+
+Index: vim-scripts/autoload/omni/cpp/complete.vim
+===================================================================
+--- vim-scripts.orig/autoload/omni/cpp/complete.vim
++++ vim-scripts/autoload/omni/cpp/complete.vim
+@@ -9,6 +9,10 @@
+     finish
+ endif
+ 
++if exists("loaded_omnicppcomplete")
++  finish
++endif
++
+ call omni#cpp#settings#Init()
+ let s:OmniCpp_ShowScopeInAbbr = g:OmniCpp_ShowScopeInAbbr
+ let s:OmniCpp_ShowPrototypeInAbbr = g:OmniCpp_ShowPrototypeInAbbr

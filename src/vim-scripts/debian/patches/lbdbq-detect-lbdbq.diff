@@ -1,0 +1,19 @@
+## lbdbq-detect-lbdbq.diff by Stefano Zacchiroli <zack@debian.org>
+##
+## detect (the absence of) the lbdbq executable
+
+Index: vim-scripts/plugin/lbdbq.vim
+===================================================================
+--- vim-scripts.orig/plugin/lbdbq.vim
++++ vim-scripts/plugin/lbdbq.vim
+@@ -14,6 +14,10 @@
+ " queries lbdb with a query string and return a list of pairs:
+ " [['full name', 'email'], ['full name', 'email'], ...]
+ function! LbdbQuery(qstring)
++  if !executable("lbdbq")
++    echoerr "Cannot find 'lbdbq' executable, please install it (usually, it comes with the 'lbdb' package)"
++    return []
++  endif
+   let output = system("lbdbq '" . a:qstring . "'")
+   let results = []
+   for line in split(output, "\n")[1:] " skip first line (lbdbq summary)

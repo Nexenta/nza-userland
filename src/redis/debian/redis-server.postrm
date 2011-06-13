@@ -1,0 +1,15 @@
+#!/bin/sh
+
+set -e
+
+if [ "$1" = "purge" ]
+then
+	rm -rf /var/lib/redis
+	rm -rf /var/log/redis
+	deluser redis
+    if [ `logins -g redis | wc -l` = 0 ]; then
+        delgroup redis
+    fi
+fi
+
+#DEBHELPER#

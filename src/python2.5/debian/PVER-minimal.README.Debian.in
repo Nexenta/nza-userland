@@ -1,0 +1,112 @@
+Contents of the @PVER@-minimal package
+-----------------------------------------
+
+@PVER@-minimal consists of a minimum set of modules which may be needed
+for python scripts used during the boot process.  If other packages
+are needed in these scripts, don't work around the missing module, but
+file a bug report against this package. The modules in this package
+are:
+
+  __builtin__		builtin
+  __future__		module
+  _codecs		builtin
+  _random		builtin
+  _socket		extension
+  _sre			builtin
+  _struct		builtin
+  _symtable		builtin
+  _types		builtin
+  ConfigParser		module
+  StringIO		module
+  UserDict		module
+  cStringIO		builtin
+  array			builtin
+  binascii		builtin
+  compileall		module
+  copy			module
+  copy_reg		module
+  dis			module
+  errno			builtin
+  exceptions		builtin
+  fcntl			builtin
+  fnmatch		module
+  gc			builtin
+  getopt		module
+  glob			module
+  grp			builtin
+  hashlib		module
+  imp			builtin
+  inspect		module
+  itertools		builtin
+  linecache		module
+  marshal		builtin
+  math			builtin
+  md5			module
+  opcode		module
+  operator		builtin
+  optparse		module
+  os			module
+  pickle		module
+  pkgutil		module
+  platform		module
+  popen2		module
+  posix			builtin
+  posixpath		module
+  pwd			builtin
+  py_compile		module
+  random		module
+  re			module
+  repr			module
+  runpy			module
+  select		builtin
+  sha			module
+  socket		builtin
+  sre			module
+  sre_compile		module
+  sre_constants		module
+  sre_parse		module
+  stat			module
+  string		module
+  strop			builtin
+  struct		module
+  subprocess		module
+  sys			builtin
+  syslog		builtin
+  tempfile		module
+  textwrap		module
+  time			builtin
+  token			module
+  tokenize		module
+  traceback		module
+  types			module
+  unicodedata		builtin
+  warnings		module
+  zipimport		builtin
+  zlib			builtin
+
+Included are as well the codecs and stringprep modules, and the encodings
+modules for all encodings except the multibyte encodings and the bz2 codec.
+
+The following modules are excluded, their import is guarded from the
+importing module (i.e. omit the import of _ssl in socket):
+
+  _hashlib	hashlib
+  os		nt ntpath os2 os2emxpath mac macpath
+		riscos riscospath riscosenviron
+  optparse	gettext
+  pickle	doctest
+  platform	tempfile
+  socket	_ssl
+  subprocess	threading
+
+This list was derived by looking at the modules in the perl-base package,
+then adding python specific "core modules".
+
+TODO's
+------
+
+- time.strptime cannot be used. The required _strptime module is not
+  included in the -minimal package yet. _strptime, locale, _locale and
+  calendar have to be added.
+
+- modules used very often in the testsuite: copy, cPickle, operator.

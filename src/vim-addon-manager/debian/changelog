@@ -1,0 +1,90 @@
+vim-addon-manager (40-0-0) unstable; urgency=low
+
+  * Ported to NCP4
+  * Used `3.0 (quilt)' source format
+  * Got prepared man page from Debian (building it requires rb2)
+  * New version scheme
+
+ -- Igor Pashev <igor.pashev@nexenta.com>  Wed, 22 Jun 2011 21:46:01 +0400
+
+vim-addon-manager (0.4.3) unstable; urgency=low
+
+  * Don't try to remove “/path/to/addons/.”.  (Closes: #566186)
+  * Do not regenerate the helptags after removing the last
+    documentation-providing addon.  Simply remove the docs directory instead.
+
+ -- James Vega <jamessan@debian.org>  Thu, 21 Jan 2010 23:55:41 -0500
+
+vim-addon-manager (0.4.2) unstable; urgency=low
+
+  * debian/control:
+    - Add myself as an uploader
+    - Update Vcs-* fields to point to git
+    - Remove vim-tiny from Recommends since it's lacking +eval which most
+      addons need.
+  * Rename amend sub-command to enable.  Leave amend as an undocumented
+    command for a little while for people that are used to the old name.
+    (Closes: #501439)
+  * Remove empty directories left behind when removing addons.
+  * Include the target directory in the install/remove informational messages.
+    (Closes: #499563)
+  * Fix a spelling error in vim-addons(1).
+  * Add a man page describing the registry file format.  (Closes: #457040)
+
+ -- James Vega <jamessan@debian.org>  Wed, 20 Jan 2010 19:23:04 -0500
+
+vim-addon-manager (0.4.1) unstable; urgency=low
+
+  * bump Standards-Version, no changes needed
+  * set "Debian Vim Maintainers" as Maintainer, no Uploaders for the
+    moment. So long.
+
+ -- Debian Vim Maintainers <pkg-vim-maintainers@lists.alioth.debian.org>  Tue, 21 Jul 2009 13:19:28 +0200
+
+vim-addon-manager (0.4) unstable; urgency=low
+
+  * vim-addons manpage: fix typo, s/linst/list/ (closes: #446527)
+  * remove TODO.Debian, the only item was done in 0.3
+  * use "status" as the default command when none is given
+  * fix the license header of the vim-addons main executable to GPL v3
+
+ -- Stefano Zacchiroli <zack@debian.org>  Thu, 29 Nov 2007 14:26:52 +0100
+
+vim-addon-manager (0.3) unstable; urgency=low
+
+  * debian/control
+    - better long description
+  * debian/copyright
+    - change license to GPL 3 or above, fixed source file headers accordingly
+  * vim-addons
+    - add 'show' command which show in a 822-like format a more detailed
+      report of each addons and its status (closes: #438154)
+    - add '-q' option which make the output of the 'status' command more
+      parsable and only show addons wrt the current execution mode
+      (system-wide or not)
+  * add bash completion script contributed by Antonio Terceiro
+    (closes: #440843); fix debian/*.install accordingly
+
+ -- Stefano Zacchiroli <zack@debian.org>  Mon, 24 Sep 2007 10:24:22 +0200
+
+vim-addon-manager (0.2) unstable; urgency=low
+
+  * uploading to unstable
+  * vim-addons:
+    - when files are installed or removed under doc/ run helpztags afterwards
+      to regenerate help tags
+    - avoid performing an action when there is no need to perform it
+    - added feedback messages for the user
+    - handle gracefully command line parsing errors (Closes: #420029)
+  * debian/control
+    - added dependency on vim-common, which ships /usr/bin/helpztags
+    - added XS-Vcs-* fields
+
+ -- Stefano Zacchiroli <zack@debian.org>  Sun, 29 Apr 2007 11:29:11 +0200
+
+vim-addon-manager (0.1) experimental; urgency=low
+
+  * Initial release (closes: #409627)
+
+ -- Stefano Zacchiroli <zack@debian.org>  Mon,  5 Feb 2007 00:32:42 +0100
+

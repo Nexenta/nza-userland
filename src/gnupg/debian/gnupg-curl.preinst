@@ -7,11 +7,11 @@ set -e
 
 if [ "$1" = install ] || [ "$1" = upgrade ] ; then
 	dpkg-divert --package gnupg-curl \
-	   --divert /usr/lib/gnupg/gpgkeys_curl.non_curl \
-	   --rename /usr/lib/gnupg/gpgkeys_curl
+	   --divert /usr/lib/gpg2keys_curl.non_curl \
+	   --rename /usr/lib/gpg2keys_curl
 	dpkg-divert --package gnupg-curl \
-	   --divert /usr/lib/gnupg/gpgkeys_hkp.non_curl \
-	   --rename /usr/lib/gnupg/gpgkeys_hkp
+	   --divert /usr/lib/gpg2keys_hkp.non_curl \
+	   --rename /usr/lib/gpg2keys_hkp
 fi
 
 #DEBHELPER#

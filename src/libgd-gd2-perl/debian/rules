@@ -1,0 +1,41 @@
+#!/usr/bin/make -f
+# -*- mode: makefile; coding: utf-8 -*-
+# Copyright © 2003-2008 Jonas Smedegaard <dr@jones.dk>
+
+# NB! Local CDBS tweaks in use. More info in README.cdbs-tweaks
+include debian/cdbs/1/rules/upstream-tarball.mk
+include /usr/share/cdbs/1/rules/debhelper.mk
+include debian/cdbs/1/rules/buildinfo.mk
+include debian/cdbs/1/rules/copyright-check.mk
+# Put perlmodule.mk last to dh_clean temporary files not in MANIFEST
+include /usr/share/cdbs/1/class/perlmodule.mk
+
+DEB_UPSTREAM_PACKAGE = GD
+DEB_UPSTREAM_URL = http://www.cpan.org/modules/by-module/GD
+DEB_UPSTREAM_TARBALL_MD5 = 5fdb681e5614236e7a952a07eabc8791
+
+DEB_INSTALL_DOCS_ALL += GD.html README.unix README.QUICKDRAW
+DEB_INSTALL_EXAMPLES_ALL = demos bdf_scripts qd.pl
+DEB_INSTALL_EXAMPLES_libgd-gd2-perl = $(DEB_INSTALL_EXAMPLES_ALL)
+DEB_INSTALL_EXAMPLES_libgd-gd2-noxpm-perl = $(DEB_INSTALL_EXAMPLES_ALL)
+
+common-post-build-arch::
+	pod2html --outfile=GD.html GD.pm
+
+# qd.pl and bdf2gdfont.pl are installed as example scripts instead
+common-binary-post-install-arch::
+	find "$(DEB_DESTDIR)" -type f -and '(' -name '*qd.pl*' -or -name '*bdf2gdfont.pl*' ')' -and -not -path '*/usr/share/doc/*' -exec rm -r '{}' ';'
+
+# Remove stray empty dirs (due to MakeMaker stupidity and above cleanup)
+common-binary-post-install-arch::
+	find "$(DEB_DESTDIR)" -empty -depth -exec rm -rf '{}' ';'
+
+# Manually clean leftovers
+clean::
+	rm -f GD.html pod2html* .config.cache GD/Image.pm *.tmp
+
+# Needed for by upstream build process
+CDBS_BUILD_DEPENDS := $(CDBS_BUILD_DEPENDS), libgd2-xpm-dev (>= 2.0.28), libjpeg62-dev, libpng12-dev, libz-dev, libfreetype6-dev, libxpm-dev, libx11-dev
+
+# Fix double cdbs build-dependencies
+CDBS_BUILD_DEPENDS := $(shell echo '$(CDBS_BUILD_DEPENDS)' | sed -e '/\bcdbs (>= 0.4.39)/ s/ *,* *\bcdbs (>= \(0.4.23-1.1\)) *,* */, /g' -e 's/^ *, *//' -e 's/ *, *$$//')

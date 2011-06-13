@@ -1,0 +1,40 @@
+## detectindent_fix.diff by Antonio Terceiro <terceiro@softwarelivre.org>
+
+Index: vim-scripts/plugin/detectindent.vim
+===================================================================
+--- vim-scripts.orig/plugin/detectindent.vim
++++ vim-scripts/plugin/detectindent.vim
+@@ -86,7 +86,7 @@
+     if l:has_leading_tabs && ! l:has_leading_spaces
+         " tabs only, no spaces
+         set noexpandtab
+-        if exists("g:detectindent_preferred_tabsize")
++        if exists("g:detectindent_preferred_indent")
+             let &shiftwidth  = g:detectindent_preferred_indent
+             let &tabstop     = g:detectindent_preferred_indent
+         endif
+@@ -95,6 +95,8 @@
+         " spaces only, no tabs
+         set expandtab
+         let &shiftwidth  = l:shortest_leading_spaces_run
++        let &tabstop = l:shortest_leading_spaces_run
++        let &softtabstop = l:shortest_leading_spaces_run
+ 
+     elseif l:has_leading_spaces && l:has_leading_tabs
+         " spaces and tabs
+@@ -109,12 +111,14 @@
+         else
+             let &tabstop = 8
+         endif
++        let &softtabstop = &tabstop
+ 
+     else
+         " no spaces, no tabs
+-        if exists("g:detectindent_preferred_tabsize")
++        if exists("g:detectindent_preferred_indent")
+             let &shiftwidth  = g:detectindent_preferred_indent
+             let &tabstop     = g:detectindent_preferred_indent
++            let &softtabstop = g:detectindent_preferred_indent
+         endif
+         if exists("g:detectindent_preferred_expandtab")
+             set expandtab

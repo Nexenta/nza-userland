@@ -1,0 +1,40 @@
+#! /bin/sh -e
+
+# DP: distutils: Do not encode the python version into the .egg-info name.
+
+dir=
+if [ $# -eq 3 -a "$2" = '-d' ]; then
+    pdir="-d $3"
+    dir="$3/"
+elif [ $# -ne 1 ]; then
+    echo >&2 "usage: `basename $0`: -patch|-unpatch [-d <srcdir>]"
+    exit 1
+fi
+case "$1" in
+    -patch)
+        patch $pdir -f --no-backup-if-mismatch -p0 < $0
+        ;;
+    -unpatch)
+        patch $pdir -f --no-backup-if-mismatch -R -p0 < $0
+        ;;
+    *)
+	echo >&2 "usage: `basename $0`: -patch|-unpatch [-d <srcdir>]"
+        exit 1
+esac
+exit 0
+
+--- Lib/distutils/command/install_egg_info.py~	2007-02-16 16:57:19.000000000 +0100
++++ Lib/distutils/command/install_egg_info.py	2007-03-05 11:18:29.000000000 +0100
+@@ -21,10 +21,9 @@
+ 
+     def finalize_options(self):
+         self.set_undefined_options('install_lib',('install_dir','install_dir'))
+-        basename = "%s-%s-py%s.egg-info" % (
++        basename = "%s-%s.egg-info" % (
+             to_filename(safe_name(self.distribution.get_name())),
+-            to_filename(safe_version(self.distribution.get_version())),
+-            sys.version[:3]
++            to_filename(safe_version(self.distribution.get_version()))
+         )
+         self.target = os.path.join(self.install_dir, basename)
+         self.outputs = [self.target]

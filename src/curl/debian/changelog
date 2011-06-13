@@ -1,27 +1,108 @@
-curl (7.21.0-1nexenta3) unstable; urgency=low
-
-  * Rebuilt on NCP4
-
- -- Kartik Mistry <kartik.mistry@nexenta.com>  Sun, 27 Mar 2011 08:36:55 +0530
-
-curl (7.21.0-1nexenta2) unstable; urgency=low
+curl (40-0-1) unstable; urgency=low
 
   * debian/control:
-    + Fixed system-security-kerberos to system-security-kerberos-5
+    + (Really) Depends on libkrb5-dev | system-security-kerberos-5 instead of
+      libkrb5-dev alone.
 
- -- Kartik Mistry <kartik.mistry@nexenta.com>  Wed, 09 Feb 2011 15:30:24 +0530
+ -- Kartik Mistry <kartik.mistry@nexenta.com>  Fri, 24 Jun 2011 21:34:29 +0530
 
-curl (7.21.0-1nexenta1) unstable; urgency=low
+curl (40-0-0) unstable; urgency=low
 
+  * Rebuilt for NCP4:
+    + Use Wheezy source as current Squeeze source FTBFS on NCP4
+      (Closes: #4543, #5110, #5327).
+    + Reverted changes made in SFW package.
+    + Added new version scheme support.
+  * debian/control:
+    + Do not depends on libkrb5-dev for solaris.
+    + Depends on libdb4.8-dev as our db-defaults is still 4.6.
   * debian/rules:
-    + Do not use --with-lber-lib=lber and --with-gssapi=/usr
-    + Use --with-ssl to enable SSL
-  * debian/control:
-    + Fixed sunw* dependencies
-    + Removed dependencies on libldap2
-    + Use system-security-kerberos for NCP4
+    + Set -lgss instead of -lgssapi
+    + Use illumos krb5 headers
 
- -- Kartik Mistry <kartik.mistry@nexenta.com>  Fri, 31 Dec 2010 20:21:24 +0530
+ -- Kartik Mistry <kartik.mistry@nexenta.com>  Tue, 21 Jun 2011 23:04:45 +0530
+
+curl (7.21.6-1) unstable; urgency=low
+
+  * New upstream release to fix a HTTPS over a HTTP proxy bug on 7.21.5.
+
+ -- Ramakrishnan Muthukrishnan <rkrishnan@debian.org>  Sat, 23 Apr 2011 07:12:57 +0530
+
+curl (7.21.5-1) unstable; urgency=low
+
+  * New Upstream version. (closes: #623459)
+  * debian/patches/{sslv2_disable, error_code}: removed as these
+    patches were backported earlier from new upstream and this
+    release incorporates them.
+
+ -- Ramakrishnan Muthukrishnan <rkrishnan@debian.org>  Fri, 22 Apr 2011 13:14:41 +0530
+
+curl (7.21.4-2) unstable; urgency=low
+
+  * debian/patches/{sslv2-disable, series}: Apply the
+    upstream commit c66b0b32fba175d5f096c944d8ec8f9f06299f4a.
+    (closes: #622016)
+  * debian/{rules, control}: enable rtmp. (closes: #622328)
+  * debian/control: removing hurd from dependencies. Hurd is
+    an 'essential' package.
+
+ -- Ramakrishnan Muthukrishnan <rkrishnan@debian.org>  Wed, 13 Apr 2011 16:15:27 -0700
+
+curl (7.21.4-1) unstable; urgency=low
+
+  * New upstream release.
+  * debian/control: downgraded the version number of libdb-dev required
+    to 4.6 from 4.7, based on the inputs from Erik Schanze <schanzi_@gmx.de>. 
+
+ -- Ramakrishnan Muthukrishnan <rkrishnan@debian.org>  Mon, 28 Feb 2011 19:35:36 +0530
+
+curl (7.21.3-1) unstable; urgency=low
+
+  * New upstream release.
+  * debian/*.manpages: adding all manpages for the curl library.
+    (closes: #605651)
+  * gnutls->handshake: improved timeout handling. See #594150 for details.
+
+ -- Ramakrishnan Muthukrishnan <rkrishnan@debian.org>  Wed, 15 Dec 2010 23:39:26 +0530
+
+curl (7.21.2-4) unstable; urgency=low
+
+  * support for curl library built against nss.
+    (closes: #606244)
+  * honour DEB_BUILD_OPTIONS=nocheck option.
+    (closes: #606059)
+
+ -- Ramakrishnan Muthukrishnan <rkrishnan@debian.org>  Thu, 09 Dec 2010 20:11:37 +0530
+
+curl (7.21.2-3) unstable; urgency=low
+
+  * debian/rules: reverting changes related to c-ares inclusion.
+  * debian/control: removing libc-ares-dev for now.
+    (closes: #605558)
+
+ -- Ramakrishnan Muthukrishnan <rkrishnan@debian.org>  Thu, 02 Dec 2010 10:56:36 +0530
+
+curl (7.21.2-2) unstable; urgency=low
+
+  * debian/control: add libc-ares-dev as build dependency.
+  * debian/rules: invoke configure with --enable-ares.
+    (closes: #570436)
+  * debian/copyright: add copyright notice of `lib/security.c'
+    to the copyright file. (closes: #603712)
+
+ -- Ramakrishnan Muthukrishnan <rkrishnan@debian.org>  Tue, 30 Nov 2010 17:35:29 +0530
+
+curl (7.21.2-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Ramakrishnan Muthukrishnan <rkrishnan@debian.org>  Mon, 18 Oct 2010 11:13:17 +0530
+
+curl (7.21.1-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Ramakrishnan Muthukrishnan <rkrishnan@debian.org>  Thu, 12 Aug 2010 08:20:48 +0530
 
 curl (7.21.0-1) unstable; urgency=low
 
