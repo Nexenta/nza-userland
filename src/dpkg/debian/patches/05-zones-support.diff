@@ -184,18 +184,7 @@ diff -ur dpkg-1.15.8.5.old/src/processarc.c dpkg-1.15.8.5/src/processarc.c
 diff -ur /dev/null dpkg-1.15.8.5/src/zone.c
 --- /dev/null			2011-06-11 14:50:55.000000000 +0100
 +++ dpkg-1.15.8.5/src/zone.c	2011-03-22 01:01:10.000000000 +0000
-@@ -0,0 +1,69 @@
-+/*
-+ * This file and its contents are supplied under the terms of the
-+ * Common Development and Distribution License ("CDDL"), version 1.0.
-+ * You may only use this file in accordance with the terms of version
-+ * 1.0 of the CDDL.
-+ *
-+ * A full copy of the text of the CDDL should have accompanied this
-+ * source.  A copy of the CDDL is also available via the Internet at
-+ * http://www.illumos.org/license/CDDL.
-+ */
-+						     
+@@ -0,0 +1,58 @@
 +/*
 + * Copyright 2011 Nexenta Systems, Inc.  All rights reserved.
 + */
