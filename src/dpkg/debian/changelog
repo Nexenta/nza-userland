@@ -1,4 +1,4 @@
-dpkg (40-2-0) unstable; urgency=low
+dpkg (40-0-3) unstable; urgency=low
 
   * Add Upstream-Version support for source format 1.0. Closes: #5534
   * Change build-dep on libncursesw5-dev to libncurses5-dev. Closes: #5521
@@ -6,13 +6,13 @@ dpkg (40-2-0) unstable; urgency=low
 
  -- Andrew Stormont (astormont)  <andyjstormont@googlemail.com>  Mon, 13 Jun 2011 08:22:24 +0100
 
-dpkg (40-1-1) testing; urgency=low
+dpkg (40-0-2) testing; urgency=low
 
   * Upload to testing.
 
  -- Andrew Stormont (astormont) <andyjstormont@googlemail.com>  Mon, 13 Jun 2011 06:05:51 +0100
 
-dpkg (40-1-0) unstable; urgency=low
+dpkg (40-0-1) unstable; urgency=low
 
   * Fix warnings about Upstream-Version. Closes: #5513
   * dpkg-maintscript should use bash.  Closes: #5153
