@@ -1,3 +1,9 @@
+dpkg (40-1-1) testing; urgency=low
+
+  * Upload to testing.
+
+ -- Andrew Stormont (astormont) <andyjstormont@googlemail.com>  Mon, 13 Jun 2011 06:05:51 +0100
+
 dpkg (40-1-0) unstable; urgency=low
 
   * Fix warnings about Upstream-Version. Closes: #5513
