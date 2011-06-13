@@ -1,0 +1,1 @@
+LoadModule userdir_module mod_userdir.so

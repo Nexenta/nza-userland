@@ -1,0 +1,5 @@
+usr/sbin/httxt2dbm usr/sbin/i86/
+usr/sbin/amd64/httxt2dbm
+usr/sbin/*/apache2-*
+usr/lib/apache2/modules
+debian/apache2ctl	usr/sbin/

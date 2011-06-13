@@ -1,0 +1,12 @@
+001_dbm_read_hash_or_btree.patch
+002_configure_in_remove_syspaths.patch
+003_buildconf_config.guess_sub_location.patch
+004_debian_layout_fix.patch
+010_dont_use_all_pg_build_deps.patch
+011_avoid_ldap_by_defaut.patch
+013_ship_find_apu.m4.patch
+014_apu_config_dont_list_indep_libs.patch
+015_disable_expat_buildconf.patch
+099_alternate_md4_md5_impl.patch
+config.layout
+libtool-tag.patch

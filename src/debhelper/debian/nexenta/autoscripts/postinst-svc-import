@@ -1,1 +1,0 @@
-/usr/sbin/svccfg -v import #MANIFEST# || true

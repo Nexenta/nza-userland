@@ -1,0 +1,70 @@
+Index: apr-util-1.3.11/config.layout
+===================================================================
+--- apr-util-1.3.11.orig/config.layout	2011-05-14 16:28:45.467530885 +0400
++++ apr-util-1.3.11/config.layout	2011-05-14 16:39:27.734614545 +0400
+@@ -4,7 +4,7 @@
+ ##  Hints:
+ ##  - layouts can be loaded with configure's --enable-layout=ID option
+ ##  - when no --enable-layout option is given, the default layout is `apr'
+-##  - a trailing plus character (`+') on paths is replaced with a 
++##  - a trailing plus character (`+') on paths is replaced with a
+ ##    `/<target>' suffix where <target> is currently hardcoded to 'apr'.
+ ##    (This may become a configurable parameter at some point.)
+ ##
+@@ -109,7 +109,7 @@
+     includedir:    ${prefix}/include/apr
+     localstatedir: /var
+     runtimedir:    ${localstatedir}/run
+-</Layout>     
++</Layout>
+ 
+ #   According to the /opt filesystem conventions
+ <Layout opt>
+@@ -215,7 +215,24 @@
+ 
+ # Debian layout
+ <Layout Debian>
+-    prefix:        
++    prefix:
++    exec_prefix:   ${prefix}/usr
++    bindir:        ${exec_prefix}/bin
++    sbindir:       ${exec_prefix}/sbin
++    libdir:        ${exec_prefix}/lib
++    libexecdir:    ${exec_prefix}/lib/apr/modules
++    mandir:        ${exec_prefix}/share/man
++    datadir:       ${exec_prefix}/share/apr
++    includedir:    ${exec_prefix}/include/apr-1.0
++    localstatedir: ${prefix}/var/run
++    runtimedir:    ${prefix}/var/run
++    infodir:       ${exec_prefix}/share/info
++    libsuffix:     -${APRUTIL_MAJOR_VERSION}
++    installbuilddir: ${prefix}/usr/share/apache2/build
++</Layout>
++
++<Layout Nexenta>
++    prefix:
+     exec_prefix:   ${prefix}/usr
+     bindir:        ${exec_prefix}/bin
+     sbindir:       ${exec_prefix}/sbin
+@@ -230,3 +247,21 @@
+     libsuffix:     -${APRUTIL_MAJOR_VERSION}
+     installbuilddir: ${prefix}/usr/share/apache2/build
+ </Layout>
++
++<Layout Nexenta-amd64>
++    prefix:
++    exec_prefix:   ${prefix}/usr
++    bindir:        ${exec_prefix}/bin/amd64
++    sbindir:       ${exec_prefix}/sbin/amd64
++    libdir:        ${exec_prefix}/lib/amd64
++    libexecdir:    ${exec_prefix}/lib/amd64/apr/modules
++    mandir:        ${exec_prefix}/share/man
++    datadir:       ${exec_prefix}/share/apr
++    includedir:    ${exec_prefix}/include/apr-1.0
++    localstatedir: ${prefix}/var/run
++    runtimedir:    ${prefix}/var/run
++    infodir:       ${exec_prefix}/share/info
++    libsuffix:     -${APRUTIL_MAJOR_VERSION}
++    installbuilddir: ${prefix}/usr/share/apache2/build
++</Layout>
++

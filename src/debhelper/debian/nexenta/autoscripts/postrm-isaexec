@@ -1,5 +1,5 @@
 case "$1" in
-    upgrade|remove)
+    remove)
         rm #BINARIES# || true
         ;;
 esac

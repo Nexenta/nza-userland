@@ -1,0 +1,16 @@
+Index: apr-1.4.5/configure.in
+===================================================================
+--- apr-1.4.5.orig/configure.in	2011-05-24 16:19:41.492871187 +0400
++++ apr-1.4.5/configure.in	2011-05-24 16:19:53.639326948 +0400
+@@ -281,9 +281,9 @@
+   [ use_libtool=$withval ], [ use_libtool="yes" ] )
+ 
+ if test "x$use_libtool" = "xyes"; then
+-      lt_compile='$(LIBTOOL) $(LTFLAGS) --mode=compile $(COMPILE) -o $@ -c $< && touch $@'
++      lt_compile='$(LIBTOOL) $(LTFLAGS) --tag=CC --mode=compile $(COMPILE) -o $@ -c $< && touch $@'
+       LT_VERSION="-version-info `$get_version libtool $version_hdr APR`"
+-      link="\$(LIBTOOL) \$(LTFLAGS) --mode=link \$(LT_LDFLAGS) \$(COMPILE) \$(LT_VERSION) \$(ALL_LDFLAGS) -o \$@"
++      link="\$(LIBTOOL) \$(LTFLAGS) --tag=CC --mode=link \$(LT_LDFLAGS) \$(COMPILE) \$(LT_VERSION) \$(ALL_LDFLAGS) -o \$@"
+       so_ext='lo'
+       lib_target='-rpath $(libdir) $(OBJECTS)'
+       export_lib_target='-rpath \$(libdir) \$(OBJECTS)'

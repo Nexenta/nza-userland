@@ -1,0 +1,1 @@
+LoadModule authn_anon_module mod_authn_anon.so

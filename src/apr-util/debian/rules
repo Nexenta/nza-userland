@@ -1,0 +1,112 @@
+#!/usr/bin/make -f
+
+BUILD = build-tree
+
+CFLAGS += -Wformat -Wformat-security -D_FORTIFY_SOURCE=2 -fstack-protector
+
+LDFLAGS = -lssp_nonshared -lssp -Wl,-z,relro
+
+CC_32 = gcc -m32
+CC_64 = gcc -m64
+
+CFLAGS_32 = 
+CFLAGS_64 = 
+
+LDFLAGS_32 = -m32 -L/usr/lib -R/usr/lib
+LDFLAGS_64 = -m64 -L/usr/lib/amd64 -R/usr/lib/amd64
+
+# See config.layout
+APR_LAYOUT32=Nexenta
+APR_LAYOUT64=$(APR_LAYOUT32)-amd64
+
+APR = $(shell apr-1-config --srcdir)
+
+CONFIGURE_OPTIONS_COMMON = \
+    --with-expat=/usr \
+    --with-sqlite3=/usr \
+    --with-ldap=ldap-2.4 \
+    --without-gdbm \
+	--without-sqlite2
+
+CONFIGURE_OPTIONS_32 = \
+    --enable-layout=${APR_LAYOUT32} \
+	--target=i386-pc-solaris2.11 \
+    --with-mysql=/usr \
+	--with-freetds=/usr \
+	--with-odbc=/usr \
+	--with-berkeley-db=/usr \
+	--with-dbm=db46 \
+	--with-apr=/usr/bin/apr-config \
+
+
+CONFIGURE_OPTIONS_64 = \
+    --enable-layout=${APR_LAYOUT64} \
+	--target=x86_64-pc-solaris2.11 \
+	--without-berkeley-db \
+	--with-apr=/usr/bin/amd64/apr-config
+
+build binary clean binary-indep binary-arch install:
+	dh $@
+
+
+# We use specific configure options
+override_dh_auto_configure:
+override_dh_auto_build: build64 build32 $(BUILD)/build32/docs/dox/apr.tag
+
+configure: buildconf
+	/bin/bash ./buildconf --with-apr=$(APR)
+
+# Build docs
+$(BUILD)/build32/docs/dox/apr.tag:
+	dh_testdir
+	mkdir -p $(BUILD)/build32/docs/dox
+	$(MAKE) -C $(BUILD)/build32 dox
+
+# Makefile ignore CFLAGS etc, due to including
+# /usr/share/apr-1.0/build/apr_rules.mk
+# So we need command line options to override it.
+# See: http://bugs.gentoo.org/show_bug.cgi?id=309335
+build32 build64 : build% : configure
+	dh_testdir
+	mkdir -p $(BUILD)/$@
+	cd $(BUILD)/$@ && $(CURDIR)/configure \
+		$(CONFIGURE_OPTIONS_COMMON) \
+		$(CONFIGURE_OPTIONS_$*) \
+		CC="$(CC_$*)" \
+		CFLAGS="$(CFLAGS) $(CFLAGS_$*)" \
+		LDFLAGS="$(LDFLAGS) $(LDFLAGS_$*)"
+	make -C $(BUILD)/$@ \
+		CC="$(CC_$*)" \
+		CFLAGS="$(CFLAGS_$*) $(CFLAGS)" \
+		LDFLAGS="$(LDFLAGS_$*) $(LDFLAGS)"
+	touch $@
+
+override_dh_auto_install:
+	make -C $(BUILD)/build32 install DESTDIR=$(CURDIR)/debian/tmp
+	make -C $(BUILD)/build64 install DESTDIR=$(CURDIR)/debian/tmp
+
+
+override_dh_auto_clean:
+	rm -f \
+		test/data/test-db \
+		test/data/test-sdbm.dir \
+		test/data/test-sdbm.pag
+	rm -f \
+		xml/expat/aclocal.m4 \
+		xml/expat/configure \
+		xml/expat/conftools/ltmain.sh
+	rm -f \
+		configure \
+		build/lt* \
+		build/config.guess \
+		build/config.sub \
+		build/libtool.m4 \
+		build/apr_common.m4 \
+		build-outputs.mk \
+		include/private/apu_config.h \
+		config.log \
+		config.nice
+	rm -rf $(BUILD)
+	rm -f net
+	rm -f build32 build64
+

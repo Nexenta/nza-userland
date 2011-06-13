@@ -1,0 +1,31 @@
+Index: apache2-2.2.19/server/core.c
+===================================================================
+--- apache2-2.2.19.orig/server/core.c	2011-03-17 21:40:40.000000000 +0300
++++ apache2-2.2.19/server/core.c	2011-05-24 16:06:29.175731897 +0400
+@@ -2770,7 +2770,7 @@
+ AP_DECLARE(const char *) ap_get_server_description(void)
+ {
+     return server_description ? server_description :
+-        AP_SERVER_BASEVERSION " (" PLATFORM ")";
++        AP_SERVER_BASEVERSION " (Nexenta)";
+ }
+ 
+ AP_DECLARE(const char *) ap_get_server_banner(void)
+@@ -2831,7 +2831,7 @@
+         ap_add_version_component(pconf, AP_SERVER_BASEPRODUCT "/" AP_SERVER_MAJORVERSION);
+     }
+     else {
+-        ap_add_version_component(pconf, AP_SERVER_BASEVERSION " (" PLATFORM ")");
++        ap_add_version_component(pconf, AP_SERVER_BASEVERSION " (Nexenta)");
+     }
+ 
+     /*
+@@ -2841,7 +2841,7 @@
+     if (ap_server_tokens != SrvTk_FULL) {
+         banner_locked++;
+     }
+-    server_description = AP_SERVER_BASEVERSION " (" PLATFORM ")";
++    server_description = AP_SERVER_BASEVERSION " (Nexenta)";
+ }
+ 
+ static const char *set_serv_tokens(cmd_parms *cmd, void *dummy,

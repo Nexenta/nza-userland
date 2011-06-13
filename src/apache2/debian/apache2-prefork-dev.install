@@ -1,0 +1,6 @@
+debian/tmp/prefork/usr/include/apache2/* usr/include/apache2/
+debian/tmp/prefork/usr/share/apache2/build/* usr/share/apache2/build/
+
+# It's a perl script:
+build-tree/mpm32-worker/support/apxs usr/bin/
+usr/share/man/man8/apxs2.8
