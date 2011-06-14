@@ -1,0 +1,3 @@
+debian/tmp/usr/gnu/share/locale/* usr/gnu/share/locale
+debian/tmp/usr/gnu/bin/xargs usr/gnu/bin
+debian/tmp/usr/gnu/bin/*find usr/gnu/bin

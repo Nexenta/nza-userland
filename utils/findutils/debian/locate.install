@@ -1,0 +1,2 @@
+debian/tmp/var/cache/locate var/cache
+debian/tmp/usr/gnu/lib/locate/* usr/gnu/lib/locate
