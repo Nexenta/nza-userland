@@ -2,7 +2,7 @@
 
 # build script for findutils
 
-WEBARCHIVE_PATH="http://apt.nexenta.org/wip/dists/siddy-unstable/main/source/utils"
+WEBARCHIVE_PATH="http://apt.nexenta.org/wip/dists/siddy-testing/main/source/utils"
 
 PKGNAME="findutils"
 PKGVER="4.4.2"
