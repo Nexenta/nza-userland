@@ -1,0 +1,19 @@
+Source: pkg-config
+Section: devel
+Priority: optional
+Maintainer: Tollef Fog Heen <tfheen@debian.org>
+Build-Depends: debhelper (>= 7.0.50), libglib2.0-dev, libpopt-dev
+Homepage: http://pkg-config.freedesktop.org
+Standards-Version: 3.8.4
+
+Package: pkg-config
+Architecture: any
+#Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: gettext-base, libgcc1, libglib2.0-0 (>= 2.16.0), libiconv, libpopt0 (>= 1.16), sunwcs, system-library
+Description: manage compile and link flags for libraries
+ pkg-config is a system for managing library compile and link flags that 
+ works with automake and autoconf.
+ .
+ Increasingly libraries ship with ".pc" files that allow querying of the
+ compiler and linker flags needed to use them through the pkg-config(1)
+ program.

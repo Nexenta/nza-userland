@@ -1,0 +1,16 @@
+#! /usr/bin/make -f
+
+pkgdir := `pwd`/debian/sash
+
+%:
+	dh $@
+
+override_dh_auto_configure:
+	./configure --prefix=/usr --with-installed-glib \
+		--with-installed-popt \
+		--mandir=\$${prefix}/share/man \
+		--infodir=\$${prefix}/share/info --disable-shared \
+		--with-pc-path=/usr/local/lib/pkgconfig:/usr/local/lib/pkgconfig/$(DEB_BUILD_GNU_TYPE):/usr/local/share/pkgconfig:/usr/lib/pkgconfig:/usr/lib/pkgconfig/$(DEB_BUILD_GNU_TYPE):/usr/share/pkgconfig \
+
+override_dh_auto_clean:
+	[ ! -f Makefile ] || $(MAKE) distclean DIST_SUBDIRS="popt check"
