@@ -1,3 +1,9 @@
+pkg-config (0.25-1.1nexenta3) unstable; urgency=low
+
+  * Rebuilt to use libintl.so.1 (instead of libintl.so.8)
+
+ -- Kartik Mistry <kartik.mistry@nexenta.com>  Wed, 15 Jun 2011 08:21:00 +0530
+
 pkg-config (0.25-1.1nexenta2) unstable; urgency=low
 
   * Removed sunw* dependencies
