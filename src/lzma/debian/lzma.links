@@ -1,0 +1,4 @@
+usr/bin/lzma usr/bin/unlzma
+usr/bin/lzma usr/bin/lzcat
+usr/share/man/man1/lzma.1.gz usr/share/man/man1/unlzma.1.gz
+usr/share/man/man1/lzma.1.gz usr/share/man/man1/lzcat.1.gz

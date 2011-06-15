@@ -1,0 +1,133 @@
+#! /usr/bin/make -f
+build clean install binary-arch binary-indep binary:
+	dh $@
+
+export DH_OPTIONS
+
+CC  = gcc
+CXX = g++
+ifeq (,$(filter noopt,$(DEB_BUILD_OPTIONS)))
+CFLAGS = -O2 -g -Wall
+else
+CFLAGS = -g -Wall
+endif
+
+# From Makefile.in
+version  = $(shell cat VERSION)
+revision = $(shell sed -e 's/^0$$//' -e 's/^[1-9].*$$/.&/' REVISION)
+upstream = $(version)$(revision)
+datadir  = usr/gnu/share/groff/$(upstream)
+
+gbtmp = debian/groff-base
+gtmp  = debian/groff
+
+ifeq (,$(filter no-groff-x11,$(DEB_BUILD_OPTIONS)))
+GROFF_X11 := yes
+else
+GROFF_X11 := no
+endif
+
+ifeq ($(GROFF_X11),no)
+  confflags += --without-x
+endif
+
+# We need to take some care to preserve these files in their original state
+# in the source package, as they may get rebuilt or otherwise changed.
+PRESERVE := Makefile \
+	doc/groff.info doc/groff.info-1 doc/groff.info-2 doc/groff.info-3 \
+	src/preproc/eqn/eqn.cpp src/preproc/eqn/eqn_tab.h \
+	src/preproc/pic/pic.cpp src/preproc/pic/pic_tab.h \
+	src/preproc/refer/label.cpp
+
+override_dh_auto_configure:
+	set -e; for f in $(PRESERVE); do \
+		if [ ! -f $$(dirname $$f)/clean-$$(basename $$f) ]; then \
+			cp -p $$f $$(dirname $$f)/clean-$$(basename $$f); \
+		fi; \
+	done
+	-rm -f config.log config.cache
+	CC="$(CC)" CXX="$(CXX)" CFLAGS="$(CFLAGS)" CXXFLAGS="$(CFLAGS)" \
+		PSPRINT=lpr PAGE=A4 \
+		dh_auto_configure -- $(confflags) \
+			--with-appresdir=/etc/X11/app-defaults \
+			--exec-prefix=/usr/gnu \
+			--prefix=/usr/gnu
+
+override_dh_auto_build:
+	touch configure		# avoid autoconf build-dependency
+	$(MAKE) extratmacdirs=/usr/share/groff/tmac \
+		docdir=\$${prefix}/share/doc/groff-base
+	GROFF_NO_SGR=1 $(MAKE) -C doc meintro.txt meref.txt pic.txt
+
+override_dh_auto_clean:
+	touch configure		# avoid autoconf build-dependency
+	# doc/Makefile defines the set of cleaned files differently from
+	# doc/Makefile.sub, so bizarrely we need to call this separately.
+	[ ! -f doc/Makefile ] || $(MAKE) -C doc -i extraclean
+	if [ -f Makefile ] && [ -f clean-Makefile ]; then \
+		$(MAKE) -i realclean extraclean; \
+	fi
+
+override_dh_clean:
+	find . -name tags | xargs -r rm -f
+	find . -name '*.cc.combine' | xargs -r rm -f
+	rm -rf contrib/pdfmark/groff-pdfroff.*
+	dh_clean build-groff
+	set -e; for f in $(PRESERVE); do \
+		if [ -f $$(dirname $$f)/clean-$$(basename $$f) ]; then \
+			mv -f $$(dirname $$f)/clean-$$(basename $$f) $$f; \
+		fi; \
+	done
+
+override_dh_auto_install:
+	dh_auto_install -- \
+		docdir=\$${prefix}/share/doc/groff-base \
+		INSTALL_INFO=:
+
+%: %.in
+	sed -e 's/@VERSION@/$(upstream)/g' $< > $@
+
+override_dh_install:
+	$(MAKE) -f debian/rules \
+		debian/groff-base.dirs \
+		debian/groff-base.install \
+		debian/groff.install
+	rm -f debian/tmp/usr/gnu/lib/charset.alias
+	dh_install --fail-missing
+	# Debian additions to *.local
+	cat debian/mandoc.local >> $(gbtmp)/etc/groff/man.local
+	cat debian/mandoc.local >> $(gbtmp)/etc/groff/mdoc.local
+	# Scripts should be executable
+	chmod +x $(gbtmp)/$(datadir)/font/devps/generate/afmname \
+		 $(gbtmp)/$(datadir)/font/devps/generate/symbol.sed
+	chmod +x $(gtmp)/$(datadir)/font/devdvi/generate/CompileFonts \
+		 $(gtmp)/$(datadir)/font/devlj4/generate/special.awk
+
+override_dh_installdocs:
+	dh_installdocs -pgroff-base
+	dh_installdocs -pgroff -Xcopyright --link-doc=groff-base
+
+override_dh_installchangelogs:
+	dh_installchangelogs -pgroff-base
+
+override_dh_builddeb:
+	dh_builddeb
+ifneq ($(GROFF_X11),yes)
+	@echo
+	@echo "=========================================================="
+	@echo "WARNING! groff has been built without X support."
+	@echo "Please do not upload these packages to the Debian archive!"
+	@echo "=========================================================="
+	@echo
+endif
+
+# You only need to run this immediately after checking out the package from
+# revision control.
+quilt-setup:
+	[ ! -d .pc ]
+	set -e; for patch in $$(quilt series | tac); do \
+		patch -p1 -R --no-backup-if-mismatch <"debian/patches/$$patch"; \
+	done
+	quilt push -a
+
+.PHONY: build clean install binary-arch binary-indep binary quilt-setup

@@ -1,0 +1,7 @@
+usr/include/X11/*
+usr/lib/libXt.a
+usr/lib/libXt.so
+usr/lib/pkgconfig/xt.pc
+usr/share/man/man3/*
+usr/bin/makestrs
+usr/share/man/man1/makestrs.1

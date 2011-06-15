@@ -1,0 +1,5 @@
+usr/include/*
+lib/libz.a
+#lib/libz.so
+usr/share/man/man3/*
+usr/lib/pkgconfig/zlib.pc

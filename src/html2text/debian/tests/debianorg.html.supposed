@@ -1,0 +1,122 @@
+
+
+
+
+
+
+
+
+
+ [Debian_Project]
+ Select a server near you
+[One of: Australia/Austria/Brazil/Bulgaria/China/France/Germany/Hong Kong/
+Indonesia/Japan/Netherlands/Russia/South Africa/Spain/Ukraine/United Kingdom/
+United States] [ Go ]
+
+Skip_Quicknav
+    * About_Debian
+    * News
+    * Getting_Debian
+    * Support
+    * Developers' Corner
+    * Site_map
+    * Search
+
+    * About
+          o Social Contract
+          o Free Software
+          o Partners
+          o Donations
+          o Contact Us
+    * News
+          o Project News
+          o Events
+    * Getting_Debian
+          o CD_vendors
+          o CD_ISO_images
+          o Network_install
+          o Pre-installed
+    * Debian Packages
+    * Documentation
+          o Release Info
+          o Installation manual
+          o Debian Books
+    * Support
+          o Debian International
+          o Security Information
+          o Bug_reports
+          o Mailing Lists
+          o Mailing List Archives
+          o Ports/Architectures
+    * Miscellaneous
+    * Help_Debian
+    * Developers' Corner
+    * Site_map
+    * Search
+[q           ]
+[Visit_the_site_sponsor]
+[Valid_HTML_4.01!]
+[Valid_CSS!]
+***** What is Debian? *****
+Debian is a free operating system (OS) for your computer. An operating system
+is the set of basic programs and utilities that make your computer run. Debian
+uses the Linux kernel (the core of an operating system), but most of the basic
+OS tools come from the GNU_project; hence the name GNU/Linux.
+Debian GNU/Linux provides more than a pure OS: it comes with over 18733
+packages, precompiled software bundled up in a nice format for easy
+installation on your machine.
+Read_more...
+===============================================================================
+***** Getting Started *****
+The latest_stable_release_of_Debian is 4.0. The last update to this release was
+made on July 26th, 2008. Read more about available_versions_of_Debian.
+If you'd like to start using Debian, you can easily obtain_a_copy, and then
+follow the installation_instructions to install it.
+If you're upgrading to the latest stable release from a previous version,
+please read the_release_notes before proceeding.
+To get help in using or setting up Debian, see our documentation and support
+pages.
+Users that speak languages other than English should check the international
+section.
+People who use systems other than Intel x86 should check the ports section.
+===============================================================================
+***** News *****
+[08 Aug 2008] Mar_del_Plata_to_host_8th_Debian_conference
+[26 Jul 2008] Debian_GNU/Linux_4.0_updated_and_support_for_newer_hardware_added
+[27 Apr 2008] Debian_is_participating_in_the_2008_Google_Summer_of_Code
+[13 Apr 2008] Debian_GNU/Linux_3.1_updated
+[29 Feb 2008] Security_Support_for_Debian_3.1_to_be_terminated
+[17 Feb 2008] Debian_GNU/Linux_4.0_updated
+For older news items see the News_Page. If you would like to receive mail
+whenever new Debian news comes out, subscribe to the debian-announce_mailing
+list.
+===============================================================================
+***** Security Advisories *****
+[01 Sep 2008] DSA-1634_wordnet - stack and heap overflows
+[01 Sep 2008] DSA-1633_slash - SQL Injection, Cross-Site Scripting
+[26 Aug 2008] DSA-1632_tiff - buffer underflow
+[22 Aug 2008] DSA-1631_libxml2 - denial of service
+[21 Aug 2008] DSA-1630_linux-2.6 - denial of service/information leak
+[19 Aug 2008] DSA-1629_postfix - programming error
+[10 Aug 2008] DSA-1628_pdns - DNS response spoofing
+[04 Aug 2008] DSA-1627_opensc - programming error
+[01 Aug 2008] DSA-1626_httrack - buffer overflow
+[01 Aug 2008] DSA-1625_cupsys - buffer overflows
+For older security advisories see the Security_Page. If you would like to
+receive security advisories as soon as they're announced, subscribe to the
+debian-security-announce_mailing_list.
+===============================================================================
+This page is also available in the following languages:
+عربية (Arabiya) Български (Bəlgarski) català česky dansk Deutsch Ελληνικά 
+(Ellinika) español Esperanto français 한국어 (Hangul) Հայերեն (hayeren) hrvatski
+Italiano magyar Nederlands 日本語 (Nihongo) norsk (bokmål) polski Português română
+Русский (Russkij) slovensky suomi svenska தமிழ் (Tamil) українська 
+(ukrajins'ka) 中文(简) 中文(HK) 中文(繁)
+How to set the_default_document_language
+
+===============================================================================
+To report a problem with the web site, e-mail debian-www@lists.debian.org. For
+other contact information, see the Debian contact_page.
+Last Modified: Sat, Sep 6 07:30:37 UTC 2008
+Copyright © 1997-2008 SPI; See license_terms
+Debian is a registered trademark of Software in the Public Interest, Inc.

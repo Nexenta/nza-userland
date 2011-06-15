@@ -1,0 +1,159 @@
+--- debian/control
++++ debian/control
+@@ -1 +1,155 @@
+-tail: cannot open `.pc/applied-patches' for reading: No such file or directory
++Source: poppler
++Section: devel
++Priority: optional
++Maintainer: Loic Minier <lool@dooz.org>
++Uploaders: Josselin Mouette <joss@debian.org>,
++           Dave Beckett <dajobe@debian.org>,
++           Ross Burton <ross@debian.org>
++Build-Depends: cdbs (>= 0.4.52),
++               debhelper (>= 5),
++               quilt,
++               autotools-dev,
++               gnome-pkg-tools,
++               libglib2.0-dev (>= 2.6),
++               libgtk2.0-dev (>= 2.12),
++               libfontconfig1-dev,
++               libqt3-mt-dev (>= 3:3.3.4-4),
++               libqt4-dev (>= 4.4.0),
++               libglade2-dev,
++               libcairo2-dev (>= 1.8.4),
++               libopenjpeg-dev,
++               libjpeg-dev,
++               libpng-dev,
++               liblcms-dev,
++               libfreetype6-dev,
++               libxml2-dev,
++               gtk-doc-tools (>= 1.0),
++               pkg-config (>= 0.18),
++               libglib2.0-doc
++Standards-Version: 3.8.1
++
++Package: libpoppler5
++Architecture: any
++Section: libs
++Depends: libfontconfig1 (>= 2.4.0), libfreetype6 (>= 2.2.1), libgcc1, libpng12-0 (>= 1.2.13-4), libstdc++6
++Description: PDF rendering library
++ Poppler is a PDF rendering library based on xpdf PDF viewer.
++ .
++ This package contains the shared library.
++
++#Package: libpoppler-dev
++#Architecture: any
++#Section: libdevel
++#Depends: libpoppler5 (= ${binary:Version}),
++#         libfontconfig1-dev,
++#         ${shlibs:Depends},
++#         ${misc:Depends}
++#Description: PDF rendering library -- development files
++# Poppler is a PDF rendering library based on xpdf PDF viewer.
++# .
++# This package contains the headers and development libraries needed to
++# build applications using Poppler.
++
++Package: libpoppler-glib4
++Architecture: any
++Section: libs
++Depends: libfontconfig1 (>= 2.4.0), libfreetype6 (>= 2.2.1), libgcc1, libglib2.0-0 (>= 2.24.0), libpoppler5, libstdc++6, system-library
++Description: PDF rendering library (GLib-based shared library)
++ Poppler is a PDF rendering library based on xpdf PDF viewer.
++ .
++ This package provides the GLib-based shared library for applications
++ using the GLib interface to Poppler.
++
++#Package: libpoppler-glib-dev
++#Architecture: any
++#Section: libdevel
++#Depends: libpoppler-glib4 (= ${binary:Version}),
++#         libpoppler-dev (= ${binary:Version}),
++#         libglib2.0-dev (>= 2.12),
++#         libpango1.0-dev,
++#         libcairo2-dev (>= 1.8.4),
++#         ${shlibs:Depends},
++#         ${misc:Depends}
++#Description: PDF rendering library -- development files (GLib interface)
++# Poppler is a PDF rendering library based on xpdf PDF viewer.
++# .
++# This package provides a GLib-style interface to Poppler.
++
++#Package: libpoppler-qt2
++#Architecture: any
++#Section: libs
++#Depends: ${shlibs:Depends},
++#         ${misc:Depends}
++#Description: PDF rendering library (Qt 3 based shared library)
++# Poppler is a PDF rendering library based on xpdf PDF viewer.
++# .
++# This package provides the Qt 3 based shared library for applications
++# using the Qt 3 interface to Poppler.
++
++#Package: libpoppler-qt-dev
++#Architecture: any
++#Section: libdevel
++#Depends: libpoppler-qt2 (= ${binary:Version}),
++#         libpoppler-dev (= ${binary:Version}),
++#         libqt3-mt-dev,
++#         ${shlibs:Depends},
++#         ${misc:Depends}
++#Description: PDF rendering library -- development files (Qt 3 interface)
++# Poppler is a PDF rendering library based on xpdf PDF viewer.
++# .
++# This package provides a Qt 3 style interface to Poppler.
++
++#Package: libpoppler-qt4-3
++#Architecture: any
++#Section: libs
++#Depends: ${shlibs:Depends},
++#         ${misc:Depends}
++#Description: PDF rendering library (Qt 4 based shared library)
++# Poppler is a PDF rendering library based on xpdf PDF viewer.
++# .
++# This package provides the Qt 4 based shared library for applications
++# using the Qt 4 interface to Poppler.
++
++#Package: libpoppler-qt4-dev
++#Architecture: any
++#Section: libdevel
++#Depends: libpoppler-qt4-3 (= ${binary:Version}),
++#         libpoppler-dev (= ${binary:Version}),
++#         libqt4-dev,
++#         ${shlibs:Depends},
++#         ${misc:Depends}
++#Description: PDF rendering library -- development files (Qt 4 interface)
++# Poppler is a PDF rendering library based on xpdf PDF viewer.
++# .
++# This package provides a Qt 4 style interface to Poppler.
++
++Package: poppler-utils
++Architecture: any
++Section: utils
++Depends: libfontconfig1 (>= 2.4.0), libfreetype6 (>= 2.2.1), libgcc1, libpng12-0 (>= 1.2.13-4), libpoppler5, libstdc++6, system-library, zlib1g
++Recommends: ghostscript
++Conflicts: xpdf-utils (<< 3.02-9),
++           pdftohtml (<< 0.36-14)
++Replaces: xpdf-utils,
++          pdftohtml,
++          xpdf-reader
++Provides: xpdf-utils,
++          pdftohtml
++Description: PDF utilitites (based on libpoppler)
++ This package contains pdftops (PDF to PostScript converter), pdfinfo
++ (PDF document information extractor), pdfimages (PDF image extractor),
++ pdftohtml (PDF to HTML converter), pdftotext (PDF to text converter),
++ and pdffonts (PDF font analyzer).
++
++#Package: poppler-dbg
++#Architecture: any
++#Section: debug
++#Priority: extra
++#Depends: ${misc:Depends},
++#         libpoppler5 (= ${binary:Version}),
++#         ${shlibs:Depends}
++#Description: PDF rendering library - detached debugging symbols
++# Poppler is a PDF rendering library based on xpdf PDF viewer.
++# .
++# This package contains the detached debugging symbols.
++

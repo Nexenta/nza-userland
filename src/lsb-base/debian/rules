@@ -1,0 +1,55 @@
+#!/usr/bin/make -f
+# debian/rules for alien
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+
+PACKAGE=$(shell dh_listpackages)
+CURDIR=$(shell pwd)
+
+
+build:
+	dh_testdir
+	dh_testroot
+
+install: build
+	dh_testdir
+	dh_testroot
+	mkdir -p debian/tmp/lib/lsb
+	install -o root -g bin -m 0755 init-functions debian/tmp/lib/lsb
+	
+clean:
+	dh_testdir
+	dh_testroot
+	dh_clean -d
+	rm -rf debian/tmp
+	rm -rf debian/lsb-base
+	rm -f debian/preinst debian/*substvars debian/files
+	#cd utils; $(MAKE) clean || true
+
+
+binary-indep: build
+
+binary-arch: build install
+	dh_testdir
+	dh_testroot
+	dh_installdirs
+	dh_installdocs
+	dh_installchangelogs
+	dh_install --sourcedir=debian/tmp
+#	ln -sf debian/tmp/lib/lsb debian/tmp/lib/lsbi
+##	dh_sunstrip
+	dh_compress
+#	dh_fixperms
+	dh_makeshlibs
+	dh_installdeb
+	cd debian/lsb-base/lib && ln -sf lsb lsbi
+	cd $(CURDIR)
+	-dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary

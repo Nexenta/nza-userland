@@ -1,0 +1,20 @@
+#!/usr/bin/make -f
+# -*- makefile-gmake -*-
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+%:
+	dh --with quilt $@
+
+override_dh_auto_clean:
+	dh_auto_clean
+	rm -f config.sub config.guess
+
+override_dh_auto_configure:
+	ln -sf /usr/share/misc/config.sub .
+	ln -sf /usr/share/misc/config.guess .
+	dh_auto_configure
+
+override_dh_strip:
+	dh_strip --dbg-package=pth-dbg

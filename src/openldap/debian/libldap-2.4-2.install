@@ -1,0 +1,7 @@
+usr/lib/liblber-2.4.so.*
+usr/lib/amd64/liblber-2.4.so.*
+usr/lib/libldap_r-2.4.so.*
+usr/lib/amd64/libldap_r-2.4.so.*
+usr/lib/libldap-2.4.so.*
+usr/lib/amd64/libldap-2.4.so.*
+etc/openldap/ldap.conf

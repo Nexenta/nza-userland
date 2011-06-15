@@ -1,0 +1,13 @@
+Document: jade
+Title: Jade Users Manual
+Author: James Clark <jjc@jclark.com>
+Abstract: Users manual and documentation for Jade.
+  Jade is an implementation of the DSSSL style language.
+  This allows you to flexibly format SGML and XML data to
+  media-specific back-ends, including TeX, RTF, and other
+  XML or SGML files.
+Section: Apps/Text
+
+Format: HTML
+Index: /usr/share/doc/jade/jade.htm
+Files: /usr/share/doc/jade/*.htm

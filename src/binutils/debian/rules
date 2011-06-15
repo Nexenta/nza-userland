@@ -1,0 +1,114 @@
+#!/usr/bin/make -f
+
+CC = gcc
+CXX = g++
+SHELL = /bin/bash
+
+#CFLAGS = -Wall -g -D_FILE_OFFSET_BITS=64
+#CFLAGS = -g -D_FILE_OFFSET_BITS=64
+#CFLAGS = 
+
+ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
+    CFLAGS += -O0
+else
+    CFLAGS += -O2
+endif
+
+DEB_HOST_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
+DEB_BUILD_GNU_TYPE ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
+DEB_HOST_ARCH_OS ?= $(shell dpkg-architecture -qDEB_HOST_ARCH_OS)
+
+ifeq ($(DEB_HOST_ARCH_OS),solaris)
+	CPPFLAGS = -D_REENTRANT -D_POSIX_PTHREAD_SEMANTICS -DSOLARIS -mtune=i686
+#	LDFLAGS += -lscf -lbsm -lresolv
+endif
+
+patch: patch-stamp
+patch-stamp:
+	QUILT_PATCHES=debian/patches quilt push -a || test $$? = 2
+	touch $@
+
+unpatch:
+	QUILT_PATCHES=debian/patches quilt pop -a -f || test $$? = 2
+	rm -f patch-stamp
+
+
+configure32: patch configure32-stamp
+configure32-stamp:
+	mkdir -p build32 
+	cd build32 && \
+	CC="$(CC)" \
+	CXX="$(CXX)" \
+	CPPFLAGS="$(CPPFLAGS)" \
+	LDFLAGS="$(LDFLAGS)" \
+	../configure \
+	--prefix=/usr/gnu \
+	--with-included-gettext \
+	--mandir=/usr/gnu/share/man \
+	--infodir=/usr/share/info \
+	--enable-targets=x86_64-pc-solaris2.11 \
+	--with-sysroot=/ \
+	--enable-64-bit-bfd
+
+#	--enable-shared \
+
+	touch $@
+
+
+build: build32
+
+build32: build32-stamp
+build32-stamp: configure32
+	cd build32 && \
+	$(MAKE)
+	touch $@
+
+install: install-stamp
+#install-stamp: build32 build64
+install-stamp: build32
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	
+	rm -rf debian/tmp
+	dh_installdirs -a
+
+#	$(MAKE) -C build32 DESTDIR=$(CURDIR)/debian/inst32 install
+	$(MAKE) -C build32 DESTDIR=$(CURDIR)/debian/tmp install
+	chmod -R a+x $(CURDIR)/debian/tmp/usr/gnu/i386-pc-solaris2.11/lib
+	
+	touch $@
+
+binary: binary-arch binary-indep
+binary-indep:
+binary-arch: install
+	dh_testdir
+	dh_testroot
+	
+	dh_install -a
+	
+	dh_installchangelogs -a
+#	dh_installdocs -a
+#	dh_installexamples -a
+#	dh_installman -a
+	dh_link -a
+	dh_compress -a
+	dh_makeshlibs
+	dh_installdeb -a
+	LD_LIBRARY_PATH=debian/tmp/usr/gnu/lib:$$LD_LIBRARY_PATH dh_shlibdeps -a
+	dh_gencontrol -a
+	dh_md5sums -a
+	dh_builddeb -a
+
+
+clean: unpatch
+	dh_testdir
+	dh_testroot
+	rm -f *-stamp
+	rm -rf build32
+	rm -rf debian/tmp
+	rm -rf .pc
+	-$(MAKE) clean
+	dh_clean
+
+.PHONY: binary binary-arch configlibtool build clean

@@ -1,0 +1,11 @@
+binutils (2.19.1-1nexenta2) unstable; urgency=low
+
+  * Fixed 32 bits ELF - pldd working.
+
+ -- Igor Kozhukhov <igor.kozhukhov@nexenta.com>  Thu, 9 Jun 2011 23:33:32 +0300
+
+binutils (2.19.1-1nexenta1) unstable; urgency=low
+
+  * Port to NCP4 from SFW
+
+ -- Igor Kozhukhov <igor.kozhukhov@nexenta.com>  Mon, 25 Apr 2011 22:37:32 +0300

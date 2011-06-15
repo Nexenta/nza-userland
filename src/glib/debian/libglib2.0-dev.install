@@ -1,0 +1,36 @@
+debian/install/deb32/usr/include/* usr/include
+
+#debian/install/deb32/usr/lib/lib*.{la,a} usr/lib
+#debian/install/deb64/usr/lib/lib*.{la,a} usr/lib/amd64
+
+#debian/install/deb32/usr/lib/libg{object,module,thread,io}*.so usr/lib
+#debian/install/deb64/usr/lib/libg{object,module,thread,io}*.so usr/lib/amd64
+debian/install/deb32/usr/lib/*.so usr/lib
+debian/install/deb64/usr/lib/*.so usr/lib/amd64
+
+debian/install/deb32/usr/lib/glib-2.0 usr/lib
+debian/install/deb64/usr/lib/glib-2.0 usr/lib/amd64
+
+debian/install/deb32/usr/lib/pkgconfig usr/lib
+debian/install/deb64/usr/lib/pkgconfig usr/lib/amd64
+
+debian/install/deb32/usr/share/aclocal usr/share
+debian/install/deb32/usr/share/glib-2.0/gdb usr/share/glib-2.0
+debian/install/deb32/usr/share/glib-2.0/gettext usr/share/glib-2.0
+debian/install/deb32/usr/share/glib-2.0/schemas usr/share/glib-2.0
+
+debian/install/deb32/usr/share/man/man1/glib-genmarshal.1* usr/share/man/man1
+debian/install/deb32/usr/share/man/man1/glib-mkenums.1* usr/share/man/man1
+debian/install/deb32/usr/share/man/man1/gobject-query.1* usr/share/man/man1
+debian/install/deb32/usr/share/man/man1/glib-gettextize.1* usr/share/man/man1
+
+debian/install/deb32/usr/bin/glib-genmarshal usr/bin
+debian/install/deb32/usr/bin/glib-gettextize usr/bin
+debian/install/deb32/usr/bin/glib-mkenums usr/bin
+debian/install/deb32/usr/bin/gobject-query usr/bin
+
+debian/install/deb32/usr/bin/gtester usr/bin
+debian/install/deb64/usr/bin/gtester usr/bin/amd64
+
+debian/install/deb32/usr/bin/gtester-report usr/bin
+debian/install/deb64/usr/bin/gtester-report usr/bin/amd64

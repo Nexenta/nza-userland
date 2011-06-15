@@ -1,0 +1,4 @@
+?package(tcl8.4):needs="text"\
+	section="Applications/Programming"\
+	title="Tclsh8.4"\
+	command="/usr/bin/tclsh8.4"

@@ -1,0 +1,7 @@
+00_dbus-quiesce-startup-errors.patch
+01_no-fatal-warnings.patch
+10_dbus-1.0.1-generate-xml-docs.patch
+no-pie.patch
+alloca.patch
+no-gc-sections.patch
+nexenta-authorization.patch

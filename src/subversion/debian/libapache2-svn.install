@@ -1,0 +1,2 @@
+debian/tmp/usr/lib/apache2/modules/*.so		usr/lib/apache2/modules
+debian/dav_svn.load debian/dav_svn.conf		etc/apache2/mods-available

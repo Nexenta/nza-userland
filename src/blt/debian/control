@@ -1,0 +1,62 @@
+Source: blt
+Section: devel
+Priority: optional
+Maintainer: Chris Waters <xtifr@debian.org>
+Build-Depends: tk8.4-dev, tk8.5-dev, debhelper (>= 4), autotools-dev
+Build-Conflicts: tk8.0-dev
+Standards-Version: 3.6.2
+Homepage: http://blt.sourceforge.net/
+
+Package: blt
+Architecture: any
+Section: libs
+Depends: ${shlibs:Depends}
+Conflicts: blt4.2, blt8.0-unoff, blt8.0, blt-common
+Replaces: blt4.2, blt8.0-unoff, blt8.0, blt-common, blt-dev (<< 2.4z-3), blt-demo (<< 2.4i-1)
+Provides: blt-common
+Suggests: blt-demo
+Description: the BLT extension library for Tcl/Tk - run-time package
+ BLT is a library of useful extensions for the Tcl language and the
+ popular Tk graphical toolkit.  It adds a vector and tree data type,
+ background execution and some debugging tools to Tcl, and provides
+ several new widgets for Tk, including graphs, bar-charts, trees, tabs,
+ splines and hyper-links, as well as a new geometry manager, drag &
+ drop support, and more.
+ .
+ This package contains everything you need to use BLT with your Tcl/Tk
+ scripts and Tcl/Tk-enabled apps.
+
+Package: blt-dev
+Architecture: any
+Section: devel
+Depends: blt (= ${binary:Version}), tk8.5-dev | tk8.4-dev, tcl8.5-dev | tcl8.4-dev
+Conflicts: blt8.0-dev, blt8.0-unoff
+Replaces: blt4.2-dev, blt8.0-unoff, blt (<< 2.4i-1), blt4.2
+Suggests: blt-demo
+Description: the BLT extension library for Tcl/Tk - development files
+ BLT is a library of useful extensions for the Tcl language and the
+ popular Tk graphical toolkit.  It adds a vector and tree data type,
+ background execution and some debugging tools to Tcl, and provides
+ several new widgets for Tk, including graphs, bar-charts, trees, tabs,
+ splines and hyper-links, as well as a new geometry manager, drag &
+ drop support, and more.
+ .
+ This package contains the headers and libraries needed to extend or
+ embed BLT.
+
+Package: blt-demo
+Architecture: all
+Section: devel
+Depends: blt, tk8.5 | wish, tcl8.5 | tclsh
+Conflicts: blt4.2, blt8.0 (<< 2.4i-1)
+Replaces: blt-dev (<< 2.4j-1)
+Description: the BLT extension library for Tcl/Tk - demos and examples
+ BLT is a library of useful extensions for the Tcl language and the
+ popular Tk graphical toolkit.  It adds a vector and tree data type,
+ background execution and some debugging tools to Tcl, and provides
+ several new widgets for Tk, including graphs, bar-charts, trees, tabs,
+ splines and hyper-links, as well as a new geometry manager, drag &
+ drop support, and more.
+ .
+ This package contains demos and samples showing the power and
+ versatility of BLT.

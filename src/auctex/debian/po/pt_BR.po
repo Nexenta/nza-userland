@@ -1,0 +1,176 @@
+# Brazilian Portuguese translations of the "debian/auctex/templates" file of
+# the auctex Debian package.
+#
+# Copyright (C) 2002, 03, 04, 05, 06, 07 Davide G. M. Salvetti
+#
+# This file is distributed under the same license as the auctex Debian
+# package.
+#
+# Paulo R. Ormenese <pormenese@uol.com.br>, 2002
+# André Luís Lopes <andrelop@debian.org>, 2007
+msgid ""
+msgstr ""
+"Project-Id-Version: auctex\n"
+"Report-Msgid-Bugs-To: auctex@packages.debian.org\n"
+"POT-Creation-Date: 2009-08-23 12:41+0200\n"
+"PO-Revision-Date: 2010-08-27 13:43+0200\n"
+"Last-Translator: André Luís Lopes <dndrelop@debian.org>\n"
+"Language-Team: Debian-BR Project <debian-l10n-portuguese@lists.debian.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"pt_BR utf8\n"
+
+#. Type: select
+#. Choices
+#: ../auctex/templates:1001
+msgid "Background"
+msgstr "Segundo plano"
+
+#. Type: select
+#. Choices
+#: ../auctex/templates:1001
+msgid "Foreground"
+msgstr "Primeiro plano"
+
+#. Type: select
+#. Choices
+#: ../auctex/templates:1001
+msgid "None"
+msgstr "Nenhum"
+
+#. Type: select
+#. Description
+#: ../auctex/templates:1002
+msgid "(La)TeX macros parsing mode:"
+msgstr "Modo de interpretação de macros (La)TeX:"
+
+#. Type: select
+#. Description
+#: ../auctex/templates:1002
+#, fuzzy
+#| msgid ""
+#| "To greatly improve AUCTeX performances, every TeX macro package and LaTeX "
+#| "style file currently installed at your site will be parsed."
+msgid ""
+"To improve the performance of AUCTeX, every currently installed TeX macro "
+"package and LaTeX style file will be parsed."
+msgstr ""
+"Para melhorar enormemente a performance de AUCTeX, todo pacote de macro TeX "
+"e arquivo de estilo LaTeX instalados atualmente em seu sistema serão "
+"interpretados."
+
+#. Type: select
+#. Description
+#. Translators: do NOT translate ${LOGFILE}
+#: ../auctex/templates:1002
+#, fuzzy
+#| msgid ""
+#| "This may take a lot of time, so it should be probably done in the "
+#| "background; however you may also choose to have it done in the "
+#| "foreground, or to skip the parsing at all instead.  If you choose "
+#| "Background, you will find a detailed log of the process in the file: "
+#| "${LOGFILE}."
+msgid ""
+"This may take a lot of time, so it should probably be done in the "
+"background.  You may also choose to have it done in the foreground, or to "
+"skip that step.  If you choose 'Background', you will find a detailed log of "
+"the process in ${LOGFILE}."
+msgstr ""
+"Isso pode consumir um bom tempo, então pode ser feito provavelmente em "
+"segundo plano; entretanto, você pode optar por ter isso feito em primeiro "
+"plano, ou ao invés disso pular o processo de interpretação. Caso você optar "
+"por fazer a interpretação em segundo plano, encontrará um log detalhado do "
+"processo no arquivo: ${LOGFILE}."
+
+#. Type: select
+#. Description
+#: ../auctex/templates:1002
+#, fuzzy
+#| msgid ""
+#| "A weekly cron job will also take care of updating the data collected now, "
+#| "so usually you won't need to worry about them whenever you install new "
+#| "(La)TeX packages or remove old ones."
+msgid ""
+"A weekly cron job will also take care of updating the cached data, so that "
+"no specific action is required whenever you install new (La)TeX packages or "
+"remove old ones."
+msgstr ""
+"Um trabalho semanal do cron também tomará o cuidado de atualizar as "
+"informações obtidas agora, então você normalmente não precisará preocupar-se "
+"com elas mesmo quando instalar novos pacotes (La)TeX ou remover antigos."
+
+#. Type: select
+#. Description
+#: ../auctex/templates:1002
+#, fuzzy
+#| msgid "Anyway, you can update them by hand running update-auctex-elisp."
+msgid ""
+"This update can be run manually at any moment by running 'update-auctex-"
+"elisp'."
+msgstr ""
+"De qualquer forma, você pode atualizá-las manualmente executando update-"
+"auctex-elisp."
+
+#. Type: select
+#. Choices
+#: ../auctex/templates:2001
+msgid "Console"
+msgstr "Console"
+
+#. Type: select
+#. Choices
+#: ../auctex/templates:2001
+msgid "File"
+msgstr "Arquivo"
+
+#. Type: select
+#. Description
+#: ../auctex/templates:2002
+msgid "Parsing output destination:"
+msgstr "Destino da saída do processo de interpretação:"
+
+#. Type: select
+#. Description
+#: ../auctex/templates:2002
+#, fuzzy
+#| msgid ""
+#| "You chose to parse TeX macro packages and LaTeX style files in "
+#| "foreground. This is OK, but normally it will also generate quite a lot of "
+#| "output."
+msgid ""
+"You chose to parse TeX macro packages and LaTeX style files in foreground. "
+"This operation generates a lot of information. Please choose where this "
+"information should be sent:"
+msgstr ""
+"Você optou por interpretar pacotes de macros TeX e arquivos de estilo LaTeX "
+"em primero plano. Não há problemas em relação a isso, mas normalmente esse "
+"processo também irá gerar bastante saída."
+
+#. Type: select
+#. Description
+#. Translators: do NOT translate ${LOGFILE}
+#: ../auctex/templates:2002
+msgid ""
+"  Console: output goes to the current console;\n"
+"  File:    output goes to ${LOGFILE}."
+msgstr ""
+
+#~ msgid ""
+#~ "By default -- i.e., answering File to this question -- further output "
+#~ "from the parsing process will go to a file named: ${LOGFILE}."
+#~ msgstr ""
+#~ "Por padrão -- isto é, respondendo Arquivo a esta questão -- a saída "
+#~ "adicional do processo de interpretação irá para um arquivo nomeado: "
+#~ "${LOGFILE}."
+
+#~ msgid ""
+#~ "If you answer Console, you will see all of the (boring) output right on "
+#~ "your terminal."
+#~ msgstr ""
+#~ "Caso você optar por Console, verá toda a saída (cansativa) direto em seu "
+#~ "terminal."
+
+#~ msgid "Where should parsing output go?"
+#~ msgstr "Onde deve ir a saída da interpretação?"

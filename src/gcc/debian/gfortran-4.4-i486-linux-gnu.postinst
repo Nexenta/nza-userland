@@ -1,0 +1,13 @@
+#!/bin/sh
+
+set -e
+
+if [ "$1" = "configure" ]; then
+    update-alternatives --quiet \
+	--install /usr/bin/i486-linux-gnu-gfortran i486-linux-gnu-gfortran /usr/bin/i486-linux-gnu-gfortran-4.4 44 \
+	#--slave /usr/share/man/man1/i486-linux-gnu-gfortran.1.gz i486-linux-gnu-gfortran.1.gz /usr/share/man/man1/i486-linux-gnu-gfortran-4.4.1.gz
+fi
+
+#DEBHELPER#
+
+exit 0

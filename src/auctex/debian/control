@@ -1,0 +1,57 @@
+Source: auctex
+Priority: optional
+Section: tex
+Maintainer: Davide G. M. Salvetti <salve@debian.org>
+Uploaders: OHURA Makoto <ohura@debian.org>
+Standards-Version: 3.9.1
+Build-Depends-Indep: emacs23 | emacs22 | emacs21 | emacs-snapshot, eperl,  po-debconf, texlive-latex-base, texinfo, texi2html (>=1.76)
+Homepage: http://www.gnu.org/software/auctex/
+
+Package: auctex
+Architecture: all
+Depends: debconf | debconf-2.0, emacs23 | emacs22 | emacs21 | emacs-snapshot, make, preview-latex-style, dpkg (>= 1.15.4) | install-info
+Recommends: doc-base, ghostscript, texlive-latex-recommended, xpdf | pdf-viewer
+Suggests: catdvi, dvipng, lacheck
+Conflicts: emacspeak (<= 17.0-1), preview-latex
+Replaces: preview-latex
+Provides: preview-latex
+Description: integrated document editing environment for TeX etc.
+ AUCTeX is a comprehensive customizable integrated environment for writing
+ input files for TeX/LaTeX/ConTeXt/Texinfo using GNU Emacs.  Currently
+ XEmacs ships with its own AUCTeX version.
+ .
+ It supports processing source files by running TeX and related tools
+ (such as output filters, post processors for generating indices and
+ bibliographies, and viewers) from inside Emacs.  AUCTeX allows browsing
+ through the errors reported by TeX, while it moves the cursor directly to
+ the reported error, and displays some documentation for that particular
+ error.  This will even work when the document is spread over several
+ files.
+ .
+ AUCTeX can automatically indent LaTeX source, either line by line or for
+ an entire document, and has a special outline feature which can greatly
+ assist in getting an overview of a document.
+ .
+ AUCTeX is written entirely in Emacs Lisp, and may therefore be enhanced
+ with new features for specific needs.  It comes with a large range of
+ handy Emacs macros.  It is a GNU project, and documentation for all its
+ features is accessible via the Emacs info browser.
+
+Package: preview-latex-style
+Architecture: all
+Depends: tex-common
+Recommends: doc-base
+Conflicts: preview-latex (<=0.7.3-2)
+Homepage: http://www.gnu.org/software/auctex/preview-latex.html
+Description: extraction of elements from LaTeX documents as graphics
+ The purpose of preview is the extraction of selected elements from a
+ LaTeX source, like formulas or graphics, into separate pages of a DVI
+ file.  A flexible and convenient interface allows it to specify what
+ commands and constructs should be extracted.  This works with DVI files
+ postprocessed by either Dvips and Ghostscript or dvipng, but it also
+ works when using PDFTeX for generating PDF files.
+ .
+ Currently, preview.sty is used by preview-latex, the WYSIWYG component of
+ the AUCTeX editing environment; for generation of previews in LyX; as
+ part of the operation of the ps4pdf and pst-pdf LaTeX packages; by the
+ tbook XML system and some other tools.

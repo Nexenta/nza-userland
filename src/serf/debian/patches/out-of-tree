@@ -1,0 +1,23 @@
+Patches for out-of-tree builds.
+
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -104,7 +104,7 @@
+ check: test/serf_response test/test_all
+ 	@for i in $(TESTCASES); \
+ 		 do echo "== Testing $$i =="; \
+-		 ./test/serf_response $$i; \
++		 ./test/serf_response $(srcdir)/$$i; \
+ 	done;
+ 	@echo "== Running test_all ==";
+ 	@./test/test_all
+@@ -135,6 +135,9 @@
+ 	@if [ ! -d test ]; then \
+ 		$(MKDIR) test; \
+ 	fi;
++	@if [ ! -r test/serftestca.pem ]; then \
++		cp -f $(srcdir)/test/serftestca.pem test/; \
++	fi;
+ 
+ .c.lo:
+ 	$(LIBTOOL) $(LTFLAGS) --mode=compile $(CC) $(CFLAGS) $(CPPFLAGS) $(INCLUDES) -c -o $@ $< && touch $@

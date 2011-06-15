@@ -1,0 +1,42 @@
+Index: trousers-0.3.4/src/tspi/tsp_policy.c
+===================================================================
+--- trousers-0.3.4.orig/src/tspi/tsp_policy.c	2011-04-07 12:02:23.249358299 +0400
++++ trousers-0.3.4/src/tspi/tsp_policy.c	2011-04-07 12:05:26.975906156 +0400
+@@ -26,6 +26,10 @@
+ #include "tsplog.h"
+ #include "obj.h"
+ 
++#define	PGSIZE sysconf(_SC_PAGESIZE)
++#define PGOFFSET (PGSIZE - 1)
++#define PGMASK (~PGOFFSET)
++
+ /*
+  *  popup_GetSecret()
+  *
+@@ -43,7 +47,7 @@
+ {
+ 	BYTE secret[UI_MAX_SECRET_STRING_LENGTH] = { 0 };
+ 	BYTE *dflt = (BYTE *)"TSS Authentication Dialog";
+-	UINT32 secret_len;
++	UINT32 secret_len = 0;
+ 	TSS_RESULT result;
+ 
+ 	if (popup_str == NULL)
+@@ -88,6 +92,8 @@
+ 		return 0;
+ 	}
+ 
++	len += (uintptr_t)addr & PGOFFSET;
++	addr = (void *)((uintptr_t)addr & PGMASK);
+ 	if (mlock(addr, len) == -1) {
+ 		LogError("mlock: %s", strerror(errno));
+ 		return 1;
+@@ -105,6 +111,8 @@
+ 		return 0;
+ 	}
+ 
++	len += (uintptr_t)addr & PGOFFSET;
++	addr = (void *)((uintptr_t)addr & PGMASK);
+ 	if (munlock(addr, len) == -1) {
+ 		LogError("mlock: %s", strerror(errno));
+ 		return 1;

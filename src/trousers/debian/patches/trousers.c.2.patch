@@ -1,0 +1,40 @@
+Index: trousers-0.3.4/src/trspi/trousers.c
+===================================================================
+--- trousers-0.3.4.orig/src/trspi/trousers.c	2011-04-07 13:26:52.460149166 +0400
++++ trousers-0.3.4/src/trspi/trousers.c	2011-04-07 13:32:19.005510580 +0400
+@@ -1513,7 +1513,7 @@
+ Trspi_Native_To_UNICODE(BYTE *string, unsigned *size)
+ {
+ 	char *ret, *outbuf, tmpbuf[MAX_BUF_SIZE] = { 0, };
+-	BSD_CONST char *ptr;
++	const char *ptr;
+ 	unsigned len = 0, tmplen;
+ 	iconv_t cd = 0;
+ 	size_t rc, outbytesleft, inbytesleft;
+@@ -1539,7 +1539,7 @@
+ 		ptr = (char *)string;
+ 		errno = 0;
+ 
+-		rc = iconv(cd, (BSD_CONST char **)&ptr, &inbytesleft, &outbuf, &outbytesleft);
++		rc = iconv(cd, (const char **)&ptr, &inbytesleft, &outbuf, &outbytesleft);
+ 	} while (rc == (size_t)-1 && errno == E2BIG);
+ 
+ 	if (len > MAX_BUF_SIZE) {
+@@ -1572,7 +1572,7 @@
+ Trspi_UNICODE_To_Native(BYTE *string, unsigned *size)
+ {
+ 	char *ret, *outbuf, tmpbuf[MAX_BUF_SIZE] = { 0, };
+-	BSD_CONST char *ptr;
++	const char *ptr;
+ 	unsigned len = 0, tmplen;
+ 	iconv_t cd;
+ 	size_t rc, outbytesleft, inbytesleft;
+@@ -1601,7 +1601,7 @@
+ 		ptr = (char *)string;
+ 		errno = 0;
+ 
+-		rc = iconv(cd, (BSD_CONST char **)&ptr, &inbytesleft, &outbuf, &outbytesleft);
++		rc = iconv(cd, (const char **)&ptr, &inbytesleft, &outbuf, &outbytesleft);
+ 	} while (rc == (size_t)-1 && errno == E2BIG);
+ 
+ 	/* add terminating bytes of the correct width */

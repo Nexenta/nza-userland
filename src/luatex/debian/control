@@ -1,0 +1,38 @@
+Source: luatex
+Section: tex
+Priority: optional
+Maintainer: Debian TeX Maintainers <debian-tex-maint@lists.debian.org>
+Uploaders: Frank Küster <frank@debian.org>, Norbert Preining <preining@debian.org>
+Build-Depends: debhelper (>= 7), flex, bison, zlib1g-dev, libpng12-dev, libjpeg-dev, pkg-config, sharutils, libpoppler-dev
+Standards-Version: 3.9.0
+Vcs-Svn: svn://svn.debian.org/svn/debian-tex/luatex/trunk
+Vcs-Browser: http://svn.debian.org/wsvn/debian-tex/luatex/trunk/
+Homepage: http://www.luatex.org
+
+Package: luatex
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Recommends: texlive-luatex
+Replaces: luatex-snapshot
+Conflicts: luatex-snapshot, texlive-base-bin (<< 2008)
+Description: next generation TeX engine
+ LuaTeX uses Lua scripting both as an extension to the TeX 
+ macro language and as an extension to the typesetting 
+ engine itself. A (growing) number of TeX internals are 
+ made available to the embedded lua interpreter.
+ .
+ LuaTeX uses code and interfaces from Aleph to improve the 
+ typesetting of non-latin alphabet languages, instead of
+ the TeXXeT code present in the current releases of pdfTeX. 
+ .
+ Unicode and OpenType font support are added progressively,
+ and regular pdfTeX development will continue in this
+ branch as well.
+ .
+ The multi-lingual extensions are coded and merged by Taco 
+ Hoekwater. Swift progress in that area is made possible 
+ by a joint grant from Colorado State University and TUG, 
+ under the 'Oriental TeX' project.
+ .
+ This package only contains the barebone binary. If you are
+ searching for support file, formats etc install texlive-luatex.

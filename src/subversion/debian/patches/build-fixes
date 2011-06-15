@@ -1,0 +1,181 @@
+--- a/build/generator/swig/checkout_swig_header.py
++++ b/build/generator/swig/checkout_swig_header.py
+@@ -20,15 +20,14 @@
+ 
+   def write_makefile_rules(self, makefile):
+     """Write makefile rules to checkout files"""
+-    script_path = '$(top_srcdir)/build/generator/swig/checkout_swig_header.py'
+-    conf = '$(abs_srcdir)/build.conf'
+-    makefile.write('CHECKOUT_SWIG = cd $(top_builddir) && $(PYTHON)' +
+-                   ' %s %s $(SWIG)\n\n' % (script_path, conf))
++    script_path = 'build/generator/swig/checkout_swig_header.py'
++    makefile.write('CHECKOUT_SWIG = cd $(top_srcdir) &&' +
++                   ' $(PYTHON) %s build.conf $(SWIG)\n' % script_path)
+     checkout_locations = []
+     for path in self.swig_checkout_files:
+       out = self._output_file(path)
+       checkout_locations.append(out)
+-      makefile.write('%s: %s\n' % (out, script_path) +
++      makefile.write('%s: $(top_srcdir)/%s\n' % (out, script_path) +
+                      '\t$(CHECKOUT_SWIG) %s\n\n' % path)
+     makefile.write('SWIG_CHECKOUT_FILES = %s\n\n\n'
+                    % " ".join(checkout_locations))
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -249,14 +249,14 @@
+ 
+ # The path to generated and complementary source files for the SWIG
+ # bindings.
+-SWIG_PL_DIR = $(abs_builddir)/subversion/bindings/swig/perl
+-SWIG_PY_DIR = $(abs_builddir)/subversion/bindings/swig/python
+-SWIG_RB_DIR = $(abs_builddir)/subversion/bindings/swig/ruby
++SWIG_PL_DIR = $(top_builddir)/subversion/bindings/swig/perl
++SWIG_PY_DIR = $(top_builddir)/subversion/bindings/swig/python
++SWIG_RB_DIR = $(top_builddir)/subversion/bindings/swig/ruby
+ 
+ # The path to the source files for the SWIG bindings
+ SWIG_PL_SRC_DIR = $(abs_srcdir)/subversion/bindings/swig/perl
+-SWIG_PY_SRC_DIR = $(abs_srcdir)/subversion/bindings/swig/python
+-SWIG_RB_SRC_DIR = $(abs_srcdir)/subversion/bindings/swig/ruby
++SWIG_PY_SRC_DIR = $(top_srcdir)/subversion/bindings/swig/python
++SWIG_RB_SRC_DIR = $(top_srcdir)/subversion/bindings/swig/ruby
+ 
+ ### Automate JAR creation using Makefile generator's javahl-java.jar
+ ### property.  Enhance generator to support JAR installation.
+@@ -532,6 +532,7 @@
+ # Generate API documentation for the C libraries.
+ ### This could also generate POD for swig-perl, etc.
+ doc-api:
++	[ -d doc ] || $(MKDIR) doc
+ 	( cd $(top_srcdir) && \
+ 	  sed "s,\(OUTPUT_DIRECTORY *= *\),\1$(abs_builddir)/," \
+ 	  doc/doxygen.conf | doxygen - )
+@@ -682,7 +683,7 @@
+ swig-pl_DEPS = autogen-swig-pl libsvn_swig_perl \
+   $(SWIG_PL_DIR)/native/Makefile
+ swig-pl: $(swig-pl_DEPS)
+-	if test "$(SWIG_PL_DIR)" != "$(SWIG_PL_SRC_DIR)"; then \
++	if test "$$(cd $(SWIG_PL_DIR);pwd)" != "$(SWIG_PL_SRC_DIR)"; then \
+ 	  ln -sf $(SWIG_PL_SRC_DIR)/native/*.c $(SWIG_PL_DIR)/native; \
+ 	fi
+ 	cd $(SWIG_PL_DIR)/native; $(MAKE) OPTIMIZE="" OTHERLDFLAGS="$(SWIG_LDFLAGS)"
+@@ -705,8 +706,7 @@
+ 	fi
+ 	for d in $(SWIG_PL_DIR)/libsvn_swig_perl; \
+ 	do \
+-	  cd $$d; \
+-	  rm -rf *.lo *.la *.o .libs; \
++	  (cd $$d && rm -rf *.lo *.la *.o .libs); \
+ 	done
+ 	if [ -f "$(SWIG_PL_DIR)/native/Makefile" ]; then \
+ 	  cd $(SWIG_PL_DIR)/native; $(MAKE) clean; \
+@@ -739,7 +739,7 @@
+ 	fi
+ 	for d in $(SWIG_PY_DIR) $(SWIG_PY_DIR)/libsvn_swig_py; \
+ 	do \
+-	  cd $$d && rm -rf *.lo *.la *.o *.pyc .libs; \
++	  (cd $$d && rm -rf *.lo *.la *.o *.pyc .libs); \
+ 	done
+ 	find $(SWIG_PY_SRC_DIR) $(SWIG_PY_DIR) -name "*.pyc" -exec rm {} ';'
+ 
+@@ -763,8 +763,7 @@
+ 	fi
+ 	for d in $(SWIG_RB_DIR) $(SWIG_RB_DIR)/libsvn_swig_ruby; \
+ 	do \
+-	  cd $$d; \
+-	  rm -rf *.lo *.la *.o .libs; \
++	  (cd $$d && rm -rf *.lo *.la *.o .libs); \
+ 	done
+ 
+ extraclean-swig-rb: clean-swig-rb
+--- a/build/generator/gen_make.py
++++ b/build/generator/gen_make.py
+@@ -183,9 +183,9 @@
+       source_dir = build_path_dirname(source)
+       opts = self.swig.opts[objname.lang]
+       if not self.release_mode:
+-        self.ofile.write('%s: %s\n' % (objname, deps) +
+-          '\t$(SWIG) $(SWIG_INCLUDES) %s ' % opts +
+-          '-o $@ $(top_srcdir)/%s\n' % source
++        self.ofile.write('$(top_srcdir)/%s:' % objname +
++                         ' $(top_srcdir)/%s %s\n' % (source, deps) +
++          '\t$(SWIG) $(SWIG_INCLUDES) %s -o $@ $<\n' % opts
+         )
+ 
+     self.ofile.write('\n')
+@@ -456,11 +456,11 @@
+       self.ofile.write('%s: %s\n' % (objname, deps))
+       cmd = objname.compile_cmd
+       if cmd:
+-        if not getattr(objname, 'source_generated', 0):
++#        if not getattr(objname, 'source_generated', 0):
+           self.ofile.write('\t%s %s\n\n'
+                            % (cmd, '$(canonicalized_srcdir)' + str(sources[0])))
+-        else:
+-          self.ofile.write('\t%s %s\n\n' % (cmd, sources[0]))
++#        else:
++#          self.ofile.write('\t%s %s\n\n' % (cmd, sources[0]))
+       else:
+         self.ofile.write('\n')
+ 
+--- a/build/generator/gen_base.py
++++ b/build/generator/gen_base.py
+@@ -284,7 +284,8 @@
+ 
+ class SWIGSource(SourceFile):
+   def __init__(self, filename):
+-    SourceFile.__init__(self, filename, build_path_dirname(filename))
++    SourceFile.__init__(self, filename,
++                        build_path_dirname('$(top_srcdir)/' + filename))
+   pass
+ 
+ lang_abbrev = {
+--- a/build/generator/swig/header_wrappers.py
++++ b/build/generator/swig/header_wrappers.py
+@@ -32,7 +32,7 @@
+     """Write makefile rules for generating SWIG wrappers for Subversion
+     header files."""
+     wrapper_fnames = []
+-    python_script = '$(abs_srcdir)/build/generator/swig/header_wrappers.py'
++    python_script = 'build/generator/swig/header_wrappers.py'
+     makefile.write('GEN_SWIG_WRAPPER = cd $(top_srcdir) && $(PYTHON)' +
+                    ' %s build.conf $(SWIG)\n\n'  % python_script)
+     for fname in self.includes:
+--- a/configure.ac
++++ b/configure.ac
+@@ -1010,6 +1010,11 @@
+ AC_SUBST(SVN_CONFIG_SCRIPT_FILES)
+ 
+ AC_OUTPUT
++if test "$abs_srcdir" != "$abs_builddir"
++then
++  AC_MSG_NOTICE([Creating build directories])
++  (cd "$abs_srcdir"; find subversion tools contrib -type d) | xargs $MKDIR
++fi
+ 
+ # ==== Print final messages to user ==========================================
+ 
+--- a/build.conf
++++ b/build.conf
+@@ -648,13 +648,14 @@
+ # ----------------------------------------------------------------------------
+ # Tests for libsvn_subr
+ 
+-[auth-test]
+-description = Test platform-specific auth provider access
+-type = exe
+-path = subversion/tests/libsvn_subr
+-sources = auth-test.c
+-install = test
+-libs = libsvn_test libsvn_subr
++# Fails because it assumes gnome-keyring facilities are available at test time
++#[auth-test]
++#description = Test platform-specific auth provider access
++#type = exe
++#path = subversion/tests/libsvn_subr
++#sources = auth-test.c
++#install = test
++#libs = libsvn_test libsvn_subr
+ 
+ [cache-test]
+ description = Test in-memory cache

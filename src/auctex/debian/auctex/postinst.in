@@ -1,0 +1,52 @@
+#include "variables"
+#! /bin/bash -e
+#
+# <% postinst %> script for <:=${PACKAGE}:>
+#
+<:=@COPYRIGHT:>//
+
+set -o posix
+
+<:
+# parse <% debconf %> database: do not remove,
+# even if no further use of it is made here
+:>//
+source <:=${CONFMODULE}:>
+db_version 2.0
+
+#---B-E-G-I-N---O-L-D---S-T-U-F-F---keep-it,-it-doesn't-hurt-------------------
+for i in /usr/lib/emacs/common/auctex/auto/ /var/lib/emacs/auctex/; do
+    if test -d ${i}
+	then rm -rf ${i}
+    fi
+done
+for i in /usr/lib/emacs/common/auctex /usr/lib/emacs/common; do
+    if test -d ${i}
+	then find ${i%/*} -name ${i##*/} -type d -empty \
+	    | xargs --no-run-if-empty rmdir
+    fi
+done
+#---E-N-D---O-L-D---S-T-U-F-F--------------------------------------------------
+
+case "${1}" in
+    abort-deconfigure|abort-remove|abort-upgrade|configure|reconfigure) :;;
+    *) echo >&2 "${0##*/}/<:=${PACKAGE}:>:" \
+	"Unknown argument: \"${1}\"."
+	exit 1
+esac
+
+<:# Emacs install :>//
+case "${1}" in abort-deconfigure|abort-remove|abort-upgrade|configure|reconfigure)
+    <:=${EINSTALL}:> <:=${PACKAGE}:>
+esac
+
+exit 0
+<:
+# local variables:
+# mode: shell-script
+# ispell-local-dictionary: "american"
+# ispell-check-comments: exclusive
+# end:
+#
+# LocalWords:  emacs
+:>//

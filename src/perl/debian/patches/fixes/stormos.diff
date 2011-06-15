@@ -1,0 +1,11 @@
+--- perl-5.10.1/Configure.orig	2010-08-04 11:32:28.861163699 +0200
++++ perl-5.10.1/Configure	2010-08-04 11:33:04.994819587 +0200
+@@ -1354,7 +1354,7 @@
+ : set usesocks on the Configure command line to enable socks.
+ : List of libraries we want.
+ : If anyone needs extra -lxxx, put those in a hint file.
+-libswanted='gdbm gdbm_compat db dl m c crypt'
++libswanted='gdbm gdbm_compat db dl m c crypt socket'
+ : We probably want to search /usr/shlib before most other libraries.
+ : This is only used by the lib/ExtUtils/MakeMaker.pm routine extliblist.
+ glibpth=`echo " $glibpth " | sed -e 's! /usr/shlib ! !'`

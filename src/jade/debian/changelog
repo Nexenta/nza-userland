@@ -1,0 +1,821 @@
+jade (1.2.1-47nexenta2) unstable; urgency=low
+
+  * Port for Nexenta 4 
+
+ -- Peter Zaikin <peter.zaikin@nexenta.com>  Wed, 16 Feb 2011 10:14:54 +0200
+
+jade (1.2.1-47nexenta1) unstable; urgency=low
+
+  * Port to NCP 
+
+ -- Anil Gulecha <anil.verve@gmail.com>  Fri, 12 Nov 2010 07:55:48 +0530
+
+jade (1.2.1-47stormos0) unstable; urgency=low
+
+  * Package for StormOS.
+
+ -- Andrew Stormont (astormont) <andyjstormont@googlemail.com>  Mon, 16 Aug 2010 19:26:34 +0200
+
+jade (1.2.1-47) unstable; urgency=low
+
+  * "Package explicitely build-depends on g++-3.4":
+    debian/control: Remove dependency on g++ 3.4 for hppa, 4.0 works.
+    debian/rules: Use -O2 for hppa as well as other arches.
+   (closes: #342972)
+  * Removed debian/watch.  We do not want a newer version even if one
+    comes out because Jade has been replaced by OpenJade.  The last
+    upstream release of Jade was over seven years ago. (closes: #354368)
+
+ -- Neil Roeth <neil@debian.org>  Sun, 26 Feb 2006 18:00:28 -0500
+
+jade (1.2.1-46) unstable; urgency=low
+
+  * debian/rules: Fix quoting on multiline sed command to fix make
+    backward incompatibility: "FTBFS with new make". Also fixed
+    README.Debian.in: sgml-dir -> sgmldir.  Thanks to Daniel
+    Schepler. (closes: #346185)
+
+ -- Neil Roeth <neil@debian.org>  Fri,  6 Jan 2006 06:46:18 -0500
+
+jade (1.2.1-45) unstable; urgency=low
+
+  * Remove bogus libstdc++6-4.0-dev and libc6-dev depedencies, thanks to
+    Matthias Klose. (closes: #320445)
+  * Removed unnecessary libtool and gettext dependencies.
+  * Updated Standards-Version to 3.6.2 - no changes to package.
+  * Moved debian/libsp1.* to debian/libsp1c2.* - should have been done in
+    the last version.
+  * Build using g++-3.4 on hppa to avoid FTBFS, thanks to Matthias
+    Klose. (closes: #321084)
+
+ -- Neil Roeth <neil@debian.org>  Wed,  3 Aug 2005 22:38:32 -0400
+
+jade (1.2.1-44) unstable; urgency=low
+
+  * Changes for using g++ 4.0:
+  - Use patch supplied by Daniel Schepler to allow it to compile.
+    (closes: #308810).
+  - Updated version numbers in Replaces and Conflicts so that all SP libs
+    as well as Jade are consistent.
+  - Updated C++ lib to libstdc++6-4.0-dev.
+  - Changed name from libsp1 to libsp1c2.
+
+ -- Neil Roeth <neil@debian.org>  Fri, 15 Jul 2005 21:19:42 -0400
+
+jade (1.2.1-43) unstable; urgency=high
+
+  * RC bug fix: Make libsp1 conflict with jade earlier than 1.2.1-30 to
+    avoid problem where old version of jade fails to run because of
+    changes in libsp1.  Better way to do this would be new soname, etc.,
+    but that would be a drastic change to make so close to the sarge
+    release (this situation has existed for almost two years with no prior
+    report of problems). Other, non-Debian programs compiled locally
+    against old version of libsp1 might have problems.  Best solution for
+    those is to convert to the OpenSP version of these programs, since
+    that is the successor to this old, no longer updated suite of
+    programs. (closes: #286945)
+  * Use patch supplied by Andreas Jochens to allow compiling with g++ 3.4
+    (closes: #221735, #270109)
+
+ -- Neil Roeth <neil@debian.org>  Wed, 29 Dec 2004 07:12:29 -0500
+
+jade (1.2.1-42) unstable; urgency=low
+
+  * Fixed broken linkage (weakly defined symbols).  Again.
+
+ -- Neil Roeth <neil@debian.org>  Tue,  8 Jun 2004 20:55:41 -0400
+
+jade (1.2.1-41) unstable; urgency=low
+
+  * Rerun libtool with newer version to fix build on mips (closes: #252313)
+
+ -- Neil Roeth <neil@debian.org>  Wed,  2 Jun 2004 20:59:29 -0400
+
+jade (1.2.1-40) unstable; urgency=low
+
+  * Removed /usr/lib/sgml and /usr/local/lib/sgml.
+  * Added dh-buildinfo.
+
+ -- Neil Roeth <neil@debian.org>  Wed, 19 May 2004 22:54:22 -0400
+
+jade (1.2.1-39) unstable; urgency=low
+
+  * debian/rules: Changed default-catalogs from a list of absolute paths
+    that was a duplicate of default-sgml-path to just "/etc/sgml/catalog".
+    A file called "catalog" will be searched for on all directories in
+    default-sgml-path, so the only one that needs to be explicitly
+    specified is /etc/sgml/catalog, since /etc/sgml is not in
+    default-sgml-path, and does not need to be.
+
+ -- Neil Roeth <neil@debian.org>  Thu, 11 Dec 2003 07:51:29 -0500
+
+jade (1.2.1-38) unstable; urgency=low
+
+  * Revert to -35 behavior of using gruesome sed hack to force libtool to
+    use C++ for linking.  The newer libtool only cures the problem if the
+    autotools generated files are regenerated, and they were not (oops).
+    They are very old and I do not want to open an autotools can of worms
+    just as we are about to release sarge, so sed it is for now.  Fixes
+    "libsp1: Libraries contain undefined symbols" from Robin Verduijn
+    (closes: #220067).
+
+ -- Neil Roeth <neil@debian.org>  Tue, 11 Nov 2003 08:25:41 -0500
+
+jade (1.2.1-37) unstable; urgency=low
+
+  * Upgraded to policy version 3.6.1 (no changes).
+  * Depend on debhelper >= 4.1.75 to pick up necessary fixes to
+    dh_installcatalogs.
+
+ -- Neil Roeth <neil@debian.org>  Sat, 18 Oct 2003 21:51:56 -0400
+
+jade (1.2.1-36) unstable; urgency=low
+
+  * Removed all explicit g++ dependencies.
+  * Removed gruesome sed hack used to get libtool to use C++ for linking,
+    libtool 1.5 now does this properly.
+  * Removed creation of unused /usr/lib/jade.
+  * Updated jade.{prerm,postinst} to conform to current practice.
+  * Change reference from copying.txt to copyright in jade
+    documentation. (closes: #186884)
+
+ -- Neil Roeth <neil@debian.org>  Thu,  9 Oct 2003 18:27:35 -0400
+
+jade (1.2.1-35) unstable; urgency=low
+
+  * Changed use of DEB_BUILD_OPTIONS to conform to policy:
+    - set -g by default instead of -O2
+    - add -O2 if "noopt" is present, else -O0
+    - remove addition of -g if "debug" is present.
+     (closes: #199078)
+  * Explicitly depend on g++ 3.3 on m68k so it works even if built on a
+    buildd running an old compiler (closes: #199013)
+
+ -- Neil Roeth <neil@debian.org>  Thu,  3 Jul 2003 22:18:21 -0400
+
+jade (1.2.1-34) unstable; urgency=low
+
+  * Use g++ 3.3 on m68k, it works now, and 2.95 doesn't. (closes: #196730)
+  * Build depend on m4, not automake1.5; latter unnecessary.
+
+ -- Neil Roeth <neil@debian.org>  Wed, 18 Jun 2003 07:05:54 -0400
+
+jade (1.2.1-33) unstable; urgency=low
+
+  * Modified debian/rules to use g++-3.2 on s390; there is a compiler
+    problem with 3.3 (closes: #195902)
+  * Changed section of libsp1-dev to libdevel to match override file.
+
+ -- Neil Roeth <neil@debian.org>  Wed,  4 Jun 2003 12:39:30 -0400
+
+jade (1.2.1-32) unstable; urgency=low
+
+  * Reordered definitions of classes in Attribute.h to resolve compile
+    errors when using g++ 3.3.
+  * Added command to debian/rules to change permissions on m4 files so
+    that they can be touch(1)-ed during build.
+
+ -- Neil Roeth <neil@debian.org>  Sat, 24 May 2003 16:36:10 -0400
+
+jade (1.2.1-31) unstable; urgency=low
+
+  * Added missing build-depends on autotools-dev.
+  * Quoted "remove" in libsp1.postrm to eliminate lintian warning.
+  * Converted to automake1.5.
+  * Forced all compilation and libtool to use g++ so that libstdc++ gets
+    properly linked into the shared libraries. (closes: #193950)
+
+ -- Neil Roeth <neil@debian.org>  Wed, 21 May 2003 16:38:35 -0400
+
+jade (1.2.1-30) unstable; urgency=low
+
+  * New maintainer (closes: #184552)
+  * Depend on 1.3.4-1.2.1-30 shlibs (closes: #191886)
+  * Built with g++ 3.2 (closes: #178312)
+
+ -- Neil Roeth <neil@debian.org>  Wed, 14 May 2003 18:24:20 -0400
+
+jade (1.2.1-29.3) unstable; urgency=low
+
+  * NMU
+  * fallback to gcc-2.95/g++-2.95 but just for m68k (closes: #187667, #191880)
+
+ -- Goswin von Brederlow <goswin.brederlow@student.uni-tuebingen.de>  Tue, 06 May 2003 02:43:18 +0200
+
+jade (1.2.1-29.2) unstable; urgency=low
+
+  * NMU
+  * drop optimization on hppa
+
+ -- LaMont Jones <lamont@debian.org>  Tue, 29 Apr 2003 05:09:18 -0600
+
+jade (1.2.1-29.1) unstable; urgency=low
+
+  * Non-maintainer upload during bug-squashing party.
+  * Update SGML catalogs on remove (closes: #147296).
+
+ -- Roland Mas <lolando@debian.org>  Sat, 15 Mar 2003 21:15:50 +0100
+
+jade (1.2.1-29) unstable; urgency=low
+
+  * Orphan package (revert maint. to qa group) upstream inactive
+
+ -- Stephen M Moraco <stephen@debian.org>  Wed, 12 Mar 2003 19:00:46 -0700
+
+jade (1.2.1-28) unstable; urgency=low
+
+  * Fix dpkg-gencontrol: warning for libsp1-dev (round 2)
+    which fixes bad Depends: libsp1-dev (Closes: Bug#134819)
+    this time it is verified to be correct...
+
+ -- Stephen M Moraco <stephen@debian.org>  Wed, 20 Feb 2002 23:41:00 -0700
+
+jade (1.2.1-27) unstable; urgency=low
+
+  * Fix descr all binary pkgs per ddtp audit (Closes: Bug#131292)
+  * Fix dpkg-gencontrol: warning for libsp1-dev
+  * Move update of config.{sub|guess} to clean for autobuilders
+
+ -- Stephen M Moraco <stephen@debian.org>  Thu, 14 Feb 2002 01:45:22 -0700
+
+jade (1.2.1-26) unstable; urgency=low
+
+  * New maintainer (Closes: Bug#110801)
+
+ -- Stephen M Moraco <stephen@debian.org>  Tue, 12 Feb 2002 00:17:35 -0700
+
+jade (1.2.1-25) unstable; urgency=low
+
+  * fix a bug introduced in last version where symlink for SP-supplied
+    declarations were not properly created in /usr/lib/sgml, instead the
+    blob character was created (oops!)
+    closes: #124251, #125913, #127630
+
+ -- Adam Di Carlo <aph@debian.org>  Sat,  5 Jan 2002 15:00:54 -0500
+
+jade (1.2.1-24) unstable; urgency=low
+
+  * update for new Debian SGML layout, catalog files, and search path;
+    closes: #115913, #115915
+  * depend on sgml-base 1.07 or better
+  * remove useless sp.catalog conffile
+  * bump libsp1 requirement to this version due to search path change,
+    which is a compile time option
+  * add build-dependency on gettext
+  * policy compliant to 3.5.6
+  * debian/rules: more debhelperification, suggestions from Roger Leigh
+  * move to DH_COMPAT 3, require debhelper 3.0 or better
+  * debian/control: add build-depends on gettext, remove redundant dependency
+    on autotools-dev
+  * provide FOT.tex as an example, I guess that's for an example of how to
+    render FOT output -- not completely clear...
+  * we provide xml.soc in /usr/share/sgml/declaration/xml.soc, as expected
+    by psgmls and probably other tools
+
+ -- Adam Di Carlo <aph@debian.org>  Fri,  8 Nov 2001 20:35:50 -0500
+
+jade (1.2.1-23) unstable; urgency=low
+
+  * debian/rules: touch the m4 files in the clean rule, forcing them to
+    rebuild, as Gerhard Tonn pointed out (my CVS makes all the timestamps
+    the same)
+  * refresh config.status etc files again, not that it really matters,
+    since those are also forced during build
+  * configure.in: force AC_PROG_CXXCPP early, preventing a little annoying
+    problem
+  * fix a duplicate dependancy on libsp1 affecting jade and sp
+  * libsp1, policy: should call ldconfig in the `postrm' script if the
+    first argument is `remove'; rework the 'ldconfig' call in postinst so
+    lintian likes it better (although it was perfectly correct before)
+  * debian/rules: we were building before on alpha and ia64 with
+    SIZEOF_SIZE_T forced to 8; that isn't necessary anymore since we've
+    hopefully fixed the upstream source to no longer need this
+  * debian/rules: implement policy recommendations regarding
+    DEB_BUILD_OPTIONS
+
+ -- Adam Di Carlo <aph@debian.org>  Mon, 15 Oct 2001 02:05:58 -0400
+
+jade (1.2.1-22) unstable; urgency=low
+
+  * try once again to fix the instantiate Vector problem, still plaguing
+    s390 -- with the new patch, from Gerhard Tonn, we don't have to
+    hard-code the 64-bit architectures anymore; closes: #97949
+
+ -- Adam Di Carlo <aph@debian.org>  Sat,  6 Oct 2001 12:48:58 -0400
+
+jade (1.2.1-21) unstable; urgency=medium
+
+  * configure.in: remove special handling for strtoul, which references a
+    source file which is not actually shipped; fixes build problems on
+    ia64, and probably others
+
+ -- Adam Di Carlo <aph@debian.org>  Sun, 16 Sep 2001 00:59:41 -0400
+
+jade (1.2.1-20) unstable; urgency=low
+
+  * debian/control: fix override disparities
+  * debian/rules: copy in new config.sub and config.guess in the clean
+    target from autotools-dev;
+    add aclocal and autoreconf calls to update autoconf stuff;
+    closes: #112292
+  * fix some tomfoolery in the upstream source where AC_CONFIG_AUX_DIR was
+    being misused, this eliminates some tomfoolery in debian/rules
+  * debian/rules: clean is a bit cleaner
+  * update config.{sub,guess}, autoconf and libtool stuff in the source
+  * Makefile.in: fix a mixup with the whole .libs symlink stuff, oh why
+    is this needed at all?; other requirements for new libtool
+  * build-depends on autotools-dev and automake
+
+ -- Adam Di Carlo <aph@debian.org>  Sat, 15 Sep 2001 17:29:40 -0400
+
+jade (1.2.1-19) unstable; urgency=medium
+
+  * proper rework of patch from 18.1, to instantiate 
+    Vector<size_t> unless we're 64 bit (well, actually, unless we're ia64
+    or alpha, where sizeof long != sizeof int I think?)
+    closes: #97949, #103192, #109388
+
+    could someone who knows C++ please do this right and/or take over this
+    package please?  WNPP request already submitted.
+  
+  * TODO file: cosmetics, note need to do new sgml-base policy
+  * rerun libtoolize --force, although I rather fail to see how this
+    makes much difference for porters, since running libtoolize --force is
+    part of the build process (I moved it up even higher); closes: #97377
+  * in new libstdc++3, we need SP_NO_STD_NAMESPACE enabled; closes: #96261
+  * incorporate other fixes from 18.2; closes: #99743, #103195
+  * minor FHS changes in our man pages; closes: #103178
+  * get rid of some old, broken cruft removal; closes: #95236
+
+ -- Adam Di Carlo <aph@debian.org>  Mon, 10 Sep 2001 12:51:41 -0400
+
+jade (1.2.1-18.2) unstable; urgency=low
+
+  * Non-maintainer upload
+  * Fix to build with gcc 3.0. Closes: #96261
+  * New config.guess and config.sub (hppa, ia64, s390 & sh)  Closes: #97377
+  * Fix to build under fakeroot.  Closes: #99743, #103195
+  * Add gross hack for ia64 - works, but needs to be reviewd.
+    Closes: #103192.
+
+ -- LaMont Jones <lamont@debian.org>  Fri,  6 Jul 2001 10:49:33 -0600
+
+jade (1.2.1-18.1) unstable; urgency=low
+ 
+  * Non-maintainer upload.
+  * Added template instance Vector<long unsigned int>.  Closes: #97949
+ 
+ -- Gerhard Tonn <gt@debian.org>  Fri,  1 Jun 2001 20:38:43 +0200
+
+jade (1.2.1-18) unstable; urgency=low
+
+  * debian/rules: correct location of sgml-catalog-check.pl
+    (closes: Bug#75384); clean more stuff which should have been cleaned
+    in upstream Makefiles
+  * unicode/catalog: fix name of unicode.decl (closes: Bug#74858)
+  * debian/control: build depends requires new enough sgml-data
+  * apply patch from Randolph Chung updating autoconf/libtools stuff and
+    enabling compilation on ia64 (closes: Bug#82109, Bug#82487)
+
+ -- Adam Di Carlo <aph@debian.org>  Thu, 18 Jan 2001 03:44:19 -0500
+
+jade (1.2.1-17) unstable; urgency=low
+
+  * rebuild same rev for woody only
+  * corrections in nsgmls manual page, patch from Gabor Liptak
+    <gaborliptak@usa.net> (closes: Bug#56628)
+  * README.Debian: do sgml-dir substitution; discussion XML validation
+    using the .decl file or the xml.soc (closes: Bug#56905)
+  * debian/rules: install xml.soc in <sgml-dir>/declaration/
+
+ -- Adam Di Carlo <aph@debian.org>  Tue, 28 Mar 2000 02:20:32 -0500
+
+jade (1.2.1-16) frozen unstable; urgency=medium
+
+  * patch for Alpha (and 64-bit arches) (closes: Bug#58666);
+    comment from the bug fixer, David Huggins-Daines:
+      work around broken C++ compiler on Alpha, also instantiate
+      Vector<size_t> on Alpha since sizeof(size_t) != sizeof(int). This
+      can't be done on 32-bit archs since gcc 2.95 will complain about
+      multiple instantiations, however it has to be done on 64-bit ones -
+      this is just a quick hack, upstream needs to fix it by checking the
+      size of size_t in their configure script.
+  * since the preceeding fix is needed for Alpha compilation, and since
+    that patch does not affect any other architectures, this should be
+    included in Potato.
+
+ -- Adam Di Carlo <aph@debian.org>  Sat,  4 Mar 2000 15:56:40 -0500
+
+jade (1.2.1-15) unstable; urgency=low
+
+  * libsp: comment out the dtddeclNotSupported, because it's annoying and
+    stupid to complain so much about things the software doesn't
+    understand, and effectively makes it harder (well, more annoying) to
+    transition to DTDDECL, which is fully understood by OpenJade
+
+ -- Adam Di Carlo <aph@debian.org>  Tue,  4 Jan 2000 18:19:41 -0500
+
+jade (1.2.1-14) unstable; urgency=low
+
+  * include sgml2xml and sgmlnorm man pages, thanks to Steve Cheng, from
+    the docbook2man examples (closes: Bug#39489)
+  * do not install /usr/lib/sgml/declaration/xml.decl -- xml.dcl is now
+    provided by sgml-data
+  * patch for TeX output ligature problem affecting the characters '-<>',
+    adopted from OpenJade (closes: Bug#45489)
+  * debian/control: build standards version to 3.1.1; add Build-Depends
+  * include/config.h: force #define SP_MULTI_BYTE (closes: Bug#46130)
+  * remove "compatability" symlink /usr/lib/sgml/sgml/japan.decl, since I
+    don't think anyone uses it
+  * debian/rules: debhelperify
+  * debian/*: rename files closed to what debhelper expects
+
+ -- Adam Di Carlo <aph@debian.org>  Sat,  1 Jan 2000 19:06:04 -0500
+
+jade (1.2.1-13) unstable; urgency=low
+
+  * merge in upstream SP 1.3.4 (no correlated jade release yet, so this is
+    packaged as a diff against jade 1.2.1)
+  * debian/rules: enforce more modularity for consistency with openjade
+    rules file; clean sp.conffiles; install SP example stuff from 'dsssl/'
+
+ -- Adam Di Carlo <aph@debian.org>  Sat, 30 Oct 1999 13:51:18 -0400
+
+jade (1.2.1-12) unstable; urgency=low
+
+  * debian/rules: remove '-fpermissive' call (closes: Bug#45452); fold out
+    config.status as a separate target for a better build
+  * include generic/*.h (closes: Bug#46129)
+  * sp postinst: fix shell output indirection oopsie (closes: Bug#46577)
+
+ -- Adam Di Carlo <aph@debian.org>  Thu,  7 Oct 1999 02:20:24 -0400
+
+jade (1.2.1-11) unstable; urgency=low
+
+  * incorporate NMU from 1.2.1-10.1 (closes: Bug#44500)
+  * debian/rules: also, run libtoolize at build time; clean is cleaner
+  * port for g++ 2.95 or better made more robust (i.e., should work for
+    future g++ 3.x as well, as well as non GNU compilers); regenerate the
+    C++ files from M4 files so they don't show up in diffs
+
+ -- Adam Di Carlo <aph@debian.org>  Fri, 10 Sep 1999 20:08:59 -0400
+
+jade (1.2.1-10.1) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Update config.{guess,sub} for ARM
+
+ -- Jim Pick <jim@jimpick.com>  Mon,  6 Sep 1999 10:46:41 -0700
+
+jade (1.2.1-10) unstable; urgency=low
+
+  * port sources with g++ 2.95 (closes Bug#42925)
+  * update Policy standard compliance to 3.0.1
+  * README.sp-dev: note that SP_MULTI_BYTE must be defined when
+    compiling with the libraries/headers (closes Bug#41584)
+  * debian/rules: more debhelperification, where it helps
+
+ -- Adam Di Carlo <aph@debian.org>  Fri, 10 Sep 1999 19:05:56 -0400
+
+jade (1.2.1-9) unstable; urgency=low
+
+  * config/configure.in: add --enable-html to enable the HTML backend
+  * configure: regenerated
+  * debian/rules: enable the HTML backend
+  * README.Debian: add URLs, talk about the OpenJade project (thanks
+    esp. to Didier PH Martin)
+
+ -- Adam Di Carlo <aph@debian.org>  Sat, 26 Jun 1999 14:56:54 -0400
+
+jade (1.2.1-8) unstable; urgency=low
+
+  * patches for hurd port, and linking with libthreads (autoconf)
+    (closes Bug#38518)
+  * configure: regenerated from autoconf 1.13 (was 1.12)
+  * config/{ltmain.sh,ltconfig}: update from libtool 1.3.2
+  * README.Debian: update a few URLs
+  * Makefile.jade: no longer upstream or used by Debian, removed
+  * incidentally, non-Debian specific patches submitted to OpenJade group
+
+ -- Adam Di Carlo <aph@debian.org>  Thu, 17 Jun 1999 21:45:37 -0400
+
+jade (1.2.1-7) unstable; urgency=low
+
+  * sp: new conffile, /etc/sp.catalog, which is initially populated with
+    'OVERRIDE YES', which means that public (catalog) identifiers will
+    override system identifiers, which is relevant to XML files which
+    require both (as suggested by Gregor Hoffleit).  You can put other
+    global settings relevant to sp here also.
+  * correct libsp1 dependancy, discovered by the maintainer when upgrading
+    a hamm system to slink
+  * jade postinst: remove old policy violating sgml.catalog scrubbing; now
+    that is provided in a little script which can be hand run,
+    /usr/lib/jade/scrub-dsssl-catalog-cruft; be more discriminate in how
+    many cases we run under
+  * postinst: other minor style fixups
+  * rebuilt with newest g++ and libstdc++ packages
+
+ -- Adam Di Carlo <aph@debian.org>  Mon,  3 May 1999 02:08:33 -0400
+
+jade (1.2.1-6) unstable; urgency=low
+
+  * add some additional include files for libstyle to /usr/include/sp
+    (closes Bug#36207)
+  * debian/rules: clean out some cruft
+
+ -- Adam Di Carlo <aph@debian.org>  Sat, 17 Apr 1999 18:19:28 -0400
+
+jade (1.2.1-5) unstable; urgency=low
+
+  * parameterize and change default SGML paths to put /usr/local paths
+    prior to /usr paths; automatically populate README.Debian with the
+    proper value (closes Bug#31737)
+
+ -- Adam Di Carlo <aph@debian.org>  Sun,  7 Feb 1999 18:01:32 -0500
+
+jade (1.2.1-4) frozen unstable; urgency=low
+
+  * debian/rules: cosmetic cleanups
+  * debian/rules: recompile the whole shbang with -D_REENTRANT (policy
+    violation for libraries -- hopefully it won't hurt the non-libraries)
+
+ -- Adam Di Carlo <aph@debian.org>  Tue,  8 Dec 1998 01:49:51 -0500
+
+jade (1.2.1-3) frozen unstable; urgency=low
+
+  * recompile with new g++/libstdc++
+  * maintainer name change
+  * debian/control: fix spelling error in description (thanks, lintian!)
+  * debian/control: standards version 2.5.0
+
+ -- Adam Di Carlo <aph@debian.org>  Sat, 28 Nov 1998 06:29:49 -0500
+
+jade (1.2.1-2) frozen unstable; urgency=low
+
+  * debian/control: libsp1 conflicts with sp (<= 1.3-1.1-6), since if jade
+    is run with the mentioned or earlier sp, there are problems with the
+    shared libraries (closes Bug#29423)
+
+ -- Adam P. Harris <aph@debian.org>  Sat, 14 Nov 1998 02:28:26 -0500
+
+jade (1.2.1-1) frozen unstable; urgency=low
+
+  * new upstream minor version, bugfixes only, including portability fixes 
+    and an autoconf bug which stopped the MIF backend from really being
+    enabled
+  * pristine upstream source
+  * config/configure.in: stop forcing us to use -ansi, which should help
+    porters, and is more correct -- consulting upstream with Cees de
+    Groot.   Should close Bug#28176.
+
+ -- Adam P. Harris <aph@debian.org>  Tue, 20 Oct 1998 02:46:32 -0400
+
+jade (1.2-3) unstable; urgency=medium
+
+  * debian/control: jade suggests sp
+  * debian/control: jade depends on libsp1 (closes Bug#28031, Bug#27830)
+
+ -- Adam P. Harris <aph@debian.org>  Fri, 16 Oct 1998 10:00:50 -0400
+
+jade (1.2-2) unstable; urgency=low
+
+  * enable MIF backend
+  * sp properly depends on libsp1 -- either dpkg-shlibdeps let me down or
+    I'm using it wrong (closes Bug#27331)
+  * debian/rules: set LD_PRELOAD= to work around bad interaction between 
+    fakeroot and dpkg-shlibdeps; ensure autoconf scripts are executable;
+    fixup some strictly internal stuff
+
+ -- Adam P. Harris <aph@debian.org>  Sun,  4 Oct 1998 20:26:26 -0400
+
+jade (1.2-1) unstable; urgency=low
+
+  * new upstream version, obsoletes all previous patches
+    - can build with egcs
+    - a MIF backend written by Kathleen Marszalek and Paul Prescod,
+    sponsored by ISOGEN International Corp
+    - an enhanced TeX backend written by Kathleen Marszalek, sponsored by
+    Novare International, and an associated LaTeX macro package by
+    Sebastian Rahtz.
+    - configure/autoconf support from Cees de Groot (see
+    README.configure); this should make it easier to install; uses libtool 
+    for shared libraries
+  * apply Cees' autoconf patch 1 from http://www.sgmltools.org/jade.html;
+    now we ship libgrove, libspgrove, and libstyle shared libs in the
+    libsp1 packages
+
+  * NOTE: shared library SO version numbers have changed.  This version of 
+    libsp.so et al are not compatible with the other ones. Number has been 
+    moved back from .so.1.3.x to so.1.0.3.  Honestly, I should bump the so 
+    to .so.2.x but since the only other pkg which depends on this is
+    maintained by me I'm not going to bother.  Feel free to file a bug
+    report if this messes you up and I'll look into bumping the .so.
+  * debian/rules: use debhelper-style temporary build directories and use
+    dh_strip for maximum strip'age
+  * config/configure.in: remove sig_atomic_t check, stop adding
+    -fno-implicit-templates to CXXFLAGS, add --enable-default-search-path
+    for setting the search path
+  * debian/rules: stop generating buildinfo file, it's too much of a PITA
+
+ -- Adam P. Harris <aph@debian.org>  Sat, 26 Sep 1998 18:13:27 -0400
+
+jade (1.1.1-4) unstable; urgency=low
+
+  * Apply patches for Jadetex Aug06
+      http://tug.org/applications/jadetex/jade.patch.aug06
+    This requires jadetex 1.04 or better
+  * libsp1*: update README.Debian
+  * libsp1-dev: symlink doc dir from libsp1
+  * jade maintainer scripts: only blab about removing entries if we really are
+  * debian/rules: only install *.htm from jadedoc, eliminating lintian's
+    extra-license-file warning
+  * debian/rules: minor housekeeping
+
+ -- Adam P. Harris <aph@debian.org>  Thu,  3 Sep 1998 04:09:58 -0400
+
+jade (1.1.1-3) unstable; urgency=low
+
+  * Apply patches for Jadetex July07
+      http://tug.org/applications/jadetex/jade.patch.july07
+      http://tug.org/applications/jadetex/jade-newfiles.zip
+    This incorporates jadetex table support.  The jadetex 'aug06' patches
+    have not been incorporated since this would required jadetex 1.04 or
+    better.
+  * libsp1.shlibs: provide library in >= 1.3.1-1.1.1-1, rather than
+    requiring the exact current version
+
+ -- Adam P. Harris <aph@debian.org>  Fri, 14 Aug 1998 00:02:39 -0400
+
+jade (1.1.1-2) unstable; urgency=low
+
+  * libsp1-dev: include libgrove.a and libspgrove.a (no shared versions
+    yet, someone tell me if they want them) and some include files for
+    grove and spgrove.  Prompted by problems compiling dsc.
+  * link /usr/doc/jade/jade.htm to /usr/doc/jade/index.html
+
+ -- Adam P. Harris <aph@debian.org>  Wed,  5 Aug 1998 19:32:41 -0400
+
+jade (1.1.1-1) unstable; urgency=low
+
+  * new upstream versions (sp 1.3.1, jade 1.1.1)
+  * libsp1 split out from sp, sp-dev renamed to libsp1-dev
+  * libsp1-dev depends on libc6-dev and libg++272-dev, and recommends g++272
+  * libsp1 replaces older sp's since they had libsp.so.1* in them
+  * don't have the link from HTML file to /usr/doc/sp/changelog
+  * I tried again to use eg++ instead of g++272 but jade is still
+    non-functional when formatting docbook.  For porters, the entire SP
+    suite itself seems to do fine under eg++.
+
+ -- Adam P. Harris <aph@debian.org>  Sat, 25 Jul 1998 12:38:08 -0400
+
+jade (1.1-6) frozen unstable; urgency=low
+
+  * jade.1: fixed location reference of jade.htm
+  * backout from egcs' c++, since that seems to be the cause of the core
+    dumps, so we're back with 'gcc -fno-implicit-templates' as our c++
+    compiler; thanks for Terry Dawson <terry@linux.spice.net.au> for
+    isolating exactly when jade started crumbling (closes Bug#20796,
+    Bug#21895, Bug#21856)
+  * set dependancies on libsp.so now that we've got to do this manually
+    again
+  * rebuild with new sgml-catalog-check.pl from sgml-data, and add a check
+    to try to ensure we never build with bad symlinks (closes Bug#21807)
+  * add buildinfo.Debian file for all binary packages
+  * /usr/doc/sp/README added from upstream, minor updates to reflect
+    Debian way
+  * debian/control: bumped standards compliance to 2.4.1.0
+  * /usr/doc/*/copyright file brought up to policy spec
+  * TODO.Debian updated
+  * /usr/doc/sp/changelog and /usr/doc/sp-dev/changelog link created
+    (policy)
+
+ -- Adam P. Harris <aph@debian.org>  Sat,  2 May 1998 17:21:06 -0400
+
+jade (1.1-5) frozen unstable; urgency=low
+
+  * set SGML_SEARCH_PATH_DEFAULT to /usr/lib/sgml:/usr/local/lib/sgml (was 
+    unset before, leading to wierd searching in /etc sometimes)
+  * set SGML_CATALOG_FILES_DEFAULT to
+    /usr/lib/sgml/catalog:/usr/local/lib/sgml/catalog
+  * rebuild with egcs-2.90.26 980308, remove -fno-implicit-templates,
+    which means Alpha platform should compile out of the box, linked
+    against libstdc++2.8 as well
+  * fixing dependancies:  sp shouldn't depend on itself, sp-dev now
+    depends on sync'd version of sp, jade depends on sync'd version of sp; 
+    I think tight coupling is there between jade and sp.  I might loosen
+    it later.
+  * call ldconfig in sp's postinst, as stipulated by David Engel
+  * don't build SP tools with -fpic, you silly!
+
+ -- Adam P. Harris <aph@debian.org>  Sun, 29 Mar 1998 16:47:44 -0500
+
+jade (1.1-4) frozen unstable; urgency=low
+
+  * declarations do in /usr/lib/sgml/declaration, not declarations, as per
+    SGML subpolicy.
+  * unicode subdir moved to /usr/lib/sp/unicode (lintian)
+  * added declaration sp_implied.decl, representing sp's default
+    declaration
+  * don't call 'install-docs -r' from postrm, so scripts changed into
+    prerm (lintian)
+  * updates to README files
+
+ -- Adam P. Harris <aph@debian.org>  Thu, 19 Mar 1998 21:49:29 -0500
+
+jade (1.1-3) frozen unstable; urgency=low
+
+  * make shared libsp.so.1.3, major revision 1, link all programs in sp
+    and jade against that, which lowers the combined size by about 1MB
+  * add sp-dev package to hold the unversioned library symlink, the static 
+    library, and the include files
+  * change documentation area from "text" to "Apps/Text"
+  * remove _GNU_SOURCE define, not needed anymore AFAIK
+  * move jade DTDs in to dtd subdir, make proper sublinks
+  * move jade's dsssl catalog to /usr/lib/jade/catalog
+  * rename jade's smgl catalog package from 'dsssl' to 'jade'
+  * rename sp's japan.dcl to japan.decl (more standard)
+  * include xml.decl
+
+ -- Adam P. Harris <aph@debian.org>  Sun, 15 Mar 1998 15:42:00 -0500
+
+jade (1.1-2) unstable; urgency=low
+
+  * split sp out from this source package, so now the jade source creates
+    both the jade and sp packages
+  * jade no longer conflicts/replaces/provides sp, but rather depends on
+    it
+  * sp version is SPVer-JadeSrcVer, i.e., 1.3-1.1-2 (thanks to Yann Dirson)
+  * debian/postrm*: be tolerant removing documentation
+  * README.Debian: add some links to relevant web sites
+
+ -- Adam P. Harris <aph@debian.org>  Wed, 11 Mar 1998 12:23:11 -0500
+
+jade (1.1-1) unstable; urgency=low
+
+  * new maintainer
+  * new upstream version (closes Bug#19155, Bug#19174, Bug#19175)
+  * jade now conflicts/replaces/provides sp
+  * source managed with CVS
+  * updated Standard compliance
+  * debian/rules: cleanup and abstraction like I like it, remove debstd
+    (closes Bug#15443)
+  * debian/control: suggest doc-base, since that is how I register HTML
+  * debian/control: switched to priority optional, which was sp's priority
+  * define SP_HAVE_SOCKET for http support
+  * define _GNU_SOURCE to help Alpha users (closes Bug#14319)
+  * include nsgmls, spam, and spent man pages from 1.0.1 distribution
+  * rename sx to sgml2xml to prevent namespace pollution
+
+ -- Adam P. Harris <aph@debian.org>  Tue, 10 Mar 1998 04:29:52 -0500
+
+jade (1.0.1-1) unstable; urgency=low
+
+  * new upstream release, libc6.
+  * debian/postrm: fix cleanup bug (missing $CAT) and use
+    install-sgmlcatalog --remove.
+  * debian/postinst: *always* remove the old entries, and use
+    install-sgmlcatalog --install.  (Plan to ditch all this cleanup code
+    before Debian 2.0.)
+  * Makefile.jade: turn on SP_HAVE_GETTEXT, but turn of SP_HAVE_SOCKET
+    since libc6 has a broken arpa/inet.h that won't build with -ansi.
+
+ -- Mark W. Eichin <eichin@kitten.gen.ma.us>  Tue, 28 Oct 1997 02:19:39 -0500
+
+jade (0.8-4) unstable; urgency=low
+
+  * debian/postinst, debian/postrm: add _FIX to the $SIG line, and install
+    the *dsssl* catalog entries, not the davenport ones (oops,
+    overenthusiastic cut and paste...) Make postrm more verbose, let
+    postinst treat configure like upgrade. grep $CAT, not stdin.
+  * turn off SP_HAVE_GETTEXT until I do a libc6 release.
+
+ -- Mark W. Eichin <eichin@kitten.gen.ma.us>  Sat, 2 Aug 1997 18:30:58 -0400
+
+jade (0.8-3) unstable; urgency=low
+
+  * Makefile.jade: set SP_HAVE_LOCALE, SP_HAVE_GETTEXT, SP_HAVE_SOCKET as
+    well (per suggestions from Ulrich Drepper.)
+
+ -- Mark W. Eichin <eichin@kitten.gen.ma.us>  Sat, 5 Jul 1997 13:53:27 -0400
+
+jade (0.8-2) unstable; urgency=low
+
+  * Makefile.jade: set SGML_CATALOG_FILES_DEFAULT to the debian value
+    (/usr/lib/sgml/catalog, so that the relative names work, *not* the
+    /etc/ version.)
+  * debian/rules: install dsssl/catalog as dsssl.cat
+  * debian/postinst, postrm: use jade-style md5 signatures, more advanced
+    cleanup code.
+
+ -- Mark W. Eichin <eichin@kitten.gen.ma.us>  Tue,  1 Jul 1997 00:54:18 -0400
+
+jade (0.8-1) unstable; urgency=low
+
+  * Initial Release, build with deb-make single.
+  * debian/rules: Only build/install jade, leave out the rest because they
+    are already in the debian "sp" package.
+  * debian/{postinst,postrm}: add/remove DSSSL DTD entries.
+
+ -- Mark W. Eichin <eichin@kitten.gen.ma.us>  Fri, 27 Jun 1997 22:28:34 -0400
+
+

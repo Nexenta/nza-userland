@@ -1,0 +1,4 @@
+usr/include/X11/*
+usr/lib/libXfont.a
+usr/lib/libXfont.so
+usr/lib/pkgconfig/xfont.pc

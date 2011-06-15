@@ -1,0 +1,12 @@
+#!/usr/bin/make -f
+
+TEST_FILES = $(filter-out t/01basic.t,$(shell echo t/*.t))
+
+%:
+	dh --with quilt $@
+
+override_dh_auto_configure:
+	SKIP_SAX_INSTALL=1 dh_auto_configure
+
+override_dh_auto_test:
+	dh_auto_test -- TEST_FILES="$(TEST_FILES)"

@@ -1,0 +1,9 @@
+dh_installdirs
+dh_installdirs
+dh_installdirs
+dh_strip
+dh_link
+dh_compress
+dh_fixperms
+dh_installdeb
+dh_shlibdeps

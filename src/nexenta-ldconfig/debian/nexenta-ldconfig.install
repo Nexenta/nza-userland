@@ -1,0 +1,4 @@
+/usr/bin/ldconfig
+sbin/ldconfig
+usr/bin/pidof
+usr/sbin/sysidconfig

@@ -1,0 +1,26 @@
+libsp1 and libsp1-dev: SP development support for Debian
+--------------------------------------------------------
+
+Include files, from libsp1-dev, are available in /usr/include/sp .
+You might have to add this to the compiler switches.
+
+Documentation on this library is available in the 'sp' package,
+in the Section "Programming with SP".
+
+Note that the default search paths compiled into this system are
+equivalent to setting the following environment variables as shown:
+
+ SGML_CATALOG_FILES="/usr/lib/sgml/catalog:/usr/local/lib/sgml/catalog"
+ SGML_SEARCH_PATH="/usr/lib/sgml:/usr/local/lib/sgml"
+
+You can override this by setting these variables yourself, i.e., in
+~/.profile or /etc/environment.
+
+One other note: unless you include "sp/config.h" first of all, you will
+get errors. The Debian version of libsp is compiled with multibyte
+support, so you may need to compile with:
+
+ #define SP_MULTI_BYTE
+ #include <sp/config.h>
+
+.....A. P. Harris...apharris@onShore.com...<URL:http://www.onShore.com/>

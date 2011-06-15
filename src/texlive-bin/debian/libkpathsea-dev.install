@@ -1,0 +1,3 @@
+inst/lib/libkpathsea.a usr/lib/
+inst/lib/libkpathsea.so usr/lib/
+inst/include/kpathsea/* usr/include/kpathsea/

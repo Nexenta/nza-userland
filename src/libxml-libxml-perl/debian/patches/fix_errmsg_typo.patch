@@ -1,0 +1,14 @@
+Description: Fix a typo in an error message.
+Author: Adam Buchbinder <adam.buchbinder@gmail.com>
+
+--- a/LibXML.pm
++++ b/LibXML.pm
+@@ -1557,7 +1557,7 @@
+   }
+   if (defined($nsURI) and $nsURI eq XML_XMLNS_NS) {
+     if ($qname !~ /^xmlns(?::|$)/) {
+-      croak("NAMESPACE ERROR: Namespace declartions must have the prefix 'xmlns'");
++      croak("NAMESPACE ERROR: Namespace declarations must have the prefix 'xmlns'");
+     }
+     $self->setAttribute($qname,$value); # see implementation above
+     return;

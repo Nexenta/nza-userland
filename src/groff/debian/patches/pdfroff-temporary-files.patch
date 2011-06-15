@@ -1,0 +1,62 @@
+Description: Fix temporary file handling vulnerabilities in pdfroff
+Origin: vendor, http://cvsweb.openwall.com/cgi/cvsweb.cgi/Owl/packages/groff/groff-1.20.1-owl-tmp.diff
+Bug-Debian: http://bugs.debian.org/538330
+Forwarded: http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=538330#8
+Last-Update: 2010-03-01
+
+Index: b/contrib/pdfmark/pdfroff.man
+===================================================================
+--- a/contrib/pdfmark/pdfroff.man
++++ b/contrib/pdfmark/pdfroff.man
+@@ -529,7 +529,7 @@
+ .B GROFF_TMPDIR
+ Identifies the directory in which
+ .B pdfroff
+-should create temporary files.
++should create a subdirectory for its temporary files.
+ If
+ .B \%GROFF_TMPDIR
+ is
+@@ -541,7 +541,8 @@
+ .B TEMP
+ are considered in turn, as possible temporary file repositories.
+ If none of these are set, then temporary files are created
+-in the current directory.
++in a subdirectory of
++.BR /tmp .
+ .
+ .TP
+ .B GROFF_GHOSTSCRIPT_INTERPRETER
+Index: b/contrib/pdfmark/pdfroff.sh
+===================================================================
+--- a/contrib/pdfmark/pdfroff.sh
++++ b/contrib/pdfmark/pdfroff.sh
+@@ -137,7 +137,15 @@
+ #
+ # Set up temporary/intermediate file locations.
+ #
+-  WRKFILE=${GROFF_TMPDIR=${TMPDIR-${TMP-${TEMP-"."}}}}/pdf$$.tmp
++  MYTMPDIR=${GROFF_TMPDIR-${TMPDIR-${TMP-${TEMP-"/tmp"}}}}
++  WRKDIR="`unset TMPDIR && mktemp -dp "$MYTMPDIR" groff-pdfroff.XXXXXXXXXX`" || exit
++
++  trap 'rm -rf -- "$WRKDIR"' EXIT
++  trap 'trap - EXIT; rm -rf -- "$WRKDIR"; exit 1' HUP INT QUIT PIPE TERM
++
++  GROFF_TMPDIR=${WRKDIR}
++
++  WRKFILE=${GROFF_TMPDIR}/pdf$$.tmp
+ #
+   REFCOPY=${GROFF_TMPDIR}/pdf$$.cmp
+   REFFILE=${GROFF_TMPDIR}/pdf$$.ref
+@@ -146,11 +154,6 @@
+   TC_DATA=${GROFF_TMPDIR}/pdf$$.tc
+   BD_DATA=${GROFF_TMPDIR}/pdf$$.ps
+ #
+-# Set a trap, to delete temporary files on exit.
+-# (FIXME: may want to include other signals, in released version).
+-#
+-  trap "rm -f ${GROFF_TMPDIR}/pdf$$.*" 0
+-#
+ # Initialise 'groff' format control settings,
+ # to discriminate table of contents and document body formatting passes.
+ #

@@ -1,0 +1,65 @@
+// svn-updates.diff
+deb-setup.diff
+deb-locations.diff
+site-locations.diff
+distutils-install-layout.diff
+locale-module.diff
+distutils-link.diff
+distutils-sysconfig.diff
+test-sundry.diff
+tkinter-import.diff
+link-opt.diff
+debug-build.diff
+hotshot-import.diff
+profile-doc.diff
+webbrowser.diff
+linecache.diff
+doc-nodownload.diff
+profiled-build2.diff
+no-zip-on-sys.path.diff
+platform-lsbrelease.diff
+issue1113244.diff
+bdist-wininst-notfound.diff
+setup-modules-ssl.diff
+makesetup-bashism.diff
+hurd-broken-poll.diff
+hurd-disable-nonworking-constants.diff
+issue8140.diff
+bsddb-version.diff
+issue8154.diff
+issue8032.diff
+issue762963.diff
+issue8233.diff
+enable-fpectl.diff
+kfreebsd-ossaudio.diff
+make-pydoc-more-robust.diff
+statvfs-f_flag-constants.diff
+#if defined (arch_alpha)
+plat-linux2_alpha.diff
+#elif defined (arch_hppa)
+plat-linux2_hppa.diff
+#elif defined (arch_mips) || defined(arch_mipsel)
+plat-linux2_mips.diff
+#elif defined (arch_sparc) || defined (arch_sparc64)
+plat-linux2_sparc.diff
+#endif
+#if defined (BROKEN_UTIMES)
+disable-utimes.diff
+#endif
+#if defined (Ubuntu)
+langpack-gettext.diff
+#endif
+#if defined (arch_os_hurd)
+no-large-file-support.diff
+cthreads.diff
+#endif
+issue7609.diff
+issue9054.diff
+issue9729.diff
+link-system-expat.diff
+plat-gnukfreebsd.diff
+issue7356.diff
+#if defined (arch_os_solaris)
+socketmodule.c.HAVE_NETPACKET_PACKET_H.patch
+nexenta_sfw.patch
+#endif

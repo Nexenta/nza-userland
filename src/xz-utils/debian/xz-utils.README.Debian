@@ -1,0 +1,24 @@
+XZ Utils for Debian
+-------------------
+
+XZ Utils should have been called LZMA Utils 4.42, but it came too late.
+The old .lzma file format has some problems, worst of which is the lack
+of magic number, but it gets enough use to still need to be supported.
+See /usr/share/doc/xz-utils/history.txt.gz for the full story.
+
+To support old scripts and muscle memory, XZ Utils can emulate the
+legacy LZMA Utils interface.  To use this feature, you can install some
+subset of the following list of symbolic links to your $PATH.
+
+	lzma, unlzma, lzcat -> /usr/bin/xz
+	lzgrep, lzegrep, lzfgrep -> /usr/bin/xzgrep
+	lzless -> /usr/bin/xzless
+	lzmore -> /usr/bin/xzmore
+	lzdiff, lzcmp -> /usr/bin/xzdiff
+
+To allow administrators to keep the old lzma package, the xz-utils
+package does not provide those links itself.  If you would like XZ Utils
+to provide these commands by default for all users, install the
+xz-lzma package.
+
+ -- Jonathan Nieder <jrnieder@gmail.com>  Fri, 04 Jun 2010 02:25:06 -0500

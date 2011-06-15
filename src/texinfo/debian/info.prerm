@@ -1,0 +1,7 @@
+#!/bin/sh -e
+
+if [ "$1" != "upgrade" ]; then
+  update-alternatives --remove infobrowser /usr/gnu/bin/info
+fi
+
+#DEBHELPER#

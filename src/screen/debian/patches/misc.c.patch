@@ -1,0 +1,13 @@
+Index: screen-4.0.3/misc.c
+===================================================================
+--- screen-4.0.3.orig/misc.c	2011-05-25 15:58:25.706926324 +0400
++++ screen-4.0.3/misc.c	2011-05-25 15:58:51.513685162 +0400
+@@ -613,7 +613,7 @@
+    */
+ # endif /* NEEDSETENV */
+ #else /* USESETENV */
+-# if defined(linux) || defined(__convex__) || (BSD >= 199103)
++# if defined(linux) || defined(__convex__) || (BSD >= 199103) || (__sun)
+   setenv(var, value, 1);
+ # else
+   setenv(var, value);

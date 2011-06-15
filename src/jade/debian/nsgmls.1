@@ -1,0 +1,1549 @@
+'\" t
+.tr \(ts"
+.ds S \s-1SGML\s0
+.de TS
+.br
+.sp .5
+..
+.de TE
+.br
+.sp .5
+..
+.de TQ
+.br
+.ns
+.TP \\$1
+..
+.TH NSGMLS 1
+.SH NAME
+nsgmls \- a validating SGML parser
+.sp
+An \*S System Conforming to
+.if n .br
+International Standard ISO 8879 \(em
+.br
+Standard Generalized Markup Language
+.SH SYNOPSIS
+.B nsgmls
+[
+.B \-BCdeglprsuv
+]
+[
+.BI \-a linktype
+]
+[
+.BI \-b (bctf|encoding)
+]
+[
+.BI \-D directory
+]
+[
+.BI \-E max_errors
+]
+[
+.BI \-f file
+]
+[
+.BI \-i name
+]
+[
+.BI \-m sysid
+]
+[
+.BI \-o output_option
+]
+[
+.BI \-t file
+]
+[
+.BI \-w warning_type
+]
+[
+.IR sysid \|.\|.\|.
+]
+.SH WARNING
+This manual page may be out of date.  Consult the HTML documentation for
+the most up-to-date information concerning this program.
+You can find the HTML document in:
+.I /usr/share/doc/sp/nsgmls.htm
+.SH DESCRIPTION
+.I Nsgmls
+parses and validates
+the \*S document whose document entity is specified by the system identifiers
+.IR sysid \|.\|.\|.
+and prints on the standard output a simple text representation of its
+Element Structure Information Set.
+(This is the information set which a structure-controlled
+conforming \*S application should act upon.)
+The form of system identifiers is described in detail below;
+a system identifier that does not start with
+.B <
+and does not look like an absolute URL will be treated as a filename.
+If more than one system identifier is specified,
+then the corresponding entities will be concatenated to form
+the document entity.
+Thus the document entity may be spread amongst several files;
+for example, the SGML declaration, prolog and document
+instance set could each be in a separate file.
+If no system identifiers are specified, then
+.I nsgmls
+will read the document entity from the standard input.
+A command line system identifier of
+.B \-
+can be used to refer to the standard input.
+(Normally in a system identifier,
+.B <osfd>0
+is used to refer to standard input.)
+.LP
+The following options are available:
+.TP
+.BI \-a linktype
+Make link type
+.I linktype
+active.
+Not all ESIS information is output in this case:
+the active LPDs are not explicitly reported,
+although each link attribute is qualified with
+its link type name;
+there is no information about result elements;
+when there are multiple link rules applicable to the
+current element,
+.I nsgmls
+always chooses the first.
+.TP
+.BI \-b (bctf|encoding)
+This determines the encoding used for output. If in fixed
+character set mode it specifies the name of an encoding; if
+not, it specifies the name of a BCTF.
+See the description below of the
+.B bctf
+storage manager attribute for more information.
+.TP
+.B \-B
+Batch mode. Parse each sysid... specified on the command line
+separately, rather than concatenating them. This is useful
+mainly with -s.
+.br
+If -tfilename is also specified, then the specified filename
+will be prefixed to the sysid to make the filename for the RAST
+result for each sysid.
+.TP
+.B \-C
+The
+.IR filename \|.\|.\|.
+arguments specify catalog files rather than the document entity.
+The document entity is specified by the first
+.B DOCUMENT
+entry in the catalog files.
+.TP
+.BI \-D directory
+Search
+.I directory
+for files specified in system identifiers.
+Multiple
+.B \-D options
+are allowed.
+See the description of the
+.B osfile
+storage manager for more information about file searching.
+.TP
+.B \-e
+Describe open entities in error messages.
+Error messages always include the position of the most recently
+opened external entity.
+.TP
+.B \-E max_errors
+Nsgmls will exit after max_errors errors. If max_errors is 0,
+there is no limit on the number of errors. The default is 200.
+.TP
+.BI \-f file
+Redirect errors to
+.IR file .
+This is useful mainly with shells that do not support redirection
+of stderr.
+.TP
+.B \-g
+Show the \s-1GI\s0s of open elements in error messages.
+.TP
+.BI \-i name
+Pretend that
+.RS
+.IP
+.BI <!ENTITY\ %\  name\  \(tsINCLUDE\(ts>
+.LP
+occurs at the start of the document type declaration subset
+in the \*S document entity.
+Since repeated definitions of an entity are ignored,
+this definition will take precedence over any other definitions
+of this entity in the document type declaration.
+Multiple
+.B \-i
+options are allowed.
+If the \*S declaration replaces the reserved name
+.B INCLUDE
+then the new reserved name will be the replacement text of the entity.
+Typically the document type declaration will contain
+.IP
+.BI <!ENTITY\ %\  name\  \(tsIGNORE\(ts>
+.LP
+and will use
+.BI % name ;
+in the status keyword specification of a marked section declaration.
+In this case the effect of the option will be to cause the marked
+section not to be ignored.
+.RE
+.TP
+.BI \-m sysid
+Map public identifiers and entity names to system identifiers
+using the catalog entry file whose system identifier is
+.IR sysid .
+Multiple
+.B \-m
+options are allowed.
+If there is a catalog entry file called
+.B catalog
+in the same place as the document entity,
+it will be searched for immediately after those specified by
+.BR \-m .
+.TP
+.BI \-o output_option
+Output additional information accordig to
+.IR output_option :
+.RS
+.TP
+.B entity
+Output definitions of all general entities
+not just for data or subdoc entities that are referenced or named in an
+ENTITY or ENTITIES attribute.
+.TP
+.B id
+Distinguish attributes whose declared value is ID.
+.TP
+.B line
+Output
+.B L
+commands giving the current line number and filename.
+.TP
+.B included
+Output an
+.B i
+command for included subelements.
+.LP
+Multiple
+.B \-o
+options are allowed.
+.RE
+.TP
+.B \-p
+Parse only the prolog.
+.I Nsgmls
+will exit after parsing the document type declaration.
+Implies
+.BR \-s .
+.TP
+.B \-s
+Suppress output.
+Error messages will still be printed.
+.TP
+.BI \-t file
+Output to
+.I file
+the RAST result as defined by
+ISO/IEC 13673:1995 (actually this isn't quite an IS yet;
+this implements the Intermediate Editor's Draft of 1994/08/29,
+with changes to implement ISO/IEC JTC1/SC18/WG8 N1777).
+The normal output is not produced.
+.TP
+.B \-v
+Print the version number.
+.TP
+.BI \-w type
+Control warnings and errors.
+Multiple
+.B \-w
+options are allowed.
+The following values of
+.I type
+enable warnings:
+.RS
+.TP
+.B mixed
+Warn about mixed content models that do not allow #pcdata anywhere.
+.TP
+.B sgmldecl
+Warn about various dubious constructions in the SGML declaration.
+.TP
+.B should
+Warn about various recommendations made in ISO 8879 that the document
+does not comply with.
+(Recommendations are expressed with ``should'', as distinct from
+requirements which are usually expressed with ``shall''.)
+.TP
+.B default
+Warn about defaulted references.
+.TP
+.B duplicate
+Warn about duplicate entity declarations.
+.TP
+.B undefined
+Warn about undefined elements: elements used in the DTD but not defined.
+.TP
+.B unclosed
+Warn about unclosed start and end-tags.
+.TP
+.B empty
+Warn about empty start and end-tags.
+.TP
+.B net
+Warn about net-enabling start-tags and null end-tags.
+.TP
+.B min-tag
+Warn about minimized start and end-tags.
+Equivalent to combination of
+.BR unclosed ,
+.B empty
+and
+.B net
+warnings.
+.TP
+.B unused-map
+Warn about unused short reference maps: maps that are declared with a
+short reference mapping declaration but never used in a short
+reference use declaration in the DTD.
+.TP
+.B unused-param
+Warn about parameter entities that are defined but not used in a DTD.
+.TP
+.B all
+Warn about conditions that should usually be avoided
+(in the opinion of the author).
+Equivalent to:
+.BR mixed ,
+.BR should ,
+.BR default ,
+.BR undefined ,
+.BR sgmldecl ,
+.BR unused-map ,
+.BR unused-param ,
+.B empty
+and
+.BR unclosed .
+.LP
+A warning can be disabled by using its name prefixed with
+.BR no- .
+Thus
+.B -wall\ -wno-duplicate
+will enable all warnings except those about duplicate entity
+declarations.
+.LP
+The following values for
+.I warning_type
+disable errors:
+.TP
+.B no-idref
+Do not give an error for an ID reference value
+which no element has as its ID.
+The effect will be as if each attribute declared as
+an ID reference value had been declared as a name.
+.TP
+.B no-significant
+Do not give an error when a character that is not a significant
+character in the reference concrete syntax occurs in a literal in the
+SGML declaration.  This may be useful in conjunction with certain
+buggy test suites.
+.RE
+.LP
+The following options are also supported for backwards compatibility
+with
+.IR sgmls :
+.TP
+.B \-d
+Same as
+.BR \-wduplicate .
+.TP
+.B \-l
+Same as
+.BR \-oline .
+.TP
+.B \-r
+Same as
+.BR \-wdefault .
+.TP
+.B \-u
+Same as
+.BR \-wundef .
+.SS "System identifiers"
+A system identifier can either be a formal system identifier
+or a simple system identifier.
+A system identifier that is a formal system identifier
+consists of a sequence of one or more storage object specifications.
+The objects specified by the storage object specifications
+are concatenated to form the entity.
+A storage object specification consists of an SGML start-tag in the
+reference concrete syntax followed by character data content.
+The generic identifier of the start-tag is the name of a storage manager.
+The content is a storage object identifier which identifies
+the storage object in a manner dependent on the storage manager.
+The start-tag can also specify attributes giving additional information
+about the storage object.
+Numeric character references are recognized in storage object identifiers
+and attribute value literals in the start-tag.
+Record ends are ignored in the storage object identifier as with SGML.
+A system identifier will be interpreted as a formal system identifier
+if it starts with a
+.B <
+followed by a storage manager name, followed by
+either
+.B >
+or white-space;
+otherwise it will be interpreted as a simple system identifier.
+A storage object identifier extends until the end of the
+system identifier or until the first occurrence of
+.B <
+followed by a storage manager name, followed by
+either
+.B >
+or white-space.
+.LP
+The following storage managers are available:
+.TP
+.B osfile
+The storage object identifier is a filename.
+If the filename is relative it is resolved using
+a base filename.
+Normally the base filename is the name of
+the file in which the storage object identifier was
+specified, but this can be changed using the
+.B base
+attribute.
+The filename will be searched for first in the directory of
+the base filename.
+If it is not found there,
+then it will be searched for in directories specified with the
+.B \-D
+option in the order in which they were specified on the command line,
+and then in the list of directories
+specified by the environment variable
+.BR \s-1SGML_SEARCH_PATH\s0 .
+The list is separated by colons under Unix
+and by semi-colons under MSDOS.
+.TP
+.B osfd
+The storage object identifier is an integer specifying a file descriptor.
+Thus a system identifier of
+.B <osfd>0
+will refer to the standard input.
+.TP
+.B url
+The storage object identifier is a URL.
+Only the
+.B http
+scheme is currently supported and not on all systems.
+.TP
+.B neutral
+The storage manager is the storage manager of storage object
+in which the system identifier was specified
+(the
+.IR "underlying storage manager" ).
+However if the underlying storage manager does not support named
+storage objects (ie it is
+.BR osfd ),
+then the storage manager will be
+.BR osfile .
+The storage object identifier is treated as a relative, hierarchical
+name separated by slashes
+.RB ( / )
+and will be transformed as appropriate for the underlying storage manager.
+.LP
+The following attributes are supported:
+.TP
+.B records
+This describes how records are delimited in the storage object:
+.RS
+.TP
+.B cr
+Records are terminated by a carriage return.
+.TP
+.B lf
+Records are terminated by a line feed.
+.TP
+.B crlf
+Records are terminated by a carriage return followed by a line feed.
+.TP
+.B find
+Records are terminated by whichever of
+.BR cr ,
+.BR lf
+or
+.B crlf
+is first encountered in the storage object.
+.TP
+.B asis
+No recognition of records is performed.
+.LP
+The default is
+.B find
+except for NDATA entities for which the default is
+.BR asis .
+.LP
+When records are recognized in a storage object,
+a record start is inserted at the beginning of
+each record, and a record end at the end of each record.  If there is a
+partial record (a record that doesn't end with the record terminator)
+at the end of the entity, then a record start will be inserted before it
+but no record end will be inserted after it.
+.LP
+The attribute name and
+.B =
+can be omitted for this attribute.
+.RE
+.TP
+.B zapeof
+This specifies whether a Control-Z character that occurs as the final byte
+in the storage object should be stripped.
+The following values are allowed:
+.RS
+.TP
+.B zapeof
+A final Control-Z should be stripped.
+.TP
+.B nozapeof
+A final Control-Z should not be stripped.
+.LP
+The default is
+.B zapeof
+except for NDATA entities,
+entities declared in storage objects with
+.B zapeof=nozapeof
+and storage objects with
+.BR records=asis .
+.LP
+The attribute name and
+.B =
+can be omitted for this attribute.
+.RE
+.TP
+.B bctf
+The bctf (bit combination transformation format)
+attribute describes how the bit combinations of the
+storage object are transformed into the sequence of bytes
+that are contained in the object identified by the storage object identifier.
+This inverse of this transformation is performed when the entity manager
+reads the storage object.
+It has one of the following values:
+.RS
+.TP
+.B identity
+Each bit combination is represented by a single
+byte.
+.TP
+.B fixed-2
+Each bit combination is represented by exactly 2
+bytes, with the more significant byte first.
+.TP
+.B utf-8
+Each bit combination is represented by a variable
+number of bytes according to UCS Transformation
+Format 8 defined in Annex P to be added by the first
+proposed drafted amendment (PDAM 1) to ISO/IEC
+ 10646-1:1993.
+.TP
+.B euc-jp
+Each bit combination is treated as a pair of bytes, most significant
+byte first, encoding a character using the
+Extended_UNIX_Code_Fixed_Width_for_Japanese Internet charset, and is
+transformed into the variable length sequence of octets that would
+encode that character using the
+Extended_UNIX_Code_Packed_Format_for_Japanese Internet charset.
+.TP
+.B sjis
+Each bit combination is treated as a pair of bytes, most significant
+byte first, encoding a character using the
+Extended_UNIX_Code_Fixed_Width_for_Japanese Internet charset, and is
+transformed into the variable length sequence of bytes that would
+encode that character using the Shift_JIS Internet charset.
+.TP
+.B unicode
+Each bit combination is represented by 2 bytes.
+The bytes representing the entire storage object may be preceded
+by a pair of bytes representing the byte order mark character (0xFEFF).
+The bytes representing each bit combination are in the system byte order,
+unless the byte order mark character is present, in which case
+the order of its bytes determines the byte order.
+When the storage object is read, any byte order mark character
+is discarded.
+.TP
+.BI is8859- N
+.I N
+can be any single digit other than 0.
+Each bit combination is interpreted as the number of a character
+in ISO/IEC 10646 and is represented by the single byte that would
+encode that character in ISO
+.RI 8859- N .
+These values are not supported with the
+.B \-b
+option.
+.LP
+Values other than
+.B identity
+are supported only with the multi-byte version of
+.IR nsgmls .
+.RE
+.TP
+.B tracking
+This specifies whether line boundaries should be tracked
+for this object:
+a value of
+.B track
+specifies that they should;
+a value of
+.B notrack
+specifies that they should not.
+The default value is
+.BR track .
+Keeping track of where line boundaries occur in a storage object
+requires approximately one byte of storage per line
+and it may be desirable to disable this for very large storage objects.
+.IP
+The attribute name and
+.B =
+can be omitted for this attribute.
+.TP
+.B base
+When the storage object identifier specified in the content of the
+storage object specification is relative, this specifies the base
+storage object identifier relative to which that storage object
+identifier should be resolved.
+When not specified a storage object identifier is interpreted
+relative to the storage object in which it is specified,
+provided that this has the same storage manager.
+This applies both to system identifiers specified in SGML
+documents and to system identifiers specified in the catalog entry
+files.
+.TP
+.B smcrd
+The value is a single character that will be recognized
+in storage object identifiers
+(both in the content of storage object specifications
+and in the value of
+.B base
+attributes)
+as a storage manager character reference delimiter
+when followed by a digit.
+A storage manager character reference is like an SGML numeric character
+reference except that the number is interpreted as a character number
+in the inherent character set of the storage manager rather than
+the document character set.
+The default is for no character to be recognized as
+a storage manager character reference delimiter.
+Numeric character references cannot be used to prevent
+recognition of storage manager character reference delimiters.
+.TP
+.B fold
+This applies only to the
+.B neutral
+storage manager.
+It specifies whether the storage object identifier should
+be folded to the customary case of the underlying storage manager
+if storage object identifiers for the underlying storage manager
+are case sensitive.
+The following values are allowed:
+.RS
+.TP
+.B fold
+The storage object identifier will be folded.
+.TP
+.B nofold
+The storage object identifier will not be folded.
+.LP
+The default value is
+.BR fold .
+The attribute name and
+.B =
+can be omitted for this attribute.
+.LP
+For example, on Unix filenames are case-sensitive and the customary
+case is lower-case.
+So if the underlying storage manager were
+.B osfile
+and the system was a Unix system, then
+.B \%<neutral>FOO.SGM
+would be equivalent to
+.BR \%<osfile>foo.sgm .
+.RE
+.LP
+A simple system identifier is interpreted as a storage object identifier
+with a storage manager that depends on where the system identifier
+was specified:
+if it was specified in a storage object whose storage manager was
+.B url
+or if the system identifier looks like an absolute URL in a supported scheme,
+the storage manager will be
+.BR url ;
+otherwise the storage manager will be
+.BR osfile .
+The storage manager attributes are defaulted as for a formal system
+identifier.
+Numeric character references are not recognized in simple system
+identifiers.
+.SS "System identifier generation"
+The entity manager generates an effective system identifier for every external
+entity using catalog entry files in the format defined
+by SGML Open Technical Resolution 9401:1994.
+The entity manager will give an error if it is unable to generate
+an effective system identifier for an external entity.
+Normally if the external identifier for an entity includes a system
+identifier then the entity manager will use that as the
+effective system identifier for
+the entity; this behaviour can be changed using OVERRIDE or SYSTEM
+entries in a catalog entry file.
+.LP
+A catalog entry file contains a
+sequence of entries in one of the following forms:
+.TP
+.BI PUBLIC\  pubid\ sysid
+This specifies that
+.I sysid
+should be used as the effective system identifier if the public
+identifier is
+.IR pubid .
+.I Sysid
+is a system identifier as defined in ISO 8879 and
+.I pubid
+is a public identifier as defined in ISO 8879.
+.TP
+.BI ENTITY\  name\ sysid
+This specifies that
+.I sysid
+should be used as the effective system identifier if the entity is a general
+entity whose name is
+.IR name .
+.TP
+.BI ENTITY\ % name\ sysid
+This specifies that
+.I sysid
+should be used as the effective system identifier if the entity is a parameter
+entity whose name is
+.IR name .
+Note that there is no space between the
+.B %
+and the
+.IR name .
+.TP
+.BI DOCTYPE\  name\ sysid
+This specifies that
+.I sysid
+should be used as the effective system identifier if the entity is an
+entity declared in a document type declaration whose document type name is
+.IR name .
+.TP
+.BI LINKTYPE\  name\ sysid
+This specifies that
+.I sysid
+should be used as the effective system identifier if the entity is an
+entity declared in a link type declaration whose link type name is
+.IR name .
+.TP
+.BI NOTATION\  name\ sysid
+This specifies that
+.I sysid
+should be used as the effective system identifier for a notation whose name is
+.IR name .
+This is an extension to the SGML Open format.
+This is relevant only with the
+.B \-n
+option.
+.TP
+.B OVERRIDE\ YES\fR|\fPNO
+This sets the overriding mode for entries up to the next
+occurrence of OVERRIDE or the end of the catalog entry file.
+At the beginning of a catalog entry file the overriding mode
+will be NO.
+A PUBLIC, ENTITY, DOCTYPE, LINKTYPE or NOTATION entry with an overriding
+mode of YES will be used whether or not the external identifier
+has an explicit system identifier;
+those with an overriding mode of NO will be ignored if
+external identifier has an explicit system identifier.
+This is an extension to the SGML Open format.
+.TP
+.BI SYSTEM\  sysid1\ sysid2
+This specifies that
+.I sysid2
+should be used as the effective system identifier if the system identifier
+specified in the external identifier was
+.IR sysid1 .
+This is an extension to the SGML Open format.
+.TP
+.BI SGMLDECL\  sysid
+This specifies that if the document does not contain an SGML declaration,
+the SGML declaration in
+.I sysid
+should be implied.
+.TP
+.BI DOCUMENT\  sysid
+This specifies that the document entity is
+.IR sysid .
+This entry is used only with the
+.B \-C
+option.
+.TP
+.BI CATALOG\  sysid
+This specifies that
+.I sysid
+is the system identifier of an additional catalog entry file to be
+read after this one.
+Multiple
+.B CATALOG
+entries are allowed and will be read in order.
+This is an extension to the SGML Open format.
+.LP
+The delimiters can be omitted from the
+.I sysid
+provided it does not contain any white space.
+Comments are allowed between parameters delimited by
+.B --
+as in SGML.
+.LP
+The environment variable
+.B \s-1SGML_CATALOG_FILES\s0
+contains a list of catalog entry files.
+The list is separated by colons under Unix
+and by semi-colons under MSDOS.
+These will be searched after any catalog entry files specified
+using the
+.B \-m
+option,
+and after the catalog entry file called
+.B catalog
+in the same place as the document entity.
+If this environment variable is not set,
+then a system dependent list of catalog entry files will be used.
+In fact catalog entry files are not restricted to being files:
+the name of a catalog entry file is interpreted as a system identifier.
+.LP
+A match in one catalog entry file will take precedence
+over any match in a later catalog entry file.
+A match in a catalog entry file for a SYSTEM entry will take
+precedence over a match in the same file for a PUBLIC, ENTITY,
+DOCTYPE, LINKTYPE or NOTATION entry.
+A match in a catalog entry file for a PUBLIC entry will take
+precedence over a match in the same file for an ENTITY,
+DOCTYPE, LINKTYPE or NOTATION entry.
+.br
+.ne 18
+.SS "System declaration"
+The system declaration for
+.I nsgmls
+is as follows:
+.LP
+.TS
+tab(&);
+c1 s1 s1 s1 s1 s1 s1 s1 s
+c s s s s s s s s
+l l s s s s s s s
+l l s s s s s s s
+l l s s s s s s s
+l l l s s s s s s
+c s s s s s s s s
+l l l l l l l l l
+l l l l l l l l l
+l l l l l l l l l
+l l s s s s s s s
+l l l s s s s s s
+l l l s s s s s s
+c s s s s s s s s
+l l l l l l l l l.
+SYSTEM "ISO 8879:1986"
+CHARSET
+BASESET&"ISO 646-1983//CHARSET
+&\h'\w'"'u'International Reference Version (IRV)//ESC 2/5 4/0"
+DESCSET&0\0128\00
+CAPACITY&PUBLIC&"ISO 8879:1986//CAPACITY Reference//EN"
+FEATURES
+MINIMIZE&DATATAG&NO&OMITTAG&YES&RANK&YES&SHORTTAG&YES
+LINK&SIMPLE&YES 65535&IMPLICIT&YES&EXPLICIT&YES 1
+OTHER&CONCUR&NO&SUBDOC&YES 100&FORMAL&YES
+SCOPE&DOCUMENT
+SYNTAX&PUBLIC&"ISO 8879:1986//SYNTAX Reference//EN"
+SYNTAX&PUBLIC&"ISO 8879:1986//SYNTAX Core//EN"
+VALIDATE
+&GENERAL&YES&MODEL&YES&EXCLUDE&YES&CAPACITY&NO
+&NONSGML&YES&SGML&YES&FORMAL&YES
+.T&
+c s s s s s s s s
+l l l l l l l l l.
+SDIF
+&PACK&NO&UNPACK&NO
+.TE
+.LP
+The limit for the \s-1SUBDOC\s0 parameter is memory dependent.
+.LP
+Any legal concrete syntax may be used.
+.SS "\*S declaration"
+If the \*S declaration is omitted
+and there is no applicable
+.B SGMLDECL
+entry in a catalog,
+the following declaration will be implied:
+.TS
+tab(&);
+c1 s1 s1 s1 s1 s1 s1 s1 s
+c s s s s s s s s
+l l s s s s s s s.
+<!SGML "ISO 8879:1986"
+CHARSET
+BASESET&"ISO 646-1983//CHARSET
+&\h'\w'"'u'International Reference Version (IRV)//ESC 2/5 4/0"
+DESCSET&\0\00\0\09\0UNUSED
+&\0\09\0\02\0\09
+&\011\0\02\0UNUSED
+&\013\0\01\013
+&\014\018\0UNUSED
+&\032\095\032
+&127\0\01\0UNUSED
+.T&
+l l l s s s s s s
+l l s s s s s s s.
+CAPACITY&PUBLIC&"ISO 8879:1986//CAPACITY Reference//EN"
+SCOPE&DOCUMENT
+SYNTAX
+SHUNCHAR&CONTROLS 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17
+&18 19 20 21 22 23 24 25 26 27 28 29 30 31 127 255
+BASESET&"ISO 646-1983//CHARSET International Reference Version
+&\h'\w'"'u'(IRV)//ESC 2/5 4/0"
+DESCSET&0\0128\00
+.T&
+l l l l s s s s s.
+FUNCTION&RE&&13
+&RS&&10
+&SPACE&&32
+&TAB&SEPCHAR&9
+NAMING&LCNMSTRT&""
+&UCNMSTRT&""
+&LCNMCHAR&"-."
+&UCNMCHAR&"-."
+&NAMECASE&GENERAL&YES
+&&ENTITY&NO
+DELIM&GENERAL&SGMLREF
+&SHORTREF&SGMLREF
+NAMES&SGMLREF
+QUANTITY&SGMLREF
+&ATTCNT&99999999
+&ATTSPLEN&99999999
+&DTEMPLEN&24000
+&ENTLVL&99999999
+&GRPCNT&99999999
+&GRPGTCNT&99999999
+&GRPLVL&99999999
+&LITLEN&24000
+&NAMELEN&99999999
+&PILEN&24000
+&TAGLEN&99999999
+&TAGLVL&99999999
+.T&
+c s s s s s s s s
+l l l s s s s s s.
+FEATURES
+MINIMIZE&DATATAG&NO
+&OMITTAG&YES
+&RANK&YES
+&SHORTTAG&YES
+LINK&SIMPLE&YES\01000
+&IMPLICIT&YES
+&EXPLICIT&YES\01
+OTHER&CONCUR&NO
+&SUBDOC&YES\099999999
+&FORMAL&YES
+.T&
+c s s s s s s s s.
+APPINFO NONE>
+.TE
+with the exception that all characters that are neither significant
+not shunned will be assigned to \s-1DATACHAR\s0.
+.LP
+A character in a base character set is described either by giving its
+number in a universal character set, or by specifying a minimum
+literal.  The constraints on the choice of universal character set are
+that characters that are significant in the SGML reference concrete
+syntax must be in the universal character set and must have the same
+number in the universal character set as in ISO 646 and that each
+character in the character set must be represented by exactly one
+number; that character numbers in the range 0 to 31 and 127 to 159 are
+control characters (for the purpose of enforcing SHUNCHAR CONTROLS).
+It is recommended that ISO 10646 (Unicode) be used as the universal
+character set, except in environments where the normal document
+character sets are large character set which cannot be compactly
+described in terms of ISO 10646.
+The public identifier of a base character set can be associated
+with an entity that describes it by using a
+.B PUBLIC
+entry in the catalog entry file.
+The entity must be a fragment
+of an SGML declaration
+consisting of the
+portion of a character set description,
+following the DESCSET keyword,
+that is, it must be a sequence of character descriptions,
+where each character description specifies a described character
+number, the number of characters and
+either a character number in the universal character set, a minimum literal
+or the keyword
+.BR UNUSED .
+Character numbers in the universal character set can be as big as
+99999999.
+.LP
+In addition
+.I nsgmls
+has built in knowledge of a few character sets.
+These are identified using the designating sequence in the
+public identifier.  The following designating sequences are
+recognized:
+.TS
+tab(&);
+c c c c c
+c c c c ^
+c c c c ^
+l n n n l.
+Designating&ISO&Minimum&Number&Description
+Escape&Registration&Character&of&
+Sequence&Number&Number&Characters&
+_
+ESC 2/5 4/0&-&0&128&full set of ISO 646 IRV
+ESC 2/8 4/0&2&0&128&G0 set of ISO 646 IRV
+ESC 2/8 4/2&6&0&128&G0 set of ASCII
+ESC 2/1 4/0&1&0&32&C0 set of ISO 646
+.TE
+.LP
+The graphic character sets do not strictly include
+C0 and C1 control character sets.
+For convenience,
+.I nsgmls
+augments the graphic character sets with the appropriate
+control character sets.
+.LP
+It is not necessary for every character set used in the SGML
+declaration to be known to
+.I nsgmls
+provided that characters in the document character set that are
+significant both in the reference concrete syntax and in the described
+concrete syntax are described using known base character sets and that
+characters that are significant in the described concrete syntax are
+described using the same base character sets or the same minimum
+literals in both the document character set description and the syntax
+reference character set description.
+.LP
+The public identifier for a public concrete syntax can be associated
+with an entity that describes using a
+.B PUBLIC
+entry in the catalog entry file.
+The entity must be a fragment of an SGML declaration
+consisting of a concrete syntax description
+starting with the
+.B SHUNCHAR
+keyword
+as in an SGML declaration.
+The entity can also make use of the following extensions:
+.IP
+An
+.I added\ function
+can be expressed as a parameter literal
+instead of a name.
+.IP
+The replacement for a reference reserved name
+can be expressed as a parameter literal instead of a name.
+.IP
+The
+.BR LCNMSTRT ,
+.BR UCNMSTRT ,
+.B LCNMCHAR
+and
+.B UCNMCHAR
+keywords may each be followed by more than one parameter literal.  A
+sequence of parameter literals has the same meaning as a single
+parameter literal whose content is the concatenation of the content of
+each of the literals in the sequence.  This extension is useful
+because of the restriction on the length of a parameter literal in the
+SGML declaration to 240 characters.
+.IP
+The total number of characters specified for
+.B UCNMCHAR
+or
+.B UCNMSTRT
+may exceed the total number of characters specified for
+.B LCNMCHAR
+or
+.B LCNMSTRT
+respectively.
+Each character in
+.B UCNMCHAR
+or
+.B UCNMSTRT
+which does not have a corresponding character in the same position in
+.B LCNMCHAR
+or
+.B LCNMSTRT
+is simply assigned to UCNMCHAR or UCNMSTRT
+without making it the upper-case form of any character.
+.IP
+A parameter following any of
+.BR LCNMSTRT ,
+.BR UCNMSTRT ,
+.B LCNMCHAR
+and
+.B UCNMCHAR
+keywords
+may be followed by
+the name token
+.B .\|.\|.
+and another parameter literal.
+This has the same meaning as the two parameter literals
+with a parameter literal in between
+containing in order each character whose number
+is greater than the number of the last character in
+the first parameter literal and less than the
+number of the first character in the second
+parameter literal.
+A parameter literal must contain at least one character for each
+.B .\|.\|.
+to which it is adjacent.
+.IP
+A number may be used as a parameter following the
+.BR LCNMSTRT ,
+.BR UCNMSTRT ,
+.B LCNMCHAR
+and
+.B UCNMCHAR
+keywords or as a delimiter in the
+.B DELIM
+section with the same meaning as a parameter literal
+containing just a numeric character reference with that number.
+.IP
+The parameters following the
+.BR LCNMSTRT ,
+.BR UCNMSTRT ,
+.B LCNMCHAR
+and
+.B UCNMCHAR
+keywords may be omitted.
+This has the same meaning as specifying
+an empty parameter literal.
+.IP
+Within the specification of the short reference delimiters,
+a parameter literal containing exactly one character
+may be followed by the name token
+.B .\|.\|.
+and another parameter literal containing exactly one character.
+This has the same meaning as a sequence of parameter literals
+one for each character number that is greater than or equal
+to the number of the character in the first parameter literal
+and less than or equal to the number of the character in the
+second parameter literal.
+.LP
+The public identifier for a public capacity set can be associated
+with an entity that describes using a
+.B PUBLIC
+entry in the catalog entry file.
+The entity must be a fragment of an SGML declaration
+consisting of a sequence of capacity names and numbers.
+.SS "Output format"
+The output is a series of lines.
+Lines can be arbitrarily long.
+Each line consists of an initial command character
+and one or more arguments.
+Arguments are separated by a single space,
+but when a command takes a fixed number of arguments
+the last argument can contain spaces.
+There is no space between the command character and the first argument.
+Arguments can contain the following escape sequences.
+.TP
+.B \e\e
+A
+.BR \e.
+.TP
+.B \en
+A record end character.
+.TP
+.B \e|
+Internal \s-1SDATA\s0 entities are bracketed by these.
+.TP
+.BI \e nnn
+The character whose code is
+.I nnn
+octal.
+.LP
+A record start character will be represented by
+.BR \e012 .
+Most applications will need to ignore
+.B \e012
+and translate
+.B \en
+into newline.
+.TP
+.BI \e# n ;
+The character whose number is
+.I n 
+in decimal.
+.I n
+can have any number of digits.
+This is used for characters that are not representable by the
+encoding translation used for output
+(as specified by the
+.SM
+.B NSGML_CODE
+environment variable).
+This will only occur with the multibyte version of nsgmls.
+.LP
+The possible command characters and arguments are as follows:
+.TP
+.BI ( gi
+The start of an element whose generic identifier is
+.IR gi .
+Any attributes for this element
+will have been specified with
+.B A
+commands.
+.TP
+.BI ) gi
+The end of an element whose generic identifier is
+.IR gi .
+.TP
+.BI \- data
+Data.
+.TP
+.BI & name
+A reference to an external data entity
+.IR name ;
+.I name
+will have been defined using an
+.B E
+command.
+.TP
+.BI ? pi
+A processing instruction with data
+.IR pi .
+.TP
+.BI A name\ val
+The next element to start has an attribute
+.I name
+with value
+.I val
+which takes one of the following forms:
+.RS
+.TP
+.B IMPLIED
+The value of the attribute is implied.
+.TP
+.BI CDATA\  data
+The attribute is character data.
+This is used for attributes whose declared value is
+.BR \s-1CDATA\s0 .
+.TP
+.BI NOTATION\  nname
+The attribute is a notation name;
+.I nname
+will have been defined using a
+.B N
+command.
+This is used for attributes whose declared value is
+.BR \s-1NOTATION\s0 .
+.TP
+.BI ENTITY\  name\|.\|.\|.
+The attribute is a list of general entity names.
+Each entity name will have been defined using an
+.BR I ,
+.B E
+or
+.B S
+command.
+This is used for attributes whose declared value is
+.B \s-1ENTITY\s0
+or
+.BR \s-1ENTITIES\s0 .
+.TP
+.BI TOKEN\  token\|.\|.\|.
+The attribute is a list of tokens.
+This is used for attributes whose declared value is anything else.
+.TP
+.BI ID\  token
+The attribute is an ID value.
+This will be output only if the
+.B \-oid
+option is specified.
+Otherwise
+.B TOKEN
+will be used for ID values.
+.RE
+.TP
+.BI D ename\ name\ val
+This is the same as the
+.B A
+command, except that it specifies a data attribute for an
+external entity named
+.IR ename .
+Any
+.B D
+commands will come after the
+.B E
+command that defines the entity to which they apply, but
+before any
+.B &
+or
+.B A
+commands that reference the entity.
+.TP
+.BI a type\ name\ val
+The next element to start has a link attribute with link type
+.IR type ,
+name
+.IR name ,
+and value
+.IR val ,
+which takes the same form as with the
+.B A
+command.
+.TP
+.BI N nname
+.IR nname.
+Define a notation.
+This command will be preceded by a
+.B p
+command if the notation was declared with a public identifier,
+and by a
+.B s
+command if the notation was declared with a system identifier.
+If the
+.B \-n
+option was specified,
+this command will also be preceded by an
+.B f
+command giving the system identifier generated by the entity manager
+(unless it was unable to generate one).
+A notation will only be defined if it is to be referenced
+in an
+.B E
+command or in an
+.B A
+command for an attribute with a declared value of
+.BR \s-1NOTATION\s0 .
+.TP
+.BI E ename\ typ\ nname
+Define an external data entity named
+.I ename
+with type
+.I typ
+.RB ( \s-1CDATA\s0 ,
+.B \s-1NDATA\s0
+or
+.BR \s-1SDATA\s0 )
+and notation
+.IR not.
+This command will be preceded by an
+.B f
+command giving the system identifier generated by the entity manager
+(unless it was unable to generate one),
+by a
+.B p
+command if a public identifier was declared for the entity,
+and by a
+.B s
+command if a system identifier was declared for the entity.
+.I not
+will have been defined using a
+.B N
+command.
+Data attributes may be specified for the entity using
+.B D
+commands.
+If the
+.B \-oentity
+option is not specified,
+an external data entity will only be defined if it is to be referenced in a
+.B &
+command or in an
+.B A
+command for an attribute whose declared value is
+.B \s-1ENTITY\s0
+or
+.BR \s-1ENTITIES\s0 .
+.TP
+.BI I ename\ typ\ text
+Define an internal data entity named
+.I ename
+with type
+.I typ
+and entity text
+.IR text .
+The
+.I typ
+will be
+.B \s-1CDATA\s0
+or
+.B \s-1SDATA\s0
+unless the
+.B \-oentity
+option was specified,
+in which case it can also be
+.B \s-1PI\s0
+or
+.B \s-1TEXT\s0
+(for an \*S text entity).
+If the
+.B \-oentity
+option is not specified,
+an internal data entity will only be defined if it is referenced in an
+.B A
+command for an attribute whose declared value is
+.B \s-1ENTITY\s0
+or
+.BR \s-1ENTITIES\s0 .
+.TP
+.BI S ename
+Define a subdocument entity named
+.IR ename .
+This command will be preceded by an
+.B f
+command giving the system identifier generated by the entity manager
+(unless it was unable to generate one),
+by a
+.B p
+command if a public identifier was declared for the entity,
+and by a
+.B s
+command if a system identifier was declared for the entity.
+If the
+.B \-oentity
+option is not specified,
+a subdocument entity will only be defined if it is referenced
+in a
+.B {
+command
+or in an
+.B A
+command for an attribute whose declared value is
+.B \s-1ENTITY\s0
+or
+.BR \s-1ENTITIES\s0 .
+.TP
+.BI T ename
+Define an external SGML text entity named
+.IR ename .
+This command will be preceded by an
+.B f
+command giving the system identifier generated by the entity manager
+(unless it was unable to generate one),
+by a
+.B p
+command if a public identifier was declared for the entity,
+and by a
+.B s
+command if a system identifier was declared for the entity.
+This command will be output only if the
+.B \-oentity
+option is specified.
+.TP
+.BI s sysid
+This command applies to the next
+.BR E ,
+.BR S ,
+.B T
+or
+.B N
+command and specifies the associated system identifier.
+.TP
+.BI p pubid
+This command applies to the next
+.BR E ,
+.BR S ,
+.B T
+or
+.B N
+command and specifies the associated public identifier.
+.TP
+.BI f sysid
+This command applies to the next
+.BR E ,
+.BR S ,
+.B T
+or, if the
+.B \-n
+option was specified,
+.B N
+command and specifies the system identifier
+generated by the entity manager from the specified external identifier
+and other information about the entity or notation.
+.TP
+.BI { ename
+The start of the \*S subdocument entity
+.IR ename ;
+.I ename
+will have been defined using a
+.B S
+command.
+.TP
+.BI } ename
+The end of the \*S subdocument entity
+.IR ename .
+.TP
+.BI L lineno\ file
+.TQ
+.BI L lineno
+Set the current line number and filename.
+The
+.I file
+argument will be omitted if only the line number has changed.
+This will be output only if the
+.B \-l
+option has been given.
+.TP
+.BI # text
+An \s-1APPINFO\s0 parameter of
+.I text
+was specified in the \*S declaration.
+This is not strictly part of the ESIS, but a structure-controlled
+application is permitted to act on it.
+No
+.B #
+command will be output if
+.B \s-1APPINFO\s0\ \s-1NONE\s0
+was specified.
+A
+.B #
+command will occur at most once,
+and may be preceded only by a single
+.B L
+command.
+.TP
+.B C
+This command indicates that the document was a conforming \*S document.
+If this command is output, it will be the last command.
+An \*S document is not conforming if it references a subdocument entity
+that is not conforming.
+.SH ENVIRONMENT
+.TP
+.SM
+.B SP_BCTF
+If this is set to one of
+.BR identity ,
+.BR utf-8 ,
+.B euc-jp
+and
+.BR sjis ,
+then that BCTF will be used as the default BCTF
+for everything (including file input, file output, message output,
+filenames and command line arguments).
+.SH "SEE ALSO"
+The \*S Handbook, Charles F. Goldfarb
+.br
+\s-1ISO\s0 8879 (Standard Generalized Markup Language),
+International Organization for Standardization
+.PP
+More complete HTML documentation can be found in:
+.I /usr/share/doc/sp/index.htm
+.SH BUGS
+.LP
+Only with
+.B \-t
+is all ESIS information for LINK is reported.
+.SH AUTHOR
+.LP
+James Clark (jjc@jclark.com).

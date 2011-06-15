@@ -1,0 +1,75 @@
+#!/bin/sh
+## ----------------------------------------------------------------------
+## debian/preinst : preinstallation script for libxml-sax-perl
+## ----------------------------------------------------------------------
+
+## ----------------------------------------------------------------------
+set -e
+
+## ----------------------------------------------------------------------
+if [ "$1" = "install" -o "$1" = "upgrade" ]
+then
+
+    ## ------------------------------------------------------------------
+    if [ ! -d /etc/perl/XML/SAX ]
+    then
+	cd /etc
+	mkdir --parents perl/XML/SAX/ParserDetails.d
+	touch perl/XML/SAX/ParserDetails.ini
+    fi
+
+    ## ------------------------------------------------------------------
+    if [ -d /etc/XML/SAX/ParserDetails.d ]
+    then
+	cd /etc/XML/SAX/ParserDetails.d
+	if [ -n "`\ls`" ]
+	then
+	    for f in `\ls`
+	    do
+	        if [ ! -f /etc/perl/XML/SAX/ParserDetails.d/${f} ]
+		then
+		    mv -f ${f} /etc/perl/XML/SAX/ParserDetails.d/.
+		else
+		    rm -f ${f}
+		fi
+	    done
+	fi
+	cd /etc/XML/SAX
+	rm -f ParserDetails.ini
+	cd /etc
+	rmdir --parents --ignore-fail-on-non-empty XML/SAX/ParserDetails.d
+
+    fi
+
+    ## ------------------------------------------------------------------
+    if [ -d /etc/perl/SAX/ParserDetails.d ]
+    then
+	cd /etc/perl/SAX/ParserDetails.d
+	if [ -n "`\ls`" ]
+	then
+	    for f in `\ls`
+	    do
+	        if [ ! -f /etc/perl/XML/SAX/ParserDetails.d/${f} ]
+		then
+		    mv -f ${f} /etc/perl/XML/SAX/ParserDetails.d/.
+		else
+		    rm -f ${f}
+		fi
+	    done
+	fi
+	cd /etc/perl/SAX
+	rm -f ParserDetails.ini
+	cd /etc/perl
+	rmdir --parents --ignore-fail-on-non-empty SAX/ParserDetails.d
+
+    fi
+
+fi
+
+## ---------------------------------------------------------------------- 
+## automatically generated debhelper commands
+#DEBHELPER#
+
+exit 0
+
+## ----------------------------------------------------------------------

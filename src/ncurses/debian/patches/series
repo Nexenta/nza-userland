@@ -1,0 +1,8 @@
+ncurses-01-widec.diff
+ncurses-02-rpath.diff
+01-use-d-reentrant.diff
+05-emdebian-wchar.diff
+06-kfreebsd.diff
+08-pkg-config-libdir.diff
+09-fix-delscreen-segfault.diff
+cursesmain.cc.patch

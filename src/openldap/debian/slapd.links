@@ -1,0 +1,21 @@
+#usr/share/slapd/DB_CONFIG usr/share/doc/slapd/examples/DB_CONFIG
+#usr/share/slapd/slapd.conf usr/share/doc/slapd/examples/slapd.conf
+usr/lib/slapd /usr/sbin/slapacl
+usr/lib/slapd /usr/sbin/slapadd
+usr/lib/slapd /usr/sbin/slapauth
+usr/lib/slapd /usr/sbin/slapcat
+usr/lib/slapd /usr/sbin/slapdn
+usr/lib/slapd /usr/sbin/slapindex
+usr/lib/slapd /usr/sbin/slappasswd
+usr/lib/slapd /usr/sbin/slapschema
+usr/lib/slapd /usr/sbin/slaptest
+#
+usr/lib/amd64/slapd /usr/sbin/amd64/slapacl
+usr/lib/amd64/slapd /usr/sbin/amd64/slapadd
+usr/lib/amd64/slapd /usr/sbin/amd64/slapauth
+usr/lib/amd64/slapd /usr/sbin/amd64/slapcat
+usr/lib/amd64/slapd /usr/sbin/amd64/slapdn
+usr/lib/amd64/slapd /usr/sbin/amd64/slapindex
+usr/lib/amd64/slapd /usr/sbin/amd64/slappasswd
+usr/lib/amd64/slapd /usr/sbin/amd64/slapschema
+usr/lib/amd64/slapd /usr/sbin/amd64/slaptest

@@ -1,0 +1,2 @@
+version=3
+http://www.midnight-commander.org/downloads/mc-(.+\.0\.?[^\.]*)\.tar\.gz

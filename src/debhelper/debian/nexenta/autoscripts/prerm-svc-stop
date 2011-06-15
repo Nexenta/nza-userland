@@ -1,0 +1,7 @@
+for s in #SERVICES#; do
+    case `svcs -Ho STATE $s` in
+        online|offline|degrated|maintenance)
+            /usr/sbin/svcadm -v disable -s $s || true
+            ;;
+    esac
+done

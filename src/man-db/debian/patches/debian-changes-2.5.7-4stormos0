@@ -1,0 +1,1738 @@
+Description: Upstream changes introduced in version 2.5.7-4stormos0
+ This patch has been created by dpkg-source during the package build.
+ Here's the last changelog entry, hopefully it gives details on why
+ those changes were made:
+ .
+ man-db (2.5.7-4stormos0) unstable; urgency=low
+ .
+   * Package for StormOS.
+ .
+ The person named in the Author field signed this changelog entry.
+Author: Andrew Stormont (astormont) <andyjstormont@googlemail.com>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: http://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: <YYYY-MM-DD>
+
+--- man-db-2.5.7.orig/man/po4a/po/id.po
++++ man-db-2.5.7/man/po4a/po/id.po
+@@ -10,6 +10,7 @@ msgstr ""
+ "PO-Revision-Date: 2009-09-09 07:00+0700\n"
+ "Last-Translator: Arif E. Nugroho <arif_endro@yahoo.com>\n"
+ "Language-Team: Indonesian <translation-team-id@lists.sourceforge.net>\n"
++"Language: id\n"
+ "MIME-Version: 1.0\n"
+ "Content-Type: text/plain; charset=ISO-8859-1\n"
+ "Content-Transfer-Encoding: 8bit\n"
+@@ -108,8 +109,8 @@ msgid ""
+ "Each manual page has a short description available within it.  B<%apropos%> "
+ "searches the descriptions for instances of I<keyword>."
+ msgstr ""
+-"Setiap halaman buku panduan memiliki sebuah deskripsi singkat didalamnya. B<%"
+-"apropos%> mencari deskripsi untuk setiap hal dari I<kata kunci>."
++"Setiap halaman buku panduan memiliki sebuah deskripsi singkat didalamnya. B<"
++"%apropos%> mencari deskripsi untuk setiap hal dari I<kata kunci>."
+ 
+ #. type: Plain text
+ #: ../../man/man1/apropos.man1:50
+@@ -451,8 +452,8 @@ msgstr ""
+ #. type: Plain text
+ #: ../../man/man1/apropos.man1:236
+ msgid ""
+-"If $B<POSIXLY_CORRECT> is set, even to a null value, the default B<%apropos%"
+-"> search will be as an extended regex (B<-r>).  Nowadays, this is the "
++"If $B<POSIXLY_CORRECT> is set, even to a null value, the default B<%apropos"
++"%> search will be as an extended regex (B<-r>).  Nowadays, this is the "
+ "default behaviour anyway."
+ msgstr ""
+ "Jika $B<POSIXLY_CORRECT> diset, meskipun ke sebuah nilai null, pencarian "
+@@ -690,8 +691,8 @@ msgstr ""
+ #. type: Plain text
+ #: ../../man/man1/lexgrog.man1:142
+ msgid ""
+-"Some manual pagers require the \\(oq\\e-\\(cq to be exactly as shown; B<%"
+-"mandb%> is more tolerant, but for compatibility with other systems it is "
++"Some manual pagers require the \\(oq\\e-\\(cq to be exactly as shown; B<"
++"%mandb%> is more tolerant, but for compatibility with other systems it is "
+ "nevertheless a good idea to retain the backslash."
+ msgstr ""
+ "Beberapa halaman buku panduan membutuhkan \\(oq\\e-\\(cq sama seperti yang "
+@@ -836,8 +837,8 @@ msgid ""
+ "\\|] [\\|B<-7>\\|] [\\|B<-E> I<encoding>\\|] [\\|B<--no-hyphenation>\\|] [\\|"
+ "B<--no-justification>\\|] [\\|B<-p> I<string>\\|] [\\|B<-t>\\|] [\\|B<-T>\\|"
+ "[\\|I<device>\\|]\\|] [\\|B<-H>\\|[\\|I<browser>\\|]\\|] [\\|B<-X>\\|[\\|"
+-"I<dpi>\\|]\\|] [\\|B<-Z>\\|] [\\|[\\|I<section>\\|] I<page>\\ .\\|.\\|.\\|]"
+-"\\ .\\|.\\|."
++"I<dpi>\\|]\\|] [\\|B<-Z>\\|] [\\|[\\|I<section>\\|] I<page>\\ .\\|.\\|."
++"\\|]\\ .\\|.\\|."
+ msgstr ""
+ "B<%man%> [\\|B<-C> I<berkas>\\|] [\\|B<-d>\\|] [\\|B<-D>\\|] [\\|B<--"
+ "warnings>\\|[\\|=I<peringatan>\\|]\\|] [\\|B<-R> I<pengkodean>\\|] [\\|B<-L> "
+@@ -848,8 +849,8 @@ msgstr ""
+ "I<prompt>\\|] [\\|B<-7>\\|] [\\|B<-E> I<pengkodean>\\|] [\\|B<--no-"
+ "hyphenation>\\|] [\\|B<-p> I<string>\\|] [\\|B<-t>\\|] [\\|B<-T>\\|[\\|"
+ "I<perangkat>\\|]\\|] [\\|B<-H>\\|[\\|I<browser>\\|]\\|] [\\|B<-X>\\|[\\|"
+-"I<dpi>\\|]\\|] [\\|B<-Z>\\|] [\\|[\\|I<bagian>\\|] I<halaman>\\ .\\|.\\|.\\|]"
+-"\\ .\\|.\\|."
++"I<dpi>\\|]\\|] [\\|B<-Z>\\|] [\\|[\\|I<bagian>\\|] I<halaman>\\ .\\|.\\|."
++"\\|]\\ .\\|.\\|."
+ 
+ #.  The --global-apropos command line
+ #. type: Plain text
+@@ -919,8 +920,8 @@ msgstr "B<%man%> [\\|B<-hV>\\|]"
+ #. type: Plain text
+ #: ../../man/man1/man.man1:174
+ msgid ""
+-"B<%man%> is the system's manual pager. Each I<page> argument given to B<%man%"
+-"> is normally the name of a program, utility or function.  The I<manual "
++"B<%man%> is the system's manual pager. Each I<page> argument given to B<%man"
++"%> is normally the name of a program, utility or function.  The I<manual "
+ "page> associated with each of these arguments is then found and displayed. A "
+ "I<section>, if provided, will direct B<%man%> to look only in that "
+ "I<section> of the manual.  The default action is to search in all of the "
+@@ -1187,12 +1188,12 @@ msgstr "B<%man%\\ -k>I<\\ printf>"
+ #: ../../man/man1/man.man1:299
+ msgid ""
+ "Search the short descriptions and manual page names for the keyword "
+-"I<printf> as regular expression.  Print out any matches.  Equivalent to B<%"
+-"apropos%\\ -r>I<\\ printf>B<.>"
++"I<printf> as regular expression.  Print out any matches.  Equivalent to B<"
++"%apropos%\\ -r>I<\\ printf>B<.>"
+ msgstr ""
+ "Cari deskripsi singkat dan nama halaman buku panduan untuk kata kunci "
+-"I<printf> seperti ekspresi umum. Cetak semua kecocokan. Sama dengan B<%"
+-"apropos%\\ -r>I<\\ printf>B<.>"
++"I<printf> seperti ekspresi umum. Cetak semua kecocokan. Sama dengan B<"
++"%apropos%\\ -r>I<\\ printf>B<.>"
+ 
+ #. type: TP
+ #: ../../man/man1/man.man1:299
+@@ -1401,8 +1402,8 @@ msgid ""
+ "However, the cache consistency check can be slow on systems with many manual "
+ "pages installed, so it is not performed by default, and system "
+ "administrators may wish to run B<%mandb%> every week or so to keep the "
+-"database caches fresh.  To forestall problems caused by outdated caches, B<%"
+-"man%> will fall back to file globbing if a cache lookup fails, just as it "
++"database caches fresh.  To forestall problems caused by outdated caches, B<"
++"%man%> will fall back to file globbing if a cache lookup fails, just as it "
+ "would if no cache was present."
+ msgstr ""
+ "B<%man%> akan mencari untuk halaman buku panduan yang diinginkan didalam "
+@@ -1649,8 +1650,8 @@ msgstr ""
+ #. type: Plain text
+ #: ../../man/man1/man.man1:610
+ msgid ""
+-"This option is not for general use and should only be used by the B<%catman%"
+-"> program."
++"This option is not for general use and should only be used by the B<%catman"
++"%> program."
+ msgstr ""
+ "Pilihan in tidak untuk penggunaan umum dan seharusnya hanya digunakan oleh "
+ "aplikasi B<%catman%>."
+@@ -1719,8 +1720,8 @@ msgid ""
+ "derived code to determine the path to search.  This option overrides the "
+ "$B<MANPATH> environment variable and causes option B<-m> to be ignored."
+ msgstr ""
+-"Spesifikasikan sebuah jalur man alternatif untuk digunakan. Secara baku, B<%"
+-"man%> menggunakan B<%manpath%> kode turunan untuk menentukan jalur "
++"Spesifikasikan sebuah jalur man alternatif untuk digunakan. Secara baku, B<"
++"%man%> menggunakan B<%manpath%> kode turunan untuk menentukan jalur "
+ "pencarian. Pilihan ini mengesampingkan variabel lingkungan $B<MANPATH> dan "
+ "dapat menyebabkan pilihan B<-m> untuk diabaikan."
+ 
+@@ -1916,8 +1917,8 @@ msgid ""
+ "overrides the $B<PAGER> environment variable.  It is not used in conjunction "
+ "with B<-f> or B<-k>."
+ msgstr ""
+-"Spesifikasikan pager keluaran mana yang akan digunakan, Secara baku, B<%man%"
+-"> menggunakan B<%pager%>. Pilihan ini mengesampingkan variabel lingkungan "
++"Spesifikasikan pager keluaran mana yang akan digunakan, Secara baku, B<%man"
++"%> menggunakan B<%pager%>. Pilihan ini mengesampingkan variabel lingkungan "
+ "$B<MANPAGER>, yang jadinya mengesampingkan variabel lingkungan $B<PAGER>. "
+ "Ini tidak digunakan dengan konjungsi dengan B<-f> atau B<-k>."
+ 
+@@ -2009,8 +2010,8 @@ msgstr ""
+ "dievaluasi oleh shell. Semua double quotes, back-quotes dan backslashes "
+ "dalam prompt harus diberi karakter untuk keluar dengan sebuah awalan "
+ "backslash. Prompt string mungkin berakhir dalam sebuah karakter untuk keluar "
+-"$ yang mungkin diikuti oleh pilihan selanjutnya untuk less. Secara baku B<%"
+-"man%> menset pilihan B<-ix8>."
++"$ yang mungkin diikuti oleh pilihan selanjutnya untuk less. Secara baku B<"
++"%man%> menset pilihan B<-ix8>."
+ 
+ #. type: Plain text
+ #: ../../man/man1/man.man1:909
+@@ -2378,8 +2379,8 @@ msgid ""
+ "If $B<BROWSER> is set, its value is a colon-delimited list of commands, each "
+ "of which in turn is used to try to start a web browser for B<man> B<--"
+ "html>.  In each command, I<%s> is replaced by a filename containing the HTML "
+-"output from B<groff>, I<%%> is replaced by a single percent sign (%), and I<%"
+-"c> is replaced by a colon (:)."
++"output from B<groff>, I<%%> is replaced by a single percent sign (%), and I<"
++"%c> is replaced by a colon (:)."
+ msgstr ""
+ "Jika $B<BROWSER> diset, nilai itu adalah daftar dipisahkan kolon dari "
+ "perintah, setiap perintah itu digunakan untuk mencoba menjalankan sebuah web "
+@@ -2467,8 +2468,8 @@ msgstr ""
+ #: ../../man/man1/man.man1:1291
+ msgid ""
+ "Depending on system and implementation, either or both of $B<LANG> and "
+-"$B<LC_MESSAGES> will be interrogated for the current message locale.  B<%man%"
+-"> will display its messages in that locale (if available).  See B<setlocale>"
++"$B<LC_MESSAGES> will be interrogated for the current message locale.  B<%man"
++"%> will display its messages in that locale (if available).  See B<setlocale>"
+ "(3)  for precise details."
+ msgstr ""
+ "Tergantung dari sistem dan implementasi, baik atau kedua dari $B<LANG> dan "
+@@ -2491,13 +2492,13 @@ msgstr "Sebuah hierarki halaman buku pan
+ #: ../../man/man1/man.man1:1327
+ msgid ""
+ "B<%mandb%>(8), B<%manpath%>(1), B<manpath>(5), B<%apropos%>(1), B<%whatis%>"
+-"(1), B<%catman%>(8), B<less>(1), B<nroff>(1), B<troff>(1), B<groff>(1), B<%"
+-"zsoelim%>(1), B<setlocale>(3), B<man>(7), B<ascii>(7), B<latin1>(7), the man-"
+-"db package manual, B<FSSTND>."
++"(1), B<%catman%>(8), B<less>(1), B<nroff>(1), B<troff>(1), B<groff>(1), B<"
++"%zsoelim%>(1), B<setlocale>(3), B<man>(7), B<ascii>(7), B<latin1>(7), the "
++"man-db package manual, B<FSSTND>."
+ msgstr ""
+ "B<%mandb%>(8), B<%manpath%>(1), B<manpath>(5), B<%apropos%>(1), B<%whatis%>"
+-"(1), B<%catman%>(8), B<less>(1), B<nroff>(1), B<troff>(1), B<groff>(1), B<%"
+-"zsoelim%>(1), B<setlocale>(3), B<man>(7), B<ascii>(7), B<latin1>(7), paket "
++"(1), B<%catman%>(8), B<less>(1), B<nroff>(1), B<troff>(1), B<groff>(1), B<"
++"%zsoelim%>(1), B<setlocale>(3), B<man>(7), B<ascii>(7), B<latin1>(7), paket "
+ "buku panduan man-db, B<FSSTND>."
+ 
+ #. type: SH
+@@ -2801,8 +2802,8 @@ msgstr ""
+ #. type: Plain text
+ #: ../../man/man1/whatis.man1:61
+ msgid ""
+-"B<index> databases are used during the search, and are updated by the B<%"
+-"mandb%> program.  Depending on your installation, this may be run by a "
++"B<index> databases are used during the search, and are updated by the B<"
++"%mandb%> program.  Depending on your installation, this may be run by a "
+ "periodic cron job, or may need to be run manually after new manual pages "
+ "have been installed.  To produce an old style text B<whatis> database from "
+ "the relative B<index> database, issue the command:"
+--- man-db-2.5.7.orig/man/po4a/po/ru.po
++++ man-db-2.5.7/man/po4a/po/ru.po
+@@ -12,12 +12,13 @@ msgstr ""
+ "PO-Revision-Date: 2009-11-16 20:10+0300\n"
+ "Last-Translator: Yuri Kozlov <yuray@komyakino.ru>\n"
+ "Language-Team: Russian <gnu@mx.ru>\n"
++"Language: ru\n"
+ "MIME-Version: 1.0\n"
+ "Content-Type: text/plain; charset=UTF-8\n"
+ "Content-Transfer-Encoding: 8bit\n"
+ "X-Generator: KBabel 1.11.4\n"
+-"Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
+-"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
++"Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
++"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+ 
+ #. type: TH
+ #: ../../man/man1/apropos.man1:12
+@@ -146,8 +147,8 @@ msgid ""
+ "Depending on your installation, this may be run by a periodic cron job, or "
+ "may need to be run manually after new manual pages have been installed."
+ msgstr ""
+-"Используемая B<%apropos%> поисковая база данных обновляется программой B<%"
+-"mandb%>. В зависимости от установки, она может запускаться как периодически "
++"Используемая B<%apropos%> поисковая база данных обновляется программой B<"
++"%mandb%>. В зависимости от установки, она может запускаться как периодически "
+ "выполняемое задание cron или вручную, после установки новых справочных "
+ "страниц."
+ 
+@@ -459,8 +460,8 @@ msgstr ""
+ #. type: Plain text
+ #: ../../man/man1/apropos.man1:236
+ msgid ""
+-"If $B<POSIXLY_CORRECT> is set, even to a null value, the default B<%apropos%"
+-"> search will be as an extended regex (B<-r>).  Nowadays, this is the "
++"If $B<POSIXLY_CORRECT> is set, even to a null value, the default B<%apropos"
++"%> search will be as an extended regex (B<-r>).  Nowadays, this is the "
+ "default behaviour anyway."
+ msgstr ""
+ "Если установлена переменная окружения $B<POSIXLY_CORRECT>, даже имеющая "
+@@ -702,12 +703,12 @@ msgstr ""
+ #. type: Plain text
+ #: ../../man/man1/lexgrog.man1:142
+ msgid ""
+-"Some manual pagers require the \\(oq\\e-\\(cq to be exactly as shown; B<%"
+-"mandb%> is more tolerant, but for compatibility with other systems it is "
++"Some manual pagers require the \\(oq\\e-\\(cq to be exactly as shown; B<"
++"%mandb%> is more tolerant, but for compatibility with other systems it is "
+ "nevertheless a good idea to retain the backslash."
+ msgstr ""
+-"Некоторые справочные пейджеры требуют \\(oq\\e-\\(cq точно как показано; B<%"
+-"mandb%> более терпим, но для совместимости с другими системами всё же лучше "
++"Некоторые справочные пейджеры требуют \\(oq\\e-\\(cq точно как показано; B<"
++"%mandb%> более терпим, но для совместимости с другими системами всё же лучше "
+ "оставлять символ обратной косой черты."
+ 
+ #. type: Plain text
+@@ -845,8 +846,8 @@ msgid ""
+ "\\|] [\\|B<-7>\\|] [\\|B<-E> I<encoding>\\|] [\\|B<--no-hyphenation>\\|] [\\|"
+ "B<--no-justification>\\|] [\\|B<-p> I<string>\\|] [\\|B<-t>\\|] [\\|B<-T>\\|"
+ "[\\|I<device>\\|]\\|] [\\|B<-H>\\|[\\|I<browser>\\|]\\|] [\\|B<-X>\\|[\\|"
+-"I<dpi>\\|]\\|] [\\|B<-Z>\\|] [\\|[\\|I<section>\\|] I<page>\\ .\\|.\\|.\\|]"
+-"\\ .\\|.\\|."
++"I<dpi>\\|]\\|] [\\|B<-Z>\\|] [\\|[\\|I<section>\\|] I<page>\\ .\\|.\\|."
++"\\|]\\ .\\|.\\|."
+ msgstr ""
+ "B<%man%> [\\|B<-C> I<файл>\\|] [\\|B<-d>\\|] [\\|B<-D>\\|] [\\|B<--warnings>"
+ "\\|[\\|=I<предупреждения>\\|]\\|] [\\|B<-R> I<кодировка>\\|] [\\|B<-L> "
+@@ -934,8 +935,8 @@ msgstr "B<%man%> [\\|B<-hV>\\|]"
+ #. type: Plain text
+ #: ../../man/man1/man.man1:174
+ msgid ""
+-"B<%man%> is the system's manual pager. Each I<page> argument given to B<%man%"
+-"> is normally the name of a program, utility or function.  The I<manual "
++"B<%man%> is the system's manual pager. Each I<page> argument given to B<%man"
++"%> is normally the name of a program, utility or function.  The I<manual "
+ "page> associated with each of these arguments is then found and displayed. A "
+ "I<section>, if provided, will direct B<%man%> to look only in that "
+ "I<section> of the manual.  The default action is to search in all of the "
+@@ -1204,8 +1205,8 @@ msgstr "B<%man%\\ -k>I<\\ printf>"
+ #: ../../man/man1/man.man1:299
+ msgid ""
+ "Search the short descriptions and manual page names for the keyword "
+-"I<printf> as regular expression.  Print out any matches.  Equivalent to B<%"
+-"apropos%\\ -r>I<\\ printf>B<.>"
++"I<printf> as regular expression.  Print out any matches.  Equivalent to B<"
++"%apropos%\\ -r>I<\\ printf>B<.>"
+ msgstr ""
+ "Искать в кратких описаниях и именах справочных страниц ключевое слово "
+ "I<printf>, рассматриваемое как регулярное выражение. Показать любые "
+@@ -1305,8 +1306,8 @@ msgstr ""
+ "Если B<%man%> не может найти B<%mandb%> для первоначального создания базы "
+ "данных B<index> под определённую иерархию справочных страниц, то она "
+ "попытается выполнить поиск запрашиваемых справочных страниц, хотя для этого "
+-"потребуются универсальные имена файлов для поиска внутри иерархии. Если B<%"
+-"whatis%> или B<%apropos%> не удастся найти B<index>, то они попробуют "
++"потребуются универсальные имена файлов для поиска внутри иерархии. Если B<"
++"%whatis%> или B<%apropos%> не удастся найти B<index>, то они попробуют "
+ "извлечь информацию из традиционной текстовой базы данных I<whatis>."
+ 
+ #. type: Plain text
+@@ -1412,8 +1413,8 @@ msgid ""
+ "However, the cache consistency check can be slow on systems with many manual "
+ "pages installed, so it is not performed by default, and system "
+ "administrators may wish to run B<%mandb%> every week or so to keep the "
+-"database caches fresh.  To forestall problems caused by outdated caches, B<%"
+-"man%> will fall back to file globbing if a cache lookup fails, just as it "
++"database caches fresh.  To forestall problems caused by outdated caches, B<"
++"%man%> will fall back to file globbing if a cache lookup fails, just as it "
+ "would if no cache was present."
+ msgstr ""
+ "B<%man%> ищет требуемые справочные страницы в кэшах базы данных I<index>. "
+@@ -1423,8 +1424,8 @@ msgstr ""
+ "запускать B<%mandb%> после первоначального создания кэша, пока кэш не "
+ "повредится. Однако проверка целостности кэша может работать медленно на "
+ "машинах с большим количеством установленных справочных страниц, поэтому она "
+-"не выполняется по умолчанию, и системным администраторам лучше запускать B<%"
+-"mandb%> раз в неделю, чтобы поддерживать кэши базы данных в актуальном "
++"не выполняется по умолчанию, и системным администраторам лучше запускать B<"
++"%mandb%> раз в неделю, чтобы поддерживать кэши базы данных в актуальном "
+ "состоянии. Чтобы предотвратить проблемы из-за устаревших кэшей, B<%man%> "
+ "выполняет поиск файлов по имени, если в кэше ничего не нашлось ( как если бы "
+ "кэша не было)."
+@@ -1591,8 +1592,8 @@ msgid ""
+ "keywords and display any matches.  See B<%apropos%>(1)  for details."
+ msgstr ""
+ "Эквивалентно работе B<%apropos%>. Ищет в кратких описаниях справочных "
+-"страниц ключевые слова и показывает любые совпадения. Подробней смотрите B<%"
+-"apropos%>(1)."
++"страниц ключевые слова и показывает любые совпадения. Подробней смотрите B<"
++"%apropos%>(1)."
+ 
+ #. type: Plain text
+ #: ../../man/man1/man.man1:580
+@@ -1657,8 +1658,8 @@ msgstr ""
+ #. type: Plain text
+ #: ../../man/man1/man.man1:610
+ msgid ""
+-"This option is not for general use and should only be used by the B<%catman%"
+-"> program."
++"This option is not for general use and should only be used by the B<%catman"
++"%> program."
+ msgstr ""
+ "Этот параметр не для обычного использования, и должен использоваться только "
+ "программой B<%catman%>."
+@@ -2278,10 +2279,10 @@ msgid ""
+ "respectively."
+ msgstr ""
+ "С этим параметром вывод B<groff> осуществляет в графическое окно с помощью "
+-"программы B<gxditview>. Значениями I<dpi> (точек на дюйм) могут быть 75, 75-"
+-"12, 100 или 100-12; по умолчанию 75; в вариантах с -12 в конце используется "
+-"базовый шрифт в 12 точек. Этот параметр подразумевает B<-T> со значениями "
+-"устройств X75, X75-12, X100 и X100-12 соответственно."
++"программы B<gxditview>. Значениями I<dpi> (точек на дюйм) могут быть 75, "
++"75-12, 100 или 100-12; по умолчанию 75; в вариантах с -12 в конце "
++"используется базовый шрифт в 12 точек. Этот параметр подразумевает B<-T> со "
++"значениями устройств X75, X75-12, X100 и X100-12 соответственно."
+ 
+ #. type: Plain text
+ #: ../../man/man1/man.man1:1110
+@@ -2389,8 +2390,8 @@ msgid ""
+ "If $B<BROWSER> is set, its value is a colon-delimited list of commands, each "
+ "of which in turn is used to try to start a web browser for B<man> B<--"
+ "html>.  In each command, I<%s> is replaced by a filename containing the HTML "
+-"output from B<groff>, I<%%> is replaced by a single percent sign (%), and I<%"
+-"c> is replaced by a colon (:)."
++"output from B<groff>, I<%%> is replaced by a single percent sign (%), and I<"
++"%c> is replaced by a colon (:)."
+ msgstr ""
+ "Если установлена переменная окружения $B<BROWSER>, то её значение "
+ "представляет собой список команд, разделяемых двоеточием; каждая из них "
+@@ -2450,8 +2451,8 @@ msgstr ""
+ "символы форматирования отбрасываются для облегчения чтения результата не "
+ "имея специальных инструментов. Однако, если переменная окружения "
+ "$B<MAN_KEEP_FORMATTING> установлена в непустое значение, то символы "
+-"форматирования остаются. Это может быть полезно для оболочек вокруг B<%man%"
+-">, которые распознают символы форматирования."
++"форматирования остаются. Это может быть полезно для оболочек вокруг B<%man"
++"%>, которые распознают символы форматирования."
+ 
+ #. type: Plain text
+ #: ../../man/man1/man.man1:1279
+@@ -2479,8 +2480,8 @@ msgstr ""
+ #: ../../man/man1/man.man1:1291
+ msgid ""
+ "Depending on system and implementation, either or both of $B<LANG> and "
+-"$B<LC_MESSAGES> will be interrogated for the current message locale.  B<%man%"
+-"> will display its messages in that locale (if available).  See B<setlocale>"
++"$B<LC_MESSAGES> will be interrogated for the current message locale.  B<%man"
++"%> will display its messages in that locale (if available).  See B<setlocale>"
+ "(3)  for precise details."
+ msgstr ""
+ "В зависимости от системы и реализации, одна или обе переменные $B<LANG> и "
+@@ -2503,13 +2504,13 @@ msgstr "Глобальная иерар�
+ #: ../../man/man1/man.man1:1327
+ msgid ""
+ "B<%mandb%>(8), B<%manpath%>(1), B<manpath>(5), B<%apropos%>(1), B<%whatis%>"
+-"(1), B<%catman%>(8), B<less>(1), B<nroff>(1), B<troff>(1), B<groff>(1), B<%"
+-"zsoelim%>(1), B<setlocale>(3), B<man>(7), B<ascii>(7), B<latin1>(7), the man-"
+-"db package manual, B<FSSTND>."
++"(1), B<%catman%>(8), B<less>(1), B<nroff>(1), B<troff>(1), B<groff>(1), B<"
++"%zsoelim%>(1), B<setlocale>(3), B<man>(7), B<ascii>(7), B<latin1>(7), the "
++"man-db package manual, B<FSSTND>."
+ msgstr ""
+ "B<%mandb%>(8), B<%manpath%>(1), B<manpath>(5), B<%apropos%>(1), B<%whatis%>"
+-"(1), B<%catman%>(8), B<less>(1), B<nroff>(1), B<troff>(1), B<groff>(1), B<%"
+-"zsoelim%>(1), B<setlocale>(3), B<man>(7), B<ascii>(7), B<latin1>(7), "
++"(1), B<%catman%>(8), B<less>(1), B<nroff>(1), B<troff>(1), B<groff>(1), B<"
++"%zsoelim%>(1), B<setlocale>(3), B<man>(7), B<ascii>(7), B<latin1>(7), "
+ "справочные страницы по пакету man-db, B<FSSTND>."
+ 
+ #. type: SH
+@@ -2665,8 +2666,8 @@ msgid ""
+ "B<%manpath%> [\\|B<-qgdchV>\\|] [\\|B<-m> I<system>\\|[\\|,.\\|.\\|.\\|]\\|] "
+ "[\\|B<-C> I<file>\\|]"
+ msgstr ""
+-"B<%manpath%> [\\|B<-qgdchV>\\|] [\\|B<-m> I<система>\\|[\\|,.\\|.\\|.\\|]"
+-"\\|] [\\|B<-C> I<файл>\\|]"
++"B<%manpath%> [\\|B<-qgdchV>\\|] [\\|B<-m> I<система>\\|[\\|,.\\|.\\|."
++"\\|]\\|] [\\|B<-C> I<файл>\\|]"
+ 
+ #. type: Plain text
+ #: ../../man/man1/manpath.man1:32
+@@ -2785,9 +2786,9 @@ msgid ""
+ msgstr ""
+ "B<%whatis%> [\\|B<-dlhvV>\\|] [\\|B<-r>\\||\\|B<-w>\\|] [\\|B<-s> I<раздел>"
+ "\\|] [\\|B<-m> I<система>\\|[\\|,.\\|.\\|.\\|]\\|] [\\|B<-M> I<путь>\\|] [\\|"
+-"B<-L> I<локаль>\\|] [\\|B<-C> I<файл>\\|] I<название> \\&.\\|.\\|. B<%whatis%"
+-"> [\\|B<-dlhvV>\\|] [\\|B<-r>\\||\\|B<-w>\\|] [\\|B<-s> I<раздел>\\|] [\\|B<-"
+-"m> I<система>\\|[\\|,.\\|.\\|.\\|]\\|] [\\|B<-M> I<путь>\\|] [\\|B<-L> "
++"B<-L> I<локаль>\\|] [\\|B<-C> I<файл>\\|] I<название> \\&.\\|.\\|. B<%whatis"
++"%> [\\|B<-dlhvV>\\|] [\\|B<-r>\\||\\|B<-w>\\|] [\\|B<-s> I<раздел>\\|] [\\|"
++"B<-m> I<система>\\|[\\|,.\\|.\\|.\\|]\\|] [\\|B<-M> I<путь>\\|] [\\|B<-L> "
+ "I<локаль>\\|] [\\|B<-C> I<файл>\\|] I<название> \\&.\\|.\\|."
+ 
+ #. type: Plain text
+@@ -2817,8 +2818,8 @@ msgstr ""
+ #. type: Plain text
+ #: ../../man/man1/whatis.man1:61
+ msgid ""
+-"B<index> databases are used during the search, and are updated by the B<%"
+-"mandb%> program.  Depending on your installation, this may be run by a "
++"B<index> databases are used during the search, and are updated by the B<"
++"%mandb%> program.  Depending on your installation, this may be run by a "
+ "periodic cron job, or may need to be run manually after new manual pages "
+ "have been installed.  To produce an old style text B<whatis> database from "
+ "the relative B<index> database, issue the command:"
+@@ -2998,8 +2999,8 @@ msgid ""
+ "If the environment variable $B<MANPATH> is already set, the information "
+ "contained within %manpath_config_file% will not override it."
+ msgstr ""
+-"Если установлена переменная окружения $B<MANPATH>, то информация из %"
+-"manpath_config_file% использоваться не будет."
++"Если установлена переменная окружения $B<MANPATH>, то информация из "
++"%manpath_config_file% использоваться не будет."
+ 
+ #. type: SH
+ #: ../../man/man5/manpath.man5:26
+@@ -3398,9 +3399,9 @@ msgstr ""
+ "которые должны быть отформатированы заранее. Иерархиями по умолчанию "
+ "считаются системные иерархии, указанные в файле настроек man-db, а разделы "
+ "по умолчанию берутся из значения переменной окружения $B<MANSECT> (список "
+-"значений через двоеточие) или из значения, заданного при компиляции B<%man%"
+-">, если переменная окружения $B<MANSECT> не установлена. При указании B<%"
+-"catman%> списка имён разделов через пробельный символ, он заменит оба эти "
++"значений через двоеточие) или из значения, заданного при компиляции B<%man"
++"%>, если переменная окружения $B<MANSECT> не установлена. При указании B<"
++"%catman%> списка имён разделов через пробельный символ, он заменит оба эти "
+ "значения по умолчанию."
+ 
+ #. type: Plain text
+@@ -3552,8 +3553,8 @@ msgid ""
+ msgstr ""
+ "Типы баз данных, которые поддерживают асинхронные обновления, предоставляют "
+ "лучшее отношение скорости к возможности повреждения в случае неожиданного "
+-"прерывания работы. Если это происходит, может потребоваться перезапустить B<%"
+-"mandb%> с параметром B<-c>, чтобы пересоздать базы данных с нуля."
++"прерывания работы. Если это происходит, может потребоваться перезапустить B<"
++"%mandb%> с параметром B<-c>, чтобы пересоздать базы данных с нуля."
+ 
+ #. type: Plain text
+ #: ../../man/man8/mandb.man8:82
+--- man-db-2.5.7.orig/man/po4a/po/pl.po
++++ man-db-2.5.7/man/po4a/po/pl.po
+@@ -13,6 +13,7 @@ msgstr ""
+ "PO-Revision-Date: 2009-01-17 18:20+0100\n"
+ "Last-Translator: Robert Luberda <robert@debian.org>\n"
+ "Language-Team: Polish <translation-team-pl@lists.sourceforge.net>\n"
++"Language: pl\n"
+ "MIME-Version: 1.0\n"
+ "Content-Type: text/plain; charset=UTF-8\n"
+ "Content-Transfer-Encoding: 8bit\n"
+@@ -468,8 +469,8 @@ msgstr ""
+ #. type: Plain text
+ #: ../../man/man1/apropos.man1:236
+ msgid ""
+-"If $B<POSIXLY_CORRECT> is set, even to a null value, the default B<%apropos%"
+-"> search will be as an extended regex (B<-r>).  Nowadays, this is the "
++"If $B<POSIXLY_CORRECT> is set, even to a null value, the default B<%apropos"
++"%> search will be as an extended regex (B<-r>).  Nowadays, this is the "
+ "default behaviour anyway."
+ msgstr ""
+ "Jeżeli ustawiono $B<POSIXLY_CORRECT>, nawet na pustą wartość, to domyślnie B<"
+@@ -715,8 +716,8 @@ msgstr ""
+ #. type: Plain text
+ #: ../../man/man1/lexgrog.man1:142
+ msgid ""
+-"Some manual pagers require the \\(oq\\e-\\(cq to be exactly as shown; B<%"
+-"mandb%> is more tolerant, but for compatibility with other systems it is "
++"Some manual pagers require the \\(oq\\e-\\(cq to be exactly as shown; B<"
++"%mandb%> is more tolerant, but for compatibility with other systems it is "
+ "nevertheless a good idea to retain the backslash."
+ msgstr ""
+ "Niektóre programy do obsługi stron podręcznika wymagają, aby separator \\(oq"
+@@ -861,8 +862,8 @@ msgid ""
+ "\\|] [\\|B<-7>\\|] [\\|B<-E> I<encoding>\\|] [\\|B<--no-hyphenation>\\|] [\\|"
+ "B<--no-justification>\\|] [\\|B<-p> I<string>\\|] [\\|B<-t>\\|] [\\|B<-T>\\|"
+ "[\\|I<device>\\|]\\|] [\\|B<-H>\\|[\\|I<browser>\\|]\\|] [\\|B<-X>\\|[\\|"
+-"I<dpi>\\|]\\|] [\\|B<-Z>\\|] [\\|[\\|I<section>\\|] I<page>\\ .\\|.\\|.\\|]"
+-"\\ .\\|.\\|."
++"I<dpi>\\|]\\|] [\\|B<-Z>\\|] [\\|[\\|I<section>\\|] I<page>\\ .\\|.\\|."
++"\\|]\\ .\\|.\\|."
+ msgstr ""
+ "B<%man%> [\\|B<-C> I<file>\\|] [\\|B<-d>\\|] [\\|B<-D>\\|] [\\|B<--warnings>"
+ "\\|[\\|=I<ostrzeżenia>\\|]\\|] [\\|B<-R> I<kodowanie_znaków>\\|] [\\|B<-L> "
+@@ -952,8 +953,8 @@ msgstr "B<%man%> [\\|B<-hV>\\|]"
+ #. type: Plain text
+ #: ../../man/man1/man.man1:174
+ msgid ""
+-"B<%man%> is the system's manual pager. Each I<page> argument given to B<%man%"
+-"> is normally the name of a program, utility or function.  The I<manual "
++"B<%man%> is the system's manual pager. Each I<page> argument given to B<%man"
++"%> is normally the name of a program, utility or function.  The I<manual "
+ "page> associated with each of these arguments is then found and displayed. A "
+ "I<section>, if provided, will direct B<%man%> to look only in that "
+ "I<section> of the manual.  The default action is to search in all of the "
+@@ -1226,8 +1227,8 @@ msgstr "B<%man%\\ -k>I<\\ printf>"
+ #: ../../man/man1/man.man1:299
+ msgid ""
+ "Search the short descriptions and manual page names for the keyword "
+-"I<printf> as regular expression.  Print out any matches.  Equivalent to B<%"
+-"apropos%\\ -r>I<\\ printf>B<.>"
++"I<printf> as regular expression.  Print out any matches.  Equivalent to B<"
++"%apropos%\\ -r>I<\\ printf>B<.>"
+ msgstr ""
+ "Szuka słowa kluczowego I<printf> jako wyrażenia regularnego w  krótkich "
+ "opisach i nazwach stron podręcznika. Wyświetla wszystkie dopasowania. "
+@@ -1329,9 +1330,9 @@ msgstr ""
+ "Jeżeli B<%man%> nie będzie mógł znaleźć zainicjowanej przez B<%mandb%> "
+ "B<indeksowanej> bazy danych dla pewnej hierarchii stron podręcznika, to "
+ "wciąż będzie przeszukiwał tę hierarchię, chociaż  w takim wypadku będzie "
+-"potrzebne użycie przeszukiwania sytemu plików. Jeśli B<%whatis%> lub B<%"
+-"apropos%> nie znajdą B<indeksu>, będą próbowały znaleźć potrzebne informacje "
+-"w tradycyjnej bazie danych I<whatis>."
++"potrzebne użycie przeszukiwania sytemu plików. Jeśli B<%whatis%> lub B<"
++"%apropos%> nie znajdą B<indeksu>, będą próbowały znaleźć potrzebne "
++"informacje w tradycyjnej bazie danych I<whatis>."
+ 
+ #. type: Plain text
+ #: ../../man/man1/man.man1:397
+@@ -1438,8 +1439,8 @@ msgid ""
+ "However, the cache consistency check can be slow on systems with many manual "
+ "pages installed, so it is not performed by default, and system "
+ "administrators may wish to run B<%mandb%> every week or so to keep the "
+-"database caches fresh.  To forestall problems caused by outdated caches, B<%"
+-"man%> will fall back to file globbing if a cache lookup fails, just as it "
++"database caches fresh.  To forestall problems caused by outdated caches, B<"
++"%man%> will fall back to file globbing if a cache lookup fails, just as it "
+ "would if no cache was present."
+ msgstr ""
+ "B<%man%> poszukuje żądanych stron podręcznika w I<indeksie> bufora bazy "
+@@ -1686,8 +1687,8 @@ msgstr ""
+ #. type: Plain text
+ #: ../../man/man1/man.man1:610
+ msgid ""
+-"This option is not for general use and should only be used by the B<%catman%"
+-"> program."
++"This option is not for general use and should only be used by the B<%catman"
++"%> program."
+ msgstr ""
+ "Ta opcja nie jest przeznaczona dla ogółu i powinna być używana tylko przez "
+ "program B<%catman%>."
+@@ -1710,8 +1711,8 @@ msgid ""
+ msgstr ""
+ "Zamiast w normalny sposób wyświetlić stronę podręcznika, wypisze źródło "
+ "strony przekształcone na podane I<kodowanie_znaków>. Jeśli znane jest "
+-"kodowanie znaków pliku źródłowego, to można użyć bezpośrednio polecenia B<%"
+-"manconv%>(1). Jednakże, opcja ta pozwala przekształcić kilka stron "
++"kodowanie znaków pliku źródłowego, to można użyć bezpośrednio polecenia B<"
++"%manconv%>(1). Jednakże, opcja ta pozwala przekształcić kilka stron "
+ "podręcznika do jednego kodowania, bez dokładnego podawania kodowania źródeł "
+ "każdej z nich, pod warunkiem że strony te są umieszczone w strukturze "
+ "katalogów podobnej do hierarchii stron podręcznika."
+@@ -2021,8 +2022,8 @@ msgid ""
+ msgstr ""
+ "Podanie B<-r> z łańcuchem znaków nadpisze tę wartość domyślną. Łańcuch "
+ "znaków może zawierać tekst B<$MAN_PN>, który zostanie zamieniony przez nazwę "
+-"bieżącej strony podręcznika oraz jej sekcję otoczoną nawiasami \"(\" i \")"
+-"\". Łańcuch znaków równoważny wartości domyślnej to:"
++"bieżącej strony podręcznika oraz jej sekcję otoczoną nawiasami \"(\" i "
++"\")\". Łańcuch znaków równoważny wartości domyślnej to:"
+ 
+ #. type: Plain text
+ #: ../../man/man1/man.man1:886
+@@ -2405,8 +2406,8 @@ msgid ""
+ msgstr ""
+ "Jeśli ustawiono zmienną $B<MANPAGER> lub $B<PAGER> ($B<MANPAGER> ma wyższy "
+ "priorytet), to jej wartość jest używana jako nazwa programu, w którym będzie "
+-"wyświetlona strona podręcznika ekranowego. Domyślnie używany jest program B<%"
+-"pager%>."
++"wyświetlona strona podręcznika ekranowego. Domyślnie używany jest program B<"
++"%pager%>."
+ 
+ #. type: Plain text
+ #: ../../man/man1/man.man1:1202
+@@ -2429,8 +2430,8 @@ msgid ""
+ "If $B<BROWSER> is set, its value is a colon-delimited list of commands, each "
+ "of which in turn is used to try to start a web browser for B<man> B<--"
+ "html>.  In each command, I<%s> is replaced by a filename containing the HTML "
+-"output from B<groff>, I<%%> is replaced by a single percent sign (%), and I<%"
+-"c> is replaced by a colon (:)."
++"output from B<groff>, I<%%> is replaced by a single percent sign (%), and I<"
++"%c> is replaced by a colon (:)."
+ msgstr ""
+ "Jeżeli jest ustawiona zmienna $B<BROWSER>, to jej wartością jest rozdzielona "
+ "dwukropkami lista poleceń, które %man% będzie - w kolejności - próbował "
+@@ -2524,14 +2525,14 @@ msgstr ""
+ #: ../../man/man1/man.man1:1291
+ msgid ""
+ "Depending on system and implementation, either or both of $B<LANG> and "
+-"$B<LC_MESSAGES> will be interrogated for the current message locale.  B<%man%"
+-"> will display its messages in that locale (if available).  See B<setlocale>"
++"$B<LC_MESSAGES> will be interrogated for the current message locale.  B<%man"
++"%> will display its messages in that locale (if available).  See B<setlocale>"
+ "(3)  for precise details."
+ msgstr ""
+ "W zależności od systemu i implementacji bieżące ustawienia językowe będą "
+-"pobierane z  jednej lub obu spośród zmiennych $B<LANG> i $B<LC_MESSAGES>. B<%"
+-"man%> wyświetli swoje komunikaty w tym języku (jeśli są dostępne). Szczegóły "
+-"można znaleźć w B<setlocale>(3)."
++"pobierane z  jednej lub obu spośród zmiennych $B<LANG> i $B<LC_MESSAGES>. B<"
++"%man%> wyświetli swoje komunikaty w tym języku (jeśli są dostępne). "
++"Szczegóły można znaleźć w B<setlocale>(3)."
+ 
+ #
+ #
+@@ -2550,13 +2551,13 @@ msgstr "Globalna hierarchia stron podrę
+ #: ../../man/man1/man.man1:1327
+ msgid ""
+ "B<%mandb%>(8), B<%manpath%>(1), B<manpath>(5), B<%apropos%>(1), B<%whatis%>"
+-"(1), B<%catman%>(8), B<less>(1), B<nroff>(1), B<troff>(1), B<groff>(1), B<%"
+-"zsoelim%>(1), B<setlocale>(3), B<man>(7), B<ascii>(7), B<latin1>(7), the man-"
+-"db package manual, B<FSSTND>."
++"(1), B<%catman%>(8), B<less>(1), B<nroff>(1), B<troff>(1), B<groff>(1), B<"
++"%zsoelim%>(1), B<setlocale>(3), B<man>(7), B<ascii>(7), B<latin1>(7), the "
++"man-db package manual, B<FSSTND>."
+ msgstr ""
+ "B<%mandb%>(8), B<%manpath%>(1), B<manpath>(5), B<%apropos%>(1), B<%whatis%>"
+-"(1), B<%catman%>(8), B<less>(1), B<nroff>(1), B<troff>(1), B<groff>(1), B<%"
+-"zsoelim%>(1), B<setlocale>(3), B<man>(7), B<ascii>(7), B<latin1>(7), "
++"(1), B<%catman%>(8), B<less>(1), B<nroff>(1), B<troff>(1), B<groff>(1), B<"
++"%zsoelim%>(1), B<setlocale>(3), B<man>(7), B<ascii>(7), B<latin1>(7), "
+ "podręcznik pakietu man-db, B<FSSTND>."
+ 
+ #. type: SH
+@@ -2874,8 +2875,8 @@ msgstr ""
+ #. type: Plain text
+ #: ../../man/man1/whatis.man1:61
+ msgid ""
+-"B<index> databases are used during the search, and are updated by the B<%"
+-"mandb%> program.  Depending on your installation, this may be run by a "
++"B<index> databases are used during the search, and are updated by the B<"
++"%mandb%> program.  Depending on your installation, this may be run by a "
+ "periodic cron job, or may need to be run manually after new manual pages "
+ "have been installed.  To produce an old style text B<whatis> database from "
+ "the relative B<index> database, issue the command:"
+@@ -3158,8 +3159,8 @@ msgstr ""
+ "Wiersze tej postaci wskazują, które ścieżki man powinny być traktowane jako "
+ "systemowe, i opcjonalnie, gdzie powinny być składowane ich pliki cat. Ten "
+ "typ pola jest szczególnie ważny, gdy B<man> jest programem setuid, gdyż "
+-"(jeżeli jest umieszczony w systemowym pliku konfiguracyjnym %"
+-"manpath_config_file%, a nie w pliku konfiguracyjnym użytkownika .manpath) "
++"(jeżeli jest umieszczony w systemowym pliku konfiguracyjnym "
++"%manpath_config_file%, a nie w pliku konfiguracyjnym użytkownika .manpath) "
+ "mówi, do których hierarchii (katalogów) stron man należy sięgać jako "
+ "użytkownik setuid, a do których jako użytkownik wywołujący program."
+ 
+@@ -3492,8 +3493,8 @@ msgstr ""
+ "(drzewami katalogów) są te, które określono jako systemowe w pliku "
+ "konfiguracyjnym man-db. Domyślne sekcje określa albo podzielona dwukropkami "
+ "zawartość zmiennej środowiska $B<MANSECT>, albo zestaw standardowy "
+-"wkompilowany w B<man>, jeżeli $B<MANSECT> jest niezdefiniowana. Wywołanie B<%"
+-"catman%> z zestawem rozdzielonych białymi znakami nazw sekcji nadpisuje "
++"wkompilowany w B<man>, jeżeli $B<MANSECT> jest niezdefiniowana. Wywołanie B<"
++"%catman%> z zestawem rozdzielonych białymi znakami nazw sekcji nadpisuje "
+ "powyższe ustawienia domyślne."
+ 
+ #
+--- /dev/null
++++ man-db-2.5.7/gnulib/lib/getline.c
+@@ -0,0 +1,31 @@
++/* getline.c --- Implementation of replacement getline function.
++   Copyright (C) 2005, 2006, 2007, 2009, 2010 Free Software Foundation, Inc.
++
++   This program is free software; you can redistribute it and/or
++   modify it under the terms of the GNU General Public License as
++   published by the Free Software Foundation; either version 2, or (at
++   your option) any later version.
++
++   This program is distributed in the hope that it will be useful, but
++   WITHOUT ANY WARRANTY; without even the implied warranty of
++   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++   General Public License for more details.
++
++   You should have received a copy of the GNU General Public License
++   along with this program; if not, write to the Free Software
++   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
++   02110-1301, USA.  */
++
++/* Written by Simon Josefsson. */
++
++#include <config.h>
++
++#include <stdio.h>
++
++#include "getdelim.c"
++
++ssize_t
++getline (char **lineptr, size_t *n, FILE *stream)
++{
++  return getdelim (lineptr, n, '\n', stream);
++}
+--- man-db-2.5.7.orig/gnulib/lib/getopt.in.h
++++ man-db-2.5.7/gnulib/lib/getopt.in.h
+@@ -25,7 +25,7 @@
+ /* The include_next requires a split double-inclusion guard.  We must
+    also inform the replacement unistd.h to not recursively use
+    <getopt.h>; our definitions will be present soon enough.  */
+-#if @HAVE_GETOPT_H@
++#if @HAVE_GETOPT_H@ && !defined(__sun)
+ # define _GL_SYSTEM_GETOPT
+ # @INCLUDE_NEXT@ @NEXT_GETOPT_H@
+ # undef _GL_SYSTEM_GETOPT
+@@ -161,7 +161,7 @@ extern int optopt;
+ #ifndef __need_getopt
+ /* Describe the long-named options requested by the application.
+    The LONG_OPTIONS argument to getopt_long or getopt_long_only is a vector
+-   of `struct option' terminated by an element containing a name which is
++   of `struct getopt_option' terminated by an element containing a name which is
+    zero.
+ 
+    The field `has_arg' is:
+@@ -180,7 +180,7 @@ extern int optopt;
+    one).  For long options that have a zero `flag' field, `getopt'
+    returns the contents of the `val' field.  */
+ 
+-struct option
++struct getopt_option
+ {
+   const char *name;
+   /* has_arg can't be an enum because some compilers complain about
+@@ -190,7 +190,7 @@ struct option
+   int val;
+ };
+ 
+-/* Names for the values of the `has_arg' field of `struct option'.  */
++/* Names for the values of the `has_arg' field of `struct getopt_option'.  */
+ 
+ # define no_argument            0
+ # define required_argument      1
+@@ -229,11 +229,11 @@ extern int getopt (int ___argc, char *co
+ #ifndef __need_getopt
+ extern int getopt_long (int ___argc, char *__getopt_argv_const *___argv,
+                         const char *__shortopts,
+-                        const struct option *__longopts, int *__longind)
++                        const struct getopt_option *__longopts, int *__longind)
+        __THROW _GL_ARG_NONNULL ((2, 3));
+ extern int getopt_long_only (int ___argc, char *__getopt_argv_const *___argv,
+                              const char *__shortopts,
+-                             const struct option *__longopts, int *__longind)
++                             const struct getopt_option *__longopts, int *__longind)
+        __THROW _GL_ARG_NONNULL ((2, 3));
+ 
+ #endif
+--- man-db-2.5.7.orig/gnulib/lib/getopt_int.h
++++ man-db-2.5.7/gnulib/lib/getopt_int.h
+@@ -23,7 +23,7 @@
+ 
+ extern int _getopt_internal (int ___argc, char **___argv,
+                              const char *__shortopts,
+-                             const struct option *__longopts, int *__longind,
++                             const struct getopt_option *__longopts, int *__longind,
+                              int __long_only, int __posixly_correct);
+ 
+ 
+@@ -114,18 +114,18 @@ struct _getopt_data
+ 
+ extern int _getopt_internal_r (int ___argc, char **___argv,
+                                const char *__shortopts,
+-                               const struct option *__longopts, int *__longind,
++                               const struct getopt_option *__longopts, int *__longind,
+                                int __long_only, struct _getopt_data *__data,
+                                int __posixly_correct);
+ 
+ extern int _getopt_long_r (int ___argc, char **___argv,
+                            const char *__shortopts,
+-                           const struct option *__longopts, int *__longind,
++                           const struct getopt_option *__longopts, int *__longind,
+                            struct _getopt_data *__data);
+ 
+ extern int _getopt_long_only_r (int ___argc, char **___argv,
+                                 const char *__shortopts,
+-                                const struct option *__longopts,
++                                const struct getopt_option *__longopts,
+                                 int *__longind,
+                                 struct _getopt_data *__data);
+ 
+--- /dev/null
++++ man-db-2.5.7/gnulib/lib/str-two-way.h
+@@ -0,0 +1,429 @@
++/* Byte-wise substring search, using the Two-Way algorithm.
++   Copyright (C) 2008, 2009, 2010 Free Software Foundation, Inc.
++   This file is part of the GNU C Library.
++   Written by Eric Blake <ebb9@byu.net>, 2008.
++
++   This program is free software; you can redistribute it and/or modify
++   it under the terms of the GNU General Public License as published by
++   the Free Software Foundation; either version 2, or (at your option)
++   any later version.
++
++   This program is distributed in the hope that it will be useful,
++   but WITHOUT ANY WARRANTY; without even the implied warranty of
++   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++   GNU General Public License for more details.
++
++   You should have received a copy of the GNU General Public License along
++   with this program; if not, write to the Free Software Foundation,
++   Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.  */
++
++/* Before including this file, you need to include <config.h> and
++   <string.h>, and define:
++     RESULT_TYPE             A macro that expands to the return type.
++     AVAILABLE(h, h_l, j, n_l)
++                             A macro that returns nonzero if there are
++                             at least N_L bytes left starting at H[J].
++                             H is 'unsigned char *', H_L, J, and N_L
++                             are 'size_t'; H_L is an lvalue.  For
++                             NUL-terminated searches, H_L can be
++                             modified each iteration to avoid having
++                             to compute the end of H up front.
++
++  For case-insensitivity, you may optionally define:
++     CMP_FUNC(p1, p2, l)     A macro that returns 0 iff the first L
++                             characters of P1 and P2 are equal.
++     CANON_ELEMENT(c)        A macro that canonicalizes an element right after
++                             it has been fetched from one of the two strings.
++                             The argument is an 'unsigned char'; the result
++                             must be an 'unsigned char' as well.
++
++  This file undefines the macros documented above, and defines
++  LONG_NEEDLE_THRESHOLD.
++*/
++
++#include <limits.h>
++#include <stdint.h>
++
++/* We use the Two-Way string matching algorithm, which guarantees
++   linear complexity with constant space.  Additionally, for long
++   needles, we also use a bad character shift table similar to the
++   Boyer-Moore algorithm to achieve improved (potentially sub-linear)
++   performance.
++
++   See http://www-igm.univ-mlv.fr/~lecroq/string/node26.html#SECTION00260
++   and http://en.wikipedia.org/wiki/Boyer-Moore_string_search_algorithm
++*/
++
++/* Point at which computing a bad-byte shift table is likely to be
++   worthwhile.  Small needles should not compute a table, since it
++   adds (1 << CHAR_BIT) + NEEDLE_LEN computations of preparation for a
++   speedup no greater than a factor of NEEDLE_LEN.  The larger the
++   needle, the better the potential performance gain.  On the other
++   hand, on non-POSIX systems with CHAR_BIT larger than eight, the
++   memory required for the table is prohibitive.  */
++#if CHAR_BIT < 10
++# define LONG_NEEDLE_THRESHOLD 32U
++#else
++# define LONG_NEEDLE_THRESHOLD SIZE_MAX
++#endif
++
++#ifndef MAX
++# define MAX(a, b) ((a < b) ? (b) : (a))
++#endif
++
++#ifndef CANON_ELEMENT
++# define CANON_ELEMENT(c) c
++#endif
++#ifndef CMP_FUNC
++# define CMP_FUNC memcmp
++#endif
++
++/* Perform a critical factorization of NEEDLE, of length NEEDLE_LEN.
++   Return the index of the first byte in the right half, and set
++   *PERIOD to the global period of the right half.
++
++   The global period of a string is the smallest index (possibly its
++   length) at which all remaining bytes in the string are repetitions
++   of the prefix (the last repetition may be a subset of the prefix).
++
++   When NEEDLE is factored into two halves, a local period is the
++   length of the smallest word that shares a suffix with the left half
++   and shares a prefix with the right half.  All factorizations of a
++   non-empty NEEDLE have a local period of at least 1 and no greater
++   than NEEDLE_LEN.
++
++   A critical factorization has the property that the local period
++   equals the global period.  All strings have at least one critical
++   factorization with the left half smaller than the global period.
++
++   Given an ordered alphabet, a critical factorization can be computed
++   in linear time, with 2 * NEEDLE_LEN comparisons, by computing the
++   larger of two ordered maximal suffixes.  The ordered maximal
++   suffixes are determined by lexicographic comparison of
++   periodicity.  */
++static size_t
++critical_factorization (const unsigned char *needle, size_t needle_len,
++                        size_t *period)
++{
++  /* Index of last byte of left half, or SIZE_MAX.  */
++  size_t max_suffix, max_suffix_rev;
++  size_t j; /* Index into NEEDLE for current candidate suffix.  */
++  size_t k; /* Offset into current period.  */
++  size_t p; /* Intermediate period.  */
++  unsigned char a, b; /* Current comparison bytes.  */
++
++  /* Invariants:
++     0 <= j < NEEDLE_LEN - 1
++     -1 <= max_suffix{,_rev} < j (treating SIZE_MAX as if it were signed)
++     min(max_suffix, max_suffix_rev) < global period of NEEDLE
++     1 <= p <= global period of NEEDLE
++     p == global period of the substring NEEDLE[max_suffix{,_rev}+1...j]
++     1 <= k <= p
++  */
++
++  /* Perform lexicographic search.  */
++  max_suffix = SIZE_MAX;
++  j = 0;
++  k = p = 1;
++  while (j + k < needle_len)
++    {
++      a = CANON_ELEMENT (needle[j + k]);
++      b = CANON_ELEMENT (needle[max_suffix + k]);
++      if (a < b)
++        {
++          /* Suffix is smaller, period is entire prefix so far.  */
++          j += k;
++          k = 1;
++          p = j - max_suffix;
++        }
++      else if (a == b)
++        {
++          /* Advance through repetition of the current period.  */
++          if (k != p)
++            ++k;
++          else
++            {
++              j += p;
++              k = 1;
++            }
++        }
++      else /* b < a */
++        {
++          /* Suffix is larger, start over from current location.  */
++          max_suffix = j++;
++          k = p = 1;
++        }
++    }
++  *period = p;
++
++  /* Perform reverse lexicographic search.  */
++  max_suffix_rev = SIZE_MAX;
++  j = 0;
++  k = p = 1;
++  while (j + k < needle_len)
++    {
++      a = CANON_ELEMENT (needle[j + k]);
++      b = CANON_ELEMENT (needle[max_suffix_rev + k]);
++      if (b < a)
++        {
++          /* Suffix is smaller, period is entire prefix so far.  */
++          j += k;
++          k = 1;
++          p = j - max_suffix_rev;
++        }
++      else if (a == b)
++        {
++          /* Advance through repetition of the current period.  */
++          if (k != p)
++            ++k;
++          else
++            {
++              j += p;
++              k = 1;
++            }
++        }
++      else /* a < b */
++        {
++          /* Suffix is larger, start over from current location.  */
++          max_suffix_rev = j++;
++          k = p = 1;
++        }
++    }
++
++  /* Choose the longer suffix.  Return the first byte of the right
++     half, rather than the last byte of the left half.  */
++  if (max_suffix_rev + 1 < max_suffix + 1)
++    return max_suffix + 1;
++  *period = p;
++  return max_suffix_rev + 1;
++}
++
++/* Return the first location of non-empty NEEDLE within HAYSTACK, or
++   NULL.  HAYSTACK_LEN is the minimum known length of HAYSTACK.  This
++   method is optimized for NEEDLE_LEN < LONG_NEEDLE_THRESHOLD.
++   Performance is guaranteed to be linear, with an initialization cost
++   of 2 * NEEDLE_LEN comparisons.
++
++   If AVAILABLE does not modify HAYSTACK_LEN (as in memmem), then at
++   most 2 * HAYSTACK_LEN - NEEDLE_LEN comparisons occur in searching.
++   If AVAILABLE modifies HAYSTACK_LEN (as in strstr), then at most 3 *
++   HAYSTACK_LEN - NEEDLE_LEN comparisons occur in searching.  */
++static RETURN_TYPE
++two_way_short_needle (const unsigned char *haystack, size_t haystack_len,
++                      const unsigned char *needle, size_t needle_len)
++{
++  size_t i; /* Index into current byte of NEEDLE.  */
++  size_t j; /* Index into current window of HAYSTACK.  */
++  size_t period; /* The period of the right half of needle.  */
++  size_t suffix; /* The index of the right half of needle.  */
++
++  /* Factor the needle into two halves, such that the left half is
++     smaller than the global period, and the right half is
++     periodic (with a period as large as NEEDLE_LEN - suffix).  */
++  suffix = critical_factorization (needle, needle_len, &period);
++
++  /* Perform the search.  Each iteration compares the right half
++     first.  */
++  if (CMP_FUNC (needle, needle + period, suffix) == 0)
++    {
++      /* Entire needle is periodic; a mismatch can only advance by the
++         period, so use memory to avoid rescanning known occurrences
++         of the period.  */
++      size_t memory = 0;
++      j = 0;
++      while (AVAILABLE (haystack, haystack_len, j, needle_len))
++        {
++          /* Scan for matches in right half.  */
++          i = MAX (suffix, memory);
++          while (i < needle_len && (CANON_ELEMENT (needle[i])
++                                    == CANON_ELEMENT (haystack[i + j])))
++            ++i;
++          if (needle_len <= i)
++            {
++              /* Scan for matches in left half.  */
++              i = suffix - 1;
++              while (memory < i + 1 && (CANON_ELEMENT (needle[i])
++                                        == CANON_ELEMENT (haystack[i + j])))
++                --i;
++              if (i + 1 < memory + 1)
++                return (RETURN_TYPE) (haystack + j);
++              /* No match, so remember how many repetitions of period
++                 on the right half were scanned.  */
++              j += period;
++              memory = needle_len - period;
++            }
++          else
++            {
++              j += i - suffix + 1;
++              memory = 0;
++            }
++        }
++    }
++  else
++    {
++      /* The two halves of needle are distinct; no extra memory is
++         required, and any mismatch results in a maximal shift.  */
++      period = MAX (suffix, needle_len - suffix) + 1;
++      j = 0;
++      while (AVAILABLE (haystack, haystack_len, j, needle_len))
++        {
++          /* Scan for matches in right half.  */
++          i = suffix;
++          while (i < needle_len && (CANON_ELEMENT (needle[i])
++                                    == CANON_ELEMENT (haystack[i + j])))
++            ++i;
++          if (needle_len <= i)
++            {
++              /* Scan for matches in left half.  */
++              i = suffix - 1;
++              while (i != SIZE_MAX && (CANON_ELEMENT (needle[i])
++                                       == CANON_ELEMENT (haystack[i + j])))
++                --i;
++              if (i == SIZE_MAX)
++                return (RETURN_TYPE) (haystack + j);
++              j += period;
++            }
++          else
++            j += i - suffix + 1;
++        }
++    }
++  return NULL;
++}
++
++/* Return the first location of non-empty NEEDLE within HAYSTACK, or
++   NULL.  HAYSTACK_LEN is the minimum known length of HAYSTACK.  This
++   method is optimized for LONG_NEEDLE_THRESHOLD <= NEEDLE_LEN.
++   Performance is guaranteed to be linear, with an initialization cost
++   of 3 * NEEDLE_LEN + (1 << CHAR_BIT) operations.
++
++   If AVAILABLE does not modify HAYSTACK_LEN (as in memmem), then at
++   most 2 * HAYSTACK_LEN - NEEDLE_LEN comparisons occur in searching,
++   and sublinear performance O(HAYSTACK_LEN / NEEDLE_LEN) is possible.
++   If AVAILABLE modifies HAYSTACK_LEN (as in strstr), then at most 3 *
++   HAYSTACK_LEN - NEEDLE_LEN comparisons occur in searching, and
++   sublinear performance is not possible.  */
++static RETURN_TYPE
++two_way_long_needle (const unsigned char *haystack, size_t haystack_len,
++                     const unsigned char *needle, size_t needle_len)
++{
++  size_t i; /* Index into current byte of NEEDLE.  */
++  size_t j; /* Index into current window of HAYSTACK.  */
++  size_t period; /* The period of the right half of needle.  */
++  size_t suffix; /* The index of the right half of needle.  */
++  size_t shift_table[1U << CHAR_BIT]; /* See below.  */
++
++  /* Factor the needle into two halves, such that the left half is
++     smaller than the global period, and the right half is
++     periodic (with a period as large as NEEDLE_LEN - suffix).  */
++  suffix = critical_factorization (needle, needle_len, &period);
++
++  /* Populate shift_table.  For each possible byte value c,
++     shift_table[c] is the distance from the last occurrence of c to
++     the end of NEEDLE, or NEEDLE_LEN if c is absent from the NEEDLE.
++     shift_table[NEEDLE[NEEDLE_LEN - 1]] contains the only 0.  */
++  for (i = 0; i < 1U << CHAR_BIT; i++)
++    shift_table[i] = needle_len;
++  for (i = 0; i < needle_len; i++)
++    shift_table[CANON_ELEMENT (needle[i])] = needle_len - i - 1;
++
++  /* Perform the search.  Each iteration compares the right half
++     first.  */
++  if (CMP_FUNC (needle, needle + period, suffix) == 0)
++    {
++      /* Entire needle is periodic; a mismatch can only advance by the
++         period, so use memory to avoid rescanning known occurrences
++         of the period.  */
++      size_t memory = 0;
++      size_t shift;
++      j = 0;
++      while (AVAILABLE (haystack, haystack_len, j, needle_len))
++        {
++          /* Check the last byte first; if it does not match, then
++             shift to the next possible match location.  */
++          shift = shift_table[CANON_ELEMENT (haystack[j + needle_len - 1])];
++          if (0 < shift)
++            {
++              if (memory && shift < period)
++                {
++                  /* Since needle is periodic, but the last period has
++                     a byte out of place, there can be no match until
++                     after the mismatch.  */
++                  shift = needle_len - period;
++                  memory = 0;
++                }
++              j += shift;
++              continue;
++            }
++          /* Scan for matches in right half.  The last byte has
++             already been matched, by virtue of the shift table.  */
++          i = MAX (suffix, memory);
++          while (i < needle_len - 1 && (CANON_ELEMENT (needle[i])
++                                        == CANON_ELEMENT (haystack[i + j])))
++            ++i;
++          if (needle_len - 1 <= i)
++            {
++              /* Scan for matches in left half.  */
++              i = suffix - 1;
++              while (memory < i + 1 && (CANON_ELEMENT (needle[i])
++                                        == CANON_ELEMENT (haystack[i + j])))
++                --i;
++              if (i + 1 < memory + 1)
++                return (RETURN_TYPE) (haystack + j);
++              /* No match, so remember how many repetitions of period
++                 on the right half were scanned.  */
++              j += period;
++              memory = needle_len - period;
++            }
++          else
++            {
++              j += i - suffix + 1;
++              memory = 0;
++            }
++        }
++    }
++  else
++    {
++      /* The two halves of needle are distinct; no extra memory is
++         required, and any mismatch results in a maximal shift.  */
++      size_t shift;
++      period = MAX (suffix, needle_len - suffix) + 1;
++      j = 0;
++      while (AVAILABLE (haystack, haystack_len, j, needle_len))
++        {
++          /* Check the last byte first; if it does not match, then
++             shift to the next possible match location.  */
++          shift = shift_table[CANON_ELEMENT (haystack[j + needle_len - 1])];
++          if (0 < shift)
++            {
++              j += shift;
++              continue;
++            }
++          /* Scan for matches in right half.  The last byte has
++             already been matched, by virtue of the shift table.  */
++          i = suffix;
++          while (i < needle_len - 1 && (CANON_ELEMENT (needle[i])
++                                        == CANON_ELEMENT (haystack[i + j])))
++            ++i;
++          if (needle_len - 1 <= i)
++            {
++              /* Scan for matches in left half.  */
++              i = suffix - 1;
++              while (i != SIZE_MAX && (CANON_ELEMENT (needle[i])
++                                       == CANON_ELEMENT (haystack[i + j])))
++                --i;
++              if (i == SIZE_MAX)
++                return (RETURN_TYPE) (haystack + j);
++              j += period;
++            }
++          else
++            j += i - suffix + 1;
++        }
++    }
++  return NULL;
++}
++
++#undef AVAILABLE
++#undef CANON_ELEMENT
++#undef CMP_FUNC
++#undef MAX
++#undef RETURN_TYPE
+--- /dev/null
++++ man-db-2.5.7/gnulib/lib/strcasestr.c
+@@ -0,0 +1,83 @@
++/* Case-insensitive searching in a string.
++   Copyright (C) 2005-2010 Free Software Foundation, Inc.
++   Written by Bruno Haible <bruno@clisp.org>, 2005.
++
++   This program is free software; you can redistribute it and/or modify
++   it under the terms of the GNU General Public License as published by
++   the Free Software Foundation; either version 2, or (at your option)
++   any later version.
++
++   This program is distributed in the hope that it will be useful,
++   but WITHOUT ANY WARRANTY; without even the implied warranty of
++   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++   GNU General Public License for more details.
++
++   You should have received a copy of the GNU General Public License
++   along with this program; if not, write to the Free Software Foundation,
++   Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.  */
++
++#include <config.h>
++
++/* Specification.  */
++#include <string.h>
++
++#include <ctype.h>
++#include <stdbool.h>
++#include <strings.h>
++
++#define TOLOWER(Ch) (isupper (Ch) ? tolower (Ch) : (Ch))
++
++/* Two-Way algorithm.  */
++#define RETURN_TYPE char *
++#define AVAILABLE(h, h_l, j, n_l)                       \
++  (!memchr ((h) + (h_l), '\0', (j) + (n_l) - (h_l))     \
++   && ((h_l) = (j) + (n_l)))
++#define CANON_ELEMENT(c) TOLOWER (c)
++#define CMP_FUNC(p1, p2, l)                             \
++  strncasecmp ((const char *) (p1), (const char *) (p2), l)
++#include "str-two-way.h"
++
++/* Find the first occurrence of NEEDLE in HAYSTACK, using
++   case-insensitive comparison.  This function gives unspecified
++   results in multibyte locales.  */
++char *
++strcasestr (const char *haystack_start, const char *needle_start)
++{
++  const char *haystack = haystack_start;
++  const char *needle = needle_start;
++  size_t needle_len; /* Length of NEEDLE.  */
++  size_t haystack_len; /* Known minimum length of HAYSTACK.  */
++  bool ok = true; /* True if NEEDLE is prefix of HAYSTACK.  */
++
++  /* Determine length of NEEDLE, and in the process, make sure
++     HAYSTACK is at least as long (no point processing all of a long
++     NEEDLE if HAYSTACK is too short).  */
++  while (*haystack && *needle)
++    {
++      ok &= (TOLOWER ((unsigned char) *haystack)
++             == TOLOWER ((unsigned char) *needle));
++      haystack++;
++      needle++;
++    }
++  if (*needle)
++    return NULL;
++  if (ok)
++    return (char *) haystack_start;
++  needle_len = needle - needle_start;
++  haystack = haystack_start + 1;
++  haystack_len = needle_len - 1;
++
++  /* Perform the search.  Abstract memory is considered to be an array
++     of 'unsigned char' values, not an array of 'char' values.  See
++     ISO C 99 section 6.2.6.1.  */
++  if (needle_len < LONG_NEEDLE_THRESHOLD)
++    return two_way_short_needle ((const unsigned char *) haystack,
++                                 haystack_len,
++                                 (const unsigned char *) needle_start,
++                                 needle_len);
++  return two_way_long_needle ((const unsigned char *) haystack, haystack_len,
++                              (const unsigned char *) needle_start,
++                              needle_len);
++}
++
++#undef LONG_NEEDLE_THRESHOLD
+--- man-db-2.5.7.orig/gnulib/lib/argp-parse.c
++++ man-db-2.5.7/gnulib/lib/argp-parse.c
+@@ -58,7 +58,7 @@
+ #define GROUP_BITS CHAR_BIT
+ 
+ /* The number of bits available for the user value.  */
+-#define USER_BITS ((sizeof ((struct option *)0)->val * CHAR_BIT) - GROUP_BITS)
++#define USER_BITS ((sizeof ((struct getopt_option *)0)->val * CHAR_BIT) - GROUP_BITS)
+ #define USER_MASK ((1 << USER_BITS) - 1)
+ 
+ /* EZ alias for ARGP_ERR_UNKNOWN.  */
+@@ -172,9 +172,9 @@ static const struct argp argp_version_ar
+    long option with called NAME, or -1 if none is found.  Passing NULL as
+    NAME will return the number of options.  */
+ static int
+-find_long_option (struct option *long_options, const char *name)
++find_long_option (struct getopt_option *long_options, const char *name)
+ {
+-  struct option *l = long_options;
++  struct getopt_option *l = long_options;
+   while (l->name != NULL)
+     if (name != NULL && strcmp (l->name, name) == 0)
+       return l - long_options;
+@@ -246,7 +246,7 @@ struct parser
+   char *short_opts;
+   /* LONG_OPTS is the array of getop long option structures for the union of
+      all the groups of options.  */
+-  struct option *long_opts;
++  struct getopt_option *long_opts;
+   /* OPT_DATA is the getopt data used for the re-entrant getopt.  */
+   struct _getopt_data opt_data;
+ 
+@@ -276,7 +276,7 @@ struct parser_convert_state
+ {
+   struct parser *parser;
+   char *short_end;
+-  struct option *long_end;
++  struct getopt_option *long_end;
+   void **child_inputs_end;
+ };
+ 
+@@ -478,16 +478,16 @@ parser_init (struct parser *parser, cons
+   /* Lengths of the various bits of storage used by PARSER.  */
+   glen = (szs.num_groups + 1) * sizeof (struct group);
+   clen = szs.num_child_inputs * sizeof (void *);
+-  llen = (szs.long_len + 1) * sizeof (struct option);
++  llen = (szs.long_len + 1) * sizeof (struct getopt_option);
+   slen = szs.short_len + 1;
+ 
+   /* Sums of previous lengths, properly aligned.  There's no need to
+      align gsum, since struct group is aligned at least as strictly as
+      void * (since it contains a void * member).  And there's no need
+-     to align lsum, since struct option is aligned at least as
++     to align lsum, since struct getopt_option is aligned at least as
+      strictly as char.  */
+   gsum = glen;
+-  csum = alignto (gsum + clen, alignof (struct option));
++  csum = alignto (gsum + clen, alignof (struct getopt_option));
+   lsum = csum + llen;
+   ssum = lsum + slen;
+ 
+@@ -498,7 +498,7 @@ parser_init (struct parser *parser, cons
+   storage = parser->storage;
+   parser->groups = parser->storage;
+   parser->child_inputs = (void **) (storage + gsum);
+-  parser->long_opts = (struct option *) (storage + csum);
++  parser->long_opts = (struct getopt_option *) (storage + csum);
+   parser->short_opts = storage + lsum;
+   parser->opt_data = opt_data;
+ 
+@@ -757,7 +757,7 @@ parser_parse_opt (struct parser *parser,
+                       dgettext (parser->argp->argp_domain, bad_key_err));
+       else
+         {
+-          struct option *long_opt = parser->long_opts;
++          struct getopt_option *long_opt = parser->long_opts;
+           while (long_opt->val != opt && long_opt->name)
+             long_opt++;
+           __argp_error (&parser->state, "--%s: %s",
+@@ -768,7 +768,7 @@ parser_parse_opt (struct parser *parser,
+ 
+   return err;
+ }
+-
++
+ /* Parse the next argument in PARSER (as indicated by PARSER->state.next).
+    Any error from the parsers is returned, and *ARGP_EBADKEY indicates
+    whether a value of EBADKEY is due to an unrecognized argument (which is
+--- /dev/null
++++ man-db-2.5.7/gnulib/lib/getdelim.c
+@@ -0,0 +1,137 @@
++/* getdelim.c --- Implementation of replacement getdelim function.
++   Copyright (C) 1994, 1996, 1997, 1998, 2001, 2003, 2005, 2006, 2007, 2008,
++   2009, 2010 Free Software Foundation, Inc.
++
++   This program is free software; you can redistribute it and/or
++   modify it under the terms of the GNU General Public License as
++   published by the Free Software Foundation; either version 2, or (at
++   your option) any later version.
++
++   This program is distributed in the hope that it will be useful, but
++   WITHOUT ANY WARRANTY; without even the implied warranty of
++   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++   General Public License for more details.
++
++   You should have received a copy of the GNU General Public License
++   along with this program; if not, write to the Free Software
++   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
++   02110-1301, USA.  */
++
++/* Ported from glibc by Simon Josefsson. */
++
++#include <config.h>
++
++/* Don't use __attribute__ __nonnull__ in this compilation unit.  Otherwise gcc
++   optimizes away the lineptr == NULL || n == NULL || fp == NULL tests below.  */
++#define _GL_ARG_NONNULL(params)
++
++#include <stdio.h>
++
++#include <limits.h>
++#include <stdint.h>
++#include <stdlib.h>
++#include <errno.h>
++
++#ifndef SSIZE_MAX
++# define SSIZE_MAX ((ssize_t) (SIZE_MAX / 2))
++#endif
++
++#if USE_UNLOCKED_IO
++# include "unlocked-io.h"
++# define getc_maybe_unlocked(fp)        getc(fp)
++#elif !HAVE_FLOCKFILE || !HAVE_FUNLOCKFILE || !HAVE_DECL_GETC_UNLOCKED
++# undef flockfile
++# undef funlockfile
++# define flockfile(x) ((void) 0)
++# define funlockfile(x) ((void) 0)
++# define getc_maybe_unlocked(fp)        getc(fp)
++#else
++# define getc_maybe_unlocked(fp)        getc_unlocked(fp)
++#endif
++
++/* Read up to (and including) a DELIMITER from FP into *LINEPTR (and
++   NUL-terminate it).  *LINEPTR is a pointer returned from malloc (or
++   NULL), pointing to *N characters of space.  It is realloc'ed as
++   necessary.  Returns the number of characters read (not including
++   the null terminator), or -1 on error or EOF.  */
++
++ssize_t
++getdelim (char **lineptr, size_t *n, int delimiter, FILE *fp)
++{
++  ssize_t result;
++  size_t cur_len = 0;
++
++  if (lineptr == NULL || n == NULL || fp == NULL)
++    {
++      errno = EINVAL;
++      return -1;
++    }
++
++  flockfile (fp);
++
++  if (*lineptr == NULL || *n == 0)
++    {
++      char *new_lineptr;
++      *n = 120;
++      new_lineptr = (char *) realloc (*lineptr, *n);
++      if (new_lineptr == NULL)
++        {
++          result = -1;
++          goto unlock_return;
++        }
++      *lineptr = new_lineptr;
++    }
++
++  for (;;)
++    {
++      int i;
++
++      i = getc_maybe_unlocked (fp);
++      if (i == EOF)
++        {
++          result = -1;
++          break;
++        }
++
++      /* Make enough space for len+1 (for final NUL) bytes.  */
++      if (cur_len + 1 >= *n)
++        {
++          size_t needed_max =
++            SSIZE_MAX < SIZE_MAX ? (size_t) SSIZE_MAX + 1 : SIZE_MAX;
++          size_t needed = 2 * *n + 1;   /* Be generous. */
++          char *new_lineptr;
++
++          if (needed_max < needed)
++            needed = needed_max;
++          if (cur_len + 1 >= needed)
++            {
++              result = -1;
++              errno = EOVERFLOW;
++              goto unlock_return;
++            }
++
++          new_lineptr = (char *) realloc (*lineptr, needed);
++          if (new_lineptr == NULL)
++            {
++              result = -1;
++              goto unlock_return;
++            }
++
++          *lineptr = new_lineptr;
++          *n = needed;
++        }
++
++      (*lineptr)[cur_len] = i;
++      cur_len++;
++
++      if (i == delimiter)
++        break;
++    }
++  (*lineptr)[cur_len] = '\0';
++  result = cur_len ? cur_len : result;
++
++ unlock_return:
++  funlockfile (fp); /* doesn't set errno */
++
++  return result;
++}
+--- man-db-2.5.7.orig/gnulib/lib/getopt.c
++++ man-db-2.5.7/gnulib/lib/getopt.c
+@@ -336,7 +336,7 @@ _getopt_initialize (int argc _GL_UNUSED,
+    But we pretend they're const in the prototype to be compatible
+    with other systems.
+ 
+-   LONGOPTS is a vector of `struct option' terminated by an
++   LONGOPTS is a vector of `struct getopt_option' terminated by an
+    element containing a name which is zero.
+ 
+    LONGIND returns the index in LONGOPT of the long-named option found.
+@@ -348,7 +348,7 @@ _getopt_initialize (int argc _GL_UNUSED,
+ 
+ int
+ _getopt_internal_r (int argc, char **argv, const char *optstring,
+-                    const struct option *longopts, int *longind,
++                    const struct getopt_option *longopts, int *longind,
+                     int long_only, struct _getopt_data *d, int posixly_correct)
+ {
+   int print_errors = d->opterr;
+@@ -481,8 +481,8 @@ _getopt_internal_r (int argc, char **arg
+                             || !strchr (optstring, argv[d->optind][1])))))
+     {
+       char *nameend;
+-      const struct option *p;
+-      const struct option *pfound = NULL;
++      const struct getopt_option *p;
++      const struct getopt_option *pfound = NULL;
+       int exact = 0;
+       int ambig = 0;
+       int indfound = -1;
+@@ -786,8 +786,8 @@ _getopt_internal_r (int argc, char **arg
+     if (temp[0] == 'W' && temp[1] == ';')
+       {
+         char *nameend;
+-        const struct option *p;
+-        const struct option *pfound = NULL;
++        const struct getopt_option *p;
++        const struct getopt_option *pfound = NULL;
+         int exact = 0;
+         int ambig = 0;
+         int indfound = 0;
+@@ -1070,7 +1070,7 @@ _getopt_internal_r (int argc, char **arg
+ 
+ int
+ _getopt_internal (int argc, char **argv, const char *optstring,
+-                  const struct option *longopts, int *longind, int long_only,
++                  const struct getopt_option *longopts, int *longind, int long_only,
+                   int posixly_correct)
+ {
+   int result;
+@@ -1101,7 +1101,7 @@ int
+ getopt (int argc, char *const *argv, const char *optstring)
+ {
+   return _getopt_internal (argc, (char **) argv, optstring,
+-                           (const struct option *) 0,
++                           (const struct getopt_option *) 0,
+                            (int *) 0,
+                            0, POSIXLY_CORRECT);
+ }
+@@ -1111,7 +1111,7 @@ int
+ __posix_getopt (int argc, char *const *argv, const char *optstring)
+ {
+   return _getopt_internal (argc, argv, optstring,
+-                           (const struct option *) 0,
++                           (const struct getopt_option *) 0,
+                            (int *) 0,
+                            0, 1);
+ }
+--- man-db-2.5.7.orig/gnulib/lib/getopt1.c
++++ man-db-2.5.7/gnulib/lib/getopt1.c
+@@ -38,7 +38,7 @@
+ 
+ int
+ getopt_long (int argc, char *__getopt_argv_const *argv, const char *options,
+-             const struct option *long_options, int *opt_index)
++             const struct getopt_option *long_options, int *opt_index)
+ {
+   return _getopt_internal (argc, (char **) argv, options, long_options,
+                            opt_index, 0, 0);
+@@ -46,7 +46,7 @@ getopt_long (int argc, char *__getopt_ar
+ 
+ int
+ _getopt_long_r (int argc, char **argv, const char *options,
+-                const struct option *long_options, int *opt_index,
++                const struct getopt_option *long_options, int *opt_index,
+                 struct _getopt_data *d)
+ {
+   return _getopt_internal_r (argc, argv, options, long_options, opt_index,
+@@ -61,7 +61,7 @@ _getopt_long_r (int argc, char **argv, c
+ int
+ getopt_long_only (int argc, char *__getopt_argv_const *argv,
+                   const char *options,
+-                  const struct option *long_options, int *opt_index)
++                  const struct getopt_option *long_options, int *opt_index)
+ {
+   return _getopt_internal (argc, (char **) argv, options, long_options,
+                            opt_index, 1, 0);
+@@ -69,7 +69,7 @@ getopt_long_only (int argc, char *__geto
+ 
+ int
+ _getopt_long_only_r (int argc, char **argv, const char *options,
+-                     const struct option *long_options, int *opt_index,
++                     const struct getopt_option *long_options, int *opt_index,
+                      struct _getopt_data *d)
+ {
+   return _getopt_internal_r (argc, argv, options, long_options, opt_index,
+@@ -91,7 +91,7 @@ main (int argc, char **argv)
+     {
+       int this_option_optind = optind ? optind : 1;
+       int option_index = 0;
+-      static const struct option long_options[] =
++      static const struct getopt_option long_options[] =
+       {
+         {"add", 1, 0, 0},
+         {"append", 0, 0, 0},
+--- man-db-2.5.7.orig/src/man.c
++++ man-db-2.5.7/src/man.c
+@@ -105,6 +105,10 @@ static char *cwd;
+ #include "zsoelim.h"
+ #include "man.h"
+ 
++#ifdef __sun
++#include "gnulib/lib/strcasestr.c"
++#endif
++
+ #ifdef SECURE_MAN_UID
+ extern uid_t ruid;
+ extern uid_t euid;
+@@ -2761,7 +2765,7 @@ static int duplicate_candidates (struct 
+ 	slash2 = strrchr (right->path, '/');
+ 	if (!slash1 || !slash2 ||
+ 	    !STRNEQ (left->path, right->path,
+-		     MAX (slash1 - left->path, slash2 - right->path)))
++		     ((slash1 - left->path) < (slash2 - right->path) ? (slash1 - left->path) : (slash2 - right->path)) ))
+ 		return 0; /* different path base */
+ 
+ 	unpack_locale_bits (++slash1, &bits1);
+--- man-db-2.5.7.orig/src/encodings.c
++++ man-db-2.5.7/src/encodings.c
+@@ -44,6 +44,9 @@
+ #include "manconv.h"
+ #include "encodings.h"
+ 
++#ifdef __sun
++#include "gnulib/lib/getline.c"
++#endif
+ 
+ /* Due to historical limitations in groff (which may be removed in the
+  * future), there is no mechanism for a man page to specify its own

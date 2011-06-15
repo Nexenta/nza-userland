@@ -1,0 +1,27 @@
+# DP: Don't include /usr/local/include and /usr/local/lib as gcc search paths 
+
+Index: python2.6-2.6.5+20100521/setup.py
+===================================================================
+--- python2.6-2.6.5+20100521.orig/setup.py	2010-05-21 15:29:52.295707354 +0200
++++ python2.6-2.6.5+20100521/setup.py	2010-05-21 15:29:59.867737113 +0200
+@@ -310,8 +310,9 @@
+ 
+     def detect_modules(self):
+         # Ensure that /usr/local is always used
+-        add_dir_to_list(self.compiler.library_dirs, '/usr/local/lib')
+-        add_dir_to_list(self.compiler.include_dirs, '/usr/local/include')
++        # On Debian /usr/local is always used, so we don't include it twice
++        #add_dir_to_list(self.compiler.library_dirs, '/usr/local/lib')
++        #add_dir_to_list(self.compiler.include_dirs, '/usr/local/include')
+ 
+         # Add paths specified in the environment variables LDFLAGS and
+         # CPPFLAGS for header and library files.
+@@ -412,6 +412,8 @@
+             '/lib', '/usr/lib',
+             ]
+         inc_dirs = self.compiler.include_dirs + ['/usr/include']
++        gnu_triplet = os.popen('dpkg-architecture -qDEB_HOST_GNU_TYPE').readline()[:-1]
++        inc_dirs.append(os.path.join('/usr/include', gnu_triplet))
+         exts = []
+         missing = []
+ 

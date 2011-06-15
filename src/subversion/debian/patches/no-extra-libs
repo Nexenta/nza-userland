@@ -1,0 +1,52 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+##
+## no-extra-libs by <peter@p12n.org>
+##
+## DP: Work around "libtool disease" in '{apr,aprutil,neon}-config --libs',
+## DP: where they think our runtime linker is too stupid to handle recursive
+## DP: library dependencies.
+## DP:
+## DP: See Debian bug #338302.
+
+@DPATCH@
+--- a/build/ac-macros/apr.m4
++++ b/build/ac-macros/apr.m4
+@@ -74,16 +74,10 @@
+     AC_MSG_ERROR([apr-config --prefix failed])
+   fi
+ 
+-  dnl When APR stores the dependent libs in the .la file, we don't need 
+-  dnl --libs.
+-  SVN_APR_LIBS="`$apr_config --link-libtool --libs`"
++  SVN_APR_LIBS="`pkg-config --libs apr-1`"
++  SVN_APR_EXPORT_LIBS="`pkg-config --libs apr-1`"
+   if test $? -ne 0; then
+-    AC_MSG_ERROR([apr-config --link-libtool --libs failed])
+-  fi
+-
+-  SVN_APR_EXPORT_LIBS="`$apr_config --link-ld --libs`"
+-  if test $? -ne 0; then
+-    AC_MSG_ERROR([apr-config --link-ld --libs failed])
++    AC_MSG_ERROR([pkg-config --libs apr-1 failed])
+   fi
+ 
+   SVN_APR_SHLIB_PATH_VAR="`$apr_config --shlib-path-var`"
+--- a/build/ac-macros/aprutil.m4
++++ b/build/ac-macros/aprutil.m4
+@@ -77,14 +77,8 @@
+     AC_MSG_ERROR([apu-config --prefix failed])
+   fi
+ 
+-  dnl When APR stores the dependent libs in the .la file, we don't need
+-  dnl --libs.
+-  SVN_APRUTIL_LIBS="`$apu_config --link-libtool --libs`"
+-  if test $? -ne 0; then
+-    AC_MSG_ERROR([apu-config --link-libtool --libs failed])
+-  fi
+-
+-  SVN_APRUTIL_EXPORT_LIBS="`$apu_config --link-ld --libs`"
++  SVN_APRUTIL_LIBS="`pkg-config --libs apr-util-1`"
++  SVN_APRUTIL_EXPORT_LIBS="`pkg-config --libs apr-util-1`"
+   if test $? -ne 0; then
+     AC_MSG_ERROR([apu-config --link-ld --libs failed])
+   fi

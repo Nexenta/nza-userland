@@ -1,0 +1,17 @@
+debian/install/deb32/usr/bin/gio-querymodules usr/bin
+debian/install/deb64/usr/bin/gio-querymodules usr/bin/amd64
+
+debian/install/deb32/usr/bin/glib-compile-schemas usr/bin
+debian/install/deb64/usr/bin/glib-compile-schemas usr/bin/amd64
+
+debian/install/deb32/usr/bin/gsettings usr/bin
+debian/install/deb64/usr/bin/gsettings usr/bin/amd64
+
+#debian/install/deb32/usr/bin/gdbus usr/bin
+#debian/install/deb64/usr/bin/gdbus usr/bin/amd64
+
+
+debian/install/deb32/usr/share/man/man1/gio-querymodules.1* usr/share/man/man1
+debian/install/deb32/usr/share/man/man1/glib-compile-schemas.1* usr/share/man/man1
+debian/install/deb32/usr/share/man/man1/gsettings.1* usr/share/man/man1
+debian/install/deb32/usr/share/man/man1/gdbus.1* usr/share/man/man1

@@ -1,0 +1,31 @@
+#!/bin/sh
+
+set -e
+
+# catalog info based on dsssl/catalog
+
+CAT=/etc/sgml.catalog
+# the _FIX makes it actually put in the dsssl.cat instead of the davenport one
+SIG="9ed965b566274159f9ea7c7feb9cc48c_FIX"
+SBEG="-- SGML BEGIN dsssl.cat"
+SEND="-- SGML END dsssl.cat"
+SIGNBEG="$SBEG $SIG --"
+SIGNEND="$SEND $SIG --"
+
+# *always* ditch the old crufty entries.
+if grep -q "^$SBEG" $CAT && grep -q "^$SEND" $CAT; then
+    echo "Cleaning out DSSSL DTD entries from $CAT on $1."
+    sed -e "/$SBEG/,/$SEND/d" < $CAT > ${CAT}.new
+    mv ${CAT}.new ${CAT}
+else
+    if grep -q "fot.dtd" $CAT && \
+       grep -q "dsssl.dtd" $CAT && \
+       grep -q "style-sheet.dtd" $CAT
+    then
+	echo "Untagged entries found, cleaning"
+	grep -v "fot.dtd" < $CAT | \
+	  grep -v "dsssl.dtd" | \
+	  grep -v "style-sheet.dtd" > ${CAT}.new
+	mv ${CAT}.new ${CAT}
+    fi
+fi

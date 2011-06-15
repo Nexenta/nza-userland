@@ -1,0 +1,21 @@
+#!/bin/sh
+set -e
+
+case "$1" in
+	purge)
+
+		rm -f \
+			/usr/share/mc/cedit.menu \
+			/usr/share/mc/*.ini \
+			/usr/share/mc/mc.* \
+			/usr/share/mc/*.rc \
+			/usr/share/mc/Syntax
+
+		rmdir /usr/share/mc 2>/dev/null || true
+
+	;;
+esac
+
+#DEBHELPER#
+
+exit 0

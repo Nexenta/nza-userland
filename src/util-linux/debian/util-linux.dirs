@@ -1,0 +1,16 @@
+usr/gnu/
+usr/gnu/bin/
+usr/gnu/sbin/
+usr/gnu/lib/mime/
+usr/gnu/lib/mime/packages/
+usr/gnu/share/
+usr/gnu/share/man/man1/
+usr/gnu/share/man/man8/
+usr/gnu/share/info/
+usr/gnu/share/doc/
+usr/gnu/share/doc/util-linux/
+usr/gnu/share/doc/util-linux/examples/
+usr/gnu/share/lintian/
+usr/gnu/share/lintian/overrides/
+usr/gnu/lib/udev/
+usr/gnu/lib/udev/rules.d/

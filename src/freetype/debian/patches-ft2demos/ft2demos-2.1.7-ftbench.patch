@@ -1,0 +1,113 @@
+Index: src/ftbench.c
+===================================================================
+--- src/ftbench.c.orig	2006-05-13 13:49:48.000000000 -0700
++++ src/ftbench.c	2006-05-13 13:56:03.000000000 -0700
+@@ -70,6 +70,7 @@
+ FTC_ImageCache    image_cache;
+ FTC_SBitCache     sbit_cache;
+ FTC_ImageTypeRec  font_type;
++FT_UInt           num_charcodes;
+ 
+ enum {
+   FT_BENCH_LOAD_GLYPH,
+@@ -209,7 +210,7 @@
+ 
+   TIMER_START( timer );
+ 
+-  for ( i = 0; i < face->num_glyphs; i++ )
++  for ( i = 0; i < num_charcodes; i++ )
+   {
+     if ( !FT_Load_Glyph( face, i, load_flags ) )
+       done++;
+@@ -231,7 +232,7 @@
+ 
+   FT_UNUSED( user_data );
+ 
+-  for ( i = 0; i < face->num_glyphs; i++ )
++  for ( i = 0; i < num_charcodes; i++ )
+   {
+     if ( FT_Load_Glyph( face, i, load_flags ) )
+       continue;
+@@ -257,7 +258,7 @@
+ 
+   FT_UNUSED( user_data );
+ 
+-  for ( i = 0; i < face->num_glyphs; i++ )
++  for ( i = 0; i < num_charcodes; i++ )
+   {
+     if ( FT_Load_Glyph( face, i, load_flags ) )
+       continue;
+@@ -287,7 +288,7 @@
+ 
+   FT_UNUSED( user_data );
+ 
+-  for ( i = 0; i < face->num_glyphs; i++ )
++  for ( i = 0; i < num_charcodes; i++ )
+   {
+     if ( FT_Load_Glyph( face, i, load_flags ) )
+       continue;
+@@ -380,7 +381,7 @@
+ 
+   TIMER_START( timer );
+ 
+-  for ( i = 0; i < face->num_glyphs; i++ )
++  for ( i = 0; i < num_charcodes; i++ )
+   {
+     if ( !FTC_ImageCache_Lookup(image_cache, &font_type, i, &glyph, NULL) )
+       done++;
+@@ -411,7 +412,7 @@
+ 
+   TIMER_START( timer );
+ 
+-  for ( i = 0; i < face->num_glyphs; i++ )
++  for ( i = 0; i < num_charcodes; i++ )
+   {
+     if ( !FTC_SBitCache_Lookup(sbit_cache, &font_type, i, &glyph, NULL) )
+       done++;
+@@ -481,19 +482,24 @@
+   int i;
+ 
+ 
+-  charset->code = (FT_ULong*)calloc( face->num_glyphs, sizeof( FT_ULong ) );
+-  if ( !charset->code )
+-    return;
+-
+   if ( face->charmap )
+   {
+-    i = 0;
++    /* A glyph may have multiple cmap entries in some fonts such that	*/
++    /* the num_charcodes may be greater than face->num_glyphs.		*/
++    /* To be safe, count num_charcodes before calling calloc.		*/
++    num_charcodes = 0;
+     charcode = FT_Get_First_Char(face, &gindex);
++    while ( gindex )
++    {
++      num_charcodes++;
++      charcode = FT_Get_Next_Char(face, charcode, &gindex);
++    }
+ 
+-    /* certain fonts contain a broken charmap that will map character codes */
+-    /* to out-of-bounds glyph indices. Take care of that here !!            */
+-    /*                                                                      */
+-    while ( gindex && i < face->num_glyphs )
++    charset->code = (FT_ULong*)calloc(num_charcodes, sizeof( FT_ULong ));
++
++    i = 0;
++    charcode = FT_Get_First_Char(face, &gindex);
++    while ( gindex )
+     {
+       charset->code[i++] = charcode;
+       charcode = FT_Get_Next_Char(face, charcode, &gindex);
+@@ -503,7 +509,11 @@
+   else
+   {
+     /* no charmap, do an identity mapping */
+-    for ( i = 0; i < face->num_glyphs; i++ )
++    num_charcodes = face->num_glyphs;
++
++    charset->code = (FT_ULong*)calloc(num_charcodes, sizeof( FT_ULong ));
++
++    for ( i = 0; i < num_charcodes; i++ )
+       charset->code[i] = i;
+   }
+ 

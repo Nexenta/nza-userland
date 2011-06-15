@@ -1,0 +1,18 @@
+one small thing to make luatex compile with the system libpng
+---
+ source/texk/web2c/luatexdir/image/image.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+Index: luatex-0.39.0/source/texk/web2c/luatexdir/image/image.h
+===================================================================
+--- luatex-0.39.0.orig/source/texk/web2c/luatexdir/image/image.h	2009-04-16 18:07:17.000000000 +0200
++++ luatex-0.39.0/source/texk/web2c/luatexdir/image/image.h	2009-04-16 18:13:11.000000000 +0200
+@@ -23,7 +23,7 @@
+ #ifndef IMAGE_H
+ #  define IMAGE_H
+ 
+-#  include <../libpng/png.h>
++#  include <png.h>
+ 
+ #  define JPG_UINT16      unsigned int
+ #  define JPG_UINT32      unsigned long

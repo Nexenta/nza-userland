@@ -1,0 +1,10 @@
+debian/03_use_awk.patch
+debian/04_add_gem_extension.patch
+debian/05_disable_internal_editor.patch
+debian/06_use_default_pdf_viewer.patch
+debian/08_use_sensible-editor.patch
+debian/09_uzip_broken_528239.patch
+debian/10_use_default_images_viewer.patch
+debian/20_wrong_path_to_wrappers.patch
+debian/84_use_dvicat_instead_of_dvi2tty.patch
+debian/99_detect_alt_editor.patch

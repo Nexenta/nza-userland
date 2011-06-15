@@ -1,0 +1,5 @@
+dh_fixperms-libs.patch
+makefile-nexenta.patch
+makeshlibs-scripts.patch
+nexenta-additions.patch
+run-nexenta.patches

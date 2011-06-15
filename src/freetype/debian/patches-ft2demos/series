@@ -1,0 +1,4 @@
+ft2demos-2.1.7-ftbench.patch -p0
+ft2demos-2.1.7-no-rpath.patch -p0
+compiler_hardening_fixes.patch
+ft2demos-grkey.patch

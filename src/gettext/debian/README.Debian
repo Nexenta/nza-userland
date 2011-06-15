@@ -1,0 +1,11 @@
+Notes about the Debian gettext package
+======================================
+
+The autopoint script and related stuff is now in a separate package
+called "autopoint".
+
+Packages using autopoint in their build process should now build-depend
+on autopoint.
+
+
+Santiago Vila <sanvila@debian.org>

@@ -1,0 +1,5 @@
+C/7zip/Compress/LZMA_Alone/*.a		usr/lib
+C/7zip/Compress/LZMA_C/*.a		usr/lib
+C/7zip/Common/sqlzma.h			usr/include
+C/7zip/Compress/LZMA_C/LzmaDecode.h 	usr/include
+C/7zip/Compress/LZMA_C/LzmaTypes.h 	usr/include

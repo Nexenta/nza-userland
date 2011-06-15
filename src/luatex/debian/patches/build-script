@@ -1,0 +1,39 @@
+patch the build script to use system libraries and 
+build without X
+---
+ build.sh |   14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
+
+Index: luatex-beta-0.60.1/build.sh
+===================================================================
+--- luatex-beta-0.60.1.orig/build.sh	2010-04-28 15:41:23.000000000 +0900
++++ luatex-beta-0.60.1/build.sh	2010-04-29 00:41:38.000000000 +0900
+@@ -127,6 +127,8 @@
+ if [ "$ONLY_MAKE" = "FALSE" ]
+ then
+ TL_MAKE=$MAKE ../source/configure  $CONFHOST $CONFBUILD  $WARNINGFLAGS\
++    --disable-native-texlive-build \
++    --with-tex-banner='Web2C 2010/dev/Debian' \
+     --enable-cxx-runtime-hack \
+     --disable-afm2pl    \
+     --disable-aleph  \
+@@ -183,12 +185,14 @@
+     --without-graphite \
+     --without-system-icu \
+     --without-system-kpathsea \
+-    --without-system-freetype2 \
+-    --without-system-gd \
+-    --without-system-libpng \
++    --with-system-freetype2 \
++    --with-freetype2-include=/usr/include/freetype2 \
++    --with-system-gd \
++    --with-system-libpng \
+     --without-system-teckit \
+-    --without-system-zlib \
+-    --without-system-t1lib \
++    --with-system-zlib \
++    --with-system-t1lib \
++    --with-system-xpdf \
+     --disable-shared    \
+     --disable-largefile \
+     --disable-ipc \

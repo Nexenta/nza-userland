@@ -1,0 +1,88 @@
+#include "variables"
+The Debian package <:=${PACKAGE}:>
+-------------------<:="-" x length (${PACKAGE}):>
+
+
+RefTeX
+======
+
+AUCTeX users will probably want to switch the very useful RefTeX package on,
+by adding something like "(add-hook 'LaTeX-mode-hook 'turn-on-reftex)" to
+their "~/.emacs" (see the RefTeX info manual for more information on RefTeX,
+which is part of GNU Emacs).
+
+
+Font-LaTeX
+==========
+
+Starting with AUCTeX 11.01, a new user customizable variable appeared:
+"TeX-install-font-lock".  Font-LaTeX it's now the default choice, so users
+need not doing anything special to load it anymore.  Emacs 21 users may choose
+"tex-font" instead, should they wish it.
+
+
+On line Documentation
+=====================
+
+On line documentation may be found in the info or HTML manual, and in the
+<:=${UPDATE_ELISP}:>(8) and <:=${UPDATE_INSTALL}:>(8) manual pages.
+
+TeXInfo sources may be found in the "<:=if($_="${docsrc}")=~tr|/|/|s:>"
+directory.
+
+
+Notes to System Administrators
+==============================
+
+A) To improve its performance AUCTeX stores information about TeX macros and
+LaTeX styles available on the system in the "<:=${var}:>" directory.
+
+AUCTeX updates this information weekly, by mean of a cron script;
+nevertheless, you may want to run "<:=if($_="${sbin}/${UPDATE_ELISP}")=~tr|/|/|s:>"
+manually after installing new style files under "/usr/local/share/texmf".
+
+B) You may probably want to customize the list of printers available at your
+site.
+
+This could be easily accomplished by declaring it in "<:=${SSEL}:>"
+(along with the default printer), for example:
+
+(setq TeX-printer-list
+      '(("lp" "dvips -f %s | lpr -P %p" "lpq -P %p")
+        ("lpc" "dvips -f %s | lpr -P %p" "lpq -P %p")
+        ("lpf" "dvips -f %s | lpr -P %p" "lpq -P %p")
+        ("lpt" "dvips -f %s | lpr -P %p" "lpq -P %p"))
+      TeX-printer-default "lpf")
+
+Please, look at the on line documentation, type `C-h v TeX-printer-list RET'
+from within Emacs (load AUCTeX first), or browse through the file
+"<:=if($_="${lisp}/tex.el")=~tr|/|/|s:>" for more information on this topic.
+
+
+Contributed Files
+=================
+
+There are several files that are not part of AUCTeX proper, but included in
+the distribution in case they are useful:
+
+    - `bib-cite.el': better support for bibliographies and much more;
+
+    - `tex-jp.el': Japanese support;
+
+    - `tex-fptex.el': fpTeX support.
+
+Read the comments at the start of each file for more information about how to
+load it, what does it do, and who wrote and maintains it.
+
+
+-- Davide G. M. Salvetti <salve@debian.org>, <:=$_=gmtime:>.
+<:
+# local variables:
+# mode: text
+# fill-column: 78
+# ispell-local-dictionary: "american"
+# end:
+#
+# LocalWords:  AUCTeX RefTeX LaTeX reftex emacs tex TeXInfo cron setq lp dvips
+# LocalWords:  lpr lpq lpc lpf lpt RET el jp fptex fpTeX
+:>//

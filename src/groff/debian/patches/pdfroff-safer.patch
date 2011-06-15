@@ -1,0 +1,32 @@
+Description: Use -dSAFER when calling gs from pdfroff
+Author: Colin Watson <cjwatson@debian.org>
+Bug-Debian: http://bugs.debian.org/538338
+Forwarded: http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=538338#8
+Last-Update: 2010-03-01
+
+Index: b/contrib/pdfmark/pdfroff.man
+===================================================================
+--- a/contrib/pdfmark/pdfroff.man
++++ b/contrib/pdfmark/pdfroff.man
+@@ -521,7 +521,7 @@
+ .IP
+ .I
+ .ad l
+-.NH gs \-dBATCH \-dQUIET \-dNOPAUSE \-sDEVICE=pdfwrite \-sOutputFile=\-
++.NH gs \-dBATCH \-dQUIET \-dNOPAUSE \-dSAFER \-sDEVICE=pdfwrite \-sOutputFile=\-
+ .ad
+ .RE
+ .
+Index: b/contrib/pdfmark/pdfroff.sh
+===================================================================
+--- a/contrib/pdfmark/pdfroff.sh
++++ b/contrib/pdfmark/pdfroff.sh
+@@ -600,7 +600,7 @@
+   $SAY >&2 $n "Writing PDF output ..$c"
+   if test -z "$PDFROFF_POSTPROCESSOR_COMMAND"
+   then
+-    PDFROFF_POSTPROCESSOR_COMMAND="$GS -dQUIET -dBATCH -dNOPAUSE
++    PDFROFF_POSTPROCESSOR_COMMAND="$GS -dQUIET -dBATCH -dNOPAUSE -dSAFER
+       -sDEVICE=pdfwrite -sOutputFile="${PDF_OUTPUT-"-"}
+ 
+   elif test -n "$PDF_OUTPUT"

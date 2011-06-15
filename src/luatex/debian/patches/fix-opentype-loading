@@ -1,0 +1,26 @@
+Fix loading of ttf/otf fonts in plain mode
+patch by Pawe/l Jackowski on luatex-dev mailing list
+included upstream
+---
+ source/texk/web2c/luatexdir/tex/texfileio.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+Index: luatex-0.45.0/source/texk/web2c/luatexdir/tex/texfileio.c
+===================================================================
+--- luatex-0.45.0.orig/source/texk/web2c/luatexdir/tex/texfileio.c	2009-11-18 23:46:47.000000000 +0900
++++ luatex-0.45.0/source/texk/web2c/luatexdir/tex/texfileio.c	2009-11-19 22:20:30.000000000 +0900
+@@ -153,6 +153,14 @@
+         case find_type1_file_callback:
+             ftemp = kpse_find_file(s, kpse_type1_format, 0);
+             break;
++        case find_truetype_file_callback:
++            ftemp = kpse_find_file(s, kpse_truetype_format, 0);
++            break;
++        case find_opentype_file_callback:
++            ftemp = kpse_find_file(s, kpse_opentype_format, 0);
++	    if (ftemp == NULL)
++	    	ftemp = kpse_find_file(s, kpse_truetype_format, 0);
++            break;
+         case find_ocp_file_callback:
+             ftemp = kpse_find_file(s, kpse_ocp_format, 0);
+             break;

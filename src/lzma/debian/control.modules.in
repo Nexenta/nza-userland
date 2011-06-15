@@ -1,0 +1,28 @@
+Source: lzma
+Section: utils
+Priority: optional
+Maintainer: Mohammed Adnène Trojette <adn+deb@diwi.org>
+Uploaders: Arnaud Fontaine <arnau@debian.org>
+Build-Depends: debhelper (>= 4.0.0), linux-headers-_KVERS_, lzma-dev
+Homepage: http://www.7-zip.org/sdk.html
+Vcs-Git: git://git.debian.org/git/collab-maint/lzma.git
+Vcs-Browser: http://git.debian.org/?p=collab-maint/lzma.git;a=summary
+Standards-Version: 3.7.3
+
+Package: lzma-modules-_KVERS_
+Architecture: any
+Provides: lzma-modules
+Depends: linux-modules-_KVERS_ | linux-image-_KVERS_
+Description: Source of the lzma kernel module
+ LZMA is a compression algorithm, based on the famous Lempel Ziv
+ compression method.
+ .
+ The main characteristics of the algorithm are very good compression,
+ fast decompression, use of lot of RAM for compression and low usage of
+ RAM for decompression.
+ .
+ LZMA provides high compression ratio and very fast decompression, so it
+ is very suitable for embedded applications. For example, it can be used
+ for ROM (firmware) compression.
+ .
+ This package contains the compiled kernel module for _KVERS_

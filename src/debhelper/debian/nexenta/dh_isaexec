@@ -1,0 +1,134 @@
+#!/usr/bin/perl -w
+
+=head1 NAME
+
+dh_isaexec - prepare package to use isaexec
+
+=cut
+
+use strict;
+use File::Find;
+use Debian::Debhelper::Dh_Lib;
+
+=head1 SYNOPSIS
+
+B<dh_isaexec> [S<I<debhelper options>>]
+
+=head1 DESCRIPTION
+
+B<dh_isaexec> is a debhelper program that prepares a package to use I<isaexec>(1).
+
+B<dh_isaexec> accepts a list of programs (such as /usr/bin/ps) which
+are to be replaced by I<isaexec>. B<dh_isaexec> adds post-install
+and post-remove scripts that adds and remove corresponding hard link
+to I<isaexec> executable.
+
+
+=head1 FILES
+
+=over 4
+
+=item debian/I<package>.isaexec
+
+List of executables (maybe glob) to be replaced with I<isaexec>.
+
+=back
+
+
+=head1 EXAMPLES
+
+I<debian/program/usr/bin/> has I<tool.sh> (Shell script), I<yatool> (ELF 32bit binary).
+
+I<program.isaexec> contains B<usr/bin/*>
+
+So, I<tool.sh> (Shell script) leaved as is. But I<yatool> (ELF 32bit Intel 80386 binary)
+dropped into usr/bin/i86/. Then code to add and remove hardlink to I<isaexec>
+is added to post-install and post-remove scripts.
+
+Installed files will look like this:
+
+/usr/bin/yatool.sh
+
+/usr/bin/yatool (isaexec actually)
+
+/usr/bin/i86/yatool (real 32bit yatool)
+
+Files specified in debian/I<package>.isaexec may not exist,
+in this case only code to create hardlink will be added.
+
+
+=back
+
+=head1 NOTES
+
+Note that this command is not idempotent. L<dh_prep(1)> should be called
+between invocations of this command. Otherwise, it may cause multiple
+instances of the same text to be added to maintainer scripts.
+
+=cut
+
+init(options => {});
+
+
+sub moveit {
+    my ($from, $to) = @_;
+    doit('mkdir', '-p', $to) unless -d $to;
+    doit('mv', $from, $to);
+}
+
+foreach my $package (@{$dh{DOPACKAGES}}) {
+	my $tmp  = tmpdir($package);
+	my $file = pkgfile($package, 'isaexec');
+
+    next if not $file;
+
+    my @bins = filearray($file, $tmp);
+    my @collected_bins = ();
+    foreach my $bin (@bins) {
+        next if -d "$tmp/$bin";
+        if (-f "$tmp/$bin") {
+            my $dir  = dirname($bin);
+            my $name = basename($bin);
+            my $type = `file "$tmp/$bin"`;
+
+            # FIXME : Add more in the future
+            # FIXME : use File::MMagic::XS ?
+            # FIXME : Take care of Sun and GNU `file'
+            if ($type =~ /ELF\s+32.+86/i) {
+                moveit("$tmp/$bin", "$tmp/$dir/i86/");
+            } elsif ($type =~ /ELF\s+64.+(x86-64|AMD64)/i) {
+                moveit("$tmp/$bin", "$tmp/$dir/amd64/");
+            } elsif ($type =~ /ERROR/) {
+                die "file: $type";
+            } else {
+                next
+            }
+        }
+       
+        $bin = '/' . $bin unless $bin =~ m|^/|;
+        push @collected_bins, $bin;
+    }
+
+    if (@collected_bins) {
+        my $isabins = join(' ', @collected_bins);
+        autoscript($package, 'postinst', 'postinst-isaexec',
+            "s|#BINARIES#|$isabins|");
+        autoscript($package, 'postrm', 'postrm-isaexec',
+            "s|#BINARIES#|$isabins|");
+    }
+    
+}
+
+
+
+=head1 SEE ALSO
+
+L<debhelper(7)>
+
+This program is a Nexenta addition to debhelper.
+
+=head1 AUTHOR
+
+Igor Pashev <igor.pashev@nexenta.com>
+
+=cut

@@ -1,0 +1,6 @@
+* Bug 594944
+  - Where does '/usr/share/emacs/site-lisp/auctex/auto-loads.el~' come
+    from?  Maybe we should clean more, clean better?
+* xdg-open
+  - Maybe auctex should recommend xdg-open instead of xpdf?  WRTT me think
+    source specials need to be considered.

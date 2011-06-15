@@ -1,0 +1,26 @@
+Source: libtimedate-perl
+Section: perl
+Priority: optional
+Build-Depends: debhelper (>= 7.0.8), quilt (>= 0.46-7)
+Build-Depends-Indep: perl
+Maintainer: Debian Perl Group <pkg-perl-maintainers@lists.alioth.debian.org>
+Uploaders: Christian Hammers <ch@debian.org>, Jonathan Yu <jawnsy@cpan.org>,
+ gregor herrmann <gregoa@debian.org>
+Standards-Version: 3.8.3
+Vcs-Svn: svn://svn.debian.org/pkg-perl/trunk/libtimedate-perl/
+Vcs-Browser: http://svn.debian.org/viewsvn/pkg-perl/trunk/libtimedate-perl/
+Homepage: http://search.cpan.org/dist/TimeDate/
+
+Package: libtimedate-perl
+Replaces: timedate
+Conflicts: timedate
+Provides: timedate
+Architecture: all
+Depends: ${perl:Depends}, ${misc:Depends}
+Description: collection of modules to manipulate date/time information
+ TimeDate is a collection of Perl modules useful for manipulating date and
+ time information. Date::Parse can parse absolute date specifications in a
+ wide variety of input formats and many languages (via Date::Language).
+ .
+ This package also includes Date::Format, which can format dates into strings,
+ as well as Time::Zone, which contains miscellaneous time zone functions.

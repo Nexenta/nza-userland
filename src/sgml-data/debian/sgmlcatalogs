@@ -1,0 +1,13 @@
+sgml/dtd/catalog /usr/share/sgml/dtd/catalog
+sgml/entities/ArborText/catalog /usr/share/sgml/entities/ArborText/catalog
+sgml/entities/Hewlett-Packard/catalog /usr/share/sgml/entities/Hewlett-Packard/catalog
+sgml/entities/sgml-iso-entities-8879.1986/catalog /usr/share/sgml/entities/sgml-iso-entities-8879.1986/catalog
+sgml/entities/sgml-iso-entities-9573-13.1991/catalog /usr/share/sgml/entities/sgml-iso-entities-9573-13.1991/catalog
+sgml/html/dtd/catalog /usr/share/sgml/html/dtd/catalog
+sgml/html/dtd/4.0/catalog /usr/share/sgml/html/dtd/4.0/catalog
+sgml/html/dtd/4.01/catalog /usr/share/sgml/html/dtd/4.01/catalog
+sgml/html/dtd/iso-15445/catalog /usr/share/sgml/html/dtd/iso-15445/catalog
+sgml/html/entities/catalog /usr/share/sgml/html/entities/catalog
+xml/qaml/catalog /usr/share/xml/qaml/catalog
+xml/svg/catalog /usr/share/xml/svg/catalog
+xml/entities/xml-iso-entities-8879.1986/catalog /usr/share/xml/entities/xml-iso-entities-8879.1986/catalog

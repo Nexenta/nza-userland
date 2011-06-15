@@ -1,0 +1,35 @@
+From: Jonathan Nieder <jrnieder@gmail.com>
+Date: Mon, 18 Jan 2010 02:40:10 -0600
+Subject: Bump soname for upstream interface changes
+
+With commit 418d64a (Fix a design error in liblzma API,
+2009-11-14) the lzma_options_lzma data structure has changed.
+Programs that read or write its fields will have no hope of
+working with older liblzma versions.
+
+With commit 1a7ec87 (Revised the Index handling code.,
+2009-12-31) various functions have been removed.  Programs
+that used them will not work with the current library.  So
+bump the soname again.
+---
+debian/liblzma2.README.Debian explains.
+
+ src/liblzma/Makefile.am                       |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/src/liblzma/Makefile.am b/src/liblzma/Makefile.am
+index a4d2c1e..8737a55 100644
+--- a/src/liblzma/Makefile.am
++++ b/src/liblzma/Makefile.am
+@@ -25,7 +25,7 @@ liblzma_la_CPPFLAGS = \
+ 	-I$(top_srcdir)/src/liblzma/simple \
+ 	-I$(top_srcdir)/src/common \
+ 	-DTUKLIB_SYMBOL_PREFIX=lzma_
+-liblzma_la_LDFLAGS = -no-undefined -version-info 0:0:0
++liblzma_la_LDFLAGS = -no-undefined -version-info 2:0:0
+ 
+ include $(srcdir)/common/Makefile.inc
+ include $(srcdir)/check/Makefile.inc
+-- 
+1.6.5.2
+

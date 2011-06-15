@@ -1,0 +1,33 @@
+--- tcl8.4-8.4.19.orig/unix/configure
++++ tcl8.4-8.4.19/unix/configure
+@@ -9150,7 +9150,7 @@
+ DBGX='${TCL_DBGX}'
+ eval "TCL_LIB_FILE=${TCL_LIB_FILE}"
+ 
+-TCL_LIBRARY='$(prefix)/lib/tcl$(VERSION)'
++test -z "$TCL_LIBRARY" && TCL_LIBRARY='$(prefix)/lib/tcl$(VERSION)'
+ PRIVATE_INCLUDE_DIR='$(includedir)'
+ HTML_DIR='$(DISTDIR)/html'
+ 
+--- tcl8.4-8.4.19.orig/unix/configure.in
++++ tcl8.4-8.4.19/unix/configure.in
+@@ -570,7 +570,7 @@
+ DBGX='${TCL_DBGX}'
+ eval "TCL_LIB_FILE=${TCL_LIB_FILE}"
+ 
+-TCL_LIBRARY='$(prefix)/lib/tcl$(VERSION)'
++test -z "$TCL_LIBRARY" && TCL_LIBRARY='$(prefix)/lib/tcl$(VERSION)'
+ PRIVATE_INCLUDE_DIR='$(includedir)'
+ HTML_DIR='$(DISTDIR)/html'
+ 
+--- tcl8.4-8.4.19.orig/library/init.tcl
++++ tcl8.4-8.4.19/library/init.tcl
+@@ -49,7 +49,7 @@
+ namespace eval tcl {
+     variable Dir
+     if {[info library] ne ""} {
+-	foreach Dir [list [info library] [file dirname [info library]]] {
++	foreach Dir [list [info library]] {
+ 	    if {[lsearch -exact $::auto_path $Dir] < 0} {
+ 		lappend ::auto_path $Dir
+ 	    }

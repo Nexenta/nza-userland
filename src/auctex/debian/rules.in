@@ -1,0 +1,358 @@
+#include "variables"
+#! /usr/bin/make -f
+#
+# rules for <:=${PACKAGE}:>
+#
+<:=@COPYRIGHT:>//
+
+checkdir=test -f debian/rules
+checkroot=test root = "$$(whoami)"
+fixperms=chmod -R a+rX .
+
+tmp := $(shell pwd)/debian/tmp/
+auctex := $(tmp)/auctex/
+pls := $(tmp)/preview-latex-style/
+
+SHELL := /bin/bash
+INSTDIR := install -m 755 -d
+INSTPROG := install -m 755 -s
+INSTDATA := install -m 644
+INSTSCRIPT := install -m 755
+STRIP := strip -R .note -R .comment
+
+<:# DO NOT include <% debian/rules %> nor <% debian/templates %> :>//
+DFILES := debian/<:=${PACKAGE}:>/README debian/copyright \
+debian/<:=${PACKAGE}:>/config debian/<:=${PACKAGE}:>/postinst \
+debian/<:=${PACKAGE}:>/prerm debian/<:=${PACKAGE}:>/postrm \
+debian/<:=${PACKAGE}:>/conffiles debian/<:=${PACKAGE}:>/cron \
+debian/<:=${PACKAGE}:>/docbase.auctex \
+debian/<:=${PACKAGE}:>/docbase.preview \
+debian/<:=${PACKAGE}:>/lintian \
+debian/<:=${PACKAGE}:>/bug.presubj debian/<:=${PACKAGE}:>/bug.script \
+debian/<:=${PACKAGE}:>/install debian/<:=${PACKAGE}:>/remove \
+debian/<:=${PACKAGE}:>/lisp-startup.el \
+debian/<:=${PACKAGE}:>/<:=${UPDATE_ELISP}:> \
+debian/<:=${PACKAGE}:>/<:=${UPDATE_ELISP}:>.8 \
+debian/<:=${PACKAGE}:>/<:=${UPDATE_INSTALL}:> \
+debian/<:=${PACKAGE}:>/<:=${UPDATE_INSTALL}:>.8 \
+debian/<:=${PLSPKG}:>/README \
+debian/<:=${PLSPKG}:>/postinst \
+debian/<:=${PLSPKG}:>/prerm debian/<:=${PLSPKG}:>/postrm \
+debian/<:=${PLSPKG}:>/docbase \
+debian/<:=${PLSPKG}:>/lintian \
+debian/<:=${PLSPKG}:>/bug.presubj
+
+<:# <% Debconf %> templates :>//
+DCSOURCES := $(shell cat debian/po/POTFILES.in \
+		| perl -pe 's|^\[[^]]+\] +(.*)$$|debian/$${1}|')
+DFILES += $(patsubst %templates, %templates.dcobj, $(DCSOURCES))
+
+AUCTEXSCRIPTS := configure install-sh
+AUCTEXSRCS := $(filter-out auctex.el, \
+	$(wildcard aclocal.m4 configure.ac *.in *.el))
+STYLES := style/*.el style/.nosearch
+PREVIEWSCRIPTS := preview/configure
+PREVIEWSRCS := $(filter-out preview/auto.el, \
+	$(wildcard preview/configure.ac preview/*.in preview/*.el))
+<:# Hacks needed by configure. :>//
+MAKEFILEHACKS := doc/Makefile.in preview/latex/Makefile.in
+
+test:
+	@echo $(AUCTEXSRCS)
+	@echo $(PREVIEWSRCS)
+
+.PHONY: pre-build
+pre-build:
+	test -x ./autogen.sh && ./autogen.sh || true
+
+debian/rules: debian/variables
+
+<:# Eperl is simply great: thanks, Ralf! :>//
+%:: %.in
+	eperl -d DEBIAN_DIR="$(shell pwd)/debian/" \
+		-I "$(shell pwd)/debian/" -P -o $@ $<
+
+debian/po/templates.pot: $(DCSOURCES)
+	umask 0022 && debconf-updatepo --verbose --podir=debian/po/
+	@touch $@
+
+%.dcobj: % debian/po/templates.pot
+	po2debconf --verbose --podir debian/po $< > $@
+
+<:# rm -f ~/.debconf.d/* && debian/rules debconf-test :>//
+.PHONY: debconf-test
+debconf-test: debian/<:=${PACKAGE}:>/templates.dcobj \
+		debian/<:=${PACKAGE}:>/config
+	debconf-loadtemplate <:=${PACKAGE}:> \
+		debian/<:=${PACKAGE}:>/templates.dcobj
+	DEBCONF_DEBUG=developer debconf --owner=<:=${PACKAGE}:> \
+		--frontend=dialog --priority=low \
+		$(SHELL) -e debian/<:=${PACKAGE}:>/config configure
+
+.PHONY: debconf-ask-for-translations
+debconf-ask-for-translations: debian/<:=${PACKAGE}:>/templates.dcobj
+	podebconf-report-po --verbose --gzip \
+		 --call --withtranslators --languageteam \
+		--package=<:=${PACKAGE}:> --deadline='+7days' \
+		--from='"Davide G. M. Salvetti (Debian <:=${PACKAGE}:> maintainer)" <salve@debian.org>' \
+		--postpone=../+RFT.mbox
+
+build: $(DFILES) debian/po/templates.pot
+	$(checkdir)
+	./configure \
+		--prefix=<:$_=${usr}; s|/+|/|g; print:> \
+		--infodir=<:=${info}:> \
+		--with-emacs=$$(type emacs-snapshot &>/dev/null \
+			&& echo emacs-snapshot || echo emacs)
+	cd doc && $(MAKE) all
+	cd doc && $(MAKE) auctex.htmls/auctex.html
+	cd doc && $(MAKE) preview-latex.htmls/preview-latex.html
+	cd preview && $(MAKE) texmf
+	touch build
+
+.PHONY: clean
+clean: debian/po/templates.pot
+	$(checkdir)
+	-rm -rf build core $(tmp) debian/{files*,substvars}
+	test ! -f Makefile || $(MAKE) distclean
+	-rm -f $(DFILES)
+	$(fixperms)
+
+.PHONY: binary
+binary: binary-arch binary-indep
+
+.PHONY: binary-indep
+binary-indep: binary-indep-auctex binary-indep-pls
+
+.PHONY: binary-indep-auctex
+binary-indep-auctex: build
+	$(checkdir)
+	$(checkroot)
+	-rm -rf $(auctex)
+
+<:# install package :>//
+	$(INSTDIR) $(auctex)/<:=${lisp}:> $(auctex)/<:=${style}:> \
+		$(auctex)/<:=${lisp}:>/preview/
+	$(INSTSCRIPT) $(AUCTEXSCRIPTS) $(auctex)/<:=${lisp}:>/
+<:# The ChangeLog is needed by configure, uncompressed; therefore it
+  # cannot be a link to the compressed version in doc/${PACKAGE}:>//
+	$(INSTDATA) ChangeLog $(auctex)/<:=${lisp}:>/
+	$(INSTDATA) $(AUCTEXSRCS) $(auctex)/<:=${lisp}:>/
+	$(INSTDATA) $(STYLES) $(auctex)/<:=${style}:>/
+	$(INSTSCRIPT) $(PREVIEWSCRIPTS) $(auctex)/<:=${lisp}:>/preview/
+	$(INSTDATA) $(PREVIEWSRCS) $(auctex)/<:=${lisp}:>/preview/
+	$(MAKE) prefix=$(auctex)/<:$_=${usr}; s|/+|/|g; print:> install-images
+	cd preview && $(MAKE) prefix=$(auctex)/<:$_=${usr};
+		s|/+|/|g; print:> install-images
+	umask 0022; for i in $(MAKEFILEHACKS); do \
+		$(INSTDIR) $(auctex)/<:=${lisp}:>/$${i%/*}/; \
+		echo -e "clean distclean maintainer-clean:\n\trm -f Makefile\n" \
+			> $(auctex)/<:=${lisp}:>/$${i}; \
+	done
+	$(INSTDIR) $(auctex)/<:=${info}:>
+	$(MAKE) infodir=$(auctex)/<:=${info}:> \
+		docdir=$(auctex)/<:=${doc}:> \
+		INSTALL_INFO=: install-docs
+	gzip -9frv $(auctex)/<:=${info}:>
+
+<:# install Debian doc :>//
+	$(INSTDIR) $(auctex)/<:=${doc}:> $(auctex)/<:=${docsrc}:> \
+		$(auctex)/<:=${html}:>/{auctex,preview-latex} \
+		$(auctex)/<:=${man}:>/man8/
+	$(INSTDATA) <:=${DOCS}:> $(auctex)/<:=${doc}:>
+	$(INSTDATA) doc/*.tex{,i} $(auctex)/<:=${docsrc}:>
+	$(INSTDATA) preview/*.tex $(auctex)/<:=${docsrc}:>
+	$(INSTDATA) debian/<:=${PACKAGE}:>/README \
+		$(auctex)/<:=${doc}:>/README.Debian
+	$(INSTDATA) debian/<:=${PACKAGE}:>/NEWS \
+		$(auctex)/<:=${doc}:>/NEWS.Debian
+	$(INSTDATA) ChangeLog $(auctex)/<:=${doc}:>
+	$(INSTDATA) preview/ChangeLog \
+		$(auctex)/<:=${doc}:>/ChangeLog.preview
+	$(INSTDATA) preview/ChangeLog.1 \
+		$(auctex)/<:=${doc}:>/ChangeLog.preview.1
+	$(INSTDATA) RELEASE $(auctex)/<:=${doc}:>
+	$(INSTDATA) debian/changelog $(auctex)/<:=${doc}:>/changelog.Debian
+	gzip -9frv $(auctex)/<:=${doc}:>
+	ln -sf ChangeLog.gz $(auctex)/<:=${doc}:>/changelog.gz
+	$(INSTDATA) debian/copyright $(auctex)/<:=${doc}:>
+	$(INSTDATA) doc/auctex.htmls/* \
+		$(auctex)/<:=${html}:>/auctex/
+	ln -snf auctex.html \
+		$(auctex)/<:=${html}:>/auctex/index.html
+	$(INSTDATA) doc/preview-latex.htmls/* \
+		$(auctex)/<:=${html}:>/preview-latex/
+	ln -snf preview-latex.html \
+		$(auctex)/<:=${html}:>/preview-latex/index.html
+	$(INSTDATA) debian/<:=${PACKAGE}:>/<:=${UPDATE_ELISP}:>.8 \
+		$(auctex)/<:=${man}:>/man8/
+	$(INSTDATA) debian/<:=${PACKAGE}:>/<:=${UPDATE_INSTALL}:>.8 \
+		$(auctex)/<:=${man}:>/man8/
+	gzip -9frv $(auctex)/<:=${man}:>
+
+<:# install Debian system files :>//
+	$(INSTDIR) $(auctex)/<:$_=${sstartd}; s|emacs|emacs21|; print:> \
+		$(auctex)/<:$_=${sstartd}; s|emacs|emacs22|; print:> \
+		$(auctex)/<:$_=${sstartd}; s|emacs|emacs23|; print:> \
+		$(auctex)/<:$_=${sstartd}; s|emacs|emacs-snapshot|; print:>
+	$(INSTDATA) debian/<:=${PACKAGE}:>/lisp-startup.el \
+		$(auctex)/<:$_="${sstartd}/${EPRIORITY}${PACKAGE}.el";
+		s|emacs|emacs21|; $_=~tr|/|/|s; print:>
+	$(INSTDATA) debian/<:=${PACKAGE}:>/lisp-startup.el \
+		$(auctex)/<:$_="${sstartd}/${EPRIORITY}${PACKAGE}.el";
+		s|emacs|emacs22|; $_=~tr|/|/|s; print:>
+	$(INSTDATA) debian/<:=${PACKAGE}:>/lisp-startup.el \
+		$(auctex)/<:$_="${sstartd}/${EPRIORITY}${PACKAGE}.el";
+		s|emacs|emacs23|; $_=~tr|/|/|s; print:>
+	$(INSTDATA) debian/<:=${PACKAGE}:>/lisp-startup.el \
+		$(auctex)/<:$_="${sstartd}/${EPRIORITY}${PACKAGE}.el";
+		s|emacs|emacs-snapshot|; $_=~tr|/|/|s; print:>
+	$(INSTDIR) $(auctex)/<:=${cron_weekly}:>
+	$(INSTSCRIPT) debian/<:=${PACKAGE}:>/cron \
+		$(auctex)/<:=${cron_weekly}:>/<:=${PACKAGE}:>
+	$(INSTDIR) $(auctex)/<:=${sbin}:>
+	$(INSTSCRIPT) debian/<:=${PACKAGE}:>/<:=${UPDATE_ELISP}:> \
+		$(auctex)/<:=${sbin}:>
+	$(INSTSCRIPT) debian/<:=${PACKAGE}:>/<:=${UPDATE_INSTALL}:> \
+		$(auctex)/<:=${sbin}:>
+	$(INSTDIR) $(auctex)/<:=${var}:>
+	$(INSTDIR) $(auctex)/<:=${lisp}:>
+	$(INSTDIR) $(auctex)/<:=${ecode}:>/{install,remove}
+	$(INSTSCRIPT) debian/<:=${PACKAGE}:>/install \
+		$(auctex)/<:=${ecode}:>/install/<:=${PACKAGE}:>
+	$(INSTSCRIPT) debian/<:=${PACKAGE}:>/remove \
+		$(auctex)/<:=${ecode}:>/remove/<:=${PACKAGE}:>
+	$(INSTDIR) $(auctex)/<:=${docbase}:>
+	$(INSTDATA) debian/<:=${PACKAGE}:>/docbase.auctex \
+		$(auctex)/<:=${docbase}:>/auctex
+	$(INSTDATA) debian/<:=${PACKAGE}:>/docbase.preview \
+		$(auctex)/<:=${docbase}:>/preview-latex
+	$(INSTDIR) $(auctex)/<:=${bug}:>
+	$(INSTDATA) debian/<:=${PACKAGE}:>/bug.presubj \
+		$(auctex)/<:=${bug}:>/presubj
+	$(INSTSCRIPT) debian/<:=${PACKAGE}:>/bug.script \
+		$(auctex)/<:=${bug}:>/script
+	$(INSTDIR) $(auctex)/<:=${lintian}:>
+	$(INSTDATA) debian/<:=${PACKAGE}:>/lintian \
+		$(auctex)/<:=${lintian}:>/<:=${PACKAGE}:>
+
+<:# install Debian control files :>//
+	$(INSTDIR) $(auctex)/<:=${debian}:>
+	$(INSTDATA) debian/<:=${PACKAGE}:>/conffiles \
+		$(auctex)/<:=${debian}:>
+	$(INSTDATA) debian/<:=${PACKAGE}:>/templates.dcobj \
+		$(auctex)/<:=${debian}:>/templates
+	$(INSTSCRIPT) debian/<:=${PACKAGE}:>/{config,postinst,postrm,prerm} \
+		$(auctex)/<:=${debian}:>
+
+<:# standard stuff :>//
+	cd $(auctex) && md5sum \
+		$$(find ./ -path './DEBIAN' -prune \
+		-o -type f -printf "%P\n") \
+		| sort -k 2 -o $(auctex)/<:=${debian}:>/md5sums
+	dpkg-gencontrol -isp -P$(auctex) -pauctex
+	chown -R root.root $(auctex)
+	chmod -R go=rX $(auctex)
+	dpkg --build $(auctex) ..
+
+.PHONY: binary-indep-pls
+binary-indep-pls: build
+	$(checkdir)
+	$(checkroot)
+	-rm -rf $(pls)
+
+<:# install package :>//
+	cd preview && $(MAKE) prefix=$(pls)/<:$_=${usr};
+		s|/+|/|g; print:> TEXHASH=: \
+		previewdocdir=$(pls)/<:=${texmfdoc}:> \
+		install-texmf
+	gzip -9frv $(pls)/<:=${texmfdoc}:>
+
+<:# install Debian doc :>//
+	$(INSTDIR) $(pls)/<:$_=${doc};
+		s|${PACKAGE}|${PLSPKG}|g; print:>
+	$(INSTDATA) preview/latex/README $(pls)/<:$_=${doc};
+		s|${PACKAGE}|${PLSPKG}|g; print:>
+	$(INSTDATA) debian/<:=${PLSPKG}:>/README \
+		$(pls)/<:$_=${doc};
+		s|${PACKAGE}|${PLSPKG}|g; print:>/README.Debian
+	$(INSTDATA) preview/ChangeLog $(pls)/<:$_=${doc};
+		s|${PACKAGE}|${PLSPKG}|g; print:>
+	$(INSTDATA) preview/ChangeLog.1 $(pls)/<:$_=${doc};
+		s|${PACKAGE}|${PLSPKG}|g; print:>
+	$(INSTDATA) debian/changelog $(pls)/<:$_=${doc};
+		s|${PACKAGE}|${PLSPKG}|g; print:>/changelog.Debian
+	gzip -9frv $(pls)/<:$_=${doc};
+		s|${PACKAGE}|${PLSPKG}|g; print:>
+	ln -sf ChangeLog.gz $(pls)/<:$_=${doc};
+		s|${PACKAGE}|${PLSPKG}|g; print:>/changelog.gz
+	$(INSTDATA) debian/copyright $(pls)/<:$_=${doc};
+		s|${PACKAGE}|${PLSPKG}|g; print:>
+
+<:# install Debian system files :>//
+	$(INSTDIR) $(pls)/<:=${docbase}:>
+	$(INSTDATA) debian/<:=${PLSPKG}:>/docbase \
+		$(pls)/<:=${docbase}:>/<:=${PLSPKG}:>
+	$(INSTDIR) $(pls)/<:$_=${bug};
+		s|${PACKAGE}|${PLSPKG}|g; print:>
+	$(INSTDATA) debian/<:=${PLSPKG}:>/bug.presubj \
+		$(pls)/<:$_=${bug};
+		s|${PACKAGE}|${PLSPKG}|g; print:>/presubj
+	$(INSTDIR) $(pls)/<:=${lintian}:>
+	$(INSTDATA) debian/<:=${PLSPKG}:>/lintian \
+		$(pls)/<:=${lintian}:>/<:=${PLSPKG}:>
+
+<:# install Debian control files :>//
+	$(INSTDIR) $(pls)/<:=${debian}:>
+	$(INSTSCRIPT) debian/<:=${PLSPKG}:>/{postinst,prerm,postrm} \
+		$(pls)/<:=${debian}:>
+
+<:# standard stuff :>//
+	cd $(pls) && md5sum \
+		$$(find ./ -path './DEBIAN' -prune \
+		-o -type f -printf "%P\n") \
+		| sort -k 2 -o $(pls)/<:=${debian}:>/md5sums
+	dpkg-gencontrol -isp -P$(pls) -p<:=${PLSPKG}:>
+	chown -R root.root $(pls)
+	chmod -R go=rX $(pls)
+	dpkg --build $(pls) ..
+
+.PHONY: binary-arch
+binary-arch: build
+
+.PHONY: build-package
+build-package: clean
+	dpkg-buildpackage -rfakeroot -tc -i
+	lintian --info --color auto --show-overrides --checksums \
+		--display-info --display-experimental --pedantic \
+		../<:=${PACKAGE}:>*changes
+
+.PHONY: snapshot
+snapshot:
+	gbp-pq rebase
+	git-dch --debian-branch=patch-queue/master --snapshot --auto
+	git-buildpackage --git-ignore-new -rfakeroot -tc -i -us -uc
+
+.PHONY: release
+release:
+	gbp-pq rebase
+	gbp-pq export
+	git-dch --release
+	git add debian/changelog
+	git commit
+	gbp-pq rebase
+	git-buildpackage --git-debian-branch=patch-queue/master \
+		-rfakeroot -tc -i
+	git checkout master
+	V=$$(dpkg-parsechangelog|egrep '^Version: '|cut -d ' ' -f 2); \
+	git tag -s -m "Debian release $${V}" debian/$${V}
+
+<:
+# local variables:
+# mode: makefile
+# ispell-local-dictionary: "american"
+# ispell-check-comments: exclusive
+# end:
+#
+# LocalWords:  Eperl Ralf auctexdoc tex ChangeLog
+:>//

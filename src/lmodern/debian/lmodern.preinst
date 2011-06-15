@@ -1,0 +1,246 @@
+#! /bin/sh -e
+
+PACKAGE=lmodern
+
+CONFIG_FILE_BASE_NAME=10lmodern.cfg
+CONFIG_FILE="/etc/texmf/updmap.d/$CONFIG_FILE_BASE_NAME"
+TEMP_CONFIG_FILE="$OLD_STATE_DIR/${CONFIG_FILE_BASE_NAME}.tmp"
+
+# Stuff from the old (teTeX 2 times) updmap scheme
+OLD_STATE_DIR="/var/lib/$PACKAGE"
+SAVED_CONFIG_FILE="$OLD_STATE_DIR/${CONFIG_FILE_BASE_NAME}.saved"
+NO_CONFIG_FILE="$OLD_STATE_DIR/admin-wants-no-lmodern.cfg"
+
+
+# Function to call when upgrading from experimental versions 0.92-{4,5,6}
+remove_stuff_from_experimental_versions()
+{
+    # If ucf is not installed anymore, the data to purge was already
+    # removed (along with ucf), in which case there is no problem not
+    # running 'ucf --purge'.
+    [ -x /usr/bin/ucf ] && ucf --purge "$CONFIG_FILE"
+
+    rm -f "$OLD_STATE_DIR/ucf_should_not_recreate_the_config_file"
+
+    CONFIG_FILE_CRUFT_DIR="$OLD_STATE_DIR/config-file-cruft"
+    CONFIG_FILE_CRUFT_SUFFIXES='~ % .bak .dpkg-tmp .dpkg-new .dpkg-old
+                                .dpkg-dist'
+    for suffix in $CONFIG_FILE_CRUFT_SUFFIXES; do
+        rm -f "$CONFIG_FILE_CRUFT_DIR/$CONFIG_FILE_BASE_NAME$suffix"
+    done
+    [ -d "$CONFIG_FILE_CRUFT_DIR" ] && rmdir "$CONFIG_FILE_CRUFT_DIR"
+
+    return 0
+}
+
+# Transition from the (update-)updmap scheme in use with teTeX 2
+transition_from_old_updmap_scheme()
+{
+    # At the end of this block, we should have a $CONFIG_FILE.
+    if ! [ -f "$CONFIG_FILE" ]; then
+        if [ -f "$SAVED_CONFIG_FILE" ]; then
+            # The package was simply removed.
+            mv "$SAVED_CONFIG_FILE" "$CONFIG_FILE"
+        else
+            # The user had intentionally deleted $CONFIG_FILE. Create an empty
+            # one with the magic comment.
+            # The temporary file trick allows the script to be idempotent
+            # because rename(2) is guaranteed to be atomic by POSIX.
+            cat > "$TEMP_CONFIG_FILE" <<EndOfEmptyConfigFile
+# Don't delete the following pseudo-comment unless you know what you are doing.
+# -_- DebPkgProvidedMaps -_-
+# This file will *not* be included in updmap.cfg if the lmodern package is
+# removed. Please read update-updmap(1) for details.
+EndOfEmptyConfigFile
+            mv "$TEMP_CONFIG_FILE" "$CONFIG_FILE"
+        fi
+    fi
+
+    # We have a $CONFIG_FILE, therefore it is safe to remove these files now.
+    rm -f "$SAVED_CONFIG_FILE" "$NO_CONFIG_FILE"
+    # The directory should be empty by now.
+    [ -d "$OLD_STATE_DIR" ] && rmdir "$OLD_STATE_DIR"
+
+    # If the CONFIG_FILE is unchanged, remove it.
+    if [ -f "$CONFIG_FILE" ]; then
+	cnfmdsum=$(md5sum "$CONFIG_FILE" | cut -d ' ' -f 1)
+	if [ "$cnfmdsum" = "77e2ae35bcc1153c4303487472d2bd17" ]; then
+	    # We can remove the file as it hasn't been changed.
+	    echo "Removing old, unchanged (pseudo-)conffile $CONFIG_FILE"
+	    rm -f "$CONFIG_FILE"
+	else
+	    # The file was changed.
+	    # If it does not contain a magic header, we add it.
+	    if ! grep -q '^# -_- DebPkgProvidedMaps -_-' "$CONFIG_FILE"; then
+	        cat > "$TEMP_CONFIG_FILE" <<EndOfEmptyConfigFile
+# Don't delete the following pseudo-comment unless you know what you are doing.
+# -_- DebPkgProvidedMaps -_-
+# This file will *not* be included in updmap.cfg if the lmodern package is
+# removed. Please read update-updmap(1) for details.
+EndOfEmptyConfigFile
+		cat "$CONFIG_FILE" >> "$TEMP_CONFIG_FILE"
+		mv "$TEMP_CONFIG_FILE" "$CONFIG_FILE"
+	    fi
+	fi
+    fi
+
+    return 0
+}
+
+# Retrieve the MD5 sum of a conffile from the dpkg database.
+#
+# $1 -- package name
+# $2 -- full (absolute) path to the conffile; this path will be matched
+#       against the output of:
+#
+#         dpkg-query -W -f='${Conffiles}' <package>
+#
+dpkg_md5sum()
+{
+    package="$1"
+    conffile="$2"
+
+    sum=$(dpkg-query -W -f='${Conffiles}' "$package" \
+            | grep -F " $conffile " | cut -d ' ' -f 3)
+
+    if [ -n "$sum" ]; then
+        echo "$sum"
+        res=0
+    else
+        echo "Conffile '$conffile' not found in package '$package'" >&2
+        res=1
+    fi
+
+    return $res
+}
+
+move_very_old_map_file_away ()
+{
+    oldfile=/etc/texmf/dvips/lm.map
+    if ! [ -r $oldfile ] ; then
+	return 0
+    fi
+    originalmd5sum=$(dpkg_md5sum lmodern "$oldfile") || exit 1
+    installedmd5sum=$(md5sum "$oldfile" |  cut -d ' ' -f 1)
+    if [ "$originalmd5sum" = "$installedmd5sum" ] ; then
+        echo "Removing obsolete, unchanged conffile $oldfile"
+	rm $oldfile
+    else
+        mkdir -p /etc/texmf/fonts/map/dvips/lm/
+        mv $oldfile /etc/texmf/fonts/map/dvips/lm/lm.map.preinst-bak
+	echo "
+Warning: you appear to have modified $oldfile, but its location
+is now obsolete. As this is an upgrade from a very old version, your
+file has been saved in /etc/texmf/fonts/map/dvips/lm/lm.map.preinst-bak,
+and can be safely deleted. If you want to adapt the lmodern map file,
+please make a copy of /usr/share/texmf/fonts/map/dvips/lm/lm.map
+and put it into /etc/texmf/fonts/map/dvips/lm/lm.map." >&2
+    fi
+
+    return 0
+}
+
+config_move ()
+{
+    mode="$1"
+    package="$2"
+    oldfile="$3"
+    newloc="$4"
+
+    originalmd5sum=$(dpkg_md5sum "$package" "$oldfile") || exit 1
+
+    if ! [ -e "$oldfile" ] ; then
+        return 0
+    fi
+    oldloc=$(dirname "$oldfile")
+    installedmd5sum=$(md5sum "$oldfile" |  cut -d ' ' -f 1)
+
+    # Take care of $oldfile
+    if [ "$originalmd5sum" = "$installedmd5sum" ] ; then
+        echo "Removing obsolete, unchanged conffile $oldfile"
+        rm "$oldfile"
+    else
+        if [ -z "$newloc" ] ; then
+            echo "Conffile $oldfile was changed, leaving it at the same place"
+        else
+            echo "Conffile $oldfile was changed, moving it to new location" \
+                "$newloc"
+            mkdir -p "$newloc"
+            mv "$oldfile" "$newloc"
+        fi
+    fi
+
+    # Optionally remove the $oldloc directory (depending on $mode)
+    case "$mode" in
+        remove_dir)
+            test -d "$oldloc" && \
+                rmdir --ignore-fail-on-non-empty "$oldloc" || true
+            ;;
+        keep_dir)
+            ;;
+        *)
+            echo "Wrong usage of config_move(): \$1 = '$mode'" >&2
+            exit 1
+            ;;
+    esac
+
+    return 0
+}
+
+
+# If we are upgrading (in the large sense, including the case where the package
+# was previously removed-but-not-purged)...
+if [ $# -eq 2 ]  && ( [ "$1" = "install" ] || [ "$1" = "upgrade" ] ); then
+    # ... from a version tailored for the old update-updmap (where $CONFIG_FILE
+    # wasn't allowed to be a conffile)
+    if dpkg --compare-versions "$2" le 0.92-7; then
+        transition_from_old_updmap_scheme
+	move_very_old_map_file_away
+    fi
+    # ... from an experimental version that used ucf
+    #  [ Presumably, very few people installed these versions; they weren't
+    #    even uploaded to experimental. At some point, we can assume that all
+    #    these people have upgraded lmodern since then, and remove this code. ]
+    if dpkg --compare-versions "$2" ge 0.92-4 \
+        && dpkg --compare-versions "$2" lt 0.92-7; then
+        remove_stuff_from_experimental_versions
+    fi
+    
+    # If we are upgrading from a version v such as 0.92-7 < v < 0.99.3-1, then
+    # lm.map is still in /etc/texmf/map/dvips/lm/.
+    if dpkg --compare-versions "$2" gt 0.92-7 \
+        && dpkg --compare-versions "$2" lt 0.99.3-1; then
+	config_move remove_dir lmodern /etc/texmf/map/dvips/lm/lm.map \
+            /etc/texmf/fonts/map/dvips/lm
+    fi
+
+    # People who installed lmodern 0.92-7 in the same apt run that was doing
+    # the teTeX 2 to teTeX 3 upgrade may have this file lying around (see bug
+    # #334658).
+    rm -f /etc/texmf/dvips/lm.map.dpkg-new
+
+    # lmodern 0.99.3-3 moved lmodern.scale to /etc/X11/fonts/X11R7/Type1/
+    # because that was required by X.org, but the latter quickly reverted to
+    # the old location /etc/X11/fonts/Type1; so, let's move
+    # /etc/X11/fonts/X11R7/Type1/lmodern.scale back to /etc/X11/fonts/Type1 if
+    # upgrading from 0.99.3-3.
+    if [ "$2" = 0.99.3-3 ]; then
+	config_move keep_dir lmodern \
+            /etc/X11/fonts/X11R7/Type1/lmodern.scale /etc/X11/fonts/Type1
+    fi
+    
+fi
+
+case "$1" in
+    install|upgrade|abort-upgrade)
+    ;;
+
+    *)
+        echo "preinst called with unknown argument '$1'" >&2
+        exit 1
+    ;;
+esac
+
+#DEBHELPER#
+
+exit 0

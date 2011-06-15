@@ -1,0 +1,50 @@
+#! /usr/bin/make -f
+%:
+	dh $@
+
+DEB_HOST_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
+DEB_BUILD_GNU_TYPE ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
+
+dtmp    = debian/man-db
+
+# Cf. #497653
+ifeq (,$(filter noopt,$(DEB_BUILD_OPTIONS)))
+CFLAGS = -O2 -g
+else
+CFLAGS = -g
+endif
+
+# --libexecdir still needed due to #541458
+override_dh_auto_configure:
+	CFLAGS="$(CFLAGS)" dh_auto_configure -- \
+		    --prefix=/usr/gnu \
+		    --libexecdir=\$${libdir} \
+	            --enable-setuid --enable-undoc='man 7 undocumented' \
+	            --with-device=latin1 --enable-mb-groff \
+	            --with-config-file=/etc/manpath.config \
+	            --with-browser=www-browser --with-pager=pager \
+	            --with-col=col --with-vgrind=vgrind --with-grap=grap \
+	            --with-compress=compress --with-bzip2=bzip2 \
+		    --with-lzma=lzma \
+		    --without-libiconv-prefix \
+		    --without-libintl-prefix \
+		    --with-sections='1 n l 8 3 2 3posix 3pm 3perl 5 4 9 6 7'
+
+override_dh_clean:
+	dh_clean -Xxmalloc.c.orig
+
+ifeq ($(DEB_BUILD_GNU_TYPE),$(DEB_HOST_GNU_TYPE))
+override_dh_installman:
+	PATH="$(CURDIR)/$(dtmp)/usr/gnu/bin:$$PATH" dh_installman
+endif
+
+ifeq ($(DEB_HOST_ARCH_OS),solaris)
+override_dh_install:
+	dh_install
+	rm -f "$(CURDIR)/$(dtmp)/usr/lib/charset.alias"
+endif
+
+override_dh_fixperms:
+	dh_fixperms
+	chown man:root $(dtmp)/var/cache/man
+	chmod 2755     $(dtmp)/var/cache/man

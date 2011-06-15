@@ -1,0 +1,16 @@
+#!/usr/bin/make -f
+# Copyright © 2002,2003 Colin Walters <walters@verbum.org>
+# Copyright © 2003 Daniel Stone <daniels@debian.org>
+# Copyright © 2006 Sjoerd Simons <sjoerd@debian.org>
+
+include /usr/share/cdbs/1/rules/simple-patchsys.mk
+include /usr/share/cdbs/1/rules/utils.mk
+include /usr/share/cdbs/1/rules/debhelper.mk
+include /usr/share/cdbs/1/class/autotools.mk
+
+# Strict library versioning
+DEB_DH_MAKESHLIBS_ARGS_ALL := -V "libdbus-glib-1-2 (>= 0.88)"
+
+DEB_CONFIGURE_EXTRA_FLAGS := --with-introspect-xml=$(CURDIR)/debian/dbus-bus-introspect.xml
+
+include $(CURDIR)/debian/update-patches.mk

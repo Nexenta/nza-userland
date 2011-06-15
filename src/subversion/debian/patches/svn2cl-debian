@@ -1,0 +1,21 @@
+svn2cl-debian: hard-code svn2cl's data directory to /etc/svn2cl/.
+
+--- a/contrib/client-side/svn2cl/svn2cl.sh
++++ b/contrib/client-side/svn2cl/svn2cl.sh
+@@ -252,15 +252,7 @@
+   esac
+ done
+ 
+-# find the directory that this script resides in
+-prog="$0"
+-while [ -h "$prog" ]
+-do
+-  dir=`dirname "$prog"`
+-  prog=`ls -ld "$prog" | sed "s/^.*-> \(.*\)/\1/;/^[^/]/s,^,$dir/,"`
+-done
+-dir=`dirname "$prog"`
+-dir=`cd "$dir" && pwd`
++dir=/etc/svn2cl
+ XSL="$dir/svn2${OUTSTYLE}.xsl"
+ 
+ # check if the authors file is formatted as a legacy

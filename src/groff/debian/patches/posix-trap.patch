@@ -1,0 +1,45 @@
+Description: Use POSIX-compliant 'trap' arguments
+Author: David Weinehall <tao@debian.org>
+Author: Colin Watson <cjwatson@debian.org>
+Forwarded: http://lists.gnu.org/archive/html/bug-groff/2010-02/msg00005.html
+Last-Update: 2010-03-01
+
+Index: b/contrib/eqn2graph/eqn2graph.sh
+===================================================================
+--- a/contrib/eqn2graph/eqn2graph.sh
++++ b/contrib/eqn2graph/eqn2graph.sh
+@@ -75,7 +75,7 @@
+     { (exit 1); exit 1; }
+ fi
+ 
+-trap 'exit_status=$?; rm -rf $tmp && exit $exit_status' 0 2 15 
++trap 'exit_status=$?; rm -rf $tmp && exit $exit_status' EXIT INT TERM
+ 
+ # Here goes:
+ # 1. Add .EQ/.EN.
+Index: b/contrib/grap2graph/grap2graph.sh
+===================================================================
+--- a/contrib/grap2graph/grap2graph.sh
++++ b/contrib/grap2graph/grap2graph.sh
+@@ -71,7 +71,7 @@
+     { (exit 1); exit 1; }
+ fi
+ 
+-trap 'exit_status=$?; rm -rf $tmp && exit $exit_status' 0 2 15 
++trap 'exit_status=$?; rm -rf $tmp && exit $exit_status' EXIT INT TERM
+ 
+ # Here goes:
+ # 1. Add .G1/.G2.
+Index: b/contrib/pic2graph/pic2graph.sh
+===================================================================
+--- a/contrib/pic2graph/pic2graph.sh
++++ b/contrib/pic2graph/pic2graph.sh
+@@ -86,7 +86,7 @@
+     { (exit 1); exit 1; }
+ fi
+ 
+-trap 'exit_status=$?; rm -rf $tmp && exit $exit_status' 0 2 15 
++trap 'exit_status=$?; rm -rf $tmp && exit $exit_status' EXIT INT TERM
+ 
+ # Here goes:
+ # 1. Wrap the input in dummy .PS/PE macros (and add possibly null .EQ/.EN)

@@ -1,0 +1,21 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## ruby-typemap-digest by <zippel@linux-m68k.org>
+##
+## DP: Change the ruby 'digest' typemaps to tolerate NULL pointers.
+## DP: This may be the bug which has sporadically plagued us for
+## DP: several months, most recently on m68k.  Patch by Roman Zippel.
+## DP:
+## DP: Sent upstream: http://svn.haxx.se/dev/archive-2006-09/0536.shtml
+
+@DPATCH@
+--- a/subversion/bindings/swig/include/svn_types.swg
++++ b/subversion/bindings/swig/include/svn_types.swg
+@@ -1053,7 +1053,7 @@
+ #ifdef SWIGRUBY
+ %typemap(argout) unsigned char digest[ANY] {
+   char *digest_string = (char *)svn_md5_digest_to_cstring($1, _global_pool);
+-  %append_output(rb_str_new2(digest_string));
++  %append_output(rb_str_new2(digest_string ? digest_string : ""));
+ }
+ #endif
+ 

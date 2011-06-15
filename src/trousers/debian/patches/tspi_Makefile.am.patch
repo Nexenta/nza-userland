@@ -1,0 +1,21 @@
+Index: trousers-0.3.4/src/tspi/Makefile.am
+===================================================================
+--- trousers-0.3.4.orig/src/tspi/Makefile.am	2011-04-07 12:14:03.585279487 +0400
++++ trousers-0.3.4/src/tspi/Makefile.am	2011-04-07 12:15:28.372898535 +0400
+@@ -17,7 +17,7 @@
+ # 5. If any interfaces have been added since the last public release, then increment age.
+ # 6. If any interfaces have been removed since the last public release, then set age to 0.
+ 
+-libtspi_la_LDFLAGS=-version-info 2:3:1 -lpthread @CRYPTOLIB@
++libtspi_la_LDFLAGS=$(LDARCHFLAG) -version-info 2:3:1 @CRYPTOLIB@
+ 
+ libtspi_la_CFLAGS=-I$(top_srcdir)/src/include -DAPPID=\"TSPI\" -DVAR_PREFIX=\"@localstatedir@\" -DETC_PREFIX=\"@sysconfdir@\"
+ 
+@@ -217,7 +217,6 @@
+ libtspi_la_SOURCES+=gtk/main.c gtk/support.c gtk/interface.c gtk/callbacks.c
+ endif
+ if OPENSSL_UI
+-libtspi_la_LDFLAGS+=-lssl
+ libtspi_la_SOURCES+=ssl_ui.c
+ endif
+ 

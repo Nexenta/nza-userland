@@ -1,0 +1,241 @@
+debiandoc-sgml for debian
+-------------------------
+
+For the full manual, please install debiandoc-sgml-doc and read it.
+
+                         === NOTICE ===
+
+The DebianDoc-SGML is becoming less used and its is not accepting any
+new feature enhancements except localization data.  
+
+If you are creating a new documentation project or start making major
+updates on the existing documents, please consider to use Docbook XML
+system instead of DebianDoc-SGML because you will need things like
+tables and figures which are not supported by this debiandoc-sgml
+platform.
+
+New direct conversion tool debiandoc2xml in this package (or
+alternatively debiandoc2dbxml command from debiandoc2dbxml package)
+should provide easy transition of existing debiandoc-sgml document
+contents into DocBook XML format with minor manual interaction.  The
+detailed conversion instruction is given in the appendix of
+debiandoc-sgml-doc.  There are some manual adjustment needed to get the
+proper DocBook XML source from the DebianDoc-SGML source.
+
+See http://bugs.debian.org/debiandoc-sgml for the latest information.
+
+Since this is perl5/shell based script, it should run on etch without any
+modification if texlive tools are installed.
+
+                         ------------------
+
+DebianDoc-SGML is an SGML DTD and a set of formatting tools.  These
+tools convert an SGML document conforming to the DebianDoc-SGML DTD into
+various output formats.  This DTD is mainly used for, but not limited to
+Debian specific documents.
+
+Please install debiandoc-sgml-doc and read the full manual.
+
+Currently, the following output formats are supported:
+
+ - HTML
+ - XHTML
+ - plain text
+ - overstrike text
+ - LaTeX
+ - DVI (via LaTeX)
+ - PS (via LaTeX/DVI)
+ - PDF (via pdfLaTeX)
+ - Texinfo
+ - Info (via Texinfo)
+ - Docbook XML (via Texinfo) (deprecated)
+ - Debiandoc SGML (reformat) (new, usable)
+ - Docbook XML (direct conversion) (new, good enough)
+ - Wiki (direct conversion) (new, usable)
+
+Please note that new Docbook XML and and Wiki conversion tools produce
+mostly usable data but you still need to perform some manual operation
+to get the output of these commands to function properly. 
+
+The tutorial of this tool and the use of the markup tags can be found in
+the 'debiandoc-sgml-doc' package.  The documentation for the tools is in
+the manual page 'debiandoc-sgml(1)'.
+
+The exact definition of the markup tags can be found as the DTD toward
+the end of the /usr/share/sgml/debiandoc/dtd/sgml/1.0/debiandoc.dtd .
+
+The Debian mailing list 'debian-sgml@lists.debian.org' is used to
+discuss issues related to SGML on Debian systems (with an stress on
+proper integration of tools, packaging standards and the writing of
+documentation for SGML users).
+
+The Debian mailing list 'debian-doc@lists.debian.org' is used to discuss
+issues related to Debian specific documentation, including the use of
+the DebianDoc-SGML.
+
+If you find a bug in this package, please report it using command 
+`reportbug debiandoc-sgml' and sending your mail to the Debian Bug
+Tracking System (BTS) after reading this document.
+
+If you find lack of support or problem to your language, please do the
+following to customize the localization support by using -X option.
+
+ $ cp -a /usr/share/perl5/DebianDoc_SGML/Locale /your/path
+ $ cd /your/path
+ $ vim Alias.pm
+  ... add new locale xx_YY.zzzz entry.
+ $ cp -a en_US.ISO8859-1 xx_YY.zzzz
+ $ cd xx_YY.zzzz
+ $ vim HTML LaTeX Texinfo Text TextOV
+   ... translate contents and fix LaTeX header data
+ $ cd /your/source
+ $ debiandoc2html -X /your/path your_source.sgml
+   ... (try other commands)
+ 
+If you reach successful resilt, please send a bug report with these
+files to BTS using reportbug. (It is better to make them a gzipped file
+attachment to avoid encoding errors.)  The localization request must
+supply these translated text information. (If the localization support
+bug reports do not supply these translated texts, they will be closed.)
+
+Please note some convention for specifying LaTeX code generation.
+/usr/share/perl5/DebianDoc_SGML/Locale/??_??.?????/LaTeX has contents
+
+%locale = (
+           'babel' => '',
+           'inputenc' => '', 
+           'abstract' => '',
+           'copyright notice' => '',
+           'before begin document' => '',
+           'after begin document' => '',
+           'before end document' => '',
+           'pdfhyperref' => ''
+           ); 
+
+ * The first 2 are used to define language scheme based on the babel macro.
+   For CJK, this can be undefined.
+
+ * The next 2 are for the word used for abstract and copyright notice in that
+   pertinent language.
+
+ * The next 3 are recent addition which provide very flexible ways to create
+   proper LaTeX source.  CJK uses these (Can be omitted for European languages)
+
+ * The last one is defined as "hypertex" abd determins how hyperref for
+   PDF are generated. (This seems be defined as "unicode" for UTF-8 but I
+   do not know exacr rule?)
+
+The /usr/share/perl5/DebianDoc_SGML/Format/LaTeX.pm file uses the value
+defined above to generate LaTeX source header etc.
+
+Similar thing can be done for HTML with %locale values in
+/usr/share/perl5/DebianDoc_SGML/Locale/??_??.?????/HTML.  The
+/usr/share/perl5/DebianDoc_SGML/Format/HTML.pm file uses the value for
+"charset" in this when generating HTML.  Thus this part need to be
+different depending on the encoding used.
+
+Although the document format for the Debian documentation should be
+moving from this DebianDoc SGML to more versatile DocBook XML, we are
+still supporting this SGML tool package with bug fixes to the
+localization and other key functions for lenny release.  
+
+This may not be true for the subsequent release.  So we strongly
+encourage you again to adopt newer DocBook XML as soon as possible.
+Please note that you do not need to use all the tags of DocBook XML to
+make documentation.
+
+Since the source SGML file conversion to DocBook XML format can be done
+very easily from 1.1.86, there is not much reason to enhance this SGML
+tool with new features any more. So we will only perform non-aggressive
+maintenance.  Minor cosmetic formatting bugs and feature requests will
+be considered 'wishlist' and 'wontfix' bugs if they do not accompany
+good patches. 
+
+Recent debiandoc2* tools have "-s" option.  It allows us to run a hook
+script on the generated latex source.  Current default script for latex
+related conversions is found at /usr/share/debiandoc-sgml/fixlatex.  It
+addresses issues for the traditional Chinese encoding of zh_TW by
+escaping problematic code sequences. For customizing LaTeX code
+generation, please use -X function. 
+
+Now debiandoc2* commands should work for UTF-8 source if proper locale,
+such as  en.UTF-8, ja.UTF-8, en_US.UTF-8, or ja_JP.UTF-8 is given to the 
+-l option.
+
+As for debiandoc2latex*, it may be somewhat buggy until we get help from
+the expert support on LaTeX babel and CJK macro support.  If you know
+how to fix this situation, please send the correct:
+/usr/share/perl5/DebianDoc_SGML/Locale/??_??.?????/LaTeX .
+
+If you are not sure what encoding value string to give to -l option,
+please read the /usr/share/perl5/DebianDoc_SGML/Locale/Alias.pm file.
+
+The /usr/share/perl5/DebianDoc_SGML/Locale/ part of above 2 paragraphs
+can be replaced with the absolute directory specified in -X option
+argument.  This is handy if you need to have local modification or
+addition of Locale dependent data without changing the package.
+
+If you face issues with generated XML, please send us bug report with
+minimum example XML source "foo.xml" with the result of following
+command.
+
+SP_CHARSET_FIXED=YES SP_ENCODING=XML nsgmls -wxml -mdeclaration/xml.soc -gues /usr/share/sgml/declaration/xml.dcl foo.xml
+
+Multifile XML needs xsltproc command to be invoked with --xinclude option.
+
+If you want to preserve include file as separate file, you should follow
+instruction in the appendix of debiandoc-sgml-doc.  The trick to preserve
+ENTITY as ENTITY is also documented there too.
+
+For alternative XML conversion tool, you should check debiandoc2dbxml 
+tool too.  It uses XSLT.  That document also contain good information.
+
+                         ------------------
+
+New Debian Policy "12.2 Info documents" support.
+
+In order to properly install info documents, we need to include something like:
+
+@dircategory Individual utilities
+@direntry
+* example: (example).               An example info directory entry.
+@end direntry
+
+In order to help you to do tis via -s option, place marker is placed as in
+texinfo file generated:
+
+@c %**add dircategory and direntry here
+
+Let's see how menu package use this.  It creates a shell script file
+menu.direntry (permission 755) as:
+
+->8--menu.direntry----
+#!/bin/sh
+sedscript=`tempfile`
+cat <<'EOF' > $sedscript
+/@c %\*\*add dircategory and direntry here/a\
+@dircategory Information\
+@direntry\
+* Debian menu: \(menu\).                  The Debian menu system\
+@end direntry
+EOF
+sed -f $sedscript <$1 >$2
+rm $sedscript
+--------------------------
+
+Test this as:
+
+$ debiandoc2texinfo -s menu.direntry menu.sgml
+
+OK it works for texinfo.  It is used with debiandoc2info in menu package's
+build script as:
+
+$ debiandoc2info -s menu.direntry menu.sgml
+
+--
+Ardo van Rangelrooij (ardo@debian.org),
+Osamu Aoki (osamu@debian.org) and the team
+DebianDoc-SGML Pkgs <debiandoc-sgml-pkgs@lists.alioth.debian.org>
+
+Updated for -X by Osamu Aoki (osamu@debian.org)     Sun, 11 May 2008 17:23:43 +0900
+Updated for info by Osamu Aoki (osamu@debian.org)   Fri, 18 Sep 2009 21:07:14 +0900

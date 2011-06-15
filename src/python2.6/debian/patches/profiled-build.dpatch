@@ -1,0 +1,36 @@
+#! /bin/sh -e
+
+# DP: Fix profiled build; don't use Python/thread.gc*, gcc complains
+
+dir=
+if [ $# -eq 3 -a "$2" = '-d' ]; then
+    pdir="-d $3"
+    dir="$3/"
+elif [ $# -ne 1 ]; then
+    echo >&2 "usage: `basename $0`: -patch|-unpatch [-d <srcdir>]"
+    exit 1
+fi
+case "$1" in
+    -patch)
+        patch $pdir -f --no-backup-if-mismatch -p0 < $0
+        ;;
+    -unpatch)
+        patch $pdir -f --no-backup-if-mismatch -R -p0 < $0
+        ;;
+    *)
+	echo >&2 "usage: `basename $0`: -patch|-unpatch [-d <srcdir>]"
+        exit 1
+esac
+exit 0
+
+--- Makefile.pre.in~	2008-11-14 12:13:11.000000000 +0100
++++ Makefile.pre.in	2008-11-14 14:54:20.000000000 +0100
+@@ -375,6 +375,8 @@
+ 	./$(BUILDPYTHON) $(PROFILE_TASK)
+ 
+ build_all_use_profile:
++	: # FIXME: gcc error
++	rm -f Python/thread.gc*
+ 	$(MAKE) all CFLAGS="$(CFLAGS) -fprofile-use"
+ 
+ coverage:

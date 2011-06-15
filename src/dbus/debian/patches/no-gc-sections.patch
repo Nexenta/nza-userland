@@ -1,0 +1,15 @@
+Index: dbus-1.4.0-2/configure.in
+===================================================================
+--- dbus-1.4.0-2.orig/configure.in	2011-04-28 14:53:57.027322591 +0400
++++ dbus-1.4.0-2/configure.in	2011-04-28 14:54:53.456300244 +0400
+@@ -1249,10 +1249,6 @@
+ AC_SUBST(PIE_CFLAGS)
+ AC_SUBST(PIE_LDFLAGS)
+ 
+-if ld_supports_flag --gc-sections; then
+-  SECTION_LDFLAGS="-Wl,--gc-sections $SECTION_LDFLAGS"
+-  CFLAGS="-ffunction-sections -fdata-sections $CFLAGS"
+-fi
+ AC_SUBST(SECTION_FLAGS)
+ AC_SUBST(SECTION_LDFLAGS)
+ AC_MSG_RESULT($ac_gcsections)

@@ -1,0 +1,1277 @@
+po-debconf (1.0.16+nmu1-nexenta2) unstable; urgency=low
+
+  * debconf-updatepo should use gnu xgettext.
+
+ -- Andrew Stormont (astormont) <andyjstormont@googlemail.com>  Fri, 27 May 2011 01:41:19 +0100
+
+po-debconf (1.0.16+nmu1-nexenta1) unstable; urgency=low
+
+  * Rebuilt for NCP4
+  * debian/control:
+    + Fixed dependency: gettext->text-locale
+
+ -- Kartik Mistry <kartik.mistry@nexenta.com>  Tue, 21 Dec 2010 20:17:05 +0530
+
+po-debconf (1.0.16+nmu1) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Fix pending l10n issues. Manpages translations:
+    - French (Christian Perrier). Closes: #597432
+    - Russian (Yuri Kozlov). Closes: #602268
+    - Vietnamese (Clytie Siddall). Closes: #602680 
+    - German (Helge Kreutzmann). Closes: #602719 
+    - Portuguese (Miguel Figueiredo). Closes: #602968
+
+ -- David Prévot <david@tilapin.org>  Tue, 09 Nov 2010 18:36:01 -0400
+
+po-debconf (1.0.16) unstable; urgency=low
+
+  [ packaging ]
+  * debian/control: Standards-Version bumped to 3.8.1. No changes.
+  * debian/compat: Bumped to 7.
+  * debian/rules: Replace dh_clean -k by dh_prep.
+  * debian/control: Updated build dependency on debhelper (>= 7.0.0).
+
+  [ debconf-updatepo ]
+  * Fix the support for --msgid-bugs-address. Thanks to Felix Zielcke.
+    Closes: #503523
+
+  [ podebconf-report-po ]
+  * Apply patches from 1.0.15ubuntu1
+    - Fix opportunistic import of Mail::Box::Manager, to avoid crashing with
+      an import error if libmail-box-perl is not installed.  Now it actually
+      shows the "Please install libmail-box-perl" message, as the code intends
+      to. Thanks to Colin Watson for suggesting this fix!
+    - Drop libmail-box-perl to Suggests:. It is not needed for most users of
+      po-debconf, drags in lots of more packages, and with above fix the
+      failure mode of podebconf-report-po is adequate.
+    - Closes: #503086, #519868
+  * podebconf-report-po: If the postponed mailbox does not exist, create it.
+    Closes: #519870
+
+  [ documentation ]
+  * doc/en/po-debconf.7.pod: encourage __Choices instead of _Choices.
+    Closes: #495352
+  * doc/po4a/po/vi.po: Updated Vietnamese translation. Thanks to Clytie
+    Siddall. Closes: #513800
+  * doc/en/po-debconf.7.pod: document the debugging process. Thanks to James
+    R. Van Zandt. Closes: #505393
+  * debian/control: English fixes in the package description. Closes: #508454
+  * debian/control: Update build dependencies for po4a (>= 0.36) and
+    perl (>= 5.10) to get a proper support of UTF-8 manpages from POD
+    documents.
+  * doc/po4a/po/*.po, doc/po4a/add_*/translator.*: convert to UTF-8, 
+  * doc/po4a/po-debconf.cfg: Generate all translated POD document in UTF-8.
+  * doc/Makefile: COnvert to UTF-8, use the -utf8 pod2man option.
+    Closes: #510485
+
+ -- Nicolas FRANCOIS (Nekral) <nicolas.francois@centraliens.net>  Sun, 05 Apr 2009 16:05:55 +0200
+
+po-debconf (1.0.15) unstable; urgency=low
+
+  [ podebconf-display-po ]
+  * Fix breakage when a string appears in multiple files. This removed the
+    change applied to fix #375656, and forced the regular expression to be
+    done on a temporary string so that the fields can be retrieved on the
+    later execution (for the other line references). Closes: #484847
+
+  [ Packaging ]
+  * debian/control: Bump Standards-Version to 3.8.0 (no changes needed).
+
+ -- Nicolas FRANCOIS (Nekral) <nicolas.francois@centraliens.net>  Fri, 13 Jun 2008 01:41:32 +0200
+
+po-debconf (1.0.14) unstable; urgency=low
+
+  [ podebconf-report-po ]
+  * Create the temporary file with File::Temp::tempfile() instead of tmpnam().
+    This permits to honor the TMP or TMPDIR environment variables.
+    Closes: #482097
+  * Use the package and version set in the POT file if none were specified
+    with an option or found in a debian/changelog. Closes: #481221
+  * Keep the <package>, <version>, and <package_and_version> tags if they were
+    not filled. Closes: #481222
+
+  [ documentation translation ]
+  * doc/Makefile: Set the PACKAGE, VERSION and the Report-Msgid-Bugs-To field.
+  * doc/po4a/po/de.po: Updated German translation. Thanks to Helge Kreutzmann.
+    Closes: #481821
+  * doc/po4a/po/pt.po: Updated Portuguese translation. Thanks to Miguel
+    Figueiredo. Closes: #482141
+  * doc/po4a/po/ru.po: Updated Russian translation. Thanks to Yuri Kozlov.
+    Closes: #482287
+  * doc/po4a/po/fr.po: Updated French translation. Thanks to Florentin Duneau.
+
+  [ documentation ]
+  * doc/en/podebconf-report-po.1.pod: Document the usage of the potfile for
+    the package's name and version.
+  * doc/en/podebconf-report-po.1.pod: Change some I<...> formatting to F<...>
+    when it reference a file. Closes: #481822
+    (unfuzzy the German translation accordingly)
+  
+  [ packaging ]
+  * debian/control: Depend on po4a >= 0.33 for the --package-name,
+    --package-version, and --msgid-bugs-address options.
+
+ -- Nicolas FRANCOIS (Nekral) <nicolas.francois@centraliens.net>  Sat, 31 May 2008 18:23:09 +0200
+
+po-debconf (1.0.13) unstable; urgency=low
+
+  [ podebconf-report-po ]
+  * When --notdebconf is used, use po/ as the default po directory (instead of
+    debian/po). Closes: #480164
+  * Added EXAMPLES section for recommended usages.
+  * In the --call mode, die if --languageteam is used without the
+    --withtranslators option specified. Closes: #480168
+  * Change the default to send update requests to translators
+    (--withtranslators) when sending calls for translations.
+  * It is now possible to specify withouttranslators in the configuration file
+    to disable the above behavior.
+  * Enable the --languageteam option by default.
+  * Add a nolanguageteam option for the configuration file.
+  * Allow the specification of a deadline by an offset, when the deadline
+    starts with a '+'.
+  * Add a --nodeadline option.
+  * Add a deadline and nodeadline option for the configuration file.
+  * When no deadlines are specified (and the nodeadline option is not
+    specified), prompt for a deadline (default deadline is +10days).
+  * Automatically detect if a debconf or non-debconf template should be used.
+    The --notdebconf option is still useful when the user wants to send a call
+    for the debconf translations and for the program translation from the
+    package's root directory.
+
+  [ packaging ]
+  * Set the doc-base section to Text.
+
+  [ documentation translation ]
+  * Updated translation material.
+    Fully translated PO files are now 281t8f15u.
+
+ -- Nicolas FRANCOIS (Nekral) <nicolas.francois@centraliens.net>  Mon, 12 May 2008 14:34:48 +0200
+
+po-debconf (1.0.12.1) unstable; urgency=low
+
+  [ packaging ]
+  * debian/rules: Distribute the *-po templates (#462053)
+
+  [ documentation translation ]
+  * doc/po4a/po/ru.po: Updated translation. Thanks to Yuri Kozlov.
+    Closes: #469056
+  * doc/po4a/po/*.po, doc/po4a/po/po-debconf.pot: Updated to the new
+    documentation.
+
+ -- Nicolas FRANCOIS (Nekral) <nicolas.francois@centraliens.net>  Thu, 13 Mar 2008 22:35:01 +0100
+
+po-debconf (1.0.12) unstable; urgency=low
+
+  [ podebconf-report-po ]
+  * Add option --sendmessage to send messages to translators without
+    attachments.  Closes: #464826
+  * Add new templates call-po, submit-po, and translators-po which do not
+    mention debconf translation in the subject or body of the messages.
+  * Add option --notdebconf for regular (non debconf) translation (use the
+    *-po templates).  Closes: #462053
+  * Document the --conf option in the Usage.
+  * Sort the options alphabetically in the Usage.
+  * Allow the usage to be printed even if libmail-sendmail-perl is not
+    installed.  Closes: #455897
+
+  [ packaging ]
+  * debian/control: Bump Standards-Version to 3.7.3.0. No changes required.
+
+  [ documentation ]
+  * doc/en/podebconf-report-po.1.pod: Document --sendmessage and --notdebconf.
+  * doc/en/podebconf-report-po.1.pod: Sort the options alphabetically.
+
+ -- Nicolas FRANCOIS (Nekral) <nicolas.francois@centraliens.net>  Sat, 23 Feb 2008 23:00:09 +0100
+
+po-debconf (1.0.11) unstable; urgency=low
+
+  [ debconf-updatepo ]
+  * debconf-updatepo was generating invalid Report-Msgid-Bugs-To.
+  Thanks to Colin Watson <cjwatson@debian.org>. Closes: #450923
+
+  [ packaging ]
+  * debian/control: Build dependency on po4a raised from 0.23 to 0.31 because
+    we use the --previous option. Thanks to Dr. Helge Kreutzmann.
+    Closes: #448885
+
+  [ documentation translation ]
+  * debian/Makefile: Fix the quotes of the German and French translations
+    (for the POD C<...> formatting).
+  * doc/po4a/po/de.po: Updated German translation. Thanks to Helge Kreutzmann.
+    Closes: #449161
+
+ -- Nicolas FRANCOIS (Nekral) <nicolas.francois@centraliens.net>  Tue, 13 Nov 2007 15:39:23 +0100
+
+po-debconf (1.0.10) unstable; urgency=low
+
+  [ debconf-updatepo ]
+  * Set the Report-Msgid-Bugs-To field of the POT to
+    <package>@packages.debian.org instead of the Maintainer address.
+    Closes: #383674
+  * Add a --msgid-bugs-address option to force the use of an alternative
+    address. Closes: #427146
+
+  [ podebconf-report-po ]
+  * Fix a typo --mbox is --postpone.
+  * Add option --addlanguageteam lang:list to add a list in copy of messages
+    sent for a language. Closes: #427824
+  * Use mutt -Q postponed to retrieve the postpone mailbox. Thanks to Vagrant
+    Cascadian for the trick. Closes: #431639
+  * Support Maildir with the --postpone and --mutt options by using
+    libmail-box-perl. Thanks to Vagrant Cascadian for suggesting support for
+    Maildir.
+  * Use the same algorithm as devscripts' bts to find the From field. The name
+    of the submitter is then guessed from the DEBFULLNAME and DEBEMAIL
+    variables, defaulting to the EMAIL environment variable, and using the
+    Maintainer: field if none of these variables were set. Closes: #435856
+  * Ignore --summary when we are sending call for translations.
+    Closes: #421706
+  * Update my copyright information.
+  * Update the podebconf-report-po version to 0.12.
+  * Add option --withtranslators (and --withouttranslators) to enable (and
+    disable) sending requests to translators after sending call for
+    translation with --call. withtranslators can be specified in the
+    configuration file to make it the default behavior of --call.
+  * Add options --templatetranslators, --templatesubmit, --templatecall (which
+    can be specified in the configuration file) to specify a default template
+    for each action.
+  * Move the templates from the podebconf-report-po internal code to a new
+    /usr/share/po-debconf/templates directory.
+  * If the --from option is specified, do not use the from field from the
+    configuration file.
+  * Change the default subjects for the request for translation updates and
+    call for translations. The subjects will now start with the package's
+    name and version. Thanks to a suggestion by Helge Kreutzmann.
+
+  [ documentation ]
+  * doc/en/podebconf-report-po.1.pod: Fix a typo --mbox is --postpone.
+  * doc/en/podebconf-report-po.1.pod: Document --addlanguageteam.
+  * doc/en/podebconf-report-po.1.pod: Document the use of DEBFULLNAME and
+    EMAIL environment variables.
+  * doc/en/podebconf-report-po.1.pod: Document --withtranslators,
+    --withouttranslators and the withtranslators configuration variable.
+  * doc/en/podebconf-report-po.1.pod: For each option, indicate if it can be
+    specified in the configuration file.
+  * doc/en/podebconf-report-po.1.pod: Document --templatetranslators,
+    --templatesubmit, and --templatecall.
+  * doc/en/debconf-updatepo.1.pod: Document the new --msgid-bugs-address
+    option and the default address used for the Report-Msgid-Bugs-To field.
+  * doc/en/debconf-gettextize.1.pod: Fix description of the --merge option.
+    Thanks to Clytie Siddall for noticing the weird wording.
+  * doc/en/debconf-gettextize.1.pod, doc/en/debconf-updatepo.1.pod,
+    doc/en/po-debconf.7.pod, doc/en/po2debconf.1.pod,
+    doc/en/podebconf-display-po.1.pod, doc/en/podebconf-report-po.1.pod: Fix
+    typos and wording. Thanks to Helge Kreutzmann. Closes: #444863
+
+  [ documentation translation ]
+  * debian/rules: Call po4a with the --previous option.
+  * doc/po4a/po/fr.po: Fix a typo <nbsp> -> E<nbsp>.
+  * doc/po4a/po/de.po, doc/po4a/add_de/translator.de: New German translation.
+    Thanks to Helge Kreutzmann.
+    Closes: #444862
+  * doc/po4a/po/vi.po, doc/po4a/add_vi/translator.vi: New Vietnamese
+    translation. Thanks to Clytie Siddall.
+    Closes: #445137
+  * doc/po4a/po/pt.po, doc/po4a/add_pt/translator.pt: New Portuguese
+    translation. Thanks to Miguel Figueiredo.
+    Closes: #446539
+  * doc/po4a/po-debconf.cfg, doc/Makefile: Activate the German, Portuguese,
+    and Vietnamese translations.
+  * doc/Makefile: Build HTML manpages for the Vietnamese translation.
+  * doc/po4a/po/ru.po: Updated translation. Thanks to Sergey Alyoshin.
+  * doc/po4a/po/fr.po: Likewise. Thanks to Florentin Duneau.
+
+  [ podebconf-display-po ]
+  * Issue a warning if a Choice translation contains a comma. Closes: #421138
+
+  [ packaging ]
+  * debian/control: Added dependency on libmail-box-perl, this should provide
+    a better support for mbox and Maildir.
+  * debian/dirs, debian/rules: Install the podebconf-report-po email templates
+    in /usr/share/po-debconf/templates.
+  * doc/de/.cvsignore, doc/en/.cvsignore, doc/fr/.cvsignore,
+    doc/pt/.cvsignore, doc/ru/.cvsignore: Added .cvsignore files for the
+    generated pod and roff manpages.
+  * doc/.cvsignore: Removed roff pages, added temporary files from pod2html.
+  * debian/rules: Install the new German, Portuguese, and Vietnamese manpages.
+  * debian/dirs, debian/po-debconf.doc-base, debian/rules: Install HTML
+    manpages for the Vietnamese translation.
+
+ -- Nicolas FRANCOIS (Nekral) <nicolas.francois@centraliens.net>  Sun, 14 Oct 2007 01:27:11 +0200
+
+po-debconf (1.0.9) unstable; urgency=low
+
+  * podebconf-report-po: Fix a typo in the "call" template: attachement.
+  * podebconf-report-po: Always replace the tags before and after opening the
+    template with an editor. Closes: #417002
+  * podebconf-report-po: Ask encode_qp to not break mail header lines.
+    This avoid invalid mails when --utf8 is used. Closes: #411618
+  * podebconf-report-po: Issue a warning when invalid email addresses are
+    detected (e.g. a language team set to "French" without addresses).
+    Closes: #411689
+  * podebconf-report-po: Add options --postpone=MBOX and --mutt. Every mail
+    prepared by podebconf-report-po are stored in a mailbox, which can be used
+    by a mailer. With --mutt, mutt is started at the end of the processing.
+    Closes: #400506
+    This should allow to easily sign the mails sent by podebconf-report-po.
+    Closes: #303005
+  * podebconf-report-po: Sort the languages in the call for translations.
+    Thanks to Damyan Ivanov for the patch. Closes: #419449
+  * podebconf-report-po: Bump version to 0.11.
+  * podebconf-report-po: Support X for the language check boxes. Reword the
+    note about the check boxes in the template. Thanks to Marc Haber. This
+    fixes some points mentioned in #420269.
+
+  * debconf-updatepo: To help translator seeing what changed in a PO, keep the
+    previous msgid. Use the --previous flag when calling msgmerge.
+  * debconf-updatepo: Do not make backup of the PO files. Add --backup=none to
+    the msgmerge options. Closes: #412951
+
+  * debconf/control: because of --previous, po-debconf depends on
+    gettext (>= 0.16)
+
+  * podebconf-display-po: error is no more a cdebconf extension. It is
+    supported by debconf.  Thanks to Thomas Huriaux.
+  * podebconf-display-po: Add support for the `entropy-text' type (defined in
+    the cdebconf-entropy plugin. Thanks to Thomas Huriaux. Closes: #410387
+
+  * debconf-gettextize.1: fix a typo in the manpage (seperate->separate).
+    Thanks to J S Bygott. Closes: #410332
+  * Manpages translation:
+    + Russian: Updated to 256t. Thanks to Yuri Kozlov. Closes: #419065
+    + French: Updated to 256t. Thanks to Florentin Duneau.
+  * doc/en/*: fix various typos. Thanks to Florentin Duneau.
+    Translations unfuzzied automatically.
+
+  * COPYING, debconf-updatepo, po2debconf, podebconf-report-po: Updated FSF
+    address. Thanks to Martin Zobel-Helas for noticing.
+
+ -- Nicolas FRANCOIS (Nekral) <nicolas.francois@centraliens.net>  Thu, 12 Apr 2007 00:57:36 +0200
+
+po-debconf (1.0.8) unstable; urgency=low
+
+  * doc/po4a/po/fr.po: Update the French translation of the manpages. Thanks
+    to Florentin Duneau.
+
+  * debian/control: Move po4a from Build-Depends-Indep to Build-Depends
+    because it is used in the clean rule. Also use a versioned dependency
+    since we use the options introduced in po4a 0.23.
+
+ -- Nicolas FRANCOIS (Nekral) <nicolas.francois@centraliens.net>  Mon,  4 Dec 2006 23:03:44 +0100
+
+po-debconf (1.0.7) unstable; urgency=low
+
+  * podebconf-report-po: Document the --call and --potfile options in the
+    --help output.  Closes: #390933 
+
+  * podebconf-report-po: Give some examples of headers in the template for
+    --call (From, Subject (and Reply-To, if --bts is used)).
+
+  * podebconf-report-po: Add a --utf8 option, to allow non-ascii characters in
+    the mail body or headers.  Headers are quoted-printable encoded to avoid
+    rejection from some MTA.  Closes: #292815
+
+  * podebconf-report-po: Propose to return to the editor before sending the
+    mail.  Closes: #388774
+
+  * podebconf-report-po: Add support for config files.  Many --no* options
+    were added to override configuration file settings.  Closes: #388768
+
+  * podebconf-report-po: Invoke an editor, even with --template.  The option
+    to avoid opening an editor is --default.  Closes: #388762
+
+  * podebconf-report-po: Document the format of emails in the man page.
+    Closes: #388775
+
+  * Update the French translation of the manpages. Thanks to Florentin Duneau.
+
+ -- Nicolas FRANCOIS (Nekral) <nicolas.francois@centraliens.net>  Wed,  4 Oct 2006 19:27:07 +0200
+
+po-debconf (1.0.6) unstable; urgency=low
+
+  * New maintainer.
+
+  * podebconf-display-po: Fix another issue when a string appears multiple
+    times.  Closes: #380007
+
+  * podebconf-report-po: Add a --langs option, to restrict the languages
+    notified.  Also permit to change the addresses and the list of notified
+    languages in interactive mode with the editor.  Closes: #380342
+
+  * podebconf-report-po: Add the --call and --potfile options for sending call
+    for translations.  Closes: #380343
+
+ -- Nicolas FRANCOIS (Nekral) <nicolas.francois@centraliens.net>  Sun,  1 Oct 2006 00:12:25 +0200
+
+po-debconf (1.0.5) unstable; urgency=low
+
+  * podebconf-display-po: Changes introduced in 1.0.3 broke
+    podebconf-display-po when a string appears in multiple files,
+    Thanks Florentin Duneau.  Closes: #375656
+
+ -- Denis Barbier <barbier@debian.org>  Tue, 27 Jun 2006 19:30:35 +0200
+
+po-debconf (1.0.4) unstable; urgency=low
+
+  * doc/po4a/po/ru.po: Russian translation of podebconf-report-po
+    documentation updated by Yuri Kozlov, thanks.
+
+ -- Denis Barbier <barbier@debian.org>  Mon, 26 Jun 2006 21:05:37 +0200
+
+po-debconf (1.0.3) unstable; urgency=low
+
+  * podebconf-display-po: Display a Select question even if there is only
+    one translatable Choices field.  Report and patch by Thomas Huriaux, thanks.
+    Closes: #368984
+
+  * podebconf-display-po: Use File::Temp::tempfile() so that temporary files
+    are not created in the current directory, so that this program can be
+    run from a nn-writable directory.  Suggested by Florentin Duneau, thanks.
+
+  * debian/control: Move po4a from Build-Depends-Indep to Build-Depends
+    because it is called by the 'clean' target.
+
+  * podebconf-display-po: Handle multiple references in PO files.
+    Closes: #361670.  Thanks Yuri Kozlov and Thomas Huriaux.
+
+  * podebconf-display-po: With intltool-debian 0.34.2+20060621, templates
+    can be rebuilt even if fields appear after Description. Closes: #366227.
+    Thanks Christian Perrier.
+
+  * podebconf-report-po: Add a --summary option to send a mail to the
+    maintainer with a list of mails sent to translators.  Closes: #374077.
+    Thanks Atsuhito KOHDA.
+
+ -- Denis Barbier <barbier@debian.org>  Sun, 25 Jun 2006 22:36:44 +0200
+
+po-debconf (1.0.2) unstable; urgency=low
+
+  * doc/en/po-debconf.7.pod: Proofread.  Closes: #365622, #367128
+
+  * Update Russian translation of manual pages.  Closes: #367388
+    Thanks to Yuri Kozlov.
+
+  * Update French translation of manual pages.  Closes: #368533
+    Thanks to Florentin Duneau.
+
+  * debian/control: Bump Standards-Version: 3.7.2, no changes are needed.
+
+  * debian/control: Bump dependency: intltool-debian (>= 0.34.2+20060512)
+    to allow '*/' in comments.  See #366450.
+
+ -- Denis Barbier <barbier@debian.org>  Mon, 22 May 2006 23:44:38 +0200
+
+po-debconf (1.0.1) unstable; urgency=low
+
+  * debconf-gettextize: Spaces were trimmed down when invoked with --merge
+    --choices flags, and translations were thus fuzzy.  Closes: #365576
+    Thanks Christian Perrier.
+
+  * debian/control: Bump Standards-Version: 3.7.0, no changes are needed.
+
+  * debian/control: As told by lintian, replace Build-Depends-Indep: debhelper
+    by Build-Depends: debhelper because debhelper programs are run by the
+    clean target.
+
+ -- Denis Barbier <barbier@debian.org>  Tue,  2 May 2006 23:57:35 +0200
+
+po-debconf (1.0) unstable; urgency=low
+
+  * debconf2pot: Drop this program, "debconf-updatepo --skip-merge" does
+    the same job.
+
+  * po2debconf: Do no more run debconf-updatepo if outdated PO files
+    are detected.  po-debconf(7) already explains why this was not
+    a good idea.
+
+  * debconf-gettextize: Cleanup, remove -l/-n/-o flags.
+  * debconf-gettextize: Add a --choices flag to generate __Choices fields
+    in the master template file.
+  * debconf-gettextize: New --merge flag, to merge translations with
+    existing PO files.
+
+  * Depend on intltool-debian >= 0.34.1+20060220.
+    With this version, comments in the form '#flag:' are interpreted by
+    debconf-updatepo and po2debconf.  They are helpful when a translatable
+    field is composed of several strings.  Recognized keywords are:
+      - #flag:translate:
+        Write only the specified strings into PO files.  Closes: #330096
+        Thanks Colin Watson.
+      - #flag:comment:
+        Comments can be defined for each individual string.
+      - #flag:partial
+        This flag prints translated strings even if they are not fully
+        translated.  Closes: #230838  Thanks Christian Perrier.
+    See details in po-debconf(7).
+  * This version of intltool-debian also ensures that po2debconf properly
+    removes comments when they appear at the top or bottom of template
+    files, which should not occur though.
+
+  * podebconf-display-po: Add support for Title type.  Report and patch
+    by Thomas Huriaux, thanks.  Closes: #354583
+
+  * podebconf-report-po: Sort PO files.
+
+  * Add Build-Depends-Indep: po4a.
+  * Drop debian/README.Debian which was obsolete.
+
+  * Update documentation.
+  * Update Russian documentation.  Thanks to Yuri Kozlov.  (Closes: #353436)
+  * Partial update of French documentation.
+
+ -- Denis Barbier <barbier@debian.org>  Wed, 15 Mar 2006 21:53:28 +0100
+
+po-debconf (0.99.1) experimental; urgency=low
+
+   * Update po-debconf(7) accordingly.
+
+ -- Denis Barbier <barbier@debian.org>  Fri, 27 Jan 2006 15:11:10 +0100
+
+po-debconf (0.9.2) unstable; urgency=low
+
+  * doc/po-debconf.7.pod:  Improve the "Update templates" section to
+    explain that debconf-updatepo needs to be run manually, or better
+    called from the 'clean' target of debian/rules, so that PO files
+    shipped in source packages are up-to-date.  Closes: #338998
+    Thanks Thomas Huriaux.
+
+  * doc/fr/po-debconf.fr.7.pod doc/ru/po-debconf.ru.7.pod: Update
+
+  * podebconf-report-po: If package version number can be found in
+    debian/changelog, put it into mail's subject so that translators
+    can update their PO header field if they want to.  Closes: #329546
+    Thanks Clytie Siddal and Christian Perrier.
+
+ -- Denis Barbier <barbier@debian.org>  Mon, 19 Dec 2005 10:23:51 +0100
+
+po-debconf (0.9.1) unstable; urgency=low
+
+  * Remove debconf2po-update.1, this program has been renamed three
+    years ago, so the transition phase is over.
+
+  * Add Russian man pages.  Closes: #337750
+    Many thanks to Yuri Kozlov.
+
+  * debian/control: Drop dependencies on libmime-base64-perl, this package
+    had been merged with perl in sarge.
+
+ -- Denis Barbier <barbier@debian.org>  Thu,  8 Dec 2005 10:26:40 +0100
+
+po-debconf (0.9.0) unstable; urgency=low
+
+  * po2debconf: Default output encoding is now UTF-8, which means that
+    if your package has a debian/po/output containing '2 utf8', you
+    can remove this file and depends on 'po-debconf (>= 0.9.0)' to
+    achieve the same result.
+
+  * debconf-updatepo: Speed up merging PO files by calling msgmerge
+    directly instead of intltool-update.
+
+  * debconf-updatepo debconf2pot: Do no more modify templates.pot header
+    comment.
+
+  * debconf-updatepo: If a 'control' file is found in the parent directory
+    of PO files. put its Maintainer field into the Report-Msgid-Bugs-To
+    header field of templates.pot.  Since po-debconf 0.7.0, this file is
+    updated only when its content has changed (in order to prevent unneeded
+    commits), so Report-Msgid-Bugs-To will be updated only when some msgids
+    are modified.  You can remove templates.pot before running
+    debconf-updatepo if you want to add this field to all your PO files.
+    Note also that this works only with intltool-debian >= 0.34.1+2005082.
+
+  * po2debconf: Replace iconv by msgconv to recode PO files when encoding
+    is set to 'popular'.
+
+  * debian/control: Depends on gettext >= 0.12 because debconf-updatepo and
+    po2debconf now rely on features added into this version.
+
+  * podebconf-report-po: Document the --gzip flag in the --help output.
+    Closes: #313280
+
+  * debian/control: Bump Standards-Version: 3.6.2
+
+ -- Denis Barbier <barbier@debian.org>  Sun, 28 Aug 2005 22:34:35 +0200
+
+po-debconf (0.8.23) unstable; urgency=low
+
+  * podebconf-report-po: Fix PO header parsing when fields are splitted
+    onto several lines.  Closes: #302592
+    Thanks to Christian Perrier for reporting this bug.
+  * podebconf-report-po: Add an X-Mail-Originator field containing the
+    version number of this script; this may help debugging when problems
+    arise.
+  * podebconf-display-po: This script displays translated strings only if
+    user's environment is localized.  This restriction is added into the
+    documentation.
+  * podebconf-display-po: PO file has previously to be named <lang_code>.po;
+    this restriction is removed, PO files can have any name.  Closes: #301199
+    Thanks to Bart Carnelis for these suggestions.
+
+ -- Denis Barbier <barbier@debian.org>  Thu,  7 Apr 2005 23:11:06 +0200
+
+po-debconf (0.8.22) unstable; urgency=low
+
+  * podebconf-report-po: Add a --gzip flag to compress PO files.
+    Thanks to Jure Cuhalev and Christian Perrier for this suggestion.
+    Closes: #298599
+  * debian/control: Add Recommends: libcompress-zlib-perl needed by the
+    --gzip flag.
+
+ -- Denis Barbier <barbier@debian.org>  Thu, 10 Mar 2005 11:51:26 +0100
+
+po-debconf (0.8.21) unstable; urgency=low
+
+  * podebconf-report-po: The fix for #292472 did not work as expected.
+    Petter Reinholdtsen wrote a better patch, thanks.  Closes: #296092
+  * podebconf-report-po: Fix detection of missing translator name.
+  * podebconf-report-po: Fix parsing of mail header fields.  Thanks Jan
+    Outrata and Christian Perrier for reporting this bug.
+
+ -- Denis Barbier <barbier@debian.org>  Mon, 21 Feb 2005 21:47:28 +0100
+
+po-debconf (0.8.20) unstable; urgency=low
+
+  * debconf-updatepo debconf2pot po2debconf:  Replace 'mv' calls by
+    'mv -f' so that po-debconf scripts can be run within fakechroot.
+    Thanks Piotr Roszatycki for this suggestion.
+    Closes: #293996
+
+ -- Denis Barbier <barbier@debian.org>  Mon,  7 Feb 2005 21:57:30 +0100
+
+po-debconf (0.8.19) unstable; urgency=low
+
+  All these changes were performed by Fabio Tranchitella and Denis Barbier.
+  * podebconf-report-po:  If --from command line flag is not specified
+    and environment variable DEBEMAIL is set, use this value as mail
+    sender.  Thanks Christian Perrier for this suggestion.
+    Closes: #288532
+  * podebconf-report-po:  Add --submit/--bts command line flags.  The
+    former file a bugreport, and the latter send usual notices to
+    translators and inform them that they can send their translations
+    to the given bugreport.  Thanks again Christian Perrier for this
+    suggestion.  Closes: #288533
+  * podebconf-report-po:  Mail headers can be modified when editing mail
+    body, this is explained by comments on top of the body message.
+  * podebconf-report-po:  8bit characters are replaced by question marks
+    in mail headers.  This does not fix #292815, but at least generated
+    mails are no more invalid.
+  * Put these changes into documentation.
+  * debian/control:  Lowercase the first letter of the short description.
+
+ -- Denis Barbier <barbier@debian.org>  Wed,  2 Feb 2005 22:48:12 +0100
+
+po-debconf (0.8.18) unstable; urgency=low
+
+  * podebconf-report-po:  Missing translations were not detected, only
+    fuzzy ones were taken into account.  Thanks Drew Parsons for your
+    report and Fabio Tranchitella for providing a fix.  Closes: #292472
+
+ -- Denis Barbier <barbier@debian.org>  Thu, 27 Jan 2005 22:04:56 +0100
+
+po-debconf (0.8.17) unstable; urgency=low
+
+  * podebconf-report-po:  This script sent mails although translations
+    are up-to-date if fuzzy marker appears in header field or in obsolete
+    entries.  This is fixed now, thanks Christian Perrier for finding
+    this bug.
+
+ -- Denis Barbier <barbier@debian.org>  Wed, 29 Dec 2004 09:13:21 +0100
+
+po-debconf (0.8.16) unstable; urgency=low
+
+  * podebconf-report-po:  Add a --languageteam flag to send carbon copies
+    to Language Teams.  Suggested by Christian Perrier and implemented
+    by Fabio Tranchitella, thanks.  Closes: #285665
+
+ -- Denis Barbier <barbier@debian.org>  Fri, 24 Dec 2004 19:50:54 +0100
+
+po-debconf (0.8.15) unstable; urgency=low
+
+  * podebconf-report-po:  This new script, written by Fabio Tranchitella,
+    send mails to translators when their translations are outdated.
+    Closes: #257125  Thanks Fabio.
+  * debian/control:  Add
+     Recommends: libmail-sendmail-perl, libmime-base64-perl | perl (>= 5.8)
+    to list Perl packages needed by this script.
+
+ -- Denis Barbier <barbier@debian.org>  Sat, 27 Nov 2004 14:25:26 +0100
+
+po-debconf (0.8.14) unstable; urgency=low
+
+  * README-trans:  Major enhancements after comments by Jens Nachtigall,
+    Erik Schanze and Dennis Stampfer.
+    Closes: #270686, #273609
+
+ -- Denis Barbier <barbier@debian.org>  Tue, 28 Sep 2004 23:36:16 +0200
+
+po-debconf (0.8.13) unstable; urgency=low
+
+  * debconf-updatepo:  Add --skip-merge option.  Thanks Christian
+    Perrier for this suggestion.
+  * debconf-updatepo:  Add --skip-pot option and make this script less
+    error prone by quoting variables.  Thanks Branden Robinson for these
+    changes.
+
+ -- Denis Barbier <barbier@debian.org>  Sat,  4 Sep 2004 15:04:51 +0200
+
+po-debconf (0.8.12) unstable; urgency=low
+
+  * encodings:  Add new default encodings.  Closes: #250917
+    Thanks Petter Reinholdtsen
+  * po2debconf:  Replace numbers by names when trap'ing signals.
+    Closes: #256497  Thanks David Weinehall
+
+ -- Denis Barbier <barbier@debian.org>  Mon, 28 Jun 2004 23:29:33 +0200
+
+po-debconf (0.8.11) unstable; urgency=low
+
+  * po-debconf.7.pod:  When debconf-updatepo is called in the build
+    target, PO files are not updated in the source package.  The right
+    solution is to call it in the clean target.  Thanks Martin Quinson.
+  * Update French documentation.
+
+ -- Denis Barbier <barbier@debian.org>  Sun, 25 Apr 2004 21:44:23 +0200
+
+po-debconf (0.8.10) unstable; urgency=low
+
+  * po2debconf:  An error in the cleanup() function prevented the
+    removal of the no.po link.  Closes: #237931
+
+ -- Denis Barbier <barbier@debian.org>  Sun, 14 Mar 2004 15:05:11 +0100
+
+po-debconf (0.8.9) unstable; urgency=low
+
+  * debconf-gettextize:  Fix a warning (uninitialized value) when
+    translated templates have no Type fields. Closes: #234816
+    Thanks Martin Quinson
+  * Bump dependency: intltool-debian (>= 0.30+20040211)
+    to prevent generation of broken templates files if comments appear
+    juste above a Template: line.
+  * po2debconf:  Make warning and error messages more coherent.
+    Better handling of temporary files.
+  * Official language code for Norwegian Bokmål is redefined from "no"
+    to "nb".  Petter Reinholdtsen asked on debian-edu@l.d.o. that
+    po-debconf helps this transition; po2debconf now prints a warning
+    if no.po exists (and generates Field-no localized fields), and when
+    nb.po is found both -nb and -no localized fields are generated.
+    Norwegian translators are thus encouraged to rename their no.po
+    files into nb.po to provide the best support for users.
+    Closes: #235756
+  * po2debconf.1:  A note written by Petter Reinholdtsen about the above
+    issue is added to documentation.  French documentation is updated.
+
+ -- Denis Barbier <barbier@debian.org>  Sat,  6 Mar 2004 10:59:46 +0100
+
+po-debconf (0.8.8) unstable; urgency=low
+
+  * Fix typo in po-debconf(7), "#" is called "number sign", not
+    "dash sign".  Closes: #229964
+    Thanks Andreas Metzler
+
+ -- Denis Barbier <barbier@debian.org>  Sat,  7 Feb 2004 16:59:33 +0100
+
+po-debconf (0.8.7) unstable; urgency=low
+
+  * podebconf-display-po: C escapes were not removed from displayed
+    strings.  In order not to be bugged by stateful encodings, PO
+    files are converted to UTF-8 with msgconv.  If this program is
+    not found, PO file encoding is untouched.
+
+ -- Denis Barbier <barbier@debian.org>  Tue, 18 Nov 2003 22:41:20 +0100
+
+po-debconf (0.8.6) unstable; urgency=low
+
+  * podebconf-display-po: Choices fields could not be displayed and
+    made it abort. (Closes: Bug#218700)  Thanks Christian Perrier
+
+ -- Denis Barbier <barbier@debian.org>  Mon,  3 Nov 2003 23:50:58 +0100
+
+po-debconf (0.8.5) unstable; urgency=low
+
+  * podebconf-display-po: Escape variable substitutions, replace all $
+    signs by ${dollarsign} and let debconf replace ${dollarsign} by $.
+  * podebconf-display-po: Add a note in documentation telling that
+    the whiptail frontend traps signals.
+    (Closes: Bug#217987)  Thanks Pierre Machard
+
+ -- Denis Barbier <barbier@debian.org>  Thu, 30 Oct 2003 22:28:26 +0100
+
+po-debconf (0.8.4) unstable; urgency=low
+
+  * podebconf-display-po: for the debian-installer, cdebconf does provide
+    an "error" template type, it is converted to a note in order to be
+    displayed by debconf.
+    (Closes: Bug#217912)  Thanks Pierre Machard
+
+ -- Denis Barbier <barbier@debian.org>  Wed, 29 Oct 2003 07:21:35 +0100
+
+po-debconf (0.8.3) unstable; urgency=low
+
+  * Depends on intltool-debian (>= 0.27.2+20031023) so that template
+    type is added as a comment in PO files.  Automatic comments in
+    PO files previously looked like
+      #. Comments extracted from source files
+      #. Description
+    and now
+      #. Type: select
+      #. Description
+      #. Comments extracted from source files
+    Author comments are the most important part, so put it near English
+    text to catch translators' attention.
+  * debconf-updatepo debconf2pot:  Set INTLTOOL_DEBIAN_TYPE=po-debconf
+    to print template type in PO files.
+  * podebconf-display-po:  New utility to launch a debconf interface
+    based on templates found in a PO file.  Translators can then check
+    their translations before sending them.
+  * doc/po-debconf.7.pod:  Clarify how to mark Default fields as being
+    translatable, previous version was somewhat incorrect.
+  * doc/fr/po-debconf.7.fr.po:  Translation update.
+
+ -- Denis Barbier <barbier@debian.org>  Fri, 24 Oct 2003 01:42:29 +0200
+
+po-debconf (0.8.2) unstable; urgency=low
+
+  * --name is a new command line flag of pod2man, so do not use it
+    in doc/fr/Makefile until sarge is released.
+    (Closes: Bug#214538)  Thanks Martin Godisch
+
+ -- Denis Barbier <barbier@debian.org>  Tue,  7 Oct 2003 21:42:40 +0200
+
+po-debconf (0.8.1) unstable; urgency=low
+
+  * Fix incorrect Depends line (Closes: #214397).
+    Thanks Aurelien Jarno
+
+ -- Denis Barbier <barbier@debian.org>  Mon,  6 Oct 2003 20:58:39 +0200
+
+po-debconf (0.8.0) unstable; urgency=low
+
+  * debconf-gettextize:  Add a --unsafe flag to allow processing
+    even if msguniq is missing.
+  * debian/README.Debian:  New file containing more detailed
+    explanations about the above.  Suggested by Andreas Metzler, thanks.
+  * po-debconf(7):  Update documentation to tell that comments
+    can be inserted in templates files and copied into PO files.
+    Thus add Depends: intltool-debian >= 0.27.2+20031003 to make
+    sure that it does work as written in the documentation.
+    Previous intltool-debian versions silently discard these comments,
+    there is then no need to add a versioned build dependency against
+    po-debconf when using this new feature.
+  * Update French documentation.
+  * po2debconf:  Better error message when iconv fails
+  * Bump Standards-Version: 3.6.1  (no changes needed)
+
+ -- Denis Barbier <barbier@debian.org>  Sun,  5 Oct 2003 00:28:01 +0200
+
+po-debconf (0.7.3) unstable; urgency=low
+
+  * Fix other typos in po-debconf(7).
+  * Add French man pages, translated by Nicolas Bertolissio.
+
+ -- Denis Barbier <barbier@debian.org>  Wed, 17 Sep 2003 00:38:39 +0200
+
+po-debconf (0.7.2) unstable; urgency=low
+
+  * Fix typos in man pages.  (Closes: #209013) Thanks Nicolas Bertolissio
+  * Rename templates files under tests/ so that translators do not
+    work on these test files.
+
+ -- Denis Barbier <barbier@debian.org>  Sun, 14 Sep 2003 22:07:00 +0200
+
+po-debconf (0.7.1) unstable; urgency=low
+
+  * debconf-gettextize:  When an unknown language is found, a
+    debian/po/<lang>.po.unknown file should be generated, as
+    described in debconf-gettextize(1).  But instead, this
+    program did abort with a cryptic error message.
+    (Closes: #202320) Thanks Christian Perrier
+
+ -- Denis Barbier <barbier@debian.org>  Mon, 21 Jul 2003 22:56:57 +0200
+
+po-debconf (0.7.0) unstable; urgency=low
+
+  * Hacked intltool scripts are now put in a separate package: intltool-debian
+  * debian/control:  Bump Standards-Version: 3.6.0
+  * debconf-updatepo:  When only POT-Creation-Date has changed in
+    templates.pot, this file is no more updated.
+  * debconf-gettextize:  Add Report-Msgid-Bugs-To in the POT header
+  * debconf-gettextize:  Final instructions now tell to edit debian/rules
+    to generate the localized templates file.
+    (Closes: #198867)  Thanks Martin Quinson
+  * po2debconf:  If a PO file is older than the master templates file,
+    debconf-updatepo is run before merging translations.  This is to
+    ensure that PO files in packages are up to date.
+
+ -- Denis Barbier <barbier@debian.org>  Mon, 21 Jul 2003 00:18:43 +0200
+
+po-debconf (0.6.9) unstable; urgency=low
+
+  * encodings:  Set encoding of pt_BR to ISO-8859-1 instead of ISO-8859-15
+    (Closes: #187737)  Thanks Andre Luis Lopez
+  * debian/control:  Remove versioned dependency against debhelper, it
+    was unneeded.
+
+ -- Denis Barbier <barbier@debian.org>  Sat,  5 Apr 2003 20:53:25 +0200
+
+po-debconf (0.6.8) unstable; urgency=low
+
+  * po-debconf.7:  As suggested by Adam Di Carlo, add a hint to
+    run debconf-updatepo from debian/rules when templates file is
+    edited.  (Closes: #185886)
+  * debconf-updatepo:  debian/po/templates.pot was generated for each
+    language, it is now generated only once.  When --verbose flag is
+    set, statistics are more readable.
+  * debconf-updatepo:  POT file will be renamed later into debian.pot
+    because doc-base and other packages might want to use these tools.
+    In order to provide backward compatibility, if debian.pot does
+    exist, it is updated; otherwise templates.pot is used.
+
+ -- Denis Barbier <barbier@debian.org>  Sun, 23 Mar 2003 22:06:11 +0100
+
+po-debconf (0.6.7) unstable; urgency=low
+
+  * debian/control:  Remove versioned dependency against gettext>=0.11.
+    As msguniq is needed by debconf-gettextize, an error is reported if
+    msguniq is not found.
+  * encodings:  Add 'en ISO-8859-1'
+
+ -- Denis Barbier <barbier@debian.org>  Mon, 17 Mar 2003 22:45:06 +0100
+
+po-debconf (0.6.6) unstable; urgency=low
+
+  * debconf-gettextize:  When argument is named templates.in, strings
+    were not extracted into templates.pot because it is considered as
+    a localized templates file; there is indeed no way to know that
+    templates.xx is a translation of templates.in.
+    An error is now reported and a message is printed explaining that
+    master file must be renamed first.
+    Thanks Agustin Martin Domingo for this suggestion.
+
+ -- Denis Barbier <barbier@debian.org>  Sat, 15 Mar 2003 00:16:25 +0100
+
+po-debconf (0.6.5) unstable; urgency=low
+
+  * po2debconf:  When a language is not listed in the 'encodings' file,
+    it was discarded.  Get its encoding from the PO file instead.
+    (Closes: #184623)  Thanks Agustin Martin Domingo
+  * encodings:  Add 'eo ISO-8859-3'
+  * intltool scripts:  Upgrade to latest CVS.
+
+ -- Denis Barbier <barbier@debian.org>  Thu, 13 Mar 2003 22:59:38 +0100
+
+po-debconf (0.6.4) unstable; urgency=low
+
+  * po2debconf:  When applied to an already merged templates file,
+    translations were dropped when language code contains an underscore.
+
+ -- Denis Barbier <barbier@debian.org>  Mon, 10 Mar 2003 01:12:05 +0100
+
+po-debconf (0.6.3) unstable; urgency=low
+
+  * po2debconf:  Error messages reported by intltool-merge did appear in
+    generated templates file because intltool-merge sends its error
+    messages to stdout; redirect them to stderr.
+    A better solution is to fix intltool-* scripts, a bugreport has been
+    sent to upstream.
+    (Closes: #179347)  Thanks Joey Hess
+
+ -- Denis Barbier <barbier@debian.org>  Sat,  1 Feb 2003 21:29:49 +0100
+
+po-debconf (0.6.2) unstable; urgency=low
+
+  * debconf2pot debconf-updatepo po2debconf: LC_CTYPE must also be unset
+    to work around Perl new behavior wrt. UTF-8 locales.
+    Thanks Jerome Marant.
+
+ -- Denis Barbier <barbier@debian.org>  Mon, 20 Jan 2003 23:08:28 +0100
+
+po-debconf (0.6.1) unstable; urgency=low
+
+  * debconf2pot debconf-updatepo:  An extra space was added after newlines
+    when lines are not reformatted.
+
+ -- Denis Barbier <barbier@debian.org>  Thu, 19 Dec 2002 00:45:48 +0100
+
+po-debconf (0.6.0) unstable; urgency=low
+
+  * Internal change:  In order to prepare doc-base support,
+    intltool-merge now adds encoding in localized fields, and
+    po2debconf removes them when output format < 2.
+  * When field value is a comma separated list, an extra leading
+    underscore tells po-debconf that items have to be put in
+    separate msgids.  This is a new localized field format, there
+    is no reason to convert all _Choices field to __Choices, but if
+    their value changes quite often, it may ease translator's life.
+    (Closes: Bug#171649)
+  * po2debconf:  Fix a bug when dealing with extra text used to make
+    msgids unique, it was removed too early.
+
+ -- Denis Barbier <barbier@debian.org>  Fri, 13 Dec 2002 23:24:32 +0100
+
+po-debconf (0.5.4) unstable; urgency=low
+
+  * Remove dependency against perl >= 5.8.  Adrian Bunk pointed out
+    that File::Spec is shipped in woody, and debconf-gettextize has
+    been slightly changed not to require Perl 5.8 at all.
+    But gettext 0.11 is still needed by debconf-gettextize.
+  * po2debconf:  sort intltool-merge command line flags.
+  * encodings: ro charset is assumed to be ISO-8859-2 instead of
+    ISO-8859-16.  Thanks to Bela, who translated adduser template.
+  * intltool scripts:  upgrade to latest CVS.
+  * RFC822 files can now have a tab at first column, it is treated
+    as a normal space;  this is intended for doc-base support.
+  * --name is a new command line flag of pod2man, so do not use it
+    in doc/Makefile until sarge is released.
+    (Closes: Bug#172071)  Thanks Petter Reinholdtsen
+  * Fix typos in po-debconf(7)
+    (Closes: Bug#171803)  Thanks Jordi Mallach
+
+ -- Denis Barbier <barbier@debian.org>  Sat,  7 Dec 2002 13:25:55 +0100
+
+po-debconf (0.5.3) unstable; urgency=low
+
+  * debconf-gettextize:  duplicated messages were deleted, now they
+    are taken into account with the first translation encountered.
+
+ -- Denis Barbier <barbier@debian.org>  Sun, 24 Nov 2002 22:38:33 +0100
+
+po-debconf (0.5.2) unstable; urgency=low
+
+  Martin Quinson:
+  * Rename debconf2po-update into debconf-updatepo.  A soft link is
+    provided to ease transition.
+  * The README file has been rewritten, and put in po-debconf(7)
+
+ -- Denis Barbier <barbier@debian.org>  Tue, 12 Nov 2002 23:54:33 +0100
+
+po-debconf (0.5.1) unstable; urgency=low
+
+  * debconf2po-update:  Abort when templates.pot file is not created,
+    and remove some superfluous output.
+    (Closes: Bug#166112, #166114, #166115)  Thanks Branden Robinson.
+  * debconf-gettextize debconf2po-update debconf2pot:  Make header text
+    more descriptive in POT and PO files.
+  * debconf2pot:  Fix for multiple input files.
+  * debconf2po-update:  When there are no *.po files, do not abort but
+    call debconf2pot in order to generate templates.pot.
+  * intltool-extract:  Remove warning about multiply defined msgids.
+  * When locale is set to UTF-8, Perl reads and writes UTF-8 data, and there
+    seems to be no way to make it read bytes instead of chars.  For this
+    reason, LANGUAGE, LANG and LC_ALL environment variables are unset.
+    Thanks Martin Sjogren.
+
+ -- Denis Barbier <barbier@debian.org>  Tue, 29 Oct 2002 22:38:48 +0100
+
+po-debconf (0.5.0) unstable; urgency=low
+
+  * po2debconf:
+      + Replace --encoding=traditional by --encoding=popular.
+      + Default output value is set to 2, which means that
+        Description-de.ISO-8859-1 or Choices-ru.KOI8-R fields are printed
+        instead of Description-de and Choices-ru.
+      + When po or UTF-8 encoding is used, always set output value to 2.
+        (Closes: Bug#163597)  Thanks Tomohiro Kubota.
+      + Format may also be specified in debian/output file, e.g.
+          echo '2 utf8' > po/output
+  * debconf2po-update:  POTFILES.in was searched in directories
+    po:debian/po:../po in that order, and now in debian/po:po:../po
+  * Update intltool scripts with latest CVS
+  * intltool-extract:  In PO and POT files, sentences in a multi-paragraph
+    string were not displayed in input order.
+
+ -- Denis Barbier <barbier@debian.org>  Tue,  8 Oct 2002 22:11:28 +0200
+
+po-debconf (0.4.7) unstable; urgency=low
+
+  * Remove dependency against GNU libc, since this is a required package
+    and all ports use it.
+
+ -- Denis Barbier <barbier@debian.org>  Sun,  6 Oct 2002 20:42:36 +0200
+
+po-debconf (0.4.6) unstable; urgency=low
+
+  * Replace Depends: libc6 by libc6|libc6.1|libc0.3 in debian/control.
+    so that po-debconf is installable on alpha, ia64 and hurd-i386.
+    (Closes: Bug#163507)  Thanks Ryan Murray.
+
+ -- Denis Barbier <barbier@debian.org>  Sun,  6 Oct 2002 18:55:57 +0200
+
+po-debconf (0.4.5) unstable; urgency=low
+
+  * README:  Improve documentation.
+  * debconf-gettextize:  Minor change in output message.
+
+ -- Denis Barbier <barbier@debian.org>  Sat,  5 Oct 2002 17:07:57 +0200
+
+po-debconf (0.4.4) unstable; urgency=low
+
+  * debconf-gettextize:  When there are multiple input files, some
+    messages could be multiply defined.  Thus msguniq is called
+    to remove duplicates (shipped with gettext >= 0.11).
+  * debconf-gettextize:  Fuzzy entries were marked with '#. fuzzy' instead
+    of '#, fuzzy'.  PO files generated by previous versions should be
+    manually checked to perform this substitution.
+
+ -- Denis Barbier <barbier@debian.org>  Fri,  4 Oct 2002 22:08:36 +0200
+
+po-debconf (0.4.3) unstable; urgency=low
+
+  * po2debconf:  Text::Wrap was producing wrong output with some master
+    templates files because $Text::Wrap::break had an incorrect value
+    in /usr/share/po-debconf/intltool-merge
+    (Closes: Bug#163160)  Thanks Joey Hess.
+
+ -- Denis Barbier <barbier@debian.org>  Thu,  3 Oct 2002 19:17:45 +0200
+
+po-debconf (0.4.2) unstable; urgency=low
+
+  * Upload to *unstable* since there has been no bug reported since 0.4.0,
+    and po-debconf seems now quite mature.
+  * debconf2pot:  Without argument, default input file is templates and
+    not _templates.
+  * Various doc fixes.
+
+ -- Denis Barbier <barbier@debian.org>  Tue,  1 Oct 2002 21:21:38 +0200
+
+po-debconf (0.4.1) experimental; urgency=low
+
+  * debconf-gettextize:  It was broken when arguments are in another
+    directory.  The File::Spec module is used in order to call the
+    abs2rel method, which implies that po-debconf depends upon
+    perl >= 5.8.0.
+    Since debconf-gettextize is only run by developers, translators
+    may backport po-debconf to woody.
+
+ -- Denis Barbier <barbier@debian.org>  Sat, 28 Sep 2002 21:03:47 +0200
+
+po-debconf (0.4.0) experimental; urgency=low
+
+  * Rename _templates into templates in order to help developers migrating
+    to po-debconf format.  (Closes: Bug#161372)  Thanks Joey Hess.
+  * debconf-gettextize:
+      + Accept several master files as arguments, and thus -F flag is
+        removed because it is useless.
+      + Add short option for --lang and --new-templates.
+      + The --lang flag can be set more than once to specify several
+        languages.
+      + Run debconf2po-update when finishing, unless -n flag is used.
+  * po2debconf:
+      + Replace -n, -u and -E flags by -e.  This new option sets encoding
+        conversion, arguments is taken amongst: po (no conversion), utf8
+        (convert to UTF-8) and traditional (convert to legacy encoding).
+        The latter is the default until sarge is released, then default
+        will be utf8.
+      + -O flag is obsolete, output format may be changed by the
+        debian/po/output file.  Localized fields are written foo-xx, and
+        foo-xx.enc if debian/po/output contain 2.
+        When sarge is released, default will be 2 and backports only need to
+          echo 1 > debian/po/output
+  * Split man pages so that each program has its own one.
+  * debian/control:  Remove dependency against debhelper, in order to
+    let debhelper depends upon po-debconf if dh_installdebconf needs to
+    call po2debconf.  Thus dh_installpodebconf is no more installed.
+  * debconf-gettextize po2debconf:  Prevent line break between spaces,
+    because a wrapped line beginning with a space cannot be reformatted.
+
+  This is a release candidate for moving away from experimental, next
+  upload will go to unstable unless major changes are needed.
+
+ -- Denis Barbier <barbier@debian.org>  Sun, 22 Sep 2002 23:56:23 +0200
+
+po-debconf (0.3.2) experimental; urgency=low
+
+  * New README-trans file with instructions for translators.
+  * po2debconf:  As explained in README-trans, developers are encouraged
+    to replace in their _templates files _Default by _DefaultChoice when
+    template type is Select or Multiselect so that translators are warned
+    they must not translate this string, but instead change its value taken
+    from original Choices list.  Thus po2debconf must revert this change,
+    since debconf does not recognize this field.
+  * intltool-extract:  Fix line numbers 
+  * debconf2pot:  Add comments in POT file
+  * debconf-gettextize:  Change default PO directory, it is now
+    `dirname $1`/po
+  * debconf2po-update: search PO directory in ./po, debian/po and ../po
+
+ -- Denis Barbier <barbier@debian.org>  Sat, 21 Sep 2002 00:42:23 +0200
+
+po-debconf (0.3.1) experimental; urgency=low
+
+  * intltool-extract intltool-merge:  When reformatting paragraphs,
+    replace newline by a space, even if last char was already a
+    space char.
+    Then a space char is no more gobbled when a final dot appears at
+    end of line.  On the other hand, spacing is now wrong if there
+    was extra trailing whitespace characters, but there is no universal
+    solution, so do not try to fix broken input.
+  * encodings:  Update, thanks to Tomohiro Kubota.
+  * po2debconf:  Change default PO directory, it is now `dirname $1`/po 
+    so that po2debconf can be called from any directory.
+    (Closes: Bug#161371)  Thanks Joey Hess.
+  * debconf-gettextize:  If a language has no predefined encoding, rename
+    PO file into ll.po.unknown in order not to break further processing.
+    (Closes: Bug#161373)  Thanks Joey Hess.
+
+ -- Denis Barbier <barbier@debian.org>  Thu, 19 Sep 2002 01:50:25 +0200
+
+po-debconf (0.3.0) experimental; urgency=low
+
+  * po2debconf: print text in the new Field-ll_LL.ENCODING format
+    introduced by debconf 1.2.0.
+    Old format is still available with the -O flag.
+  * po2debconf: -u is the default, and -n prevents conversion to UTF-8
+  * debconf-gettextize: automatically determine charset of PO files
+  * debconf-gettextize: accept new debconf format in input files.
+
+  Of course all these new features are highly experimental and not
+  well tested.
+
+  * debconf-gettextize: do not print localized fields in _templates files
+
+ -- Denis Barbier <barbier@debian.org>  Tue, 17 Sep 2002 22:09:18 +0200
+
+po-debconf (0.2.4) experimental; urgency=low
+
+  * Martin Sjogren asked being able to transform his UTF-8 templates
+    files into legacy encoding in order to be used by debconf.
+    This is achieved with -E flag of po2debconf.  (Closes: #161041)
+  * Fix debconf-gettextize usage, it only accepts a single master file.
+
+ -- Denis Barbier <barbier@debian.org>  Mon, 16 Sep 2002 22:32:48 +0200
+
+po-debconf (0.2.3) experimental; urgency=low
+
+  * Replace 'Encoding: utf-8' by 'Encoding: UTF-8', since this is
+    the canonical name in glibc.
+  * Add a README file.
+
+ -- Denis Barbier <barbier@debian.org>  Sat, 14 Sep 2002 19:02:35 +0200
+
+po-debconf (0.2.2) experimental; urgency=low
+
+  * update intltool scripts for latest CVS.
+  * As suggested by Joey Hess, po2debconf supports a new --utf8 flag
+    which adds a 'Encoding: utf-8' line and convert all strings into
+    utf-8.
+  * Add a dependency against libc6 because iconv is needed by this
+    new flag.
+
+ -- Denis Barbier <barbier@debian.org>  Wed, 11 Sep 2002 20:08:31 +0200
+
+po-debconf (0.2.1) experimental; urgency=low
+
+  * Oops, /usr/share/po-debconf/intltool-* scripts were missing.
+  * Converted to native Debian package.
+
+ -- Denis Barbier <barbier@debian.org>  Wed, 11 Sep 2002 00:34:08 +0200
+
+po-debconf (0.2.0-1) experimental; urgency=low
+
+  * Uploads to experimental, procedures for l10n have currently been
+    tested by few people only, some feedback from other translators is
+    welcome before uploading to unstable.  (Closes: Bug#160284)
+  * Initial release
+
+ -- Denis Barbier <barbier@debian.org>  Wed, 11 Sep 2002 00:06:37 +0200
+

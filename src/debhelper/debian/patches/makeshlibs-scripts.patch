@@ -1,0 +1,24 @@
+Index: debhelper-8.1.6/autoscripts/postrm-makeshlibs
+===================================================================
+--- debhelper-8.1.6.orig/autoscripts/postrm-makeshlibs	2011-05-11 00:43:23.408452969 +0400
++++ debhelper-8.1.6/autoscripts/postrm-makeshlibs	2011-05-11 00:43:42.030774972 +0400
+@@ -1,3 +1,6 @@
+ if [ "$1" = "remove" ]; then
+-	ldconfig
++	crle -u
++	if [ `isainfo -b` = "64" ]; then
++	    crle -64 -u
++	fi
+ fi
+Index: debhelper-8.1.6/autoscripts/postinst-makeshlibs
+===================================================================
+--- debhelper-8.1.6.orig/autoscripts/postinst-makeshlibs	2011-05-11 00:43:16.898604854 +0400
++++ debhelper-8.1.6/autoscripts/postinst-makeshlibs	2011-05-11 00:44:03.395697916 +0400
+@@ -1,3 +1,6 @@
+ if [ "$1" = "configure" ]; then
+-	ldconfig
++	crle -u
++	if [ `isainfo -b` = "64" ]; then
++	    crle -64 -u
++	fi
+ fi

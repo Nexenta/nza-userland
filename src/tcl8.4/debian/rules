@@ -1,0 +1,174 @@
+#!/usr/bin/make -f
+# debian/rules that uses debhelper.
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+DEB_HOST_GNU_TYPE := $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
+DEB_BUILD_GNU_TYPE := $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
+
+export QUILT_PATCHES := debian/patches
+
+v = 8.4
+
+ifneq (,$(findstring debug,$(DEB_BUILD_OPTIONS)))
+CFLAGS=-g -O0
+else
+# See bug #446335
+CFLAGS=-g -O2 -fno-unit-at-a-time
+endif
+
+unpatch:
+	dh_testdir
+	quilt pop -a || test $$? = 2
+	rm -rf patch-stamp .pc
+
+patch: patch-stamp
+patch-stamp:
+	dh_testdir
+	quilt push -a || test $$? = 2
+	touch patch-stamp
+
+build: build-stamp
+build-stamp: patch-stamp
+	dh_testdir
+# So so ugly but it works...
+	touch generic/tclStubInit.c
+	cd unix && \
+	  TCL_LIBRARY="/usr/share/tcltk/tcl$(v)" \
+	  TCL_PACKAGE_PATH="/usr/local/lib/tcltk /usr/local/share/tcltk /usr/lib/tcltk /usr/share/tcltk /usr/lib" \
+	  ./configure --host=$(DEB_HOST_GNU_TYPE) \
+		      --build=$(DEB_BUILD_GNU_TYPE) \
+		      --prefix=/usr \
+		      --includedir=/usr/include/tcl$(v) \
+		      --enable-shared \
+		      --enable-threads \
+		      --mandir=/usr/share/man \
+		      --enable-man-symlinks \
+		      --enable-man-compression=gzip && \
+	  touch ../generic/tclStubInit.c && \
+	  $(MAKE) CFLAGS="$(CFLAGS)"
+# Build the static library.
+	cd unix && \
+	  ar cr libtcl$(v).a *.o && \
+	  ar d libtcl$(v).a tclAppInit.o && \
+	  ranlib libtcl$(v).a
+	touch build-stamp
+
+clean: clean-patched unpatch
+	dh_testdir
+	dh_testroot
+	dh_clean
+
+clean-patched:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp install-stamp
+	cd unix && [ ! -f Makefile ] || $(MAKE) distclean
+# Remove forgotten files
+	rm -f tests/pkg/pkga.so unix/config.log unix/Tcltest.so
+
+install: install-stamp
+install-stamp: build-stamp
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+	cd unix && \
+	  GZIP=-9 \
+	  $(MAKE) INSTALL_ROOT=`pwd`/../debian/tmp \
+		  MAN_INSTALL_DIR=`pwd`/../debian/tmp/usr/share/man \
+		  MANN_INSTALL_DIR=`pwd`/../debian/tmp/usr/share/man/man3 \
+		  install
+# Fix up the libraries.
+	cp unix/libtcl$(v).a debian/tmp/usr/lib
+	mv debian/tmp/usr/lib/libtcl$(v).so debian/tmp/usr/lib/libtcl$(v).so.0
+	ln -sf libtcl$(v).so.0 debian/tmp/usr/lib/libtcl$(v).so
+	mv debian/tmp/usr/lib/*.sh debian/tmp/usr/share/tcltk/tcl$(v)
+	cp unix/tcl.m4 debian/tmp/usr/share/tcltk/tcl$(v)/tcl.m4
+	rm -f debian/tmp/usr/share/tcltk/tcl$(v)/ldAix
+# Fix up the include files.
+	install -d debian/tmp/usr/include/tcl$(v)/tcl-private/generic
+	cp generic/*.h debian/tmp/usr/include/tcl$(v)/tcl-private/generic
+	install -d debian/tmp/usr/include/tcl$(v)/tcl-private/unix
+	cp unix/*.h debian/tmp/usr/include/tcl$(v)/tcl-private/unix
+	install -d debian/tmp/usr/include/tcl$(v)/tcl-private/compat
+	cp compat/*.h debian/tmp/usr/include/tcl$(v)/tcl-private/compat
+# Fix up the manpages.
+	cd debian/tmp/usr/share/man/man1 && \
+	  zcat tclsh.1.gz | sed -e 's/(n)/(3tcl)/g' | gzip -9 > tclsh$(v).1.gz && \
+	  rm tclsh.1.gz
+	cd debian/tmp/usr/share/man/man3 && \
+	  for f in *.[3n].gz ; do \
+	     f2=$$(echo $$f | sed -e 's/\.[3n]/.3tcl/') ; \
+	     if [ -L $$f ]; then \
+		l=$$(readlink -n $$f |sed -e 's/\.[3n]/.3tcl/') ; \
+		rm $$f ; \
+		ln -sf $$l $$f2 ; \
+	     else \
+		zcat $$f | sed -e 's/^\.TH \([^ ]\+\|"[^"]\+"\) [3n]/.TH \1 3tcl/' \
+			       -e 's/\(Tk_[0-9A-Za-z]*\)(3)/\1(3tk)/g' \
+			       -e 's/\([A-Z][0-9A-Za-z_]*\)(3)/\1(3tcl)/g' \
+			       -e 's/send(n)/send(3tk)/g' \
+			       -e 's/text(n)/text(3tk)/g' \
+			       -e 's/tk(n)/tk(3tk)/g' \
+			       -e 's/winfo(n)/winfo(3tk)/g' \
+			       -e 's/(n)/(3tcl)/g' \
+			 | gzip -9 >$$f2 ; \
+		rm $$f ; \
+	     fi ; \
+	  done
+	touch install-stamp
+
+# Build architecture-independent files here.
+binary-indep: build install
+	dh_testdir -i
+	dh_testroot -i
+	dh_movefiles -i
+	dh_installdocs -i
+	dh_installchangelogs -i ChangeLog
+	dh_compress -i
+	dh_fixperms -i
+	dh_installdeb -i
+	dh_gencontrol -i
+	dh_md5sums -i
+	dh_builddeb -i
+
+# Build architecture-dependent files here.
+binary-arch: build install
+	dh_testdir -a
+	dh_testroot -a
+	dh_movefiles -a
+# now, fix up file locations for .sh and .m4
+	mv debian/tcl$(v)/usr/share/tcltk/tcl$(v)/tcl.m4 \
+	   debian/tcl$(v)-dev/usr/gnu/share/aclocal/tcl$(v).m4
+	mv debian/tcl$(v)/usr/share/tcltk/tcl$(v)/tclConfig.sh \
+	   debian/tcl$(v)-dev/usr/share/tcltk/tcl$(v)
+	ln -s ../../share/tcltk/tcl$(v)/tclConfig.sh \
+	      debian/tcl$(v)-dev/usr/lib/tcl$(v)/tclConfig.sh
+	dh_installdocs -a
+	dh_installmenu -a
+	dh_installchangelogs -a ChangeLog
+	install -m 644 debian/tcl$(v).lintian-override \
+		debian/tcl$(v)/usr/share/lintian/overrides/tcl$(v)
+	dh_fixperms -a
+	dh_strip -a
+	dh_compress -a
+	dh_makeshlibs -a -V 'tcl$(v) (>= 8.4.16)' -XTcltest
+	dh_installdeb -a
+	#dh_shlibdeps -a -ldebian/tcl$(v)/usr/lib
+	dh_gencontrol -a
+	dh_md5sums -a
+	dh_builddeb -a
+
+source diff:
+	@echo >&2 'source and diff are obsolete - use dpkg-source -b'; false
+
+binary: binary-indep binary-arch
+
+get-orig-source:
+	wget -O tcl8.4_8.4.19.orig.tar.gz \
+	     http://prdownloads.sourceforge.net/tcl/tcl8.4.19-src.tar.gz
+
+.PHONY: patch unpatch clean-patched build clean binary-indep binary-arch binary install get-orig-source
+

@@ -1,0 +1,17 @@
+Source: nexenta-lsof
+Section: utils
+Priority: standard
+Maintainer: alexander Eremin <a.eremin@nexenta.org>
+Build-Depends: debhelper (>> 4.1.16)
+Standards-Version: 3.8.0
+
+Package: nexenta-lsof
+Architecture: any
+Depends: system-library
+Replaces: lsof-2.2 (<< 4.73), lsof-2.0.35, lsof-2.0.36, lsof-2.0.38
+Conflicts: suidmanager (<< 0.50)
+Description: List open files
+ Lsof is a Unix-specific diagnostic tool.  Its name stands
+ for LiSt Open Files, and it does just that.  It lists
+ information about any files that are open, by processes
+ currently running on the system.  

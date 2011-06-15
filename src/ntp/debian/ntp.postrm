@@ -1,0 +1,13 @@
+#!/bin/sh
+
+set -e
+
+installinit_error() {
+	exit $?
+}
+
+#DEBHELPER#
+
+if [ "$1" = "purge" ]; then
+	rm -rf /var/ntp/
+fi

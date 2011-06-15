@@ -1,0 +1,29 @@
+Description: Call `ec' before mapping characters
+Origin: upstream, http://bazaar.launchpad.net/~vcs-imports/groff/main/revision/1822
+Forwarded: yes
+Last-Update: 2010-03-01
+
+Index: b/tmac/doc.tmac
+===================================================================
+--- a/tmac/doc.tmac
++++ b/tmac/doc.tmac
+@@ -6425,6 +6425,9 @@
+ .blm doc-empty-line
+ .
+ .
++.ec
++.
++.
+ .\" For UTF-8, map some characters conservatively for the sake
+ .\" of easy cut and paste.
+ .
+@@ -6438,9 +6441,6 @@
+ .\}
+ .
+ .
+-.ec
+-.
+-.
+ .\" load local modifications
+ .mso mdoc.local
+ .

@@ -1,0 +1,33 @@
+From: Aurelien Jarno <aurel32@debian.org>
+
+serf fails to build from source on GNU/kFreeBSD due to failures in the
+testsuite. They are due to the assumptions on the returned events that
+are not true with the FreeBSD kernel.
+
+
+--- a/test/test_util.c
++++ b/test/test_util.c
+@@ -168,6 +168,7 @@
+     apr_pollset_t *pollset;
+     apr_int32_t num;
+     const apr_pollfd_t *desc;
++    int client_sock_handled = 0;
+ 
+     /* create a new pollset */
+     status = apr_pollset_create(&pollset, 32, pool, 0);
+@@ -211,7 +212,14 @@
+             goto cleanup;
+         }
+ 
+-        if (desc->desc.s == tb->client_sock) {
++        if (desc->desc.s == tb->client_sock && !client_sock_handled) {
++            /* Note: on some implementations (for example with kqueue),
++               apr_pollset_poll() returns separate events for APR_POLLIN
++               and APR_POLLOUT. client_sock_handled filters the second 
++               event.
++            */
++            client_sock_handled = 1;
++
+             /* Replay data to socket. */
+             status = replay(tb, pool);
+ 

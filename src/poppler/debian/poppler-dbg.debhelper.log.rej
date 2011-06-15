@@ -1,0 +1,6 @@
+--- debian/poppler-dbg.debhelper.log
++++ debian/poppler-dbg.debhelper.log
+@@ -1 +1,2 @@
+-tail: cannot open `.pc/applied-patches' for reading: No such file or directory
++dh_installdirs
++dh_installdirs

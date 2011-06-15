@@ -1,0 +1,6 @@
+# Watch control file for uscan
+
+# Compulsory line, this is a version 3 file
+version=3
+
+http://sf.net/tcl/tcl(8\.4\.[\d.]*)(?:-src)?.tar.gz

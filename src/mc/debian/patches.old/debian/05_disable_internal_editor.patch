@@ -1,0 +1,15 @@
+Description: Disable internal editor by default
+Bug-Debian: http://bugs.debian.org/413258
+Author: Patrick Winnertz <winnie@debian.org>
+
+--- mc-4.6.2~git20090522.orig/src/cmd.c	2009-05-22 17:22:37.000000000 +0200
++++ mc-4.6.2~git20090522/src/cmd.c	2009-05-24 10:19:36.000000000 +0200
+@@ -84,7 +84,7 @@
+ int output_starts_shell = 0;
+ 
+ /* If set, use the builtin editor */
+-int use_internal_edit = 1;
++int use_internal_edit = 0;
+ 
+ /* Automatically fills name with current selected item name on mkdir */
+ int auto_fill_mkdir_name = 1;

@@ -1,0 +1,17 @@
+Index: debhelper-8.1.6/dh_fixperms
+===================================================================
+--- debhelper-8.1.6.orig/dh_fixperms	2011-05-10 14:12:34.511176527 +0400
++++ debhelper-8.1.6/dh_fixperms	2011-05-10 14:13:59.025976205 +0400
+@@ -92,7 +92,11 @@
+ 	complex_doit("find $tmp/usr/lib/perl5 $tmp/usr/share/perl5 -type f",
+ 		"-perm -5 -name '*.pm' $find_options -print0",
+ 		"2>/dev/null | xargs -0r chmod a-X");
+-	
++
++    # Ensure SMF methods are executable and read-only (?)
++    complex_doit("find $tmp/{lib,var}/svc/method -type f $find_options -print0",
++                "2>/dev/null | xargs -0r chmod 555");
++
+ 	# v4 and up
+ 	if (! compat(3)) {
+ 		# Programs in the bin and init.d dirs should be executable..

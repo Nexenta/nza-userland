@@ -1,0 +1,88 @@
+#include "variables"
+#! /bin/bash -e
+#
+# bug reporting script for <:=${PACKAGE}:>
+#
+<:=@COPYRIGHT:>//
+
+set -o posix
+
+EMACS_COMMAND='
+(let ((start "Emacs")
+      (stop "\n-- \n"))
+  (TeX-submit-bug-report)
+  (let ((a (search-forward start nil t))
+	(b (search-forward stop nil t)))
+    (princ (concat
+	    (buffer-substring
+	     (if a (- a (length start)) (point))
+	     (if b (- b (length stop)) (point-max)))))))'
+
+cat >&3 <<EOF
+========================================================================
+Content of '<:=${lisp}:>'
+------------------------------------------------------------------------
+EOF
+find 2>/dev/null <:=${lisp}:> -type f -print0 \
+    | xargs --null --no-run-if-empty md5sum | sort --key=2,2 >&3
+cat >&3 <<EOF
+------------------------------------------------------------------------
+EOF
+
+<:# Default flavors: only GNU/Emacsen, XEmacs comes with its own AUCTeX.:>//
+FLAVORS=${*:-"emacs21 emacs22 emacs23 emacs-snapshot"}
+
+for FLAVOR in ${FLAVORS}; do
+    if [ -x /usr/bin/${FLAVOR} ]; then
+	cat >&3 <<EOF
+Collecting package info for Emacs flavor '${FLAVOR}':
+------------------------------------------------------------------------
+EOF
+	${FLAVOR} </dev/null 2>/dev/null >&3 \
+	    --no-site-file --no-init-file --batch \
+	    --eval "(require 'tex-site)" --eval "$EMACS_COMMAND"
+	cat >&3 <<EOF
+------------------------------------------------------------------------
+Collecting system info for Emacs flavor '${FLAVOR}':
+------------------------------------------------------------------------
+EOF
+	${FLAVOR} </dev/null 2>/dev/null >&3 \
+	    --no-init-file --batch --eval "$EMACS_COMMAND"
+	cat >&3 <<EOF
+------------------------------------------------------------------------
+Collecting user info for Emacs flavor '${FLAVOR}':
+------------------------------------------------------------------------
+EOF
+	${FLAVOR} </dev/null 2>/dev/null >&3 \
+	    --batch --eval "$EMACS_COMMAND"
+	cat >&3 <<EOF
+------------------------------------------------------------------------
+Content of '<:=if($_=${lisp})=~s|emacs|\${FLAVOR}|:>'
+------------------------------------------------------------------------
+EOF
+	command ls >&3 --almost-all --sort=version --format=long \
+	    <:=if($_=${lisp})=~s|emacs|\${FLAVOR}|:>
+	LOG=$(ls <:=if($_=${lisp})=~s|emacs|\${FLAVOR}|:>/<:=${ELCLOG}:>*)
+	cat >&3 <<EOF
+------------------------------------------------------------------------
+Content of '${LOG}':
+------------------------------------------------------------------------
+EOF
+	case ${LOG} in
+	    (*.gz) zcat >&3 ${LOG} ;;
+	    (*) cat >&3 ${LOG} ;;
+	esac
+	cat >&3 <<EOF
+========================================================================
+EOF
+    fi
+done
+<:
+# local variables:
+# mode: shell-script
+# ispell-local-dictionary: "american"
+# ispell-check-comments: exclusive
+# end:
+#
+# LocalWords:  Emacsen AUCTeX
+:>//

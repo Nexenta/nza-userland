@@ -1,0 +1,77 @@
+Files in 'contrib' are not necessarily copyrighted and licensed
+consistently with the rest of Subversion.  So they must be audited
+individually for copyright statements and license terms.
+
+Last updated 13 Mar 2008 by Peter Samuelson for 1.5.0-beta1 tarball.
+
+* Same copyright and license as subversion:
+  cgi/tweak-log.cgi
+  client-side/diff-wrap.sh
+  client-side/incremental-update.py
+  client-side/search-svnlog.pl
+  client-side/svn-hgmerge.py
+  client-side/svn-push/svn-push.c
+  client-side/svn_update.pl
+  client-side/svnmerge/svnmerge-migrate-history.py
+  hook-scripts/check-mime-type.pl
+  hook-scripts/commit-block-joke.py
+  hook-scripts/pre-commit-check.py
+  hook-scripts/pre-lock-require-needs-lock.py
+  hook-scripts/remove-zombie-locks.py
+  server-side/mod_dontdothat/*
+  server-side/svn-fast-backup
+  server-side/svn-tweak-author.py
+
+* Same license as subversion:
+  client-side/svnmucc/svnmucc.c
+  client-side/wcgrep
+  hook-scripts/case-insensitive.py
+  server-side/svnmirror.sh
+
+* GNU GPL v2 or later:
+  client-side/asvn
+  client-side/emacs/dsvn.el
+  client-side/emacs/psvn.el
+  client-side/svn-clean
+  client-side/svn-merge-vendor.py
+  client-side/svn_apply_autoprops.py
+  client-side/svn_export_empty_files.py
+  client-side/svncopy/*
+  client-side/svnmerge/svnmerge.py
+  client-side/svnmerge/svnmerge_test.py
+  hook-scripts/syntax-check.sh
+  server-side/fsfsverify.py
+
+* Apache license v2:
+  server-side/authz_svn_group.py
+
+* MIT-like:
+  client-side/svn-resolve
+  client-side/svn-viewdiff
+  hook-scripts/enforcer/*
+
+* BSD-like:
+  client-side/svn2cl/*
+  client-side/svnmerge.sh
+
+* Academic Free License v3.0:
+  client-side/svn_load_dirs/*
+
+* No license :(, must remove from tarball:
+  cgi/mirror_dir_through_svn.*
+  client-side/diff3wrap.bat
+  client-side/diffwrap.bat
+  client-side/svn-log.pl
+  client-side/svn_all_diffs.pl
+  client-side/vim/*
+  hook-scripts/detect-merge-conflicts.sh
+  server-side/backup-recipe.sh
+  server-side/load_repo_with_mergesensitive_copy.sh
+
+* No license, but...
+  client-side/emacs/vc-svn.el - assumed same as the newer version on
+    savannah.gnu.org, which says GNU GPL v2 or later
+  client-side/svnmerge/svnmerge-migrate-test.sh - assumed same as
+    svnmerge-migrate-history.py
+  client-side/svnmucc/svnmucc-test.py - assumed same as svnmucc.c
+  server-side/svnmirror-test.sh - assumed same as svnmirror.sh

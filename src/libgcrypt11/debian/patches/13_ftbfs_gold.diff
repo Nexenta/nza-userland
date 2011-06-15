@@ -1,0 +1,17 @@
+Description: Fix FTBFS with binutils-gold.
+Author: Andreas Metzler <ametzler@debian.org>
+Bug-Debian: http://bugs.debian.org/555179
+Forwarded: http://mid.gmane.org/6on8h7-jik.ln1@argenau.downhill.at.eu.org
+X-Applied-in-upstream-svn: yes
+
+--- libgcrypt11-1.4.6.orig/tests/Makefile.in
++++ libgcrypt11-1.4.6/tests/Makefile.in
+@@ -338,7 +338,7 @@ top_srcdir = @top_srcdir@
+ # a built header.
+ AM_CPPFLAGS = -I../src -I$(top_srcdir)/src
+ AM_CFLAGS = $(GPG_ERROR_CFLAGS)
+-LDADD = ../src/libgcrypt.la $(DL_LIBS)
++LDADD = ../src/libgcrypt.la $(DL_LIBS) @GPG_ERROR_LIBS@
+ EXTRA_DIST = README rsa-16k.key cavs_tests.sh cavs_driver.pl
+ all: all-am
+ 

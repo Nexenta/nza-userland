@@ -1,0 +1,4 @@
+lib/libxml2.so		usr/lib/libxml2.so
+lib/libxml2.so.2	usr/lib/libxml2.so.2
+lib/amd64/libxml2.so	usr/lib/amd64/libxml2.so
+lib/amd64/libxml2.so.2	usr/lib/amd64/libxml2.so.2

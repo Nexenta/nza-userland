@@ -1,0 +1,13 @@
+Index: gnupg-2.0.13/tests/pkits/Makefile.in
+===================================================================
+--- gnupg-2.0.13.orig/tests/pkits/Makefile.in	2011-04-16 20:00:49.877527764 +0400
++++ gnupg-2.0.13/tests/pkits/Makefile.in	2011-04-16 20:01:16.266118709 +0400
+@@ -554,8 +554,6 @@
+ 	maintainer-clean-generic mostlyclean mostlyclean-generic pdf \
+ 	pdf-am ps ps-am uninstall uninstall-am
+ 
+-	     import-all-certs.data 
+-
+ all-local: inittests.stamp
+ 
+ clean-local:

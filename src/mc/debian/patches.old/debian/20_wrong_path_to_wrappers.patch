@@ -1,0 +1,18 @@
+Description: Fix wrong path to the wrapper script
+Bug-Debian: http://bugs.debian.org/540238
+Author: Denis Briand <denis@narcan.fr>
+Author: Jindřich Makovička <makovick@gmail.com>
+
+--- mc-4.7.0-pre1.orig/contrib/mc.csh.in	2009-08-07 13:18:42.000000000 +0200
++++ mc-4.7.0-pre1/contrib/mc.csh.in	2009-08-07 13:19:20.000000000 +0200
+@@ -1 +1 @@
+-alias mc 'source @pkglibexecdir@/mc-wrapper.csh'
++alias mc 'source /usr/share/mc/bin/mc-wrapper.csh'
+
+--- mc-4.7.0-pre1.orig/contrib/mc.sh.in	2009-08-07 13:19:37.000000000 +0200
++++ mc-4.7.0-pre1/contrib/mc.sh.in	2009-08-07 13:20:07.000000000 +0200
+@@ -1,3 +1,3 @@
+ # Don't define aliases in plain Bourne shell
+ [ -n "${BASH_VERSION}${KSH_VERSION}${ZSH_VERSION}" ] || return 0
+-alias mc='. @pkglibexecdir@/mc-wrapper.sh'
++alias mc='. /usr/share/mc/bin/mc-wrapper.sh'

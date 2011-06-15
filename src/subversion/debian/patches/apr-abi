@@ -1,0 +1,97 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## apr-abi.dpatch by <peter@p12n.org>
+##
+## DP: Use libtool -version-info to express library SONAMEs, and make it
+## DP: sensitive to libapr ABI w/r/t 64-bit file offsets.
+## DP: 
+## DP: Patch has been submitted upstream.
+
+@DPATCH@
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -106,6 +106,7 @@
+ LTFLAGS = --tag=CC --silent
+ LTCXXFLAGS = --tag=CXX --silent
+ LT_LDFLAGS = @LT_LDFLAGS@
++LT_SOVERSION = @SVN_LT_SOVERSION@
+ LT_NO_UNDEFINED = @LT_NO_UNDEFINED@
+ LT_CXX_LIBADD = @LT_CXX_LIBADD@
+ 
+@@ -185,8 +186,8 @@
+ COMPILE_JAVAHL_JAVAH = $(JAVAH)
+ 
+ LINK = $(LIBTOOL) $(LTFLAGS) --mode=link $(CC) $(LT_LDFLAGS) $(CFLAGS) $(LDFLAGS)
+-LINK_CXX = $(LIBTOOL) $(LTCXXFLAGS) --mode=link $(CXX) $(LT_LDFLAGS) $(CXXFLAGS) $(LDFLAGS) -rpath $(libdir)
+-LINK_LIB = $(LINK) -rpath $(libdir)
++LINK_CXX = $(LIBTOOL) $(LTCXXFLAGS) --mode=link $(CXX) $(LT_LDFLAGS) $(CXXFLAGS) $(LDFLAGS) -rpath $(libdir) $(LT_SOVERSION)
++LINK_LIB = $(LINK) -rpath $(libdir) $(LT_SOVERSION)
+ 
+ # special link rule for mod_dav_svn
+ LINK_APACHE_MOD = $(LIBTOOL) $(LTFLAGS) --mode=link $(CC) $(LT_LDFLAGS) $(CFLAGS) $(LDFLAGS) -rpath $(APACHE_LIBEXECDIR) -avoid-version -module $(APACHE_LDFLAGS)
+--- a/build/ac-macros/apr.m4
++++ b/build/ac-macros/apr.m4
+@@ -85,11 +85,31 @@
+     AC_MSG_ERROR([apr-config --shlib-path-var failed])
+   fi
+ 
++  dnl Determine whether or not we will be using the 64-bit apr_off_t ABI.
++  dnl This necessarily changes the SONAME of libsvn_*.
++if test `expr $apr_version : 0` -ne 0; then
++  SVN_LT_SOVERSION="-version-info 0"
++else
++  SVN_LT_SOVERSION="-version-info 1"
++fi
++  dnl   oldcppflags=$CPPFLAGS
++  dnl   CPPFLAGS="$CPPFLAGS $SVN_APR_INCLUDES"
++  dnl   AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
++  dnl #include <apr.h>
++  dnl #if APR_HAS_LARGE_FILES
++  dnl # error Large file ABI required
++  dnl #endif
++  dnl     ]])], [apr_lfs_abi=0], [apr_lfs_abi=1])
++  dnl   CPPFLAGS=$oldcppflags
++  dnl
++  dnl SVN_LT_SOVERSION="-version-info $apr_lfs_abi"
++
+   AC_SUBST(SVN_APR_PREFIX)
+   AC_SUBST(SVN_APR_INCLUDES)
+   AC_SUBST(SVN_APR_LIBS)
+   AC_SUBST(SVN_APR_EXPORT_LIBS)
+   AC_SUBST(SVN_APR_SHLIB_PATH_VAR)
++  AC_SUBST(SVN_LT_SOVERSION)
+ ])
+ 
+ dnl SVN_DOWNLOAD_APR()
+--- a/subversion/libsvn_fs/fs-loader.c
++++ b/subversion/libsvn_fs/fs-loader.c
+@@ -92,7 +92,7 @@
+     const char *funcname;
+     apr_status_t status;
+ 
+-    libname = apr_psprintf(pool, "libsvn_fs_%s-%d.so.0",
++    libname = apr_psprintf(pool, "libsvn_fs_%s-%d.so.1",
+                            name, SVN_VER_MAJOR);
+     funcname = apr_psprintf(pool, "svn_fs_%s__init", name);
+ 
+--- a/subversion/libsvn_ra/ra_loader.c
++++ b/subversion/libsvn_ra/ra_loader.c
+@@ -154,7 +154,7 @@
+     const char *compat_funcname;
+     apr_status_t status;
+ 
+-    libname = apr_psprintf(pool, "libsvn_ra_%s-%d.so.0",
++    libname = apr_psprintf(pool, "libsvn_ra_%s-%d.so.1",
+                            ra_name, SVN_VER_MAJOR);
+     funcname = apr_psprintf(pool, "svn_ra_%s__init", ra_name);
+     compat_funcname = apr_psprintf(pool, "svn_ra_%s_init", ra_name);
+--- a/subversion/libsvn_subr/auth.c
++++ b/subversion/libsvn_subr/auth.c
+@@ -393,7 +393,7 @@
+       const char *library_label, *library_name;
+       const char *provider_function_name, *version_function_name;
+       library_name = apr_psprintf(pool,
+-                                  "libsvn_auth_%s-%d.so.0",
++                                  "libsvn_auth_%s-%d.so.1",
+                                   provider_name,
+                                   SVN_VER_MAJOR);
+       library_label = apr_psprintf(pool, "svn_%s", provider_name);

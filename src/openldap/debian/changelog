@@ -1,0 +1,6 @@
+openldap (2.4.21-1nexenta1) unstable; urgency=low
+
+  * Port from SFW
+
+ -- Igor Kozhukhov <igor.kozhukhov@nexenta.com>  Sun, 03 Apr 2011 00:45:44 +0400
+

@@ -1,0 +1,24 @@
+usr/bin/openldapmodify usr/bin/openldapadd
+usr/bin/amd64/openldapmodify usr/bin/amd64/openldapadd
+#
+usr/bin/openldapmodify usr/lib/openldap/bin/ldapadd
+usr/bin/openldapdelete usr/lib/openldap/bin/ldapdelete
+usr/bin/openldapmodrdn usr/lib/openldap/bin/ldapmodrdn
+usr/bin/openldapsearch usr/lib/openldap/bin/ldapsearch
+usr/bin/openldapcompare usr/lib/openldap/bin/ldapcompare
+usr/bin/openldapmodify usr/lib/openldap/bin/ldapmodify
+usr/bin/openldappasswd usr/lib/openldap/bin/ldappasswd
+usr/bin/openldapwhoami usr/lib/openldap/bin/ldapwhoami
+usr/bin/openldapexop usr/lib/openldap/bin/ldapexop
+usr/bin/openldapurl usr/lib/openldap/bin/ldapurl
+#
+usr/bin/amd64/openldapmodify usr/lib/openldap/bin/amd64/ldapadd
+usr/bin/amd64/openldapdelete usr/lib/openldap/bin/amd64/ldapdelete
+usr/bin/amd64/openldapmodrdn usr/lib/openldap/bin/amd64/ldapmodrdn
+usr/bin/amd64/openldapsearch usr/lib/openldap/bin/amd64/ldapsearch
+usr/bin/amd64/openldapcompare usr/lib/openldap/bin/amd64/ldapcompare
+usr/bin/amd64/openldapmodify usr/lib/openldap/bin/amd64/ldapmodify
+usr/bin/amd64/openldappasswd usr/lib/openldap/bin/amd64/ldappasswd
+usr/bin/amd64/openldapwhoami usr/lib/openldap/bin/amd64/ldapwhoami
+usr/bin/amd64/openldapexop usr/lib/openldap/bin/amd64/ldapexop
+usr/bin/amd64/openldapurl usr/lib/openldap/bin/amd64/ldapurl

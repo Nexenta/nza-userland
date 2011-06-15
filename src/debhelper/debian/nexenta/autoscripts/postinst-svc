@@ -1,0 +1,12 @@
+for s in #SERVICES#; do
+    case `svcs -Ho STATE $s` in
+        maintenance)
+            cmd="clear" ;;
+        online)
+            cmd="restart" ;;
+        *)
+            cmd="enable -sr" ;;
+    esac
+    /usr/sbin/svcadm -v $cmd $s  || true
+done
+

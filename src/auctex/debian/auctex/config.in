@@ -1,0 +1,51 @@
+#include "variables"
+#! /bin/bash -e
+#
+# <% config %> script for <:=${PACKAGE}:>
+#
+<:=@COPYRIGHT:>//
+
+set -o posix
+
+source <:=${CONFMODULE}:>
+db_capb backup
+
+case "${1}" in
+    configure|reconfigure)
+	db_subst <:=${PACKAGE}:>/doauto LOGFILE <:=${LOGFILE}:> || true
+	db_subst <:=${PACKAGE}:>/doautofg LOGFILE <:=${LOGFILE}:> || true
+	STATE=1; while true; do
+	    case "${STATE}" in
+		1)
+		    db_input low <:=${PACKAGE}:>/doauto || true;;
+		2)
+		    db_get <:=${PACKAGE}:>/doauto || true
+		    if [ "${RET}" = "Foreground" ]; then
+			<:# Ask another time, just to be sure. :>//
+			db_input low <:=${PACKAGE}:>/doautofg || true
+		    fi;;
+		*) break;;
+	    esac
+	    STATUS=0 && db_go || STATUS=${?}
+	    case "${STATUS}" in
+		30) STATE=$((${STATE} - 1));;
+		*) STATE=$((${STATE} + 1));;
+	    esac
+	done
+	if [ ${STATE} -eq 0 ]; then
+	    <:# The user asked to back up from the first question. :>//
+	    exit 2
+	fi;;
+    *) echo >&2 "${0##*/}/<:=${PACKAGE}:>:" \
+	"Unknown argument: \"${1}\"."
+	exit 1
+esac
+
+exit 0
+<:
+# local variables:
+# mode: shell-script
+# ispell-local-dictionary: "american"
+# ispell-check-comments: exclusive
+# end:
+:>//

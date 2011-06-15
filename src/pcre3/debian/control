@@ -1,0 +1,77 @@
+Source: pcre3
+Section: libs
+Priority: optional
+Maintainer:  Mark Baker <mark@mnb.org.uk>
+Standards-Version: 3.9.1
+Build-Depends: debhelper (>= 8.1.6),
+    libbz2-dev, lib64bz2-dev
+
+Package: libpcre3
+Section: libs
+Architecture: any
+Priority: important
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Conflicts: libpcre0, lib64pcre0
+Replaces: libpcre0, lib64pcre0
+Description: Perl 5 Compatible Regular Expression Library - runtime files
+ This is a library of functions to support regular expressions whose syntax 
+ and semantics are as close as possible to those of the Perl 5 language.
+ .
+ This package contains the runtime libraries.
+
+Package: libpcrecpp0
+Section: libs
+Architecture: any
+Priority: optional
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Conflicts: lib64pcrecpp0
+Replaces: lib64pcrecpp0
+Description: Perl 5 Compatible Regular Expression Library - C++ runtime files
+ This is a C++ library of functions to support regular expressions whose syntax 
+ and semantics are as close as possible to those of the Perl 5 language.
+ .
+ This package contains the C++ runtime library.
+
+Package: libpcre3-dev
+Section: libdevel
+Architecture: any
+Depends: system-library, libpcre3 (= ${binary:Version}), libpcrecpp0 (= ${binary:Version}), ${misc:Depends}
+Provides: libpcre-dev
+Conflicts: libpcre0-dev, lib64pcre0-dev
+Replaces: libpcre0-dev, lib64pcre0-dev
+Description: Perl 5 Compatible Regular Expression Library - development files
+ This is a library of functions to support regular expressions whose syntax 
+ and semantics are as close as possible to those of the Perl 5 language.
+ .
+ This package contains the development files, including headers, static 
+ libraries, and documentation.
+
+Package: libpcre3-dbg
+Section: debug
+Priority: extra
+Architecture: any
+Depends:
+ libpcre3 (= ${binary:Version}),
+ libpcrecpp0 (= ${binary:Version}),
+ ${misc:Depends}
+Provides: libpcre-dbg
+Conflicts: libpcre0-dbg, libpcre-dbg
+Replaces: libpcre0-dbg, libpcre-dbg
+Description: Perl 5 Compatible Regular Expression Library - debug symbols
+ This is a library of functions to support regular expressions whose syntax 
+ and semantics are as close as possible to those of the Perl 5 language.
+ .
+ This package contains the debug symbols,
+
+Package: pcregrep
+Section: utils
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Replaces: pgrep (<<4.5)
+Description: grep utility that uses perl 5 compatible regexes.
+ Perl-style regexps have many useful features that the standard POSIX ones
+ don't; this is basically the same as grep but with the different
+ regexp syntax.
+ .
+ The other reason for the existence of pcregrep is that its source code is an
+ example of programming with libpcre.

@@ -1,0 +1,8 @@
+po-debconf is
+  Copyright (c) 2002 Denis Barbier <barbier@linuxfr.org>
+  Copyright (c) 2002 Martin Quinson <Martin.Quinson@ens-lyon.fr>
+
+This program is released under the terms and conditions of the GNU
+General Public License (GPL).  On Debian GNU/Linux systems, the complete
+text of the GNU General Public License may be found in
+`/usr/share/common-licenses/GPL'.

@@ -1,0 +1,67 @@
+Source: libice
+Section: x11
+Priority: optional
+Maintainer: Debian X Strike Force <debian-x@lists.debian.org>
+Uploaders: David Nusinow <dnusinow@debian.org>, Drew Parsons <dparsons@debian.org>, Cyril Brulebois <kibi@debian.org>
+Build-Depends:
+ debhelper (>= 5.0.0),
+ quilt,
+ pkg-config,
+ x11proto-core-dev,
+ xtrans-dev (>= 1.0.1),
+ automake,
+ libtool,
+ xutils-dev (>= 1:7.4+4)
+Standards-Version: 3.8.3
+Vcs-Git: git://git.debian.org/git/pkg-xorg/lib/libice
+Vcs-Browser: http://git.debian.org/?p=pkg-xorg/lib/libice.git
+
+Package: libice6
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, x11-common
+Description: X11 Inter-Client Exchange library
+ This package provides the main interface to the X11 Inter-Client Exchange
+ library, which allows for communication of data between X clients.
+ .
+ More information about X.Org can be found at:
+ <URL:http://www.X.org>
+ .
+ This module can be found at
+ git://anongit.freedesktop.org/git/xorg/lib/libICE
+
+Package: libice6-dbg
+Architecture: any
+Section: debug
+Priority: extra
+Depends: ${shlibs:Depends}, ${misc:Depends}, libice6 (= ${binary:Version})
+Description: X11 Inter-Client Exchange library (debug package)
+ This package provides the main interface to the X11 Inter-Client Exchange
+ library, which allows for communication of data between X clients.
+ .
+ This package contains the debug versions of the library found in libice6.
+ Non-developers likely have little use for this package.
+ .
+ More information about X.Org can be found at:
+ <URL:http://www.X.org>
+ .
+ This module can be found at
+ git://anongit.freedesktop.org/git/xorg/lib/libICE
+
+Package: libice-dev
+Architecture: any
+Section: libdevel
+Depends: ${shlibs:Depends}, ${misc:Depends}, libice6 (= ${binary:Version}), x11proto-core-dev
+Pre-Depends: x11-common (>= 1:7.0.0)
+Description: X11 Inter-Client Exchange library (development headers)
+ This package provides the main interface to the X11 Inter-Client Exchange
+ library, which allows for communication of data between X clients.
+ .
+ This package contains the development headers for the library found in libice6.
+ Non-developers likely have little use for this package.
+ .
+ More information about X.Org can be found at:
+ <URL:http://www.X.org>
+ .
+ This module can be found at
+ git://anongit.freedesktop.org/git/xorg/lib/libICE

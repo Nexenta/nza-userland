@@ -1,0 +1,120 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 50_fmtutil_deb.dpatch
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: debianize fmtutil, updmap etc, taken from tetex
+
+@DPATCH@
+ texk/tetex/fmtutil     |   23 ++++++-----------------
+ texk/tetex/fmtutil.man |   22 ++++++++++++++++++++--
+ 2 files changed, 26 insertions(+), 19 deletions(-)
+
+Index: texlive-bin-2009/texk/tetex/fmtutil.man
+===================================================================
+--- texlive-bin-2009.orig/texk/tetex/fmtutil.man	2009-11-11 13:55:26.000000000 +0000
++++ texlive-bin-2009/texk/tetex/fmtutil.man	2009-11-11 13:55:45.000000000 +0000
+@@ -33,10 +33,25 @@
+ print a summary of commands and options
+ .IP "\fB--missing\fP" 
+ create any missing format files
++.IP "\fB--refresh\fP"
++recreate only existing format files
+ .IP "\fB--showhyphen\fP \fIformatname\fP" 
+ print the name of the
+ hyphenation file for the format
+ \fIformatname\fP
++.IP "\fB--enablefmt\fP \fIformatname\fP"
++enable formatname in config file
++.IP "\fB--disablefmt\fP \fIformatname\fP"
++disable formatname in config file
++.IP "\fB--listcfg\fP"
++list (enabled and disabled) configurations, filtered to available
++formats
++.IP "\fB--catcfg\fP"
++output the content of the config file
++.IP "\fB--edit\fP"
++edit fmtutil.cnf file (disabled in Debian)
++.IP "\fB--version\fP"
++show version info
+ .PP 
+ .SH "OPTIONS" 
+ .PP 
+@@ -58,12 +73,15 @@
+ .PP 
+ .SH "FILES" 
+ .PP 
+-.IP "\fIfmtutil\&.cnf\fP" 
++.IP "\fIfmtutil\&.cnf\fP"
+ default configuration file
++.IP "\fI/etc/texmf/fmt.d/\fP"
++Debian-specific directory for configuration file snippets
+ .PP 
+ .SH "SEE ALSO" 
+ .PP 
+-\fBkpsewhich\fP(1)
++\fBkpsewhich\fP(1),
++\fBupdate-fmtutil\fP(1)
+ .PP 
+ .SH "BUGS" 
+ .PP 
+Index: texlive-bin-2009/texk/tetex/fmtutil
+===================================================================
+--- texlive-bin-2009.orig/texk/tetex/fmtutil	2009-11-11 13:55:26.000000000 +0000
++++ texlive-bin-2009/texk/tetex/fmtutil	2009-11-11 13:55:45.000000000 +0000
+@@ -508,7 +508,8 @@
+       cleanup $?
+       ;;
+     edit)
+-      ${VISUAL-${EDITOR-vi}} $cnf_file
++      # defined by debianize-fmtutil
++      debianEditWarnAndShow
+       ;;
+     enablefmt|disablefmt)
+       $cmd $arg
+@@ -523,22 +524,6 @@
+       ;;
+   esac
+ 
+-  if test -n "$cfgmaint"; then
+-    if test -z "$cfgparam"; then
+-      ci=`tcfmgr --tmp $tmpdir --cmd ci --id $id`
+-      if test $? = 0; then
+-        if test -n "$ci"; then
+-          verboseMsg "$progname: configuration file updated: \`$ci'"
+-        else
+-          verboseMsg "$progname: configuration file unchanged."
+-        fi
+-      else
+-        abort "failed to update configuration file."
+-      fi
+-    fi
+-    cleanup $?
+-  fi
+-
+   # set up destdir:
+   if test -z "$destdir"; then
+     : ${MT_TEXMFVAR=`kpsewhich -var-value=TEXMFVAR`}
+@@ -949,6 +934,7 @@
+ ###############################################################################
+ # disablefmt(format)
+ #   disables format in configuration file
++#    [ redefined by debianize-fmtutil ]
+ ###############################################################################
+ disablefmt()
+ {
+@@ -965,6 +951,7 @@
+ ###############################################################################
+ #  enablefmt(format)
+ #    enables format in configuration file
++#    [ redefined by debianize-fmtutil ]
+ ###############################################################################
+ enablefmt()
+ {
+@@ -977,5 +964,7 @@
+   (exit 0); return 0
+ }
+ 
++. /usr/share/texlive-bin/debianize-fmtutil
++
+ main ${1+"$@"}
+ cleanup 0

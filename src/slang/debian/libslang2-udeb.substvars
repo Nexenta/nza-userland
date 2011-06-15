@@ -1,0 +1,2 @@
+shlibs:Depends=libgcc1, system-library, system-library-math
+misc:Depends=

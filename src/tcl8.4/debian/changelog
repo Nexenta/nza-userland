@@ -1,0 +1,346 @@
+tcl8.4 (8.4.19-4nexenta2) unstable; urgency=low
+
+  * Moved tcl8.4.m4 to /usr/gnu/share/aclocal
+
+ -- Kartik Mistry <kartik.mistry@nexenta.com>  Thu, 17 Mar 2011 13:09:28 +0530
+
+tcl8.4 (8.4.19-4nexenta1) unstable; urgency=low
+
+  * Rebuilt for NCP4
+
+ -- Kartik Mistry <kartik.mistry@nexenta.com>  Wed, 19 Jan 2011 18:45:34 +0530
+
+tcl8.4 (8.4.19-4stormos0) unstable; urgency=low
+
+  * Package for StormOS.
+
+ -- Andrew Stormont (astormont) <andyjstormont@googlemail.com>  Tue, 17 Aug 2010 03:14:09 +0200
+
+tcl8.4 (8.4.19-4) unstable; urgency=low
+
+  * Removed Anselm Lingnau from uploaders list (closes: #540848).
+  * Protected quilt calls in debian/rules to make conversion to source
+    format 3.0 (quilt) possible (closes: #484913).
+  * Added README.source which describes how to work with quilt.
+  * Use SourceForge redirector in debian/watch uscan control file.
+  * Bumped standards version to 3.8.3.
+
+ -- Sergei Golovan <sgolovan@debian.org>  Sat, 05 Sep 2009 11:34:08 +0400
+
+tcl8.4 (8.4.19-3) unstable; urgency=low
+
+  * Don't remove tclsh alternative in case of package upgrade because the
+    manually installed alternative is also removed which isn't desirable.
+
+ -- Sergei Golovan <sgolovan@debian.org>  Sun, 01 Mar 2009 10:35:09 +0300
+
+tcl8.4 (8.4.19-2) unstable; urgency=low
+
+  * Fixed clean target to work with debhelper 7.0 (made dh_clean the last
+    command, so debhelper logs are removed now).
+
+ -- Sergei Golovan <sgolovan@debian.org>  Thu, 01 May 2008 12:13:47 +0400
+
+tcl8.4 (8.4.19-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Sergei Golovan <sgolovan@debian.org>  Sat, 19 Apr 2008 18:09:51 +0400
+
+tcl8.4 (8.4.18-3) unstable; urgency=low
+
+  * Quoted CFLAGS in debian/rules when passing to the shell, not when
+    assigning to a make variable; otherwise the quotes end up as part of
+    the variable and many things go wrong, leading to a build failure
+    (closes: #467397, #476015).
+  * Explicitly specified configure options --host and --build to make build
+    results more predictable.
+  * Cleaned up debian/rules.
+
+ -- Sergei Golovan <sgolovan@debian.org>  Mon, 14 Apr 2008 23:01:19 +0400
+
+tcl8.4 (8.4.18-2) unstable; urgency=low
+
+  * Upload to unstable.
+
+ -- Sergei Golovan <sgolovan@debian.org>  Sat, 09 Feb 2008 01:39:26 +0300
+
+tcl8.4 (8.4.18-1) experimental; urgency=low
+
+  * New upstream release.
+  * Overridden lintian warning package-name-doesnt-match-sonames since tcl8.4
+    package contains not only a library, and it's unreasonable to split it
+    into smaller parts.
+
+ -- Sergei Golovan <sgolovan@debian.org>  Fri, 08 Feb 2008 21:35:49 +0300
+
+tcl8.4 (8.4.17-1) unstable; urgency=low
+
+  * New upstream release.
+  * Bumped standards version to 3.7.3.
+
+ -- Sergei Golovan <sgolovan@debian.org>  Thu, 03 Jan 2008 02:40:34 +0300
+
+tcl8.4 (8.4.16-4) unstable; urgency=medium
+
+  * Temporarily (until transition to a new Tcl/Tk policy is done) readded
+    /usr/lib to TCL_PACKAGE_PATH variable (closes: #451129, #451195).
+
+ -- Sergei Golovan <sgolovan@debian.org>  Wed, 14 Nov 2007 08:42:30 +0300
+
+tcl8.4 (8.4.16-3) unstable; urgency=low
+
+  * Fixed tcl8.4-dev.preinst bug in update-alternatives call (ignore return
+    value if tcl.m4 alternative doesn't exist already,
+    closes: #447310, #447311).
+
+ -- Sergei Golovan <sgolovan@debian.org>  Sat, 20 Oct 2007 06:14:00 +0400
+
+tcl8.4 (8.4.16-2) unstable; urgency=low
+
+  [ Sergei Golovan ]
+  * Added -fno-unit-at-a-time option to prevent stack corruption in a
+    particular use case (closes: #446335).
+  * Added /usr/local/lib/tcltk, /usr/local/share/tcltk, /usr/lib/tcltk,
+    /usr/share/tcltk to auto_path variable. These directories are to be
+    contain Tcl/Tk packages according to upcoming Debian Tcl/Tk Policy
+    (preliminary version see at
+    http://pkg-tcltk.alioth.debian.org/tcltk-policy.html/)
+  * Removed TCL_INC_DIR from tclConfig.sh and tcl.m4.
+  * Moved architecture independent files from /usr/lib/tcl8.4 to
+    /usr/share/tcltk/tcl8.4. To keep backward compatibility tclConfig.sh is
+    linked to /usr/lib/tcl8.4 directory.
+  * Fixed bug with update-alternatives in prerm scripts.
+  * Removed conflicts with tcl and providing tcl-dev packages from
+    debian/control to prepare binary packages for default tcl and tcl-dev.
+  * Removed build-essential package from tcl8.4-dev dependencies.
+  * Moved tcl.m4 to /usr/share/aclocal/tcl8.4.m4 to make it easier to use
+    different versions of tcl.m4.
+  * Removed alternative of tcl.m4 (the link to default tcl.m4 is to be
+    maintained by tcl-dev package).
+  * Rearranged conflicts of tcl8.4-doc package because of planned adoption of
+    real tcl-doc package.
+
+  [ Francesco Paolo Lovergine ]
+  * Added Homepage field in debian/control. 
+
+ -- Sergei Golovan <sgolovan@debian.org>  Fri, 19 Oct 2007 16:07:39 +0400
+
+tcl8.4 (8.4.16-1) unstable; urgency=low
+
+  * New upstream release.
+  * Removed patch which fixed memcmp() since it is included in upstream
+    sources.
+  * Cleaned up patches in debian/patches directory.
+  * Added /usr/lib/tcl8.4 to a search path for tclConfig.sh and /usr/lib/tk8.4
+    to a search path for tkConfig.sh in tcl.m4.
+  * Removed patch which replaced strcmp by strcoll in lsort -ascii since
+    it doesn't make sense for unicode Tcl strings.
+  * Removed hack which fixed random crashes on SMP machines (it doesn't crash
+    anymore, but needs additional testing).
+  * Removed patch which fixed build-failure on sparc in tclPosixStr.c since it
+    is not necessary anymore.
+  * Added uscan control file debian/watch.
+  * Bumped debhelper compatibility to 5.
+
+ -- Sergei Golovan <sgolovan@debian.org>  Fri, 28 Sep 2007 20:54:36 +0400
+
+tcl8.4 (8.4.15-2) unstable; urgency=low
+
+  * Added Sergei Golovan to uploaders list.
+  * Added forgotten TCL_INC_DIR variable to tclConfig.sh.
+  * Applied patch by Ian Jackson <iwj@ubuntu.com> which fixes memcmp()
+    function (closes: #440682).
+  * Removed --enable-64bit configure option from debian/rules
+    (closes: #440689).
+  * Provide virtual tcl-dev package and removed conflict with tcl-dev package
+    of tcl8.4-dev.
+  * Replaced deprecated ${Source-Version} substitution variable by
+    ${binary:Version}.
+  * Moved menu item from obsolete Apps to Applications section.
+
+ -- Sergei Golovan <sgolovan@debian.org>  Sat, 15 Sep 2007 10:31:07 +0400
+
+tcl8.4 (8.4.15-1) unstable; urgency=low
+
+  * New maintainer Tcl/Tk Debian Packagers
+    <pkg-tcltk-devel@lists.alioth.debian.org>.
+  
+  [ Sergei Golovan ]
+  * New upstream release (closes: #400820, #424055, #426251).
+  * Use quilt for patch management.
+  * Fixed sections inside manual pages.
+  * Added get-orig-source target to debian/rules.
+  * Added headers from compat directory to tcl8.4-dev package.
+  * Added list of copyright holders and files distributed under special
+    conditions to debian/copyright (closes: #403169).
+  [Chris Waters]
+  * Added Anselm Lingnau to uploaders.
+
+ -- Chris Waters <xtifr@debian.org>  Wed, 25 Jul 2007 04:21:47 -0700
+
+tcl8.4 (8.4.12-1.1) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * unix/tcl.m4: fix annoying underquoted definitions in tcl.m4, patch
+    courtesy of Toby White (Closes: #277826).
+
+ -- Sam Hocevar (Debian packages) <sam+deb@zoy.org>  Sat, 15 Jul 2006 11:49:52 +0200
+
+tcl8.4 (8.4.12-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Chris Waters <xtifr@debian.org>  Fri, 27 Jan 2006 04:22:19 -0800
+
+tcl8.4 (8.4.11-1.1) unstable; urgency=low
+
+  * NMU.
+  * Fix syntax errors in unix/tcl.m4 and unix/configure.
+    Closes: #343989.
+
+ -- Daniel Schepler <schepler@debian.org>  Sun,  8 Jan 2006 11:51:22 +0100
+
+tcl8.4 (8.4.11-1) unstable; urgency=low
+
+  * New upstream release.
+  * Needed to fix mechanism for picking up SONAME.  Now uses special
+    macro, TCL_SHLIB_LD_EXTRAS, and only for Linux, Hurd and DebianBSD.
+
+ -- Chris Waters <xtifr@debian.org>  Tue,  6 Sep 2005 13:32:03 -0700
+
+tcl8.4 (8.4.9-1) unstable; urgency=low
+
+  * New upstream release.
+  * Removed old patch for integer conversion on 64-bit systems, as
+    upstream seems to have created their own patch, which conflicts.
+  * Added a new patch (courtesy of James Troup and Ubuntu) which fixes
+    crashes on SMP machines, but may introduce some resource leakage on
+    very unusual apps - this is, we hope, only a temporary patch until
+    upstream comes up with a better solution (closes: #285062).
+  * The old mechanism for renaming the man pages no longer worked, so I
+    had to create a new one.
+
+ -- Chris Waters <xtifr@debian.org>  Wed, 15 Dec 2004 18:48:10 -0800
+
+tcl8.4 (8.4.7-1) unstable; urgency=low
+
+  * New upstream release.
+  * Removed patch files for tcl.m4, they were badly out-of-synch, and I
+    don't actually use them for anything.
+
+ -- Chris Waters <xtifr@debian.org>  Sat,  7 Aug 2004 20:42:08 -0700
+
+tcl8.4 (8.4.6-1) unstable; urgency=low
+
+  * New upstream release.
+  * Removed the Tcl_Ungets patch, upstream has fixed the problem.
+
+ -- Chris Waters <xtifr@debian.org>  Sat, 13 Mar 2004 15:10:00 -0800
+
+tcl8.4 (8.4.5-1) unstable; urgency=low
+
+  * New upstream release (closes: #224162).
+  * Add --enable-64bit configuration option to maximize the use of any
+    available 64-bit options.
+
+ -- Chris Waters <xtifr@debian.org>  Mon, 22 Dec 2003 17:48:23 -0800
+
+tcl8.4 (8.4.4-1) unstable; urgency=low
+
+  * New upstream release.
+  * Re-enabled XIMPEEK which has been fixed to work with newer XFree86es.
+
+ -- Chris Waters <xtifr@debian.org>  Thu, 31 Jul 2003 01:32:31 -0700
+
+tcl8.4 (8.4.3-3) unstable; urgency=low
+
+  * Rebuilt to not use XIMPEEK code, which doesn't work with newer
+    versions of XFree86.  This really only affects Tk, but there's a
+    passing reference to it in tcl.m4, so I'm removing it from there as
+    well, just to make extra sure that it's gone.
+
+ -- Chris Waters <xtifr@debian.org>  Tue, 24 Jun 2003 18:10:17 -0700
+
+tcl8.4 (8.4.3-2) unstable; urgency=low
+
+  * Changed -dev dependency from "libc6-dev" to "libc6-dev|libc-dev", for
+    greater flexibility.
+
+ -- Chris Waters <xtifr@debian.org>  Fri,  6 Jun 2003 00:32:47 -0700
+
+tcl8.4 (8.4.3-1) unstable; urgency=low
+
+  * New upstream release, includes fix for zh_CN.GB2312 crashing problem
+    (closes: #193284).
+  * Added mention of threading support to description.
+
+ -- Chris Waters <xtifr@debian.org>  Tue, 20 May 2003 22:38:26 -0700
+
+tcl8.4 (8.4.2-1) unstable; urgency=low
+
+  * New upstream release.
+  * Tightened dependencies for -dev package.
+  * Upstream no longer uses PATH_MAX, so hurd patch is simplified.
+  * Added debian-netbsd patch from Joel Baker.
+
+ -- Chris Waters <xtifr@debian.org>  Wed,  5 Mar 2003 19:53:44 -0800
+
+tcl8.4 (8.4.1-2) unstable; urgency=low
+
+  * The -dev package no longer uses a symlink in /usr/share/doc.  Any
+    pre-existing link now cleaned by preinst.
+  * Added README.TCL_INC to -dev package.
+  * Moved README.Debian to tcl8.4 package instead of tcl8.4-doc.
+  * Updated source location in copyright file.
+  * debian/rules: simplified the logic used to get the .sh and .m4 files
+    into the -dev package.  No longer dependent on the order that
+    dh_movefiles processes the packages, and no longer uses obscure
+    globbing magic.
+  * Include the actual upstream changelog file, as well as the file named
+    "changes" (which is more of a user-oriented description).
+  * Applied new Hurd patch from Robert Millan, hacked up a bit after
+    talking to upstream (closes: #170449).
+
+ -- Chris Waters <xtifr@debian.org>  Mon, 16 Dec 2002 17:52:14 -0800
+
+tcl8.4 (8.4.1-1) unstable; urgency=low
+
+  * New upstream release.
+  * debian/control: tcl8.4 to interpreters section, -doc to doc section.
+  * Fleshed out the package descriptions a little.
+  * Enabled thread support (needed for new aolserver) (closes: #164692).
+
+ -- Chris Waters <xtifr@debian.org>  Sun, 17 Nov 2002 19:33:28 -0800
+
+tcl8.4 (8.4.0-4) unstable; urgency=low
+
+  * Removed the man page patch introduced in 8.4.0-2, as it was large, and
+    didn't actually help.  Re-added the "ln" hack to mkLinks (as seen in
+    earlier tcl packages).
+
+ -- Chris Waters <xtifr@debian.org>  Fri, 11 Oct 2002 18:59:36 -0700
+
+tcl8.4 (8.4.0-3) unstable; urgency=low
+
+  * New maintainer.
+  * Fixed man pages missed by earlier patch in -2 (closes: #162966).
+  * Now builds with debhelper v3, did some associated cleanup.
+
+ -- Chris Waters <xtifr@debian.org>  Thu, 10 Oct 2002 00:26:38 -0700
+
+tcl8.4 (8.4.0-2) unstable; urgency=low
+
+  * Patch to tcl.m4/mkLinks/Makefile.in to support compile-time
+    specified manpage section (Closes: #161335)
+  * Fixed paths in tclConfig.sh (Closes: #161458)
+
+ -- Mike Markley <mike@markley.org>  Fri, 20 Sep 2002 20:14:09 -0700
+
+tcl8.4 (8.4.0-1) unstable; urgency=low
+
+  * New upstream TCL version.
+  * Hurd support now integrated upstream
+  * Patched mkLinks to call $ZIP -9
+
+ -- Mike Markley <mike@markley.org>  Wed, 11 Sep 2002 21:53:22 -0700

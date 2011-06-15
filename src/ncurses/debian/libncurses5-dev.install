@@ -1,0 +1,9 @@
+usr/include/ncurses/*.h
+usr/gnu/lib/libncurses.so
+#usr/gnu/lib/libtic.so
+usr/gnu/lib/libform.so
+usr/gnu/lib/libmenu.so
+usr/gnu/lib/libpanel.so
+#obj-static/lib/*.a usr/gnu/lib
+usr/gnu/lib/*.a
+usr/gnu/share/man/man3

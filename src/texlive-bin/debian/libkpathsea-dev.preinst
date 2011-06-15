@@ -1,0 +1,16 @@
+#!/bin/sh -e
+# libkpathsea-dev.preinst.pre
+# created 2008 by the Debian TeX Task Force
+# probably not copyrightable as it looks now, but anyway the code maybe 
+# freely copied, distributed and/or modified
+
+# remove link of doc file as shipped with up to version 3.0
+
+if [ -L /usr/share/doc/libkpathsea-dev ] ; then
+  if [ "$(readlink -n /usr/share/doc/libkpathsea-dev)" = libkpathsea4 ] ; then
+    rm /usr/share/doc/libkpathsea-dev
+  fi
+fi
+
+#DEBHELPER#
+

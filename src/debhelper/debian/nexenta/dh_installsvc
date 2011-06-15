@@ -1,0 +1,201 @@
+#!/usr/bin/perl -w
+
+=head1 NAME
+
+dh_installsvc - install a service for Service Management Facility (SMF)
+
+=cut
+
+use strict;
+use Debian::Debhelper::Dh_Lib;
+use XML::Simple;
+use File::Basename qw/ fileparse /;
+use File::Spec qw/ catfile /;
+#use Data::Dumper; # debug
+
+=head1 SYNOPSIS
+
+B<dh_installsvc> [S<I<debhelper options>>] [B<-n>] [B<-R>] [B<-r>]
+
+=head1 DESCRIPTION
+
+B<dh_installsvc> is a debhelper program that is responsible for installing
+SMF manifests and scripts files into package build directories.
+
+It also automatically generates the F<postinst> and F<postrm> and F<prerm> commands
+needed to set up and to start and stop the service.
+
+=head1 FILES
+
+=over 4
+
+=item debian/I<package>.xml
+
+SMF manifest, used as B<svccfg -v import I<package>.xml>.
+Installed into I</lib/svc/manifest>.
+
+=item debian/I<package>.method
+
+=item debian/I<package>.method.I<instance>
+
+SMF method to start/stop/refresh/etc.
+Maybe used in manifest debian/I<package>.xml.
+Installed into I</lib/svc/method>.
+It will be renamed to the name specified in debian/I<package>.xml.
+
+=back
+
+=head1 OPTIONS
+
+=over 4
+
+=item B<-n>, B<--noscripts>
+
+Do not modify F<postinst>/F<postrm>/F<prerm> scripts.
+
+
+=item B<-R>, B<--restart-after-upgrade>
+
+Do not stop the service until after the package upgrade has been
+completed. This is different than the default behavior, which stops the
+service in the F<prerm>, and starts it again in the F<postinst>.
+
+This can be useful for daemons that should not have a possibly long
+downtime during upgrade. But you should make sure that the daemon will not
+get confused by the package being upgraded while it's running before using
+this option.
+
+=item B<--no-start>
+
+Do not start the service on install or upgrade, or stop it on removal.
+
+
+=back
+
+=head1 NOTES
+
+Note that this command is not idempotent. L<dh_prep(1)> should be called
+between invocations of this command. Otherwise, it may cause multiple
+instances of the same text to be added to maintainer scripts.
+
+=cut
+
+init(options => {
+	"no-start" => \$dh{NO_START},
+	"R|restart-after-upgrade" => \$dh{RESTART_AFTER_UPGRADE},
+});
+
+my $MANIFEST = 'lib/svc/manifest';
+my $METHOD   = 'lib/svc/method';
+
+
+
+foreach my $package (@{$dh{DOPACKAGES}}) {
+	my $tmp = tmpdir($package);
+
+    # get SMF manifest file name if any
+    my $manifest = pkgfile($package, "xml");
+    next if ($manifest eq '');
+
+    # parse manifest
+    my $xml = XMLin($manifest, ForceArray => [qw/instance dependency exec_method propval property_group/]);
+    #print Dumper($xml); # debug
+
+
+    # get all instances
+    my %instances = ();
+    if (exists $xml->{'service'}->{'create_default_instance'}) {
+        $instances{'default'} = {
+            # for now we need only this
+            'enabled'     => $xml->{'service'}->{'create_default_instance'}->{'enabled'},
+            'exec_method' => $xml->{'service'}->{'exec_method'},
+        }
+    }    
+    if (exists $xml->{'service'}->{'instance'}) {
+        while (my ($k, $v) = each %{$xml->{'service'}->{'instance'}}) {
+            $instances{$k} = $v
+        }
+    }
+
+
+    # install manifest (XML) file:
+    my $manifest_out = basename($manifest);
+    my $service = $xml->{'service'}->{'name'};
+    $service =~ s|^/||;
+    my ($service_name, $service_group) = fileparse($service);
+    my $pkg_manifest = File::Spec->catfile($MANIFEST, $service_group, $manifest_out);
+    if (! -d "$tmp/$MANIFEST/$service_group") {
+	    doit("install", "-d", "-oroot", "-gsys", "-m755", "$tmp/$MANIFEST/$service_group");
+	}
+    doit("install", "-p", "-oroot", "-gsys", "-m644", $manifest, "$tmp/$pkg_manifest");
+
+
+
+    # install methods
+    foreach my $i (keys %instances) {
+        my $exec_method_start = $instances{$i}->{'exec_method'}->{'start'}->{'exec'};
+        if ($exec_method_start =~ m|/$METHOD/(\S+)|) {
+            my $method_xml = $1;
+            my ($method_name, $method_dir) = fileparse($method_xml);
+            if (! -f "$tmp/$METHOD/$method_dir/$method_name") {
+                my $method = '';
+                $method = pkgfile($package, "method.$i") unless $method;
+                $method = pkgfile($package, "method") unless $method;
+                die "No SMF method found.\n" if !$method;
+                if (! -d "$tmp/$METHOD/$method_dir") {
+                    doit("install", "-d", "-oroot", "-gbin", "-m755", "$tmp/$METHOD/$method_dir");
+                }
+                doit("install", "-p", "-m555", "-oroot", "-gbin", $method, "$tmp/$METHOD/$method_dir/$method_name");
+            }
+        }
+    }
+
+
+
+    # get list of services, like 'svc:/application/database/redis-server:default'
+    my $services = '';
+    foreach my $k (keys %instances) {
+        $services .= "svc:/$service:$k ";
+    }
+
+
+    # make scripts
+    if (! $dh{NOSCRIPTS}) {
+        # import manifest
+        autoscript($package, "postinst", "postinst-svc-import",
+            "s|#MANIFEST#|/$pkg_manifest|");
+
+        if (! $dh{NO_START}) {
+            # start/restart/clear service
+            autoscript($package, "postinst", "postinst-svc",
+                "s|#SERVICES#|$services|;s|#MANIFEST#|/$pkg_manifest|");
+        
+            if ($dh{RESTART_AFTER_UPGRADE}) {
+                # Do not stop on upgrade, stop only on remove
+                autoscript($package, "prerm", "prerm-svc-stop-on-remove",
+                    "s|#SERVICES#|$services|");
+            }
+            else {
+                # always stop
+                autoscript($package, "prerm", "prerm-svc-stop",
+                    "s|#SERVICES#|$services|");
+            }
+        }
+
+        # delete service on purge
+        autoscript($package, "postrm", "postrm-svc",
+                "s|#SERVICES#|$services|");
+    }
+}
+
+=head1 SEE ALSO
+
+L<debhelper(7)>
+
+This program is a Nexenta addition to debhelper.
+
+=head1 AUTHORS
+
+Igor Pashev <igor.pashev@nexenta.com>
+
+=cut

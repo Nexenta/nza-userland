@@ -1,0 +1,383 @@
+XHTML 1.0 clean patches.  When running with -wall some minor issues
+appear in the DTDs.
+
+On the strict DTD, I removed some unused entities:
+
+   FrameTarget
+   MultiLengths
+   TAlign
+   CAlign
+
+Regarding the frameset version:
+
+> SP_CHARSET_FIXED=YES SP_ENCODING=XML /usr/bin/onsgmls -wxml -wall -gus xhtml-1.0-frameset.xml
+/usr/bin/onsgmls:/usr/share/sgml/html/dtd/xml/1.0/xhtml1-frameset.dtd:228:0:W: unused parameter entity "Block"
+/usr/bin/onsgmls:/usr/share/sgml/html/dtd/xml/1.0/xhtml1-frameset.dtd:184:0:W: unused parameter entity "focus"
+
+I fixed by removing the Block parameter entity, and putting the focus
+parameter entity to use.
+
+Pretty much same goes for the loose DTD.
+
+
+=== cd /home/apharris/debian/sgml-data/sgml-data/html/dtd/xml/1.0/
+=== /usr/bin/cvs diff -u xhtml1-frameset.dtd xhtml1-strict.dtd xhtml1-transitional.dtd
+
+Index: xhtml1-frameset.dtd
+===================================================================
+RCS file: /usr/local/cvs/debian/sgml-data/html/dtd/xml/1.0/xhtml1-frameset.dtd,v
+retrieving revision 1.1
+diff -u -u -r1.1 xhtml1-frameset.dtd
+--- xhtml1-frameset.dtd	2001/03/11 22:26:32	1.1
++++ xhtml1-frameset.dtd	2001/03/22 18:06:52
+@@ -225,8 +225,6 @@
+ <!ENTITY % block
+     "p | %heading; | div | %lists; | %blocktext; | isindex | fieldset | table">
+ 
+-<!ENTITY % Block "(%block; | form | %misc;)*">
+-
+ <!-- %Flow; mixes Block and Inline and is used for list items etc. -->
+ <!ENTITY % Flow "(#PCDATA | %block; | form | %inline; | %misc;)*">
+ 
+@@ -646,6 +644,7 @@
+ <!ELEMENT a %a.content;>
+ <!ATTLIST a
+   %attrs;
++  %focus;
+   charset     %Charset;      #IMPLIED
+   type        %ContentType;  #IMPLIED
+   name        NMTOKEN        #IMPLIED
+@@ -653,12 +652,8 @@
+   hreflang    %LanguageCode; #IMPLIED
+   rel         %LinkTypes;    #IMPLIED
+   rev         %LinkTypes;    #IMPLIED
+-  accesskey   %Character;    #IMPLIED
+   shape       %Shape;        "rect"
+   coords      %Coords;       #IMPLIED
+-  tabindex    %Number;       #IMPLIED
+-  onfocus     %Script;       #IMPLIED
+-  onblur      %Script;       #IMPLIED
+   target      %FrameTarget;  #IMPLIED
+   >
+ 
+@@ -881,15 +876,12 @@
+ <!ELEMENT area EMPTY>
+ <!ATTLIST area
+   %attrs;
++  %focus;
+   shape       %Shape;        "rect"
+   coords      %Coords;       #IMPLIED
+   href        %URI;          #IMPLIED
+   nohref      (nohref)       #IMPLIED
+   alt         %Text;         #REQUIRED
+-  tabindex    %Number;       #IMPLIED
+-  accesskey   %Character;    #IMPLIED
+-  onfocus     %Script;       #IMPLIED
+-  onblur      %Script;       #IMPLIED
+   target      %FrameTarget;  #IMPLIED
+   >
+ 
+@@ -934,6 +926,7 @@
+ <!ELEMENT input EMPTY>     <!-- form control -->
+ <!ATTLIST input
+   %attrs;
++  %focus;
+   type        %InputType;    "text"
+   name        CDATA          #IMPLIED
+   value       CDATA          #IMPLIED
+@@ -945,10 +938,6 @@
+   src         %URI;          #IMPLIED
+   alt         CDATA          #IMPLIED
+   usemap      %URI;          #IMPLIED
+-  tabindex    %Number;       #IMPLIED
+-  accesskey   %Character;    #IMPLIED
+-  onfocus     %Script;       #IMPLIED
+-  onblur      %Script;       #IMPLIED
+   onselect    %Script;       #IMPLIED
+   onchange    %Script;       #IMPLIED
+   accept      %ContentTypes; #IMPLIED
+@@ -987,15 +976,12 @@
+ <!ELEMENT textarea (#PCDATA)>     <!-- multi-line text field -->
+ <!ATTLIST textarea
+   %attrs;
++  %focus;
+   name        CDATA          #IMPLIED
+   rows        %Number;       #REQUIRED
+   cols        %Number;       #REQUIRED
+   disabled    (disabled)     #IMPLIED
+   readonly    (readonly)     #IMPLIED
+-  tabindex    %Number;       #IMPLIED
+-  accesskey   %Character;    #IMPLIED
+-  onfocus     %Script;       #IMPLIED
+-  onblur      %Script;       #IMPLIED
+   onselect    %Script;       #IMPLIED
+   onchange    %Script;       #IMPLIED
+   >
+@@ -1025,14 +1011,11 @@
+ <!ELEMENT button %button.content;>  <!-- push button -->
+ <!ATTLIST button
+   %attrs;
++  %focus;
+   name        CDATA          #IMPLIED
+   value       CDATA          #IMPLIED
+   type        (button|submit|reset) "submit"
+   disabled    (disabled)     #IMPLIED
+-  tabindex    %Number;       #IMPLIED
+-  accesskey   %Character;    #IMPLIED
+-  onfocus     %Script;       #IMPLIED
+-  onblur      %Script;       #IMPLIED
+   >
+ 
+ <!-- single-line text input control (DEPRECATED) -->
+Index: xhtml1-strict.dtd
+===================================================================
+RCS file: /usr/local/cvs/debian/sgml-data/html/dtd/xml/1.0/xhtml1-strict.dtd,v
+retrieving revision 1.1
+diff -u -u -r1.1 xhtml1-strict.dtd
+--- xhtml1-strict.dtd	2001/03/11 22:26:32	1.1
++++ xhtml1-strict.dtd	2001/03/22 18:12:14
+@@ -85,18 +85,12 @@
+ <!ENTITY % Text "CDATA">
+     <!-- used for titles etc. -->
+ 
+-<!ENTITY % FrameTarget "NMTOKEN">
+-    <!-- render in this frame -->
+-
+ <!ENTITY % Length "CDATA">
+     <!-- nn for pixels or nn% for percentage length -->
+ 
+ <!ENTITY % MultiLength "CDATA">
+     <!-- pixel, percentage, or relative -->
+ 
+-<!ENTITY % MultiLengths "CDATA">
+-    <!-- comma-separated list of MultiLength -->
+-
+ <!ENTITY % Pixels "CDATA">
+     <!-- integer representing length in pixels -->
+ 
+@@ -492,6 +486,7 @@
+ <!ELEMENT a %a.content;>
+ <!ATTLIST a
+   %attrs;
++  %focus;
+   charset     %Charset;      #IMPLIED
+   type        %ContentType;  #IMPLIED
+   name        NMTOKEN        #IMPLIED
+@@ -499,12 +494,8 @@
+   hreflang    %LanguageCode; #IMPLIED
+   rel         %LinkTypes;    #IMPLIED
+   rev         %LinkTypes;    #IMPLIED
+-  accesskey   %Character;    #IMPLIED
+   shape       %Shape;        "rect"
+   coords      %Coords;       #IMPLIED
+-  tabindex    %Number;       #IMPLIED
+-  onfocus     %Script;       #IMPLIED
+-  onblur      %Script;       #IMPLIED
+   >
+ 
+ <!--===================== Inline Elements ================================-->
+@@ -671,15 +662,12 @@
+ <!ELEMENT area EMPTY>
+ <!ATTLIST area
+   %attrs;
++  %focus;
+   shape       %Shape;        "rect"
+   coords      %Coords;       #IMPLIED
+   href        %URI;          #IMPLIED
+   nohref      (nohref)       #IMPLIED
+   alt         %Text;         #REQUIRED
+-  tabindex    %Number;       #IMPLIED
+-  accesskey   %Character;    #IMPLIED
+-  onfocus     %Script;       #IMPLIED
+-  onblur      %Script;       #IMPLIED
+   >
+ 
+ <!--================ Forms ===============================================-->
+@@ -720,6 +708,7 @@
+ <!ELEMENT input EMPTY>     <!-- form control -->
+ <!ATTLIST input
+   %attrs;
++  %focus;
+   type        %InputType;    "text"
+   name        CDATA          #IMPLIED
+   value       CDATA          #IMPLIED
+@@ -731,10 +720,6 @@
+   src         %URI;          #IMPLIED
+   alt         CDATA          #IMPLIED
+   usemap      %URI;          #IMPLIED
+-  tabindex    %Number;       #IMPLIED
+-  accesskey   %Character;    #IMPLIED
+-  onfocus     %Script;       #IMPLIED
+-  onblur      %Script;       #IMPLIED
+   onselect    %Script;       #IMPLIED
+   onchange    %Script;       #IMPLIED
+   accept      %ContentTypes; #IMPLIED
+@@ -772,15 +757,12 @@
+ <!ELEMENT textarea (#PCDATA)>     <!-- multi-line text field -->
+ <!ATTLIST textarea
+   %attrs;
++  %focus;
+   name        CDATA          #IMPLIED
+   rows        %Number;       #REQUIRED
+   cols        %Number;       #REQUIRED
+   disabled    (disabled)     #IMPLIED
+   readonly    (readonly)     #IMPLIED
+-  tabindex    %Number;       #IMPLIED
+-  accesskey   %Character;    #IMPLIED
+-  onfocus     %Script;       #IMPLIED
+-  onblur      %Script;       #IMPLIED
+   onselect    %Script;       #IMPLIED
+   onchange    %Script;       #IMPLIED
+   >
+@@ -807,14 +789,11 @@
+ <!ELEMENT button %button.content;>  <!-- push button -->
+ <!ATTLIST button
+   %attrs;
++  %focus;
+   name        CDATA          #IMPLIED
+   value       CDATA          #IMPLIED
+   type        (button|submit|reset) "submit"
+   disabled    (disabled)     #IMPLIED
+-  tabindex    %Number;       #IMPLIED
+-  accesskey   %Character;    #IMPLIED
+-  onfocus     %Script;       #IMPLIED
+-  onblur      %Script;       #IMPLIED
+   >
+ 
+ <!--======================= Tables =======================================-->
+@@ -840,9 +819,6 @@
+ 
+ <!ENTITY % TRules "(none | groups | rows | cols | all)">
+   
+-<!-- horizontal placement of table relative to document -->
+-<!ENTITY % TAlign "(left|center|right)">
+-
+ <!-- horizontal alignment attributes for cell contents
+ 
+   char        alignment char, e.g. char=':'
+@@ -881,8 +857,6 @@
+   cellspacing %Length;       #IMPLIED
+   cellpadding %Length;       #IMPLIED
+   >
+-
+-<!ENTITY % CAlign "(top|bottom|left|right)">
+ 
+ <!ATTLIST caption
+   %attrs;
+Index: xhtml1-transitional.dtd
+===================================================================
+RCS file: /usr/local/cvs/debian/sgml-data/html/dtd/xml/1.0/xhtml1-transitional.dtd,v
+retrieving revision 1.1
+diff -u -u -r1.1 xhtml1-transitional.dtd
+--- xhtml1-transitional.dtd	2001/03/11 22:26:32	1.1
++++ xhtml1-transitional.dtd	2001/03/22 18:06:52
+@@ -94,9 +94,6 @@
+ <!ENTITY % MultiLength "CDATA">
+     <!-- pixel, percentage, or relative -->
+ 
+-<!ENTITY % MultiLengths "CDATA">
+-    <!-- comma-separated list of MultiLength -->
+-
+ <!ENTITY % Pixels "CDATA">
+     <!-- integer representing length in pixels -->
+ 
+@@ -225,8 +222,6 @@
+ <!ENTITY % block
+     "p | %heading; | div | %lists; | %blocktext; | isindex |fieldset | table">
+ 
+-<!ENTITY % Block "(%block; | form | %misc;)*">
+-
+ <!-- %Flow; mixes Block and Inline and is used for list items etc. -->
+ <!ENTITY % Flow "(#PCDATA | %block; | form | %inline; | %misc;)*">
+ 
+@@ -617,6 +612,7 @@
+ <!ELEMENT a %a.content;>
+ <!ATTLIST a
+   %attrs;
++  %focus;
+   charset     %Charset;      #IMPLIED
+   type        %ContentType;  #IMPLIED
+   name        NMTOKEN        #IMPLIED
+@@ -624,12 +620,8 @@
+   hreflang    %LanguageCode; #IMPLIED
+   rel         %LinkTypes;    #IMPLIED
+   rev         %LinkTypes;    #IMPLIED
+-  accesskey   %Character;    #IMPLIED
+   shape       %Shape;        "rect"
+   coords      %Coords;       #IMPLIED
+-  tabindex    %Number;       #IMPLIED
+-  onfocus     %Script;       #IMPLIED
+-  onblur      %Script;       #IMPLIED
+   target      %FrameTarget;  #IMPLIED
+   >
+ 
+@@ -852,15 +844,12 @@
+ <!ELEMENT area EMPTY>
+ <!ATTLIST area
+   %attrs;
++  %focus;
+   shape       %Shape;        "rect"
+   coords      %Coords;       #IMPLIED
+   href        %URI;          #IMPLIED
+   nohref      (nohref)       #IMPLIED
+   alt         %Text;         #REQUIRED
+-  tabindex    %Number;       #IMPLIED
+-  accesskey   %Character;    #IMPLIED
+-  onfocus     %Script;       #IMPLIED
+-  onblur      %Script;       #IMPLIED
+   target      %FrameTarget;  #IMPLIED
+   >
+ 
+@@ -905,6 +894,7 @@
+ <!ELEMENT input EMPTY>     <!-- form control -->
+ <!ATTLIST input
+   %attrs;
++  %focus;
+   type        %InputType;    "text"
+   name        CDATA          #IMPLIED
+   value       CDATA          #IMPLIED
+@@ -916,10 +906,6 @@
+   src         %URI;          #IMPLIED
+   alt         CDATA          #IMPLIED
+   usemap      %URI;          #IMPLIED
+-  tabindex    %Number;       #IMPLIED
+-  accesskey   %Character;    #IMPLIED
+-  onfocus     %Script;       #IMPLIED
+-  onblur      %Script;       #IMPLIED
+   onselect    %Script;       #IMPLIED
+   onchange    %Script;       #IMPLIED
+   accept      %ContentTypes; #IMPLIED
+@@ -958,15 +944,12 @@
+ <!ELEMENT textarea (#PCDATA)>     <!-- multi-line text field -->
+ <!ATTLIST textarea
+   %attrs;
++  %focus;
+   name        CDATA          #IMPLIED
+   rows        %Number;       #REQUIRED
+   cols        %Number;       #REQUIRED
+   disabled    (disabled)     #IMPLIED
+   readonly    (readonly)     #IMPLIED
+-  tabindex    %Number;       #IMPLIED
+-  accesskey   %Character;    #IMPLIED
+-  onfocus     %Script;       #IMPLIED
+-  onblur      %Script;       #IMPLIED
+   onselect    %Script;       #IMPLIED
+   onchange    %Script;       #IMPLIED
+   >
+@@ -996,14 +979,11 @@
+ <!ELEMENT button %button.content;>  <!-- push button -->
+ <!ATTLIST button
+   %attrs;
++  %focus;
+   name        CDATA          #IMPLIED
+   value       CDATA          #IMPLIED
+   type        (button|submit|reset) "submit"
+   disabled    (disabled)     #IMPLIED
+-  tabindex    %Number;       #IMPLIED
+-  accesskey   %Character;    #IMPLIED
+-  onfocus     %Script;       #IMPLIED
+-  onblur      %Script;       #IMPLIED
+   >
+ 
+ <!-- single-line text input control (DEPRECATED) -->
+=== Exit status: 1

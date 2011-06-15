@@ -1,0 +1,1285 @@
+auctex (11.86-3) unstable; urgency=low
+
+  * Port for Nexenta 4 
+
+ -- Peter Zaikin <peter.zaikin@nexenta.com>  Sun, 03 Apr 2011 12:34:28 +0100
+
+auctex (11.86-2) unstable; urgency=low
+
+  * [3b1fd8d] Update copyright year for man pages and debian/variables.
+  * [797e2b8] Change 'Recommends: xpdf-reader' to 'Recommends: xpdf'.
+  * [7ed99ae] Add patch: Fix TeX engine alist builtin defvar; thanks to
+    Sanjoy Mahajan.  (Closes: #597006)
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Fri, 24 Sep 2010 23:45:55 +0200
+
+auctex (11.86-1) unstable; urgency=low
+
+  * [c9e48f5] Switch to 3.0 (quilt) source format.
+  * [43613e3] Add patch: Rationalize HTML documentation targets in
+    doc/Makefile.in.
+  * [6782f7a] Call auctex/Makefile lisp target before calling install-
+    lisp.
+  * [29d4857] Update copyright year.
+  * [6ad7010] Imported Upstream version 11.86; thanks to Rogério Brito.
+    (Closes: #577151)
+  * [cca6ed8] Update patch: Rationalize HTML documentation targets in
+    doc/Makefile.in.
+  * [19de369] Add a fake maintainer-clean target to MAKEFILEHACKS.
+  * [a9c13b5] Add Debian customized 11.86 release notes to
+    debian/auctex/NEWS.
+  * [d7dcf99] Add patch: Change pdf viewer default from Evince to xpdf.
+  * [20836ab] Upgrade Standards-Version to 3.9.1.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Fri, 27 Aug 2010 17:06:08 +0200
+
+auctex (11.85-1) unstable; urgency=low
+
+  * New upstream release.  (Closes: #482956)
+  * control (Standards-Version): 3.8.3
+  * control (auctex/Depends): Add "dpkg (>= 1.15.4) | install-info" as per
+    3.8.3 standards.
+  * COPYRIGHT, copyright.in: Update (GPL v3).
+  * variables (INFOSEC, AUCTEX_INFOMENU, AUCTEX_INFODESC,
+    PREVIEW_INFOMENU, PREVIEW_INFODESC, DINSTALL, DREMOVE, IINSTALL,
+    IREMOVE): Remove.
+  * auctex/postinst.in, auctex/prerm.in: Do not call "install-info"
+    anymore.
+  * auctex/postinst.in, auctex/prerm.in, preview-latex-style/postinst.in,
+    preview-latex-style/prerm.in: Do not call "install-docs" anymore.
+  * auctex/NEWS: Rename from "NEWS.in"; update to Debian changelog style.
+  * rules.in (DFILES): Remove "NEWS".
+  * rules.in (binary-indep-auctex): Add "docdir" setting.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Tue, 22 Sep 2009 22:29:20 +0200
+
+auctex (11.83-8) unstable; urgency=medium
+
+  * COPYRIGHT, copyright.in, variables: Update copyright.
+  * control (Homepage): New field.
+  * control (Standards-Version): Updated to 3.8.2.
+  * control (auctex/Description): Reflow text.
+  * control (preview-latex-style/Description): Fix typo (unpublished
+    change obsoleted by 11.83-7.1 NMU); thanks to Rafael Laboissiere.
+    (Closes: #440397)
+  * control (preview-latex-style/Homepage): New field.
+  * po/cs.po, po/de.po, po/es.po, po/eu.po, po/fi.po, po/fr.po, po/gl.po,
+    po/it.po, po/ja.po, po/nl.po, po/pt.po, po/pt_BR.po, po/ru.po,
+    po/sv.po, po/vi.po: Normalized.
+  * po/it.po: Updated.
+  * auctex/templates.in: Reflow text.  Keep debian-l10n-english team
+    review comment from flowing to "auctex/templates".
+
+  * control, rules.in (binary-indep-auctex), auctex/bug.script.in (FLAVORS),
+    auctex/conffiles.in, auctex/install.in, auctex/remove.in,
+    auctex/update-auctex-elisp.in (FLAVORS),
+    auctex/update-auctex-install.in (FLAVORS): Add Emacs 23 support.
+    (Closes: #539749, #540093)
+
+  * config.in: No more need to register "doauto/logfile" here.
+  * install.in (do_auto): Do not remove log files here.  New log files
+    names.
+  * remove.in (undo_auto): Remove log files here.  New log files names.
+    (Closes: #508348)
+  * update-auctex-install: New log files names.
+  * variables (TMPMASK): Remove it.
+  * variables (LOGFILE): New variable.
+
+  * install.in (do_install): For each flavor, for every byte compiled
+    file, install a symlink to the corresponding Elisp source from the
+    installation directory to the source directories, for the sole purpose
+    of allowing `find-function-search-for-symbol' (invoked by clicking on
+    the help-function-def-button provided by a function definition help
+    string) to find it.  (Closes: #443930)
+  * remove.in (undo_install): Remove the symlinks to the Elisp sources
+    installed by "install.in (do_install)".
+
+  * rules.in (binary-arch): Strip "$(checkdir)" and "$(checkroot)".
+    [Lintian]
+  * auctex/lintian.in: Fix "debconf-is-not-a-registry" overrides paths.
+    Remove no more needed
+    "maintainer-script-does-not-check-for-existence-of-installdocs"
+    overrides.
+  * auctex/update-auctex-install.in, auctex/lintian.in: Needs no more
+    Debconf interaction.
+  * preview-latex-style/lintian.in: Remove no more needed
+    "maintainer-script-does-not-check-for-existence-of-installdocs"
+    lintian overrides.
+
+  * config.in: Implement Debconf backup capability.
+  * rules.in (debconf-test, debconf-ask-for-translations): New phonies.
+  * rules.in (build-package): Call lintian after building the package.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Tue, 25 Aug 2009 17:09:49 +0200
+
+auctex (11.83-7.3) unstable; urgency=high
+
+  * Non-maintainer upload; high priority since it fixes a security flaw.
+  * auctex/config.in (LOGFILE): Create installation/update log file in
+    "/var/log" rather than "/tmp". (Closes: #506961)
+  * control (Build-Depends-Indep, auctex/Recommends): Change "gs|gs-gpl"
+    to "ghostscript".
+
+ -- Ben Hutchings <ben@decadent.org.uk>  Sun, 07 Dec 2008 14:54:46 +0000
+
+auctex (11.83-7.2) unstable; urgency=low
+
+  * Non-maintainer upload to fix pending l10n issues.
+  * po/sv.po: New file; thanks to Martin Bagge.  (Closes: #487370)
+  * po/ja.po: Updated; thanks to Hideki Yamane.  (Closes: #494055)
+
+ -- Christian Perrier <bubulle@debian.org>  Mon, 08 Sep 2008 07:04:49 +0200
+
+auctex (11.83-7.1) unstable; urgency=low
+
+  * Non-maintainer upload to fix pending l10n issues.
+  * control (Build-Depends-Indep): Add "eperl", required by the "clean"
+    target.
+  * control (Build-Depends-Indep): Change "texi2html >= 1.76-1" to
+    "texi2html >=1.76".  [Lintian]
+  * control (auctex/Description, preview-latex-style/Description),
+    auctex/templates.in: Reviewed by the debian-l10n-english team as part
+    of the Smith review project.  (Closes: #452493)
+  * po/cs.po: Updated; thanks to Miroslav Kure.  (Closes: #455237)
+  * po/de.po: Updated; thanks to Helge Kreutzmann.  (Closes: #454509)
+  * po/es.po: Updated; thanks to Steve Lord Flaubert.  (Closes: #473577)
+  * po/eu.po: New file; thanks to Piarres Beobide.  (Closes: #453281)
+  * po/fi.po: New file; thanks to Esko Arajärvi.  (Closes: #453642)
+  * po/fr.po: Updated; thanks to Steve Petruzzello.  (Closes: #456160)
+  * po/gl.po: Updated; thanks to Jacobo Tarrio.  (Closes: #453325)
+  * po/pt.po: Updated; thanks to Ricardo Silva.  (Closes: #456359)
+  * po/ru.po: Updated; thanks to Yuri Kozlov.  (Closes: #455963)
+  * po/vi.po: New file; thanks to Clytie Siddall.  (Closes: #453379)
+  * variables (MENUSEC): Change "Apps/Editors" to "Editors".  [Lintian]
+
+ -- Christian Perrier <bubulle@debian.org>  Mon, 31 Mar 2008 17:56:23 +0200
+
+auctex (11.83-7) unstable; urgency=medium
+
+  * copyright.in, COPYRIGHT, variables: Update copyright.
+  * config.in, install.in, postinst.in, postrm.in, preinst.in, prerm.in,
+    remove.in: Linting.
+  * control (Build-Depends-Indep, Depends), install.in, remove.in,
+    rules.in, auctex/bug.script.in (FLAVORS), auctex/conffiles.in,
+    auctex/update-auctex-elisp.in, auctex/update-auctex-install.in: Added
+    "emacs22".  (Closes: #425148, #426339, #432206, #432215)
+  * postinst.in, postrm.in, prerm.in: Check script arguments before calling
+    actions.
+  * variables (DINSTALL, DREMOVE): Check for "install-docs" in "${PATH}"
+    rather than by absolute location.
+
+  * control (Build-Depends-Indep):  Dropped "tetex-bin".
+    (auctex/Recommends): Dropped "tetex-base".
+    (preview-latex-style/Depends): Dropped "tetex-bin".
+    (Build-Depends-Indep): Replaced "texlive-base" (which should have been
+    "texlive-base-bin") by "texlive-latex-base", which depends on
+    "texlive-base-bin" through "texlive-base" because LaTeX is needed by
+    "preview" at build time to build its documentation, and checked for by
+    "preview/configure".
+    (auctex/Recommends): Replaced "xpdf" by "xpdf-reader", since it is the
+    reader which is intended to be recommended.
+    (auctex/Depends, auctex/Recommends): Move "gs-gpl | gs" from "Depends"
+    to "Recommends", as it is not necessary at installation time and it is
+    only needed by "preview".
+    (preview-latex-style/Recommends): Added missing "doc-base"; note that
+    since "auctex" depends on "preview-latex-style"), "doc-base" could be
+    safely removed from "auctex/Recommends"; however, there's no harm
+    duplicating it there, for the sake of clearness.
+    (preview-latex-style/Depends): Replaced "texlive-base" by
+    "tex-common", following Debian TeX policy implementation to check if
+    "mktexlsr" has to be run.
+    (Build-Depends-Indep): Removed "ed", which is no more necessary.
+    (auctex/Depends): Removed "debianutils (>= 1.7)", which is no more
+    necessary (see #198778).
+  * auctex/install.in (do_install): Pass "LATEX=/bin/true",
+    "PDFLATEX=/bin/true", and "TEX=/bin/true" to configure, in order to
+    skip the associated program-in-path test.  This avoids an unnecessary
+    dependency on "texlive-latex-base".  (Closes: #408227, #428908)
+
+  * install.in (do_install): Remove an extra space character in the
+    'setting-up' message.
+
+  * po/pt_BR.po: Updated; thanks to André Luís Lopes.  (Closes: #421529)
+  * po/ru.po: New file; thanks to Yuri Kozlov.  (Closes: #434238)
+
+  * auctex/docbase.auctex.in, auctex/docbase.preview.in: Remove
+    unsupported format "texinfo".
+
+  * auctex/lintian.in, preview-latex-style/lintian.in: We do check for
+    "installdocs" existence.
+  * rules.in (DFILES, binary-indep-pls): Add "lintian" overrides for
+    "preview-latex-style".
+
+  * rules.in (clean): Test for "Makefile" existence before calling "make
+    distclean".
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Wed, 08 Aug 2007 13:10:11 +0200
+
+auctex (11.83-6) unstable; urgency=medium
+
+  * Rebuild with clean source.
+  * rules.in (build-package): Added dependency on the "clean" target.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Wed, 14 Mar 2007 00:43:56 +0100
+
+auctex (11.83-5) unstable; urgency=medium
+
+  * po/de.po: Updated; thanks to Helge Kreutzmann and Frank Küster
+    (Closes: #406831, #411855).
+  * po/gl.po: New file; thanks to Jacobo Tarrio.  (Closes: #411836)
+
+  * "debian/auctex/templates" is an auto-generated object, from
+    "debian/auctex/templates.in".  Via the following changes, it has been
+    added to the sources, to ease the life of translators running
+    "debconf-updatepo"; thanks to Thomas Huriaux and Frank Küster.
+    (Closes: #407215)
+  * rules.in (DFILES): Removed "debian/<:=${PACKAGE}:>/templates": it
+    should not be deleted at clean time.
+    (build): Added dependency on "debian/po/templates.pot".
+    (clean): Added dependency on "debian/po/templates.pot".
+  * auctex/templates.in: Add an ePerl auto-generated arch-tag to
+    "auctex/templates".
+
+  * auctex/bug.script.in: Redirect Emacs stdin from "dev/null"; thanks to
+    Andrea Mennucci.  (Closes: #389249)
+
+  * auctex/install.in (do_install): State the log file location; thanks to
+    Romain Francoise.  (See: #408227)
+
+  * control (Recommends): Added "xpdf | pdf-viewer"; thanks to Andrea
+    Mennucci.  (See: #409795)
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Fri,  9 Mar 2007 11:28:24 +0100
+
+auctex (11.83-4) unstable; urgency=medium
+
+  * ../latex.el (TeX-latex-mode): Backport of diff between version 5.418
+    and 5.419; thanks to Luca Capello.  (Closes: #401119)
+
+  * rules.in (AUCTEXSRCS): Filter out "auctex.el".
+    (PREVIEWSRCS): Filter out "preview/auto.el".
+    Thanks to James R. Van Zandt, Andrea Mennucci, and Frank Küster.
+    (Closes: #352576)
+
+  * ../tex.el (Info-find-file, TeX-doc-backend-alist, TeX-doc): Backport
+    provided by Ralf Angeli; thanks to Ralf Stubner, Frank Küster, and
+    Ralf Angeli.  (Closes: #375264)
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Sat,  9 Dec 2006 23:49:11 +0100
+
+auctex (11.83-3) unstable; urgency=medium
+
+  * control (auctex/Build-Depends-Indep, auctex/Recommends,
+    preview-latex-style/Depends): Updated texlive alternative dependencies
+    according to <http://www.tug.org/texlive/debian.html> suggestions:
+    "tetex-base | texlive-latex-recommended" and "tetex-bin |
+    texlive-base".
+
+  * po/pt.po: New file; thanks to Ricardo Silva. (Closes: #380674)
+  * po/ja.po: New file; thanks to Shimono Atsushi.  (Closes: #384996)
+  * po/nl.po: New file; thanks to Vincent Zweije. (Closes: #392216)
+  * po/cs.po: New file; thanks to Miroslav Kure.  (Closes: #396052)
+  * po/es.po: Updated file; thanks to Steve Lord Flaubert.  (Closes: #402025)
+
+  * auctex/config.in: Do not display the "auctex/defaultchanged" note
+    anymore.  (Closes: #388825)
+  * auctex/templates.in (auctex/defaultchanged): Note deleted.  (See:
+    #388825)
+
+  * rules.in (DFILES): Added "debian/auctex/templates", since it is
+    auto-generated.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Fri,  8 Dec 2006 17:35:02 +0100
+
+auctex (11.83-2.1) unstable; urgency=high
+
+  * NMU to fix an RC bug.
+  * control (auctex/Provides): Add "preview-latex".  The package actually
+    does this, and declaring it will allow the RC-buggy preview-latex
+    package to be removed from etch.  (Closes: #395294)
+
+ -- Frank Küster <frank@debian.org>  Thu, 26 Oct 2006 09:30:43 +0200
+
+auctex (11.83-2) unstable; urgency=low
+
+  * {auctex, preview-latex-style}/{postinst.in, postrm.in, prerm.in}:
+    Fixed typo; exit 1 if called with unknown argument; thanks to Justin
+    Pryzby.
+  * {auctex, preview-latex-style}/prerm.in (failed-upgrade): Was
+    backwards, fixed; thanks to Justin Pryzby.  (Closes: #372146)
+
+  * auctex/install.in (do_install): Pass "GS=gs" to configure, to skip the
+    associated test.  This is important when a Ghostscript providing
+    package has not already been configured ("/usr/bin/gs" is managed
+    through alternatives); thanks do David Kastrup.  (Closes: #372566)
+
+  * po/fr.po: New file; thanks to Steve Petruzzello.  (Closes: #374751)
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Wed, 21 Jun 2006 11:39:43 +0200
+
+auctex (11.83-1) unstable; urgency=low
+
+  * New upstream release.  (Closes: #363643, #366255)
+
+  * control (Standards-Version): Updated to 3.7.2.
+  * control (auctex/Description, preview-latex-style/Description): Added
+    upstream URL.
+
+  * control (Build-Depends-Indep): Add alternative "texlive-base".
+  * control (Recommends): Add alternative "texlive-base".
+
+  * rules.in (fixperms): New variable.  The command used to canonicalize
+    the whole tree permissions.
+    (clean): Use "$(fixperms)" to canonicalize permissions after cleaning.
+
+  * rules.in (%): Cater for ePerl "*.in" sources in subdirectories of
+    "debian".
+
+  * rules.in (checkdir, checkroot): Should not be implemented by means of
+    phony targets, otherwise targets which depend on them will never be
+    up-to-date.
+    (build, clean, binary-indep, binary-arch): Change accordingly.
+
+  * auctex/docbase.auctex.in (Abstract): Fixed typo.
+  
+  * auctex/templates.in: Renamed from "auctex/template".
+    (auctex/doauto, auctex/doautofg): Improved wording.
+  * po/de.po, po/es.po, po/it.po, po/pt_BR.po, po/templates.po: Updated
+    accordingly.
+  * rules.in (po-debconf): Refactored.
+    (clean): Updated.
+
+  * update-auctex-elisp.8.in: Improved wording.  Updated copyright.
+  * update-auctex-install.8.in: Updated copyright.
+
+  * debian/po: Moved from "debian/auctex/po"; thanks to Denis Barbier.
+    (Closes: #353146)
+  * debian/po/POTFILES.in: Updated accordingly.
+
+  * auctex/lintian.in: New file.
+  * rules.in (binary-indep-auctex): Install it.
+
+  * variables ($texmfdoc): New variable.
+  * rules.in (binary-indep-pls), preview-latex-style/docbase.in (DVI): Use
+    it.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Thu,  8 Jun 2006 13:47:12 +0200
+
+auctex (11.82-1) unstable; urgency=high
+
+  * New upstream release.
+
+  * High urgency upload: fixes a serious bug.
+  * control (Depends): Add "gs-gpl | gs"; thanks to Frank Küster.
+  * install.in (do_install): Also touch "preview/configure.ac"; thanks to
+    Frank Küster.  (Closes: #349330, #349471, #349620)
+  
+  * control (Build-Depends-Indep): Change Ghostscript dependence to
+    "gs-gpl | gs".
+  
+  * control (Depends): Add alternative "texlive-latex-base"; thanks to
+    Norbert Preining.  (Closes: #349662)
+
+  * rules.in (%): Declare ${DEBIAN_DIR}.
+  * variables: Use it, to include "COPYRIGHT" in ePerl auto-generated files
+    located in a "debian/" subdirectory.
+
+  * install.in (do_install): Remove unneeded cleanup in old
+    ".../site-lisp/preview/" directory.
+    (do_clean_old_cruft): New function.  Clean up ".../site-lisp/preview/"
+    if possible.
+  * remove.in (undo_install): Remove obsolete clean up code for
+    ".../site-lisp/preview/".
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Sat,  4 Feb 2006 01:49:01 +0100
+
+auctex (11.81-2) unstable; urgency=low
+
+  * First public release for the 11.81 series.
+  * control (Uploaders): Added "OHURA Makoto <ohura@debian.org>".
+  * update-auctex-elisp.in: Use the proper combination of "find" and "rm";
+    thanks to Norbert Preining.  (Closes: #347472)
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Sat, 21 Jan 2006 12:27:13 +0100
+
+auctex (11.81-1) UNRELEASED; urgency=low
+
+  * New upstream release.  (Closes: #277885, #318114)
+  * This debian version supersedes and replaces the preview-latex package
+    (which is no longer a separate package) and provides the binary
+    package preview-latex-style (which remains a separate package).  This
+    is done in agreement with OHURA Makoto, preview-latex maintainers,
+    which becomes a co-maintainer for auctex.  (Closes: #300933)
+  * General overhaul of the build and installation procedure.
+  * control (Standards-Version): Updated to 3.6.2.
+    (Build-Depends-Indep): Added "gs | gs-aladdin", "po-debconf", and
+    "tetex-bin".  Declared "texi2html (>=1.76-1)", thanks to Frank Küster.
+    (auctex/Depends): Added "preview-latex-style".
+    (auctex/Suggests): Added "dvipng".
+    (auctex/Conflicts, auctex/Replaces): This auctex version completely
+    replaces the old package "preview-latex".
+    (auctex/Description): Updated.
+    (preview-latex-style): New binary section.  This binary package depends
+    on "tetex-bin", because it uses "mktexlsr" in its maintainer scripts.
+    Inherits the "Conflicts" field from previous versions with source
+    package "preview-latex".
+    (Depends): Modified the dependency on "debconf" to "debconf |
+    debconf-2.0" in order to allow the transition to cdebconf.
+    (Closes: #331751)
+  * rules.in: Heavily modified; it now builds two binary packages: "auctex"
+    and "preview-latex-style".
+    (binary-indep, binary-indep-auctex, binary-indep-pls): Split the
+    content of "binary-indep" between "binary-indep-auctex" and
+    "binary-indep-pls", one for each of the two binary packages.
+  * variables (PLSPKG): New variable, the name of "preview-latex-style",
+    the second binary package.
+    (DOCS): Updated.
+    (AUCTEX_INFOMENU, AUCTEX_INFODESC, PREVIEW_INFOMENU,
+    PREVIEW_INFODESC): New variables, split from INFOMENU and INFODESC to
+    cope with two distinct Info manuals, for AUCTeX and for preview-latex.
+    (IINSTALL): New function, replaces the variable ${IINSTALL}.
+  * NEWS.in: New file, suggested by Frank Küster.  Note that AUCTeX gets
+    now auto-loaded by default.  Note that preview-latex is now included
+    into AUCTeX.
+  * conffiles.in: Add the lisp startup files for emacs-snapshot and
+    emacs21.
+  * config.in: Question about default loading ("alreadydefault" and
+    "default") removed.  Note "defaultchanged" added.
+  * docbase.auctex.in: Updated.
+  * docbase.preview.in: New file.
+  * install.in (debconf): Question "default" query removed.
+    (do_install): Updated to cater for the new 11.81 upstream release.
+  * lisp-startup.el.in: New file.
+  * remove.in (undo_install): Updated to cater for the new 11.81 upstream
+    release.
+  * postinst.in (DINSTALL, IINSTALL): Also register preview-latex.
+  * prerm.in (DREMOVE, DINSTALL, IREMOVE, IINSTALL): Also (de)register
+    preview-latex.
+  * templates: Renamed from template.in.  Adapted to po-debconf.
+    (default, alreadydefault): Removed.
+    (defaultchanged): New.  A note displayed to users upgrading from
+    versions older than 11.81-1 which states that AUCTeX gets now
+    auto-loaded by default.
+  * po: New subdirectory.  Translations.
+  * po/POTFILES.in: New file.  Automatically managed by po-debconf.
+  * po/de.po, po/es.po, po/it.po, po/pt_BR.po: New files.  Localized
+    translations for templates, moved from templates.
+  * po/templates.pot: New file.  Automatically managed by po-debconf.
+  * rules.in (DFILES, updatepo, po/updatepo, templates.merged,
+    binary-indep): Cater for po-debconf.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Fri, 30 Sep 2005 10:15:29 +0200
+
+auctex (11.55-3) unstable; urgency=low
+
+  * General overhaul of the debian directory.
+  * preinst: Deleted.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Sun, 11 Sep 2005 16:41:07 +0200
+
+auctex (11.55-2) unstable; urgency=low
+
+  * bug.presubj, bug.script: New files; thanks to Frank Küster.
+    (Closes: #293139)
+  * install (do_install): Add a directory separator at the end of
+    "--with-auto-dir"; thanks to Reuben Thomas.  (Closes: #302916)
+  * rules (binary-indep): Handle "bug.presubj" and "bug.script".
+  * rules (binary-indep): Remove "tex-site.el", which is not needed;
+    thanks to Reuben Thomas.  (Closes: #302915)
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Sat, 23 Apr 2005 19:47:40 +0200
+
+auctex (11.55-1) unstable; urgency=medium
+
+  * New upstream release.
+  * ../latex.el: Revert to upstream.
+  * ../tex-buf.el: Revert to upstream.
+  * ../tex.el: Revert to upstream.
+  * rules (build, binary-indep): Reflect upstream change in html build
+    directory.
+  * rules (binary-indep): Add "RELEASE" to "/usr/share/doc/auctex/".
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Sat,  5 Feb 2005 03:35:55 +0100
+
+auctex (11.54-5) unstable; urgency=high
+
+  * Urgency high: fixes an important bug.  (See: #292886)
+  * ../latex.el: Apply a patch from Ralf Angeli, thanks to Daniel Burrows.
+    (Closes: #292886)
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Tue,  1 Feb 2005 00:29:34 +0100
+
+auctex (11.54-4) unstable; urgency=medium
+
+  * control (Conflicts): Set emacspeak version to (<= 17.0-1).
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Fri, 28 Jan 2005 11:41:55 +0100
+
+auctex (11.54-3) unstable; urgency=high
+
+  * Urgency high: fixes an important bug.  (See: #292508)
+  * ../tex.el: Apply a patch from Ralf Angeli, thanks to Frank Küster.
+    (Closes: #292508)
+  * control (Conflicts): Add emacspeak (<= 21), thanks to Frank Küster.
+    (See: #291970)
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Thu, 27 Jan 2005 16:34:12 +0100
+
+auctex (11.54-2) unstable; urgency=low
+
+  * ../tex-buf.el: Apply a patch from Ralf Angeli.  (Closes: #258686)
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Tue, 18 Jan 2005 14:24:53 +0100
+
+auctex (11.54-1) unstable; urgency=medium
+
+  * New upstream release.  (Closes: #290263)
+  * Medium urgency: the potential impact of bug #287461 is unknown, so
+    better fix it soon; should go in sarge.
+  * install (do_install): Use "--disable-build-dir-test" instead of
+    "DISABLE_VALID_BUILD_DIR=YES".
+  * install (do_install): Strip extra "/" from configure command line;
+    thanks to Marcus Frings and others.  (Closes: #287461)
+  * rules (binary-indep): Change the "index.html" link to "auctex.html".
+  * docbase, prerm, postinst, rules (build): AUCTeX info manual is now called
+    "auctex.info".
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Sat, 15 Jan 2005 13:13:56 +0100
+
+auctex (11.53+CVS.2004.09.09.1-1) UNRELEASED; urgency=low
+
+  * New CVS upstream source.
+  * install (do_install): Add "DISABLE_VALID_BUILD_DIR=YES" to "configure"
+    call.  No more add ".nosearch" to the ${FLAVOR} "site-lisp" directory.
+  * remove (undo_install): No need to remove ".nosearch" from the
+    ${FLAVOR} "site-lisp" directory anymore.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Thu,  9 Sep 2004 16:13:22 +0200
+
+auctex (11.53-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Thu,  9 Sep 2004 10:07:40 +0200
+
+auctex (11.52-3) unstable; urgency=high
+
+  * Important bug fix release.  (Closes: #268156)
+  * ../configure: Completely remove the test for build directory validity.
+    (Unharmful hack on Debian.)
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Wed,  8 Sep 2004 09:52:18 +0200
+
+auctex (11.52-2) UNRELEASED; urgency=high
+
+  * ../configure: Add "-no-site-file" to the test for build directory
+    validity.
+  * install (do_install): Add ".nosearch" to the ${FLAVOR} "site-lisp"
+    directory.
+  * remove (undo_install): Also remove uncompressed log and ".nosearch".
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Fri, 27 Aug 2004 16:45:41 +0200
+
+auctex (11.52-1) unstable; urgency=high
+
+  * New upstream release, urgency set to high due to release date
+    approaching and very high number of closed bugs.
+    (Closes: #244336, #244342, #245388, #246908, #257496, #265598)
+  * config (configure, reconfigure): Do not display egrep error messages;
+    thanks to Frank Küster.  (Closes: #258304)
+  * control (Build-Depends-Indep): Added "emacs21 | emacs-snapshot";
+    thanks to Frank Küster.
+  * rules (build, binary-indep): Rename "auc-tex_toc.html" to
+    "auctex_toc.html".
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Thu, 26 Aug 2004 18:14:48 +0200
+
+auctex (11.14+CVS.2004.06.16.1-1) UNRELEASED; urgency=low
+
+  * New CVS upstream source.
+  * variables: Added "FAQ".
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Mon, 14 Jun 2004 10:03:59 +0200
+
+auctex (11.14+CVS.2004.05.25.1-1) UNRELEASED; urgency=low
+
+  * New CVS upstream source.
+  * rules: Add a "dir" file before calling "install-info", caters for
+    older version of that program.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Tue, 25 May 2004 11:28:53 +0200
+
+auctex (11.14+CVS.2004.05.19.1-1) UNRELEASED; urgency=low
+
+  * New CVS upstream source.
+  * README, cron, install, rules, templates: Change "${UPDATE}" to
+    "${UPDATE_ELISP}".
+  * README (Online Documentation): Add "update-auctex-install(8)".
+  * rules: Add targets for "update-auctex-install" and
+    "update-auctex-install(8)".
+  * update-auctex-elisp.8: Spell fixes.
+  * update-auctex-install: New script.
+  * update-auctex-install.8: New man page.
+  * variables: Added "${UPDATE_INSTALL}".
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Wed, 19 May 2004 11:35:40 +0200
+
+auctex (11.14+CVS.2004.05.18.1-1) UNRELEASED; urgency=low
+
+  * New CVS upstream source.
+  * control (Standards-Version): Updated to 3.6.1.
+    (Depends): Added emacs-snapshot as a supported Emacs flavor.
+  * install: Added emacs-snapshot as a supported Emacs flavor.
+  * remove: Added emacs-snapshot as a supported Emacs flavor.
+  * update-auctex-elisp: Added emacs-snapshot as a supported Emacs flavor.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Tue, 18 May 2004 16:15:11 +0200
+
+auctex (11.14+CVS.2004.05.14.1-1) UNRELEASED; urgency=low
+
+  * New CVS upstream source.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Fri, 14 May 2004 21:30:25 +0200
+
+auctex (11.14+CVS.2004.05.13.1-1) UNRELEASED; urgency=low
+  
+  * New CVS upstream source.
+  * ../latex.el: Upstream updated, reverted.
+  * ../doc/Makefile: Reverted to upstream.
+  * ../doc/auc-tex.texi: Reverted to upstream.
+  * Changed AUC.TeX to AUCTeX in all relevant files.
+  * README (Contributed Files): Removed "hilit-LaTeX.el", section improved.
+  * control (Description): Updated.
+    (Depends): Added make.
+  * copyright: Sentence on Debian GNU configuration removed.
+  * docbase (Title,Author,Abstract): Updated.
+  * install (do_byte_compile): Renamed to "do_install".
+    (do_install): Rewritten from scratch.
+  * postinst (conf_autoload): Code moved to "install (do_install)".
+  * prerm (deconf_autoload): Code moved to "remove (undo_install)".
+  * remove (undo_byte_compile): Renamed to "undo_install".
+  * rules (build, binary-indep): Heavily revised.
+  * update-auctex-elisp: Use the right, ${FLAVOR} dependent,
+    "tex-site.el".
+  * variables (DOCSRC,SOURCES,MULESRC,XSRC,STYLES): Removed.
+    (INFODESC): This sentence shouldn't end with a full stop.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Thu, 13 May 2004 16:50:32 +0200
+
+auctex (11.14-3) unstable; urgency=low
+
+  * ../doc/Makefile: Code from patch-info moved here.
+  * ../doc/auc-tex.texi: Code from patch-info moved here.
+  * ../latex.el: Code from patch-multicolumn moved here.
+  * ../tex.el: Code from patch-custom moved here.
+    (TeX-macro-global): Changed "bibtex" in "bibtex/bst"; thanks to Frank
+    Küster.  (Reread: #125715)
+  * ../tex-site.el: Code from patch-custom moved here.
+  * install: Open ${_db_logfile} in append mode instead of truncating it
+    with every new flavor run; thanks to Frank Küster.
+  * patch-custom: Removed.
+  * patch-info: Removed.
+  * patch-multicolumn: Removed.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Thu, 18 Mar 2004 15:08:15 +0100
+
+auctex (11.14-2) unstable; urgency=high
+
+  * COPYRIGHT: Updated.
+  * config: Set ${LOGFILE} for the doautofg template; thanks to Yannick
+    Roehlly.  (Closes: #238415)
+  * copyright: Updated.
+  * install: emacs20 removed.
+  * patch-custom: Fixed.  (Closes: #238413)
+  * remove: emacs20 removed.
+  * update-auctex-elisp (${FLAVORS}): emacs20 removed.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Wed, 17 Mar 2004 11:13:55 +0100
+
+auctex (11.14-1) unstable; urgency=high
+
+  * New upstream version.  (Closes: #203632)
+  * ../tex-site.el: Debian customization code moved into patch-custom.
+    (TeX-Lisp-lisp-directory): defvar changed to defcustom.
+    Add source directories location on Debian to load-path; thanks to Matt
+    Swift.  (Closes: #214576)
+  * control (Depends): emacs20 removed.  (Closes: #232744)
+    (Suggests): catdvi added.
+  * patch-custom: New file with customization code formerly held in
+    ../tex-site.el, patch applied to ../tex.el and ../tex-site.el.
+    (Closes: #214594)
+  * patch-info: Updated.
+  * patch-multicolumn: New file, patch applied to ../latex.el; thanks to
+    Julian Gilbey.  (Closes: #234110)
+  * rules: Use patch-custom and patch-multicolumn.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Tue, 16 Mar 2004 14:20:13 +0100
+
+auctex (11.13-2) unstable; urgency=high
+
+  * patch-info: New file.
+  * rules: Use it.  (Closes: #204034)
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Wed, 20 Aug 2003 16:09:08 +0200
+
+auctex (11.13-1) unstable; urgency=medium
+
+  * New upstream version.  (Closes: #177270, #199193)
+  * COPYRIGHT: Updated.
+  * README (RefTeX): New section.
+    (Contributed Files): Removed font-latex.el; added tex-fptex.el.
+  * control (Standard-Version): Upgraded to 3.5.10.
+  * copyright: Updated.
+  * variables ($STYLES): Auto-generated; suggested by Frank Küster.
+    (Closes: #177902)
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Sun, 29 Jun 2003 17:28:10 +0200
+
+auctex (11.11-3) unstable; urgency=medium
+
+  * control (Build-Depends-Indep): Added ed.  (Closes: #187648)
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Sun,  6 Apr 2003 11:49:24 +0200
+
+auctex (11.11-2) unstable; urgency=low
+
+  * control (Standards-Version): Upgraded to 3.5.7.
+  * postinst (do_link): Removed.
+  * prerm (undo_link): Removed.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Fri, 27 Sep 2002 15:36:55 +0200
+
+auctex (11.11-1) unstable; urgency=medium
+
+  * New upstream CVS version.
+    (Closes: #81522, #118305, #118307, #122259, #125849)
+  * Not really a bug. (Closes: #150718)
+  * ../tex-site.el: A lot of changes.  (Closes: #118400)
+  * copyright: Updated.
+  * templates: Added Brazilian Portuguese; thanks to Paulo R. Ormenese.
+    (Closes: #144630)
+    (doauto, doautofg): Added forgotten Choices-de strings.
+  * variables (STYLES): Added "style/prosper.el".
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Sun, 22 Sep 2002 11:20:38 +0200
+
+auctex (11.06-1) unstable; urgency=low
+
+  * New upstream CVS version.  (Closes: #115660, #109114)
+  * ../tex-site.el (TeX-macro-global): Removed old ".../lib/texmf/" items;
+    added "/usr/local/share/texmf/bibtex/" and
+    "/usr/share/texmf/bibtex/"; thanks to Matt Hodges.  (Closes: #125715)
+  * COPYRIGHT: Updated.
+  * README (Font-LaTeX): Documented new default.  (Closes: #115694)
+  * config: Removed fldefault and flalreadydefault, see
+    README (Font-LaTeX).  (Closes: #115694)
+  * control (Depends): Removed no longer existing mule2.
+    (Standards-Version): Updated to 3.5.6.
+    Build-Depends -> Build-Depends-Indep.
+  * copyright: Updated.
+  * install: Removed no longer existing mule2.
+    Added do_auto from postinst.
+  * postinst: Removed fldefault code, see README (Font-LaTeX).
+    (Closes: #115694)
+    Moved do_auto to install.
+  * postrm: Removed no more needed debconf inclusion.
+  * preinst: Removed no more needed debconf inclusion.
+  * prerm: Moved undo_auto to remove.
+  * remove: Removed no longer existing mule2.
+    Added undo_auto from remove; thanks to Julian D. Gilbey.
+    (Closes: #117047)
+  * templates: Added Spanish; thanks to Gorka Olaizola.  (Closes: #108211)
+    Removed fldefault and flalreadydefault, see README (Font-LaTeX).
+    (Closes: #115694)
+  * update-auctex-elisp: Removed no longer existing mule2.
+    Added flavor arguments; thanks to Julian D. Gilbey.  (Closes: #117047)
+  * update-auctex-elisp.8: Documented new command-line arguments.
+  * variables (AUC TeX sources): Added font-latex.el, tex-font.el.
+    (Contributed sources): Removed font-latex.el, added tex-fptex.el.
+    (Styles): Added verbatim.el.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Fri, 18 Jan 2002 16:30:43 +0100
+
+auctex (10.0g-4) unstable; urgency=low
+
+  * control (Standards-Version): Updated to 3.5.5.
+  * remove: Changed `|| true' after `rmdir' to `test -d && rmdir'.
+  * templates (alreadydefault): Type changed from `text' to `note'.
+    (Closes: #106329)
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Sat, 28 Jul 2001 14:57:24 +0200
+
+auctex (10.0g-3) unstable; urgency=low
+
+  * remove: Added `|| true' after `rmdir'; thanks to Timshel Knoll.
+    (Closes: #101067)
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Sat, 16 Jun 2001 13:47:34 +0200
+
+auctex (10.0g-2) unstable; urgency=high
+
+  * rules (build): Removed debian/rules from deps.
+    (debian/rules): Removed debian/system.variables from deps.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Wed, 16 May 2001 14:48:51 +0200
+
+auctex (10.0g-1) unstable; urgency=low
+
+  * New upstream release.  (Closes: #92996)
+  * control (Build-Depends): Added eperl.
+  * copyright: Updated md5sum; typo fixed.
+  * rules (debian/rules): Added.
+  * rules (build): Added debian/rules.
+  * templates: Added German; thanks to Knut Suebert.  (Closes: #93686)
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Sat,  5 May 2001 15:47:53 +0200
+
+auctex (10.0d-1) unstable; urgency=medium
+
+  * New upstream release.
+  * COPYRIGHT: Updated.
+  * README: Added font-latex support.
+  * config: Added font-latex support.
+  * control (Depends): added emacs21;
+    (Build-Depends): added texinfo, texi2html.
+  * install: Removed no more needed beauty stuff.
+  * postinst: Removed no more needed beauty stuff.
+    Added font-latex support.
+  * templates: Added font-latex support.
+  * update-auctex-elisp.8: Updated copyright.
+  * variables: Updated $STYLES.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Thu, 18 Jan 2001 13:18:19 +0100
+
+auctex (9.10t-3) unstable; urgency=low
+
+  * COPYRIGHT: Updated.
+  * config: Added support for doautofg.
+    Cosmetic fix.
+  * control: Cosmetic fix.
+  * install: Added support for emacs21.
+  * postinst: Added support for doautofg.
+  * remove: Added support for emacs21.
+  * template (doautofg): New question.  (Closes: #77428)
+  * update-auctex-elisp.8: Updated copyright.
+  * update-auctex-elisp: Added support for emacs21.
+    Cosmetic fix.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Fri,  5 Jan 2001 02:33:35 +0100
+
+auctex (9.10t-2) unstable; urgency=low
+
+  * install: Touch ".nosearch" in ".../$FLAVOR/$style" to prevent it
+    from being automatically added to load-path by the execution of
+    normal-top-level-add-subdirs-to-load-path.
+  * remove: Remove ".nosearch" from ".../$FLAVOR/$style"
+  * rules: Touch ".nosearch" in "...$style" to prevent it from being
+    automatically added to load-path by the execution of
+    normal-top-level-add-subdirs-to-load-path.
+    Added -isp to dpkg-gencontrol.
+  * templates: Wording improved.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Wed, 15 Nov 2000 17:29:18 +0100
+
+auctex (9.10t-1) unstable; urgency=low
+
+  * New upstream version.
+  * Wrong quote string bug fixed upstream.  (Closes: #64185, #64186)
+  * config: Uses a better regexp to detect alreadydefault.  (Closes: #67408)
+  * control (Depends): emacs19 removed: upstream version now supports
+    _ONLY_ Emacs 20 and newer.
+    (Standards-Version): Updated to 3.2.1.
+  * copyright: Updated, removed japanese-patch statement.
+  * install: Removed emacs19.
+  * japanese-patch: Removed (included upstream).
+  * japanese-patch-copyright: Removed.
+  * templates: Wording improved.  (Closes: #61064)
+    Localized in Italian.  (Closes: #64159)
+  * remove: Removed emacs19.
+  * rules: Removed rules for japanese-patch.
+  * updated-auctex-elisp: Removed emacs19.
+  * updated-auctex-elisp.8: Updated.
+  * variables: Added tex-mik.el and various new styles.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Fri, 20 Oct 2000 02:14:58 +0200
+
+auctex (9.9p-13) frozen unstable; urgency=medium
+
+  * control (Standards-Version): Updated to 3.0.0.
+  * postinst: Fixed typo.
+  * rules: Fixed info files renaming rule; thanks to Ryuichi
+    Arafune.  (Closes: #51364)
+  * update-auctex-elisp: mule2 ad hoc rule added; thanks to Takuo
+    Kitame.  (Closes: #52016)
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Thu, 20 Jan 2000 15:32:38 +0100
+
+auctex (9.9p-12) unstable; urgency=low
+
+  * Debconf support updated.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Sun, 31 Oct 1999 22:49:57 +0100
+
+auctex (9.9p-11) unstable; urgency=low
+
+  * control: Added mule2 support.
+  * install: Added mule2 support.
+  * remove: Added mule2 support.
+  * rules: Rule to update system.variables added.
+  * update-auctex-elisp: Added mule2 support.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Fri, 22 Oct 1999 21:55:20 +0200
+
+auctex (9.9p-10) unstable; urgency=low
+
+  * postinst,prerm: Fixed typo.  (Closes: #47418)
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Thu, 14 Oct 1999 21:09:16 +0200
+
+auctex (9.9p-9) unstable; urgency=low
+
+  * templates: Fixed typo. (Ref: #47306)
+  * postinst: Run update-auctex-elisp with fd 3 closed; issue "db_stop" at
+    exit.  (Closes: #47325)
+  * preinst: New file.
+  * variables: Split generic stuff to system.variables.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Thu, 14 Oct 1999 16:38:37 +0200
+
+auctex (9.9p-8) unstable; urgency=high
+
+  * install: Really ignore emacs.
+  * postinst: Mental typo with umask fixed (hence urgency=high).
+  * remove: Really ignore emacs.
+  * rules: Fixed japanese-patch mistake.  (Closes: #47189)
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Tue, 12 Oct 1999 16:34:45 +0200
+
+auctex (9.9p-7) unstable; urgency=low
+
+  * README: Instructions on AUC-TeX auto-loading updated.
+  * config: Default auto-loading questions added.
+  * postinst: Default auto-loading rule added; fixed ../share/doc/pkg
+    bug.  (Closes: #47119)
+  * prerm: Default auto-loading rule added.
+  * templates: Default auto-loading questions added.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Mon, 11 Oct 1999 10:13:43 +0200
+
+auctex (9.9p-6) unstable; urgency=low
+
+  * Debconf support added.
+  * Eperl handling of Debian files.
+  * ../tex-site.el: Macros directory updated.
+  * COPYRIGHT: New file.
+  * README: Added note for TeX/TeXInfo sources.
+  * config: New file.
+  * control: Dependence on debconf added.
+  * emacsen.install: Renamed to install.
+  * emacsen.remove: Renamed to remove.
+  * postinst: Old hacks removed.
+  * postrm: New file.
+  * preinst: File removed (hopefully we need those old hacks no more).
+  * rules: Debconf support added; new doc directory for TeX/TeXInfo
+    sources.
+  * templates: New file.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Sat,  9 Oct 1999 18:35:47 +0200
+
+auctex (9.9p-5) unstable; urgency=low
+
+  * Docbase support added.
+  * docbase: New file.
+  * auctex.cron: Renamed to cron.
+  * auctex.dhelp: File removed.
+  * auctex.menu: File removed.
+  * emacsen.install: Renamed to install.
+  * emacsen.remove: Renamed to remove.
+  * postrm: File removed.
+  * prerm: Docbase support added.
+  * postinst: Docbase support added.
+  * rules: Docbase support added.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Thu,  7 Oct 1999 17:48:43 +0200
+
+auctex (9.9p-4) unstable; urgency=low
+
+  * control: Standards-Version: 3.0.0.
+  * postinst: Updated accordingly.
+  * prerm: Updated accordingly.
+  * rules: Updated accordingly.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Wed,  6 Oct 1999 01:17:04 +0200
+
+auctex (9.9p-3) unstable; urgency=low
+
+  * Added dhelp support.  (Closes: #41592)
+  * auctex.dhelp: New file.
+  * postinst: Added dhelp support.
+  * prerm: Added dhelp support.
+  * rules: Added auctex.dhelp rule.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Tue,  5 Oct 1999 20:09:42 +0200
+
+auctex (9.9p-2) unstable; urgency=low
+
+  * ../tex.el:  Applied patch from Hidenobu Nabetani
+    <nabetani@kern.phys.sci.osaka-u.ac.jp>.  (Closes: #39547)
+  * ../tex-jp.el: Applied patch from Hidenobu Nabetani
+    <nabetani@kern.phys.sci.osaka-u.ac.jp>.  (Closes: #39547)
+  * japanese-patch: added.
+  * japanese-patch-copyright: added.
+  * rules: updated to support japanese-patch.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Fri, 16 Jul 1999 18:21:11 +0200
+
+auctex (9.9p-1) unstable; urgency=low
+
+  * New upstream version (stable version).
+  * README: updated.
+  * copyright: updated.
+  * emacsen.install: E(MULE)?FLAGS switched to long style option and
+    `--no-site-file' added (side effects on the `custom' emacs19 add-on
+    package expected; sigh!).  (Closes: #39095)
+  * update-auctex-elisp: $FLAVOR flags switched to long style option and
+    `--no-site-file' added (side effects on the `custom' emacs19 add-on
+    package expected; sigh!).  (Closes: #39095)
+  * ../tex-jp.el: reverted to upstream version, waiting for Japanese
+    patches to be tested against it.  (See: #39547)
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Fri,  2 Jul 1999 17:53:45 +0200
+
+auctex (9.9o-1) unstable; urgency=low
+
+  * New upstream version.  (Closes: #32122)
+  * update-auctex-elisp: Removed emacs' option `-no-site-file', since we
+    already byte compile stuff without it.  This should allow AUC TeX to
+    make good use of the `custom' add-on package with `emacs19'; however,
+    it may well have some nasty side effects on non-standard sites, since
+    this way we're going to compile things in an (potentially) unknown
+    environment, due to the fact we let `site-start.el' to be loaded on
+    startup as well.  Well, we'll see; thanks to Martin Stjernholm for
+    this fix.  (Closes: #30419)
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Sat, 23 Jan 1999 15:38:48 +0100
+
+auctex (9.9j-3) unstable; urgency=low
+
+  * ../tex-jp.el: Applied patch from Hidenobu Nabetani
+    <nabetani@kern.phys.sci.osaka-u.ac.jp>.  (Closes: #28223)
+  * emacsen.install: Added lpath-jp.el trick to allow byte-compiling of
+    tex-jp.el.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Wed, 21 Oct 1998 01:25:50 +0200
+
+auctex (9.9j-2) frozen unstable; urgency=medium
+
+  * Bug fix release for frozen.
+  * README: s/update-auctex-lisp/update-auctex-elisp/.
+  * auctex.cron: s/auctex-auto-load/update-auctex-elisp/.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Sat, 17 Oct 1998 15:42:24 +0200
+
+auctex (9.9j-1) unstable; urgency=low
+
+  * New upstream version.
+  * copyright: Updated upstream sources reference.
+  * emacsen.install: Updated $SOURCES, added texmathp.el.
+  * rules: Updated $(AUCSRC), added texmathp.el.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Fri, 28 Aug 1998 18:33:17 +0200
+
+auctex (9.9b-4) stable unstable; urgency=low
+
+  * README: Added a note about `TeX-printer-list'; added a note about
+    contributed files.
+  * postinst: Delete old relics if empty.  (Closes: #22734)
+  * preinst: Added `--no-run-if-empty' to `xargs rmdir'.  (Closes: #22734)
+    Move old byte-compiled files along with their sources.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Thu, 27 Aug 1998 15:50:14 +0200
+
+auctex (9.9b-3) frozen unstable; urgency=low
+
+  * emacsen.install: Log compilation warnings.
+  * postrm: New file.
+  * prerm: Moved call to update-menus to postrm.
+  * rules: Added postrm rule.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Tue, 21 Apr 1998 19:02:59 +0200
+
+auctex (9.9b-2) frozen unstable; urgency=low
+
+  * control: Added dependence on debianutils (>=1.7).  (Closes: #21049).
+  * postinst: Moved abort stuff in a separate nop case statement.
+  * preinst: Added -f to mv -V t -b.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Tue, 14 Apr 1998 14:35:17 +0200
+
+auctex (9.9b-1) unstable; urgency=low
+
+  * New upstream version.
+  * ../tex-site.el: Switched Debian configuration variables definitions
+    from `defvar' to `defcustom'.
+  * ../tex-site.el: Re-added trailing `/' to TeX-lisp-directory.
+  * postinst: Fixed test on /var/lib/auctex before call to
+    run_auto_generate.
+  * rules: auctex-auto-load -> update-auctex-elisp compatibility symlink
+    disabled.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Mon,  9 Mar 1998 14:20:15 +0100
+
+auctex (9.9a-2) unstable; urgency=low
+
+  * ../tex-site.el: Removed trailing `/' from TeX-lisp-directory.
+  * postinst: Use mktemp for update-auctex-elisp' log file; don't ask the
+    user about running it in background any more, just do it.
+    Fixed test for update-menus.
+  * preinst: Removed a couple of question to the user.
+  * prerm: Fixed test for update-menus.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Fri,  6 Mar 1998 15:53:06 +0100
+
+auctex (9.9a-1) unstable; urgency=low
+
+  * New upstream version.
+  * emacsen.install: Added tex-jp.elc rule for emacs20.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Mon, 23 Feb 1998 17:38:35 +0100
+
+auctex (9.8i-3) unstable; urgency=medium
+
+  * ../tex-site.el: Added "/usr/local/lib/texmf/tex/" to TeX-macro-global.
+    Added debian-emacs-flavor code.
+    /var/lib/emacs/auctex/ -> /var/lib/auctex/.
+  * README: New file.
+  * auctex-auto-load: Changed name to update-auctex-elisp; added a
+    compatibility symlink that should eventually disappear.
+  * auctex.menu: New file.
+  * conffiles (tex-site.el): Removed.
+  * control (Standards-Version): Updated to 2.4.0.0.
+    (Depends): Changed to emacs19|emacs20.
+  * emacsen.install: New file.
+  * emacsen.remove: New file.
+  * postinst: Added support for `menu'.
+    Info description changed.
+    Added call to emacs-package-install.
+  * preinst: Added warning about /etc/elisp/tex-site.el removal.
+    Dropped a few ancient warnings.
+  * prerm: Added support for `menu'.
+    Added call to emacs-package-remove.
+  * postrm: Moved some stuff into prerm and deleted.
+  * rules: Moved the Debian patched tex-site.el in the upstream source
+    directory.
+    Moved elisp directory from /usr/lib/emacs/common/auctex/ to
+    /usr/share/emacs/site-lisp/auctex/.
+    Added math-ref.tex.gz and tex-ref.tex.gz to /usr/doc/auctex/.
+    Added HTML documentation in /usr/doc/auctex/auctex.html/.
+    Modified to support the new emacsen proposal.
+  * update-auctex-elisp: Added debian-emacs-flavor code.
+  * update-auctex-elisp.8: New file.
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Thu, 19 Feb 1998 00:06:54 +0100
+
+auctex (9.8i-2) unstable; urgency=low
+
+  * auctex.cron: Doesn't send useless output to root anymore.  (Closes:
+    #16988)
+  * copyright: Upstream maintainer email address fixed. (Hopefully. :-)
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Mon, 12 Jan 1998 20:09:47 +0100
+
+auctex (9.8i-1) unstable; urgency=low
+
+  * New maintainer.
+  * New upstream version.
+  * control (Standards-Version): Updated to 2.3.0.1.
+    (Description): Improved.
+  * tex-site.el: Auto generated files are now created under /var instead
+    of /usr.
+  * auctex-auto-load: Remove auto generated *.el files after *.elc have
+    been generated.
+  * auctex.cron: Added test to prevent execution in config-files status.
+  * postinst: Warn the user upgrading from old version about the new
+    location of tex-site.el.  (Closes: #12111)
+    Changed old version upgrade test. (Closes: #12111)
+    run_auto_generate is now correctly called.
+  * preinst: Warn the user before trying to remove old AUCTeX directory.
+    (Closes: #12111)
+  * rules: Heavily rewritten; don't compress copyright anymore.  (Closes:
+    #14395)
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Thu, 8 Jan 1998 11:07:00 +0100
+
+auctex (9.7n-2) frozen unstable; urgency=low
+
+  * fixed the postinst script
+
+ -- Helmut Geyer <Helmut.Geyer@iwr.uni-heidelberg.de>  Fri, 18 Apr 1997 03:04:19 +0200
+
+auctex (9.7n-1) unstable; urgency=low
+
+  * new upstream version.
+  * fixed files permissions (Bug# 8448)
+  * Architecture: all (Bug# 8442)
+
+ -- Helmut Geyer <Helmut.Geyer@iwr.uni-heidelberg.de>  Wed, 2 Apr 1997 00:56:38 +0200
+
+auctex (9.7m-1) unstable; urgency=medium
+
+  * new upstream release 9.7m
+  * new maintainer Helmut Geyer
+  * correct handling of site-start.d using standard priority 50 for emacs,
+    xemacs 19 and xemacs 20.
+
+ -- Helmut Geyer <Helmut.Geyer@iwr.uni-heidelberg.de>  Mon, 17 Mar 1997 20:42:25 +0100
+
+auctex (9.7l-1) unstable; urgency=medium
+
+  * new upstream release 9.7l
+  * unmaintained release for bo (Debian 1.3)
+  * new Debian packaging standard used
+  * new location for auctex: /usr/lib/emacs/common/auctex
+  * lacheck no longer part of the package -> (not-yet-existent) lacheck package
+  * changes to support the new TeX packages based on teTeX
+  * fixed several bugs
+  * TeX-auto-generate{,-global} now is aware of already parsed files. This
+    does regretfully not work for style/macro files that do not generate
+    any lisp file.
+  * added weekly cron entry for auctex-auto-generate
+
+ -- Helmut Geyer <Helmut.Geyer@iwr.uni-heidelberg.de>  Sat, 15 Mar 1997 15:30:00 +0100
+
+comment (0) UNRELEASED; urgency=low
+
+  * This is not a changelog entry.
+
+  * local variables:
+  * mode: debian-changelog
+  * ispell-local-dictionary: "american"
+  * end:
+
+  * LocalWords:  texlive fixperms canonicalize ePerl checkdir checkroot indep
+  * LocalWords:  doauto doautofg gpl Küster Ghostscript Preining Uploaders po
+  * LocalWords:  OHURA Makoto elisp aladdin debconf tetex texi html dvipng pls
+  * LocalWords:  mktexlsr cdebconf PLSPKG INFOMENU INFODESC AUCTeX IINSTALL de
+  * LocalWords:  conffiles emacs config alreadydefault defaultchanged postinst
+  * LocalWords:  DINSTALL prerm DREMOVE IREMOVE DFILES updatepo Sep preinst dir
+  * LocalWords:  tex el emacspeak Frings docbase CVS nosearch Unharmful egrep
+  * LocalWords:  auc toc README cron hilit LaTeX conf autoload deconf DOCSRC md
+  * LocalWords:  MULESRC XSRC multicolumn bibtex bst logfile Yannick Roehlly fd
+  * LocalWords:  defvar defcustom catdvi Gilbey RefTeX fptex Ormenese fldefault
+  * LocalWords:  flalreadydefault postrm Gorka Olaizola rmdir Timshel deps Knut
+  * LocalWords:  eperl Suebert texinfo subdirs isp dpkg gencontrol japanese mik
+  * LocalWords:  Ryuichi Arafune hoc Takuo Kitame umask TeXInfo emacsen dhelp
+  * LocalWords:  Hidenobu Nabetani Stjernholm lpath jp texmathp AUCSRC xargs mv
+  * LocalWords:  debianutils nop symlink mktemp elc usr Helmut Geyer xemacs bo
+  * LocalWords:  lacheck teTeX auctex debian refactored Barbier texmfdoc DVI
+  * LocalWords:  presubj Kreutzmann Tarrio Capello AUCTEXSRCS PREVIEWSRCS Zandt
+  * LocalWords:  Mennucci backend alist Stubner Shimono Atsushi Zweije Kure dev
+  * LocalWords:  Miroslav NMU Pryzby Kastrup Petruzzello xpdf PDFLATEX André
+  * LocalWords:  Luís Kozlov Huriaux stdin pdf Laboissiere TMPMASK lintian tmp
+  * LocalWords:  installdocs ghostscript Hutchings Bagge Hideki Yamane Piarres
+  * LocalWords:  Beobide Esko Arajärvi Clytie Siddall MENUSEC Makefile distclean
+
+ -- Davide G. M. Salvetti <salve@debian.org>  Thu, 01 Jan 1970 00:00:01 +0000

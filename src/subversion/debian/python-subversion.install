@@ -1,0 +1,2 @@
+debian/tmp/usr/lib/libsvn_swig_py*.so.*		usr/lib
+debian/tmp/usr/lib/python*			usr/lib

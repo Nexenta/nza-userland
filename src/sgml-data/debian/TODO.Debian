@@ -1,0 +1,35 @@
+sgml-data-TODO (0.0)
+
+  * Just because somethings on this list, that doesn't mean you can't go
+    ahead and submit a wishlist bug against it.  Please feel free, it lets 
+    me know what people want the most.
+
+  * more example files
+
+  * anyhow, what is it that you are interested that I adopt exactly?
+
+  * ISO/IEC DTR 9573-12, Part 12: Public Entity Sets for General and
+    Publishing Symbols, e.g.,
+     "ISO 9573-12:1991//ENTITIES Numeric and Special Graphic//EN" "ISONUM"
+     "ISO 9573-12:1991//ENTITIES Publishing//EN" "ISOPUB"
+
+  * ISO/IEC DTR 9573-14, Part 14: Public Entity Sets for Latin Based
+    Alphabets
+      "ISO 9573-14:1996//ENTITIES Latin Letters and Digits//EN"
+  
+  * ISO/IEC DTR 9573-15, Part 15: Public entity sets
+    for non-Latin based alphabets"
+
+ --
+
+<nik_#sgml> At least the convention that manual page references (which use <citerefentry>) are hidden behind entities that look something like man.<command>.<section>.
+for instance, I could pretty easily auto-generate some sort of "-//Debian//ENTITIES DocBook Manual Page Entities//EN" *.ent file and ship that with sgml-data (SGML baseline stuff)
+<nik_#sgml> Yeah.
+
+
+ --
+
+Local variables:
+mode: debian-changelog
+End:
+

@@ -1,0 +1,17 @@
+Source: intltool-debian
+Section: devel
+Priority: optional
+Maintainer: Nicolas FRANCOIS (Nekral) <nicolas.francois@centraliens.net>
+Standards-Version: 3.7.2
+Build-Depends: debhelper (>= 4.0.0)
+Build-Depends-Indep: perl
+
+Package: intltool-debian
+Architecture: all
+Depends: perl, text-locale
+Description: Help i18n of RFC822 compliant config files
+ Intltool is a bunch of scripts written by the GNOME project to
+ internationalize many different file formats.  This package is
+ a slightly modified version which adds support for RFC822
+ compliant config files, e.g. Debconf templates files.
+

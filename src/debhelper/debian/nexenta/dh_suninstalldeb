@@ -1,0 +1,86 @@
+#!/usr/bin/perl -w
+
+=head1 NAME
+
+dh_suninstalldeb - install files into the DEBIAN directory (Sun Solaris)
+
+=cut
+
+use strict;
+use Debian::Debhelper::Dh_Lib;
+
+=head1 SYNOPSIS
+
+B<dh_suninstalldeb> [S<I<debhelper options>>]
+
+=head1 DESCRIPTION
+
+dh_suninstalldeb is a debhelper program that is responsible for installing
+files into the DEBIAN directories in package build directories with the
+correct permissions.
+
+dh_suninstalldeb automatically installs the following files from debian/ into
+the DEBIAN directory:
+  package.postinst
+  package.preinst
+  package.postrm
+  package.prerm
+  package.shlibs
+
+The postinst, preinst, postrm, and prerm are handled specially: If a
+corresponding file named debian/package.script.debhelper exists, the contents
+of that file are merged into the script as follows: If the script exists,
+then anywhere in it that "#DEBHELPER#" appears, the text of the .debhelper
+file is inserted. If the script does not exist, then a script is generated
+from the .debhelper file. The .debhelper files are created by other debhelper
+programs, such as L<dh_installmenu(1)>, and are shell script fragments.
+
+This program is a variant of dh_installdeb, which pretty much does similar
+tasks except for generating the conffiles.
+
+=cut
+
+init();
+
+foreach my $package (@{$dh{DOPACKAGES}}) {
+	my $tmp=tmpdir($package);
+
+	if (! -d "$tmp/DEBIAN") {
+		doit("install","-o",0,"-g",0,"-d","$tmp/DEBIAN");
+	}
+
+	if (is_udeb($package)) {
+		# For udebs, only do the postinst, and no #DEBHELPER#.
+		my $f=pkgfile($package,"postinst");
+		if ($f) {
+			doit("install", "-o", 0, "-g", 0, "-m", 755, 
+			     $f, "$tmp/DEBIAN/postinst");
+		}
+		next;		
+	}
+	
+	# Install debian scripts.
+	foreach my $script (qw{postinst preinst prerm postrm}) {
+		debhelper_script_subst($package, $script);
+	}
+
+	# Install non-executable files
+	foreach my $file (qw{shlibs}) {
+		my $f=pkgfile($package,$file);
+		if ($f) {
+			doit("install","-o",0,"-g",0,"-m",644,"-p",$f,"$tmp/DEBIAN/$file");
+		}
+	}
+}
+
+=head1 SEE ALSO
+
+L<debhelper(7)>
+
+This program is a part of debhelper.
+
+=head1 AUTHOR
+
+Mac <mac@gnusolaris.org>
+
+=cut

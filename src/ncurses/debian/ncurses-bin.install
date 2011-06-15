@@ -1,0 +1,25 @@
+usr/gnu/bin/gcaptoinfo usr/bin
+usr/gnu/bin/gclear usr/bin
+usr/gnu/bin/ginfocmp usr/bin
+usr/gnu/bin/ginfotocap usr/bin
+usr/gnu/bin/greset usr/bin
+usr/gnu/bin/gtabs usr/bin
+usr/gnu/bin/gtic usr/bin
+usr/gnu/bin/gtoe usr/bin
+usr/gnu/bin/gtput usr/bin
+usr/gnu/bin/gtset usr/bin
+
+usr/gnu/bin/amd64/gcaptoinfo usr/bin/amd64
+usr/gnu/bin/amd64/gclear usr/bin/amd64
+usr/gnu/bin/amd64/ginfocmp usr/bin/amd64
+usr/gnu/bin/amd64/ginfotocap usr/bin/amd64
+usr/gnu/bin/amd64/greset usr/bin/amd64
+usr/gnu/bin/amd64/gtabs usr/bin/amd64
+usr/gnu/bin/amd64/gtic usr/bin/amd64
+usr/gnu/bin/amd64/gtoe usr/bin/amd64
+usr/gnu/bin/amd64/gtput usr/bin/amd64
+usr/gnu/bin/amd64/gtset usr/bin/amd64
+
+usr/gnu/share/man/man1
+usr/gnu/share/man/man5
+usr/gnu/share/man/man7

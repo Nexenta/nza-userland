@@ -1,0 +1,5 @@
+nexenta-lsof (4.85D-nexenta1) unstable; urgency=low
+
+  * NCP port
+
+ -- Alexander Eremin <a.eremin@nexenta.com>  Mon, 14 Mar 2011 10:13:12 +0300

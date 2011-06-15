@@ -1,0 +1,7 @@
+06_sqlzma.diff
+05_sqlzma_backport.diff
+05_fix_path.diff
+04_sqlzma_h.diff
+03_cflags_makefile.diff
+01_large_files.diff
+02_lzmp.diff

@@ -1,0 +1,56 @@
+Subversion for Debian
+=====================
+
+Subversion is maintained by a team at:
+
+  http://pkg-subversion.alioth.debian.org/
+
+
+NFS and Repositories
+--------------------
+You should never host a BDB-format repository on an NFS volume: it can
+lead to data corruption and data loss.  We recommend the svn://
+(svnserve) or svn+ssh:// (ssh tunnel) access methods instead.
+
+A FSFS repository can be hosted on NFS, but make sure you have the
+'lockd' daemon (from the 'nfs-common' package) running on both client
+and server.  See also this Subversion FAQ entry:
+
+  http://subversion.tigris.org/faq.html#nfs
+
+
+The umask issue
+---------------
+If you are sharing BDB repositories between multiple users, you may
+wish to use the 'svnwrap' script after setting proper permissions.
+This sets 'umask 002' before running the real subversion binary.  See
+'man svnwrap' for details.
+
+
+Emacs and Subversion
+--------------------
+There are two packages that provide support for Subversion in Emacs:
+
+* psvn.el:
+
+  A PCL-CVS-style interface for Subversion.
+
+* vc-svn.el:
+
+  A Subversion backend for the Emacs VC system.  This is no longer
+  included in the Subversion package; maintainership has been taken
+  over by the Emacs project.  It will be included in Emacs 22, and is
+  now available in the 'emacs-snapshot' package.  It is not currently
+  in Xemacs.
+
+  If you use Emacs 21 (vc-svn appears to be incompatible with Xemacs),
+  you will need to manually install an older version of vc-svn.el from
+  the Subversion site; the Emacs 22 version of vc-svn.el does not work
+  with older Emacsen.  You can download it using Subversion itself:
+
+    svn export \
+      http://svn.collab.net/repos/svn/trunk/contrib/client-side/vc-svn.el@9195
+
+  Place it in /usr/local/share/emacs/21.4/site-lisp/ or elsewhere in
+  your autoload path.  Then ensure that 'SVN appears in the list of the
+  custom variable vc-handled-backends.

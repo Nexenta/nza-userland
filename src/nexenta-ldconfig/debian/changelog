@@ -1,0 +1,25 @@
+nexenta-ldconfig (0.4) unstable; urgency=low
+
+  * Re-built on new environment: passwd (/usr/sbin/chpasswd, gpasswd)
+  * Added 64 bit support to ldconfig
+
+ -- Igor Kozhukhov <igor.kozhukhov@nexenta.com>  Sat, 28 May 2011 13:56:14 +0300
+
+nexenta-ldconfig (0.3) unstable; urgency=low
+
+  * Added passwd (/usr/sbin/chpasswd, gpasswd)
+
+ -- Alexander Eremin <a.eremin@nexenta.com>  Tue, 04 Jan 2011 11:11:14 +0300
+
+nexenta-ldconfig (0.2) unstable; urgency=low
+
+  * Remove old names and lsb
+
+ -- Alexander Eremin <a.eremin@nexenta.com>  Wed, 22 Dec 2010 01:14:14 +0300
+
+nexenta-ldconfig (0.1) unstable; urgency=low
+
+  * Initial release of Nexenta specific hacks
+
+ -- Nexenta Systems <maintainer@nexenta.com>  Sat, 06 Nov 2010 01:48:46 -0700
+

@@ -1,0 +1,35 @@
+#!/usr/bin/make -f
+
+include /usr/share/cdbs/1/rules/debhelper.mk
+include /usr/share/cdbs/1/class/autotools.mk
+
+DEB_DH_STRIP_ARGS := --dbg-package=mc-dbg
+#DEB_CONFIGURE_EXTRA_FLAGS := --enable-vfs-undelfs --without-samba --with-x --with-screen=slang --libexecdir='$${prefix}/lib' --disable-rpath
+DEB_CONFIGURE_EXTRA_FLAGS := \
+	    --sysconfdir=/usr/share \
+	    --libexecdir=/usr/share \
+	    --without-samba \
+	    --with-x \
+	    --enable-charset \
+	    --with-screen=slang \
+	    --without-ext2undel \
+	    --disable-rpath
+AWK := awk
+
+# If DEB_BUILD_OPTIONS=parallel=n, build in n parallel processes
+ifneq (,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
+	NUMJOBS = $(patsubst parallel=%,%,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
+	MAKEFLAGS += -j$(NUMJOBS)
+endif
+
+DEB_FIXPERMS_EXCLUDE := /usr/share/mc/cons.saver
+
+binary-post-install/mc::
+	chmod 644 ./debian/mc/usr/share/mc/bin/mc*
+	chmod 755 ./debian/mc/usr/share/mc/edit.spell.rc
+	chmod 755 ./debian/mc/usr/share/mc/edit.indent.rc
+
+	chgrp tty ./debian/mc/usr/share/mc/cons.saver || true
+	chmod g+s ./debian/mc/usr/share/mc/cons.saver || true
+
+	rmdir ./debian/mc/usr/share/man/sr/man8

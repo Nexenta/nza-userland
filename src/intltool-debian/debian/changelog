@@ -1,0 +1,209 @@
+intltool-debian (0.35.0+20060710.1-nexenta1) unstable; urgency=low
+
+  * Rebuilt for NCP4
+  * Fixed dependency: gettext->text-locale
+
+ -- Kartik Mistry <kartik.mistry@nexenta.com>  Tue, 21 Dec 2010 20:23:15 +0530
+
+intltool-debian (0.35.0+20060710.1) unstable; urgency=low
+
+  * New maintainer. 
+
+ -- Nicolas FRANCOIS (Nekral) <nicolas.francois@centraliens.net>  Sun,  1 Oct 2006 18:19:23 +0200
+
+intltool-debian (0.35.0+20060710) unstable; urgency=low
+
+  * Sync CVS: intltool 2006/07/10.
+
+  * intltool-extract: Fix numbering of template fields.  Closes: #377354
+    Thanks Florentin Duneau for the report and Thomas Huriaux for the patch.
+
+ -- Denis Barbier <barbier@debian.org>  Mon, 10 Jul 2006 21:43:23 +0200
+
+intltool-debian (0.34.2+20060621) unstable; urgency=low
+
+  * intltool-extract: Fields for the first template are now numbered from
+    1001, for the 2nd template from 2001 and so forth.  All references are
+    written into the POT file, which allows podebconf-display-po to handle
+    strings which appear several times in templates.  Closes: #374463
+    Thanks Yuri Kozlov for the report and Thomas Huriaux for the fix.
+    This change will also let podebconf-display-po do a better job when
+    recreating original templates file, in particular it will be able to
+    handle cases when other fields follow Description, as has been discussed
+    in #366227.
+
+ -- Denis Barbier <barbier@debian.org>  Wed, 21 Jun 2006 23:34:31 +0200
+
+intltool-debian (0.34.2+20060512) unstable; urgency=low
+
+  * Sync CVS: intltool 2006/05/12.
+
+  * intltool-extract: Use C++ comments '//' instead of C comments '/*...*/'
+    to allow '*/' in comments.  Closes: #366450  Thanks Christian Perrier
+
+  * debian/control: Bump Standards-Version: 3.7.2, no changes are needed.
+
+  * debian/control: As told by lintian, replace Build-Depends-Indep: debhelper
+    by Build-Depends: debhelper because debhelper programs are run by the
+    clean target.
+
+ -- Denis Barbier <barbier@debian.org>  Sat, 13 May 2006 01:49:05 +0200
+
+intltool-debian (0.34.2+20060415) unstable; urgency=low
+
+  * intltool-update: This program called /usr/bin/file to determine file
+    encoding.  It is useless in intltool-debian, so this call is dropped
+    indtead of adding an unnecessary dependency.  Closes: #362814
+    Thanks Marc Haber
+
+ -- Denis Barbier <barbier@debian.org>  Sat, 15 Apr 2006 22:56:35 +0200
+
+intltool-debian (0.34.2+20060322) unstable; urgency=low
+
+  * intltool-merge: Under some special circumstances, an English field
+    composed of several paragraphs may contain an empty string.  Of course
+    this empty string has no translation, and thus the whole paragraph is
+    untranslated.  A better approach is to assume that an empty string
+    has an empty translation.  Closes: #357948  Thanks Colin Watson
+  * Update to intltool 0.34.2; there is no change in handling of
+    RFC822 files.
+
+ -- Denis Barbier <barbier@debian.org>  Tue, 28 Mar 2006 23:38:30 +0200
+
+intltool-debian (0.34.1+20060220) unstable; urgency=low
+
+  * intltool-merge: Do not reformat translated templates.  This will produce
+    very long lines, but this is already the case with locale or keyboard
+    choosers, so there should be no problem with (c)debconf.
+
+  * intltool-merge: Comments are now properly discarded.
+
+  * Comments in the form '#flag:' are interpreted by intltool-extract and
+    intltool-merge.  They are helpful when a translatable field is composed
+    of several strings.  Recognized keywords are:
+      - #flag:translate: Write only the specified strings into PO files.
+      - #flag:comment: Comments can be defined for each individual string.
+      - #flag:partial: This flag prints translated strings even if they are
+        not fully translated.
+  * See full documentation in po-debconf(7).
+  * Slightly modify intltool-merge and intltool-extract so that inner routines
+    are more similar and thus less error prone.
+
+  * Add intltool authors into debian/copyright.
+
+ -- Denis Barbier <barbier@debian.org>  Wed, 15 Mar 2006 21:44:03 +0100
+
+intltool-debian (0.34.1+20050828) unstable; urgency=low
+
+  * Update to intltool 0.34.1; there is no change in handling of
+    RFC822 files.
+  * intltool-merge: When a localized short description contains a newline,
+    it is replaced by a space and a warning is reported.  Closes: #308581
+    Thanks Christian Perrier.
+  * debian/control: Bump Standards-Version: 3.6.2
+
+ -- Denis Barbier <barbier@debian.org>  Sun, 28 Aug 2005 00:03:26 +0200
+
+intltool-debian (0.30+20040213) unstable; urgency=low
+
+  * intltool-extract:  A template without translatable fields caused
+    bogus comments in PO files, the next template had a wrong type.
+    Closes: #260086  Thanks Pierre Machard.
+
+ -- Denis Barbier <barbier@debian.org>  Sun, 18 Jul 2004 23:58:14 +0200
+
+intltool-debian (0.30+20040212) unstable; urgency=low
+
+  * Intltool-merge uses Text::Wrap to word-wrap translated templates.
+    But when a long line begins with a space and has many non-space
+    characters, it is split.  The resulting template is then wrongly
+    formatted by debconf.  The current fix is to detect such lines
+    and put them together.  Closes: #236228
+    In fact there seems to be no reason to reformat the full templates
+    file, but this change is somewhat drastic and care must be taken.
+  * Handle escaped commas in __Choices fields.  Those escapes are a
+    cdebconf extension, so until it is accepted by debconf, this new
+    feature won't be documented.  Bugreport and patch sent by
+    Matt Kraai, thanks.  Closes: #241188
+
+ -- Denis Barbier <barbier@debian.org>  Thu,  1 Apr 2004 00:53:09 +0200
+
+intltool-debian (0.30+20040211) unstable; urgency=low
+
+  * Sync CVS: intltool 2004/02/11.
+  * intltool-merge:  When a Template line has a comment just above, it was
+    concatenated with the previous template.  Closes: #232070
+
+ -- Denis Barbier <barbier@debian.org>  Wed, 11 Feb 2004 08:55:21 +0100
+
+intltool-debian (0.27.2+20031023) unstable; urgency=low
+
+  * intltool-extract:  In order to have po-debconf put templates
+    type as a comment in PO files, this script detects if the
+    INTLTOOL_DEBIAN_TYPE environment variable is set and equal
+    to 'po-debconf'.  This is a dirty hack until a better solution
+    is found via command-line options.
+  * intltool-extract:  Change order of automatic comments in PO files,
+    they previously looked like
+      #. Comments extracted from source files
+      #. Description
+    and now
+      #. Type: select
+      #. Description
+      #. Comments extracted from source files
+    Author comments are the most important part, so put it near English
+    text to catch translators' attention.
+
+ -- Denis Barbier <barbier@debian.org>  Thu, 23 Oct 2003 23:04:03 +0200
+
+intltool-debian (0.27.2+20031003) unstable; urgency=low
+
+  * intltool-merge:  If a comment line did contain a colon without
+    any space character before it, the line was not removed.
+
+ -- Denis Barbier <barbier@debian.org>  Sat,  4 Oct 2003 00:53:04 +0200
+
+intltool-debian (0.27.2+20030930) unstable; urgency=low
+
+  * New upstream release: intltool 0.27.2
+  * Upstream release handles non-ASCII msgids, but this feature is disabled
+    until sarge is released to ensure that gettext 0.12 is available.
+  * Recognize comments in rfc822deb format, i.e. lines beginning with
+    a hash sign are put as comments in PO files.
+    Such lines were already discarded by intltool-merge, except when
+    they contain a colon.  In this version, they are always discarded.
+  * Bump Standards-Version: 3.6.1
+
+ -- Denis Barbier <barbier@debian.org>  Tue, 30 Sep 2003 22:05:24 +0200
+
+intltool-debian (0.26+20030525) unstable; urgency=low
+
+  * intltool-update:  Comment lines are not taken into account when
+    determining if the .pot file has changed.
+
+ -- Denis Barbier <barbier@debian.org>  Sun, 25 May 2003 01:12:25 +0200
+
+intltool-debian (0.26+20030523) unstable; urgency=low
+
+  * New upstream release: intltool 0.26
+  * intltool-update:  When only POT-Creation-Date has changed in the
+    .pot file, this file is not updated.
+
+ -- Denis Barbier <barbier@debian.org>  Fri, 23 May 2003 23:01:03 +0200
+
+intltool-debian (0.25+20030419) unstable; urgency=low
+
+  * Initial public release
+  * This is a rearrangement of the po-debconf package needed so
+    that other packages managing RFC822 compliant files can use
+    features similar to those provided by po-debconf.
+    (Closes: #171377)
+  * This package contains the modified intltool scripts, previously
+    shipped in /usr/share/po-debconf, and now in /usr/share/intltool-debian.
+  * Po-debconf will depend on this package when it enters Debian.
+  * Changes are reported upstream, so intltool and intltool-debian
+    should converge; as intltool-debian is still moving, having
+    a separate package helps making quick fixes without breaking
+    GNOME packages.
+
+ -- Denis Barbier <barbier@debian.org>  Sat, 19 Apr 2003 23:28:43 +0200

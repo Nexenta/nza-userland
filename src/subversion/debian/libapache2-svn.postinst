@@ -1,0 +1,8 @@
+#!/bin/sh -e
+
+# enable on new installs only, not upgrades
+if [ "$1" = "configure" ]; then
+  /usr/sbin/a2enmod dav_svn
+fi
+
+#DEBHELPER#

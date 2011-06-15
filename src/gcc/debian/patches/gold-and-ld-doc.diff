@@ -1,0 +1,3 @@
+# DP: Enable both gold and ld in a single toolchain (documentation).
+# DP: New option -fuse-ld=ld.bfd, -fuse-ld=gold.
+

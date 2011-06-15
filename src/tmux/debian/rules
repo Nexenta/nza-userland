@@ -1,0 +1,19 @@
+#!/usr/bin/make -f
+
+#include /usr/share/hardening-includes/hardening.make
+
+#export CFLAGS += $(HARDENING_CFLAGS)
+#export LDFLAGS += $(HARDENING_LDFLAGS)
+
+%:
+	dh $@
+
+override_dh_installinit:
+	dh_installinit --no-start --init-script='tmux-cleanup' \
+		--update-rcd-params='start 70 S .'
+
+override_dh_fixperms:
+	dh_fixperms -X/usr/bin/tmux
+
+override_dh_auto_clean: 
+	dh_auto_clean -- clean-all

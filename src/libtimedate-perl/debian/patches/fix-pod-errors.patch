@@ -1,0 +1,15 @@
+Description: fix POD errors
+Author: Jonathan Yu <jawnsy@cpan.org>
+Origin: vendor
+Forwarded: no
+--- a/lib/Date/Parse.pm
++++ b/lib/Date/Parse.pm
+@@ -322,6 +322,8 @@
+ the timezone offset in seconds from GMT. An empty array is returned upon
+ failure.
+ 
++=back
++
+ =head1 MULTI-LANGUAGE SUPPORT
+ 
+ Date::Parse is capable of parsing dates in several languages, these include

@@ -1,0 +1,320 @@
+sgml-base (1.26+nmu1nexenta0) unstable; urgency=low
+
+  * Port to NCP 
+
+ -- Anil Gulecha <anil.verve@gmail.com>  Fri, 12 Nov 2010 08:38:51 +0530
+
+sgml-base (1.26+nmu1) unstable; urgency=low
+
+  * Non-maintainer upload
+  * Applied patch from Hideki Yamane adding a check whether directories exist
+    before removing them on purge 
+    (closes: Bug#576445)
+  * Moved debhelper from Build-Depends-Indep to Build-Depends as it is used in
+    the clean target, as per Policy section 7.7.
+
+ -- Michael Banck <mbanck@debian.org>  Sat, 17 Jul 2010 16:27:02 +0200
+
+sgml-base (1.26) unstable; urgency=low
+
+  * Removed creation of the transitional catalog in a installation
+    - debian/sgml-base.postinst
+    - debian/sgml-base.prerm
+    - tools/install-sgmlcatalog
+
+ -- Ardo van Rangelrooij <ardo@debian.org>  Sat, 14 Aug 2004 10:03:56 -0500
+
+sgml-base (1.25) unstable; urgency=low
+
+  * debian/sgml-base.postinst: fixed transitional SGML catalog initialization
+    (closes: Bug#255627)
+
+ -- Ardo van Rangelrooij <ardo@debian.org>  Tue, 22 Jun 2004 20:06:53 -0500
+
+sgml-base (1.24) unstable; urgency=low
+
+  * debian/sgml-base.*inst: moved SGML root catalog initialization from the
+    preinst to the postinst
+    (closes: Bug#255472)
+
+ -- Ardo van Rangelrooij <ardo@debian.org>  Mon, 21 Jun 2004 13:58:25 -0500
+
+sgml-base (1.23) unstable; urgency=low
+
+  * Removed support for '/usr/lib/sgml'
+    - debian/sgml-base.p*: remove support for '/usr/lib/sgml/catalog'
+    - debian/sgml-base.p*: moved transitional SGML catalog to /etc/sgml
+    - tools/install-sgmlcatalog: updated accordingly
+    - tools/install-sgmlcatalog.8: updated accordingly
+  * debian/control: rewrote short and long description
+  * README: updated
+  * Added README.Debian
+  * debian/copyright: updated
+
+ -- Ardo van Rangelrooij <ardo@debian.org>  Sun, 20 Jun 2004 16:59:11 -0500
+
+sgml-base (1.22) unstable; urgency=low
+
+  * Added SGML infrastructure directories
+    - Makefile: created the SGML infrastructure directories under
+      /usr/share/sgml and under /usr/share/local/sgml
+    - debian/rules: updated to use 'dh_usrlocal'
+  * Moved 'update-catalog*', 'install-sgmlcatalog*' and SGML catalog
+    templates to 'tools' directory
+  * Added Makefiles to 'tools' subdirectory and put all the common parts
+    in 'MAKE/include'
+  * tools/update-catalog: absorbed manual page in POD format
+  * tools/install-sgmlcatalog: absorbed manual page in POD format
+  * debian/control: changed 'Maintainer' to 'Debian XML/SGML Group
+    <debian-xml-sgml-pkgs@lists.alioth.debian.org>' and added current
+    maintainer to 'Uploaders'
+  * debian/control: upgraded to Debian Policy 3.6.1 (no changes)
+
+ -- Ardo van Rangelrooij <ardo@debian.org>  Wed, 21 Apr 2004 14:34:27 -0500
+
+sgml-base (1.21) unstable; urgency=low
+
+  * debian/sgml-base.prerm: updated to remove the transitional catalog from the
+    super catalog also during package upgrade per current sgml-base practice
+
+ -- Ardo van Rangelrooij <ardo@debian.org>  Sun, 21 Sep 2003 16:14:18 -0500
+
+sgml-base (1.20) unstable; urgency=low
+
+  * Added examples
+  * debian/sgml-base.p*:various cosmetic changes
+  * debian/control: upgraded to Debian Policy 3.6.1 (no changes)
+
+ -- Ardo van Rangelrooij <ardo@debian.org>  Sun, 21 Sep 2003 16:02:18 -0500
+
+sgml-base (1.19) unstable; urgency=low
+
+  * install-sgmlcatalog: re-added '--quiet' option
+    (closes: Bug#204891)
+
+ -- Ardo van Rangelrooij <ardo@debian.org>  Mon, 11 Aug 2003 05:36:09 -0500
+
+sgml-base (1.18) unstable; urgency=low
+
+  * install-sgmlcatalog: marked '--install' option as deprecated
+    (closes: Bug#174831)
+  * debian/rules: moved debhelper compatibility level setting to
+    'debian/compat' per latest debhelper best practices
+  * debian/control: changed build dependency on 'debhelper' to '(>= 4.1)'
+  * debian/copyright: updated
+  * debian/control: upgraded to Debian Policy 3.6.0 (no changes)
+
+ -- Ardo van Rangelrooij <ardo@debian.org>  Sun, 10 Aug 2003 17:43:56 -0500
+
+sgml-base (1.17) unstable; urgency=low
+
+  * debian/control: updated short description and long description
+
+ -- Ardo van Rangelrooij <ardo@debian.org>  Sat, 10 Aug 2002 19:00:51 -0500
+
+sgml-base (1.16) unstable; urgency=low
+
+  * debian/rules: upgraded to debhelper v4
+  * debian/control: changed build dependency on debhelper accordingly
+  * debian/rules: migrated from 'dh_movefiles' to 'dh_install'
+  * debian/rules: split off 'install' target from 'binary-indep' target
+  * debian/copyright: added pointer to license
+
+ -- Ardo van Rangelrooij <ardo@debian.org>  Sat, 10 Aug 2002 13:37:14 -0500
+
+sgml-base (1.15) unstable; urgency=low
+
+  * debian/control: removed explicit and versioned dependency on 'sed'
+
+ -- Ardo van Rangelrooij <ardo@debian.org>  Sun, 26 May 2002 16:49:02 -0500
+
+sgml-base (1.14) unstable; urgency=low
+
+  * '/usr/share/sgml-base/catalog' -> '/usr/share/sgml-base/catalog.super'
+    (closes: Bug#135279)
+
+ -- Ardo van Rangelrooij <ardo@debian.org>  Fri, 22 Feb 2002 21:01:54 -0600
+
+sgml-base (1.13) unstable; urgency=low
+
+  * Moved documentation into a separate package
+    (closes: Bug#130208)
+
+ -- Ardo van Rangelrooij <ardo@debian.org>  Sun, 17 Feb 2002 14:17:29 -0600
+
+sgml-base (1.12) unstable; urgency=low
+
+  * debian/sgml-base.prerm: split into prerm and postrm to remove catalog
+    files properly upon purge
+
+ -- Ardo van Rangelrooij <ardo@debian.org>  Sat, 15 Dec 2001 09:55:45 -0600
+
+sgml-base (1.11) unstable; urgency=low
+
+  * Removed explicit dhelp support since doc-base now takes care of this
+  * debian/control: added build dependency on sp
+  * Added documentation in PDF format
+  * debian/control: added build dependency on 'libpaperg', 'tetex-bin'
+    and 'tetex-extra'
+  * debian/control: removed obsolete build dependency on 'perl'
+  * debian/control: upgraded to Debian Policy 3.5.6
+
+ -- Ardo van Rangelrooij <ardo@debian.org>  Sun,  4 Nov 2001 13:29:14 -0600
+
+sgml-base (1.10) unstable; urgency=low
+
+  * debian/postinst: corrected install of 'transitional.cat'
+    (closes: Bug#96163)
+  * debian/prerm: added purge handling
+    (closes: Bug#93036)
+
+ -- Ardo van Rangelrooij <ardo@debian.org>  Thu,  3 May 2001 12:05:03 -0500
+
+sgml-base (1.09) unstable; urgency=low
+
+  * Moved the transitional catalog from '/etc/sgml' to '/usr/lib/sgml'
+    (closes: Bug#87943, Bug#90164)
+
+ -- Ardo van Rangelrooij <ardo@debian.org>  Tue, 10 Apr 2001 20:35:14 -0500
+
+sgml-base (1.08) unstable; urgency=low
+
+  * debian/control: added Conflicts with 'sgmltools-2 (< 2.0.2-5)'
+    (closes: Bug#88078)
+  * debian/postinst: remove circular catalog
+    (closes: Bug#86603, Bug#88009, Bug#88339, Bug#89538, Bug#90766)
+  * debian/postinst: no conffiles anymore
+    (closes: Bug#88003)
+  * debian/control: updated dependencies
+  * debian/control: upgraded to Debian Policy 3.5.2
+  * debian/control: upgraded to Debian Perl Policy 1.17
+
+ -- Ardo van Rangelrooij <ardo@debian.org>  Mon,  9 Apr 2001 20:44:57 -0500
+
+sgml-base (1.07) unstable; urgency=low
+
+  * debian/postinst: forgot to `mkdir -p /usr/lib/sgml`
+  * debian/postinst: put various steps in correct order
+    (closes: Bug#87704)
+
+ -- Ardo van Rangelrooij <ardo@debian.org>  Mon, 26 Feb 2001 09:47:45 -0600
+
+sgml-base (1.06) unstable; urgency=low
+
+  * debian/postinst: forgot to `mkdir -p /etc/sgml`
+
+ -- Ardo van Rangelrooij <ardo@debian.org>  Sun, 25 Feb 2001 13:10:52 -0600
+
+sgml-base (1.05) unstable; urgency=low
+
+  * Install '/etc/sgml/catalog' and '/etc/sgml/transitional.cat' as
+    templates from '/usr/share/sgml-base'
+    (closes: Bug#86600)
+  * debian/rules: updated to install to 'debian/tmp' and use 'dh_movefiles'
+
+ -- Ardo van Rangelrooij <ardo@debian.org>  Sun, 25 Feb 2001 12:37:03 -0600
+
+sgml-base (1.04) unstable; urgency=low
+
+  * First steps in migrating '/usr/lib/sgml' to '/usr/share/sgml'
+  * Moved '/etc/sgml.catalog' to '/etc/sgml/transitional.cat'
+  * install-sgmlcatalog: updated to reflect catalog change
+  * install-sgmlcatalog.8: updated to reflect catalog change
+  * Added empty super catalog '/etc/sgml/catalog'
+  * /usr/lib/sgml/catalog: updated to point to the super catalog
+  * Added template for centralized catalogs
+  * Added `update-catalog` for maintaining the super catalog and
+    centralized catalogs
+  * Added various policy documents
+  * README: updated
+  * Added TODO
+
+ -- Ardo van Rangelrooij <ardo@debian.org>  Sun, 18 Feb 2001 11:28:05 -0600
+
+sgml-base (1.03) unstable; urgency=low
+
+  * debian/rules: split functionality between 'Makefile' and 'debian/rules'
+  * Makefile: cleaned-up
+  * debian/rules: cleaned up and migrated to debhelper
+  * debian/control: upgraded to Debian Policy 3.2.1
+  * Added doc-base support
+    (closes: Bug#31188)
+
+ -- Ardo van Rangelrooij <ardo@debian.org>  Tue,  9 Jan 2001 21:22:46 -0600
+
+sgml-base (1.02) unstable; urgency=low
+
+  * New maintainer.
+  * debian/rules: moved manpage to /usr/share/man
+    (closes: Bug#80768)
+
+ -- Ardo van Rangelrooij <ardo@debian.org>  Mon,  8 Jan 2001 09:17:42 -0600
+
+sgml-base (1.01) unstable; urgency=high
+
+  * Arrgh. It was creating the link in /usr/lib/sgml-base/catalog! My
+    bad. closes: Bug#19873
+
+ -- Manoj Srivastava <srivasta@debian.org>  Wed, 18 Mar 1998 00:16:08 -0600
+
+sgml-base (1.00) unstable; urgency=low
+
+  * New maintainer.
+  * Added the SGML entity management document (thanks to aph@debian.org),
+    and normalized the sgml (I like normalized sgml), and modified and
+    expanded the document. Since an agreement has been reached about the
+    location of declaration files (and, by extention, notations), I
+    incorporatred them as such in the document)
+  * Changed the rules file to conform to my standard rule file
+  * Imported to CVS using cvs-inject
+  * Use cvs-buildpackage to update
+  * Put the text and HTML vversions of the Entity Management docs in
+    /usr/doc. 
+
+ -- Manoj Srivastava <srivasta@debian.org>  Sun, 15 Mar 1998 16:33:58 -0600
+
+sgml-base (0.4.2) unstable; urgency=low
+
+  * changed usr/lib/sgml/catalog into an absolute link
+    (reported by Lintian)
+  * debian/control: Upgraded to Standards Version 2.4.0.0 (no changes)
+
+ -- Christian Schwarz <schwarz@debian.org>  Sat, 14 Feb 1998 01:05:39 +0100
+
+sgml-base (0.4.1) unstable; urgency=low
+
+  * debian/rules: Don't use debstd anymore
+  * debian/rules: Compress changelog file (fixes:#15403)
+  * debian/control: Upgraded to Standards Version 2.3.0.1
+  * debian/control: Removed perl dependency (perl-base is tagged
+    `Essential')
+
+ -- Christian Schwarz <schwarz@debian.org>  Wed, 24 Dec 1997 12:19:22 +0100
+
+sgml-base (0.4) unstable; urgency=low
+
+  * Don't fail if /etc/sgml.catalog does not exist when removing an entry
+    (fixes #13937)
+  * Upgraded to Standards Version 2.3.0.0
+
+ -- Christian Schwarz <schwarz@debian.org>  Fri, 17 Oct 1997 16:00:44 +0200
+
+sgml-base (0.3) unstable; urgency=low
+
+  * Use absolute path spec for conffile "/etc/sgml.catalog" (fixes #9755)
+  * Conflict with sgml-data <= 0.02 (fixes #9941)
+
+ -- Christian Schwarz <schwarz@debian.org>  Sun, 25 May 1997 14:24:36 +0200
+
+sgml-base (0.2) unstable; urgency=low
+
+  * Removed symlink /usr/lib/sgml/sgml.catalog .
+  * Wrote README.debian (Guidelines for SGML packages). 
+
+ -- Christian Schwarz <schwarz@debian.org>  Thu, 8 May 1997 11:06:35 +0200
+
+sgml-base (0.1) unstable; urgency=low
+
+  * Initial release.
+
+ -- Christian Schwarz <schwarz@debian.org>  Tue, 6 May 1997 16:51:44 +0200

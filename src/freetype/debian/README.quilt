@@ -1,0 +1,8 @@
+To update the patches using quilt use the
+following procedure:
+
+* Unpack the tarball, for example freetype.
+* cd freetype-<version>
+* export QUILT_PATCHES=../freetype.patches
+* Do usual quilt magic.
+* quilt -p0 refresh

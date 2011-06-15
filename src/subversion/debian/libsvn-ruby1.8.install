@@ -1,0 +1,2 @@
+debian/tmp/usr/lib/libsvn_swig_ruby*.so.*	usr/lib
+debian/tmp/usr/lib/ruby				usr/lib

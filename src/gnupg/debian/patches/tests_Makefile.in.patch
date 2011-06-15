@@ -1,0 +1,13 @@
+Index: gnupg-2.0.13/tests/Makefile.in
+===================================================================
+--- gnupg-2.0.13.orig/tests/Makefile.in	2011-04-16 20:02:16.590983407 +0400
++++ gnupg-2.0.13/tests/Makefile.in	2011-04-16 20:02:53.191370647 +0400
+@@ -313,7 +313,7 @@
+ # if the shell used for inittests would uses an internal version of
+ # pwd which handles symlinks differently.
+ TESTS_ENVIRONMENT = GNUPGHOME=`/bin/pwd` GPG_AGENT_INFO= LC_ALL=C \
+-                    GPGSM=$(GPGSM) $(srcdir)/runtest
++                    GPGSM=$(GPGSM) LD_LIBRARY_PATH=$(ROOT)/usr/lib $(srcdir)/runtest
+ 
+ testscripts = sm-sign+verify sm-verify
+ EXTRA_DIST = runtest inittests $(testscripts) \

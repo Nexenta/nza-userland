@@ -1,0 +1,63 @@
+jade and sp for Debian
+----------------------
+
+This document covers the Debian version of Jade and the SP suite.
+Note that we use the version of SP which ships with the Jade sources,
+which is slightly newer than the SP which ship standalone.
+
+Note that the default search paths compiled into this system are
+equivalent to setting the following environment variables as shown:
+
+ SGML_CATALOG_FILES="%{default-catalogs}"
+ SGML_SEARCH_PATH="%{default-sgml-path}"
+
+You can override this by setting these variables yourself, i.e., in
+~/.profile or /etc/environment.
+
+If you are validating or processing XML, you want to run the command
+with the XML declaration.  The upstream documentation talks about
+xml.soc, which is located in %{sgmldir}/declaration/xml.soc, 
+but you can also run it like so:
+  nsgmls <other-args> %{sgmldir}/declaration/xml.dcl <xml-file>
+or
+  jade <other-args> %{sgmldir}/declaration/xml.dcl <xml-file>
+as appropriate.
+
+For information on using these packages, see the included HTML
+documentation.  It also includes links to other sites, for more
+information about SGML or DSSSL.  Also see:
+
+  <URL:http://www.jclark.com/jade/>        Jade home page
+  <URL:http://www.jclark.com/>             James Clark's pages
+  <URL:http://www.oasis-open.org/cover/>   Robin Cover's SGML/XML/DSSSL pages
+  <URL:http://www.mulberrytech.com/dsssl/> Mulberry DSSSL docs and cookbook
+  <URL:http://trisome.com/auto_faq/jade-Dsssl/>
+                                           An auto-FAQ for Jade and DSSSL
+  <URL:http://www.w3.org/>                 W3O, a standards body
+  <URL:http://www.netfolder.com/SGML/HTML-CSS%20Formatting%20objects.html>
+                                           Discussion of the HTML backend
+
+James Clark, the upstream maintainer, is now quite absorbed in the XSL
+effort, which is an XML alternative to DSSSL.  However, a new group
+has undertaken to continue to improve and maintain Jade under the name
+OpenJade.  This software is not yet released, but they have already
+produced some documentation, etc.  See
+<URL:http://www.netfolder.com/DSSSL/>.
+
+No package is an island; true to this dictum, the jade and sp packages
+increase value in conjunction with the following packages:
+
+  * sgml-base (required) provides essential Debian SGML infrastructure
+  * sgml-data (suggested) contains standard HTML and entities
+  * doc-base (suggested) provides documentation infrastructure used for
+    this package's documentatation
+  * sp-dev		Static library and include files for SP
+  * jadetex		LaTeX macros for SGML to DVI/PS conversion with jade
+  * psgml		Nifty Emacs mode for editing SGML documents
+  * sdc			SDC is an alternate SGML formatter not using DSSSL
+  * debiandoc-sgml	A formatter for Debian documents
+  * sgml-tools		A formatter for linuxdoc documents
+  * docbook		An SGML DTD for software documentation
+  * docbook-stylesheets	Stylesheets for printing and converting DocBook
+
+.....A. P. Harris...apharris@onShore.com...<URL:http://www.onShore.com/>

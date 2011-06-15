@@ -1,0 +1,23 @@
+Source: binutils
+Section: devel
+Priority: optional
+Maintainer: Matthias Klose <doko@debian.org>
+Uploaders: James Troup <james@nocrew.org>, Daniel Jacobowitz <dan@debian.org>
+Standards-Version: 3.8.4
+Build-Depends: dpkg-dev (>= 1.13.9), autoconf (>= 2.64), bison, flex, gettext, texinfo, dejagnu (>= 1.4.2-1.1), dpatch, file, bzip2, lsb-release, zlib1g-dev
+
+Package: binutils
+Architecture: any
+Depends: ${shlibs:Depends}
+Conflicts: gas, elf-binutils, modutils (<< 2.4.19-1), ${extraConflicts}, binutils-gold (<< 2.20.1-6)
+Replaces: binutils-gold (<< 2.20.1-6)
+Provides: elf-binutils
+Suggests: binutils-doc (>= ${source:Version})
+Description: The GNU assembler, linker and binary utilities
+ The programs in this package are used to assemble, link and manipulate
+ binary and object files.  They may be used in conjunction with a compiler
+ and various libraries to build programs.
+ .
+ On some architectures the (experimental) GNU gold linker is included.
+ It currently fails to link some applications and libraries (i.e. won't
+ link usable kernels).

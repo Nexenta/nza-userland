@@ -1,0 +1,12 @@
+#!/bin/sh
+set -e
+
+if [ "$1" = configure ]; then
+#  if ! test -d /var/run/screen; then
+#    install -g root -m 0777 -d /var/run/screen
+#    [ `stat -c%a /usr/bin/screen` -lt 4000 ] || chmod 0777 /var/run/screen
+#  fi
+  add-shell /usr/bin/screen || true
+fi
+
+#DEBHELPER#

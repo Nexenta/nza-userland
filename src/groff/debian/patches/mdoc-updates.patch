@@ -1,0 +1,54 @@
+Description: Update mdoc for newer FreeBSD and POSIX versions
+Author: Colin Watson <cjwatson@debian.org>
+Forwarded: http://lists.gnu.org/archive/html/bug-groff/2010-02/msg00007.html
+Last-Update: 2010-03-01
+
+Index: b/tmac/doc-common
+===================================================================
+--- a/tmac/doc-common
++++ b/tmac/doc-common
+@@ -504,6 +504,9 @@
+ .ds doc-operating-system-FreeBSD-6.4     6.4
+ .ds doc-operating-system-FreeBSD-7.0     7.0
+ .ds doc-operating-system-FreeBSD-7.1     7.1
++.ds doc-operating-system-FreeBSD-7.2     7.2
++.ds doc-operating-system-FreeBSD-7.3     7.3
++.ds doc-operating-system-FreeBSD-8.0     8.0
+ .
+ .ds doc-operating-system-Darwin-8.0.0  8.0.0
+ .ds doc-operating-system-Darwin-8.1.0  8.1.0
+Index: b/tmac/doc-syms
+===================================================================
+--- a/tmac/doc-syms
++++ b/tmac/doc-syms
+@@ -637,6 +637,8 @@
+ .as doc-str-St--p1003.1-2001   " (\*[Lq]\)\*[Px]\*[doc-str-St].1\*[Rq])
+ .ds doc-str-St--p1003.1-2004   \*[doc-Tn-font-size]\%IEEE\*[doc-str-St] Std 1003.1-2004
+ .as doc-str-St--p1003.1-2004   " (\*[Lq]\)\*[Px]\*[doc-str-St].1\*[Rq])
++.ds doc-str-St--p1003.1-2008   \*[doc-Tn-font-size]\%IEEE\*[doc-str-St] Std 1003.1-2008
++.as doc-str-St--p1003.1-2008   " (\*[Lq]\)\*[Px]\*[doc-str-St].1\*[Rq])
+ .
+ .\" POSIX Part 2: Shell and Utilities
+ .ds doc-str-St--p1003.2        \*[doc-Tn-font-size]\%IEEE\*[doc-str-St] Std 1003.2
+Index: b/tmac/groff_mdoc.man
+===================================================================
+--- a/tmac/groff_mdoc.man
++++ b/tmac/groff_mdoc.man
+@@ -870,7 +870,7 @@
+ 1.0, 1.1, 1.1.5, 1.1.5.1, 2.0, 2.0.5, 2.1, 2.1.5, 2.1.6, 2.1.7, 2.2, 2.2.1,
+ 2.2.2, 2.2.5, 2.2.6, 2.2.7, 2.2.8, 3.0, 3.1, 3.2, 3.3, 3.4, 3.5, 4.0, 4.1,
+ 4.1.1, 4.2, 4.3, 4.4, 4.5, 4.6, 4.6.2, 4.7, 4.8, 4.9, 4.10, 4.11, 5.0, 5.1,
+-5.2, 5.2.1, 5.3, 5.4, 5.5, 6.0, 6.1, 6.2, 6.3, 6.4, 7.0, 7.1
++5.2, 5.2.1, 5.3, 5.4, 5.5, 6.0, 6.1, 6.2, 6.3, 6.4, 7.0, 7.1, 7.2, 7.3, 8.0
+ .It DragonFly
+ 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.8, 1.8.1, 1.10, 1.12, 1.12.2, 2.0
+ .It Darwin
+@@ -1974,6 +1974,8 @@
+ .St -p1003.1-2001
+ .It Li \-p1003.1\-2004
+ .St -p1003.1-2004
++.It Li \-p1003.1\-2008
++.St -p1003.1-2008
+ .El
+ .Pp
+ .

@@ -1,0 +1,32 @@
+# lintian overrides for binary packages
+# Please use one comment line before each override line;
+# debian/rules will split the file that way.
+
+# These aren't really for external use; arguably should move to a subdir.
+libsvn1: shlib-missing-in-control-file libsvn_fs_util-1
+libsvn1: shlib-missing-in-control-file libsvn_fs_fs-1
+libsvn1: shlib-missing-in-control-file libsvn_ra_serf-1
+libsvn1: shlib-missing-in-control-file libsvn_ra_neon-1
+libsvn1: shlib-missing-in-control-file libsvn_ra_local-1
+libsvn1: shlib-missing-in-control-file libsvn_fs_base-1
+libsvn1: shlib-missing-in-control-file libsvn_auth_kwallet-1
+libsvn1: shlib-missing-in-control-file libsvn_auth_gnome_keyring-1
+
+# the ruby script isn't really needed, it's more of an example file
+subversion-tools: ruby-script-but-no-ruby-dep ./usr/share/subversion/hook-scripts/commit-email.rb
+# Python dependency is implied by python-subversion dependency
+subversion-tools: python-script-but-no-python-dep
+
+# this is config documentation, not "how to build the package"
+libapache2-svn: package-contains-upstream-install-documentation usr/share/doc/libapache2-svn/INSTALL.authz.gz
+
+# nobody but us will ever link to this, so we don't ship a shlibs file
+libsvn-perl: no-shlibs-control-file usr/lib/libsvn_swig_perl-1.so.1.0.0
+
+# nobody but us will ever link to this, so we don't ship a shlibs file
+python-subversion: no-shlibs-control-file usr/lib/libsvn_swig_py2.4-1.so.1.0.0
+python-subversion: no-shlibs-control-file usr/lib/libsvn_swig_py2.5-1.so.1.0.0
+python-subversion: no-shlibs-control-file usr/lib/libsvn_swig_py2.6-1.so.1.0.0
+
+# nobody but us will ever link to this, so we don't ship a shlibs file
+libsvn-ruby1.8: no-shlibs-control-file usr/lib/libsvn_swig_ruby-1.so.1.0.0

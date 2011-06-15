@@ -1,0 +1,16 @@
+#!/bin/sh
+
+set -e
+
+# remove old symlink if it's still hanging around.
+if [ -L /usr/share/doc/tcl8.4-dev ]; then
+    rm -f /usr/share/doc/tcl8.4-dev
+fi
+
+if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt-nl "8.4.16-2"; then
+    update-alternatives --remove tcl.m4 /usr/lib/tcl8.4/tcl.m4
+    # We really want to remove this alternative
+    update-alternatives --auto tcl.m4 >/dev/null || true
+fi
+
+#DEBHELPER#

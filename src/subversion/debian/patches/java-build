@@ -1,0 +1,26 @@
+A hack to get around differences between Sun javah and gcj javah - in Sun
+javah, symbols in a nested class use _ as a separator instead of _00024.
+
+--- a/build/generator/gen_make.py
++++ b/build/generator/gen_make.py
+@@ -290,7 +290,8 @@
+             '%s_CLASS_FILENAMES = %s\n'
+             '%s_CLASSES = %s\n'
+             '$(%s_HEADERS): $(%s_CLASS_FILENAMES)\n'
+-            '\t%s -d %s -classpath %s:$(%s_CLASSPATH) $(%s_CLASSES)\n'
++            '\t%s -d %s -classpath %s:$(%s_CLASSPATH) -all %s\n'
++            '\tcd %s; sed -i s/_00024/_/ *.h\n'
+             % (targ_varname, ' '.join(header_class_filenames),
+ 
+                targ_varname, ' '.join(header_classes),
+@@ -298,7 +299,9 @@
+                targ_varname, targ_varname,
+ 
+                target_ob.link_cmd, target_ob.output_dir, target_ob.classes,
+-               targ_varname, targ_varname))
++               targ_varname, target_ob.classes,
++
++               target_ob.output_dir))
+ 
+         # Build the objects from the object_srcs with one 'javac' call
+         if object_srcs:

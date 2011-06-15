@@ -1,0 +1,72 @@
+#!/usr/bin/make -f
+# debian/rules file for autotools-dev
+# GNU copyright 1997 to 1999 by Joey Hess & Henrique M. Holschuh
+# $Id: rules,v 1.19 2006-02-25 15:25:39 hmh Exp $
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+# Version of the dh_autotools file
+DHAVERSION=`sed -e '/[$$]Id: .*[$$]/! d' <dh_autotools |cut -f 3 -d ' '`
+
+build: build-stamp
+build-stamp:
+	dh_testdir
+	pod2man -c Debhelper debian/dh_autotools-dev_updateconfig  debian/dh_autotools-dev_updateconfig.1
+	pod2man -c Debhelper debian/dh_autotools-dev_restoreconfig debian/dh_autotools-dev_restoreconfig.1
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	-rm -f debian/dh_autotools-dev_updateconfig.1 debian/dh_autotools-dev_restoreconfig.1
+	-rm -f build-stamp
+	dh_clean
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+
+	install config.guess config.sub $(CURDIR)/debian/autotools-dev/usr/share/misc
+	install debian/dh_autotools-dev_updateconfig debian/dh_autotools-dev_restoreconfig $(CURDIR)/debian/autotools-dev/usr/bin
+	install debian/autotools_dev.pm $(CURDIR)/debian/autotools-dev/usr/share/perl5/Debian/Debhelper/Sequence
+
+# Build architecture-dependent files here.
+binary-arch: build install
+# We have nothing to do by default.
+
+# Build architecture-independent files here.
+binary-indep: build install
+	dh_testdir
+	dh_testroot
+#	dh_installdebconf	
+	dh_installdocs
+	dh_installexamples
+#	dh_installmenu
+#	dh_installlogrotate
+#	dh_installemacsen
+#	dh_installpam
+#	dh_installmime
+#	dh_installinit
+#	dh_installcron
+	dh_installman
+#	dh_installinfo
+#	dh_undocumented
+#	dh_installchangelogs
+	install -D debian/changelog $(CURDIR)/debian/autotools-dev/usr/share/doc/autotools-dev/changelog.Debian
+	install -D ChangeLog $(CURDIR)/debian/autotools-dev/usr/share/doc/autotools-dev/changelog
+	dh_strip
+	dh_compress
+	dh_fixperms
+#	dh_makeshlibs
+	dh_installdeb
+#	dh_perl
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install configure get-debian-source get-orig-source

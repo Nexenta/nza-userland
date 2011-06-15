@@ -1,0 +1,12 @@
+*.debhelper
+*.substvars
+fontconfig-config
+fontconfig-udeb
+libfontconfig1
+libfontconfig1-dev
+libfontconfig1-dbg
+stamp-*
+tmp
+fontconfig
+files
+

@@ -1,0 +1,41 @@
+Source: libssh2
+Section: libs
+Priority: optional
+Maintainer: Mikhail Gusarov <dottedmag@debian.org>
+Build-Depends: debhelper (>= 7), autotools-dev, automake, libtool, libgcrypt11-dev, zlib1g-dev
+Standards-Version: 3.8.4
+
+Package: libssh2-1
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, sunwcs, libgcrypt11, zlib1g
+Description: SSH2 client-side library
+ libssh2 is a client-side C library implementing the SSH2 protocol.
+ It supports regular terminal, SCP and SFTP sessions; port forwarding;
+ password, key-based and keyboard-interactive authentication.
+ .
+ This package contains the runtime library.
+
+Package: libssh2-1-dev
+Conflicts: libssh2-0-dev
+Replaces: libssh2-0-dev
+Section: libdevel
+Architecture: any
+Depends: libssh2-1 (= ${binary:Version}), ${misc:Depends}
+Description: SSH2 client-side library (development headers)
+ libssh2 is a client-side C library implementing the SSH2 protocol.
+ It supports regular terminal, SCP and SFTP sessions; port forwarding;
+ password, key-based and keyboard-interactive authentication.
+ .
+ This package contains the development files.
+
+Package: libssh2-1-dbg
+Section: debug
+Priority: extra
+Architecture: any
+Depends: libssh2-1 (= ${binary:Version}), libssh2-1-dev (= ${binary:Version}), ${misc:Depends}
+Description: SSH2 client-side library (debug package)
+ libssh2 is a client-side C library implementing the SSH2 protocol.
+ It supports regular terminal, SCP and SFTP sessions; port forwarding;
+ password, key-based and keyboard-interactive authentication.
+ .
+ This package contains the debugging symbols.

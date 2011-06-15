@@ -1,0 +1,76 @@
+Source: libxt
+Section: x11
+Priority: optional
+Maintainer: Debian X Strike Force <debian-x@lists.debian.org>
+Uploaders: David Nusinow <dnusinow@debian.org>
+Build-Depends:
+ debhelper (>= 5.0.0),
+ libx11-dev (>= 1:0.99.2),
+ libsm-dev (>= 1:0.99.1),
+ libice-dev (>= 1:0.99.0),
+ pkg-config,
+ automake,
+ libtool,
+ xutils-dev (>= 1:7.5~1),
+ quilt
+Standards-Version: 3.8.3
+Vcs-Git: git://git.debian.org/git/pkg-xorg/lib/libxt
+Vcs-Browser: http://git.debian.org/?p=pkg-xorg/lib/libxt.git
+
+Package: libxt6
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: X11 toolkit intrinsics library
+ libXt provides the X Toolkit Intrinsics, an abstract widget library upon
+ which other toolkits are based.  Xt is the basis for many toolkits, including
+ the Athena widgets (Xaw), and LessTif (a Motif implementation).
+ .
+ More information about X.Org can be found at:
+ <URL:http://www.X.org>
+ <URL:http://xorg.freedesktop.org>
+ <URL:http://lists.freedesktop.org/mailman/listinfo/xorg>
+ .
+ This module can be found at
+ git://anongit.freedesktop.org/git/xorg/lib/libXt
+
+Package: libxt6-dbg
+Section: debug
+Architecture: any
+Priority: extra
+Depends: ${shlibs:Depends}, ${misc:Depends}, libxt6 (= ${binary:Version})
+Description: X11 toolkit intrinsics library (debug package)
+ libXt provides the X Toolkit Intrinsics, an abstract widget library upon
+ which other toolkits are based.  Xt is the basis for many toolkits, including
+ the Athena widgets (Xaw), and LessTif (a Motif implementation).
+ .
+ This package contains the debug versions of the library found in libxt6.
+ Non-developers likely have little use for this package.
+ .
+ More information about X.Org can be found at:
+ <URL:http://www.X.org>
+ <URL:http://xorg.freedesktop.org>
+ <URL:http://lists.freedesktop.org/mailman/listinfo/xorg>
+ .
+ This module can be found at
+ git://anongit.freedesktop.org/git/xorg/lib/libXt
+
+Package: libxt-dev
+Section: libdevel
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libxt6 (= ${binary:Version}), libx11-dev, x11proto-core-dev, libsm-dev
+Description: X11 toolkit intrinsics library (development headers)
+ libXt provides the X Toolkit Intrinsics, an abstract widget library upon
+ which other toolkits are based.  Xt is the basis for many toolkits, including
+ the Athena widgets (Xaw), and LessTif (a Motif implementation).
+ .
+ This package contains the development headers for the library found in
+ libxt6.  Non-developers likely have little use for this package.
+ .
+ More information about X.Org can be found at:
+ <URL:http://www.X.org>
+ <URL:http://xorg.freedesktop.org>
+ <URL:http://lists.freedesktop.org/mailman/listinfo/xorg>
+ .
+ This module can be found at
+ git://anongit.freedesktop.org/git/xorg/lib/libXt

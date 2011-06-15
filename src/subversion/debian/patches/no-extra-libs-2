@@ -1,0 +1,106 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+##
+## no-extra-libs-2 by <peter@p12n.org>
+##
+## DP: Eliminate several unneeded inter-library linkages.
+## DP: This saves us one package dependency (subversion -> libneon).
+
+@DPATCH@
+--- a/build.conf
++++ b/build.conf
+@@ -149,7 +149,7 @@
+ type = exe
+ path = subversion/svn
+ libs = libsvn_client libsvn_wc libsvn_ra libsvn_delta libsvn_diff libsvn_subr
+-       apriconv apr neon
++       apriconv apr
+ manpages = subversion/svn/svn.1
+ install = bin
+ 
+@@ -194,7 +194,7 @@
+ description = Subversion repository replicator
+ type = exe
+ path = subversion/svnsync
+-libs = libsvn_ra libsvn_delta libsvn_subr apr neon
++libs = libsvn_ra libsvn_delta libsvn_subr apr
+ install = bin
+ manpages = subversion/svnsync/svnsync.1
+ 
+@@ -543,7 +543,7 @@
+ type = lib
+ path = subversion/bindings/javahl/native
+ libs = libsvn_repos libsvn_client libsvn_wc libsvn_ra libsvn_delta libsvn_diff 
+-       libsvn_subr libsvn_fs aprutil apriconv apr neon
++       libsvn_subr libsvn_fs apriconv apr
+ sources = *.cpp *.c
+ add-deps = $(javahl_javah_DEPS) $(javahl_java_DEPS)
+ install = javahl-lib
+@@ -905,7 +905,7 @@
+ 
+ [apriconv]
+ type = lib
+-external-lib = $(SVN_APRUTIL_LIBS)
++external-lib = $(SVN_APR_LIBS)
+ 
+ [bdb]
+ type = lib
+@@ -1033,14 +1033,14 @@
+ path = contrib/client-side/svn-push
+ sources = svn-push.c
+ install = contrib
+-libs = libsvn_ra libsvn_delta libsvn_subr apriconv apr neon
++libs = libsvn_ra libsvn_delta libsvn_subr apriconv apr
+ 
+ [svnmucc]
+ type = exe
+ path = tools/client-side/svnmucc
+ sources = svnmucc.c
+ install = tools
+-libs = libsvn_client libsvn_ra libsvn_subr libsvn_delta apriconv apr neon
++libs = libsvn_client libsvn_ra libsvn_subr libsvn_delta apriconv apr
+ 
+ [diff]
+ type = exe
+--- a/subversion/bindings/swig/perl/native/Makefile.PL.in
++++ b/subversion/bindings/swig/perl/native/Makefile.PL.in
+@@ -25,7 +25,12 @@
+                                                                       fs_base
+                                                                       fs_util
+                                                                       fs_fs/));
+-my @ldmodules = map {"-lsvn_$_-1"} (@modules, qw/diff subr/);
++sub libs_line {
++   return join(' ', $apr_ldflags,
++               (map {$_ = abs_path($_); "-L$_"} @ldpaths),
++               (map {"-lsvn_$_-1"} @_),
++               '-lsvn_swig_perl-1', `$swig -perl -ldflags`);
++}
+ 
+ my $apr_shlib_path_var = '@SVN_APR_SHLIB_PATH_VAR@';
+ my $cppflags = '@CPPFLAGS@';
+@@ -50,10 +55,6 @@
+                  " -I$svnlib_builddir",
+                  " -I$swig_srcdir -g"),
+     OBJECT => q/$(O_FILES)/,
+-    LIBS => [join(' ', $apr_ldflags,
+-                  (map {$_ = abs_path($_); "-L$_"} @ldpaths),
+-                  @ldmodules, '-lsvn_swig_perl-1',
+-                  `$swig -perl -ldflags`)],
+     test => { TESTS => "$swig_srcdir/perl/native/t/*.t" }
+ );
+ 
+@@ -63,6 +64,7 @@
+     $_;
+ }
+ 
++$config{LIBS} = [libs_line('diff', 'subr')];
+ WriteMakefile(%config, NAME => 'SVN::_Core', C => ['core.c'],
+         PM => {map { ("$swig_srcdir/perl/native/$_.pm" =>
+                       "\$(INST_LIBDIR)/$_.pm") }
+@@ -77,6 +79,7 @@
+        );
+ 
+ for (@modules) {
++    $config{LIBS} = [libs_line($_, 'subr')];
+     WriteMakefile(%config,
+       MAKEFILE=> "Makefile.$_",
+       NAME    => "SVN::_".perlish($_),

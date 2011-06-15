@@ -1,0 +1,102 @@
+#!/usr/bin/make -f
+
+CC=gcc
+
+DEB_BUILDDIR = debian/build
+#DEB_MAKE_FLAVORS = deb udeb refdbg
+#DEB_MAKE_FLAVORS = deb64 deb refdbg
+DEB_MAKE_FLAVORS = deb64 deb32
+DISABLE_UPDATE_UPLOADERS := 1
+
+include /usr/share/cdbs/1/rules/debhelper.mk
+include /usr/share/cdbs/1/rules/utils.mk
+include /usr/share/cdbs/1/class/gnome.mk
+include /usr/share/gnome-pkg-tools/1/rules/clean-la.mk
+include /usr/share/gnome-pkg-tools/1/rules/uploaders.mk
+include /usr/share/gnome-pkg-tools/1/rules/gnome-get-source.mk
+
+GNOME_MODULE := glib
+
+# Ensure the build aborts when there are still references to undefined symbols
+LDFLAGS += -Wl,-z,defs
+
+# NB: do NOT use -Wl,--as-needed to build glib; for instance the link to
+# pthread is carefully crafted to allow dlopen()ing pthread-using libs; see
+# http://mid.gmane.org/1257999019.21780.15.camel@marzipan
+LDFLAGS += -Wl,--no-as-needed
+
+# Make the linker work a bit harder so dynamic loading can be done faster
+LDFLAGS += -Wl,-O1
+
+LDFLAGS += -lsocket -lnsl
+
+#CFLAGS += 
+
+APIVER := 2.0
+SONAME := 0
+
+# package names
+SHARED_PKG := libglib$(APIVER)-$(SONAME)
+DATA_PKG := libglib$(APIVER)-data
+DEV_PKG := libglib$(APIVER)-dev
+BIN_PKG := libglib$(APIVER)-bin
+UDEB_PKG := libglib$(APIVER)-udeb
+DOC_PKG := libglib$(APIVER)-doc
+DEBUG_PKG := $(SHARED_PKG)-dbg
+REFDBG_PKG := libglib$(APIVER)-$(SONAME)-refdbg
+
+DEB_MAKE_DESTDIRSKEL = $(CURDIR)/debian/install/@FLAVOR@
+#DEB_MAKE_DESTDIRSKEL = $(CURDIR)/debian/tmp
+
+#DEB_DH_MAKESHLIBS_ARGS_$(SHARED_PKG) += -V --add-udeb=$(UDEB_PKG) -- -c4
+DEB_DH_MAKESHLIBS_ARGS_$(SHARED_PKG) += -V -- -c4
+DEB_DH_MAKESHLIBS_ARGS_$(REFDBG_PKG) = --no-act
+DEB_DH_STRIP_ARGS_$(REFDBG_PKG) = --no-act
+# Don't put the symbols in the -dbg package
+DEB_DH_STRIP_ARGS_$(UDEB_PKG) = --dbg-package=
+
+#DEB_MAKE_CHECK_TARGET = -k check || true
+
+# configure flags
+DEB_CONFIGURE_EXTRA_FLAGS := \
+			--with-html-dir=\$${prefix}/share/doc/$(DOC_PKG) \
+			--with-pcre=system \
+			--disable-fam \
+			--disable-dtrace
+
+#			--with-threads=posix
+#			--disable-gtk-doc-html 
+
+DEB_CONFIGURE_FLAGS_deb32 := \
+			--disable-selinux \
+			--enable-static \
+			--enable-shared 
+
+DEB_CONFIGURE_FLAGS_deb64 := \
+			CC="gcc -m64" \
+			--disable-selinux \
+			--enable-static \
+			--enable-shared 
+
+#DEB_CONFIGURE_FLAGS_refdbg := \
+#			--disable-Bsymbolic \
+#			--enable-debug=yes
+
+clean::
+	rm -rf debian/build
+	rm -rf debian/install
+	rm -rf debian/stamp-*
+	sed \
+		-e "s#@SONAME@#$(SONAME)#g" \
+		-e "s#@APIVER@#$(APIVER)#g" \
+		-e "s#@VERSION@#$(DEB_UPSTREAM_VERSION)#g" \
+		-e "s#@SHARED_PKG@#$(SHARED_PKG)#g" \
+		-e "s#@BIN_PKG@#$(BIN_PKG)#g" \
+		-e "s#@DATA_PKG@#$(DATA_PKG)#g" \
+		-e "s#@DEV_PKG@#$(DEV_PKG)#g" \
+		-e "s#@UDEB_PKG@#$(UDEB_PKG)#g" \
+		-e "s#@DOC_PKG@#$(DOC_PKG)#g" \
+		-e "s#@DEBUG_PKG@#$(DEBUG_PKG)#g" \
+		-e "s#@GNOME_TEAM@#$(UPLOADERS)#g" \
+		-e "s#@REFDBG_PKG@#$(REFDBG_PKG)#g" \
+		debian/control.in > debian/control

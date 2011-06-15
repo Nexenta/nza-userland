@@ -1,0 +1,135 @@
+# Finnish translations of the "debian/auctex/templates" file of the auctex
+# Debian package.
+#
+# Copyright (C) 2007 Davide G. M. Salvetti
+#
+# This file is distributed under the same license as the auctex Debian
+# package.
+#
+# Esko Arajärvi <edu@iki.fi>, 2007
+msgid ""
+msgstr ""
+"Project-Id-Version: auctex 11.83-8\n"
+"Report-Msgid-Bugs-To: auctex@packages.debian.org\n"
+"POT-Creation-Date: 2009-08-23 12:41+0200\n"
+"PO-Revision-Date: 2010-08-27 13:42+0200\n"
+"Last-Translator: Esko Arajärvi <edu@iki.fi>\n"
+"Language-Team: Finnish <debian-l10n-finnish@lists.debian.org>\n"
+"Language: fi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Finnish\n"
+"X-Poedit-Country: Finland\n"
+
+#. Type: select
+#. Choices
+#: ../auctex/templates:1001
+msgid "Background"
+msgstr "Taustalla"
+
+#. Type: select
+#. Choices
+#: ../auctex/templates:1001
+msgid "Foreground"
+msgstr "Edustalla"
+
+#. Type: select
+#. Choices
+#: ../auctex/templates:1001
+msgid "None"
+msgstr "Ei mikään"
+
+#. Type: select
+#. Description
+#: ../auctex/templates:1002
+msgid "(La)TeX macros parsing mode:"
+msgstr "(La)TeX-makrojen jäsennystapa:"
+
+#. Type: select
+#. Description
+#: ../auctex/templates:1002
+msgid ""
+"To improve the performance of AUCTeX, every currently installed TeX macro "
+"package and LaTeX style file will be parsed."
+msgstr ""
+"AUCTeXin suorituskyvyn parantamiseksi kaikki tällä hetkellä asennettuna "
+"olevat TeX-makropaketit ja LaTeX-tyylitiedostot jäsennetään."
+
+#. Type: select
+#. Description
+#. Translators: do NOT translate ${LOGFILE}
+#: ../auctex/templates:1002
+msgid ""
+"This may take a lot of time, so it should probably be done in the "
+"background.  You may also choose to have it done in the foreground, or to "
+"skip that step.  If you choose 'Background', you will find a detailed log of "
+"the process in ${LOGFILE}."
+msgstr ""
+"Tämä voi kestää kauan, joten se tulisi luultavasti tehdä taustalla. Se "
+"voidaan myös tehdä edustalla tai jäsennys voidaan ohittaa. Jos valitset "
+"”Taustalla”, löytyvät prosessin yksityiskohtaiset lokit tiedostosta "
+"${LOGFILE}."
+
+#. Type: select
+#. Description
+#: ../auctex/templates:1002
+msgid ""
+"A weekly cron job will also take care of updating the cached data, so that "
+"no specific action is required whenever you install new (La)TeX packages or "
+"remove old ones."
+msgstr ""
+"Viikottainen cron-työ hoitaa myös varastoidun tiedon päivittämisen, joten "
+"mitään erityistä ei tarvitse tehdä, kun asennat uusia (La)TeX-paketteja tai "
+"poistat vanhoja."
+
+#. Type: select
+#. Description
+#: ../auctex/templates:1002
+msgid ""
+"This update can be run manually at any moment by running 'update-auctex-"
+"elisp'."
+msgstr ""
+"Tämä päivitys voidaan tehdä käsin koska tahansa ajamalla komento ”update-"
+"auctex-elisp”."
+
+#. Type: select
+#. Choices
+#: ../auctex/templates:2001
+msgid "Console"
+msgstr "Konsoli"
+
+#. Type: select
+#. Choices
+#: ../auctex/templates:2001
+msgid "File"
+msgstr "Tiedosto"
+
+#. Type: select
+#. Description
+#: ../auctex/templates:2002
+msgid "Parsing output destination:"
+msgstr "Jäsennystulosteen kohde:"
+
+#. Type: select
+#. Description
+#: ../auctex/templates:2002
+msgid ""
+"You chose to parse TeX macro packages and LaTeX style files in foreground. "
+"This operation generates a lot of information. Please choose where this "
+"information should be sent:"
+msgstr ""
+"Valitsit, että TeX-makropakettien ja LaTeX-tyylitedostojen jäsennys tehdään "
+"edustalla. Operaatio tuottaa paljon tietoa. Valitse mihin tämä tieto tulisi "
+"lähettää:"
+
+#. Type: select
+#. Description
+#. Translators: do NOT translate ${LOGFILE}
+#: ../auctex/templates:2002
+msgid ""
+"  Console: output goes to the current console;\n"
+"  File:    output goes to ${LOGFILE}."
+msgstr ""
+"  Konsoli:  tuloste lähetetään nykyiselle konsolille\n"
+"  Tiedosto: tuloste lähetetään tiedostoon ${LOGFILE}"

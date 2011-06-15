@@ -1,0 +1,535 @@
+****** Debian Bug report logs: Bugs with severity critical in stable ******
+    * Outstanding_bugs_--_Critical_bugs;_Patch_Available (7 bugs)
+    * Outstanding_bugs_--_Critical_bugs;_Confirmed (1 bug)
+    * Outstanding_bugs_--_Critical_bugs;_Unclassified (27 bugs)
+    * Forwarded_bugs_--_Critical_bugs (5 bugs)
+    * Pending_Upload_bugs_--_Critical_bugs (1 bug)
+    * Resolved_bugs_--_Critical_bugs (4 bugs)
+    * From_other_Branch_bugs_--_Critical_bugs (30 bugs)
+Outstanding bugs -- Critical bugs; Patch Available (7 bugs)
+    * #417673 [C|+|☺] [dosfstools] /sbin/fsck.vfat:_Incorrectly_truncates_files
+      of_4294966784_bytes_length_during_boot.
+      Reported by: Andrew_Vaughan_<ajv-lists@netspace.net.au>; Date: Wed, 4 Apr
+      2007 08:57:05 UTC; Severity: critical; Tags: patch; Found_in_versions
+      dosfstools/2.11-2.1,_dosfstools/2.11-2;_Fixed_in_version_dosfstools/2.11-
+      2.2;Done: Andreas Barth <aba@not.so.argh.org>; Filed 1 year and 318 days
+      ago; Modified 64 days ago;
+    * #417862 [C|+Su|☺] [graphicsmagick] libX11:_Buffer_overflow_in_XGetPixel
+      ().
+      Reported by: Sami_Liedes_<sliedes@cc.hut.fi>; Date: Thu, 1 Mar 2007 03:
+      42:01 UTC; Severity: critical; Tags: patch, security, upstream; Fixed_in
+      version_graphicsmagick/1.1.7-14;Done: Daniel Kobras <kobras@debian.org>;
+      Filed 1 year and 352 days ago; Modified 1 year and 316 days ago;
+    * #476339 [C|+S|┣] [libmikmod2] libmikmod2:_segfaults_when_loading_XM_files
+      Reported by: Javier_Serrano_Polo_<jasp00@terra.es>; Date: Wed, 16 Apr
+      2008 03:27:01 UTC; Severity: critical; Tags: patch, security; Found_in
+      version_libmikmod/3.1.11-6;Blocking fix for 510675: mod support disabled
+      in 0.14-1?; Filed 305 days ago; Modified 33 days ago;
+    * #480972 [C|+Su|☺] [libuu-dev] CVE-2008-2266_vulnerable_to_symlink_attacks
+      Reported by: Marco_d'Itri_<md@linux.it>; Date: Mon, 12 May 2008 23:24:10
+      UTC; Severity: critical; Tags: patch, security, upstream; Found_in
+      version_uudeview/0.5.20-3;_Fixed_in_version_uudeview/0.5.20-3.1;Done:
+      Marco d'Itri <md@linux.it>; Filed 278 days ago; Modified 268 days ago;
+    * #492348 [C|+|☺] [libpam-devperm] libpam-devperm:_Breaks_execution_of_at
+      jobs
+      Reported by: Christoph_Pleger_<Christoph.Pleger@cs.uni-dortmund.de>;
+      Date: Fri, 25 Jul 2008 14:09:02 UTC; Severity: critical; Tags: patch;
+      Found_in_version_pam-devperm/1.5-2;_Fixed_in_version_pam-devperm/1.6-
+      1;Done: Petter Reinholdtsen <pere@debian.org>; Filed 205 days ago;
+      Modified 196 days ago;
+    * #510205 [C|+S|  ] [libaudiofile0] buffer_overflow_in_libaudiofile
+      Reported by: Max_Kellermann_<max@duempel.org>; Date: Tue, 30 Dec 2008 13:
+      30:02 UTC; Severity: critical; Tags: patch, security; Found_in_version
+      audiofile/0.2.6-6;Filed 47 days ago; Modified 34 days ago;
+    * #512365 [C|+S|=☺] [gmetad] gmetad:_stack_based_buffer_overflow_in
+      process_path
+      Reported by: Carlo_Marcelo_Arenas_Belon_<carenas@sajinet.com.pe>; Date:
+      Tue, 20 Jan 2009 07:21:02 UTC; Severity: critical; Tags: patch, security;
+      Merged with 512637; Found_in_version_ganglia-monitor-core/2.5.7-2;_Fixed
+      in_version_ganglia/3.1.2-1;Done: Stu Teasdale <sdt@debian.org>; Filed 26
+      days ago; Modified 14 days ago;
+Outstanding bugs -- Critical bugs; Confirmed (1 bug)
+    * #435983 [C|H|☺] [mdadm] mount:_fails_to_detect_LABEL=foo_filesystems
+      Reported by: James_Youngman_<jay@gnu.org>; Date: Sat, 4 Aug 2007 13:45:01
+      UTC; Severity: critical; Tags: confirmed, help, lenny, sid; Fixed_in
+      version_mdadm/2.6.7-2;Done: madduck@debian.org (martin f. krafft); Filed
+      1 year and 196 days ago; Modified 228 days ago;
+Outstanding bugs -- Critical bugs; Unclassified (27 bugs)
+    * #394963 [C|  |  ] [installation-reports] installation:_Problems_with_dual
+      booting_Dell_D600_with_winXP_pro_in_the_first_partition_(hd0,_0)._After
+      installing_the_Dell_Etch_Beta_3,_Windows_fails_to_boot_and_I_get_the_blue
+      screen_of_death.
+      Reported by: Bobby_Jafari_<bobby.jafari@senetas.com>; Date: Tue, 24 Oct
+      2006 06:48:03 UTC; Severity: critical; Tags: etch, lenny, sarge, sid;
+      Filed 2 years and 115 days ago; Modified 1 year and 211 days ago;
+    * #416424 [C|S|☺] [libapache2-mod-suphp] SuPHP_security_issue:_Replace
+      AddHandler_by_AddType
+      Reported by: Fili_<fili@fili.nl>; Date: Sat, 17 Mar 2007 14:24:05 UTC;
+      Severity: critical; Tags: security; Found_in_version_suphp/0.6.2-1;_Fixed
+      in_version_suphp/0.6.2-2;Done: Emmanuel Lacour <elacour@home-dn.net>;
+      Filed 1 year and 336 days ago; Modified 1 year and 121 days ago;
+    * #419987 [C|  |=☺] [xmltex] configuration_runs_into_neverending_loop
+      Reported by: Wouter_Cloetens_<wouter@mind.be>; Date: Thu, 19 Apr 2007 08:
+      51:01 UTC; Severity: critical; Tags: lenny, sid; Merged with 420559,
+      421059, 421242; Fixed_in_version_xmltex/1.9-12;Done: Norbert Preining
+      <preining@debian.org>; Filed 1 year and 303 days ago; Modified 1 year and
+      210 days ago;
+    * #424964 [C|  |☺] [python-constraint] python-constraint:_causes_multiple
+      postinst_failures_(SyntaxError:_from___future___imports_must_occur_at_the
+      beginning_of_the_file)
+      Reported by: Laurent_Bonnaud_<Laurent.Bonnaud@inpg.fr>; Date: Fri, 18 May
+      2007 07:30:02 UTC; Severity: critical; Tags: lenny, sid; Found_in_version
+      constraint/0.3.0-5;_Fixed_in_version_constraint/0.3.0-6;Done: Alexandre
+      Fayolle <afayolle@debian.org>; Filed 1 year and 274 days ago; Modified 1
+      year and 230 days ago;
+    * #425656 [C|  |☺] [libpam-encfs] libpam-encfs_causes_problems_with_sudo
+      Reported by: Stefan_Tittel_<bugreports@tittel.net>; Date: Wed, 23 May
+      2007 02:03:02 UTC; Severity: critical;  Found_in_version_libpam-encfs/
+      0.1.3-1;_Fixed_in_version_libpam-encfs/0.1.4.1-1;Done: Rubén Porras Campo
+      <nahoo82@gmail.com>; Filed 1 year and 269 days ago; Modified 1 year and
+      109 days ago;
+    * #427562 [C|  |☺] [tex-common] texlive-base-bin:_Launches_forkbomb_on
+      upgrade/install
+      Reported by: John_Goerzen_<jgoerzen@complete.org>; Date: Mon, 4 Jun 2007
+      21:39:02 UTC; Severity: critical;  Found_in_versions_tex-common/1.0.1,
+      tex-common/1.7;_Fixed_in_version_tex-common/1.8;Done: Frank Küster
+      <frank@debian.org>; Filed 1 year and 256 days ago; Modified 1 year and
+      214 days ago;
+    * #431605 [C|  |☺] [korganizer] korganizer:_events_disappear
+      Reported by: Alex_Henry_Ribeiro_dos_Santos_<tukkek@terra.com.br>; Date:
+      Tue, 3 Jul 2007 19:24:01 UTC; Severity: critical;  Found_in_versions
+      kdepim/4:3.5.5.dfsg.1-6,_kdepim/4:3.5.7-4;_Fixed_in_version_kdepim/4:
+      3.5.9-3;Done: Debian Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>;
+      Filed 1 year and 228 days ago; Modified 230 days ago;
+    * #433826 [C|  |☺] [gforge] gforge:_missing_dependancy_on_libapache-mod-ssl
+      ;_ssl_certificates_not_set_;_shell_via_pgsql_problems
+      Reported by: Ivan_Vucica_<ivucica@gmail.com>; Date: Thu, 19 Jul 2007 18:
+      15:04 UTC; Severity: critical;  Found_in_version_gforge/4.5.14-22;_Fixed
+      in_version_gforge/4.6.99+svn6094-2;Done: Roland Mas <lolando@debian.org>;
+      Filed 1 year and 212 days ago; Modified 1 year and 143 days ago;
+    * #436681 [C|S|☺] [backuppc] backuppc:_Web_interface_password_publicly
+      visible
+      Reported by: Frans_Pop_<elendil@planet.nl>; Date: Wed, 8 Aug 2007 14:00:
+      02 UTC; Severity: critical; Tags: security; Found_in_versions_backuppc/
+      2.1.2-6,_backuppc/3.0.0-1;_Fixed_in_version_backuppc/3.0.0-4;Done:
+      Ludovic Drolez <ldrolez@debian.org>; Filed 1 year and 192 days ago;
+      Modified 287 days ago;
+    * #437142 [C|  |☺] [perl-base] perl-base_should_include_unicore/PVA.pl
+      Reported by: Christian_Perrier_<bubulle@debian.org>; Date: Fri, 10 Aug
+      2007 16:51:04 UTC; Severity: critical;  Found_in_version_perl/5.8.8-7;
+      Fixed_in_version_perl/5.8.8-8;Done: Brendan O'Dea <bod@debian.org>; Filed
+      1 year and 190 days ago; Modified 1 year and 152 days ago;
+    * #440630 [C|  |☺] [bsdmainutils] bsdmainutils:_hexdump_is_lost,_needs_a
+      new_upload_with_appropriate_conflicts
+      Reported by: Pierre_Habouzit_<madcoder@debian.org>; Date: Mon, 3 Sep 2007
+      09:12:02 UTC; Severity: critical; Tags: lenny, sid; Found_in_version
+      bsdmainutils/6.1.6;_Fixed_in_version_bsdmainutils/6.1.7;Done: Daniel
+      Baumann <daniel@debian.org>; Filed 1 year and 166 days ago; Modified 1
+      year and 126 days ago;
+    * #441555 [C|S|=☺] [lighttpd] lighttpd:_header_overflow_when_using_the
+      mod_fastcgi_extension
+      Reported by: Stefan_Andersson_<stefan@stardoll.com>; Date: Mon, 10 Sep
+      2007 11:42:06 UTC; Severity: critical; Tags: etch, lenny, security, sid;
+      Merged with 441787; Found_in_versions_lighttpd/1.4.13-4etch1,_lighttpd/
+      1.4.15-1,_lighttpd/1.4.13-4etch3;_Fixed_in_version_1.4.18-1;Done:
+      Krzysztof Krzyzaniak (eloy) <eloy@debian.org>; Filed 1 year and 159 days
+      ago; Modified 1 year and 151 days ago;
+    * #442165 [C|  |☺] [apt-spy] apt-spy:_Destroys_sources.list_file
+      Reported by: &quot;Jeffrey_W._Baker&quot;_<jwbaker@acm.org>; Date: Thu,
+      13 Sep 2007 18:18:01 UTC; Severity: critical;  Found_in_version_apt-spy/
+      3.1-16;_Fixed_in_version_apt-spy/3.1-17;Done: Raphael Geissert
+      <atomo64@gmail.com>; Filed 1 year and 156 days ago; Modified 1 year and
+      118 days ago;
+    * #445861 [C|  |=☺] [hal] hal:_HAL_daemon_exited_with_return_code_1
+      Reported by: Antonio_<antonio.dantas@gmail.com>; Date: Mon, 8 Oct 2007
+      17:54:01 UTC; Severity: critical;  Merged with 447860; Found_in_versions
+      hal/0.5.10-1,_hal/0.5.8.1-9;_Fixed_in_version_hal/0.5.10-4;Done: Sjoerd
+      Simons <sjoerd@debian.org>; Filed 1 year and 131 days ago; Modified 1
+      year and 75 days ago;
+    * #455694 [C|  |☺] [gdm] gdm:_crashes_GTK+_when_run_with_dash_as_/bin/sh
+      Reported by: Andreas_Kroschel_<kro@pobox.com>; Date: Tue, 11 Dec 2007 07:
+      54:01 UTC; Severity: critical; Tags: lenny, sid; Fixed_in_version_gdm/
+      2.20.3-1;Done: Sebastian Dröge <slomo@debian.org>; Filed 1 year and 67
+      days ago; Modified 183 days ago;
+    * #467090 [C|  |  ] [lvm-common] lvm-common:_Snapshotting_LVM1_volumes_with
+      LVM2_tools_corrupts_volume_group
+      Reported by: Dominic_Hargreaves_<dom@earth.li>; Date: Fri, 22 Feb 2008
+      23:24:01 UTC; Severity: critical;  Found_in_version_lvm-common/
+      1.5.20;Filed 358 days ago; Modified 358 days ago;
+    * #468343 [C|  |☺] [linux-image-2.6.18-6-amd64] Page_fault_in
+      nfs_complete_unlink
+      Reported by: Evaggelos_Souglakos_<sys-serv@otenet.gr>; Date: Thu, 28 Feb
+      2008 13:30:02 UTC; Severity: critical;  Found_in_version_linux-2.6/
+      2.6.18.dfsg.1-18etch1;_Fixed_in_version_2.6.23-1;Done: maximilian attems
+      <max@stro.at>; Filed 353 days ago; Modified 277 days ago;
+    * #470745 [C|Uu|☺] [passwd] passwd:_usermod_loops_and_mem_leaks
+      Reported by: Thomas_Rasmussen_<rasmussen.thomas@gmail.com>; Date: Thu, 13
+      Mar 2008 11:36:02 UTC; Severity: critical; Tags: fixed-upstream,
+      upstream; Found_in_version_shadow/1:4.0.18.1-7;_Fixed_in_version_shadow/
+      1:4.1.1-1;Done: Nicolas FRANCOIS (Nekral)
+      <nicolas.francois@centraliens.net>; Filed 339 days ago; Modified 318 days
+      ago;
+    * #474364 [C|  |☺] [fmirror] fmirror:_deletes_filesystem_before_downloading
+      Reported by: Michael_Braun_<michael-dev@fami-braun.de>; Date: Sat, 5 Apr
+      2008 10:06:02 UTC; Severity: critical;  Found_in_version_fmirror/2:0.8.4-
+      13;_Fixed_in_version_2:0.8.4-14+rm;Done: Marco Rodrigues
+      <gothicx@sapo.pt>; Filed 316 days ago; Modified 207 days ago;
+    * #475926 [C|  |☺] [laptop-mode-tools] laptop-mode-tools:_When_/proc/acpi/
+      battery_is_not_present_and_auto_hibernate_is_on,_system_hibernates_on
+      boot
+      Reported by: Nigel_McNie_<nigel@mcnie.name>; Date: Sun, 13 Apr 2008 21:
+      48:01 UTC; Severity: critical;  Fixed_in_version_laptop-mode-tools/1.40-
+      1;Done: Bart Samwel <bart@samwel.tk>; Filed 307 days ago; Modified 301
+      days ago;
+    * #490443 [C|  |  ] [evms] A_partition_is_registered_twice_in_blkid.tab,
+      which_prevent_to_mount_it
+      Reported by: Fabrice_Salvaire_<fabrice.salvaire@orange.fr>; Date: Sat, 12
+      Jul 2008 10:57:02 UTC; Severity: critical;  Found_in_version_evms/2.5.5-
+      18;Filed 218 days ago; Modified 218 days ago;
+    * #490753 [C|  |☺] [linux-image-2.6.18-6-686] /boot/vmlinuz-2.6.18-6-686:
+      kernel_BUG_at_drivers/md/bitmap.c:1166!
+      Reported by: Rob_Leslie_<rob@mars.org>; Date: Mon, 14 Jul 2008 00:24:04
+      UTC; Severity: critical;  Found_in_version_2.6.18.dfsg.1-18etch6;_Fixed
+      in_version_2.6.24-1;Done: maximilian attems <max@stro.at>; Filed 216 days
+      ago; Modified 204 days ago;
+    * #495603 [C|  |  ] [installation-reports] grub-installer_fails_on_a_FSC
+      Primergy_RX300_with_a_level_5_RAID
+      Reported by: Ulrich_Stärk_<uli@spielviel.de>; Date: Mon, 18 Aug 2008 20:
+      54:01 UTC; Severity: critical;  Filed 180 days ago; Modified 180 days
+      ago;
+    * #508259 [C|S|☺] [linux-image-2.6.18-6-k7] linux-image-2.6.18-6-k7:_Local
+      kernel_panic_exploit
+      Reported by: Kuba_Plichcinski_<kuba@fabrykahostingu.pl>; Date: Tue, 9 Dec
+      2008 11:48:02 UTC; Severity: critical; Tags: security; Found_in_version
+      linux-2.6/2.6.18.dfsg.1-23;_Fixed_in_version_2.6.26-11;Done: Moritz
+      Muehlenhoff <jmm@inutil.org>; Filed 68 days ago; Modified 56 days ago;
+    * #512999 [C|Su|☺] [rt2400] Possible_security_flaw_in_ad-hoc_probe_request
+      processing
+      Reported by: Ben_Hutchings_<ben@decadent.org.uk>; Date: Sun, 25 Jan 2009
+      16:18:01 UTC; Severity: critical; Tags: security, upstream; Found_in
+      versions_rt2400/1.2.2+cvs20060620-4,_1.2.2+cvs20080623-2;_Fixed_in
+      version_rt2400/1.2.2+cvs20080623-3;Done: Ben Hutchings
+      <ben@decadent.org.uk>; Filed 21 days ago; Modified 18 days ago;
+    * #513000 [C|Su|☺] [rt2500] Possible_security_flaw_in_ad-hoc_probe_request
+      processing
+      Reported by: Ben_Hutchings_<ben@decadent.org.uk>; Date: Sun, 25 Jan 2009
+      16:18:01 UTC; Severity: critical; Tags: security, upstream; Found_in
+      versions_1:1.1.0-b4+cvs20080623-2,_rt2500/1.1.0+cvs20060620-3;_Fixed_in
+      version_rt2500/1:1.1.0-b4+cvs20080623-3;Done: Ben Hutchings
+      <ben@decadent.org.uk>; Filed 21 days ago; Modified 18 days ago;
+    * #514096 [C|  |☺] [mped] Minimum_Profit_text_editor_version_3.x_can
+      destroy_UTF-8_files
+      Reported by: Angel_Ortega_<angel@triptico.com>; Date: Wed, 4 Feb 2009 07:
+      57:01 UTC; Severity: critical; Tags: lenny; Found_in_version_mped/3.3.17-
+      1;_Fixed_in_version_mped/5.1.1-1;Filed 11 days ago; Modified 11 days ago;
+Forwarded bugs -- Critical bugs (5 bugs)
+    * #439392 [C|S|☺↝] [backup-manager] backup-manager:_password_disclosure_in
+      backup_uploads
+      Reported by: Micha_Lenk_<micha@lenk.info>; Date: Fri, 24 Aug 2007 19:06:
+      02 UTC; Severity: critical; Tags: security; Found_in_version_backup-
+      manager/0.7.5-3;_Fixed_in_versions_backup-manager/0.7.6-3,_backup-
+      manager/0.5.7-1sarge2,_backup-manager/0.7.5-4;Forwarded to http://
+      bugzilla.backup-manager.org/cgi-bin/show_bug.cgi?id=173; Done: Thijs
+      Kinkhorst <thijs@debian.org>; Filed 1 year and 176 days ago; Modified 309
+      days ago;
+    * #466663 [C|+S|☺↝] [lighttpd] lighttpd:_remote_denial_of_service
+      Reported by: u0@desibbrg.com; Date: Wed, 20 Feb 2008 08:42:01 UTC;
+      Severity: critical; Tags: patch, security; Found_in_versions_lighttpd/
+      1.4.13-4etch4,_lighttpd/1.4.18-1;_Fixed_in_version_lighttpd/1.4.18-
+      2;Forwarded to http://trac.lighttpd.net/trac/ticket/1562; Done: Pierre
+      Habouzit <madcoder@debian.org>; Filed 361 days ago; Modified 256 days
+      ago;
+    * #494969 [C|+S|=☺↝] [sympa] sympa:_Leftover_debug_code_may_lead_to_data
+      loss
+      Reported by: Olivier_Berger_<olivier.berger@it-sudparis.eu>; Date: Wed,
+      13 Aug 2008 14:00:07 UTC; Severity: critical; Tags: patch, security;
+      Merged with 496405; Found_in_versions_sympa/5.2.3-1.2+etch1,_sympa/5.3.4-
+      5;_Fixed_in_version_5.3.4-5.1;Forwarded to http://sourcesup.cru.fr/
+      tracker/index.php?func=detail&amp;aid=4430; Done: Nico Golde
+      <nion@debian.org>; Filed 186 days ago; Modified 171 days ago;
+    * #499078 [C|M+|↝] [jfsutils] jfsutils:_Bus_Error_when_running_fsck.jfs_on
+      sparc
+      Reported by: Ivan_Jager_<aij+debian@andrew.cmu.edu>; Date: Tue, 16 Sep
+      2008 01:42:01 UTC; Severity: critical; Tags: moreinfo, patch; Found_in
+      version_jfsutils/1.1.11-1;Forwarded to https://sourceforge.net/tracker/
+      ?func=detail&amp;atid=712756&amp;aid=2113843&amp;group_id=128802; Filed
+      152 days ago;
+    * #514163 [C|  |☺↝] [fail2ban] fail2ban:_allows_DoS_via_construction_of
+      domain_names_starting_with_IP_of_a_victim
+      Reported by: Chris_Butler_<chrisb@debian.org>; Date: Wed, 4 Feb 2009 19:
+      57:01 UTC; Severity: critical;  Found_in_version_fail2ban/0.7.5-2etch1;
+      Fixed_in_versions_fail2ban/0.8.3-5,_fail2ban/0.8.3-2sid1;Forwarded to
+      Cyril Jaquier
+      jaquier@fail2ban.org>; Done: Yaroslav Halchenko <debian@onerussian.com>;
+      Filed 11 days ago; Modified 10 days ago;
+Pending Upload bugs -- Critical bugs (1 bug)
+    * #471104 [C|P|☺] [php5] php5:_Please_rebuild_against_up_to_date_timezone
+      data
+      Reported by: Andrew_McMillan_<debian@mcmillan.net.nz>; Date: Sat, 15 Mar
+      2008 22:54:01 UTC; Severity: critical; Tags: pending; Found_in_version
+      php5/5.2.0-8+etch10;_Fixed_in_version_php5/5.2.6-1;Done: Sean Finney
+      <seanius@debian.org>; Filed 336 days ago; Modified 71 days ago;
+Resolved bugs -- Critical bugs (4 bugs)
+    * #466449 [C|S|☺] [diatheke] diatheke:_Diatheke_allows_arbitrary_command
+      execution_using_the_range_parameter
+      Reported by: Dan_Dennison_<dan@thedennisons.org>; Date: Mon, 18 Feb 2008
+      20:36:05 UTC; Severity: critical; Tags: security; Fixed_in_versions
+      sword/1.5.9-8,_sword/1.5.7-7sarge1,_sword/1.5.9-2etch1;Done: Thijs
+      Kinkhorst <thijs@debian.org>; Filed 362 days ago; Modified 204 days ago;
+    * #510902 [C|S|☺] [iceweasel] Missing_security_updates_-_version_2.0.0.20
+      available_from_upstream
+      Reported by: &quot;bugtracker@slideomania.com&quot;
+      <bugtracker@slideomania.com>; Date: Mon, 5 Jan 2009 20:06:02 UTC;
+      Severity: critical; Tags: security; Found_in_version_iceweasel/2.0.0.18-
+      0etch1;_Fixed_in_version_iceweasel/2.0.0.19-0etch1;Done: Eric Dorland
+      <eric@debian.org>; Can be archived in 23 days; Filed 40 days ago;
+    * #514411 [C|  |  ] [resolvconf] resolvconf_breaks_all_network_operations
+      Reported by: Richard_Kettlewell_<rjk@greenend.org.uk>; Date: Sat, 7 Feb
+      2009 10:51:02 UTC; Severity: critical;  Found_in_version_resolvconf/
+      1.43;Done: Thomas Hood <jdthood@gmail.com>; Can be archived in 21 days;
+      Filed 8 days ago;
+    * #515160 [C|  |  ] [debian-installer] debian-installer:_Fails_to_install
+      Debian
+      Reported by: Michael_Rasmussen_<mir@datanom.net>; Date: Sat, 14 Feb 2009
+      02:36:01 UTC; Severity: critical;  Found_in_version_debian-installer/
+      20090123;Done: Christian Perrier <bubulle@debian.org>; Can be archived in
+      27 days;
+From other Branch bugs -- Critical bugs (30 bugs)
+    * #423222 [C|S|=☺] [libnss-mdns] SIGBUS_in__nss_mdns4_gethostbyaddr_r_on
+      SPARC
+      Reported by: Dan_Smolik_<marvin@sitour.cz>; Date: Thu, 10 May 2007 17:30:
+      02 UTC; Severity: critical; Tags: etch, security; Merged with 451428;
+      Found_in_version_nss-mdns/0.9-0.2;_Fixed_in_version_nss-mdns/0.10-
+      0.1;Done: Sjoerd Simons <sjoerd@debian.org>; Can be archived today; Filed
+      1 year and 282 days ago; Modified 1 year and 88 days ago;
+    * #425978 [C|+S|☺] [libgd2] libgd2:_Multiple_issues_in_GIF_loader
+      Reported by: Pierre_Joye_<pierre.php@gmail.com>; Date: Fri, 25 May 2007
+      11:18:02 UTC; Severity: critical; Tags: patch, security; Found_in
+      versions_2.0.33,_2.0.33-5.2;_Fixed_in_versions_2.0.34,_2.0.34-1;Done:
+      Jonas Smedegaard <dr@jones.dk>; Filed 1 year and 267 days ago; Modified 1
+      year and 187 days ago;
+    * #428053 [C|  |  ] [libpam-poldi] libpam-poldi:_segfaults_after_removing
+      the_cardreader
+      Reported by: Alexander_Wirt_<formorer@debian.org>; Date: Fri, 8 Jun 2007
+      12:06:08 UTC; Severity: critical;  Found_in_version_poldi/0.3.0-4.1;Filed
+      1 year and 253 days ago; Modified 191 days ago;
+    * #433501 [C|U|☺↝] [linux-2.6] Oops_in_kcryptd
+      Reported by: &quot;Laurent_Parenteau&quot;_<laurent.parenteau@gmail.com>;
+      Date: Tue, 17 Jul 2007 15:33:02 UTC; Severity: critical; Tags: fixed-
+      upstream; Found_in_versions_2.6.18.dfsg.1-12etch2,_2.6.18-1;_Fixed_in
+      version_2.6.22-4;Forwarded to http://bugzilla.kernel.org/
+      show_bug.cgi?id=7388; Done: Philippe Cloutier <chealer@gmail.com>; Filed
+      1 year and 214 days ago; Modified 139 days ago;
+    * #440436 [C|  |┫] [w3c-libwww] The_maintainer_plans_to_request_removal_of
+      this_package_from_the_Debian_archive
+      Reported by: Richard_Atterer_<atterer@debian.org>; Date: Sat, 1 Sep 2007
+      13:33:02 UTC; Severity: critical;  Fix blocked by 471750: dependency
+      libwww to be dropped from the archive; Filed 1 year and 168 days ago;
+      Modified 303 days ago;
+    * #463261 [C|u|↝] [libpam-thinkfinger] causes_cupsd_to_crash
+      Reported by: Sam_Hocevar_<sam@zoy.org>; Date: Wed, 30 Jan 2008 17:30:07
+      UTC; Severity: critical; Tags: upstream; Found_in_version_thinkfinger/
+      0.3+rev118.2-2;Forwarded to http://thread.gmane.org/
+      gmane.linux.drivers.thinkfinger/531; Filed 1 year and 17 days ago;
+      Modified 1 year and 14 days ago;
+    * #468751 [C|S|☺] [aptitude] aptitude_update_fails_with_improperly_formed
+      Recommends_entry_in_lists_files
+      Reported by: &quot;Warren_Turkal&quot;_<wt@penguintechs.org>; Date: Sat,
+      1 Mar 2008 07:12:04 UTC; Severity: critical; Tags: security; Found_in
+      version_aptitude/0.4.10-1;_Fixed_in_version_aptitude/0.4.11-1;Done:
+      Daniel Burrows <dburrows@debian.org>; Filed 351 days ago; Modified 336
+      days ago;
+    * #471642 [C|  |=] [pango-graphite] libpango1.0-0:_iceweasel_is_crashing
+      permanently_with_pango_enabled
+      Reported by: Norbert_Preining_<preining@logic.at>; Date: Wed, 19 Mar 2008
+      09:30:03 UTC; Severity: critical;  Merged with 476089, 479153; Filed 333
+      days ago; Modified 135 days ago;
+    * #481818 [C|  |  ] [nbsmtp] nbsmtp:_Unable_to_send_mail_via_mail_or_mailx
+      Reported by: Vojtech_<vojtech@x.cz>; Date: Sun, 18 May 2008 19:03:02 UTC;
+      Severity: critical;  Found_in_version_nbsmtp/1.00-4;Filed 273 days ago;
+      Modified 99 days ago;
+    * #491915 [C|  |  ] [python-vobject] breaks_calendarserver
+      Reported by: Guido_Günther_<agx@sigxcpu.org>; Date: Tue, 22 Jul 2008 18:
+      30:02 UTC; Severity: critical;  Found_in_version_python-vobject/0.6.6-
+      1;Filed 208 days ago; Modified 208 days ago;
+    * #492317 [C|  |  ] [kdm] update_breaks_grub_boot_(MBR)_&quot;Grub_Error
+      28:_Selected_item_can_not_fit_into_memory&quot;
+      Reported by: Alan_Braslau_<alan.braslau@cea.fr>; Date: Fri, 25 Jul 2008
+      08:30:02 UTC; Severity: critical;  Found_in_version_kdebase-workspace/4:
+      4.0.98-1;Filed 205 days ago; Modified 25 days ago;
+    * #496758 [C|  |  ] [ia32-libs-tools] Too_late_for_lenny
+      Reported by: Goswin_von_Brederlow_<goswin-v-b@web.de>; Date: Wed, 27 Aug
+      2008 08:57:01 UTC; Severity: critical;  Found_in_version_12;Filed 172
+      days ago; Modified 172 days ago;
+    * #498965 [C|  |☺] [selinux-policy-default] dbus_bus_get():_An_SELinux
+      policy_prevents_this_sender_from_sending_this_message_to_this_recipient
+      Reported by: &quot;Eddy_Petrișor&quot;_<eddy.petrisor@gmail.com>; Date:
+      Sun, 14 Sep 2008 21:21:01 UTC; Severity: critical;  Found_in_version
+      refpolicy/2:0.0.20080702-7;_Fixed_in_version_2:0.0.20080702-6;Done:
+      &quot;Eddy Petrișor&quot; <eddy.petrisor@gmail.com>; Filed 153 days ago;
+      Modified 102 days ago;
+    * #499025 [C|  |  ] [heartbeat-2] heartbeat-2:_Primary_node_thrashes_to
+      death_with_queue_error
+      Reported by: Colin_Alston_<colin@thusa.co.za>; Date: Mon, 15 Sep 2008 15:
+      45:06 UTC; Severity: critical; Tags: etch; Found_in_version_heartbeat-2/
+      2.0.7-2;Filed 153 days ago; Modified 126 days ago;
+    * #503475 [C|  |  ] [love] Reproducably_steals_all_keyboard_and_some_mouse
+      input
+      Reported by: &quot;Richard_Hartmann&quot;_<richih.mailinglist@gmail.com>;
+      Date: Sun, 26 Oct 2008 12:33:02 UTC; Severity: critical;  Found_in
+      version_love/0.4.0-2;Filed 112 days ago; Modified 55 days ago;
+    * #504373 [C|  |☺] [libtemplate-perl] libtemplate-perl:_Upgrade_from_etch
+      breaks_code_using_DBI_plugins
+      Reported by: Antti_Salmela_<asalmela@iki.fi>; Date: Mon, 3 Nov 2008 08:
+      09:02 UTC; Severity: critical;  Found_in_versions_libtemplate-perl/2.19-
+      1.1lenny1,_libtemplate-perl/2.20-1;_Fixed_in_version_libtemplate-perl/
+      2.19-1.1lenny1.1;Done: Dominic Hargreaves <dom@earth.li>; Filed 104 days
+      ago; Modified 63 days ago;
+    * #509292 [C|+|☺] [rsyslog] rsyslog:_random_crashes_on_multi_core_machines
+      Reported by: Juha_Koho_<jmcsa00@gmail.com>; Date: Sat, 20 Dec 2008 22:33:
+      01 UTC; Severity: critical; Tags: patch; Found_in_version_rsyslog/3.18.5-
+      1;_Fixed_in_version_rsyslog/3.18.6-4;Done: Michael Biebl
+      <biebl@debian.org>; Can be archived in 24 days; Filed 56 days ago;
+    * #510966 [C|  |  ] [mgp] latest_mgp_package_doesn't_display_any
+      presentation,_not_even_included_examples
+      Reported by: Harald_Welte_<laforge@gnumonks.org>; Date: Tue, 6 Jan 2009
+      10:03:02 UTC; Severity: critical;  Found_in_version_mgp/1.13a-1;Filed 40
+      days ago; Modified 39 days ago;
+    * #511562 [C|  |☺] [rsyslog] rsyslog:_segfault_on_reload_when_using
+      $AllowedSender
+      Reported by: Juha_Koho_<jmcsa00@gmail.com>; Date: Sat, 20 Dec 2008 22:33:
+      01 UTC; Severity: critical;  Found_in_version_rsyslog/3.18.5-1;_Fixed_in
+      version_rsyslog/3.18.6-3;Done: Michael Biebl <biebl@debian.org>; Can be
+      archived in 3 days; Filed 56 days ago; Modified 31 days ago;
+    * #512696 [C|  |  ] [firmware-iwlwifi] firmware-iwlwifi:_Kernel_panic_when
+      using_iwl4965_and_iwlwifi-4965-ucode-228.57.2.21
+      Reported by: Oleg_Broytmann_<phd@phd.pp.ru>; Date: Thu, 22 Jan 2009 22:
+      18:04 UTC; Severity: critical;  Found_in_version_firmware-nonfree/
+      0.14;Filed 23 days ago;
+    * #512995 [C|Su|☺] [rt73] Possible_security_flaw_in_ad-hoc_probe_request
+      processing
+      Reported by: Ben_Hutchings_<ben@decadent.org.uk>; Date: Sun, 25 Jan 2009
+      16:18:01 UTC; Severity: critical; Tags: security, upstream; Found_in
+      version_1:1.0.3.6-cvs20080623-dfsg1-2;_Fixed_in_version_rt73/1:1.0.3.6-
+      cvs20080623-dfsg1-3;Done: Ben Hutchings <ben@decadent.org.uk>; Can be
+      archived in 12 days; Filed 21 days ago; Modified 18 days ago;
+    * #513001 [C|Su|☺] [rt2570] Possible_security_flaw_in_ad-hoc_probe_request
+      processing
+      Reported by: Ben_Hutchings_<ben@decadent.org.uk>; Date: Sun, 25 Jan 2009
+      16:18:01 UTC; Severity: critical; Tags: security, upstream; Found_in
+      versions_1.1.0+cvs20060620-3,_1.1.0+cvs20080623-1;_Fixed_in_version
+      rt2570/1.1.0+cvs20080623-2;Done: Ben Hutchings <ben@decadent.org.uk>;
+      Filed 21 days ago; Modified 18 days ago;
+    * #513002 [C|Su|  ] [rt2860-source] Possible_security_flaw_in_ad-hoc_probe
+      request_processing
+      Reported by: Ben_Hutchings_<ben@decadent.org.uk>; Date: Sun, 25 Jan 2009
+      16:18:01 UTC; Severity: critical; Tags: security, upstream; Done: Ben
+      Hutchings <ben@decadent.org.uk>; Can be archived in 12 days; Filed 21
+      days ago; Modified 16 days ago;
+    * #513022 [C|PSu|☺] [linux-modules-contrib-2.6] Possible_security_flaw_in
+      ad-hoc_probe_request_processing
+      Reported by: Ben_Hutchings_<ben@decadent.org.uk>; Date: Sun, 25 Jan 2009
+      16:18:01 UTC; Severity: critical; Tags: pending, security, upstream;
+      Fixed_in_version_linux-modules-contrib-2.6/2.6.26-3;Done: Daniel Baumann
+      <daniel@debian.org>; Can be archived in 16 days; Filed 21 days ago;
+      Modified 16 days ago;
+    * #513576 [C|P|☺] [octave3.0] octave-symbolic_does_not_uninstall
+      Reported by: Steve_Cotton_<steve0001@s.cotton.clara.co.uk>; Date: Fri, 30
+      Jan 2009 12:21:01 UTC; Severity: critical; Tags: pending; Found_in
+      version_octave3.0/1:3.0.1-6lenny1;_Fixed_in_version_octave3.0/1:3.0.1-
+      6lenny2;Done: Thomas Weber <thomas.weber.mail@gmail.com>; Can be archived
+      in 21 days; Filed 16 days ago;
+    * #514017 [C|  |☺] [attr] attr_-_Puts_files_in_/lib64
+      Reported by: Bastian_Blank_<waldi@debian.org>; Date: Tue, 3 Feb 2009 13:
+      18:01 UTC; Severity: critical;  Found_in_version_attr/1:2.4.43-1;_Fixed
+      in_version_attr/1:2.4.43-2;Done: Anibal Monsalve Salazar
+      <anibal@debian.org>; Can be archived in 26 days; Filed 12 days ago;
+    * #514629 [C|  |  ] [util-linux] /sbin/cfdisk:_crash_with_big_partitions
+      Reported by: root_<bugs@shiva.hostoffice.hu>; Date: Mon, 9 Feb 2009 16:
+      12:04 UTC; Severity: critical;  Found_in_version_util-linux/2.13.1.1-1;
+    * #514713 [C|S|☺] [typo3-src] Information_disclosure_and_XSS
+      vulnerabilities_in_TYPO3
+      Reported by: gawain@camlann.de; Date: Tue, 10 Feb 2009 10:27:01 UTC;
+      Severity: critical; Tags: security; Found_in_versions_4.0.2+debian-7,
+      4.2.5-1;_Fixed_in_versions_typo3-src/4.2.6-1,_typo3-src/4.2.5-
+      1+lenny1;Done: Christian Welzel <gawain@camlann.de>; Can be archived in
+      24 days;
+    * #514892 [C|  |  ] [nfs-user-server] rpc.mount_took_a_wrong_port
+      Reported by: Dmitry_Baryshev_<ksquirrel.iv@gmail.com>; Date: Wed, 11 Feb
+      2009 18:27:02 UTC; Severity: critical;  Found_in_version_nfs-user-server/
+      2.2beta47-25;
+    * #515229 [C|  |  ] [dash] New_dash_has_serious_problems_with_waiting_for
+      spawned_processes
+      Reported by: Petr_Vandrovec_<petr@vmware.com>; Date: Sun, 15 Feb 2009 01:
+      03:01 UTC; Severity: critical;  Found_in_version_dash/0.5.5.1-1;
+***** Summary *****
+    * Status
+          o 35 Outstanding
+          o 5 Forwarded
+          o 1 Pending Upload
+          o 4 Resolved
+          o 30 From other Branch
+    * Severity
+          o 75 Critical bugs
+    * Classification
+          o 7 Patch Available
+          o 1 Confirmed
+          o 27 Unclassified
+***** Options *****
+
+                                                    The same search fields are
+                         [One of: in package/       ORed, different fields are
+                         tagged/with severity/in    ANDed.
+                         source package/in packages Valid severities are
+                         maintained by/submitted    critical, grave, serious,
+                         by/owned by/with status/   important, normal, minor,
+                         which affect package/with  wishlist, fixed
+                         mail from/newest bugs/in   Valid tags are patch,
+                         bug] [critical             wontfix, moreinfo,
+***** Select bugs *****  ]                          unreproducible, fixed,
+                         [One of: in package/       potato, woody, sid, help,
+                         tagged/with severity/in    security, upstream,
+                         source package/in packages pending, sarge, sarge-
+                         maintained by/submitted    ignore, experimental, d-i,
+                         by/owned by/with status/   confirmed, ipv6, lfs,
+                         which affect package/with  fixed-in-experimental,
+                         mail from/newest bugs/in   fixed-upstream, l10n, etch,
+                         bug] [_fo_searchvalue      etch-ignore, lenny, lenny-
+                         ]                          ignore, squeeze, squeeze-
+                                                    ignore
+                          [One of: with subject
+                         containing/tagged/with
+                         severity/with pending
+***** Include Bugs ***** state/with submitter
+                         containing/with forwarded
+                         containing/with owner
+                         containing/with package]
+                         [_fo_includevalue    ]
+                          [One of: with subject
+                         containing/tagged/with
+                         severity/with pending
+***** Exclude Bugs ***** state/with submitter
+                         containing/with forwarded
+                         containing/with owner
+                         containing/with package]
+                         [_fo_excludevalue    ]
+***** Categorize using
+*****
+***** Order by *****
+                         ⁰ Repeat Merged
+                         ⁰ Reverse Bugs
+                         ⁰ Reverse Pending
+                         ⁰ Reverse Severity
+                         [One of: None/testing/
+***** Misc options ***** oldstable/experimental/
+                         unstable/stable]
+                         [One of: Unarchived/
+                         Archived/Archived and
+                         Unarchived]
+                         Toggle_all_extra
+                         information
+***** Submit *****       [Submit]
+===============================================================================
+Debian_Bug_tracking_system
+Copyright (C) 1999 Darren O. Benham, 1997,2003 nCipher Corporation Ltd, 1994-97
+Ian Jackson.

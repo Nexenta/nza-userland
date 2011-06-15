@@ -1,0 +1,4 @@
+for f in #BINARIES#
+do
+    /usr/bin/ln /usr/lib/isaexec $f | true
+done

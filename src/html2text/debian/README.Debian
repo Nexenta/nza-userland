@@ -1,0 +1,64 @@
+--------------------------------
+Some notes about using html2text
+--------------------------------
+
+1. HTTP support
+
+The original html2text doesn't support any complicated HTTP queries and
+answers. The Debian version of html2text doesn't provide http support 
+at all.
+
+However, you can easily operate by using the curl or wget packages:
+
+curl -s http://www.server.org/aaa/bbb/ccc.html | html2text
+wget http://www.server.org/aaa/bbb/ccc.html -O- | html2text
+
+Using wget or curl for downloading packages allows you to use:
+ - proxy servers;
+ - https;
+ - ftp;
+ - some IPv6 support;
+ - and any other downloading feature that wget or curl supports.
+
+Please don't submit bugs about direct HTTP support; use the approach 
+mentioned above instead.
+
+2. Input recoding
+
+The original html2text lacks support for recognizing encoding of html 
+file. However, the Debian version has it and even has it turned on by 
+default. Use the new '-nometa' option to restore the original behavior.
+
+To ensure html2text processes your document right, check that one of 
+following cases is true:
+ - the document has 'META HTTP-EQUIV' section with right encoding;
+ - the document is encoded in ISO_8859-1;
+ - the document is encoded in US ASCII and one of '-ascii' or '-utf8'
+   options is supplied;
+ - the document is encoded in UTF-8 and '-utf8' option is supplied.
+
+3. Output recoding
+
+The original html2text doesn't have support for output recoding. 
+However, the Debian version does.
+
+Note that this recoding will be done only if output is a terminal.
+
+html2text recodes output into the current user's locale charset, stored 
+in LC_CTYPE. This will work in most cases. If you need to recode output 
+to some other charset, you have to specify
+
+LC_CTYPE=<locale>.<charset> html2text <options>
+
+If you have LC_ALL set, you have to substitute LC_ALL for LC_CTYPE in
+the example above.
+
+4. Backspaces
+
+Debian version of html2text now does recoding, which may use multi-byte
+encodings.  Since backspace-producing code does not work with 
+multi-byte encodings (at least currently), producing of backspaces is
+disabled.
+
+--
+Eugene V. Lyubimkin

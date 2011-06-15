@@ -1,0 +1,34 @@
+Source: texlive-bin
+Section: tex
+Priority: optional
+Maintainer:  Debian TeX Maintainers <debian-tex-maint@lists.debian.org>
+Uploaders: Norbert Preining <preining@debian.org>, Frank Küster <frank@kuesterei.ch>
+Build-Depends: debhelper (>= 7), quilt, sharutils, ed | sunwcs, libncurses5-dev | libncurses-dev, libxaw7-dev, libpng12-dev | libpng-dev, zlib1g-dev | libz-dev, libgd2-xpm-dev | libgd2-noxpm-dev, flex, bison, libpoppler-dev (>= 0.12.4), chrpath, g++-4.4 [armel], time | sunwcs
+Standards-Version: 3.8.4
+Homepage: http://www.tug.org/texlive
+
+Package: texlive-binaries
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, texlive-common (>= 2009), tex-common (>= 2.00), ed | sunwcs, perl
+Conflicts: texlive-base-bin, dvi2tty
+Replaces: texlive-base-bin, texlive-omega (<< 2008), dvipdfmx, texlive-extra-utils (<< 2008), texlive-font-utils (<< 2008), texlive-lang-cyrillic (<< 2008), texlive-xetex (<< 2008), texlive-metapost (<< 2008), texlive-lang-indic (<< 2008), texlive-formats-extra (<< 2008), dvi2tty, freetype1-tools
+Provides: texlive-base-bin, dvi2tty
+Description: Binaries for TeX Live
+ This package contains all the binaries of TeX Live packages.
+
+Package: libkpathsea5
+Section: libs
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Description: TeX Live: path search library for TeX (runtime part)
+ This package contains the runtime part of the Kpathsea[rch] library,
+ which implements generic path searching, configuration, and
+ TeX-specific file searching.
+
+Package: libkpathsea-dev
+Section: libdevel
+Architecture: any
+Depends: ${misc:Depends}, libkpathsea5 (= ${binary:Version}), ${shlibs:Depends}
+Description: TeX Live: path search library for TeX (development part)
+ This package contains the static library and header files for the
+ Kpathsea[rch] library.

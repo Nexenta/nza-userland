@@ -1,0 +1,34 @@
+# DP: hotshot/pstats.py: Error out on missing profile/pstats modules.
+# DP: Add a note to the library documentation, that the profile and pstats
+# DP: modules can be found in the python2.x-profiler package.
+
+Index: python2.6-2.6.5+20100521/Doc/library/profile.rst
+===================================================================
+--- python2.6-2.6.5+20100521.orig/Doc/library/profile.rst	2010-05-21 15:51:07.267718046 +0200
++++ python2.6-2.6.5+20100521/Doc/library/profile.rst	2010-05-21 15:51:07.275710194 +0200
+@@ -5,6 +5,12 @@
+ The Python Profilers
+ ********************
+ 
++Debian note: The license for the :mod:`profile` and :mod:`pstats`
++modules doesn't conform to the Debian Free Software Guidelines (DFSG).
++These modules can be found in the *python-profiler* package in the
++*non-free* section of the Debian archives or in the the *multiverse*
++section of the Ubuntu archives.
++
+ .. sectionauthor:: James Roskind
+ 
+ .. module:: profile
+@@ -243,6 +249,12 @@
+    :synopsis: Python profiler
+ 
+ 
++Debian note: The license for the :mod:`profile` and :mod:`pstats`
++modules doesn't conform to the Debian Free Software Guidelines (DFSG).
++These modules can be found in the *python-profiler* package in the
++*non-free* section of the Debian archives or in the the *multiverse*
++section of the Ubuntu archives.
++
+ The primary entry point for the profiler is the global function
+ :func:`profile.run` (resp. :func:`cProfile.run`). It is typically used to create
+ any profile information.  The reports are formatted and printed using methods of

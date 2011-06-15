@@ -1,0 +1,15 @@
+Description: Add gem extension
+Bug-Debian: http://bugs.debian.org/541673
+Author: Patrick Winnertz <winnie@debian.org>
+
+--- a/misc/mc.ext.in
++++ b/misc/mc.ext.in
+@@ -107,7 +107,7 @@
+ ### Archives ###
+ 
+ # .tgz, .tpz, .tar.gz, .tar.z, .tar.Z, .ipk
+-regex/\.t([gp]?z|ar\.g?[zZ])$|\.ipk$
++regex/\.t([gp]?z|ar\.g?[zZ])$|\.ipk|\.gem$
+ 	Open=%cd %p#utar
+ 	View=%view{ascii} gzip -dc %f 2>/dev/null | tar tvvf -
+ 

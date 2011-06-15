@@ -1,0 +1,25 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+##
+## entropy by <troyh@debian.org>
+##
+## DP: Changing the default behavior to not use apr_generate_random_bytes(), Debian use
+## DP: the system APR which is configured to use /dev/random. In cases where the
+## DP: entropy pool is drained svn commands can block waiting. Moving to the fallback
+## DP: of using time. (Closes: #285708, #298822) 
+
+@DPATCH@
+--- a/subversion/libsvn_ra_svn/cram.c
++++ b/subversion/libsvn_ra_svn/cram.c
+@@ -118,12 +118,8 @@
+  * should prevent replay attacks in practice. */
+ static apr_status_t make_nonce(apr_uint64_t *nonce)
+ {
+-#if APR_HAS_RANDOM
+-  return apr_generate_random_bytes((unsigned char *) nonce, sizeof(*nonce));
+-#else
+   *nonce = apr_time_now();
+   return APR_SUCCESS;
+-#endif
+ }
+ 
+ svn_error_t *svn_ra_svn_cram_server(svn_ra_svn_conn_t *conn, apr_pool_t *pool,

@@ -1,0 +1,2 @@
+shlibs:Depends=libgcc1, libgpg-error0 (>= 1.10), libldap-2.4-2 (>= 2.4.7), system-library
+misc:Depends=

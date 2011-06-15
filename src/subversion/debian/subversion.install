@@ -1,0 +1,10 @@
+debian/tmp/usr/bin/svn*			usr/bin
+debian/tmp/usr/share/locale		usr/share
+debian/tmp/usr/share/man/man1		usr/share/man
+debian/tmp/usr/share/man/man5		usr/share/man
+debian/tmp/usr/share/man/man8		usr/share/man
+
+debian/tools/svn-defaults/config	etc/subversion
+debian/tools/svn-defaults/servers	etc/subversion
+contrib/client-side/emacs/psvn.el	usr/share/emacs/site-lisp
+debian/etc/50psvn.el			etc/emacs/site-start.d

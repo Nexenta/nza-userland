@@ -1,0 +1,14 @@
+tools/hook-scripts/*			usr/share/subversion/hook-scripts
+BUILD/tools/hook-scripts/*		usr/share/subversion/hook-scripts
+BUILD/contrib/hook-scripts/commit-email.pl	usr/share/subversion/hook-scripts
+BUILD/contrib/client-side/svn_load_dirs/svn_load_dirs.pl  usr/bin
+
+tools/server-side/svn-backup-dumps.py		usr/bin
+contrib/server-side/svn-fast-backup		usr/bin
+contrib/client-side/svn-clean			usr/bin
+contrib/client-side/svn_apply_autoprops.py	usr/bin
+contrib/client-side/svnmerge/svnmerge.py	usr/bin
+contrib/client-side/svn2cl/svn2cl.sh		usr/bin
+contrib/client-side/svn2cl/*.{xml,xsl,css}	etc/svn2cl
+debian/bin/svn-bisect				usr/bin
+debian/bin/svnwrap				usr/bin

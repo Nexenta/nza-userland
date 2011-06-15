@@ -1,0 +1,12 @@
+jade-TODO (1.1-1) unstable; urgency=low
+
+  * fix /usr/lib/sgml/unicode (i.e., register or not)
+
+  * wishlist: package a libsp1-dbg package, statically linking libsp1 and compiling
+    with debug symbols -- anyone want this?
+
+ -- Adam Di Carlo <aph@debian.org>  Wed,  5 Sep 2001 02:56:28 -0400
+
+Local variables:
+mode: debian-changelog
+End:

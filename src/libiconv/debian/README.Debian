@@ -1,0 +1,7 @@
+libiconv for Debian
+-------------------
+
+On Solaris, libiconv is essential package and must be installed
+right after SUN Core packages
+
+ -- Erast Benson <erast@gnusolaris.org>, Wed, 20 Jul 2005 16:15:38 -0700

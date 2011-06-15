@@ -1,0 +1,17 @@
+Index: trousers-0.3.4/src/tspi/obj_context.c
+===================================================================
+--- trousers-0.3.4.orig/src/tspi/obj_context.c	2011-04-07 01:06:19.332424497 +0400
++++ trousers-0.3.4/src/tspi/obj_context.c	2011-04-07 01:07:40.159027850 +0400
+@@ -187,7 +187,11 @@
+ 		*data = NULL;
+ 		*size = 0;
+ 	} else {
+-		*data = calloc_tspi(obj->tspContext, context->machineNameLength);
++		/*
++		 * Don't use calloc_tspi because this memory is
++		 * not freed using "free_tspi"
++		 */
++		*data = calloc(1, context->machineNameLength);
+ 		if (*data == NULL) {
+ 			LogError("malloc of %u bytes failed.",
+ 					context->machineNameLength);

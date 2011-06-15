@@ -1,0 +1,11 @@
+Note for experienced users
+--------------------------
+
+The Latin Modern fonts can be used as a substitution for CM, CS, PL, and VN as
+mentioned in the README file. Several map files and encoding files (the ones
+with '-rep-' in their name) have been prepared for this purpose and can be
+found in <TEXMFMAIN>/fonts/map/dvips/lm and <TEXMFMAIN>/fonts/enc/dvips/lm.
+
+To make use of these map files, you should place the appropriate .cfg file(s)
+from this directory into /etc/texmf/updmap.d/. Don't forget to run
+update-updmap, mktexlsr and updmap-sys afterwards.

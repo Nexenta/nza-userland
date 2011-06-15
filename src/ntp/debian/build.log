@@ -1,0 +1,52 @@
+dpkg-buildpackage: export CFLAGS from dpkg-buildflags (origin: vendor): -g -O2
+dpkg-buildpackage: export CPPFLAGS from dpkg-buildflags (origin: vendor): 
+dpkg-buildpackage: export CXXFLAGS from dpkg-buildflags (origin: vendor): -g -O2
+dpkg-buildpackage: export FFLAGS from dpkg-buildflags (origin: vendor): -g -O2
+dpkg-buildpackage: export LDFLAGS from dpkg-buildflags (origin: vendor): 
+dpkg-buildpackage: source package ntp
+dpkg-buildpackage: source version 1:4.2.5p200-1nexenta1
+dpkg-buildpackage: source changed by Nexenta Systems <maintainer@nexenta.com>
+ dpkg-source --before-build ntp-4.2.5p200
+dpkg-buildpackage: host architecture solaris-i386
+ debian/rules clean
+dh_testdir
+dh_testroot
+rm -f build-stamp patch-stamp
+rm -f config.guess config.sub
+QUILT_PATCHES=debian/patches quilt pop -a || test $? = 2
+Removing patch debian/patches/etcfix.patch
+Restoring ntpdate/ntptime_config.c
+Restoring ntpdate/ntptimeset.c
+Restoring ntpdate/ntpdate.c
+Restoring ntpd/refclock_oncore.c
+Restoring sntp/header.h
+Restoring libntp/audio.c
+Restoring include/ntp_config.h
+
+Removing patch debian/patches/mc.patch
+Restoring ntpd/ntp_io.c
+
+Removing patch debian/patches/mdns.patch
+Restoring ntpd/ntpd-opts.h
+Restoring ntpd/ntpd-opts.c
+Restoring ntpd/ntpd.c
+
+Removing patch debian/patches/noextra.patch
+Restoring Makefile.in
+Restoring configure
+
+Removing patch debian/patches/ntpwait.patch
+Restoring scripts/ntp-wait.in
+
+Removing patch debian/patches/timing.patch
+Restoring ntpd/ntp_proto.c
+
+No patches applied
+rm -rf .pc
+dh_clean
+ dpkg-source -b ntp-4.2.5p200
+dpkg-source: warning: no source format specified in debian/source/format, see dpkg-source(1)
+dpkg-source: info: using source format `1.0'
+dpkg-source: info: building ntp using existing ntp_4.2.5p200.orig.tar.gz
+dpkg-source: info: building ntp in ntp_4.2.5p200-1nexenta1.diff.gz
+dpkg-source: warning: executable mode 0755 of 'config.status' will not be represented in diff

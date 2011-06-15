@@ -1,0 +1,28 @@
+From: Davide G. M. Salvetti <salve@debian.org>
+Date: Fri, 24 Sep 2010 23:16:45 +0200
+Subject: [PATCH] Fix TeX-engine-alist-builtin defvar.
+
+- See Debian bug #597006.
+- Fixed upstream since 2010-09-18.
+---
+ tex.el |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/tex.el b/tex.el
+index 757223e..0cdaac2 100644
+--- a/tex.el
++++ b/tex.el
+@@ -1214,10 +1214,10 @@ predicates are true, nil otherwise."
+ ;;; Engine
+ 
+ (defvar TeX-engine-alist-builtin
+-  '((default "Default" TeX-command LaTeX-command ConTeXt-engine)
++  `((default "Default" ,TeX-command ,LaTeX-command ,ConTeXt-engine)
+     (xetex "XeTeX" "xetex" "xelatex" "xetex")
+     (luatex "LuaTeX" "luatex" "lualatex" "luatex")
+-    (omega "Omega" TeX-Omega-command LaTeX-Omega-command ConTeXt-Omega-engine))
++    (omega "Omega" ,TeX-Omega-command ,LaTeX-Omega-command ,ConTeXt-Omega-engine))
+   "Alist of built-in TeX engines and associated commands.
+ For a description of the format see `TeX-engine-alist'.")
+ 
+-- 

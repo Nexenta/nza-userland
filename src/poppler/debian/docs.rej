@@ -1,0 +1,9 @@
+--- debian/docs
++++ debian/docs
+@@ -1 +1,5 @@
+-tail: cannot open `.pc/applied-patches' for reading: No such file or directory
++AUTHORS
++NEWS
++README
++README-XPDF
++TODO

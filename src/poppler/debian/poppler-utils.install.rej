@@ -1,0 +1,6 @@
+--- debian/poppler-utils.install
++++ debian/poppler-utils.install
+@@ -1 +1,2 @@
+-tail: cannot open `.pc/applied-patches' for reading: No such file or directory
++debian/tmp/usr/bin/
++debian/tmp/usr/share/man/man1/

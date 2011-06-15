@@ -1,0 +1,259 @@
+.tr \(ts"
+.ds S \s-1SGML\s0
+.TH SPAM 1
+.SH NAME
+spam \- an SGML markup stream editor
+.sp
+An \*S System Conforming to
+.if n .br
+International Standard ISO 8879 \(em
+.br
+Standard Generalized Markup Language
+.SH SYNOPSIS
+.B spam
+[
+.B \-ehilprvx
+]
+[
+.BI \-c catalog_file
+]
+[
+.BI \-D directory
+]
+[
+.BI \-f file
+]
+[
+.BI \-m markup_option
+]
+[
+.BI \-o entity_name
+]
+[
+.BI \-w warning_type
+]
+.I sysid\|.\|.\|.
+.SH DESCRIPTION
+This manual page may be out of date.  Consult the HTML documentation for
+the most up-to-date information concerning this program.
+.PP
+.I Spam
+(SP Add Markup)
+is an SGML markup stream editor implemented using the SP parser.
+.I Spam
+parses the SGML document contained in
+.I sysid\|.\|.\|.
+and copies to the standard output
+the portion of the document entity containing the document
+instance, adding or changing markup as specified by the
+.B \-m
+options.
+The
+.B \-p
+option can be used to include the SGML declaration and prolog
+in the output.
+The
+.B \-o
+option can be used to output other entities.
+The
+.B \-x
+option can be used to expand entity references.
+.LP
+For more information about the underlying SGML parser and entity
+manager, see
+.BR nsgmls (1).
+.LP
+The following options are available:
+.TP
+.BI \-c file
+Use the catalog entry file
+.IR file .
+.TP
+.BI \-D directory
+Search
+.I directory
+for files specified in system identifiers.
+Multiple
+.B \-D
+options are allowed.
+See
+.BR nsgmls (1)
+for more information about file searching.
+.TP
+.B \-e
+Describe open entities in error messages.
+.TP
+.BI \-f file
+Redirect errors to
+.IR file .
+This is useful mainly with shells that do not support redirection
+of stderr.
+.TP
+.B \-h
+Hoist omitted tags out from the start of internal entities.
+If the text at the beginning of an internal entity causes
+a tag to be implied,
+the tag will usually be treated as being in that internal entity;
+this option will instead cause it to be treated as being in the entity
+that referenced the internal entity.
+This option makes a difference in conjunction with
+.B \-momittag
+or
+.BR \-x\ \-x .
+.TP
+.BI \-i name
+Pretend that
+.RS
+.IP
+.BI <!ENTITY\ %\  name\  \(tsINCLUDE\(ts>
+.LP
+occurs at the start of the document type declaration subset
+in the \*S document entity.
+.RE
+.TP
+.BI \-l
+Prefer lower-case.
+Added names that were subject to upper-case substitution
+will be converted to lower-case.
+.TP
+.BI \-m markup_option
+Change the markup in the output according to the value
+of
+.I markup_option
+as follows:
+.RS
+.TP
+.B omittag
+Add tags that were omitted using omitted tag minimization.
+End tags that were omitted because the element has
+a declared content of
+.SM EMPTY
+or an explicit content reference
+will not be added.
+.TP
+.B shortref
+Replace short references by named entity references.
+.TP
+.B net
+Change null end-tags
+into unminimized end-tags,
+and change net-enabling start-tags
+into unminimized start-tags.
+.TP
+.B emptytag
+Change empty tags into unminimized tags.
+.TP
+.B unclosed
+Change unclosed tags into unminimized tags.
+.TP
+.B attname
+Add omitted attribute names and
+.BR vi s.
+.TP
+.B attvalue
+Add literal delimiters omitted from attribute values.
+.TP
+.B attspec
+Add omitted attribute specifications.
+.TP
+.B current
+Add omitted attribute specifications for current attributes.
+This option is implied by the
+.B attspec
+option.
+.TP
+.B shorttag
+Equivalent to combination of
+.BR net ,
+.BR emptytag ,
+.BR unclosed ,
+.BR attname ,
+.B attvalue
+and
+.B attspec
+options.
+.TP
+.B rank
+Add omitted rank suffixes.
+.TP
+.B reserved
+Put reserved names in upper-case.
+.TP
+.B ms
+Remove marked section declarations whose effective status
+is IGNORE, and replace each marked section declaration
+whose effective status is INCLUDE by its marked section.
+In the document instance, empty comments will be added
+before or after the marked section declaration to ensure
+that ignored record ends remain ignored.
+.LP
+Multiple
+.B \-m
+options are allowed.
+.RE
+.TP
+.BI \-o name
+Output the general entity
+.I name
+instead of the document entity.
+The output will correspond to the first time
+that the entity is referenced in content.
+.TP
+.B \-p
+Output the part of the document entity containing the SGML declaration
+(if it was explicitly present in the document entity)
+and the prolog before anything else.
+If this option is specified two or more times,
+then all entity references occurring between declarations
+in the prolog will be expanded;
+this includes the implicit reference to the entity
+containing the external subset of the DTD, if there is one.
+Note that the SGML declaration will not be included if it was
+specified by an SGMLDECL entry in a catalog.
+.TP
+.B \-r
+Don't perform any conversion on RSs and REs when outputting the entity.
+The entity would typically have the storage manager attribute
+.BR records=asis .
+.TP
+.B \-v
+Print the version number.
+.TP
+.BI \-w type
+Control warnings and errors according to
+.IR type .
+See
+.BR nsgmls (1)
+for the allowed values of
+.IR type .
+.TP
+.B \-x
+Expand references to entities that are changed.
+If this option is specified two or more times,
+then all references to entities that contain tags
+will be expanded.
+.SH BUGS
+.LP
+Omitted tags are added at the point where they are
+implied by the SGML parser (except as modified
+by the
+.B \-h
+option); this is often not quite where they are wanted.
+.LP
+The case of general delimiters is not preserved.
+.LP
+Incorrect results may be produced if a variant concrete syntax is used
+which is such that there are delimiters in markup to be added that have a
+prefix that is a proper suffix of some other delimiter.
+.LP
+If an entity reference in a default value uses the default entity and
+an entity with that name is subsequently defined and that default
+value is added to the document instance, then the resulting document
+may not be equivalent to the original document.
+.I Spam
+will give a warning when the first two conditions are met.
+.SH AUTHOR
+.LP
+James Clark (jjc@jclark.com).
+.SH "SEE ALSO"
+.BR nsgmls (1)

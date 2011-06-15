@@ -1,0 +1,11 @@
+Document: sp
+Title: SP Users Manual
+Author: James Clark <jjc@jclark.com>
+Abstract: Users manual and documentation for the SP SGML management suite.
+  This package includes an entire suite of high-quality tools to
+  parse, validate, and normalize SGML and XML files.
+Section: Apps/Text
+
+Format: HTML
+Index: /usr/share/doc/sp/index.htm
+Files: /usr/share/doc/sp/*.htm

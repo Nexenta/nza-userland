@@ -1,0 +1,13 @@
+Index: debhelper-8.1.6/dh_fixperms
+===================================================================
+--- debhelper-8.1.6.orig/dh_fixperms	2011-05-10 14:09:05.575928683 +0400
++++ debhelper-8.1.6/dh_fixperms	2011-05-10 14:09:25.175754582 +0400
+@@ -73,7 +73,7 @@
+ 	# (and .la files from libtool) ..
+ 	complex_doit("find $tmp -perm -5 -type f",
+ 		"\\( -name '*.so.*' -or -name '*.so' -or -name '*.la' -or -name '*.a' \\) $find_options -print0",
+-		"2>/dev/null | xargs -0r chmod 644");
++		"2>/dev/null | xargs -0r chmod 755");
+ 	
+ 	# ..and header files ..
+ 	complex_doit("find $tmp/usr/include -type f $find_options -print0",

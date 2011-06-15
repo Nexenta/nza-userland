@@ -1,0 +1,11 @@
+etc/openldap/schema
+etc/security
+lib/svc
+usr/lib/slapd
+usr/lib/amd64/slapd
+#debian/ldiftopasswd usr/share/slapd
+#debian/DB_CONFIG usr/share/slapd
+debian/DB_CONFIG.example etc/openldap
+#debian/slapd.conf usr/share/slapd
+debian/slapd.conf etc/openldap
+#debian/slapd.init.ldif usr/share/slapd

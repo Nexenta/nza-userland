@@ -1,0 +1,45 @@
+.TH SPENT 1
+.SH NAME
+spent \- print SGML entity on the standard output
+.SH SYNOPSIS
+.B spent
+[
+.B \-rv
+]
+[
+.BI \-b bctf
+]
+.I sysid\|.\|.\|.
+.SH DESCRIPTION
+This manual page may be out of date.  Consult the HTML documentation for
+the most up-to-date information concerning this program.
+.PP
+.I Spent
+(SGML print entity)
+prints the concatenation of the entities with system identifiers
+.I sysid\|.\|.\|.
+on the standard output.
+The format of the system identifiers is described in
+.BR nsgmls (1).
+.LP
+The following options are available:
+.TP
+.BI \-b bctf
+Use the BCTF with name
+.I bctf
+for output.
+Available BCTFs are described in
+.BR nsgmls (1).
+.TP
+.B \-r
+Don't perform any conversion on RSs and REs when printing the entity.
+The entity would typically have the storage manager attribute
+.BR records=asis .
+.TP
+.B \-v
+Print the version number.
+.SH AUTHOR
+.LP
+James Clark (jjc@jclark.com).
+.SH "SEE ALSO"
+.BR nsgmls (1)

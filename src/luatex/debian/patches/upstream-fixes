@@ -1,0 +1,40 @@
+---
+ source/texk/web2c/luatexdir/pdf/pdfcolorstack.c |    4 ++--
+ source/texk/web2c/luatexdir/tex/texnodes.c      |    2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+Index: luatex-0.47.0/source/texk/web2c/luatexdir/pdf/pdfcolorstack.c
+===================================================================
+--- luatex-0.47.0.orig/source/texk/web2c/luatexdir/pdf/pdfcolorstack.c	2009-12-21 07:29:01.000000000 +0900
++++ luatex-0.47.0/source/texk/web2c/luatexdir/pdf/pdfcolorstack.c	2009-12-21 07:29:24.000000000 +0900
+@@ -206,7 +206,7 @@
+         if (*str == 0) {
+             colstack->page_current = NULL;
+         } else {
+-            colstack->page_current = str;
++            colstack->page_current = xstrdup(str);
+         }
+         free(str);
+     } else {
+@@ -220,7 +220,7 @@
+         if (*str == 0) {
+             colstack->form_current = NULL;
+         } else {
+-            colstack->form_current = str;
++            colstack->form_current = xstrdup(str);
+         }
+         free(str);
+     }
+Index: luatex-0.47.0/source/texk/web2c/luatexdir/tex/texnodes.c
+===================================================================
+--- luatex-0.47.0.orig/source/texk/web2c/luatexdir/tex/texnodes.c	2009-12-21 07:29:01.000000000 +0900
++++ luatex-0.47.0/source/texk/web2c/luatexdir/tex/texnodes.c	2009-12-21 07:29:24.000000000 +0900
+@@ -2076,7 +2076,7 @@
+         attr_list_ref(q) = 1;
+         node_attr(n) = q;
+     }
+-    p = vlink(p);
++    p = vlink(node_attr(n));
+     while (j-- > 0)
+         p = vlink(p);
+     t = attribute_value(p);

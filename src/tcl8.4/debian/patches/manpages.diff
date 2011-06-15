@@ -1,0 +1,23 @@
+Patch by Chris Waters fixes installing of several manual pages which
+aren't installed by upstream script but are referenced inside other
+manual pages.
+
+--- tcl8.4-8.4.19.orig/unix/installManPage
++++ tcl8.4-8.4.19/unix/installManPage
+@@ -49,7 +49,16 @@
+     }' $MANPAGE`
+ 
+ SECTION=`echo $MANPAGE | sed 's/.*\(.\)$/\1/'`
++NAME=`basename $MANPAGE .$SECTION`
+ SRCDIR=`dirname $MANPAGE`
++
++SPECIALS="DString Thread Notifier RegExp"
++for n in $SPECIALS; do
++    if [ "$NAME" = "$n" ] ; then
++	NAMES="$n $NAMES"
++    fi
++done
++
+ FIRST=""
+ for f in $NAMES; do
+     f=$f.$SECTION$SUFFIX

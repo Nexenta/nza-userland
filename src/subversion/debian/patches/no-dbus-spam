@@ -1,0 +1,26 @@
+Suppress console spam from the gnome_keyring auth plugin.
+Also committed upstream r38878 for svn 1.7.
+
+--- a/subversion/libsvn_auth_gnome_keyring/gnome_keyring.c
++++ b/subversion/libsvn_auth_gnome_keyring/gnome_keyring.c
+@@ -478,6 +478,12 @@
+     }
+ }
+ 
++static void log_noop(const gchar *log_domain, GLogLevelFlags log_level,
++                     const gchar *message, gpointer user_data)
++{
++  /* do nothing */
++}
++
+ static void
+ init_gnome_keyring(void)
+ {
+@@ -485,6 +491,7 @@
+   application_name = g_get_application_name();
+   if (!application_name)
+     g_set_application_name("Subversion");
++  g_log_set_default_handler(log_noop, NULL);
+ }
+ 
+ static const svn_auth_provider_t gnome_keyring_simple_provider = {

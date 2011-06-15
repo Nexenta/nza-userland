@@ -1,0 +1,5 @@
+usr/gnu/lib/libncurses.so.*
+#usr/gnu/lib/libtic.so.*
+usr/gnu/lib/libpanel.so.*
+usr/gnu/lib/libform.so.*
+usr/gnu/lib/libmenu.so.*

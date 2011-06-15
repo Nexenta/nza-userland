@@ -1,0 +1,14 @@
+Source: mkisofs
+Section: otherosfs
+Priority: optional
+Maintainer: Nexenta Systems <maintainer@nexenta.com>
+Build-Depends: debhelper (>= 5)
+Standards-Version: 10:0.1
+
+Package: mkisofs
+Architecture: solaris-i386
+Depends: genisoimage, file
+Replaces: media-cdrtools
+Description: Dummy package with symlinks to genisoimage
+ .
+

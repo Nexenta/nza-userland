@@ -1,0 +1,20 @@
+Description: Adjust default recursive make targets
+ This has been in the groff packaging since records began, and the reason
+ for it is unclear.  Needs investigation.
+Author: unknown
+Forwarded: no
+Last-Update: 2010-03-01
+
+Index: b/Makefile.in
+===================================================================
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -641,7 +641,7 @@
+ 	fi
+ 
+ do=all
+-dodirs=$(ALLDIRS) dot
++dodirs=$(DISTDIRS) 
+ # Default target for subdir_Makefile
+ subdir=src/roff/troff
+ 

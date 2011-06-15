@@ -1,0 +1,15 @@
+Description: Use mailcap entry to choose PDF viewer
+Bug-Debian: http://bugs.debian.org/544054
+Author: Andreas Tille <tillea@rki.de>
+
+--- mc-4.7.0-pre1.orig/misc/mc.ext.in	2009-08-28 17:29:19.000000000 +0200
++++ mc-4.7.0-pre1/misc/mc.ext.in	2009-08-28 17:30:06.000000000 +0200
+@@ -468,7 +468,7 @@
+ 
+ # PDF
+ type/^PDF
+-	Open=(xpdf %f &)
++	Open=(see %f &)
+ 	#Open=(acroread %f &)
+ 	#Open=(ghostview %f &)
+ 	View=%view{ascii} pdftotext %f -

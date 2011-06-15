@@ -1,0 +1,132 @@
+#include "variables"
+#! /bin/bash -e
+#
+# <% elisp %> Emacs install script for <:=${PACKAGE}:>
+#
+<:=@COPYRIGHT:>//
+
+set -o posix
+
+<:# parse debconf database :>//
+source <:=${CONFMODULE}:>
+db_version 2.0
+db_get <:=${PACKAGE}:>/doauto || true; _db_doauto=${RET}
+db_get <:=${PACKAGE}:>/doautofg || true; _db_doautofg=${RET}
+
+FLAVOR=${1}
+
+INSTALL="install -o root -g root -m 644"
+INSTDIR="${INSTALL} -m 755 -d"
+
+do_install () {
+    echo >&2 -n "install/<:=${PACKAGE}:>: Setting up for ${FLAVOR}" \
+    "(log file: <:=if($_=${lisp})=~s|emacs|\${FLAVOR}|:>/<:=${ELCLOG}:>)... "
+    cd <:=${lisp}:>; umask 0022;
+    <:# ensure that "configure" is up-to-date WRT "configure.ac" and
+      # "aclocal.m4":>//
+    touch --reference configure --date "-1 second" configure.ac
+    touch --reference configure --date "-1 second" aclocal.m4
+    touch --reference configure --date "-1 second" preview/configure.ac
+    ${INSTDIR} <:=if($_=${lisp})=~s|emacs|\${FLAVOR}|:>
+    ./configure --disable-build-dir-test GS=gs \
+	LATEX=/bin/true PDFLATEX=/bin/true TEX=/bin/true \
+	--prefix=<:$_=${usr}; s|/+|/|g; print:> \
+	--with-emacs=${FLAVOR} \
+	--with-lispdir=<:$_=${lisp}; s|/+${PACKAGE}/*|/|;
+			 s|emacs|\${FLAVOR}|; s|/+|/|g; print:> \
+	--with-texmf-dir=<:=${texmf}:> \
+	--with-auto-dir=<:$_=${var}; s|/+|/|g;
+			 s|/$||; print:>/${FLAVOR}/ \
+	>> <:=if($_=${lisp})=~s|emacs|\${FLAVOR}|:>/<:=${ELCLOG}:> 2>&1
+    make INSTALL="${INSTALL}" MKINSTALLDIRS="${INSTDIR}" \
+	lisp install-lisp install-startup \
+	>> <:=if($_=${lisp})=~s|emacs|\${FLAVOR}|:>/<:=${ELCLOG}:> 2>&1
+    ln -sf <:=${lisp}:>/images <:=if($_=${lisp})=~s|emacs|\${FLAVOR}|:>/
+    pushd preview \
+	>> <:=if($_=${lisp})=~s|emacs|\${FLAVOR}|:>/<:=${ELCLOG}:> 2>&1
+    make INSTALL="${INSTALL}" MKINSTALLDIRS="${INSTDIR}" \
+	install-el install-nosearch install-startup \
+	>> <:=if($_=${lisp})=~s|emacs|\${FLAVOR}|:>/<:=${ELCLOG}:> 2>&1
+    popd >> <:=if($_=${lisp})=~s|emacs|\${FLAVOR}|:>/<:=${ELCLOG}:> 2>&1
+    make maintainer-clean \
+	>> <:=if($_=${lisp})=~s|emacs|\${FLAVOR}|:>/<:=${ELCLOG}:> 2>&1
+    find <:=if($_=${lisp})=~s|emacs|\${FLAVOR}|:> -type f -name \*.el \
+	-print0 | xargs --null rm -f ,dummy, \
+	>> <:=if($_=${lisp})=~s|emacs|\${FLAVOR}|:>/<:=${ELCLOG}:> 2>&1
+    for s in <:=if($_=${lisp})=~s|emacs|\${FLAVOR}|:>/*.elc; do
+	find <:=${lisp}:> -type f -name $(basename ${s%c}) -print0 \
+	    | xargs --null --no-run-if-empty \
+	    ln --symbolic --verbose \
+	    --target-directory=<:=if($_=${lisp})=~s|emacs|\${FLAVOR}|:> \
+	    >> <:=if($_=${lisp})=~s|emacs|\${FLAVOR}|:>/<:=${ELCLOG}:> 2>&1
+    done
+    gzip -9fq <:=if($_=${lisp})=~s|emacs|\${FLAVOR}|:>/<:=${ELCLOG}:>
+    echo >&2 "done."
+    return 0
+}
+
+do_auto () {
+    LOGFILE=<:=if($_=${LOGFILE})=~s|emacs|\${FLAVOR}|:>
+    case "${_db_doauto}" in
+	(Foreground)
+	case "${_db_doautofg}" in
+	    (Console)
+	    <:="${sbin}/${UPDATE_ELISP}":> ${FLAVOR} ;;
+	    (File)
+	    echo >&2 -n "<:=${UPDATE_ELISP}:>: "
+	    echo >&2 "Further output will appear in: ${LOGFILE}."
+	    echo >&2 -n "<:=${PACKAGE}:>: "
+	    echo >&2 -n "Waiting for <:=${UPDATE_ELISP}:> to terminate... "
+	    <:="${sbin}/${UPDATE_ELISP}":> ${FLAVOR} >> ${LOGFILE} 2>&1
+	    echo >&2 "done." ;;
+	    (*) echo >&2 \
+		"${0##*/}: Unknown Debconf value doautofg = \"${_db_doautofg}\"." ;;
+	esac ;;
+	(Background)
+	<:# Closing fd 3 is debconf important. :>//
+	<:# debconf\'s frontend wait for its standard input to be closed :>//
+	<:# before dying, and that means fd 3 :>//
+	<:# better don\'t close fd 0: Emacs does not take it very well :>//
+	<:# WARNING: DON\'T CLOSE FD\'S TO BE WRITTEN TO! :>//
+	<:# WARNING: DON\'T CLOSE FD\'S TO BE READ TO! :>//
+	<:="${sbin}/${UPDATE_ELISP}":> ${FLAVOR} >> ${LOGFILE} 2>&1 3>&- &
+	echo >&2 -n "<:=${UPDATE_ELISP}:>[${!}]: "
+	echo >&2 "Further output will appear in: ${LOGFILE}." ;;
+	(None) :;;
+	(*) echo >&2 \
+	    "${0##*/}: Unknown Debconf value doauto = \"${_db_doauto}\"." ;;
+    esac
+    return 0
+}
+
+do_clean_old_cruft () {
+    <:# ".../site-lisp/preview/" is obsolete :>//
+    rm -f <:=if($_=${style})=~s|emacs|\${FLAVOR}|:>/../preview/.nosearch
+    test -d <:=if($_=${lisp})=~s|emacs|\${FLAVOR}|:>/../preview/ && \
+	rmdir --ignore-fail-on-non-empty \
+	<:=if($_=${lisp})=~s|emacs|\${FLAVOR}|:>/../preview/
+    return 0
+}
+
+case "${FLAVOR}" in
+    emacs) :;;
+    emacs2[123]|emacs-snapshot)
+	<:# clean old cruft :>//
+	do_clean_old_cruft ${FLAVOR}
+	do_install ${FLAVOR}
+	<:# parse TeX macros and LaTeX styles :>//
+	do_auto ${FLAVOR};;
+    *) echo >&2 "install/<:=${PACKAGE}:>:" \
+	"Ignoring emacsen flavor: \"${FLAVOR}\"."
+esac
+
+exit 0
+<:
+# local variables:
+# mode: shell-script
+# ispell-local-dictionary: "american"
+# ispell-check-comments: exclusive
+# end:
+#
+# LocalWords:  debconf fd frontend aclocal LaTeX
+:>//

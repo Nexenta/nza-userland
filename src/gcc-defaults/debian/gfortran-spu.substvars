@@ -1,0 +1,47 @@
+version:cpp=4:4.4.3-1
+version:gcc=4:4.4.3-1
+version:gpp=4:4.4.3-1
+version:gobjc=4:4.4.3-1
+version:gij=4:4.4.3-1
+version:gcj=4:4.4.3-1
+version:gpc=5:2.1-4.1.2-43
+version:gfort=4:4.4.3-1
+version:libgcjcommon=1:4.4.2-1
+pv:cpp=4.4
+pv:gcc=4.4
+pv:gpp=4.4
+pv:gobjc=4.4
+pv:gobjcxx=4.4
+pv:chill=2.95
+pv:gfort=4.4
+pv:gcj=4.4
+pv:gij=4.4
+pv:gpc=4.1
+pv:gdc=4.3
+pv:spu=4.4
+reqv:cpp=(>= 4.4.3-1)
+reqv:gcc=(>= 4.4.3-1)
+reqv:gpp=(>= 4.4.3-1)
+reqv:gobjc=(>= 4.4.3-1)
+reqv:gobjcxx=(>= 4.4.3-1)
+reqv:chill=(>= 1:2.95.4-16)
+reqv:gfort=(>= 4.4.3-1)
+reqv:gcj=(>= 4.4.3-1)
+reqv:gij=(>= 4.4.3-1)
+reqv:gpc=(>= 2.1-4.1.2-16)
+reqv:gdc=(>= 1:1.043-4.3.4-1)
+reqv:spu=(>= 4.4.3-1)
+pkg:libgcj=libgcj10
+pkg:libgcjawt=libgcj10-awt
+version:libgcjbc=4.4.3-4
+pkgmulti:gcc=gcc-multilib
+pkgmulti:gpp=g++-multilib
+pkgmulti:gobjc=gobjc-multilib
+pkgmulti:gobjcxx=gobjc++-multilib
+pkgmulti:gfort=gfortran-multilib
+dep:jrehl=gcj-${pv:gij}-jre-headless ${reqv:gij}
+dep:jre=gcj-${pv:gij}-jre ${reqv:gij}
+dep:jdk=gcj-${pv:gcj}-jdk ${reqv:gcj}
+pkg:gjdoc=gjdoc
+ver:gcjconflict=4:4.4.0-2
+misc:Depends=

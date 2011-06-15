@@ -1,0 +1,88 @@
+#!/usr/bin/make -f
+
+CFLAGS = -g
+ifneq (,$(filter noopt,$(DEB_BUILD_OPTIONS)))
+	CFLAGS += -O0
+else
+	CFLAGS += -O2
+endif
+# XXX make check fails with -j, so disable for now
+#ifneq (,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
+#	NUMJOBS = $(patsubst parallel=%,%,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
+#	MAKEFLAGS += -j$(NUMJOBS)
+#endif
+
+DEB_BUILD_GNU_TYPE ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
+DEB_HOST_GNU_TYPE ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
+DEB_BUILDDIR = obj-$(DEB_BUILD_GNU_TYPE)
+
+confflags = --build=$(DEB_BUILD_GNU_TYPE)
+ifneq ($(DEB_BUILD_GNU_TYPE),$(DEB_HOST_GNU_TYPE))
+	confflags += --host=$(DEB_HOST_GNU_TYPE)
+endif
+
+configure:
+	autoreconf -vfi
+
+$(DEB_BUILDDIR)/config.status: configure
+	mkdir -p $(DEB_BUILDDIR)
+	cd $(DEB_BUILDDIR) && \
+	../configure \
+		$(confflags) \
+		--prefix=/usr \
+		CFLAGS="$(CFLAGS)"
+
+override_dh_auto_configure: $(DEB_BUILDDIR)/config.status
+
+check:
+ifeq (,$(filter nocheck,$(DEB_BUILD_OPTIONS)))
+	$(MAKE) -C $(DEB_BUILDDIR) check
+endif
+
+override_dh_auto_test: check
+
+.PHONY: build
+build:
+	dh $@
+
+build-stamp:
+	$(MAKE) -C $(DEB_BUILDDIR)
+	>$@
+
+override_dh_auto_build: build-stamp
+
+.PHONY: install
+install: build-stamp
+	$(MAKE) -C $(DEB_BUILDDIR) install DESTDIR=$(CURDIR)/debian/tmp
+
+override_dh_auto_install: install
+
+override_dh_strip:
+	set -e; \
+	for pkg in $$(./debian/grep-libs < debian/control); do \
+		dh_strip -p $$pkg --dbg-package=$${pkg}-dbg; \
+	done
+	dh_strip -s --remaining-packages
+
+override_dh_makeshlibs:
+	dh_makeshlibs -plibxcb1 --add-udeb=libxcb1-udeb
+	dh_makeshlibs -Nlibxcb1
+
+.PHONY: binary binary-arch binary-indep
+binary: binary-arch
+binary-arch: debian/copyright
+	dh $@
+
+binary-indep:
+
+debian/copyright: debian/copyright.debian COPYING
+	cat $+ > $@
+
+clean:
+	dh $@
+	-rm -f debian/copyright
+	rm -f aclocal.m4 configure install-sh missing
+	rm -f config.guess config.sub depcomp ltmain.sh src/config.h.in
+	rm -f $$(find -name Makefile.in)
+	rm -rf $(DEB_BUILDDIR)
+	rm -f build-stamp

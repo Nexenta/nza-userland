@@ -1,0 +1,44 @@
+Description: Upstream changes introduced in version 2.8.6-1nexenta1
+ This patch has been created by dpkg-source during the package build.
+ Here's the last changelog entry, hopefully it gives details on why
+ those changes were made:
+ .
+ gnutls26 (2.8.6-1nexenta1) unstable; urgency=low
+ .
+   * Rebuilt for NCP4
+   * debian/control:
+     + Do not build guile-gnutls package
+     + Fixed sunw* dependencies
+ .
+ The person named in the Author field signed this changelog entry.
+Author: Kartik Mistry <kartik.mistry@nexenta.com>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: http://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: <YYYY-MM-DD>
+
+--- gnutls26-2.8.6.orig/doc/version.texi
++++ gnutls26-2.8.6/doc/version.texi
+@@ -1,4 +1,4 @@
+-@set UPDATED 2 June 2009
++@set UPDATED 3 June 2009
+ @set UPDATED-MONTH June 2009
+ @set EDITION 2.8.6
+ @set VERSION 2.8.6
+--- gnutls26-2.8.6.orig/doc/stamp-vti
++++ gnutls26-2.8.6/doc/stamp-vti
+@@ -1,4 +1,4 @@
+-@set UPDATED 2 June 2009
++@set UPDATED 3 June 2009
+ @set UPDATED-MONTH June 2009
+ @set EDITION 2.8.6
+ @set VERSION 2.8.6

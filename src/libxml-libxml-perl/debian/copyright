@@ -1,0 +1,46 @@
+Format-Specification:
+    http://wiki.debian.org/Proposals/CopyrightFormat?action=recall&rev=196
+Upstream-Maintainer: Petr Pajas <pajas@matfyz.cz>
+Upstream-Source: http://search.cpan.org/dist/XML-LibXML/
+Upstream-Name: XML-LibXML
+
+Files: *
+Copyright: 2006-2008, Petr Pajas <pajas@matfyz.cz>
+ 2002-2006, Christian Glahn <phish@cpan.org>
+ 2001-2007, AxKit.com Ltd
+License-Alias: Perl
+License: Artistic | GPL-1+
+
+Files: ppport.h
+Copyright: 2004-2009, Marcus Holland-Moritz <mhx-cpan@gmx.net>
+ 2001, Paul Marquess <pmqs@cpan.org> (Version 2.x)
+ 1999, Kenneth Albanowski <kjahds@kjahds.com> (Version 1.x)
+License-Alias: Perl
+License: Artistic | GPL-1+
+
+Files: debian/*
+Copyright: 2009, Jonathan Yu <jawnsy@cpan.org>
+ 2008-2009, gregor herrmann <gregoa@debian.org>
+ 2008, Gunnar Wolf <gwolf@debian.org>
+ 2007, Andreas Barth <aba@not.so.argh.org>
+ 2005-2007, Florian Ragwitz <rafl@debian.org>
+ 2005, Andrew Pollock <apollock@debian.org>
+ 2004, Michael Kröll <michael.kroell@uibk.ac.at>
+ 2004, Enrico Zini <enrico@debian.org>
+ 2003-2004, Michael K. Edwards <mkedeb@sane.net>
+ 2001-2003, Ardo van Rangelrooij <ardo@debian.org>
+License: Artistic | GPL-1+
+
+License: Artistic
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the Artistic License, which comes with Perl.
+    On Debian GNU/Linux systems, the complete text of the Artistic License
+    can be found in /usr/share/common-licenses/Artistic
+
+License: GPL-1+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by 
+    the Free Software Foundation; either version 1, or (at your option)
+    any later version.
+    On Debian GNU/Linux systems, the complete text of the GNU General
+    Public License can be found in `/usr/share/common-licenses/GPL'

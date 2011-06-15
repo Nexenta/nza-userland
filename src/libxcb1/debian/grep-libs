@@ -1,0 +1,13 @@
+#!/bin/sh
+
+PKG=''
+CAT=''
+while read l; do
+	case "$l" in
+		Package:*) PKG=`echo "$l" | cut -d ':' -f 2`;;
+		"Section: libs"*) echo $PKG;;
+	esac
+done
+
+exit 0
+

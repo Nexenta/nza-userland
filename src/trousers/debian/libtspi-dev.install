@@ -1,0 +1,8 @@
+/usr/include
+/usr/lib/*.a
+/usr/lib/amd64/*.a
+/usr/lib/*.so
+/usr/lib/amd64/*.so
+/usr/lib/*.la
+/usr/lib/amd64/*.la
+/usr/share/man/man3

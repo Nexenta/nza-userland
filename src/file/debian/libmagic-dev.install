@@ -1,0 +1,4 @@
+/usr/gnu/include
+/usr/gnu/lib/*.a
+/usr/gnu/lib/*.so
+/usr/gnu/share/man/man3

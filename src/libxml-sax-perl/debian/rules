@@ -1,0 +1,63 @@
+#!/usr/bin/make -f
+## ----------------------------------------------------------------------
+## debian/rules : package script for libxml-sax-perl
+## ----------------------------------------------------------------------
+
+## ----------------------------------------------------------------------
+## uncomment this to turn on verbose mode
+#export DH_VERBOSE=1
+
+## ----------------------------------------------------------------------
+TMP_DIR		= debian/tmp
+
+## ----------------------------------------------------------------------
+## targets
+
+clean:
+		dh_testdir
+		dh_testroot
+		[ ! -f Makefile ] || $(MAKE) realclean
+		dh_clean
+		rm -f build-stamp install-stamp
+
+build:		build-stamp
+build-stamp:
+		dh_testdir
+		perl Makefile.PL INSTALLDIRS=vendor
+		$(MAKE) OPTIMIZE="-O2 -g -Wall"
+		$(MAKE) test
+		touch build-stamp
+
+install:	install-stamp
+install-stamp:	build
+		dh_testdir
+		dh_testroot
+		dh_clean -k
+		dh_installdirs
+		$(MAKE) install PREFIX=$(PWD)/$(TMP_DIR)/usr
+		touch install-stamp
+
+binary-indep:	build install
+		dh_testdir
+		dh_testroot
+		dh_install --sourcedir=$(TMP_DIR)
+		dh_installman
+		dh_installdocs
+		dh_installexamples
+		dh_installchangelogs Changes
+		dh_link
+		dh_compress
+		dh_fixperms
+		dh_installdeb
+		dh_perl
+		dh_gencontrol
+		dh_md5sums
+		dh_builddeb
+
+binary-arch:
+
+binary:		binary-indep binary-arch
+
+.PHONY:		clean build install binary-indep binary-arch binary
+
+## ----------------------------------------------------------------------

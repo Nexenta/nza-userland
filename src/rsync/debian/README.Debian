@@ -1,0 +1,21 @@
+rsync for Debian
+----------------
+
+- Starting with version 2.6.0-2, there is now an init.d script for
+  starting an rsync daemon.  To enable this, the file /etc/default/rsync
+  will have to be edited: change RSYNC_ENABLE=false to RSYNC_ENABLE=true
+
+  It is also necessary to create a config file for the daemon:
+  /etc/rsyncd.conf by default, the location can be changed by
+  entering --config=/some/where/else in the value for RSYNC_OPTS.
+  See /usr/share/doc/rsync/examples/rsyncd.conf for an example,
+  and the rsyncd.conf(5) manpage.
+
+- The experimental modification of the --bwlimit option (--bwlimit-mod)
+  available in earlier Debian versions of rsync is now folded into the
+  standard --bwlimit implementation upstream, so the separate --bwlimit-mod
+  option is no longer necessary. Please update any scripts you may have that
+  use --bwlimit-mod so that only --bwlimit is used.
+
+
+ -- Paul Slootman <paul@debian.org>, Tue Aug 17 10:22:45 CEST 2004

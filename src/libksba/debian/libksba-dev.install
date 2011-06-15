@@ -1,0 +1,7 @@
+debian/install/deb32/usr/include/* usr/include
+debian/install/deb32/usr/lib/lib*.a usr/lib
+debian/install/deb64/usr/lib/lib*.a usr/lib/amd64
+debian/install/deb32/usr/lib/lib*.so usr/lib
+debian/install/deb64/usr/lib/lib*.so usr/lib/amd64
+debian/install/deb32/usr/share/aclocal/ksba.m4 /usr/share/aclocal
+debian/install/deb32/usr/bin/ksba-config usr/bin

@@ -1,0 +1,17 @@
+Description: Use catdvi instead of dvi2tty and improve code
+Bug-Debian: http://bugs.debian.org/543202
+Author: Denis Briand <denis@narcan.fr>
+
+--- mc-4.7.0-pre2~git20090919.orig/misc/mc.ext.in	2009-09-21 21:44:49.000000000 +0200
++++ mc-4.7.0-pre2~git20090919/misc/mc.ext.in	2009-09-21 21:47:02.000000000 +0200
+@@ -527,8 +527,8 @@
+ 
+ # DVI
+ regex/\.([dD][vV][iI])$
+-	Open=if [ x$DISPLAY = x ]; then dvisvga %f; else (xdvi %f &); fi
+-	View=%view{ascii} dvi2tty %f
++	Open=run-mailcap %f 2>&1 &
++	View=%view{ascii} catdvi %f
+ 
+ # TeX
+ regex/\.([Tt][Ee][Xx])$

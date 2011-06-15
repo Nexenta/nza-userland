@@ -1,0 +1,20 @@
+#include "variables"
+# <% lintian %> override file for <:=${PACKAGE}:>
+
+# This is needed to build alternative formats of the manual from sources.
+auctex binary: extra-license-file usr/share/doc/auctex/src/copying.texi.gz
+
+# This is needed at installation time and should stay this way.
+auctex binary: executable-not-elf-or-script ./usr/share/emacs/site-lisp/auctex/install-sh
+
+# This is a maintainer script.
+auctex binary: debconf-is-not-a-registry <:$_
+       ="${ecode}/install/${PACKAGE}"; s|/+|/|g; s|^/||; print:>
+
+<:
+# local variables:
+# mode: fundamental
+# ispell-local-dictionary: "american"
+# ispell-check-comments: exclusive
+# end:
+:>//

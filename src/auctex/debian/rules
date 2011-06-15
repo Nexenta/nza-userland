@@ -1,0 +1,331 @@
+#! /usr/bin/make -f
+#
+# rules for auctex
+#
+# Copyright (C) 1997, 98, 99, 2000, 01, 02, 03, 04, 05, 06, 07, 08, 09, 10
+# by Davide G. M. Salvetti.
+#
+# This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the
+# Free Software Foundation; either version 3 of the License, or (at your
+# option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+# On Debian GNU/Linux System you can find a copy of the GNU General Public
+# License in "/usr/share/common-licenses/GPL".
+
+checkdir=test -f debian/rules
+checkroot=test root = "$$(whoami)"
+fixperms=chmod -R a+rX .
+
+tmp := $(shell pwd)/debian/tmp/
+auctex := $(tmp)/auctex/
+pls := $(tmp)/preview-latex-style/
+
+SHELL := /bin/bash
+INSTDIR := install -m 755 -d
+INSTPROG := install -m 755 -s
+INSTDATA := install -m 644
+INSTSCRIPT := install -m 755
+STRIP := strip -R .note -R .comment
+
+DFILES := debian/auctex/README debian/copyright \
+debian/auctex/config debian/auctex/postinst \
+debian/auctex/prerm debian/auctex/postrm \
+debian/auctex/conffiles debian/auctex/cron \
+debian/auctex/docbase.auctex \
+debian/auctex/docbase.preview \
+debian/auctex/lintian \
+debian/auctex/bug.presubj debian/auctex/bug.script \
+debian/auctex/install debian/auctex/remove \
+debian/auctex/lisp-startup.el \
+debian/auctex/update-auctex-elisp \
+debian/auctex/update-auctex-elisp.8 \
+debian/auctex/update-auctex-install \
+debian/auctex/update-auctex-install.8 \
+debian/preview-latex-style/README \
+debian/preview-latex-style/postinst \
+debian/preview-latex-style/prerm debian/preview-latex-style/postrm \
+debian/preview-latex-style/docbase \
+debian/preview-latex-style/lintian \
+debian/preview-latex-style/bug.presubj
+
+DCSOURCES := $(shell cat debian/po/POTFILES.in \
+		| perl -pe 's|^\[[^]]+\] +(.*)$$|debian/$${1}|')
+DFILES += $(patsubst %templates, %templates.dcobj, $(DCSOURCES))
+
+AUCTEXSCRIPTS := configure install-sh
+AUCTEXSRCS := $(filter-out auctex.el, \
+	$(wildcard aclocal.m4 configure.ac *.in *.el))
+STYLES := style/*.el style/.nosearch
+PREVIEWSCRIPTS := preview/configure
+PREVIEWSRCS := $(filter-out preview/auto.el, \
+	$(wildcard preview/configure.ac preview/*.in preview/*.el))
+MAKEFILEHACKS := doc/Makefile.in preview/latex/Makefile.in
+
+test:
+	@echo $(AUCTEXSRCS)
+	@echo $(PREVIEWSRCS)
+
+.PHONY: pre-build
+pre-build:
+	test -x ./autogen.sh && ./autogen.sh || true
+
+debian/rules: debian/variables
+
+%:: %.in
+	eperl -d DEBIAN_DIR="$(shell pwd)/debian/" \
+		-I "$(shell pwd)/debian/" -P -o $@ $<
+
+debian/po/templates.pot: $(DCSOURCES)
+	umask 0022 && debconf-updatepo --verbose --podir=debian/po/
+	@touch $@
+
+%.dcobj: % debian/po/templates.pot
+	po2debconf --verbose --podir debian/po $< > $@
+
+.PHONY: debconf-test
+debconf-test: debian/auctex/templates.dcobj \
+		debian/auctex/config
+	debconf-loadtemplate auctex \
+		debian/auctex/templates.dcobj
+	DEBCONF_DEBUG=developer debconf --owner=auctex \
+		--frontend=dialog --priority=low \
+		$(SHELL) -e debian/auctex/config configure
+
+.PHONY: debconf-ask-for-translations
+debconf-ask-for-translations: debian/auctex/templates.dcobj
+	podebconf-report-po --verbose --gzip \
+		 --call --withtranslators --languageteam \
+		--package=auctex --deadline='+7days' \
+		--from='"Davide G. M. Salvetti (Debian auctex maintainer)" <salve@debian.org>' \
+		--postpone=../+RFT.mbox
+
+build: $(DFILES) debian/po/templates.pot
+	$(checkdir)
+	./configure \
+		--prefix=/usr/ \
+		--infodir=/usr/share/info/ \
+		--with-emacs=$$(type emacs-snapshot &>/dev/null \
+			&& echo emacs-snapshot || echo emacs)
+	cd doc && $(MAKE) all
+	cd doc && $(MAKE) auctex.htmls/auctex.html
+	cd doc && $(MAKE) preview-latex.htmls/preview-latex.html
+	cd preview && $(MAKE) texmf
+	touch build
+
+.PHONY: clean
+clean: debian/po/templates.pot
+	$(checkdir)
+	-rm -rf build core $(tmp) debian/{files*,substvars}
+	test ! -f Makefile || $(MAKE) distclean
+	-rm -f $(DFILES)
+	$(fixperms)
+
+.PHONY: binary
+binary: binary-arch binary-indep
+
+.PHONY: binary-indep
+binary-indep: binary-indep-auctex binary-indep-pls
+
+.PHONY: binary-indep-auctex
+binary-indep-auctex: build
+	$(checkdir)
+	$(checkroot)
+	-rm -rf $(auctex)
+
+	$(INSTDIR) $(auctex)//usr/share/emacs/site-lisp/auctex/ $(auctex)//usr/share/emacs/site-lisp/auctex//style/ \
+		$(auctex)//usr/share/emacs/site-lisp/auctex//preview/
+	$(INSTSCRIPT) $(AUCTEXSCRIPTS) $(auctex)//usr/share/emacs/site-lisp/auctex//
+	$(INSTDATA) ChangeLog $(auctex)//usr/share/emacs/site-lisp/auctex//
+	$(INSTDATA) $(AUCTEXSRCS) $(auctex)//usr/share/emacs/site-lisp/auctex//
+	$(INSTDATA) $(STYLES) $(auctex)//usr/share/emacs/site-lisp/auctex//style//
+	$(INSTSCRIPT) $(PREVIEWSCRIPTS) $(auctex)//usr/share/emacs/site-lisp/auctex//preview/
+	$(INSTDATA) $(PREVIEWSRCS) $(auctex)//usr/share/emacs/site-lisp/auctex//preview/
+	$(MAKE) prefix=$(auctex)//usr/ install-images
+	cd preview && $(MAKE) prefix=$(auctex)//usr/ install-images
+	umask 0022; for i in $(MAKEFILEHACKS); do \
+		$(INSTDIR) $(auctex)//usr/share/emacs/site-lisp/auctex//$${i%/*}/; \
+		echo -e "clean distclean maintainer-clean:\n\trm -f Makefile\n" \
+			> $(auctex)//usr/share/emacs/site-lisp/auctex//$${i}; \
+	done
+	$(INSTDIR) $(auctex)//usr/share/info/
+	$(MAKE) infodir=$(auctex)//usr/share/info/ \
+		docdir=$(auctex)//usr/share/doc/auctex/ \
+		INSTALL_INFO=: install-docs
+	gzip -9frv $(auctex)//usr/share/info/
+
+	$(INSTDIR) $(auctex)//usr/share/doc/auctex/ $(auctex)//usr/share/doc/auctex//src/ \
+		$(auctex)//usr/share/doc/auctex//HTML/{auctex,preview-latex} \
+		$(auctex)//usr/share/man//man8/
+	$(INSTDATA) README CHANGES FAQ TODO $(auctex)//usr/share/doc/auctex/
+	$(INSTDATA) doc/*.tex{,i} $(auctex)//usr/share/doc/auctex//src/
+	$(INSTDATA) preview/*.tex $(auctex)//usr/share/doc/auctex//src/
+	$(INSTDATA) debian/auctex/README \
+		$(auctex)//usr/share/doc/auctex//README.Debian
+	$(INSTDATA) debian/auctex/NEWS \
+		$(auctex)//usr/share/doc/auctex//NEWS.Debian
+	$(INSTDATA) ChangeLog $(auctex)//usr/share/doc/auctex/
+	$(INSTDATA) preview/ChangeLog \
+		$(auctex)//usr/share/doc/auctex//ChangeLog.preview
+	$(INSTDATA) preview/ChangeLog.1 \
+		$(auctex)//usr/share/doc/auctex//ChangeLog.preview.1
+	$(INSTDATA) RELEASE $(auctex)//usr/share/doc/auctex/
+	$(INSTDATA) debian/changelog $(auctex)//usr/share/doc/auctex//changelog.Debian
+	gzip -9frv $(auctex)//usr/share/doc/auctex/
+	ln -sf ChangeLog.gz $(auctex)//usr/share/doc/auctex//changelog.gz
+	$(INSTDATA) debian/copyright $(auctex)//usr/share/doc/auctex/
+	$(INSTDATA) doc/auctex.htmls/* \
+		$(auctex)//usr/share/doc/auctex//HTML/auctex/
+	ln -snf auctex.html \
+		$(auctex)//usr/share/doc/auctex//HTML/auctex/index.html
+	$(INSTDATA) doc/preview-latex.htmls/* \
+		$(auctex)//usr/share/doc/auctex//HTML/preview-latex/
+	ln -snf preview-latex.html \
+		$(auctex)//usr/share/doc/auctex//HTML/preview-latex/index.html
+	$(INSTDATA) debian/auctex/update-auctex-elisp.8 \
+		$(auctex)//usr/share/man//man8/
+	$(INSTDATA) debian/auctex/update-auctex-install.8 \
+		$(auctex)//usr/share/man//man8/
+	gzip -9frv $(auctex)//usr/share/man/
+
+	$(INSTDIR) $(auctex)//etc/emacs21/site-start.d/ \
+		$(auctex)//etc/emacs22/site-start.d/ \
+		$(auctex)//etc/emacs23/site-start.d/ \
+		$(auctex)//etc/emacs-snapshot/site-start.d/
+	$(INSTDATA) debian/auctex/lisp-startup.el \
+		$(auctex)//etc/emacs21/site-start.d/50auctex.el
+	$(INSTDATA) debian/auctex/lisp-startup.el \
+		$(auctex)//etc/emacs22/site-start.d/50auctex.el
+	$(INSTDATA) debian/auctex/lisp-startup.el \
+		$(auctex)//etc/emacs23/site-start.d/50auctex.el
+	$(INSTDATA) debian/auctex/lisp-startup.el \
+		$(auctex)//etc/emacs-snapshot/site-start.d/50auctex.el
+	$(INSTDIR) $(auctex)//etc/cron.weekly/
+	$(INSTSCRIPT) debian/auctex/cron \
+		$(auctex)//etc/cron.weekly//auctex
+	$(INSTDIR) $(auctex)//usr/sbin/
+	$(INSTSCRIPT) debian/auctex/update-auctex-elisp \
+		$(auctex)//usr/sbin/
+	$(INSTSCRIPT) debian/auctex/update-auctex-install \
+		$(auctex)//usr/sbin/
+	$(INSTDIR) $(auctex)//var/lib/auctex/
+	$(INSTDIR) $(auctex)//usr/share/emacs/site-lisp/auctex/
+	$(INSTDIR) $(auctex)//usr/lib/emacsen-common/packages//{install,remove}
+	$(INSTSCRIPT) debian/auctex/install \
+		$(auctex)//usr/lib/emacsen-common/packages//install/auctex
+	$(INSTSCRIPT) debian/auctex/remove \
+		$(auctex)//usr/lib/emacsen-common/packages//remove/auctex
+	$(INSTDIR) $(auctex)//usr/share/doc-base/
+	$(INSTDATA) debian/auctex/docbase.auctex \
+		$(auctex)//usr/share/doc-base//auctex
+	$(INSTDATA) debian/auctex/docbase.preview \
+		$(auctex)//usr/share/doc-base//preview-latex
+	$(INSTDIR) $(auctex)//usr/share/bug/auctex/
+	$(INSTDATA) debian/auctex/bug.presubj \
+		$(auctex)//usr/share/bug/auctex//presubj
+	$(INSTSCRIPT) debian/auctex/bug.script \
+		$(auctex)//usr/share/bug/auctex//script
+	$(INSTDIR) $(auctex)//usr/share/lintian/overrides/
+	$(INSTDATA) debian/auctex/lintian \
+		$(auctex)//usr/share/lintian/overrides//auctex
+
+	$(INSTDIR) $(auctex)//DEBIAN/
+	$(INSTDATA) debian/auctex/conffiles \
+		$(auctex)//DEBIAN/
+	$(INSTDATA) debian/auctex/templates.dcobj \
+		$(auctex)//DEBIAN//templates
+	$(INSTSCRIPT) debian/auctex/{config,postinst,postrm,prerm} \
+		$(auctex)//DEBIAN/
+
+	cd $(auctex) && md5sum \
+		$$(find ./ -path './DEBIAN' -prune \
+		-o -type f -printf "%P\n") \
+		| sort -k 2 -o $(auctex)//DEBIAN//md5sums
+	dpkg-gencontrol -isp -P$(auctex) -pauctex
+	chown -R root.root $(auctex)
+	chmod -R go=rX $(auctex)
+	dpkg --build $(auctex) ..
+
+.PHONY: binary-indep-pls
+binary-indep-pls: build
+	$(checkdir)
+	$(checkroot)
+	-rm -rf $(pls)
+
+	cd preview && $(MAKE) prefix=$(pls)//usr/ TEXHASH=: \
+		previewdocdir=$(pls)//usr/share/doc/texmf/latex/styles/ \
+		install-texmf
+	gzip -9frv $(pls)//usr/share/doc/texmf/latex/styles/
+
+	$(INSTDIR) $(pls)//usr/share/doc/preview-latex-style/
+	$(INSTDATA) preview/latex/README $(pls)//usr/share/doc/preview-latex-style/
+	$(INSTDATA) debian/preview-latex-style/README \
+		$(pls)//usr/share/doc/preview-latex-style//README.Debian
+	$(INSTDATA) preview/ChangeLog $(pls)//usr/share/doc/preview-latex-style/
+	$(INSTDATA) preview/ChangeLog.1 $(pls)//usr/share/doc/preview-latex-style/
+	$(INSTDATA) debian/changelog $(pls)//usr/share/doc/preview-latex-style//changelog.Debian
+	gzip -9frv $(pls)//usr/share/doc/preview-latex-style/
+	ln -sf ChangeLog.gz $(pls)//usr/share/doc/preview-latex-style//changelog.gz
+	$(INSTDATA) debian/copyright $(pls)//usr/share/doc/preview-latex-style/
+
+	$(INSTDIR) $(pls)//usr/share/doc-base/
+	$(INSTDATA) debian/preview-latex-style/docbase \
+		$(pls)//usr/share/doc-base//preview-latex-style
+	$(INSTDIR) $(pls)//usr/share/bug/preview-latex-style/
+	$(INSTDATA) debian/preview-latex-style/bug.presubj \
+		$(pls)//usr/share/bug/preview-latex-style//presubj
+	$(INSTDIR) $(pls)//usr/share/lintian/overrides/
+	$(INSTDATA) debian/preview-latex-style/lintian \
+		$(pls)//usr/share/lintian/overrides//preview-latex-style
+
+	$(INSTDIR) $(pls)//DEBIAN/
+	$(INSTSCRIPT) debian/preview-latex-style/{postinst,prerm,postrm} \
+		$(pls)//DEBIAN/
+
+	cd $(pls) && md5sum \
+		$$(find ./ -path './DEBIAN' -prune \
+		-o -type f -printf "%P\n") \
+		| sort -k 2 -o $(pls)//DEBIAN//md5sums
+	dpkg-gencontrol -isp -P$(pls) -ppreview-latex-style
+	chown -R root.root $(pls)
+	chmod -R go=rX $(pls)
+	dpkg --build $(pls) ..
+
+.PHONY: binary-arch
+binary-arch: build
+
+.PHONY: build-package
+build-package: clean
+	dpkg-buildpackage -rfakeroot -tc -i
+	lintian --info --color auto --show-overrides --checksums \
+		--display-info --display-experimental --pedantic \
+		../auctex*changes
+
+.PHONY: snapshot
+snapshot:
+	gbp-pq rebase
+	git-dch --debian-branch=patch-queue/master --snapshot --auto
+	git-buildpackage --git-ignore-new -rfakeroot -tc -i -us -uc
+
+.PHONY: release
+release:
+	gbp-pq rebase
+	gbp-pq export
+	git-dch --release
+	git add debian/changelog
+	git commit
+	gbp-pq rebase
+	git-buildpackage --git-debian-branch=patch-queue/master \
+		-rfakeroot -tc -i
+	git checkout master
+	V=$$(dpkg-parsechangelog|egrep '^Version: '|cut -d ' ' -f 2); \
+	git tag -s -m "Debian release $${V}" debian/$${V}
+

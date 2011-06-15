@@ -1,0 +1,15 @@
+Source: lsb-base
+Section: base
+Priority: required
+Maintainer: Nexenta Systems <maintainer@nexenta.com>
+Build-Depends: debhelper (>= 5)
+Standards-Version: 3.7.2
+
+Package: lsb-base
+XBS-Virtual: lsb-base
+Architecture: all
+Priority: required
+Depends: sunwcs, bash
+Description: Debian LSB-3.0 compatibility scripts
+ This package provides Debian LSB-3.0 compatibility scripts such as
+ init-functions and others

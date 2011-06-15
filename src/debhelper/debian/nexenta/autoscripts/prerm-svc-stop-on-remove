@@ -1,0 +1,13 @@
+if [ "$1" = remove ]; then
+    for s in #SERVICES#; do
+        case `svcs -Ho STATE $s` in
+            maintenance)
+                /usr/sbin/svcadm -v clear $s || true
+                /usr/sbin/svcadm -v disable -s $s || true
+                ;;
+            online|offline|degrated)
+                /usr/sbin/svcadm -v disable -s $s || true
+                ;;
+        esac
+    done
+fi

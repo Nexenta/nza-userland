@@ -1,0 +1,3 @@
+# this source package provides these packages so it cannot depend on them
+dbg-package-missing-depends python-all-dbg
+dbg-package-missing-depends python-dbg

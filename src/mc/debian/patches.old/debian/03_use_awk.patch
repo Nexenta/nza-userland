@@ -1,0 +1,15 @@
+Description: Use awk before using anything else in ./configure
+Bug-Debian: http://bugs.debian.org/499723
+Author: Patrick Winnertz <winnie@debian.org>
+
+--- a/configure	2009-08-04 20:22:13.000000000 +0200
++++ b/configure	2009-08-04 20:22:29.000000000 +0200
+@@ -2544,7 +2544,7 @@
+   */*) mkdir_p="\$(top_builddir)/$mkdir_p" ;;
+ esac
+ 
+-for ac_prog in gawk mawk nawk awk
++for ac_prog in awk gawk mawk nawk
+ do
+   # Extract the first word of "$ac_prog", so it can be a program name with args.
+ set dummy $ac_prog; ac_word=$2

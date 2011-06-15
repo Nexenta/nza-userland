@@ -1,0 +1,4 @@
+# Lintian overrides for the binary package
+
+# cons.saver has to be sgid tty to access vcsa
+mc binary: setgid-binary usr/lib/mc/cons.saver 2755 root/tty

@@ -1,0 +1,5 @@
+--- debian/compat
++++ debian/compat
+@@ -1 +1 @@
+-tail: cannot open `.pc/applied-patches' for reading: No such file or directory
++5

@@ -1,0 +1,145 @@
+# Galician translation of the "debian/auctex/templates" file of the auctex
+# Debian package.
+#
+# Copyright (C) 2007 Davide G. M. Salvetti
+#
+# This file is distributed under the same license as the auctex Debian
+# package.
+#
+# Jacobo Tarrio <jtarrio@debian.org>, 2007
+msgid ""
+msgstr ""
+"Project-Id-Version: auctex\n"
+"Report-Msgid-Bugs-To: auctex@packages.debian.org\n"
+"POT-Creation-Date: 2009-08-23 12:41+0200\n"
+"PO-Revision-Date: 2010-08-27 13:42+0200\n"
+"Last-Translator: Jacobo Tarrio <jtarrio@debian.org>\n"
+"Language-Team: Galician <proxecto@trasno.net>\n"
+"Language: gl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. Type: select
+#. Choices
+#: ../auctex/templates:1001
+msgid "Background"
+msgstr "Fondo"
+
+#. Type: select
+#. Choices
+#: ../auctex/templates:1001
+msgid "Foreground"
+msgstr "Primeiro plano"
+
+#. Type: select
+#. Choices
+#: ../auctex/templates:1001
+msgid "None"
+msgstr "Ningún"
+
+#. Type: select
+#. Description
+#: ../auctex/templates:1002
+msgid "(La)TeX macros parsing mode:"
+msgstr "Modo de análise de macros de (La)TeX:"
+
+#. Type: select
+#. Description
+#: ../auctex/templates:1002
+msgid ""
+"To improve the performance of AUCTeX, every currently installed TeX macro "
+"package and LaTeX style file will be parsed."
+msgstr ""
+"Para mellorar o rendemento de AUCTeX, hanse analizar tódolos paquetes de "
+"macros de TeX e ficheiros de estilos de LaTeX instalados actualmente."
+
+#. Type: select
+#. Description
+#. Translators: do NOT translate ${LOGFILE}
+#: ../auctex/templates:1002
+msgid ""
+"This may take a lot of time, so it should probably be done in the "
+"background.  You may also choose to have it done in the foreground, or to "
+"skip that step.  If you choose 'Background', you will find a detailed log of "
+"the process in ${LOGFILE}."
+msgstr ""
+"Isto pode levar moito tempo, así que seguramente sexa mellor facelo coma "
+"tarefa de fondo. Tamén pode facelo coma tarefa de primeiro plano, ou omitir "
+"ese paso. Se escolle \"Fondo\", ha ter un rexistro detallado do proceso no "
+"ficheiro ${LOGFILE}."
+
+#. Type: select
+#. Description
+#: ../auctex/templates:1002
+msgid ""
+"A weekly cron job will also take care of updating the cached data, so that "
+"no specific action is required whenever you install new (La)TeX packages or "
+"remove old ones."
+msgstr ""
+"Unha tarefa de cron semanal tamén se ha encargar de actualizar os datos da "
+"caché, para que non se precise de realizar ningunha acción específica ao "
+"instalar ou eliminar paquetes de (La)TeX."
+
+#. Type: select
+#. Description
+#: ../auctex/templates:1002
+msgid ""
+"This update can be run manually at any moment by running 'update-auctex-"
+"elisp'."
+msgstr ""
+"Pódese executar esta actualización manualmente en calquera momento "
+"executando \"update-auctex-elisp\"."
+
+#. Type: select
+#. Choices
+#: ../auctex/templates:2001
+msgid "Console"
+msgstr "Consola"
+
+#. Type: select
+#. Choices
+#: ../auctex/templates:2001
+msgid "File"
+msgstr "Ficheiro"
+
+#. Type: select
+#. Description
+#: ../auctex/templates:2002
+msgid "Parsing output destination:"
+msgstr "Destino da saída da análise:"
+
+#. Type: select
+#. Description
+#: ../auctex/templates:2002
+msgid ""
+"You chose to parse TeX macro packages and LaTeX style files in foreground. "
+"This operation generates a lot of information. Please choose where this "
+"information should be sent:"
+msgstr ""
+"Decidiu analizar os paquetes de macros de TeX e os ficheiros de estilos de "
+"LaTeX nunha tarefa de fondo. Esta operación produce moita información. "
+"Indique onde se debe enviar esa información:"
+
+#. Type: select
+#. Description
+#. Translators: do NOT translate ${LOGFILE}
+#: ../auctex/templates:2002
+msgid ""
+"  Console: output goes to the current console;\n"
+"  File:    output goes to ${LOGFILE}."
+msgstr ""
+"  Consola:  a saída vai á consola actual;\n"
+"  Ficheiro: a saída vai ao ficheiro ${LOGFILE}."
+
+#~ msgid ""
+#~ "By default -- i.e., answering File to this question -- further output "
+#~ "from the parsing process will go to a file named: ${LOGFILE}."
+#~ msgstr ""
+#~ "Por defecto -- é dicir, se resposta \"Ficheiro\" a esta pregunta --, a "
+#~ "saída do proceso de análise ha ir a un ficheiro chamado ${LOGFILE}."
+
+#~ msgid ""
+#~ "If you answer Console, you will see all of the (boring) output right on "
+#~ "your terminal."
+#~ msgstr "Se resposta \"Consola\" ha ver toda a saída no seu terminal."

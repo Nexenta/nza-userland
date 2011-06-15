@@ -1,0 +1,11 @@
+--- lzma443/C/7zip/Compress/LZMA_C/kmod/module.c.old	2007-10-06 03:34:00.000000000 +0100
++++ lzma443/C/7zip/Compress/LZMA_C/kmod/module.c	2007-10-06 03:33:18.000000000 +0100
+@@ -11,7 +11,7 @@
+ #include <linux/init.h>
+ #include <linux/module.h>
+ 
+-#include "../LzmaDecode.c"
++#include "LzmaDecode.c"
+ 
+ EXPORT_SYMBOL(LzmaDecodeProperties);
+ EXPORT_SYMBOL(LzmaDecode);

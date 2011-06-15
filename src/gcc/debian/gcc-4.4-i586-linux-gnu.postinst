@@ -1,0 +1,16 @@
+#!/bin/sh
+
+set -e
+
+if [ "$1" = "configure" ]; then
+    update-alternatives --quiet \
+	--install /usr/bin/i586-linux-gnu-gcc i586-linux-gnu-gcc /usr/bin/i586-linux-gnu-gcc-4.4 44 \
+	#--slave /usr/share/man/man1/i586-linux-gnu-gcc.1.gz i586-linux-gnu-gcc.1.gz /usr/share/man/man1/i586-linux-gnu-gcc-4.4.1.gz
+    update-alternatives --quiet \
+	--install /usr/bin/i586-linux-gnu-gcov i586-linux-gnu-gcov /usr/bin/i586-linux-gnu-gcov-4.4 44 \
+	#--slave /usr/share/man/man1/i586-linux-gnu-gcov.1.gz i586-linux-gnu-gcov.1.gz /usr/share/man/man1/i586-linux-gnu-gcov-4.4.1.gz
+fi
+
+#DEBHELPER#
+
+exit 0

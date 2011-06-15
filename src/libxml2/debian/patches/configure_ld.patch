@@ -1,0 +1,18 @@
+Index: libxml2-2.7.6/configure
+===================================================================
+--- libxml2-2.7.6.orig/configure
++++ libxml2-2.7.6/configure
+@@ -12147,10 +12147,10 @@ CC="$lt_save_CC"
+ 
+ 
+ VERSION_SCRIPT_FLAGS=
+-$(/usr/bin/ld --help 2>&1 | grep -- --version-script >/dev/null) && \
++$(ld --help 2>&1 | grep -- --version-script >/dev/null) && \
+     VERSION_SCRIPT_FLAGS=-Wl,--version-script=
+-test "`uname`" == "SunOS" && \
+-    VERSION_SCRIPT_FLAGS="-Wl,-M -Wl,"
++#test "`uname`" == "SunOS" && \
++#    VERSION_SCRIPT_FLAGS="-Wl,-M -Wl,"
+ 
+  if test -n "$VERSION_SCRIPT_FLAGS"; then
+   USE_VERSION_SCRIPT_TRUE=

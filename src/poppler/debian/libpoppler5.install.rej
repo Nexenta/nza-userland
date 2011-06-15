@@ -1,0 +1,5 @@
+--- debian/libpoppler5.install
++++ debian/libpoppler5.install
+@@ -1 +1 @@
+-tail: cannot open `.pc/applied-patches' for reading: No such file or directory
++debian/tmp/usr/lib/libpoppler.so.*

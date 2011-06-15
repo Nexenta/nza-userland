@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<!DOCTYPE service_bundle SYSTEM "/usr/share/lib/xml/dtd/service_bundle.dtd.1">
+
+<service_bundle type="manifest" name="rsync">
+<service name="network/rsync" type="service" version="4">
+
+	<create_default_instance enabled="false"/>
+	<single_instance/>
+
+	<!-- First of all, if the config file is not present,
+             then we needn't bother with anything else.  -->
+
+	<dependency name="config-file" grouping="require_all" restart_on="none" type="path">
+		<service_fmri value="file:///etc/rsyncd.conf"/>
+	</dependency>
+
+	<!-- If there's no network, then there's no point in running -->
+
+	<dependency name="loopback" grouping="require_all" restart_on="error" type="service">
+		<service_fmri value="svc:/network/loopback:default"/>
+	</dependency>
+
+	<dependency name="physical" grouping="require_all" restart_on="error" type="service">
+		<service_fmri value="svc:/network/physical:default"/>
+	</dependency>
+
+	<dependency name="fs-local" grouping="require_all" restart_on="none" type="service">
+		<service_fmri value="svc:/system/filesystem/local"/>
+	</dependency>
+
+	<exec_method type="method" name="start" exec="/lib/svc/method/rsync start" timeout_seconds="60"/>
+
+	<exec_method type="method" name="stop" exec="/lib/svc/method/rsync stop" timeout_seconds="60"/>
+
+	<exec_method type="method" name="refresh" exec="/lib/svc/method/rsync refresh" timeout_seconds="60"/>
+
+	<stability value="Unstable"/>
+
+	<template>
+		<common_name>
+			<loctext xml:lang="C">RSYNC daemon</loctext>
+		</common_name>
+		<documentation>
+			<manpage title="rsync" section="7"/>
+			<doc_link name="samba.org" uri="http://www.rsync.org/docs/"/>
+		</documentation>
+	</template>
+</service>
+</service_bundle>
+

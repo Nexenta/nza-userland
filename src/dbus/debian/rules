@@ -1,0 +1,97 @@
+#!/usr/bin/make -f
+# Copyright © 2002,2003 Colin Walters <walters@verbum.org>
+# Copyright © 2003 Daniel Stone <daniels@debian.org>
+# Copyright © 2006 Sjoerd Simons <sjoerd@debian.org>
+
+DEB_BUILDDIR = $(CURDIR)/build32
+
+include /usr/share/cdbs/1/rules/autoreconf.mk
+include /usr/share/cdbs/1/rules/utils.mk
+include /usr/share/cdbs/1/rules/debhelper.mk
+include /usr/share/cdbs/1/class/autotools.mk
+
+#DEB_STRIP_EXCLUDE += usr/bin/dbus-.*
+
+libdbusN := $(shell sed -rn 's/Package:[[:space:]]*(libdbus-[0-9-]+)[[:space:]]*$$/\1/p' debian/control | head -n 1)
+
+DEB_DH_MAKESHLIBS_ARGS_ALL = -V '$(libdbusN) (>= 1.3.1)'
+
+LDFLAGS += -Wl,--as-needed
+
+# Fixed error: 'struct msghdr' has no member named 'msg_controllen'
+CFLAGS += -D_XOPEN_SOURCE=500
+
+# List any files which are not installed
+common-binary-post-install-arch:: list-missing
+
+DEB_CONFIGURE_LIBEXECDIR := "\$${prefix}/lib/dbus-1.0"
+
+DEB_CONFIGURE_EXTRA_FLAGS := \
+	--enable-xml-docs \
+	--enable-doxygen-docs \
+	--disable-libaudit \
+	--with-dbus-user=root
+
+binary-post-install/dbus-x11::
+	mkdir -p debian/dbus-x11/etc/X11/Xsession.d
+	cp debian/dbus-Xsession debian/dbus-x11/etc/X11/Xsession.d/75dbus_dbus-launch
+
+binary-post-install/dbus::
+	dh_installsvc -pdbus
+
+build/dbus-1-doc::
+	cd $(DEB_BUILDDIR) && doxygen Doxyfile
+
+#xsltproc -o dbus.devhelp debian/doxygen_to_devhelp.xsl doc/api/xml/index.xml
+
+install/libdbus-1-dev::
+	dh_link -p$(cdbs_curpkg) lib/$$(basename $$(readlink debian/tmp/usr/lib/libdbus-1.so)) usr/lib/libdbus-1.so
+
+clean::
+	rm -f test/data/valid-config-files/session.conf
+	rm -f test/data/valid-config-files/system.conf
+	rm -f dbus.devhelp
+	rm -rf build64 build64-stamp build32
+	rm -f configure
+
+build/libdbus-1-3:: build64-stamp
+	$(MAKE) -C build64/dbus install DESTDIR=$(DEB_DESTDIR)
+	$(MAKE) -C build64 install-pkgconfigDATA DESTDIR=$(DEB_DESTDIR)
+
+build64-stamp: build64/config.status
+	$(MAKE) -C build64/dbus
+
+build64:
+	mkdir -p $@
+
+# We need only libdbus.
+# Also there is no 64bit X.
+build64/config.status: build64
+	dh_testdir
+	CFLAGS="$(CFLAGS) -m64" \
+		   dh_auto_configure -B $(CURDIR)/build64 -- \
+		   $(DEB_CONFIGURE_EXTRA_FLAGS) \
+		   --libdir=\$${prefix}/lib/amd64 \
+		   --bindir=\$${prefix}/bin/amd64 \
+		   --libexecdir=\$${prefix}/lib/amd64/dbus \
+		   --build=x86_64-pc-solaris2.11 \
+		   --disable-xml-docs \
+		   --disable-doxygen-docs \
+		   --without-x \
+
+
+# we don't want docs for the debug symbols, just symlink to the library docs
+DEB_INSTALL_DOCS_ALL =
+DEB_INSTALL_DOCS_DEFAULT = README AUTHORS
+#DEB_INSTALL_DOCS_dbus-1-dbg := --link-doc=$(libdbusN)
+DEB_INSTALL_CHANGELOGS_ALL =
+DEB_INSTALL_CHANGELOGS_DEFAULT = ChangeLog
+DEB_INSTALL_CHANGELOGS_dbus-1-dbg := --no-act
+
+# workaround for cdbs running dh-buildinfo (if installed) too early;
+# see #590594
+debian/stamp-buildinfo: insist-on-symlinks
+insist-on-symlinks:
+	@echo "regarding #590594, observe that this is before dh_installdocs"
+	install -d debian/dbus-1-dbg/usr/share/doc
+	ln -s $(libdbusN) debian/dbus-1-dbg/usr/share/doc/dbus-1-dbg

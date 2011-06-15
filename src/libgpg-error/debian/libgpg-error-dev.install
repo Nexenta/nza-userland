@@ -1,0 +1,7 @@
+usr/bin/*
+usr/bin/amd64/*
+usr/include/*
+usr/lib/libgpg-error.la
+usr/lib/amd64/libgpg-error.la
+#usr/lib/libgpg-error.so
+usr/share/aclocal/*.m4

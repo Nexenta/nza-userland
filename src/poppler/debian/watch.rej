@@ -1,0 +1,6 @@
+--- debian/watch
++++ debian/watch
+@@ -1 +1,2 @@
+-tail: cannot open `.pc/applied-patches' for reading: No such file or directory
++version=3
++http://poppler.freedesktop.org/ poppler-([0-9.]*)\.tar\.gz debian uupdate

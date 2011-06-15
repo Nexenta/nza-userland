@@ -1,0 +1,23 @@
+#!/bin/sh
+
+set -e
+
+# $1 - html file name
+# $2 - html2text param
+check()
+{
+	echo "  checking $1"
+	../../html2text $2 $1 > $1.result
+	cmp $1.result $1.supposed
+	return
+}
+
+check cp1251.html
+check debianorg.html
+check h1.html
+check quotes_dashes.html
+check rus+eng.html -utf8
+check ascii-ntilde.html -ascii
+check pkgreport.html -utf8
+check number_in_attribute.html
+

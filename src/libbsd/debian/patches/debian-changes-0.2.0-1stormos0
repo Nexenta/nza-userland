@@ -1,0 +1,745 @@
+--- libbsd-0.2.0.orig/Makefile
++++ libbsd-0.2.0/Makefile
+@@ -39,7 +39,6 @@ LIB_SRCS := \
+ 	strtonum.c \
+ 	strlcat.c strlcpy.c \
+ 	fmtcheck.c \
+-	nlist.c \
+ 	progname.c \
+ 	vis.c unvis.c \
+ 	$(LIB_SRCS_GEN)
+--- libbsd-0.2.0.orig/include/vis.h
++++ libbsd-0.2.0/include/vis.h
+@@ -72,9 +72,14 @@
+  */
+ #define	UNVIS_END	1	/* no more characters */
+ 
++#ifndef __sun
+ #include <sys/cdefs.h>
++#endif
+ 
++#ifndef __sun
+ __BEGIN_DECLS
++#endif
++
+ char	*vis(char *, int, int, int);
+ int	strvis(char *, const char *, int);
+ int	strvisx(char *, const char *, size_t, int);
+@@ -83,6 +88,9 @@ int	strunvis(char *, const char *);
+ int	strunvisx(char *, const char *, int);
+ ssize_t strnunvis(char *, const char *, size_t);
+ int	unvis(char *, int, int *, int);
++
++#ifndef __sun
+ __END_DECLS
++#endif
+ 
+ #endif /* !_VIS_H_ */
+--- libbsd-0.2.0.orig/include/libutil.h
++++ libbsd-0.2.0/include/libutil.h
+@@ -39,7 +39,10 @@
+ #ifndef _LIBUTIL_H_
+ #define _LIBUTIL_H_
+ 
++#ifndef __sun
+ #include <features.h>
++#endif
++
+ #include <sys/types.h>
+ 
+ /* for pidfile.c */
+@@ -50,7 +53,10 @@ struct pidfh {
+ 	ino_t	pf_ino;
+ };
+ 
++#ifndef __sun
+ __BEGIN_DECLS
++#endif
++
+ int humanize_number(char *buf, size_t len, int64_t bytes,
+     const char *suffix, int scale, int flags);
+ 
+@@ -60,7 +66,10 @@ struct pidfh *pidfile_open(const char *p
+ int pidfile_write(struct pidfh *pfh);
+ int pidfile_close(struct pidfh *pfh);
+ int pidfile_remove(struct pidfh *pfh);
++
++#ifndef __sun
+ __END_DECLS
++#endif
+ 
+ /* humanize_number(3) */
+ #define HN_DECIMAL              0x01
+--- libbsd-0.2.0.orig/include/bsd/unistd.h
++++ libbsd-0.2.0/include/bsd/unistd.h
+@@ -27,18 +27,27 @@
+ #ifndef LIBBSD_UNISTD_H
+ #define LIBBSD_UNISTD_H
+ 
++#ifndef __sun
+ #include <sys/cdefs.h>
++#endif
++
+ #include <sys/stat.h>
+ 
+ #ifndef S_ISTXT
+ #define S_ISTXT S_ISVTX
+ #endif
+ 
++#ifndef __sun
+ __BEGIN_DECLS
++#endif
++
+ mode_t getmode(const void *set, mode_t mode);
+ void *setmode(const char *mode_str);
+ 
+ void setproctitle(const char *fmt, ...);
++
++#ifndef __sun
+ __END_DECLS
++#endif
+ 
+ #endif
+--- libbsd-0.2.0.orig/include/bsd/stdio.h
++++ libbsd-0.2.0/include/bsd/stdio.h
+@@ -27,14 +27,23 @@
+ #ifndef LIBBSD_STDIO_H
+ #define LIBBSD_STDIO_H
+ 
++#ifndef __sun
+ #include <sys/cdefs.h>
++#endif
++
+ #include <sys/types.h>
+ #include <stdio.h>
+ 
++#ifndef __sun
+ __BEGIN_DECLS
++#endif
++
+ const char *fmtcheck(const char *, const char *);
+ 
+ char *fgetln(FILE *fp, size_t *lenp);
++
++#ifndef __sun
+ __END_DECLS
++#endif
+ 
+ #endif
+--- libbsd-0.2.0.orig/include/bsd/string.h
++++ libbsd-0.2.0/include/bsd/string.h
+@@ -27,16 +27,25 @@
+ #ifndef LIBBSD_STRING_H
+ #define LIBBSD_STRING_H
+ 
++#ifndef __sun
+ #include <sys/cdefs.h>
++#endif
++
+ #include <sys/types.h>
+ 
+ /* FIXME: Temporary inclusion to avoid API breakage, will be removed soon. */
+ #include <bsd/stdio.h>
+ 
++#ifndef __sun
+ __BEGIN_DECLS
++#endif
++
+ size_t strlcpy(char *dst, const char *src, size_t siz);
+ size_t strlcat(char *dst, const char *src, size_t siz);
+ void strmode(mode_t mode, char *str);
++
++#ifndef __sun
+ __END_DECLS
++#endif
+ 
+ #endif
+--- libbsd-0.2.0.orig/include/bsd/md5.h
++++ libbsd-0.2.0/include/bsd/md5.h
+@@ -20,21 +20,24 @@
+ #define	MD5_DIGEST_STRING_LENGTH	(MD5_DIGEST_LENGTH * 2 + 1)
+ 
+ typedef struct MD5Context {
+-	u_int32_t state[4];			/* state */
+-	u_int64_t count;			/* number of bits, mod 2^64 */
+-	u_int8_t buffer[MD5_BLOCK_LENGTH];	/* input buffer */
++	uint32_t state[4];			/* state */
++	uint64_t count;			/* number of bits, mod 2^64 */
++	uint8_t buffer[MD5_BLOCK_LENGTH];	/* input buffer */
+ } MD5_CTX;
+ 
++#ifndef __sun
+ #include <sys/cdefs.h>
+ 
+ __BEGIN_DECLS
++#endif
++
+ void	 MD5Init(MD5_CTX *);
+-void	 MD5Update(MD5_CTX *, const u_int8_t *, size_t)
++void	 MD5Update(MD5_CTX *, const uint8_t *, size_t)
+ 		__attribute__((__bounded__(__string__,2,3)));
+ void	 MD5Pad(MD5_CTX *);
+-void	 MD5Final(u_int8_t [MD5_DIGEST_LENGTH], MD5_CTX *)
++void	 MD5Final(uint8_t [MD5_DIGEST_LENGTH], MD5_CTX *)
+ 		__attribute__((__bounded__(__minbytes__,1,MD5_DIGEST_LENGTH)));
+-void	 MD5Transform(u_int32_t [4], const u_int8_t [MD5_BLOCK_LENGTH])
++void	 MD5Transform(uint32_t [4], const uint8_t [MD5_BLOCK_LENGTH])
+ 		__attribute__((__bounded__(__minbytes__,1,4)))
+ 		__attribute__((__bounded__(__minbytes__,2,MD5_BLOCK_LENGTH)));
+ char	*MD5End(MD5_CTX *, char *)
+@@ -43,9 +46,12 @@ char	*MD5File(const char *, char *)
+ 		__attribute__((__bounded__(__minbytes__,2,MD5_DIGEST_STRING_LENGTH)));
+ char	*MD5FileChunk(const char *, char *, off_t, off_t)
+ 		__attribute__((__bounded__(__minbytes__,2,MD5_DIGEST_STRING_LENGTH)));
+-char	*MD5Data(const u_int8_t *, size_t, char *)
++char	*MD5Data(const uint8_t *, size_t, char *)
+ 		__attribute__((__bounded__(__string__,1,2)))
+ 		__attribute__((__bounded__(__minbytes__,3,MD5_DIGEST_STRING_LENGTH)));
++
++#ifndef __sun
+ __END_DECLS
++#endif
+ 
+ #endif /* _MD5_H_ */
+--- libbsd-0.2.0.orig/include/bsd/readpassphrase.h
++++ libbsd-0.2.0/include/bsd/readpassphrase.h
+@@ -31,11 +31,20 @@
+ #define RPP_SEVENBIT    0x10		/* Strip the high bit from input. */
+ #define RPP_STDIN       0x20		/* Read from stdin, not /dev/tty */
+ 
++#ifndef __sun
+ #include <sys/cdefs.h>
++#endif
++
+ #include <sys/types.h>
+ 
++#ifndef __sun
+ __BEGIN_DECLS
++#endif
++
+ char * readpassphrase(const char *, char *, size_t, int);
++
++#ifndef __sun
+ __END_DECLS
++#endif
+ 
+ #endif /* !_READPASSPHRASE_H_ */
+--- libbsd-0.2.0.orig/include/bsd/stdlib.h
++++ libbsd-0.2.0/include/bsd/stdlib.h
+@@ -29,7 +29,12 @@
+ #ifndef LIBBSD_STDLIB_H
+ #define LIBBSD_STDLIB_H
+ 
++#ifdef __sun
++#include <sys/types.h>
++#else
+ #include <sys/cdefs.h>
++#endif
++
+ #include <sys/stat.h>
+ #include <stdint.h>
+ #include <stdlib.h>
+@@ -41,8 +46,11 @@
+ #include <bsd/stdio.h>
+ #include <bsd/unistd.h>
+ 
++#ifndef __sun
+ __BEGIN_DECLS
+-u_int32_t arc4random();
++#endif
++
++uint32_t arc4random();
+ void arc4random_stir();
+ void arc4random_addrandom(u_char *dat, int datlen);
+ 
+@@ -55,6 +63,9 @@ int heapsort (void *, size_t, size_t, in
+ 
+ long long strtonum(const char *nptr, long long minval, long long maxval,
+                    const char **errstr);
++
++#ifndef __sun
+ __END_DECLS
++#endif
+ 
+ #endif
+--- libbsd-0.2.0.orig/include/bsd/getopt.h
++++ libbsd-0.2.0/include/bsd/getopt.h
+@@ -28,13 +28,22 @@
+ #ifndef LIBBSD_GETOPT_H
+ #define LIBBSD_GETOPT_H
+ 
++#ifndef __sun
+ #include <sys/cdefs.h>
++#endif
++
+ #include <getopt.h>
+ 
++#ifndef __sun
+ __BEGIN_DECLS
++#endif
++
+ extern int optreset;
+ 
+ int bsd_getopt (int, char **, char *);
++
++#ifndef __sun
+ __END_DECLS
++#endif
+ 
+ #endif
+--- libbsd-0.2.0.orig/include/bsd/err.h
++++ libbsd-0.2.0/include/bsd/err.h
+@@ -28,15 +28,24 @@
+ #ifndef LIBBSD_ERR_H
+ #define LIBBSD_ERR_H
+ 
++#ifndef __sun
+ #include <sys/cdefs.h>
++#endif
++
+ #include <err.h>
+ #include <stdarg.h>
+ 
++#ifndef __sun
+ __BEGIN_DECLS
++#endif
++
+ extern void warnc (int code, const char *format, ...);
+ extern void vwarnc (int code, const char *format, va_list ap);
+ extern void errc (int status, int code, const char *format, ...);
+ extern void verrc (int status, int code, const char *format, va_list ap);
++
++#ifndef __sun
+ __END_DECLS
++#endif
+ 
+ #endif
+--- libbsd-0.2.0.orig/include/bsd/sys/queue.h
++++ libbsd-0.2.0/include/bsd/sys/queue.h
+@@ -33,7 +33,9 @@
+ #ifndef _SYS_QUEUE_H_
+ #define	_SYS_QUEUE_H_
+ 
++#ifndef __sun
+ #include <sys/cdefs.h>
++#endif
+ 
+ /*
+  * This file defines four types of data structures: singly-linked lists,
+--- libbsd-0.2.0.orig/include/bsd/sys/tree.h
++++ libbsd-0.2.0/include/bsd/sys/tree.h
+@@ -30,7 +30,9 @@
+ #ifndef	_SYS_TREE_H_
+ #define	_SYS_TREE_H_
+ 
++#ifndef __sun
+ #include <sys/cdefs.h>
++#endif
+ 
+ /*
+  * This file defines data structures for different types of trees:
+--- libbsd-0.2.0.orig/include/bsd/sys/cdefs.h
++++ libbsd-0.2.0/include/bsd/sys/cdefs.h
+@@ -27,7 +27,9 @@
+ #ifndef LIBBSD_CDEFS_H
+ #define LIBBSD_CDEFS_H
+ 
++#ifndef __sun
+ #include <sys/cdefs.h>
++#endif
+ 
+ #ifndef __dead2
+ # define __dead2
+--- libbsd-0.2.0.orig/include/bsd/netinet/ip_icmp.h
++++ libbsd-0.2.0/include/bsd/netinet/ip_icmp.h
+@@ -33,7 +33,7 @@
+ #ifndef _NETINET_IP_ICMP_H_
+ #define _NETINET_IP_ICMP_H_
+ 
+-#include <sys/types.h>		/* u_int32_t, u_char */
++#include <sys/types.h>		/* uint32_t, u_char */
+ #include <netinet/in.h>		/* in_addr */
+ #include <netinet/in_systm.h>	/* n_short */
+ #include <netinet/ip.h>		/* idi_ip */
+@@ -47,8 +47,8 @@
+  * Internal of an ICMP Router Advertisement
+  */
+ struct icmp_ra_addr {
+-	u_int32_t ira_addr;
+-	u_int32_t ira_preference;
++	uint32_t ira_addr;
++	uint32_t ira_preference;
+ };
+ 
+ /*
+@@ -76,7 +76,7 @@ struct icmp {
+ 		struct ih_rtradv {
+ 			u_char irt_num_addrs;
+ 			u_char irt_wpa;
+-			u_int16_t irt_lifetime;
++			uint16_t irt_lifetime;
+ 		} ih_rtradv;
+ 	} icmp_hun;
+ #define	icmp_pptr	icmp_hun.ih_pptr
+@@ -100,7 +100,7 @@ struct icmp {
+ 			/* options and then 64 bits of data */
+ 		} id_ip;
+ 		struct icmp_ra_addr id_radv;
+-		u_int32_t id_mask;
++		uint32_t id_mask;
+ 		char	id_data[1];
+ 	} icmp_dun;
+ #define	icmp_otime	icmp_dun.id_ts.its_otime
+--- libbsd-0.2.0.orig/src/humanize_number.c
++++ libbsd-0.2.0/src/humanize_number.c
+@@ -30,7 +30,10 @@
+  * POSSIBILITY OF SUCH DAMAGE.
+  */
+ 
++#ifndef __sun
+ #include <sys/cdefs.h>
++#endif
++
+ #include <assert.h>
+ #include <inttypes.h>
+ #include <stdio.h>
+--- libbsd-0.2.0.orig/src/strmode.c
++++ libbsd-0.2.0/src/strmode.c
+@@ -30,7 +30,10 @@
+ #if defined(LIBC_SCCS) && !defined(lint)
+ static char sccsid[] = "@(#)strmode.c	8.3 (Berkeley) 8/15/94";
+ #endif /* LIBC_SCCS and not lint */
++
++#ifndef __sun
+ #include <sys/cdefs.h>
++#endif
+ 
+ #include <sys/types.h>
+ #include <sys/stat.h>
+--- libbsd-0.2.0.orig/src/strtonum.c
++++ libbsd-0.2.0/src/strtonum.c
+@@ -17,7 +17,10 @@
+  *	$OpenBSD: strtonum.c,v 1.6 2004/08/03 19:38:01 millert Exp $
+  */
+ 
++#ifndef __sun
+ #include <sys/cdefs.h>
++#endif
++
+ __FBSDID("$FreeBSD$");
+ 
+ #include <errno.h>
+--- libbsd-0.2.0.orig/src/fmtcheck.c
++++ libbsd-0.2.0/src/fmtcheck.c
+@@ -27,7 +27,10 @@
+  */
+ 
+ /*	$NetBSD: fmtcheck.c,v 1.2 2000/11/01 01:17:20 briggs Exp $	*/
++#ifndef __sun
+ #include <sys/cdefs.h>
++#endif
++
+ __FBSDID("$FreeBSD: /repoman/r/ncvs/src/lib/libc/gen/fmtcheck.c,v 1.8 2005/03/21 08:00:55 das Exp $");
+ 
+ #include <stdio.h>
+--- libbsd-0.2.0.orig/src/pidfile.c
++++ libbsd-0.2.0/src/pidfile.c
+@@ -24,7 +24,10 @@
+  * SUCH DAMAGE.
+  */
+ 
++#ifndef __sun
+ #include <sys/cdefs.h>
++#endif
++
+ __FBSDID("$FreeBSD$");
+ 
+ #include <sys/param.h>
+--- libbsd-0.2.0.orig/src/arc4random.c
++++ libbsd-0.2.0/src/arc4random.c
+@@ -32,7 +32,10 @@
+  * RC4 is a registered trademark of RSA Laboratories.
+  */
+ 
++#ifndef __sun
+ #include <sys/cdefs.h>
++#endif
++
+ __FBSDID("$FreeBSD$");
+ 
+ #include <sys/types.h>
+@@ -43,9 +46,9 @@ __FBSDID("$FreeBSD$");
+ #include <pthread.h>
+ 
+ struct arc4_stream {
+-	u_int8_t i;
+-	u_int8_t j;
+-	u_int8_t s[256];
++	uint8_t i;
++	uint8_t j;
++	uint8_t s[256];
+ };
+ 
+ #define	RANDOMDEV	"/dev/urandom"
+@@ -65,7 +68,7 @@ static int rs_initialized;
+ static int rs_stired;
+ static int arc4_count;
+ 
+-static inline u_int8_t arc4_getbyte(void);
++static inline uint8_t arc4_getbyte(void);
+ static void arc4_stir(void);
+ 
+ static inline void
+@@ -83,7 +86,7 @@ static inline void
+ arc4_addrandom(u_char *dat, int datlen)
+ {
+ 	int     n;
+-	u_int8_t si;
++	uint8_t si;
+ 
+ 	rs.i--;
+ 	for (n = 0; n < 256; n++) {
+@@ -103,7 +106,7 @@ arc4_stir(void)
+ 	struct {
+ 		struct timeval	tv;
+ 		pid_t 		pid;
+-		u_int8_t 	rnd[KEYSIZE];
++		uint8_t 	rnd[KEYSIZE];
+ 	} rdat;
+ 
+ 	fd = open(RANDOMDEV, O_RDONLY, 0);
+@@ -133,10 +136,10 @@ arc4_stir(void)
+ 	arc4_count = 1600000;
+ }
+ 
+-static inline u_int8_t
++static inline uint8_t
+ arc4_getbyte(void)
+ {
+-	u_int8_t si, sj;
++	uint8_t si, sj;
+ 
+ 	rs.i = (rs.i + 1);
+ 	si = rs.s[rs.i];
+@@ -148,10 +151,10 @@ arc4_getbyte(void)
+ 	return (rs.s[(si + sj) & 0xff]);
+ }
+ 
+-static inline u_int32_t
++static inline uint32_t
+ arc4_getword(void)
+ {
+-	u_int32_t val;
++	uint32_t val;
+ 
+ 	val = arc4_getbyte() << 24;
+ 	val |= arc4_getbyte() << 16;
+@@ -199,10 +202,10 @@ arc4random_addrandom(u_char *dat, int da
+ 	THREAD_UNLOCK();
+ }
+ 
+-u_int32_t
++uint32_t
+ arc4random(void)
+ {
+-	u_int32_t rnd;
++	uint32_t rnd;
+ 
+ 	THREAD_LOCK();
+ 	arc4_check_init();
+@@ -239,10 +242,10 @@ arc4random_buf(void *_buf, size_t n)
+  * [2**32 % upper_bound, 2**32) which maps back to [0, upper_bound)
+  * after reduction modulo upper_bound.
+  */
+-u_int32_t
+-arc4random_uniform(u_int32_t upper_bound)
++uint32_t
++arc4random_uniform(uint32_t upper_bound)
+ {
+-	u_int32_t r, min;
++	uint32_t r, min;
+ 
+ 	if (upper_bound < 2)
+ 		return (0);
+--- libbsd-0.2.0.orig/src/setmode.c
++++ libbsd-0.2.0/src/setmode.c
+@@ -33,7 +33,11 @@
+ #if defined(LIBC_SCCS) && !defined(lint)
+ static char sccsid[] = "@(#)setmode.c	8.2 (Berkeley) 3/25/94";
+ #endif /* LIBC_SCCS and not lint */
++
++#ifndef __sun
+ #include <sys/cdefs.h>
++#endif
++
+ __FBSDID("$FreeBSD: src/lib/libc/gen/setmode.c,v 1.11 2007/01/09 00:27:55 imp Exp $");
+ 
+ #include <sys/types.h>
+--- libbsd-0.2.0.orig/src/readpassphrase.c
++++ libbsd-0.2.0/src/readpassphrase.c
+@@ -20,10 +20,15 @@
+  * Materiel Command, USAF, under agreement number F39502-99-1-0512.
+  */
+ 
++#ifdef __sun
++#define _PATH_TTY "/dev/tty"
++#else
++#include <paths.h>
++#endif
++
+ #include <ctype.h>
+ #include <errno.h>
+ #include <fcntl.h>
+-#include <paths.h>
+ #include <pwd.h>
+ #include <signal.h>
+ #include <string.h>
+--- libbsd-0.2.0.orig/src/dehumanize_number.c
++++ libbsd-0.2.0/src/dehumanize_number.c
+@@ -29,7 +29,11 @@
+  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  * POSSIBILITY OF SUCH DAMAGE.
+  */
++
++#ifndef __sun
+ #include <sys/cdefs.h>
++#endif
++
+ #if defined(LIBC_SCCS) && !defined(lint)
+ __RCSID("$NetBSD: dehumanize_number.c,v 1.2 2007/12/14 17:32:47 xtraeme Exp $");
+ #endif /* LIBC_SCCS and not lint */
+--- libbsd-0.2.0.orig/src/flopen.c
++++ libbsd-0.2.0/src/flopen.c
+@@ -25,7 +25,12 @@
+  * SUCH DAMAGE.
+  */
+ 
++#ifdef __sun
++#include <sys/fcntl.h>
++#else
+ #include <sys/cdefs.h>
++#endif
++
+ __FBSDID("$FreeBSD$");
+ 
+ #include <sys/file.h>
+@@ -57,9 +62,14 @@ flopen(const char *path, int flags, ...)
+ 		va_end(ap);
+ 	}
+ 
++#ifdef __sun
++	operation = F_GETLK;
++#else
+         operation = LOCK_EX;
++
+         if (flags & O_NONBLOCK)
+                 operation |= LOCK_NB;
++#endif
+ 
+ 	trunc = (flags & O_TRUNC);
+ 	flags &= ~O_TRUNC;
+@@ -68,7 +78,7 @@ flopen(const char *path, int flags, ...)
+ 		if ((fd = open(path, flags, mode)) == -1)
+ 			/* non-existent or no access */
+ 			return (-1);
+-		if (flock(fd, operation) == -1) {
++		if (fcntl(fd, operation) == -1) {
+ 			/* unsupported or interrupted */
+ 			serrno = errno;
+ 			(void)close(fd);
+--- libbsd-0.2.0.orig/src/fgetln.c
++++ libbsd-0.2.0/src/fgetln.c
+@@ -25,8 +25,11 @@
+  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  */
+ 
+-#include <stdio.h>
++#ifndef __sun
+ #include <sys/cdefs.h>
++#endif
++
++#include <stdio.h>
+ #include <sys/types.h>
+ #include <string.h>
+ 
+--- libbsd-0.2.0.orig/src/inet_net_pton.c
++++ libbsd-0.2.0/src/inet_net_pton.c
+@@ -18,7 +18,11 @@
+ #if defined(LIBC_SCCS) && !defined(lint)
+ static const char orig_rcsid[] = "From Id: inet_net_pton.c,v 1.8 1996/11/21 10:28:12 vixie Exp $";
+ #endif
++
++#ifndef __sun
+ #include <sys/cdefs.h>
++#endif
++
+ __FBSDID("$FreeBSD: src/lib/libc/net/inet_net_pton.c,v 1.9 2003/09/15 23:38:06 fenner Exp $");
+ 
+ #include <sys/types.h>
+--- libbsd-0.2.0.orig/src/hash/md5.c
++++ libbsd-0.2.0/src/hash/md5.c
+@@ -37,7 +37,7 @@
+ 	(cp)[1] = (value) >> 8;						\
+ 	(cp)[0] = (value); } while (0)
+ 
+-static u_int8_t PADDING[MD5_BLOCK_LENGTH] = {
++static uint8_t PADDING[MD5_BLOCK_LENGTH] = {
+ 	0x80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+ 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+ 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+@@ -71,7 +71,7 @@ MD5Update(MD5_CTX *ctx, const unsigned c
+ 	need = MD5_BLOCK_LENGTH - have;
+ 
+ 	/* Update bitcount */
+-	ctx->count += (u_int64_t)len << 3;
++	ctx->count += (uint64_t)len << 3;
+ 
+ 	if (len >= need) {
+ 		if (have != 0) {
+@@ -102,7 +102,7 @@ MD5Update(MD5_CTX *ctx, const unsigned c
+ void
+ MD5Pad(MD5_CTX *ctx)
+ {
+-	u_int8_t count[8];
++	uint8_t count[8];
+ 	size_t padlen;
+ 
+ 	/* Convert count to 8 bytes in little endian order. */
+@@ -152,19 +152,19 @@ MD5Final(unsigned char digest[MD5_DIGEST
+  * the data and converts bytes into longwords for this routine.
+  */
+ void
+-MD5Transform(u_int32_t state[4], const u_int8_t block[MD5_BLOCK_LENGTH])
++MD5Transform(uint32_t state[4], const uint8_t block[MD5_BLOCK_LENGTH])
+ {
+-	u_int32_t a, b, c, d, in[MD5_BLOCK_LENGTH / 4];
++	uint32_t a, b, c, d, in[MD5_BLOCK_LENGTH / 4];
+ 
+ #if BYTE_ORDER == LITTLE_ENDIAN
+ 	memcpy(in, block, sizeof(in));
+ #else
+ 	for (a = 0; a < MD5_BLOCK_LENGTH / 4; a++) {
+-		in[a] = (u_int32_t)(
+-		    (u_int32_t)(block[a * 4 + 0]) |
+-		    (u_int32_t)(block[a * 4 + 1]) <<  8 |
+-		    (u_int32_t)(block[a * 4 + 2]) << 16 |
+-		    (u_int32_t)(block[a * 4 + 3]) << 24);
++		in[a] = (uint32_t)(
++		    (uint32_t)(block[a * 4 + 0]) |
++		    (uint32_t)(block[a * 4 + 1]) <<  8 |
++		    (uint32_t)(block[a * 4 + 2]) << 16 |
++		    (uint32_t)(block[a * 4 + 3]) << 24);
+ 	}
+ #endif
+ 
+--- libbsd-0.2.0.orig/src/hash/helper.c
++++ libbsd-0.2.0/src/hash/helper.c
+@@ -27,7 +27,7 @@ char *
+ HASHEnd(HASH_CTX *ctx, char *buf)
+ {
+ 	int i;
+-	u_int8_t digest[HASH_DIGEST_LENGTH];
++	uint8_t digest[HASH_DIGEST_LENGTH];
+ #ifdef HASH_DIGEST_UPPERCASE
+ 	static const char hex[] = "0123456789ABCDEF";
+ #else

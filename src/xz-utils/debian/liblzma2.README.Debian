@@ -1,0 +1,13 @@
+liblzma for Debian
+------------------
+
+Upstream’s library does not have a changing version number yet, so each
+distributor has to make up its own soname.  Unfortunately, that means this
+package cannot support binaries linked against liblzma from other
+distributions.
+
+With version 5.0, this situation should change.  Upstream and its downstream
+distributors will strive to maintain compatible versions (with sonames
+starting at 5) from that point on.
+
+ -- Jonathan Nieder <jrnieder@gmail.com>  Mon, 16 Nov 2009 13:59:37 -0600

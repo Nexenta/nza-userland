@@ -1,0 +1,21 @@
+Source: screen
+Section: misc
+Priority: optional
+Maintainer: Jan Christoph Nordholz <hesso@pool.math.tu-berlin.de>
+Uploaders: Adam Lazur <zal@debian.org>
+Standards-Version: 3.8.2
+Build-Depends: libncurses5-dev, texinfo, libpam0g-dev, debhelper (>> 7), quilt
+Homepage: http://savannah.gnu.org/projects/screen
+
+Package: screen
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ncurses-base, ncurses-term
+Description: terminal multiplexor with VT100/ANSI terminal emulation
+ screen is a terminal multiplexor that runs several separate "screens" on a
+ single physical character-based terminal.  Each virtual terminal emulates a
+ DEC VT100 plus several ANSI X3.64 and ISO 2022 functions.  Screen sessions
+ can be detached and resumed later on a different terminal.
+ .
+ Screen also supports a whole slew of other features.  Some of these are:
+ configurable input and output translation, serial port support, configurable
+ logging, multi-user support, and utf8 charset support.

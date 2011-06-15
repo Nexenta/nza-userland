@@ -1,0 +1,21 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 02_client_cert.dpatch by Bryan Cain <plombex342@gmail.com>
+##
+## DP: Fix bug 480041: Client certificate notification.
+## DP: From https://bugs.launchpad.net/ubuntu/+source/neon27/+bug/294648
+
+@DPATCH@
+Index: src/ne_socket.c
+--- a/src/ne_socket.c
++++ b/src/ne_socket.c
+@@ -1789,7 +1789,9 @@
+     }
+     sock->ops = &iofns_ssl;
+ 
+-    ret = gnutls_handshake(sock->ssl);
++    do {
++        ret = gnutls_handshake(sock->ssl);
++    } while (RETRY_GNUTLS(sock, ret));
+     if (ret < 0) {
+ 	error_gnutls(sock, ret);
+         return NE_SOCK_ERROR;

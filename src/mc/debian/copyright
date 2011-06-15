@@ -1,0 +1,31 @@
+This package was debianized by Paul Seelig <pseelig@mail.uni-mainz.de>
+on Tue Apr 1 14:32:15 1997. It has been maintained by Michael Bramer
+and Martin Bialasinski <mc@internet-treff.uni-koeln.de>.
+
+From Jan 2008 this package is maintained by:
+   Patrick Winnertz <winnie@debian.org>
+   Yury V. Zaytsev <yury@shurup.com>
+
+From Jan 2008 till Jul 2010 this package was maintained by:
+   Denis Briand <denis@narcan.fr>
+
+From Jan 2004 till 2007 this package was maintained by:
+   Stefano Melchior <stefano.melchior@openlabs.it>
+   Ludovic Drolez <ldrolez@free.fr>
+
+From Dec 2002 till Dec 2004 this package was maintained by:
+   Adam Byrtek <alpha@debian.org>
+
+It was downloaded from:
+   http://www.midnight-commander.org/downloads
+
+Homepage:
+   http://www.midnight-commander.org/
+
+Copyright 1996-2010 Free Software Foundation
+    Full list of authors is located at /usr/share/doc/mc/AUTHORS.
+    Note that all these authors assigned the copyright to FSF.
+
+License:
+   This software is released under GPLv2 license - see the
+   /usr/share/common-licenses/GPL-2.

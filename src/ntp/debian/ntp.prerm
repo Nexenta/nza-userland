@@ -1,0 +1,14 @@
+#!/bin/sh
+
+set -e
+
+installinit_error() {
+	status=$?
+	exit $status
+}
+
+if [ -x "/etc/inet/ntp.conf" ]; then
+	svcadm disable ntp || installinit_error
+fi
+
+#DEBHELPER#

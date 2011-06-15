@@ -1,0 +1,10 @@
+--- debian/libpoppler-glib-dev.install
++++ debian/libpoppler-glib-dev.install
+@@ -1 +1,6 @@
+-tail: cannot open `.pc/applied-patches' for reading: No such file or directory
++debian/tmp/usr/share/gtk-doc/html/poppler/ usr/share/doc/libpoppler-glib-dev/html/
++debian/tmp/usr/include/poppler/glib/
++debian/tmp/usr/lib/libpoppler-glib.a
++debian/tmp/usr/lib/libpoppler-glib.so
++debian/tmp/usr/lib/pkgconfig/poppler-glib.pc
++glib/.libs/test-poppler-glib usr/lib/poppler

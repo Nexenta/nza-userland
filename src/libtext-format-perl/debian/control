@@ -1,0 +1,34 @@
+Source: libtext-format-perl
+Section: perl
+Priority: optional
+Maintainer: Debian Perl Group <pkg-perl-maintainers@lists.alioth.debian.org>
+Uploaders: Daniel Ruoso <daniel@ruoso.com>, gregor herrmann <gregor+debian@comodo.priv.at>, Carlo Segre <segre@debian.org>
+Standards-Version: 3.7.2
+Build-Depends: debhelper (>= 5.0.0)
+Build-Depends-Indep: perl
+
+Package: libtext-format-perl
+Section: perl
+Priority: optional
+Architecture: all
+Depends: ${perl:Depends}
+Description: Perl module for formatting (text) paragraphs
+ This module provides the following functions:
+ .
+   format()      Format text into a paragraph.  Text is first broken into
+                 words and then joined back together to make up the
+                 paragraph.  There are numerous attributes you can set to
+                 your liking.
+ .
+   paragraphs()  Treats each element of the array passed in as a separate
+                 paragraph and passes them to format() for formatting.
+                 The list returned will be then formatted into separate
+                 paragraphs.
+ .
+   center()      Centers all the lines that were passed in.
+ .
+   expand()      Expand tabs into spaces.
+ .
+   unexpand()    Turn spaces into tabs.  First calls expand() to expand
+                 tabs into spaces and then turns tabstop number of spaces
+                 into tabs, you can set tabstop size with tabstop().

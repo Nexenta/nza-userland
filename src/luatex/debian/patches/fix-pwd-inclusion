@@ -1,0 +1,87 @@
+fix implicite pointer conversion in getpwnam()
+fix from upstream subversion repository rev 1279
+---
+ src/texk/kpathsea/pwd.h    |   18 ------------------
+ src/texk/kpathsea/pwd_nt.h |   20 ++++++++++++++++++++
+ src/texk/kpathsea/tilde.c  |    4 ++++
+ src/texk/kpathsea/user.c   |    2 +-
+ 4 files changed, 25 insertions(+), 19 deletions(-)
+
+Index: luatex-0.25.3/src/texk/kpathsea/pwd.h
+===================================================================
+--- luatex-0.25.3.orig/src/texk/kpathsea/pwd.h	2008-05-28 16:24:26.000000000 +0200
++++ /dev/null	1970-01-01 00:00:00.000000000 +0000
+@@ -1,18 +0,0 @@
+-#ifndef _PWD_H_
+-#define _PWD_H_
+-/*
+- * pwd.h doesn't exist on NT, so we put together our own.
+- */
+-
+-struct passwd {
+-    char *pw_name;
+-    char *pw_passwd;
+-    int   pw_uid;
+-    int   pw_gid;
+-    int   pw_quota;
+-    char *pw_gecos;
+-    char *pw_dir;
+-    char *pw_shell;
+-};
+-
+-#endif /* _PWD_H_ */
+Index: luatex-0.25.3/src/texk/kpathsea/pwd_nt.h
+===================================================================
+--- /dev/null	1970-01-01 00:00:00.000000000 +0000
++++ luatex-0.25.3/src/texk/kpathsea/pwd_nt.h	2008-05-28 16:24:49.000000000 +0200
+@@ -0,0 +1,20 @@
++#ifndef _PWD_H_
++#define _PWD_H_
++/*
++ * pwd.h doesn't exist on NT, so we put together our own.
++ */
++
++struct passwd {
++    char *pw_name;
++    char *pw_passwd;
++    int   pw_uid;
++    int   pw_gid;
++    int   pw_quota;
++    char *pw_gecos;
++    char *pw_dir;
++    char *pw_shell;
++};
++
++struct passwd * getpwnam (const char *name);
++
++#endif /* _PWD_H_ */
+Index: luatex-0.25.3/src/texk/kpathsea/tilde.c
+===================================================================
+--- luatex-0.25.3.orig/src/texk/kpathsea/tilde.c	2008-05-28 16:24:42.000000000 +0200
++++ luatex-0.25.3/src/texk/kpathsea/tilde.c	2008-05-28 16:24:49.000000000 +0200
+@@ -25,8 +25,12 @@
+ #include <kpathsea/tilde.h>
+ 
+ #ifdef HAVE_PWD_H
++#ifdef _WIN32
++#include <pwd_nt.h>
++#else
+ #include <pwd.h>
+ #endif
++#endif
+ 
+ 
+ /* If NAME has a leading ~ or ~user, Unix-style, expand it to the user's
+Index: luatex-0.25.3/src/texk/kpathsea/user.c
+===================================================================
+--- luatex-0.25.3.orig/src/texk/kpathsea/user.c	2008-05-28 16:24:31.000000000 +0200
++++ luatex-0.25.3/src/texk/kpathsea/user.c	2008-05-28 16:24:49.000000000 +0200
+@@ -29,7 +29,7 @@
+ 
+ /* Emulate getpwuid, getpwnam and others.  */
+ 
+-#include <pwd.h>
++#include <pwd_nt.h>
+ #include <kpathsea/config.h>
+ #include <kpathsea/c-proto.h>
+ #include <kpathsea/win32lib.h>

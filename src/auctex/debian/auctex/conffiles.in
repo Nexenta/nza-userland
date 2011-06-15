@@ -1,0 +1,10 @@
+#include "variables"
+<:$_="${sstartd}/${EPRIORITY}${PACKAGE}.el";
+	s|emacs|emacs21|; $_=~tr|/|/|s; print:>
+<:$_="${sstartd}/${EPRIORITY}${PACKAGE}.el";
+	s|emacs|emacs22|; $_=~tr|/|/|s; print:>
+<:$_="${sstartd}/${EPRIORITY}${PACKAGE}.el";
+	s|emacs|emacs23|; $_=~tr|/|/|s; print:>
+<:$_="${sstartd}/${EPRIORITY}${PACKAGE}.el";
+	s|emacs|emacs-snapshot|; $_=~tr|/|/|s; print:>
+<:=if($_="${cron_weekly}/${PACKAGE}")=~tr|/|/|s:>

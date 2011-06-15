@@ -1,0 +1,15 @@
+Source: libjson-perl
+Section: contrib/perl
+Priority: optional
+Build-Depends: debhelper (>= 4.0.2), libwww-perl
+Build-Depends-Indep: perl (>= 5.8.0-7)
+Maintainer: Ivan Kohler <ivan-debian@420.am>
+Standards-Version: 3.6.1
+
+Package: libjson-perl
+Architecture: all
+Depends: ${perl:Depends}, ${misc:Depends}, 
+Description: Perl module to parse and convert to JSON (JavaScript Object Notation).
+ This module converts between JSON (JavaScript Object Notation) and Perl
+ data structure into each other.
+ For JSON, See to http://www.crockford.com/JSON/.

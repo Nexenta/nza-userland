@@ -1,0 +1,4 @@
+usr/sbin/update-rc.d
+usr/sbin/invoke-rc.d
+etc/init.d/rcS
+etc/default/rcS

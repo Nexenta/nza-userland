@@ -1,0 +1,13 @@
+diff --git a/xt.pc.in b/xt.pc.in
+index 3ea8c6f..90a576c 100644
+--- a/xt.pc.in
++++ b/xt.pc.in
+@@ -7,7 +7,7 @@ appdefaultdir=@appdefaultdir@
+ Name: Xt
+ Description: X Toolkit Library
+ Version: @VERSION@
+-Requires: xproto x11 sm
++Requires: xproto
+ Requires.private: x11 sm
+ Cflags: -I${includedir}
+ Libs: -L${libdir} -lXt

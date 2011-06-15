@@ -1,0 +1,6 @@
+Please note that this repository does _not_ hold patches or changes from
+upstream. It is meant as basis for sharing the work on mc between
+several distributions.
+
+Furthermore our aim should be to provide patches which upstream can add
+to the official git tree.
