@@ -1,12 +1,47 @@
-for s in #SERVICES#; do
-    case `svcs -Ho STATE $s` in
-        maintenance)
-            cmd="clear" ;;
-        online)
-            cmd="restart" ;;
-        *)
-            cmd="enable -sr" ;;
-    esac
-    /usr/sbin/svcadm -v $cmd $s  || true
-done
+SMF_INCLUDE=/lib/svc/share/smf_include.sh
 
+HAVE_SMF=no
+
+if [ -f $SMF_INCLUDE ]; then
+    source $SMF_INCLUDE
+    if smf_present; then
+        HAVE_SMF=yes
+    fi
+fi
+
+if [ $HAVE_SMF = yes ]; then
+
+    # Importing service manifests.
+    # If an instance is enabled, the service will start
+    for manifest in #MANIFESTS#; do
+        svccfg -v import $manifest || true
+    done
+
+    for service in #SERVICES#; do
+        case `svcs -Ho STATE $service` in
+            online)
+                # Restart the service on upgrade.
+                # On new install the service can be started by default
+                # in imported manifest: do not restart if so ;-)
+                if [ -n "$2" ]; then
+                    svcadm -v restart $service || true
+                fi
+                ;;
+
+            maintenance)
+                # Service maybe in maintenance.
+                # Orphan processes are cleaned in `prerm'.
+                # Just trying to restart:
+                svcadm -v clear $service || true
+                ;;
+
+            disabled)
+                # If service has been temporary disabled (before upgrade),
+                # do enable it again:
+                if [ x"`svcprop -p general_ovr/enabled $service 2>/dev/null`" = xfalse ]; then
+                    svcadm -v enable $service || true
+                fi
+                ;;
+        esac
+    done
+fi
