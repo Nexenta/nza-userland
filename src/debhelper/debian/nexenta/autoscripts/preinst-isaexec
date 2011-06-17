@@ -1,0 +1,5 @@
+for f in #BINARIES#
+do
+    echo "Creating isaexec hard link to $f ..."
+    /usr/bin/ln /usr/lib/isaexec $f || true
+done

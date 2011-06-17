@@ -1,3 +1,12 @@
+debhelper (40-0-1) unstable; urgency=low
+
+  * dh_isaexec:
+    - create hard links in pre-install phase
+    - remove hard links only on remove or upgrade
+      (this prevents trying to remove them twice)
+
+ -- Igor Pashev <igor.pashev@nexenta.com>  Fri, 17 Jun 2011 16:59:39 +0400
+
 debhelper (40-0-0) unstable; urgency=low
 
   * New version scheme

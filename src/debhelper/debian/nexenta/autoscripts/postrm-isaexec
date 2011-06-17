@@ -1,1 +1,5 @@
-rm #BINARIES# || true
+case "$1" in
+    upgrade|remove)
+        rm #BINARIES# || true
+        ;;
+esac
