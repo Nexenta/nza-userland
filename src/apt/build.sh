@@ -1,19 +1,54 @@
 #!/bin/sh
 
+set -e
+
 # build script for apt
 
-WEBARCHIVE_PATH="http://apt.nexenta.org/wip/dists/siddy-testing/main/source/admin/"
+WEBARCHIVE_PATH="http://ftp.fi.debian.org/debian/pool/main/a/apt"
 
-PKGNAME="apt_0.8.0"
-PKGARCH="$PKGNAME""nexenta8".tar.gz
-PKGDSC="$PKGNAME""nexenta8.dsc"
+PKGNAME=apt
+PKGVERS=0.8.10.3+squeeze1
+PKGARCH="$PKGNAME"_"$PKGVERS.tar.gz"
+PKGORIG="$PKGNAME"_"$PKGVERS.orig.tar.bz2"
+PKGDSC="$PKGNAME"_"$PKGVERS.dsc"
+PKGDIR="$PKGNAME-$PKGVERS"
 
+if [ -d build ]; then
+  echo "Removing old build dir"
+  rm -rf build
+fi
 
-cd build && wget $WEBARCHIVE_PATH/$PKGARCH
-wget $WEBARCHIVE_PATH/$PKGDSC
+mkdir -p build cache && cd cache
 
-tar xzvf $PKGARCH --exclude "debian" 
+  echo "Downloading $PKGORIG ...\c"
+  echo $WEBARCHIVE_PATH/$PKGACH
+  wget -q -c $WEBARCHIVE_PATH/$PKGARCH
+  echo " done"
 
-cp -r ../debian apt-0.8.0/
+  echo "Downloading $PKGDSC ...\c"
+  wget -q -c $WEBARCHIVE_PATH/$PKGDSC
+  echo " done"
 
-cd apt-0.8.0 && dpkg-buildpackage -sa -uc -us
+cd ../build
+
+if [ -f "../cache/$PKGORIG" ]; then
+  echo "Unpacking $PKGORIG ...\c"
+  tar -xf "../cache/$PKGORIG"
+  echo " done"
+else
+  echo "Unpacking $PKGARCH ...\c"
+  tar -xf "../cache/$PKGARCH" --exclude "debian"
+  echo " done"
+  echo "Creating $PKGORIG ...\c"
+  tar -cjf "../cache/$PKGORIG" "$PKGDIR"
+  echo " done"
+fi
+
+echo "Applying our changes ...\c"
+cp "../cache/$PKGORIG" .
+cp -r ../debian "$PKGDIR/" && cd "$PKGDIR"
+
+QUILT_PATCHES=debian/patches quilt push -a
+echo " done"
+
+DEB_BUILD_OPTIONS=nocheck dpkg-buildpackage -sa -uc -us
