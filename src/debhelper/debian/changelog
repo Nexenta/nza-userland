@@ -1,3 +1,10 @@
+debhelper (40-0-3) unstable; urgency=low
+
+  * dh_isaexec: do not remove/create isaexec hard links on upgrades
+  * dh_installsvc: remove obsolete autoscripts
+
+ -- Igor Pashev <igor.pashev@nexenta.com>  Mon, 20 Jun 2011 18:34:44 +0400
+
 debhelper (40-0-2) unstable; urgency=low
 
   * dh_isaexec: fixed hard links removal:
