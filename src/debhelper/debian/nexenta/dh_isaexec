@@ -115,6 +115,8 @@ foreach my $package (@{$dh{DOPACKAGES}}) {
             "s|#BINARIES#|$isabins|");
         autoscript($package, 'postrm', 'postrm-isaexec',
             "s|#BINARIES#|$isabins|");
+        autoscript($package, 'prerm', 'prerm-isaexec',
+            "s|#BINARIES#|$isabins|");
     }
     
 }

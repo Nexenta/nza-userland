@@ -1,3 +1,11 @@
+debhelper (40-0-2) unstable; urgency=low
+
+  * dh_isaexec: fixed hard links removal:
+    remove in prerm on upgrade
+    or in postrm on remove
+
+ -- Igor Pashev <igor.pashev@nexenta.com>  Mon, 20 Jun 2011 15:41:26 +0400
+
 debhelper (40-0-1) unstable; urgency=low
 
   * dh_isaexec:
