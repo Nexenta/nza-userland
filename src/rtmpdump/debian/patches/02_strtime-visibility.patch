@@ -1,0 +1,13 @@
+Index: rtmpdump-2.3/librtmp/hashswf.c
+===================================================================
+--- rtmpdump-2.3.orig/librtmp/hashswf.c	2010-07-05 19:54:38.120781678 +0200
++++ rtmpdump-2.3/librtmp/hashswf.c	2010-07-05 19:54:48.908791094 +0200
+@@ -435,7 +435,7 @@
+ /* Convert a Unix time to a network time string
+  * Weekday, DD-MMM-YYYY HH:MM:SS GMT
+  */
+-void
++static void
+ strtime(time_t * t, char *s)
+ {
+   struct tm *tm;

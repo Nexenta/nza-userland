@@ -1,0 +1,3 @@
+01_unbreak_makefile.diff
+02_strtime-visibility.patch
+03-Dont-link-explicitly-against-static-library.patch
