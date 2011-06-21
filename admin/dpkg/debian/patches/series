@@ -1,0 +1,7 @@
+01-nexenta-support.diff
+02-dselect-iquote-fix.diff
+03-dselect-resizeterm-fix.diff
+04-help-ldconfig-fix.diff
+05-zones-support.diff
+06-upstream-source.diff
+07-set-i686-default.diff
