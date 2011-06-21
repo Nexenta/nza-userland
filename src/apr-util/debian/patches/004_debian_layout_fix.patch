@@ -1,0 +1,15 @@
+Author: <tfheen@debian.org>
+Description: Fix the includedir in the Debian layout.
+Index: apr-util-1.3.12/config.layout
+===================================================================
+--- apr-util-1.3.12.orig/config.layout	2005-02-09 15:18:43.000000000 +0300
++++ apr-util-1.3.12/config.layout	2011-05-24 16:22:24.677620265 +0400
+@@ -223,7 +223,7 @@
+     libexecdir:    ${exec_prefix}/lib/apr/modules
+     mandir:        ${exec_prefix}/share/man
+     datadir:       ${exec_prefix}/share/apr
+-    includedir:    ${exec_prefix}/include/apr-${APRUTIL_MAJOR_VERSION}
++    includedir:    ${exec_prefix}/include/apr-1.0
+     localstatedir: ${prefix}/var/run
+     runtimedir:    ${prefix}/var/run
+     infodir:       ${exec_prefix}/share/info
