@@ -14,7 +14,6 @@ syslink=../../${localsite#/usr/*}
 
 case "$1" in
     configure)
-	[ -f /usr/bin/isa@PVER@ ] || (cd usr/bin; /usr/bin/ln -f ../lib/isaexec /usr/bin/isa@PVER@)
         # Create empty directories in /usr/local
         if [ ! -e /usr/local/lib/@PVER@ ]; then
             mkdir -p /usr/local/lib/@PVER@ 2> /dev/null || true

@@ -1,26 +1,39 @@
-python2.6 (2.6.6-5nexenta3) unstable; urgency=low
+python2.6 (40-0-0) unstable; urgency=low
 
-  * Fix headers and some missing modules.
+  * Rebuilt on NCP4 using Squeeze source and new Upstream-Version scheme
+  * Use 3.0 (quilt) source format
+  * debian/patches:
+    + socketmodule.c.HAVE_NETPACKET_PACKET_H.diff: Added patch to build socket
+      module correctly
+  * debian/rules:
+    + Fixed so symlink for solaris
+  * debian/control:
+    + Build debug package (#5485)
+    + Fixed Build-Depends: libncursesw5-dev --> libncurses5-dev
+    + Do not Build-Depends on libbluetooth-dev, gdb, libgpm for solaris
 
- -- Igor Kozhukhov <igor.kozhukhov@nexenta.com>  Mon, 23 May 2011 20:46:32 +0300
+ -- Kartik Mistry <kartik.mistry@nexenta.com>  Tue, 21 Jun 2011 17:14:32 +0530
 
-python2.6 (2.6.6-5nexenta2) unstable; urgency=low
+python2.6 (2.6.6-8) unstable; urgency=low
 
-  * Added 64 bits.
+  * Disable the profiled builds on m68k and sparc. Closes: #606091.
 
- -- Igor Kozhukhov <igor.kozhukhov@nexenta.com>  Mon, 23 May 2011 20:46:32 +0300
+ -- Matthias Klose <doko@debian.org>  Sun, 12 Dec 2010 11:30:16 +0100
 
-python2.6 (2.6.6-5nexenta1) unstable; urgency=low
+python2.6 (2.6.6-7) unstable; urgency=low
 
-  * Updated to NCP4
+  * Add python-boost* conflicts (versions in lenny can't handle
+    the upgrade to python2.6).
 
- -- Igor Kozhukhov <igor.kozhukhov@nexenta.com>  Wed, 9 Feb 2011 22:57:32 +0300
+ -- Matthias Klose <doko@debian.org>  Sun, 28 Nov 2010 17:50:25 +0100
 
-python2.6 (2.6.6-5stormos0) unstable; urgency=low
+python2.6 (2.6.6-6) unstable; urgency=low
 
-  * Package for StormOS.
+  * Lib/locale.py: Update locale aliases from the py3k branch (patch
+    lost with the conversion to quilt), remove obsolete old dpatch files.
+  * python2.6: Set priority to `standard'.
 
- -- Andrew Stormont (astormont) <andyjstormont@googlemail.com>  Mon, 04 Oct 2010 01:16:44 +0200
+ -- Matthias Klose <doko@debian.org>  Sat, 09 Oct 2010 12:24:06 +0200
 
 python2.6 (2.6.6-5) unstable; urgency=low
 

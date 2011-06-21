@@ -1,0 +1,40 @@
+Index: python2.6-2.6.6/Modules/socketmodule.c
+===================================================================
+--- python2.6-2.6.6.orig/Modules/socketmodule.c	2011-03-27 22:41:48.865690198 +0400
++++ python2.6-2.6.6/Modules/socketmodule.c	2011-03-27 22:42:03.604492165 +0400
+@@ -1096,7 +1096,7 @@
+         }
+ #endif
+ 
+-#ifdef HAVE_NETPACKET_PACKET_H
++#ifdef defined(HAVE_NETPACKET_PACKET_H) && defined(SIOCGIFNAME)
+     case AF_PACKET:
+     {
+         struct sockaddr_ll *a = (struct sockaddr_ll *)addr;
+@@ -1387,7 +1387,7 @@
+     }
+ #endif
+ 
+-#ifdef HAVE_NETPACKET_PACKET_H
++#ifdef defined(HAVE_NETPACKET_PACKET_H) && defined(SIOCGIFNAME)
+     case AF_PACKET:
+     {
+         struct sockaddr_ll* addr;
+@@ -1564,7 +1564,7 @@
+     }
+ #endif
+ 
+-#ifdef HAVE_NETPACKET_PACKET_H
++#ifdef defined(HAVE_NETPACKET_PACKET_H) && defined(SIOCGIFNAME)
+     case AF_PACKET:
+     {
+         *len_ret = sizeof (struct sockaddr_ll);
+@@ -4599,7 +4599,7 @@
+     PyModule_AddStringConstant(m, "BDADDR_LOCAL", "00:00:00:FF:FF:FF");
+ #endif
+ 
+-#ifdef HAVE_NETPACKET_PACKET_H
++#ifdef defined(HAVE_NETPACKET_PACKET_H) && defined(PACKET_LOOPBACK) && defined(PACKET_FASTROUTE)
+     PyModule_AddIntConstant(m, "AF_PACKET", AF_PACKET);
+     PyModule_AddIntConstant(m, "PF_PACKET", PF_PACKET);
+     PyModule_AddIntConstant(m, "PACKET_HOST", PACKET_HOST);

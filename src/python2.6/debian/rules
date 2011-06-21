@@ -4,11 +4,6 @@
 unexport LANG LC_ALL LC_CTYPE LC_COLLATE LC_TIME LC_NUMERIC LC_MESSAGES
 
 export SHELL = /bin/bash
-CC       = gcc
-CXX      = g++
-CPPFLAGS = -I/usr/include/ncurses -I/usr/lib/libffi-3.0.9/include -D_LARGEFILE64_SOURCE
-LDFLAGS += -L/usr/gnu/lib -R/usr/gnu/lib
-LDFLAGS64 += -L/usr/lib/amd64 -R/usr/lib/amd64 -L/usr/gnu/lib/amd64 -R/usr/gnu/lib/amd64
 
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
@@ -36,20 +31,19 @@ ifeq ($(on_buildd),yes)
   endif
 endif
 
+COMMA = ,
+ifneq (,$(filter parallel=%,$(subst $(COMMA), ,$(DEB_BUILD_OPTIONS))))
+  NJOBS := -j $(subst parallel=,,$(filter parallel=%,$(subst $(COMMA), ,$(DEB_BUILD_OPTIONS))))
+endif
+
 ifeq ($(DEB_HOST_ARCH_OS),solaris)
   LDFLAGS += -lintl
   WITHOUT_BENCH := yes
   WITHOUT_CHECK := yes
 endif
 
-COMMA = ,
-ifneq (,$(filter parallel=%,$(subst $(COMMA), ,$(DEB_BUILD_OPTIONS))))
-  NJOBS := -j $(subst parallel=,,$(filter parallel=%,$(subst $(COMMA), ,$(DEB_BUILD_OPTIONS))))
-endif
-
 distribution := $(shell lsb_release -is)
-#distribution := StormOS
-#distribution := Nexenta
+#distribution := Ubuntu
 
 export VER=2.6
 export NVER=2.7
@@ -60,7 +54,7 @@ PREVVER	:= $(shell awk '/^python/ && NR > 1 {print substr($$2,2,length($$2)-2); 
 
 # default versions are built from the python-defaults source package
 # keep the definition to adjust package priorities.
-DEFAULT_VERSION = no
+DEFAULT_VERSION = yes
 STATIC_PYTHON=yes
 
 MIN_MODS := $(shell awk '/^  / && $$2 == "module" { print $$1 }' \
@@ -91,7 +85,7 @@ PY_INTERPRETER = /usr/bin/python$(VER)
 
 ifeq ($(DEFAULT_VERSION),yes)
   PY_PRIO = standard
-  PYSTDDEP = , python (>= $(VER))
+  #PYSTDDEP = , python (>= $(VER))
 else
   PY_PRIO = optional
 endif
@@ -101,6 +95,8 @@ else
   PY_MINPRIO = $(PY_PRIO)
 endif
 with_fpectl = yes
+
+CC = gcc
 
 # on alpha, use -O2 only, use -mieee
 ifeq ($(DEB_HOST_ARCH),alpha)
@@ -113,9 +109,7 @@ endif
 
 PWD		:= $(shell pwd)
 buildd_static	:= $(CURDIR)/build-static
-buildd_static-64 := $(CURDIR)/build-static-64
 buildd_shared	:= $(CURDIR)/build-shared
-buildd_shared-64 := $(CURDIR)/build-shared-64
 buildd_debug	:= $(CURDIR)/build-debug
 buildd_shdebug	:= $(CURDIR)/build-shdebug
 
@@ -148,16 +142,16 @@ d_doc	:= debian/$(p_doc)
 d_dbg	:= debian/$(p_dbg)
 
 # profiled build fails on amd64, lpia, sparc
-ifneq (,$(filter $(DEB_HOST_ARCH), alpha amd64 armel hppa i386 ia64 lpia mips mipsel powerpc s390 sparc64 hurd-i386 kfreebsd-i386 kfreebsd-amd64 solaris-i386))
+ifneq (,$(filter $(DEB_HOST_ARCH), alpha amd64 armel hppa i386 ia64 lpia mips mipsel powerpc s390 sparc64 hurd-i386 kfreebsd-i386 kfreebsd-amd64))
   make_build_target =
 else
   make_build_target = profile-opt
 endif
+make_build_target =
 
 build: $(build_target)
 build-all: stamps/stamp-build
-#stamps/stamp-build: stamps/stamp-build-static stamps/stamp-build-static-64 stamps/stamp-build-shared stamps/stamp-build-shared-64 stamps/stamp-build-debug stamps/stamp-build-shared-debug stamps/stamp-mincheck stamps/stamp-check stamps/stamp-pystone stamps/stamp-pybench
-stamps/stamp-build: stamps/stamp-build-static stamps/stamp-build-static-64 stamps/stamp-build-shared stamps/stamp-build-shared-64 stamps/stamp-mincheck stamps/stamp-check stamps/stamp-pystone stamps/stamp-pybench
+stamps/stamp-build: stamps/stamp-build-static stamps/stamp-build-shared stamps/stamp-build-debug stamps/stamp-build-shared-debug stamps/stamp-mincheck stamps/stamp-check stamps/stamp-pystone stamps/stamp-pybench
 	touch stamps/stamp-build
 
 PROFILE_EXCLUDES = test_compiler test_distutils test_platform test_subprocess \
@@ -182,33 +176,16 @@ stamps/stamp-build-static: stamps/stamp-configure-static
 		PROFILE_TASK='$(PROFILE_TASK)' $(make_build_target)
 	touch stamps/stamp-build-static
 
-stamps/stamp-build-static-64: stamps/stamp-configure-static-64
-	dh_testdir
-	$(MAKE) $(NJOBS) -C $(buildd_static-64) \
-		PROFILE_TASK='$(PROFILE_TASK)' $(make_build_target)
-	touch stamps/stamp-build-static-64
-
 stamps/stamp-build-shared: stamps/stamp-configure-shared
 	dh_testdir
 	$(MAKE) $(NJOBS) -C $(buildd_shared)
 #	: # build the shared library
-	$(MAKE) $(NJOBS) -C $(buildd_shared) \
-		libpython$(VER).so
+#	$(MAKE) $(NJOBS) -C $(buildd_shared) \
+#		libpython$(VER).so
 	: # build a static library with PIC objects
 	$(MAKE) $(NJOBS) -C $(buildd_shared) \
 		LIBRARY=libpython$(VER)-pic.a libpython$(VER)-pic.a
 	touch stamps/stamp-build-shared
-
-stamps/stamp-build-shared-64: stamps/stamp-configure-shared-64
-	dh_testdir
-	$(MAKE) $(NJOBS) -C $(buildd_shared-64)
-#	: # build the shared library
-	$(MAKE) $(NJOBS) -C $(buildd_shared-64) \
-		libpython$(VER).so
-	: # build a static library with PIC objects
-	$(MAKE) $(NJOBS) -C $(buildd_shared-64) \
-		LIBRARY=libpython$(VER)-pic.a libpython$(VER)-pic.a
-	touch stamps/stamp-build-shared-64
 
 stamps/stamp-build-debug: stamps/stamp-configure-debug
 	dh_testdir
@@ -222,20 +199,11 @@ stamps/stamp-build-shared-debug: stamps/stamp-configure-shared-debug
 		libpython$(VER)_d.so
 	touch stamps/stamp-build-shared-debug
 
-#common_configure_args = \
-#		--prefix=/usr \
-#		--enable-ipv6 \
-#		--enable-unicode=ucs4 \
-#		--with-system-expat
-
 common_configure_args = \
 		--prefix=/usr \
-		--infodir=\$${prefix}/share/info \
-		--datadir=\$${prefix}/share \
-		--mandir=\$${prefix}/share/man \
+		--enable-ipv6 \
 		--enable-unicode=ucs4 \
-		ac_cv_opt_olimit_ok=no \
-		ac_cv_olimit_ok=no
+		--with-system-expat
 
 ifeq ($(DEB_HOST_ARCH), avr32)
   common_configure_args += --without-ffi
@@ -252,9 +220,7 @@ stamps/stamp-configure-shared: stamps/stamp-patch
 	rm -rf $(buildd_shared)
 	mkdir -p $(buildd_shared)
 	cd $(buildd_shared) && \
-	CPPFLAGS="$(CPPFLAGS)" \
-	LDFLAGS="$(LDFLAGS)" \
-	CXX="$(CXX) -m32" CC="$(CC) -m32" $(OPTSETTINGS) \
+	  CC="$(CC)" $(OPTSETTINGS) \
 	    ../configure \
 		--enable-shared \
 		$(common_configure_args)
@@ -270,39 +236,11 @@ stamps/stamp-configure-shared: stamps/stamp-patch
 
 	touch stamps/stamp-configure-shared
 
-stamps/stamp-configure-shared-64: stamps/stamp-patch
-	rm -rf $(buildd_shared-64)
-	mkdir -p $(buildd_shared-64)
-	cd $(buildd_shared-64) && \
-	CPPFLAGS="$(CPPFLAGS)" \
-	LDFLAGS="$(LDFLAGS64)" \
-	CXX="$(CXX) -m64" CC="$(CC) -m64" $(OPTSETTINGS) \
-	    ../configure \
-		--enable-shared \
-		$(common_configure_args) \
-		--build=x86_64-pc-solaris2.11 \
-		--libdir=\$${prefix}/lib/amd64 \
-		--bindir=\$${prefix}/bin/amd64
-
-	egrep \
-	  "^#($$(awk '$$2 ~ /^extension$$/ {print $$1}' debian/PVER-minimal.README.Debian.in | tr '\012' '|')XX)" \
-	    Modules/Setup.dist \
-	  | sed -e 's/^#//' -e 's/-Wl,-Bdynamic//;s/-Wl,-Bstatic//' \
-	    >> $(buildd_shared-64)/Modules/Setup.local
-	cd $(buildd_shared-64) && \
-	  ../Modules/makesetup -c ../Modules/config.c.in -s Modules \
-	    Modules/Setup.config Modules/Setup.local Modules/Setup
-	mv $(buildd_shared-64)/config.c $(buildd_shared-64)/Modules/
-
-	touch stamps/stamp-configure-shared-64
-
 stamps/stamp-configure-static: stamps/stamp-patch
 	rm -rf $(buildd_static)
 	mkdir -p $(buildd_static)
 	cd $(buildd_static) && \
-	CPPFLAGS="$(CPPFLAGS)" \
-	LDFLAGS="$(LDFLAGS)" \
-	CXX="$(CXX) -m32" CC="$(CC) -m32" $(OPTSETTINGS) \
+	  CC="$(CC)" $(OPTSETTINGS) \
 	    ../configure \
 		$(common_configure_args)
 	egrep \
@@ -321,36 +259,6 @@ stamps/stamp-configure-static: stamps/stamp-patch
 	mv $(buildd_static)/config.c $(buildd_static)/Modules/
 
 	touch stamps/stamp-configure-static
-
-stamps/stamp-configure-static-64: stamps/stamp-patch
-	rm -rf $(buildd_static-64)
-	mkdir -p $(buildd_static-64)
-	cd $(buildd_static-64) && \
-	CPPFLAGS="$(CPPFLAGS)" \
-	LDFLAGS="$(LDFLAGS64)" \
-	CXX="$(CXX) -m64" CC="$(CC) -m64" $(OPTSETTINGS) \
-	    ../configure \
-		$(common_configure_args) \
-		--build=x86_64-pc-solaris2.11 \
-		--libdir=\$${prefix}/lib/amd64 \
-		--bindir=\$${prefix}/bin/amd64
-
-	egrep \
-	  "^#($$(awk '$$2 ~ /^extension$$/ {print $$1}' debian/PVER-minimal.README.Debian.in | tr '\012' '|')XX)" \
-	  Modules/Setup.dist | sed 's/^#//' \
-	    >> $(buildd_static-64)/Modules/Setup.local
-	cd $(buildd_static-64) && \
-	  ../Modules/makesetup -c ../Modules/config.c.in -s Modules \
-	    Modules/Setup.config Modules/Setup.local Modules/Setup
-
-	: # apply workaround for missing os.fsync
-	sed 's/HAVE_SYNC/HAVE_FSYNC/g' $(buildd_static-64)/pyconfig.h \
-		> $(buildd_static-64)/pyconfig.h.new
-	touch -r $(buildd_static-64)/pyconfig.h $(buildd_static-64)/pyconfig.h.new
-	mv -f $(buildd_static-64)/pyconfig.h.new $(buildd_static-64)/pyconfig.h
-	mv $(buildd_static-64)/config.c $(buildd_static-64)/Modules/
-
-	touch stamps/stamp-configure-static-64
 
 stamps/stamp-configure-debug: stamps/stamp-patch
 	rm -rf $(buildd_debug)
@@ -519,10 +427,10 @@ stamps/stamp-pystone:
 	cd $(buildd_shared) \
 		&& LD_LIBRARY_PATH=$${LD_LIBRARY_PATH:+$$LD_LIBRARY_PATH:}. ./python ../Lib/test/pystone.py
 	@echo "END pystone shared"
-#	@echo "BEGIN pystone debug"
-#	cd $(buildd_debug) && ./python ../Lib/test/pystone.py
-#	cd $(buildd_debug) && ./python ../Lib/test/pystone.py
-#	@echo "END pystone debug"
+	@echo "BEGIN pystone debug"
+	cd $(buildd_debug) && ./python ../Lib/test/pystone.py
+	cd $(buildd_debug) && ./python ../Lib/test/pystone.py
+	@echo "END pystone debug"
 	touch stamps/stamp-pystone
 
 #ifeq (,$(filter $(DEB_HOST_ARCH), arm armel avr32 hppa mips mipsel m68k))
@@ -622,7 +530,7 @@ clean: control-file
 	$(MAKE) -C Doc clean
 	sed 's/^@/#/' Makefile.pre.in | $(MAKE) -f - srcdir=. distclean
 	rm -rf Lib/test/db_home
-	rm -rf $(buildd_static) $(buildd_static-64) $(buildd_shared) $(buildd_shared-64) $(buildd_debug) $(buildd_shdebug)
+	rm -rf $(buildd_static) $(buildd_shared) $(buildd_debug) $(buildd_shdebug)
 	find -name '*.py[co]' | xargs -r rm -f
 	rm -f Lib/lib2to3/*.pickle
 	rm -rf locales
@@ -649,10 +557,10 @@ stamps/stamp-control:
 		  <$$f >$$f2; \
 	  fi; \
 	done
-#ifneq (,$(filter $(DEB_HOST_ARCH), alpha amd64 ia64 ppc64 sparc64 kfreebsd-amd64))
-#	sed -i 's/\(Py_InitModule4[^@]*\)@/\1_64@/' \
-#		debian/lib$(PVER).symbols debian/$(PVER)-dbg.symbols
-#endif
+ifneq (,$(filter $(DEB_HOST_ARCH), alpha amd64 ia64 ppc64 sparc64 kfreebsd-amd64))
+	sed -i 's/\(Py_InitModule4[^@]*\)@/\1_64@/' \
+		debian/lib$(PVER).symbols debian/$(PVER)-dbg.symbols
+endif
 
 install: $(build_target) stamps/stamp-install
 stamps/stamp-install: stamps/stamp-build control-file stamps/stamp-control
@@ -666,10 +574,8 @@ stamps/stamp-install: stamps/stamp-build control-file stamps/stamp-control
 	install -d $(d)/usr
 ifeq ($(with_interp),static)
 	$(MAKE) -C $(buildd_static) install prefix=$(CURDIR)/$(d)/usr
-	$(MAKE) -C $(buildd_static-64) install prefix=$(CURDIR)/$(d)/usr
 else
 	$(MAKE) -C $(buildd_shared) install prefix=$(CURDIR)/$(d)/usr
-	$(MAKE) -C $(buildd_shared-64) install prefix=$(CURDIR)/$(d)/usr
 endif
 	-find $(d)/usr/lib/python$(VER) -name '*_failed*.so'
 	find $(d)/usr/lib/python$(VER) -name '*_failed*.so' | xargs -r rm -f
@@ -678,8 +584,8 @@ endif
 		$(d)/usr/lib/python$(VER)/dist-packages
 
 	: # remove files, which are not packaged
-#	rm -f $(d)/usr/bin/smtpd.py
-#	rm -rf $(d)/usr/lib/python$(VER)/ctypes/macholib
+	rm -f $(d)/usr/bin/smtpd.py
+	rm -rf $(d)/usr/lib/python$(VER)/ctypes/macholib
 
 	: # fix some file permissions
 	chmod a-x $(d)/$(scriptdir)/{fractions,lib-tk/Tix}.py
@@ -700,10 +606,8 @@ endif
 
 	: # versioned install only
 	rm -f $(d)/usr/bin/python-config
-	rm -f $(d)/usr/bin/amd64/python-config
 
 	mv $(d)/usr/bin/2to3 $(d)/usr/bin/2to3-$(VER)
-	rm -f $(d)/usr/bin/amd64/2to3
 
 #	: # remove the bsddb stuff
 #	rm -rf $(d)/$(scriptdir)/bsddb
@@ -713,28 +617,21 @@ endif
 	mv $(d)/$(scriptdir)/lib-dynload/Python-$(VER)*.egg-info \
 		$(d)/$(scriptdir)/lib-dynload/Python-$(VER).egg-info
 
-#		$(scriptdir)/config \
-
 	dh_installdirs -p$(p_lib) \
-		usr/lib \
-		usr/lib/amd64 \
+		$(scriptdir)/config \
 		usr/share/doc
 	: # install the shared library
 	cp -p $(buildd_shared)/libpython$(VER).so.1.0 $(d_lib)/usr/lib/
-	cp -p $(buildd_shared-64)/libpython$(VER).so.1.0 $(d_lib)/usr/lib/amd64/
 	ln -sf libpython$(VER).so.1.0 $(d_lib)/usr/lib/libpython$(VER).so.1
-	ln -sf libpython$(VER).so.1.0 $(d_lib)/usr/lib/amd64/libpython$(VER).so.1
-#	ln -sf ../../libpython$(VER).so.1 \
-#		$(d_lib)/$(scriptdir)/config/libpython$(VER).so
+	ln -sf ../../libpython$(VER).so.1 \
+		$(d_lib)/$(scriptdir)/config/libpython$(VER).so
 	ln -sf $(p_base) $(d_lib)/usr/share/doc/$(p_lib)
 
 	ln -sf libpython$(VER).so.1 $(d)/usr/lib/libpython$(VER).so
-	ln -sf libpython$(VER).so.1 $(d)/usr/lib/amd64/libpython$(VER).so
 
 ifeq ($(with_interp),shared)
 	: # install the statically linked runtime
 	install -m755 $(buildd_static)/python $(d)/usr/bin/python$(VER)-static
-	install -m755 $(buildd_static-64)/python $(d)/usr/bin/amd64/python$(VER)-static
 endif
 
 	mv $(d)/usr/bin/pydoc $(d)/usr/bin/pydoc$(VER)
@@ -746,34 +643,21 @@ endif
 	    -e 's,^RUNSHARED *=.*,RUNSHARED=,' \
 		build-shared/Makefile > $(d)/$(scriptdir)/config/Makefile
 
-	mkdir -p $(d)/usr/bin/i86
-	mv $(d)/usr/bin/python$(VER) $(d)/usr/bin/i86/isapython$(VER)
-	mv $(d)/usr/bin/amd64/python$(VER) $(d)/usr/bin/amd64/isapython$(VER)
-	ln -fs i86/isapython$(VER) $(d)/usr/bin/python$(VER)
-	ln -fs isapython$(VER) $(d)/usr/bin/amd64/python$(VER)
-
 	: # Move the binary and the minimal libraries into $(p_min).
 	dh_installdirs -p$(p_min) \
 		etc/$(PVER) \
 		usr/bin \
-		usr/bin/i86 \
-		usr/bin/amd64 \
-		usr/share/man/man1 
-
+		usr/share/man/man1 \
+		$(scriptdir)/lib-dynload
 	DH_COMPAT=2 dh_movefiles -p$(p_min) --sourcedir=$(d) \
-		usr/bin/i86/isapython$(VER) \
-		usr/bin/amd64/isapython$(VER) \
 		usr/bin/python$(VER) \
-		usr/bin/amd64/python$(VER) \
 		usr/share/man/man1/python$(VER).1 \
 		$(foreach i,$(MIN_MODS),$(scriptdir)/$(i).py) \
 		$(foreach i,$(MIN_PACKAGES),$(scriptdir)/$(i)) \
 		$(foreach i,$(MIN_ENCODINGS),$(scriptdir)/$(i)) \
 		$(scriptdir)/site.py
 
-	rm -rf $(d)/usr/bin/i86
-
-#		$(foreach i,$(MIN_EXTS),$(scriptdir)/lib-dynload/$(i).so) 
+#		$(foreach i,$(MIN_EXTS),$(scriptdir)/lib-dynload/$(i).so) \
 
 	: # Install sitecustomize.py.
 	cp -p debian/sitecustomize.py $(d_min)/etc/$(PVER)/
@@ -789,24 +673,18 @@ endif
 		$(scriptdir) \
 		$(scriptdir)/doc/html \
 		usr/include \
-		usr/lib \
-		usr/lib/amd64
+		usr/lib
 	cp -p Misc/HISTORY Misc/README.valgrind Misc/gdbinit \
 		debian/README.maintainers \
+		debian/test_results $(buildd_static)/pybench.log \
 	    $(d_dev)/usr/share/doc/python$(VER)/
-
-#		debian/test_results $(buildd_static)/pybench.log \
 
 	DH_COMPAT=2 dh_movefiles -p$(p_dev) --sourcedir=$(d) \
 		usr/lib/python$(VER)/config \
-		usr/lib/amd64/python$(VER)/config \
 		usr/include/python$(VER) \
 		usr/lib/libpython$(VER).so \
-		usr/lib/amd64/libpython$(VER).so \
 		usr/lib/libpython$(VER).a \
-		usr/lib/amd64/libpython$(VER).a \
 		usr/bin/python$(VER)-config \
-		usr/bin/amd64/python$(VER)-config \
 		usr/lib/python$(VER)/distutils/command/wininst-*.exe
 
 	mv $(d_dev)/usr/lib/python$(VER)/config/Makefile \
@@ -847,7 +725,6 @@ endif
 
 	: # IDLE
 	mv $(d)/usr/bin/idle $(d)/usr/bin/idle-python$(VER)
-	rm -f $(d)/usr/bin/amd64/idle
 	rm -f $(d)/usr/lib/python$(VER)/idlelib/idle.bat
 	dh_installdirs -p$(p_idle) \
 		usr/bin \
@@ -903,8 +780,7 @@ endif
 	dh_installdocs -p$(p_base) \
 		README Misc/NEWS Misc/ACKS
 	ln -sf NEWS.gz $(d_base)/usr/share/doc/$(p_base)/changelog.gz
-#	dh_installdocs --all -N$(p_base) -N$(p_dev) -N$(p_dbg) -N$(p_lib) debian/README.Debian
-	dh_installdocs --all -N$(p_base) -N$(p_dev) -N$(p_lib) debian/README.Debian
+	dh_installdocs --all -N$(p_base) -N$(p_dev) -N$(p_dbg) -N$(p_lib) debian/README.Debian
 
 	: # IDLE has its own changelogs, docs...
 	dh_installchangelogs -p$(p_idle) Lib/idlelib/ChangeLog
@@ -925,23 +801,9 @@ endif
 
 	: # The rest goes into $(p_base)
 	mkdir -p $(d)/usr/lib/python$(VER)/dist-packages
-
-	mkdir -p $(d)/usr/lib/python$(VER)/lib-dynload/64
-	mv $(d)/usr/lib/amd64/python$(VER)/lib-dynload/*.so $(d)/usr/lib/python$(VER)/lib-dynload/64/
-	rm -rf $(d)/usr/lib/amd64
-
-
-	### prepare $(p_base)
-#	rm -f $(d)/usr/bin/pydoc2.6
-	rm -f $(d)/usr/bin/amd64/pydoc
-	rm -f $(d)/usr/bin/smtpd.py
-	rm -f $(d)/usr/bin/amd64/smtpd.py
-#	rm -f $(d)/usr/bin/pygettext2.6
-	rm -f $(d)/usr/bin/python
-	rm -rf $(d)/usr/bin/amd64
-
 	(cd $(d) && tar cf - .) | (cd $(d_base) && tar xpf -)
 	sh debian/dh_rmemptydirs -p$(p_base)
+	rm -f $(d_base)/usr/bin/python
 
 	: # Install menu icon
 	dh_installdirs -p$(p_base) usr/share/pixmaps
@@ -966,56 +828,55 @@ endif
 
 	: # install debug package
 	rm -rf $(d)-dbg
-#	$(MAKE) -C $(buildd_debug) install DESTDIR=$(CURDIR)/$(d)-dbg
-#	dh_installdirs -p$(p_dbg) \
-#		usr/bin \
-#		usr/share/man/man1 \
-#		$(scriptdir)/lib-dynload \
-#		usr/include/$(PVER)_d \
-#		usr/share/doc/$(p_base)
-#	cp -p Misc/SpecialBuilds.txt $(d_dbg)/usr/share/doc/$(p_base)/
-#	cp -p debian/$(PVER)-dbg.README.Debian \
-#		$(d_dbg)/usr/share/doc/$(p_base)/README.debug
-#	cp -p $(buildd_debug)/python $(d_dbg)/usr/bin/$(PVER)-dbg
-#	sed '1s,#!.*python[^ ]*\(.*\),#! $(PY_INTERPRETER)-dbg\1,' \
-#		$(d)-dbg/usr/bin/$(PVER)-config \
-#		> $(d_dbg)/usr/bin/$(PVER)-dbg-config
-#	chmod 755 $(d_dbg)/usr/bin/$(PVER)-dbg-config
-#	cp -p $(buildd_debug)/build/lib*/*_d.so \
+	$(MAKE) -C $(buildd_debug) install DESTDIR=$(CURDIR)/$(d)-dbg
+	dh_installdirs -p$(p_dbg) \
+		usr/bin \
+		usr/share/man/man1 \
+		$(scriptdir)/lib-dynload \
+		usr/include/$(PVER)_d \
+		usr/share/doc/$(p_base)
+	cp -p Misc/SpecialBuilds.txt $(d_dbg)/usr/share/doc/$(p_base)/
+	cp -p debian/$(PVER)-dbg.README.Debian \
+		$(d_dbg)/usr/share/doc/$(p_base)/README.debug
+	cp -p $(buildd_debug)/python $(d_dbg)/usr/bin/$(PVER)-dbg
+	sed '1s,#!.*python[^ ]*\(.*\),#! $(PY_INTERPRETER)-dbg\1,' \
+		$(d)-dbg/usr/bin/$(PVER)-config \
+		> $(d_dbg)/usr/bin/$(PVER)-dbg-config
+	chmod 755 $(d_dbg)/usr/bin/$(PVER)-dbg-config
+	cp -p $(buildd_debug)/build/lib*/*_d.so \
 		$(d_dbg)/$(scriptdir)/lib-dynload/
-#ifeq ($(DEB_HOST_ARCH_OS),solaris)
-#	cp -p $(buildd_shdebug)/libpython$(VER)_d.so $(d_dbg)/usr/lib/libpython$(VER)_d.so.1.0
-#else
-#	cp -p $(buildd_shdebug)/libpython$(VER)_d.so.1.0 $(d_dbg)/usr/lib/
-#endif
-#	ln -sf libpython$(VER)_d.so.1.0 $(d_dbg)/usr/lib/libpython$(VER)_d.so.1
-#	ln -sf libpython$(VER)_d.so.1 $(d_dbg)/usr/lib/libpython$(VER)_d.so
-#ifneq ($(with_gdbm),yes)
-#	rm -f $(d_dbg)/$(scriptdir)/lib-dynload/gdbm_d.so
-#	rm -f $(d_dbg)/usr/lib/debug/$(scriptdir)/lib-dynload/gdbm.so
-#endif
-#ifneq ($(with_tk),yes)
-#	rm -f $(d_dbg)/$(scriptdir)/lib-dynload/_tkinter_d.so
-#	rm -f $(d_dbg)/usr/lib/debug/$(scriptdir)/lib-dynload/_tkinter.so
-#endif
+ifeq ($(DEB_HOST_ARCH_OS),solaris)
+	cp -p $(buildd_shdebug)/libpython$(VER)_d.so $(d_dbg)/usr/lib/libpython$(VER)_d.so.1.0
+else
+	cp -p $(buildd_shdebug)/libpython$(VER)_d.so.1.0 $(d_dbg)/usr/lib/
+endif
+	ln -sf libpython$(VER)_d.so.1.0 $(d_dbg)/usr/lib/libpython$(VER)_d.so.1
+	ln -sf libpython$(VER)_d.so.1 $(d_dbg)/usr/lib/libpython$(VER)_d.so
+ifneq ($(with_gdbm),yes)
+	rm -f $(d_dbg)/$(scriptdir)/lib-dynload/gdbm_d.so
+	rm -f $(d_dbg)/usr/lib/debug/$(scriptdir)/lib-dynload/gdbm.so
+endif
+ifneq ($(with_tk),yes)
+	rm -f $(d_dbg)/$(scriptdir)/lib-dynload/_tkinter_d.so
+	rm -f $(d_dbg)/usr/lib/debug/$(scriptdir)/lib-dynload/_tkinter.so
+endif
 #	rm -f $(d_dbg)/$(scriptdir)/lib-dynload/_bsddb_d.so
 
-#	cp -a $(d)-dbg/$(scriptdir)/config_d $(d_dbg)/$(scriptdir)/
-#	ln -sf ../../libpython$(VER)_d.so \
-#		$(d_dbg)/$(scriptdir)/config_d/libpython$(VER)_d.so
-#	ln -sf libpython$(VER)_d.so \
-#		$(d_dbg)/$(scriptdir)/config_d/libpython$(VER).so
-#	ln -sf libpython$(VER)_d.a \
-#		$(d_dbg)/$(scriptdir)/config_d/libpython$(VER).a
+	cp -a $(d)-dbg/$(scriptdir)/config_d $(d_dbg)/$(scriptdir)/
+	ln -sf ../../libpython$(VER)_d.so \
+		$(d_dbg)/$(scriptdir)/config_d/libpython$(VER)_d.so
+	ln -sf libpython$(VER)_d.so \
+		$(d_dbg)/$(scriptdir)/config_d/libpython$(VER).so
+	ln -sf libpython$(VER)_d.a \
+		$(d_dbg)/$(scriptdir)/config_d/libpython$(VER).a
 
 	for i in $(d_dev)/usr/include/$(PVER)/*; do \
 	  i=$$(basename $$i); \
 	  case $$i in pyconfig.h) continue; esac; \
+	  ln -sf ../$(PVER)/$$i $(d_dbg)/usr/include/$(PVER)_d/$$i; \
 	done
-#	  ln -sf ../$(PVER)/$$i $(d_dbg)/usr/include/$(PVER)_d/$$i; 
-
-#	cp -p $(buildd_debug)/pyconfig.h $(d_dbg)/usr/include/$(PVER)_d/
-#	ln -sf $(PVER).1.gz $(d_dbg)/usr/share/man/man1/$(PVER)-dbg.1.gz
+	cp -p $(buildd_debug)/pyconfig.h $(d_dbg)/usr/include/$(PVER)_d/
+	ln -sf $(PVER).1.gz $(d_dbg)/usr/share/man/man1/$(PVER)-dbg.1.gz
 
 	for i in debian/*.overrides; do \
 	  b=$$(basename $$i .overrides); \
@@ -1081,8 +942,7 @@ binary-arch: build install
 	-dh_icons -a || dh_iconcache -a
 #	dh_installmime -a
 	dh_installchangelogs -a
-#	for i in $(p_dev) $(p_dbg) $(p_lib); do \
-	for i in $(p_dev) $(p_lib); do \
+	for i in $(p_dev) $(p_dbg) $(p_lib); do \
 	  rm -rf debian/$$i/usr/share/doc/$$i; \
 	  ln -s $(p_base) debian/$$i/usr/share/doc/$$i; \
 	done
@@ -1093,13 +953,13 @@ endif
 ifneq ($(with_gdbm),yes)
 	rm -f $(d_base)/$(scriptdir)/lib-dynload/gdbm.so
 endif
-#	dh_strip -a -N$(p_dbg) -Xdebug -Xdbg --dbg-package=$(p_dbg)
-#	cp Tools/gdb/libpython.py $(d_dbg)/usr/lib/debug/usr/bin/$(PVER)-gdb.py
-#	ln -sf $(PVER)-gdb.py $(d_dbg)/usr/lib/debug/usr/bin/$(PVER)-dbg-gdb.py
-#	ln -sf ../bin/$(PVER)-gdb.py \
-#		$(d_dbg)/usr/lib/debug/usr/lib/lib$(PVER).so.1.0-gdb.py
-#	ln -sf ../bin/$(PVER)-gdb.py \
-#		$(d_dbg)/usr/lib/lib$(PVER)_d.so.1.0-gdb.py
+	dh_strip -a -N$(p_dbg) -Xdebug -Xdbg --dbg-package=$(p_dbg)
+	cp Tools/gdb/libpython.py $(d_dbg)/usr/lib/debug/usr/bin/$(PVER)-gdb.py
+	ln -sf $(PVER)-gdb.py $(d_dbg)/usr/lib/debug/usr/bin/$(PVER)-dbg-gdb.py
+	ln -sf ../bin/$(PVER)-gdb.py \
+		$(d_dbg)/usr/lib/debug/usr/lib/lib$(PVER).so.1.0-gdb.py
+	ln -sf ../bin/$(PVER)-gdb.py \
+		$(d_dbg)/usr/lib/lib$(PVER)_d.so.1.0-gdb.py
 	dh_link -a
 	dh_compress -a -X.py
 	dh_fixperms -a
@@ -1113,11 +973,11 @@ endif
 	done
 
 	dh_makeshlibs -p$(p_lib) -V '$(p_lib)'
-#	dh_makeshlibs -p$(p_dbg) -V '$(p_dbg)'
+	dh_makeshlibs -p$(p_dbg) -V '$(p_dbg)'
 # don't include the following symbols, found in extensions
 # which either can be built as builtin or extension.
-#	sed -ri '/^ (_check_|asdl_|fast_save_|init)/d' \
-#	  $(d_lib)/DEBIAN/symbols $(d_dbg)/DEBIAN/symbols
+	sed -ri '/^ (_check_|asdl_|fast_save_|init)/d' \
+	  $(d_lib)/DEBIAN/symbols $(d_dbg)/DEBIAN/symbols
 	dh_installdeb -a
 	dh_shlibdeps -a
 	dh_gencontrol -a
@@ -1132,10 +992,8 @@ endif
 
 patchdir	= debian/patches
 
-#glibc_version := $(shell dpkg -s locales | awk '/^Version:/ {print $$2}')
-#glibc_version := $(shell dpkg -s text-locale | awk '/^Version:/ {print $$2}')
-#broken_utimes := $(shell dpkg --compare-versions $(glibc_version) lt 2.3.5 && echo yes || echo no)
-broken_utimes := yes
+glibc_version := $(shell dpkg -s locales | awk '/^Version:/ {print $$2}')
+broken_utimes := $(shell dpkg --compare-versions $(glibc_version) lt 2.3.5 && echo yes || echo no)
 
 $(patchdir)/series: $(patchdir)/series.in
 	cpp -E \

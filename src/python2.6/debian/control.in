@@ -2,11 +2,12 @@ Source: @PVER@
 Section: python
 Priority: optional
 Maintainer: Matthias Klose <doko@debian.org>
-Build-Depends: debhelper (>= 5), quilt, autoconf, libreadline-dev, libncursesw5-dev (>= 5.3), tk8.5-dev, zlib1g-dev, blt-dev (>= 2.4z), libssl-dev, sharutils, libbz2-dev, libbluetooth-dev [!hurd-i386 !kfreebsd-i386 !kfreebsd-amd64], locales [!armel !avr32 !hppa !ia64 !mipsel], libsqlite3-dev, libffi-dev (>= 3.0.5), mime-support, libgpm2 [!hurd-i386 !kfreebsd-i386 !kfreebsd-amd64 !solaris-i386 !solaris-amd64], netbase, lsb-release, bzip2, libdb4.8-dev, gdb, python
+Build-Depends: debhelper (>= 5), quilt, autoconf, libreadline-dev, libncurses5-dev (>= 5.3), tk8.5-dev, zlib1g-dev, blt-dev (>= 2.4z), libssl-dev, sharutils, libbz2-dev, libbluetooth-dev [!hurd-i386 !kfreebsd-i386 !kfreebsd-amd64i !solaris-i386], locales [!armel !avr32 !hppa !ia64 !mipsel], libsqlite3-dev, libffi-dev (>= 3.0.5), mime-support, libgpm2 [!hurd-i386 !kfreebsd-i386 !kfreebsd-amd64 !solaris-i386], netbase, lsb-release, bzip2, libdb4.8-dev, gdb [!solaris-i386], python
 Build-Depends-Indep: python-sphinx
 Build-Conflicts: tcl8.3-dev, tk8.3-dev, tcl8.4-dev, tk8.4-dev, @PVER@-xml, python-xml, libgdbm-dev, autoconf2.13
 XS-Python-Version: @VER@
 Standards-Version: 3.9.1
+Upstream-Version: 2.6.6-8
 Vcs-Browser: https://code.launchpad.net/~doko/python/pkg@VER@-debian
 Vcs-Bzr: http://bazaar.launchpad.net/~doko/python/pkg@VER@-debian
 
@@ -52,7 +53,11 @@ Breaks: python-central (<< 0.6.14),
   fvwm-crystal (<< 3.0.5.dfsg-4~),
   gforge-web-apache2 (<< 5.0.1+svn10155),
   mftrace (<< 1.2.15) 
-Conflicts: binfmt-support (<< 1.1.2)
+Conflicts: binfmt-support (<< 1.1.2),
+  libboost-python-dev (<< 1.34.1-16),
+  libboost-dbg (<< 1.34.1-16),
+  libboost-python1.35-dev (<< 1.35.0-10),
+  libboost1.35-dbg (<< 1.35.0-10)
 XB-Python-Runtime: @PVER@
 XB-Python-Version: @VER@
 Description: A minimal subset of the Python language (version @VER@)
@@ -125,12 +130,12 @@ Description: Documentation for the high-level object-oriented language Python (v
    * Documenting Python
    * Distributing Python Modules
 
-#Package: @PVER@-dbg
-#Section: debug
-#Architecture: any
-#Priority: extra
-#Depends: @PVER@ (>= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
-#Suggests: python-gdbm-dbg, python-tk-dbg
-#Description: Debug Build of the Python Interpreter (version @VER@)
-# Python interpreter configured with --pydebug. Dynamically loaded modules are
-# searched in /usr/lib/@PVER@/lib-dynload/debug first.
+Package: @PVER@-dbg
+Section: debug
+Architecture: any
+Priority: extra
+Depends: @PVER@ (>= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
+Suggests: python-gdbm-dbg, python-tk-dbg
+Description: Debug Build of the Python Interpreter (version @VER@)
+ Python interpreter configured with --pydebug. Dynamically loaded modules are
+ searched in /usr/lib/@PVER@/lib-dynload/debug first.

@@ -3,6 +3,7 @@ deb-setup.diff
 deb-locations.diff
 site-locations.diff
 distutils-install-layout.diff
+locale-module-updates.diff
 locale-module.diff
 distutils-link.diff
 distutils-sysconfig.diff
@@ -59,7 +60,5 @@ issue9729.diff
 link-system-expat.diff
 plat-gnukfreebsd.diff
 issue7356.diff
-#if defined (arch_os_solaris)
-socketmodule.c.HAVE_NETPACKET_PACKET_H.patch
+socketmodule.c.HAVE_NETPACKET_PACKET_H.diff
 nexenta_sfw.patch
-#endif
