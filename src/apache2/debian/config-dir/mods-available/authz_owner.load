@@ -1,0 +1,1 @@
+LoadModule authz_owner_module mod_authz_owner.so

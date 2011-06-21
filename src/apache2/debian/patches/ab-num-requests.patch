@@ -1,0 +1,39 @@
+Index: apache2-2.2.19/support/ab.c
+===================================================================
+--- apache2-2.2.19.orig/support/ab.c	2011-05-24 16:07:51.520344862 +0400
++++ apache2-2.2.19/support/ab.c	2011-05-24 16:08:46.965366873 +0400
+@@ -628,6 +628,10 @@
+ 
+ static void write_request(struct connection * c)
+ {
++    if (started >= requests) {
++        return;
++    }
++
+     do {
+         apr_time_t tnow;
+         apr_size_t l = c->rwrite;
+@@ -690,6 +694,7 @@
+         new_pollfd.client_data = c;
+         apr_pollset_add(readbits, &new_pollfd);
+     }
++    started++;
+ }
+ 
+ /* --------------------------------------------------------- */
+@@ -1239,7 +1244,6 @@
+ 
+     /* connected first time */
+     c->state = STATE_CONNECTED;
+-    started++;
+ #ifdef USE_SSL
+     if (c->ssl) {
+         ssl_proceed_handshake(c);
+@@ -1768,7 +1772,6 @@
+                     }
+                     else {
+                         c->state = STATE_CONNECTED;
+-                        started++;
+ #ifdef USE_SSL
+                         if (c->ssl)
+                             ssl_proceed_handshake(c);

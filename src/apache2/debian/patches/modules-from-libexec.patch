@@ -1,0 +1,24 @@
+Index: apache2-2.2.19/modules/mappers/mod_so.c
+===================================================================
+--- apache2-2.2.19.orig/modules/mappers/mod_so.c	2008-12-18 04:46:00.000000000 +0300
++++ apache2-2.2.19/modules/mappers/mod_so.c	2011-05-24 16:08:59.230935822 +0400
+@@ -155,7 +155,7 @@
+     apr_dso_handle_t *modhandle;
+     apr_dso_handle_sym_t modsym;
+     module *modp;
+-    const char *szModuleFile = ap_server_root_relative(cmd->pool, filename);
++    char *szModuleFile = NULL;
+     so_server_conf *sconf;
+     ap_module_symbol_t *modi;
+     ap_module_symbol_t *modie;
+@@ -168,6 +168,10 @@
+      */
+     *(ap_directive_t **)dummy = NULL;
+ 
++    apr_filepath_merge(&szModuleFile,
++            DEFAULT_EXP_LIBEXECDIR, filename,
++            APR_FILEPATH_SECUREROOT,
++            cmd->pool);
+     if (!szModuleFile) {
+         return apr_pstrcat(cmd->pool, "Invalid LoadModule path ",
+                            filename, NULL);
