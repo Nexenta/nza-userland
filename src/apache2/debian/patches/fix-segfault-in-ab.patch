@@ -1,0 +1,12 @@
+Index: apache2-2.2.19/support/ab.c
+===================================================================
+--- apache2-2.2.19.orig/support/ab.c	2011-04-14 17:56:17.000000000 +0400
++++ apache2-2.2.19/support/ab.c	2011-05-24 16:07:51.520344862 +0400
+@@ -548,7 +548,6 @@
+         for (i=1; i<count; i++) {
+             cert = (X509 *)SK_VALUE(sk, i);
+             ssl_print_cert_info(bio_out, cert);
+-            X509_free(cert);
+     }
+     }
+     cert = SSL_get_peer_certificate(c->ssl);

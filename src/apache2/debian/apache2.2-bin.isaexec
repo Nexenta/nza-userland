@@ -1,0 +1,4 @@
+usr/sbin/apache2-worker
+usr/sbin/apache2-prefork
+usr/sbin/apache2-event
+usr/sbin/httx2dbm

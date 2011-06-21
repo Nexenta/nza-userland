@@ -1,0 +1,10 @@
+Index: apache2-2.2.19/docs/cgi-examples/printenv
+===================================================================
+--- apache2-2.2.19.orig/docs/cgi-examples/printenv	2004-12-11 08:52:29.000000000 +0300
++++ apache2-2.2.19/docs/cgi-examples/printenv	2011-05-24 16:06:34.996435983 +0400
+@@ -1,4 +1,4 @@
+-#!/usr/local/bin/perl
++#!/usr/bin/perl
+ ##
+ ##  printenv -- demo CGI program which just prints its environment
+ ##

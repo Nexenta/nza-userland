@@ -1,0 +1,7 @@
+usr/share/apache2/icons
+usr/share/apache2/error
+usr/sbin/envvars-std	usr/share/apache2/build/
+debian/config-dir/*	etc/apache2/
+debian/a2enmod		usr/sbin/
+debian/index.html usr/share/apache2/default-site/
+

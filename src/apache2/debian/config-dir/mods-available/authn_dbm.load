@@ -1,0 +1,1 @@
+LoadModule authn_dbm_module mod_authn_dbm.so

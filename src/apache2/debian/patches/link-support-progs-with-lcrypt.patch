@@ -1,0 +1,18 @@
+Index: apache2-2.2.19/configure
+===================================================================
+--- apache2-2.2.19.orig/configure	2011-05-24 16:08:03.491516551 +0400
++++ apache2-2.2.19/configure	2011-05-24 16:08:17.211227447 +0400
+@@ -17788,11 +17788,11 @@
+ 
+ fi
+ 
+-htpasswd_LTFLAGS=""
++htpasswd_LTFLAGS="-lcrypt"
+ htdigest_LTFLAGS=""
+ rotatelogs_LTFLAGS=""
+ logresolve_LTFLAGS=""
+-htdbm_LTFLAGS=""
++htdbm_LTFLAGS="-lcrypt"
+ ab_LTFLAGS=""
+ checkgid_LTFLAGS=""
+ htcacheclean_LTFLAGS=""

@@ -1,0 +1,77 @@
+#!/sbin/sh
+
+. /lib/svc/share/smf_include.sh
+
+#if startup options contain multiple arguments separated by a blank,
+#then they should be specified as below
+#e.g., %> svccfg -s apache22 setprop 'httpd/startup_options=("-f" "/etc/apache2/2.2/new.conf")' 
+#
+STARTUP_OPTIONS=
+
+getprop() {
+    PROPVAL=""
+    svcprop -q -p $1 ${SMF_FMRI}
+    if [ $? -eq 0 ] ; then
+        PROPVAL=`svcprop -p $1 ${SMF_FMRI}`
+        if [ "${PROPVAL}" = "\"\"" ] ; then
+            PROPVAL=""
+        fi
+        return
+    fi
+    return
+}
+
+
+getprop httpd/startup_options
+if [ "${PROPVAL}" != "" ] ; then
+	echo startupoptions set
+	echo val=${PROPVAL}
+	STARTUP_OPTIONS="${PROPVAL} -k"
+fi
+
+SERVER_TYPE=worker
+getprop httpd/server_type
+if [ "${PROPVAL}" != "" ] ; then
+    SERVER_TYPE=${PROPVAL}
+fi
+
+MPM="/usr/sbin/apache2-${SERVER_TYPE}"
+
+lnk=`readlink /usr/sbin/apache2 || true`
+if [ "x$lnk" != x"$MPM" ]; then
+    if [ ! -x "$MPM" ]; then
+        echo "\`$MPM' not found for server type \`$SERVER_TYPE'."
+        echo "Please check \`httpd/server_type' property for $SMF_FMRI"
+        exit 1
+    fi
+    rm -f /usr/sbin/apache2
+    ln -sf "$MPM" /usr/sbin/apache2
+fi
+
+case "$1" in
+start)
+	cmd="start"
+	;;
+stop)
+	cmd="stop"
+	;;
+restart)
+	cmd="restart"
+	;;
+refresh)
+	cmd="graceful"
+	;;
+*)
+	echo "Usage: $0 {start|stop|restart|refresh}"
+	exit $SMF_EXIT_ERR_CONFIG
+	;;
+esac
+
+/usr/sbin/apache2ctl ${STARTUP_OPTIONS} ${cmd} 2>&1
+
+if [ $? -ne 0 ]; then
+    echo "Server failed to start. Check the error log (defaults to /var/log/apache2/error.log) for more information, if any."
+    exit $SMF_EXIT_ERR_FATAL
+fi
+
+exit $SMF_EXIT_OK

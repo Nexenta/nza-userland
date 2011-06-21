@@ -1,0 +1,1 @@
+LoadModule authn_file_module mod_authn_file.so

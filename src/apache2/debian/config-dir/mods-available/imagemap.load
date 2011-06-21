@@ -1,0 +1,1 @@
+LoadModule imagemap_module mod_imagemap.so
