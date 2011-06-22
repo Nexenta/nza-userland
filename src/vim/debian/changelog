@@ -2,8 +2,8 @@ vim (40-0-0) unstable; urgency=low
 
   * New upstream release (7.3.230)
   * Removed all X stuff (Lesstif, GTK, GNOME)
-  * Used `3.0 (quilt)' source fromat
-  * Added suport for field `Upstream-Version' in debcontrol.vim
+  * Used `3.0 (quilt)' source format
+  * Added support for field `Upstream-Version' in debcontrol.vim
   * Made all-in-one package `vim'
   * New version scheme
 
