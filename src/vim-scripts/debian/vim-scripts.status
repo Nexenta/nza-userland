@@ -1,0 +1,569 @@
+This package was debianized by Michael Piefel <piefel@debian.org> on
+Sun, 17 Feb 2002 13:52:36 +0100.
+
+It was downloaded from http://www.vim.org/scripts/index.php
+
+Copyright:
+
+Copyright is by the individual authors mentioned in each script.
+
+Summary of license information of each script is reported below. For scripts
+which license is "no license" it is assumed in good faith that having being
+posted on vim.org their licence is at least as free as the licence of Vim
+itself.
+
+--
+
+script_name: plugin/a.vim
+addon:       alternate
+description: alternate pairing files (e.g. .c/.h) with short ex-commands
+script_url:  http://www.vim.org/scripts/script.php?script_id=31
+author:      Mike Sharpe
+author_url:  http://www.vim.org/account/profile.php?user_id=49
+email:       feline at irendi.com
+license:     license [1], see below
+extras:	     doc/alternate.txt
+disabledby:  let loaded_alternateFile = 1
+version:     2.18
+
+script_name: plugin/whatdomain.vim
+addon:       whatdomain
+description: query the meaning of a Top Level Domain
+script_url:  http://www.vim.org/scripts/script.php?script_id=62
+author:      Michael Piefel
+author_url:  http://www.vim.org/account/profile.php?user_id=38
+email:       piefel at informatik.hu-berlin.de
+license:     public domain
+disabledby:  let loaded_whatdomain = 1
+version:     20010919
+
+script_name: plugin/bufexplorer.vim
+addon:       bufexplorer
+description: buffer explorer / browser
+script_url:  http://www.vim.org/scripts/script.php?script_id=42
+author:      Jeff Lanzarotta
+author_url:  http://www.vim.org/account/profile.php?user_id=97
+email:       delux256-vim at yahoo dot com
+license:     license [2], see below
+extras:	     doc/bufexplorer.txt
+disabledby:  let loaded_bufexplorer = 1
+version:     7.2.4
+
+script_name: plugin/minibufexpl.vim
+addon:       minibufexplorer
+description: elegant buffer explorer which takes very little screen space
+script_url:  http://www.vim.org/scripts/script.php?script_id=159
+author:      Bindu Wavell
+author_url:  http://www.vim.org/account/profile.php?user_id=385
+email:       bindu at wavell.net
+license:     license [2], see below
+disabledby:  let loaded_minibufexplorer = 1
+version:     6.3.2
+
+script_name: plugin/gnupg.vim
+addon:       gnupg
+description: transparent editing of gpg encrypted files
+script_url:  http://www.vim.org/scripts/script.php?script_id=661
+author:      Markus Braun
+author_url:  http://www.vim.org/account/profile.php?user_id=1120
+email:       markus.braun at krawel.de
+license:     GNU GPL, see /usr/share/common-licenses/GPL
+disabledby:  let loaded_gnupg = 1
+version:     3026
+
+script_name: plugin/taglist.vim
+addon:       taglist
+description: source code browser
+script_url:  http://www.vim.org/scripts/script.php?script_id=273
+author:      Yegappan Lakshmanan
+author_url:  http://www.vim.org/account/profile.php?user_id=244
+email:       yegappan at yahoo.com
+license:     no license
+extras:	     doc/taglist.txt
+disabledby:  let loaded_taglist = 'no'
+version:     4.5
+
+script_name: plugin/calendar.vim
+addon:       calendar
+description: shows calendar in a vim window
+script_url:  http://www.vim.org/scripts/script.php?script_id=52
+author:      Yasuhiro Matsumoto
+author_url:  http://www.vim.org/account/profile.php?user_id=103
+email:       mattn.jp at gmail.com
+license:     no license
+disabledby:  let calendar_version = 1
+version:     2.0
+
+script_name: plugin/winmanager.vim
+addon:       winmanager
+description: IDE-like environment with file manager and buffer list
+script_url:  http://www.vim.org/scripts/script.php?script_id=95
+author:      Srinath Avadhanula
+author_url:  http://www.vim.org/account/profile.php?user_id=247
+email:       srinath at fastmail.fm
+license:     no license
+extras:	     doc/winmanager.txt, plugin/winfileexplorer.vim, plugin/wintagexplorer.vim
+disabledby:  let loaded_winmanager = 1
+version:     2.3
+
+script_name: plugin/AlignPlugin.vim
+addon:       align
+description: commands and maps for aligned text, equations, declarations, ...
+script_url:  http://www.vim.org/scripts/script.php?script_id=294
+author:      Charles Campbell
+author_url:  http://www.vim.org/account/profile.php?user_id=96
+email:       drchip at campbellfamily.biz
+license:     licese [4], see below
+extras:	     doc/Align.txt, plugin/AlignMapsPlugin.vim, plugin/cecutil.vim, autoload/Align.vim, autoload/AlignMaps.vim
+disabledby:  let loaded_alignPlugin = 1
+version:     35/41
+
+script_name: plugin/cvsmenu.vim
+addon:       cvsmenu
+description: CVS/CVSNT integration
+script_url:  http://www.vim.org/scripts/script.php?script_id=1245
+author:      Yongwei Wu, Thorsten Maerz
+author_url:  http://www.vim.org/account/profile.php?user_id=6184
+email:       wuyongwei at gmail.com
+license:     GNU LGPL, see /usr/share/common-licenses/LGPL-2
+disabledby:  let loaded_cvsmenu = 1
+version:     1.150
+
+script_name: plugin/vcscommand.vim
+addon:       vcscommand
+description: CVS/SVN/SVK/git/hg/bzr integration plugin
+script_url:  http://www.vim.org/scripts/script.php?script_id=90
+author:      Robert Hiestand
+author_url:  http://www.vim.org/account/profile.php?user_id=241
+email:       bob.hiestand at gmail.com
+license:     license[7], see below
+extras:	     doc/vcscommand.txt, plugin/vcs*.vim, syntax/*Annotate.vim, syntax/vcscommit.vim
+disabledby:  let VCSCommandDisableAll = 1
+version:     1.99.35
+
+script_name: plugin/utl.vim
+addon:       utl
+description: Universal Text Linking: URL-based hyperlinking
+script_url:  http://www.vim.org/scripts/script.php?script_id=293
+author:      Stefan Bittner
+author_url:  http://www.vim.org/account/profile.php?user_id=659
+email:       stb at bf-consulting.de
+license:     GNU GPL, see /usr/share/common-licenses/GPL-2
+extras:	     doc/utl_*.txt, plugin/utl_*.vim
+disabledby:  let loaded_utl = 1
+version:     2.0
+
+script_name: plugin/info.vim
+addon:       info
+description: GNU info documentation browser
+script_url:  http://www.vim.org/scripts/script.php?script_id=21
+author:      Slavik Gorbanyov
+author_url:  http://www.vim.org/account/profile.php?user_id=55
+email:       rnd at web-drive.ru
+license:     license [3], see below
+disabledby:  let loaded_info = 1
+version:     1.7
+
+script_name: plugin/EnhancedCommentify.vim
+addon:       enhanced-commentify
+description: comment lines in a program
+script_url:  http://www.vim.org/scripts/script.php?script_id=23
+author:      Meikel Brandmeyer
+author_url:  http://www.vim.org/account/profile.php?user_id=62
+email:       Brandels_Mikesh at web.de
+license:     license [5], see below
+extras:      doc/EnhancedCommentify.txt, ftplugin/php_enhcomm.vim, ftplugin/ocaml_enhcomm.vim
+disabledby:  let DidEnhancedCommentify = 1
+version:     2.3
+
+script_name: ftplugin/xml.vim
+addon:       xmledit
+description: plugin to help edit XML, HTML, and SGML documents
+script_url:  http://www.vim.org/scripts/script.php?script_id=301
+author:      Devin Weaver
+author_url:  http://www.vim.org/account/profile.php?user_id=667
+email:       devin at tritarget.com
+license:     GNU GPL, see /usr/share/common-licenses/GPL
+extras:      doc/xml-plugin.txt
+disabledby:  let loaded_xml_ftplugin = 1
+version:     1.84
+
+script_name: ftplugin/po.vim
+addon:       po
+description: easier editing of GNU gettext PO files
+script_url:  http://www.vim.org/scripts/script.php?script_id=695
+author:      Aleksandar Jelenak
+author_url:  http://www.vim.org/account/profile.php?user_id=2766
+email:       ajelenak at yahoo.com
+license:     no license
+disabledby:  let loaded_po_ftplugin = 1
+version:     1.2
+
+script_name: plugin/tetris.vim
+addon:       tetris
+description: a Tetris game
+script_url:  http://www.vim.org/scripts/script.php?script_id=172
+author:      Gergely Kontra
+author_url:  http://www.vim.org/account/profile.php?user_id=299
+email:       kgergely at mcl.hu
+license:     no license
+disabledby:  let loaded_tetris = 1
+version:     0.52fix
+
+script_name: plugin/sokoban.vim
+addon:       sokoban
+description: a Sokoban game
+script_url:  http://www.vim.org/scripts/script.php?script_id=211
+author:      Mike Sharpe
+author_url:  http://www.vim.org/account/profile.php?user_id=49
+email:       feline at irendi.com
+license:     license [1], see below
+disabledby:  let loaded_VimSokoban = 1
+version:     1.3
+
+script_name: plugin/color_sample_pack.vim
+addon:       colors-sampler-pack
+description: colors sampler pack: top 100 color schemes on vim.sf.net
+script_url:  http://www.vim.org/scripts/script.php?script_id=625
+author:      Robert (MetaCosm)
+author_url:  http://www.vim.org/account/profile.php?user_id=2162
+email:       iam at robertmelton.com
+license:     see colors/*.vim for per color scheme licenses
+extras:	     colors/*.vim
+disabledby:  let loaded_color_sample_pack = 1
+version:     8.03
+
+script_name: macros/closetag.vim
+addon:       closetag
+description: functions and mappings to close open HTML/XML tags
+script_url:  http://vim.sourceforge.net/scripts/script.php?script_id=13
+author:      Steven Mueller
+author_url:  http://vim.sourceforge.net/account/profile.php?user_id=43
+email:       diffusor at ugcs.caltech.edu
+license:     no license
+disabledby:  let loaded_closetag = 1
+version:     0.9.1
+
+script_name: plugin/NERD_commenter.vim
+addon:       nerd-commenter
+description: easy commenting of code for many filetypes
+script_url:  http://www.vim.org/scripts/script.php?script_id=1218
+author:      Marty Grenfell
+author_url:  http://www.vim.org/account/profile.php?user_id=7006
+email:       martin_grenfell at msn.com
+license:     wtfpl [6], see below
+extras:      doc/NERD_commenter.txt
+disabledby:  let loaded_nerd_comments = 1
+version:     2.2.2
+
+script_name: plugin/project.vim
+addon:       project
+description: organize and navigate file projects (like IDE/buffer explorer)
+script_url:  http://www.vim.org/scripts/script.php?script_id=69
+author:      Aric Blumer
+author_url:  http://www.vim.org/account/profile.php?user_id=182
+email:       aricvim at charter.net
+license:     no license
+extras:      doc/project.txt
+disabledby:  let loaded_project = 1
+version:     1.4.1
+
+script_name: plugin/vimplate.vim
+addon:       vimplate
+description: template system based on template-toolkit
+script_url:  http://www.vim.org/scripts/script.php?script_id=1311
+author:      Urs Stotz
+author_url:  http://www.vim.org/account/profile.php?user_id=5415
+email:       stotz at gmx.ch
+license:     GNU GPL, see /usr/share/common-licenses/GPL-2
+extras:      doc/vimplate.txt
+disabledby:  let loaded_vimplate = 1
+version:     0.2.3
+
+script_name: dtd2vim
+description: create XML data file for Vim7 XML omni-completion from DTDs
+script_url:  http://www.vim.org/scripts/script.php?script_id=1462
+author:      Mikolaj Machowski
+author_url:  http://www.vim.org/account/profile.php?user_id=488
+email:       mikmach at wp.pl
+license:     GNU GPL, see /usr/share/common-licenses/GPL-2
+version:     2.0
+
+script_name: plugin/DoxygenToolkit.vim
+addon:       doxygen-toolkit
+description: simplify writing Doxygen documentation in C/C++, Python
+script_url:  http://www.vim.org/scripts/script.php?script_id=987
+author:      Mathias Lorente
+author_url:  http://www.vim.org/account/profile.php?user_id=5172
+email:       mathias_lorente at yahoo.fr
+license:     no license
+disabledby:  let loaded_DoxygenToolkit = 1
+version:     0.2.7
+
+script_name: autoload/omni/cpp/complete.vim
+addon:       omnicppcomplete
+description: C++ omni completion with a ctags database
+script_url:  http://vim.sourceforge.net/scripts/script.php?script_id=1520
+author:      Vissale Neang
+author_url:  http://vim.sourceforge.net/account/profile.php?user_id=9429
+email:       fromtonrouge at gmail.com
+license:     no license
+extras:      after/ftplugin/cpp.vim, after/ftplugin/c.vim, doc/omnicppcomplete.txt, autoload/omni/cpp/includes.vim, autoload/omni/cpp/tokenizer.vim, autoload/omni/cpp/maycomplete.vim, autoload/omni/cpp/namespaces.vim, autoload/omni/cpp/settings.vim, autoload/omni/cpp/utils.vim, autoload/omni/cpp/items.vim, autoload/omni/common/debug.vim, autoload/omni/common/utils.vim
+disabledby:  let loaded_omnicppcomplete = 1
+version:     0.41
+
+script_name: plugin/supertab.vim
+addon:       supertab
+description: use the tab key for all insert-mode completion
+script_url:  http://www.vim.org/scripts/script.php?script_id=1643
+author:      Eric Van Dewoestine
+author_url:  http://www.vim.org/account/profile.php?user_id=6016
+email:       ervandew at gmail.com
+license:     BSD, see /usr/share/common-licenses/BSD
+extras:      doc/supertab.txt
+disabledby:  let loaded_supertab = 1
+version:     1.0
+
+script_name: plugin/lbdbq.vim
+addon:       lbdbq
+description: expand names to email addresses via lbdb queries
+script_url:  http://www.vim.org/scripts/script.php?script_id=1757
+author:      Stefano Zacchiroli
+author_url:  http://www.vim.org/account/profile.php?user_id=6957
+email:       zack at bononia.it
+license:     GNU GPL, see /usr/share/common-licenses/GPL
+disabledby:  let loaded_lbdbq = 1
+version:     0.3
+
+script_name: plugin/debPlugin.vim
+addon:       debPlugin
+description: browse .deb files
+script_url:  http://www.vim.org/scripts/script.php?script_id=1970
+author:      Arno Renevier
+author_url:  http://www.vim.org/account/profile.php?user_id=12828
+email:       arenevier at fdn.fr
+license:     GNU GPL, see /usr/share/common-licenses/GPL-2
+extras:      autoload/deb.vim syntax/deb.vim
+disabledby:  let loaded_debPlugin = 1
+version:     v1.4
+
+script_name: indent/python.vim
+addon:       python-indent
+description: alternative python indent (a la PEP 8)
+script_url:  http://www.vim.org/scripts/script.php?script_id=974
+author:      Eric Mc Sween
+author_url:  http://www.vim.org/account/profile.php?user_id=2913
+email:       em at tomcom.de
+license:     no license
+disabledby:  let loaded_python_indent = 1
+version:     0.3
+
+script_name: plugin/surround.vim
+addon:       surround
+description: easily delete, change, and add 'surround' of text
+script_url:  http://www.vim.org/scripts/script.php?script_id=1697
+author:      Tim Pope
+author_url:  http://www.vim.org/account/profile.php?user_id=9012
+email:       vimNOSPAM at tpope.info
+license:     Vim's license [4], see below
+extras:      doc/surround.txt
+disabledby:  let loaded_surround = 1
+version:     1.34
+
+script_name: syntax/mkd.vim
+addon:       markdown-syntax
+description: markdown syntax file
+script_url:  http://www.vim.org/scripts/script.php?script_id=1242
+author:      Ben Williams
+author_url:  http://www.vim.org/account/profile.php?user_id=5655
+email:       benw at plasticboy.com
+license:     no license
+version:     9
+
+script_name: plugin/detectindent.vim
+addon:       detectindent
+description: detects the current indentation of files
+script_url:  http://www.vim.org/scripts/script.php?script_id=1171
+author:      Ciaran McCreesh
+author_url:  http://www.vim.org/account/profile.php?user_id=4078
+email:       ciaran.mccreesh at googlemail.com
+license:     Vim's license [4], see below
+version:     1.0
+
+script_name: plugin/snippetsEmu.vim
+addon:       snippetsEmu
+description: emulate TextMate's snippet expansion
+script_url:  http://www.vim.org/scripts/script.php?script_id=1318
+author:      Felix Ingram
+author_url:  http://www.vim.org/account/profile.php?user_id=8005
+email:       F.ingram.lists at gmail.com
+license:     GNU GPL, see /usr/share/common-licenses/GPL-2
+extras:      doc/snippets_emu.txt after/ftplugin/actionscript_snippets.vim after/ftplugin/aspvbs_snippets.vim after/ftplugin/c_snippets.vim after/ftplugin/css_snippets.vim after/ftplugin/django_model_snippets.vim after/ftplugin/django_template_snippets.vim after/ftplugin/f-script_snippets.vim after/ftplugin/haskell_snippets.vim after/ftplugin/html_snippets.vim after/ftplugin/java_snippets.vim after/ftplugin/javascript_snippets.vim after/ftplugin/latex_snippets.vim after/ftplugin/logo_snippets.vim after/ftplugin/markdown_snippets.vim after/ftplugin/movable_type_snippets.vim after/ftplugin/objc_snippets.vim after/ftplugin/ocaml_snippets.vim after/ftplugin/perl_snippets.vim after/ftplugin/php_snippets.vim after/ftplugin/phpdoc_snippets.vim after/ftplugin/propel_snippets.vim after/ftplugin/python_snippets.vim after/ftplugin/rails_snippets.vim after/ftplugin/ruby_snippets.vim after/ftplugin/sh_snippets.vim after/ftplugin/slate_snippets.vim after/ftplugin/smarty_snippets.vim after/ftplugin/symfony_snippets.vim after/ftplugin/tcl_snippets.vim after/ftplugin/template_toolkit_snippets.vim after/ftplugin/tex_snippets.vim after/ftplugin/xhtml_snippets.vim
+disabledby:  let loaded_snippet = 1
+version:     1.2.3
+
+script_name: plugin/securemodelines.vim
+addon:       secure-modelines
+description: secure, user-configurable modeline support
+script_url:  http://www.vim.org/scripts/script.php?script_id=1876
+author:      Ciaran McCreesh
+author_url:  http://www.vim.org/account/profile.php?user_id=4078
+email:       ciaran.mccreesh at googlemail.com
+license:     Vim's license [4], see below
+version:     20080424
+
+--
+
+Licenses referenced above
+
+license [1]
+  We grant permission to use, copy modify, distribute, and sell this software
+  for any purpose without fee, provided that the above copyright notice and
+  this text are not removed. We make no guarantee about the suitability of
+  this software for any purpose and we are not liable for any damages
+  resulting from its use. Further, we are under no obligation to maintain or
+  extend this software. It is provided on an "as is" basis without any
+  expressed or implied warranty.
+
+license [2]
+  Permission is hereby granted to use and distribute this code, with or
+  without modifications, provided that this copyright notice is copied with
+  it. Like anything else that's free, the program is provided *as is* and
+  comes with no warranty of any kind, either expressed or implied. In no
+  event will the copyright holder be liable for any damamges resulting from
+  the use of this software.
+
+license [3]
+  Redistribution and use, with or without modification, are permitted
+  provided that the following conditions are met:
+  1. Redistributions must retain the above copyright notice, this list of
+     conditions and the following disclaimer.
+  2. The name of the author may not be used to endorse or promote products
+     derived from this script without specific prior written permission.
+
+license [4]
+  I)  There are no restrictions on distributing unmodified copies of Vim except
+      that they must include this license text.  You can also distribute
+      unmodified parts of Vim, likewise unrestricted except that they must
+      include this license text.  You are also allowed to include executables
+      that you made from the unmodified Vim sources, plus your own usage
+      examples and Vim scripts.
+
+  II) It is allowed to distribute a modified (or extended) version of Vim,
+      including executables and/or source code, when the following four
+      conditions are met:
+      1) This license text must be included unmodified.
+      2) The modified Vim must be distributed in one of the following five ways:
+         a) If you make changes to Vim yourself, you must clearly describe in
+          the distribution how to contact you.  When the maintainer asks you
+          (in any way) for a copy of the modified Vim you distributed, you
+          must make your changes, including source code, available to the
+          maintainer without fee.  The maintainer reserves the right to
+          include your changes in the official version of Vim.  What the
+          maintainer will do with your changes and under what license they
+          will be distributed is negotiable.  If there has been no negotiation
+          then this license, or a later version, also applies to your changes.
+          The current maintainer is Bram Moolenaar <Bram@vim.org>.  If this
+          changes it will be announced in appropriate places (most likely
+          vim.sf.net, www.vim.org and/or comp.editors).  When it is completely
+          impossible to contact the maintainer, the obligation to send him
+          your changes ceases.  Once the maintainer has confirmed that he has
+          received your changes they will not have to be sent again.
+         b) If you have received a modified Vim that was distributed as
+          mentioned under a) you are allowed to further distribute it
+          unmodified, as mentioned at I).  If you make additional changes the
+          text under a) applies to those changes.
+         c) Provide all the changes, including source code, with every copy of
+          the modified Vim you distribute.  This may be done in the form of a
+          context diff.  You can choose what license to use for new code you
+          add.  The changes and their license must not restrict others from
+          making their own changes to the official version of Vim.
+         d) When you have a modified Vim which includes changes as mentioned
+          under c), you can distribute it without the source code for the
+          changes if the following three conditions are met:
+          - The license that applies to the changes permits you to distribute
+            the changes to the Vim maintainer without fee or restriction, and
+            permits the Vim maintainer to include the changes in the official
+            version of Vim without fee or restriction.
+          - You keep the changes for at least three years after last
+            distributing the corresponding modified Vim.  When the maintainer
+            or someone who you distributed the modified Vim to asks you (in
+            any way) for the changes within this period, you must make them
+            available to him.
+          - You clearly describe in the distribution how to contact you.  This
+            contact information must remain valid for at least three years
+            after last distributing the corresponding modified Vim, or as long
+            as possible.
+         e) When the GNU General Public License (GPL) applies to the changes,
+          you can distribute the modified Vim under the GNU GPL version 2 or
+          any later version.
+      3) A message must be added, at least in the output of the ":version"
+         command and in the intro screen, such that the user of the modified Vim
+         is able to see that it was modified.  When distributing as mentioned
+         under 2)e) adding the message is only required for as far as this does
+         not conflict with the license used for the changes.
+      4) The contact information as required under 2)a) and 2)d) must not be
+         removed or changed, except that the person himself can make
+         corrections.
+
+  III) If you distribute a modified version of Vim, you are encouraged to use
+       the Vim license for your changes and make them available to the
+       maintainer, including the source code.  The preferred way to do this is
+       by e-mail or by uploading the files to a server and e-mailing the URL.
+       If the number of changes is small (e.g., a modified Makefile) e-mailing a
+       context diff will do.  The e-mail address to be used is
+       <maintainer@vim.org>
+
+  IV)  It is not allowed to remove this license from the distribution of the Vim
+       sources, parts of it or from a modified version.  You may use this
+       license for previous Vim releases instead of the license that they came
+       with, at your option.
+
+license [5]
+  Redistribution and use in source and binary form are permitted provided
+  that the following conditions are met:
+
+  1. Redistribition of source code must retain the above copyright
+     notice, this list of conditions and the following disclaimer.
+
+  2. Redistributions in binary form must reproduce the above copyright
+     notice, this list of conditions and the following disclaimer in the
+     documentation and/or other materials provided with the distribution.
+
+  THIS SOFTWARE IS PROVIDED BY THE AUTHORS AND CONTRIBUTORS ``AS IS'' AND
+  ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHORS OR CONTRIBUTORS BE LIABLE
+  FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+  DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+  OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+  HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+  SUCH DAMAGE.
+
+license [6]
+ This program is free software. It comes without any warranty,
+ to the extent permitted by applicable law. You can redistribute
+ it and/or modify it under the terms of the Do What The Fuck You
+ Want To Public License, Version 2, as published by Sam Hocevar.
+ See http://sam.zoy.org/wtfpl/COPYING for more details
+
+license [7]
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to
+deal in the Software without restriction, including without limitation the
+rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+sell copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+IN THE SOFTWARE.

@@ -1,0 +1,15 @@
+## usagestring-dtd2vim.diff by Stefano Zacchiroli <zack@debian.org>
+
+Index: vim-scripts/bin/dtd2vim
+===================================================================
+--- vim-scripts.orig/bin/dtd2vim
++++ vim-scripts/bin/dtd2vim
+@@ -76,7 +76,7 @@
+ if ( $#ARGV < 0 ){
+ 	print "Script generating XML omni completion data file for Vim7\n";
+ 	print "USAGE:\n";
+-	print "  dtd2vim.pl <filename> [<dialectname>]\n";
++	print "  dtd2vim <filename> [<dialectname>]\n";
+ 	exit 1;
+ }
+ 

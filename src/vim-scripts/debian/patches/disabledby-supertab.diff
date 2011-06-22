@@ -1,0 +1,18 @@
+## disabledby-supertab.diff by Stefano Zacchiroli <zack@debian.org>
+
+Index: vim-scripts/plugin/supertab.vim
+===================================================================
+--- vim-scripts.orig/plugin/supertab.vim
++++ vim-scripts/plugin/supertab.vim
+@@ -59,6 +59,11 @@
+   finish
+ endif
+ 
++if exists("loaded_supertab")
++  finish
++endif
++let loaded_supertab=1
++
+ if exists('complType') " Integration with other completion functions.
+   finish
+ endif

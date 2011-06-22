@@ -1,0 +1,5 @@
+debian/tmp/usr/bin
+debian/tmp/usr/share/vim
+debian/tmp/usr/share/man/man1
+debian/vimrc /usr/share/vim/
+debian/helpztags /usr/bin/

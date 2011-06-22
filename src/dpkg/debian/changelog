@@ -1,3 +1,11 @@
+dpkg (40-2-0) unstable; urgency=low
+
+  * Add Upstream-Version support for source format 1.0. Closes: #5534
+  * Change build-dep on libncursesw5-dev to libncurses5-dev. Closes: #5521
+  * Remove CDDL code form 05-zones-support.diff. Closes: #5520
+
+ -- Andrew Stormont (astormont)  <andyjstormont@googlemail.com>  Mon, 13 Jun 2011 08:22:24 +0100
+
 dpkg (40-1-1) testing; urgency=low
 
   * Upload to testing.

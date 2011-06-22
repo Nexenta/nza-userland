@@ -65,7 +65,7 @@ diff -ur ./scripts/Dpkg/Control/Fields.pm.bak ./scripts/Dpkg/Control/Fields.pm
  # Register vendor specifics fields
 Only in scripts/Dpkg/Control: Fields.pm.orig
 Only in scripts/Dpkg/Control: Fields.pm.rej
-diff -ur ./scripts/Dpkg/Source/scripts/V2.pm.bak ./scripts/Dpkg/Source/Package/V2.pm
+diff -ur ./scripts/Dpkg/Source/Package/V2.pm.bak ./scripts/Dpkg/Source/Package/V2.pm
 --- ./scripts/Dpkg/Source/Package/V2.pm.bak	2011-06-11 18:01:24.199478339 +0100
 +++ ./scripts/Dpkg/Source/Package/V2.pm		2011-06-11 15:54:12.000000000 +0100
 @@ -102,6 +102,7 @@
@@ -179,3 +179,46 @@ diff -ur ./scripts/Dpkg/Source/Package.pm.bak ./scripts/Dpkg/Source/Package.pm
    "Package-Type",
    "Subarchitecture",
    "Kernel-Version",
+diff -ur ./scripts/Dpkg/Source/Package/V1.pm.bak ./scripts/Dpkg/Source/Package/V1.pm
+--- dpkg-1.15.8.10/scripts/Dpkg/Source/Package/V1.pm.bak	2011-01-30 19:37:44.000000000 +0000
++++ dpkg-1.15.8.10/scripts/Dpkg/Source/Package/V1.pm		2011-06-13 05:26:53.436937720 +0100
+@@ -85,15 +85,22 @@
+ 
+     my $dscdir = $self->{'basedir'};
+ 
++    my $upstream = $self->get_upstream();
++    my $upstreamrev = $self->get_upstream(1);
+     my $basename = $self->get_basename();
+     my $basenamerev = $self->get_basename(1);
+ 
+     # V1.0 only supports gzip compression
+     my ($tarfile, $difffile);
+     foreach my $file ($self->get_files()) {
+-	if ($file =~ /^(?:\Q$basename\E\.orig|\Q$basenamerev\E)\.tar\.gz$/) {
++	if ($upstream and $upstreamrev and $file =~ /^(?:\Q$upstream\E\.orig|\Q$upstreamrev\E)\.tar\.gz$/) {
+             error(_g("multiple tarfiles in v1.0 source package")) if $tarfile;
+             $tarfile = $file;
++	} elsif ($file =~ /^(?:\Q$basename\E\.orig|\Q$basenamerev\E)\.tar\.gz$/) {
++            error(_g("multiple tarfiles in v1.0 source package")) if $tarfile;
++            $tarfile = $file;
++	} elsif ($upstreamrev and !$difffile and $file =~ /^\Q$upstreamrev\E\.diff\.gz$/) {
++	    $difffile = $file;
+ 	} elsif ($file =~ /^\Q$basenamerev\E\.diff\.gz$/) {
+ 	    $difffile = $file;
+ 	} else {
+@@ -200,7 +207,14 @@
+             error(_g("packed orig `%s' exists but is not a plain file"), $origtargz);
+         }
+     } else {
+-        $origtargz = undef;
++        $origtargz = $self->get_upstream() . ".orig.tar.gz";
++        if (-e $origtargz) {
++            unless (-f $origtargz) {
++                error(_g("packed orig `%s' exists but is not a plain file"), $origtargz);
++            }
++        } else {
++        	$origtargz = undef;
++	}
+     }
+ 
+     if (@argv) {
