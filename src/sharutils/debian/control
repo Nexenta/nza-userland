@@ -5,6 +5,7 @@ Maintainer: Santiago Vila <sanvila@debian.org>
 Standards-Version: 3.8.4
 Build-Depends-Indep: texi2html (>= 1.82)
 Homepage: http://www.gnu.org/software/sharutils/
+Upstream-Version: 1:4.9-1nexenta1
 
 Package: sharutils
 Conflicts: shar, uuencode
