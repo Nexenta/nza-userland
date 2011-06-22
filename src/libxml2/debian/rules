@@ -14,7 +14,7 @@ else
 endif
 
 #TARGETS := main $(PYVERS) $(PYVERS:%=%-dbg)
-TARGETS := main python2.6
+TARGETS := main python2.6 python2.6-dbg
 TARGETS64 := main
 # $(PYVERS:%=%-dbg)
 
@@ -32,11 +32,6 @@ endif
 CONFIGURE_FLAGS := --with-history \
 		CC="gcc -Wl,--as-needed" CFLAGS="$(CFLAGS)" \
 		--with-threads
-
-#CONFIGURE_FLAGS := --with-history \
-#		CC="gcc -m32" CFLAGS="$(CFLAGS)" \
-#		--cache-file="$(CURDIR)/build/config.cache" \
-#		--with-threads
 
 CONFIGURE_FLAGS64 := --with-history \
 		CC="gcc -m64 -Wl,--as-needed" CFLAGS="$(CFLAGS)" \
@@ -67,9 +62,6 @@ configure64-%: patch-stamp
 configure-main: CONFIGURE_FLAGS += --without-python
 
 configure64-main: CONFIGURE_FLAGS64 += --without-python
-#configure64-main: 
-#	CONFIGURE_FLAGS64 += --with-python=/usr/bin/python2.6
-#	cp -pr build64/main/python build64/main/python2.6
 
 configure-python%: CONFIGURE_FLAGS += --with-python=/usr/bin/$*
 configure64-python%: CONFIGURE_FLAGS64 += --with-python=/usr/bin/$*
@@ -127,20 +119,20 @@ install-main:
 	mv debian/tmp/usr/lib/amd64/libxml2.so* debian/tmp/lib/amd64
 
 	# Properly install documentation in /usr/share/doc/libxml2-doc
-#	install -d debian/tmp/usr/share/doc/libxml2-doc/examples
-#	install -m 644 \
-#		doc/*.html \
-#		doc/*.gif \
-#		doc/*.png \
-#		doc/libxml2-api.xml debian/tmp/usr/share/doc/libxml2-doc
-#	install -m 644 \
-#		doc/examples/*.c \
-#		doc/examples/*.res \
-#		doc/examples/index.html \
-#		doc/examples/[tw]*.xml debian/tmp/usr/share/doc/libxml2-doc/examples
-#	cp -a \
-#		doc/html \
-#		doc/tutorial debian/tmp/usr/share/doc/libxml2-doc
+	install -d debian/tmp/usr/share/doc/libxml2-doc/examples
+	install -m 644 \
+		doc/*.html \
+		doc/*.gif \
+		doc/*.png \
+		doc/libxml2-api.xml debian/tmp/usr/share/doc/libxml2-doc
+	install -m 644 \
+		doc/examples/*.c \
+		doc/examples/*.res \
+		doc/examples/index.* \
+		doc/examples/[tw]*.xml debian/tmp/usr/share/doc/libxml2-doc/examples
+	cp -a \
+		doc/html \
+		doc/tutorial debian/tmp/usr/share/doc/libxml2-doc
 
 install-python%-dbg:
 	$(MAKE) -C build/main/python$*-dbg DESTDIR=$(CURDIR)/debian/tmp-dbg install-pythonLTLIBRARIES
@@ -148,9 +140,6 @@ install-python%-dbg:
 
 install-python%:
 	dh_auto_install --builddirectory=build/main/python$*
-
-install-udeb:
-#	dh_auto_install --builddirectory=build/udeb --destdir=debian/tmp-udeb
 
 override_dh_installdocs:
 	dh_installdocs -A AUTHORS TODO README NEWS
@@ -164,10 +153,8 @@ override_dh_installchangelogs:
 	dh_installchangelogs -Nlibxml2 -XChangeLog
 
 override_dh_install:
-#	dh_install -Npython-libxml2-dbg -Nlibxml2-udeb
 	dh_install -Npython-libxml2-dbg
 	dh_install -ppython-libxml2-dbg --sourcedir=debian/tmp-dbg
-#	dh_install -plibxml2-udeb --sourcedir=debian/tmp-udeb
 	sed "/dependency_libs/ s/'.*'/''/" debian/tmp/usr/lib/libxml2.la > debian/libxml2-dev/usr/lib/libxml2.la
 
 override_dh_strip:
@@ -180,8 +167,6 @@ override_dh_strip:
 			rm -f $(python)/libxml2mod.so; \
 			ln -s ../$(PYVER)/libxml2mod.so $(python)/libxml2mod.so; \
 		fi;)
-		
-override_dh_fixperms:
 
 override_dh_makeshlibs:
 	dh_makeshlibs -a $(if $(WITH_UDEB),--add-udeb=libxml2-udeb )-V 'libxml2 (>= 2.7.4)' -- -c4

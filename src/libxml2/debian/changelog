@@ -1,3 +1,14 @@
+libxml2 (40-0-0) unstable; urgency=low
+
+  * Use new version scheme
+  * debian/control:
+    + Bring back missing Depends for -dbg package
+    + Build libxml2-doc package (#5225)
+  * debian/rules:
+    + Fixed for -doc package
+
+ -- Kartik Mistry <kartik.mistry@nexenta.com>  Wed, 22 Jun 2011 11:17:02 +0530
+
 libxml2 (2.7.6-1nexenta1) unstable; urgency=low
 
   * Updated to NCP4
