@@ -1,0 +1,19 @@
+## disabledby-calendar.diff by Stefano Zacchiroli <zack@debian.org>
+
+Index: vim-scripts/plugin/calendar.vim
+===================================================================
+--- vim-scripts.orig/plugin/calendar.vim
++++ vim-scripts/plugin/calendar.vim
+@@ -315,10 +315,10 @@
+ "       :echo calendar_version
+ " GetLatestVimScripts: 52 1 :AutoInstall: calendar.vim
+ 
+-let g:calendar_version = "2.0"
+-if &compatible
++if &compatible || exists("g:calendar_version")
+   finish
+ endif
++let g:calendar_version = "2.0"
+ 
+ if !exists("g:calendar_action")
+   let g:calendar_action = "<SID>CalendarDiary"

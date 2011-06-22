@@ -1,0 +1,447 @@
+vim-scripts (40-0-0) unstable; urgency=low
+
+  * Packaged for NCP4
+  * Used new version scheme
+  * Used `3.0 (quilt)' source format
+
+ -- Igor Pashev <igor.pashev@nexenta.com>  Wed, 22 Jun 2011 21:25:30 +0400
+
+vim-scripts (20091012) UNRELEASED; urgency=low
+
+  * Rename "colors sampler pack" to "colors-sampler-pack" so it's easier to
+    manage with vim-addon-manager.  (Closes: #555621)
+  * Updated addons:
+    - supertab: Updated to 1.0
+    - DoxygenToolkit: Update to 0.2.7
+    - Color Sampler Pack: Update to 8.03
+    - vcscommand: Update to 1.99.35
+    - calendar: Update to 2.0
+    - bufexplorer: Update to 7.2.4
+    - gnupg: Update to 3026
+      + Fixes a bug when the user's shell is (t)csh and /bin/sh is dash.
+        (Closes: #552085)
+
+ -- James Vega <jamessan@debian.org>  Sun, 24 Jan 2010 17:10:16 -0500
+
+vim-scripts (20091011) unstable; urgency=low
+
+  * debian/control:
+    - Change Vcs-* fields to point at git repo.
+    - Bump Standards-Version to 3.8.3, no changes needed.
+  * Switch from dpatch to quilt.
+  * Remove git-commit script.  Vim is shipped with more complete scripts.
+    (Closes: #539380)
+  * addons upgrades:
+    - DoxygenToolkit: Updated to 0.2.5
+    - NERD_commenter: Updated to 2.2.2
+    - Color Sampler Pack: Updated to 7.01
+    - xmledit: Updated to 1.84
+    - calendar: Updated to 1.8
+    - cvsmenu: Updated to 1.150
+    - supertab: Updated to 0.60
+  * Add disabledby-doxygentoolkit.diff patch, which enables the commented out
+    plugin loaded check.
+  * Add xml-nodocs.diff patch, which disables xmledit's "automatic
+    documentation generation" functionality.  This doesn't make sense in a
+    Debian package and in fact breaks functionality.  (Closes: #536741)
+
+ -- James Vega <jamessan@debian.org>  Sun, 11 Oct 2009 11:08:35 -0400
+
+vim-scripts (20090211-1) unstable; urgency=low
+
+  [ Stefano Zacchiroli ]
+  * Removing myself from Uploaders list. So long.
+  * add patch lbdbq-detect-lbdbq to detect whether the lbdbq executable is
+    missing (Closes: #514796)
+  * Bump Standards-Version to 3.8.2 (no changes needed).
+  * debian/control: bump Standards-Versions to 3.8.2 (no changes needed)
+
+  [ James Vega ]
+  * addons upgrades:
+    - markdown-syntax, supertab
+  * remove patch mkd-preformatted, merged upstream.
+
+ -- Debian Vim Maintainers <pkg-vim-maintainers@lists.alioth.debian.org>  Tue, 21 Jul 2009 14:51:35 +0200
+
+vim-scripts (20081206-1) unstable; urgency=low
+
+  * Updated addons:
+    - supertab, NERD_commenter, xmledit (Closes: #503707), vcscommand, Align,
+      gnupg, bufexplorer
+  * Renamed addons:
+    - themes => color_sample_pack
+  * syntax/mkd.vim: Do not restrict preformatted text from starting with '*',
+    '-', or '+' characters.  (Closes: #499878)
+  * debian/control:
+    - Simply use vim instead of both vim and gvim for Recommends/Enhances
+      since all vim binary packages Provide vim.
+    - Add ${misc:Depends} to silence lintian
+
+ -- James Vega <jamessan@debian.org>  Sat, 06 Dec 2008 20:35:41 -0500
+
+vim-scripts (20080722-1) unstable; urgency=low
+
+  * New addons:
+    - securemodelines: Secure, user-configurable modeline whitelisting.
+  * Add disabledby-securemodelines patch, which provides a means for
+    blacklisting the securemodelines plugin.
+
+ -- James Vega <jamessan@debian.org>  Wed, 23 Jul 2008 20:41:29 -0400
+
+vim-scripts (20080705-1) unstable; urgency=low
+
+  [ martin f. krafft ]
+  * Updated addons:
+    - Markdown syntax
+
+  [ James Vega ]
+  * Updated addons:
+    - NERD Commenter, vcscommand, cvsmenu
+  * Added patches:
+    - closetag-sanity.dpatch: Ensure b:unaryTagsStack is defined when calling
+      GetCloseTag.  (Closes: #489239)
+    - lbdbq-query.dpatch: Ensure there are enough fields to build the results
+      list.  Thanks to Luca Invernizzi for the patch.  (Closes: #483898)
+  * debian/control: Bump standards-version to 3.8.0 -- no changes needed.
+  * Change versioning back to non-native since the package is a collection of
+    non-native upstream sources.  Use date of when the scripts were updated as
+    version.  (Closes: #479132)
+
+ -- James Vega <jamessan@debian.org>  Sat, 05 Jul 2008 09:50:50 -0400
+
+vim-scripts (7.1.7) unstable; urgency=low
+
+  * debian/control:
+    - Update Standards-Version to 3.7.3.0 (no changes needed).
+  * Updated addons:
+    - xmledit, surround, debPlugin, Markdown syntax, NERD Commenter, Enhanced
+      Commentify, vcscommand, calendar.
+  * New addons:
+    - DetectIndent: Automatically detect indent settings. (Closes: #471890)
+    - snippetsEmu: Emulate TextMate's snippet expansion. (Closes: #473744)
+  * Added patches:
+    - patches/disabledby-xml.dpatch:
+      + Do not let loaded_xml_ftplugin since that will prevent the ftplugin
+        from being run in other buffers.  Thanks to Marvin Renich for the
+        patch.  (Closes: #465330)
+    - patches/lbdbq-inputlist.dpatch:
+      + Correct the use of inputlist() and its results so the user is able to
+        press <Enter> to cancel, as advertised.  (Closes: #474599)
+  * Change doc-base section to Editors.
+
+ -- James Vega <jamessan@debian.org>  Sun, 20 Apr 2008 10:55:00 -0400
+
+vim-scripts (7.1.6) unstable; urgency=low
+
+  * Actually install indent/python.vim.  (Closes: #464088)
+  * Updated addons:
+    - surround
+    - vcscommand: Add support for git
+
+ -- James Vega <jamessan@debian.org>  Tue, 05 Feb 2008 17:01:08 -0500
+
+vim-scripts (7.1.5) unstable; urgency=low
+
+  * Updated addons:
+    - Bufexplorer (Closes: #455883), NERD Commenter, Supertab, Align, cvsmenu,
+      and gnupg.
+  * New addons:
+    - debPlugin: Explore .deb packages with Vim (Closes: #442865)
+    - python-indent: alternative python indent (a la PEP 8)
+    - surround: Delete, change, and add "surround" text (Closes: #462431)
+    - markdown-syntax: markdown syntax file (Closes: #426680)
+  * debian/control:
+    - Remove vim from Build-Depends-Indep since NERD Commenter now ships its
+      documentation.
+  * debian/rules:
+    - Stop generating NERD Commenter's documentation at build time.
+  * Add disabledby-pythonindent patch, which allows blacklisting the
+    python-indent script.
+  * Remove the old compatibility symlink from
+    /usr/share/doc/vim-scripts/examples to /usr/share/vim-scripts.
+
+ -- James Vega <jamessan@debian.org>  Fri, 25 Jan 2008 02:06:35 -0500
+
+vim-scripts (7.1.4) unstable; urgency=low
+
+  [ Stefano Zacchiroli ]
+  * add Homepage debian/control field
+
+  [ James Vega ]
+  * Updated addons:
+    - Supertab, Omni CPP Complete, NERD Commenter, VCS Command, Align,
+      Calendar, Taglist, Bufexplorer, git-commit (Closes: #452954).
+  * debian/control:
+    - Add myself to Uploaders.
+    - Add vim to Build-Depends-Indep in order to generate NERD_commenter's
+      documentation.
+    - Move xsltproc and docbook-xsl to Build-Depends-Indep.
+  * debian/rules:
+    - Cause NERD_commenter to generate its documentation at build time.
+      (Closes: #444287)
+
+ -- James Vega <jamessan@debian.org>  Mon, 26 Nov 2007 12:21:28 +0000
+
+vim-scripts (7.1.3) unstable; urgency=low
+
+  * addons adds/removals/upgrades
+    - upgraded: supertab (the version we used to ship was superseded by a new
+      plugin, also register it as an addon which was missing)
+      (Closes: #431148)
+    - upgraded: bufexplorer, which now use ":drop" only if a gui is available
+      (Closes: #433800)
+    - upgraded: nerd-commenter (and renamed the addon, since upstream changed
+      the .vim filename to NERD_commenter.vim). Added a debian/NEWS entry
+      about some changes in this new upstream version
+    - added: lbdbq (Closes: #430685) ... which now quotes expanded names to
+      avoid dangerous characters like commas (Closes: #431820)
+  * debian/patches/
+    - add disabledby-supertab, enables blacklisting of supertab
+    - add git-defaults, provides a default for g:git_diff_spawn_mode to avoid
+      git ftplugin complain, patch from Martin Krafft (Closes: #430105)
+
+ -- Stefano Zacchiroli <zack@debian.org>  Tue, 24 Jul 2007 09:45:10 +0200
+
+vim-scripts (7.1.2) unstable; urgency=low
+
+  * debian/control
+    - Recommends: vim-addon-manager as per debian vim policy
+
+ -- Stefano Zacchiroli <zack@debian.org>  Fri, 22 Jun 2007 09:22:17 +0100
+
+vim-scripts (7.1.1) unstable; urgency=low
+
+  [ Stefano Zacchiroli ]
+  * debian/control
+    - added XS-Vcs-Browser field
+  * addons adds/removals/upgrades(/other changes)
+    - upgraded: alternate, bufexplorer, gnupg (Closes: #416011), taglist,
+      calendar, cvsmenu, vcscommand (add support for svk), nerd-commenter
+    - added: doxygen-toolkit (Closes: #424652), omnicppcomplete
+      (Closes: #427879), git-commit (Closes: #429741)
+  * debian/patches
+    - added patch disabledby-omnicppcomplete, enable blacklisting of
+      omnicppcomplete
+    - ported disabledby-calendar to new plugin version
+
+  [ James Vega ]
+  * Fix debian/patches/disabledby-themes.dpatch to use endif instead of
+    fi[nish]. (Closes: #413468)
+
+ -- Stefano Zacchiroli <zack@debian.org>  Thu, 21 Jun 2007 23:03:25 +0100
+
+vim-scripts (7.0.5) unstable; urgency=low
+
+  * addons adds/removals/upgrades(/other changes)
+    - added binary dtd2vim to generate XML data file for Vim 7 DTD-based omni
+      completion
+    - added vimplate with its binaries and samples (closes: #398650)
+    - moved games from games/ to plugin/ so that they are automatically loaded
+      (if enabled); affected addon: tetris, sokoban
+    - moved sokoban levels to /usr/share/vim-scripts/sokoban-levels/
+  * debian/rules
+    - migrated to cdbs (consequence bugfix: "build" now depends on "patch" and
+      deps are chained from "binary-indep" down to "build", so that shipped
+      files are actually patched)
+    - moved symlink management to debian/links
+  * debian/control
+    - use abbreviated form ("XS-Vcs-Svn") for the svn field
+    - set maintainer to Debian VIM Maintainers and Uploaders to me and Michael
+    - added suggest on perlsgml, required by dtd2vim
+    - added suggest on libtemplate-perl, required by vimplate
+    - bumped debhelper dependency to > 5, changed debian/compat accordingly
+    - added build-deps on xsltproc and docbook-xsl (to compile manpages)
+    - added build-dep on cdbs (now required by debian/rules)
+  * debian/README.debian
+    - mention the requirement of perlsgml for using dtd2vim
+    - mention the requirement of libtemplate-perl for using vimplate
+    - rewritten usage notes pointing to vim-addon-manager
+  * debian/vim-scripts.status
+    - fixed typo on the vcscommand addon: vcscommit.vim resides under syntax/
+  * debian/patches/*
+    - added several debian/patches/disabledby-* patches which add support for
+      disabling (viz. avoiding double-loading) of shipped plugins. Added
+      corresponding "disabledby:" fields to debian/vim-script.status
+    - renamed patch 01_sokoban to sokoboan_path
+    - changed debian/patches/00list accordingly
+    - added patch usagestring-dtd2vim which fixes the usage string of dtd2vim
+      so that the .pl extension is not shown
+    - added patch vimplate_debian-path which sets the default vimplate binary
+      path to the Debian path for it
+  * debian/vim-scripts.pl
+    - added support for generating the "disabledby:" registry field
+  * html/index.html
+    - added a description of what the shipped html pages are and a stamp
+      marking when they have been downloaded
+  * debian/dtd2vim.xml
+    - added a manpage for the dtd2vim binary (and the companions
+      debian/manpages file)
+
+ -- Stefano Zacchiroli <zack@debian.org>  Wed,  7 Feb 2007 13:00:58 +0100
+
+vim-scripts (7.0.4) unstable; urgency=low
+
+  * removed Debian version from the package version, since this is a Debian
+    native package. The new versioning scheme is
+    VimMajor.VimMinor.VimScriptRevision. Right now that means 7.0.4 (fourth
+    revision of the vim-scripts package since the release of Vim 7.0)
+  * debian/vim-registry/
+    - added (automatically generated using vim-scripts.pl) vim registry
+      entries for the shipped addons
+  * addons adds/removals/upgrades (from now on, this "section" of the
+    changelog will reference "scripts" as "addon", according to the addon
+    registry entries in debian/vim-registry/):
+    - upgraded addons: alternate, bufexplorer, align, cvsmenu, vcscommand,
+      nerd-commenter, project
+    - removed scripts (removed in this release, so it has never had an addon
+      name): plugin/Chdir.vim (superseded by the 'autochdir' option)
+
+ -- Stefano Zacchiroli <zack@debian.org>  Fri, 19 Jan 2007 11:10:50 +0100
+
+vim-scripts (7-3) unstable; urgency=low
+
+  * ship macros/ and autoload/ directories, thanks to James Vega for the patch
+    (closes: #396785)
+
+ -- Stefano Zacchiroli <zack@debian.org>  Fri,  3 Nov 2006 12:07:01 +0100
+
+vim-scripts (7-2) unstable; urgency=low
+
+  * scripts adds/removals/upgrades:
+    - added scripts:
+      | plugin/project.vim
+  * debian/control
+    - added X-Vcs-Svn field pointing to our SVN repository
+
+ -- Stefano Zacchiroli <zack@debian.org>  Sat,  9 Sep 2006 15:12:52 +0200
+
+vim-scripts (7-1) unstable; urgency=low
+
+  * debian/control
+    - set debhelper and dpatch as Build-Depends instead of
+      Build-Depends-Indep (as required by policy)
+    - bumped standards version to 3.7.2 (no changes needed)
+  * debian/README.Debian-source
+    - added this file, containing a description of the usage of
+      debian/vim-scripts.pl
+  * scripts adds/removals/upgrades:
+    - added scripts:
+      | plugin/NERD_comments.vim
+    - upgraded scripts:
+      | plugin/{a,bufexplorer,taglist,calendar,AlignPlugin,cvsmenu}.vim
+      | plugin/{cvscommand,svncommand}.vim (now both integrated in a
+        single plugin: plugin/vcscommand.vim
+      | colors/relaxedgreen.vim (closes: #383198)
+    - removed scripts:
+      | plugin/svncommand.vim (now integrated into plugin/vcscommand.vim)
+      | plugin/vimspell.vim (no longer needed with vim7, which includes
+        built-in spell checking support) (closes: #307544)
+
+ -- Stefano Zacchiroli <zack@debian.org>  Tue, 22 Aug 2006 20:27:22 +0200
+
+vim-scripts (6-3) unstable; urgency=low
+
+  * scripts adds/removals/upgrades:
+    - upgraded scripts:
+      | plugin/vimspell.vim, fixes UTF8 related bug (closes: #340592)
+      | plugin/{bufexplorer.vim,taglist.vim,Align.vim,cvsmenu.vim,
+         cvscommand.vim}
+      | macros/closetag.vim
+    - added script plugin/SuperTab.vim (closes: #315936)
+  * debian/control
+    - bumped standards version
+
+ -- Stefano Zacchiroli <zack@debian.org>  Sun, 27 Nov 2005 23:17:03 +0100
+
+vim-scripts (6-2) unstable; urgency=low
+
+  * scripts adds/removals/upgrades:
+    - added {,back}scripts: closetag.vim (on a request via private mail)
+    - upgraded scripts: plugin/{cvsmenu.vim,cvscommand.vim}, ftplugin/xml.vim
+  * debian/
+    - moved vim-scripts status to debian/vim-scripts.status, debian/copyright
+      is now generated from it with debian/vim-scripts.pl > debian/copyright
+    - added the new "extras" field to vim-scripts.status so that all
+      information for automatic installation are available
+  * debian/control
+    Recommends "vim | gvim", added Enhances field
+  * debian/patches/01_sokoban.dpatch
+    - set sokoban level directory to that shipped by vim-scripts
+
+ -- Stefano Zacchiroli <zack@debian.org>  Sun, 22 May 2005 10:57:29 +0200
+
+vim-scripts (6-1) unstable; urgency=low
+
+  * major review of shipped scripts
+    - added scripts: plugin/{EnhancedCommentify.vim,calendar.vim,
+      gnupg.vim,minibufexpl.vim,svncommand.vim,themes.vim,utl.vim,
+      vimspell.vim,winmanager.vim}, ftplugin/xml.vim
+      (Closes: Bug#303587, Bug#303589, Bug#303592)
+    - removed scripts: closetag.vim
+    - upgraded to latest version on vim.org scripts: ftplugin/po.vim,
+      plugin/{Align.vim, a.vim, bufexplorer.vim, cvscommand.vim,
+      cvsmenu.vim, taglist.vim, whatdomain.vim}
+    - replaced scripts: colors/* (by themes.vim above), plugin/thlnk.vim
+      (by utl.vim)
+  * ship webpages of scripts in html/; registered them to doc-base
+  * debian/rules
+    - install scripts in /usr/share/vim-scripts/ instead of
+      /usr/share/doc/vim-scripts/examples/. Symlink provided for
+      backward compatibility
+    - invokes dh_compress
+    - moved debhelper compatibility level to debian/compat
+  * use dpatch, changed debian/{control,rules,patches} as needed
+  * debian/control
+    - bumped debhelper dependency and Stadards-Version
+    - added me as an uploader
+  * debian/vim-scripts.pl
+    - added perl scripts which eases download of vim.org script web
+      pages and upstream version checks
+  * debian/copyright
+    - rewritten including copyright/license information about all
+      shipped script
+  * improved debian/README.Debian
+  * removed "upstream" README, now vim-scripts is a native package and
+    script descriptions are available in html/
+
+ -- Stefano Zacchiroli <zack@debian.org>  Fri,  8 Apr 2005 17:39:18 +0200
+
+vim-scripts (5-1) unstable; urgency=low
+
+  * New upstream
+  * Includes cvscommand (closes: #171624)
+
+ -- Michael Piefel <piefel@debian.org>  Mon, 22 Dec 2003 15:39:25 +0100
+
+vim-scripts (4-1) unstable; urgency=low
+
+  * New upstream.
+  * Reformatted control (closes: #130964)
+
+ -- Michael Piefel <piefel@debian.org>  Sun, 17 Feb 2002 13:44:32 +0100
+
+vim-scripts (3-1) unstable; urgency=low
+
+  * New upstream.
+  * Reformatted README.Debian (closes: #114511)
+
+ -- Michael Piefel <piefel@debian.org>  Fri, 21 Dec 2001 17:18:18 +0100
+
+vim-scripts (2-1) unstable; urgency=low
+
+  * New upstream.
+  * Add a lot of vim variants to the recommends, although I'm not quite sure
+    why these should be necessary (closes: #109873, #110305, #111594). This
+    will soon be undone when the new vim 6 package makes its way into the
+    official distribution.
+
+ -- Michael Piefel <piefel@debian.org>  Wed, 19 Sep 2001 17:11:48 +0200
+
+vim-scripts (1-1) unstable; urgency=low
+
+  * Initial Release. (closes: #107915)
+  * Contains ftplugin/html.vim, ftplugin/po.vim, plugin/whatdomain.vim,
+    colors/emacs.vim
+
+ -- Michael Piefel <piefel@debian.org>  Tue, 21 Aug 2001 11:43:22 +0200
+

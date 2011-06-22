@@ -1,0 +1,18 @@
+## disabledby-securemodelines.diff by James Vega <jamessan@debian.org>
+
+Index: vim-scripts/plugin/securemodelines.vim
+===================================================================
+--- vim-scripts.orig/plugin/securemodelines.vim
++++ vim-scripts/plugin/securemodelines.vim
+@@ -11,6 +11,11 @@
+     finish
+ endif
+ 
++if exists("g:loaded_securemodelines")
++    finish
++endif
++let g:loaded_securemodelines = 1
++
+ if (! exists("g:secure_modelines_allowed_items"))
+     let g:secure_modelines_allowed_items = [
+                 \ "textwidth",   "tw",

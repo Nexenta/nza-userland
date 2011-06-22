@@ -1,0 +1,28 @@
+# Remove automatic documentation generation since it won't work when using the
+# packaged xml.vim (either lack of permissions because it's installed
+# system-wide or lack of permissions because the user's doc file will simply
+# be a symlink to /usr/share)
+
+Index: vim-scripts/ftplugin/xml.vim
+===================================================================
+--- vim-scripts.orig/ftplugin/xml.vim
++++ vim-scripts/ftplugin/xml.vim
+@@ -660,18 +660,6 @@
+ endfunction
+ " }}}2
+ 
+-let s:script_lines = readfile(expand("<sfile>"), "", 6)
+-let s:revision=
+-      \ substitute(s:script_lines[5], '^" Version:\s*\|\s*$', '', '')
+-"      \ substitute("$Revision: 83 $",'\$\S*: \([.0-9]\+\) \$','\1','')
+-silent! let s:install_status =
+-    \ s:XmlInstallDocumentation(expand('<sfile>:p'), s:revision)
+-if (s:install_status == 1)
+-    echom expand("<sfile>:t:r") . '-plugin v' . s:revision .
+-        \ ': Help-documentation installed.'
+-endif
+-
+-
+ " Mappings and Settings.                                             {{{1
+ " This makes the '%' jump between the start and end of a single tag.
+ setlocal matchpairs+=<:>
