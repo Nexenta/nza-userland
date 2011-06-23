@@ -27,19 +27,21 @@ else
 CROSS= --build $(DEB_BUILD_GNU_TYPE)
 endif
 
-DO_TEST=no
-ifeq (${DEB_BUILD_GNU_TYPE},${DEB_HOST_GNU_TYPE})
-ifneq (${DEB_BUILD_ARCH},m68k)
-ifneq (${DEB_BUILD_ARCH_OS},kfreebsd)
-ifneq (${DEB_BUILD_ARCH_OS},knetbsd)
-ifneq (${DEB_BUILD_ARCH_OS},hurd)
-ifneq (${DEB_BUILD_ARCH_OS},solaris)
-DO_TEST=yes
-endif
-endif
-endif
-endif
-endif
+ifneq (,$(filter nocheck,$(DEB_BUILD_OPTIONS)))
+    DO_TEST=no
+else
+    DO_TEST=no
+    ifeq (${DEB_BUILD_GNU_TYPE},${DEB_HOST_GNU_TYPE})
+    ifneq (${DEB_BUILD_ARCH},m68k)
+    ifneq (${DEB_BUILD_ARCH_OS},kfreebsd)
+    ifneq (${DEB_BUILD_ARCH_OS},knetbsd)
+    ifneq (${DEB_BUILD_ARCH_OS},hurd)
+        DO_TEST=yes
+    endif
+    endif
+    endif
+    endif
+    endif
 endif
 
 SHLIBS_VERSION=7.16.2-1
@@ -47,41 +49,55 @@ SHLIBS_VERSION=7.16.2-1
 # this will catch miss-linking. (e.g. undefined symbols)
 # LDFLAGS = -Wl,-z,defs
 
-#CONFIGURE_ARGS = $(CROSS) --prefix=/usr --mandir=/usr/share/man --disable-dependency-tracking --enable-ipv6 --with-lber-lib=lber --enable-manual --enable-versioned-symbols 
-CONFIGURE_ARGS = $(CROSS) --prefix=/usr --mandir=/usr/share/man --disable-dependency-tracking --enable-ipv6 --enable-manual --enable-versioned-symbols 
+CONFIGURE_ARGS = $(CROSS) --prefix=/usr --mandir=/usr/share/man --disable-dependency-tracking --enable-ipv6 --with-lber-lib=lber --enable-manual --enable-versioned-symbols --with-librtmp
 # this is still not ready
 # --enable-ares
 # this fixes the ldap warning of dpkg-shlibdebs, but we dont want that.
 # --with-ldap-lib=/usr/lib/libldap_r.so 
 
-#ifneq (${DEB_BUILD_ARCH_OS},hurd)
-#CONFIGURE_ARGS += --with-gssapi=/usr
-#endif
+ifneq (${DEB_BUILD_ARCH_OS},hurd,solaris)
+CONFIGURE_ARGS += --with-gssapi=/usr
+endif
+
+ifeq (${DEB_BUILD_ARCH_OS},solaris)
+CFLAGS += -I/usr/include/kerberosv5
+LDFLAGS += -lgss
+endif
 
 build: build-stamp
 
 #configure-stamp: DH_OPTIONS=
 configure-stamp:
 	dh_testdir
-	mkdir -p debian/build debian/build-gnutls
+	mkdir -p debian/build debian/build-gnutls debian/build-nss
 
 	-quilt push -a
 
-	# pop the last patch which must be gnutls
+	# pop the last patch (nss)
 	quilt pop
+
+	# pop the second last patch (gnutls)
+	quilt pop
+	# get the source without nss and gnutls patches
 	tar -cf - --exclude=debian --exclude=.pc . | tar -xf - -C debian/build
 
-	# push the last patch which must be gnutls
+	# push the second last patch which must be gnutls
 	quilt push
+	# get the source with gnutls patch applied
 	tar -cf - --exclude=debian --exclude=.pc . | tar -xf - -C debian/build-gnutls
 
-	for flavour in build build-gnutls; do \
+	# push the last patch which must be nss
+	quilt push
+	# get the source with nss patch applied
+	tar -cf - --exclude=debian --exclude=.pc . | tar -xf - -C debian/build-nss
+
+	for flavour in build build-gnutls build-nss; do \
 		(cd debian/$$flavour && ./buildconf) \
 	done
 
-	#cd debian/build && ./configure ${CONFIGURE_ARGS} --with-ca-path=/etc/ssl/certs
-	cd debian/build && ./configure ${CONFIGURE_ARGS} --with-ssl
+	cd debian/build && ./configure ${CONFIGURE_ARGS} --with-ca-path=/etc/ssl/certs
 	cd debian/build-gnutls && ./configure ${CONFIGURE_ARGS} --with-ca-bundle=/etc/ssl/certs/ca-certificates.crt --without-ssl --with-gnutls --without-libssh2
+	cd debian/build-nss && ./configure ${CONFIGURE_ARGS} --with-ca-bundle=/etc/ssl/certs/ca-certificates.crt --without-ssl --with-nss --without-libssh2
 	touch configure-stamp
 
 #build-stamp: DH_OPTIONS=
@@ -89,10 +105,12 @@ build-stamp: configure-stamp
 	dh_testdir
 	${MAKE} $(JOBS) -C debian/build
 	${MAKE} $(JOBS) -C debian/build-gnutls
+	${MAKE} $(JOBS) -C debian/build-nss
 
 ifeq (${DO_TEST},yes)
 	-${MAKE} -C debian/build test
 	-${MAKE} -C debian/build-gnutls test
+	-${MAKE} -C debian/build-nss test
 endif
 
 	touch build-stamp
@@ -101,7 +119,7 @@ clean:
 	dh_testdir
 	dh_testroot
 	-quilt pop -a
-	rm -rf build-stamp configure-stamp debian/build debian/build-gnutls debian/tmp-gnutls
+	rm -rf build-stamp configure-stamp debian/build debian/build-gnutls debian/build-nss debian/tmp-gnutls debian/tmp-nss
 	dh_clean debian/shlibs.local
 
 #install: DH_OPTIONS=
@@ -112,9 +130,12 @@ install: build-stamp
 	dh_installdirs
 	${MAKE} -C debian/build DESTDIR=$(shell pwd)/debian/tmp install
 	${MAKE} -C debian/build-gnutls DESTDIR=$(shell pwd)/debian/tmp-gnutls install
+	${MAKE} -C debian/build-nss DESTDIR=$(shell pwd)/debian/tmp-nss install
 	dh_install -plibcurl3-gnutls -plibcurl4-gnutls-dev --sourcedir=debian/tmp-gnutls
-	dh_install -Nlibcurl3-gnutls -Nlibcurl4-gnutls-dev --sourcedir=debian/tmp
+	dh_install -plibcurl3-nss -plibcurl4-nss-dev --sourcedir=debian/tmp-nss
+	dh_install -Nlibcurl3-gnutls -Nlibcurl4-gnutls-dev -Nlibcurl3-nss -Nlibcurl4-nss-dev --sourcedir=debian/tmp
 	install -m 644 debian/libcurl3-gnutls.lintian-overrides debian/libcurl3-gnutls/usr/share/lintian/overrides/libcurl3-gnutls
+	install -m 644 debian/libcurl3-nss.lintian-overrides debian/libcurl3-nss/usr/share/lintian/overrides/libcurl3-nss
 	install -m 644 debian/libcurl3.lintian-overrides debian/libcurl3/usr/share/lintian/overrides/libcurl3
 	for i in `find debian/lib* -name "lib*.la"`; do echo "removing dependency_libs from $$i"; sed -i -e "/dependency_libs/ s/'.*'/''/" $$i; done
 
@@ -129,7 +150,7 @@ binary-arch: build-stamp install
 	dh_testdir
 	dh_testroot
 	dh_installdocs
-	for package in libcurl4-openssl-dev libcurl4-gnutls-dev; do \
+	for package in libcurl4-openssl-dev libcurl4-gnutls-dev libcurl4-nss-dev; do \
 		install -m 644 docs/libcurl/libcurl.m4 debian/$${package}/usr/share/aclocal; \
 		for doc_ext in html pdf; do \
 			install -m 644 docs/*.$${doc_ext} debian/$${package}/usr/share/doc/$${package}/$${doc_ext}; \
@@ -140,15 +161,16 @@ binary-arch: build-stamp install
 	dh_installexamples
 	dh_installchangelogs CHANGES
 	dh_link
-	dh_strip -Nlibcurl3 -Nlibcurl3-gnutls
-	dh_strip -plibcurl3 -plibcurl3-gnutls --dbg-package=libcurl3-dbg
+	dh_strip -Nlibcurl3 -Nlibcurl3-gnutls -Nlibcurl3-nss
+	dh_strip -plibcurl3 -plibcurl3-gnutls -plibcurl3-nss --dbg-package=libcurl3-dbg
 	dh_compress
 	dh_fixperms
 	echo "libcurl 4 libcurl3 (>= $(SHLIBS_VERSION))" > debian/shlibs.local
 	dh_makeshlibs -plibcurl3 -V "libcurl3 (>= $(SHLIBS_VERSION))"
 	dh_makeshlibs -plibcurl3-gnutls -V "libcurl3-gnutls (>= $(SHLIBS_VERSION))"
+	dh_makeshlibs -plibcurl3-nss -V "libcurl3-nss (>= $(SHLIBS_VERSION))"
 	dh_installdeb
-#	dh_shlibdeps
+	dh_shlibdeps
 	dh_md5sums
 	dh_gencontrol
 	dh_builddeb

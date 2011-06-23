@@ -4,6 +4,7 @@ runtests_gdb
 art_http_scripting
 versioned
 
-# this must be the last
 curl_links_with_rt
 gnutls
+# this must be the last
+nss

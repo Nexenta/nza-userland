@@ -1,8 +1,8 @@
-Index: curl/configure.ac
-===================================================================
---- curl.orig/configure.ac	2010-02-09 13:50:08.000000000 +0100
-+++ curl/configure.ac	2010-02-09 13:50:10.000000000 +0100
-@@ -1896,6 +1896,52 @@
+diff --git a/configure.ac b/configure.ac
+index 4f5a86b..e746902 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -2186,6 +2186,52 @@ if test X"$OPT_LIBRTMP" != Xno; then
  fi
  
  dnl **********************************************************************
@@ -55,7 +55,7 @@ Index: curl/configure.ac
  dnl Check for the presence of IDN libraries and headers
  dnl **********************************************************************
  
-@@ -2578,6 +2624,7 @@
+@@ -2950,6 +2996,7 @@ AC_CONFIG_FILES([Makefile \
             include/curl/Makefile \
             src/Makefile \
             lib/Makefile \
@@ -63,27 +63,28 @@ Index: curl/configure.ac
             tests/Makefile \
             tests/data/Makefile \
             tests/server/Makefile \
-Index: curl/lib/Makefile.am
-===================================================================
---- curl.orig/lib/Makefile.am	2010-02-09 13:50:03.000000000 +0100
-+++ curl/lib/Makefile.am	2010-02-09 13:50:10.000000000 +0100
-@@ -113,7 +113,11 @@
- MIMPURE = -mimpure-text
- endif
+diff --git a/lib/Makefile.am b/lib/Makefile.am
+index 0c7497f..1eccb9e 100644
+--- a/lib/Makefile.am
++++ b/lib/Makefile.am
+@@ -118,7 +118,11 @@ endif
  
--libcurl_la_LDFLAGS = $(UNDEF) $(VERSIONINFO) $(MIMPURE) $(LIBCURL_LIBS)
+ LINKFLAGS=$(UNDEF) $(MIMPURE) $(LIBCURL_LIBS)
+ 
+-libcurl_la_LDFLAGS = $(LINKFLAGS) $(VERSIONINFO)
 +if VERSIONED_SYMBOLS
 +VERSIONED_SYMBOLS = -Wl,--version-script=libcurl.vers
 +endif
 +
-+libcurl_la_LDFLAGS = $(UNDEF) $(VERSIONINFO) $(MIMPURE) $(LIBCURL_LIBS) $(VERSIONED_SYMBOLS)
++libcurl_la_LDFLAGS = $(LINKFLAGS) $(VERSIONINFO) $(VERSIONED_SYMBOLS)
  
- # Makefile.inc provides the CSOURCES and HHEADERS defines
- include Makefile.inc
-Index: curl/lib/libcurl.vers.in
-===================================================================
---- /dev/null	1970-01-01 00:00:00.000000000 +0000
-+++ curl/lib/libcurl.vers.in	2010-02-09 13:50:10.000000000 +0100
+ # as unit testing will compile and link everything an extra time, we only
+ # do it if debug is enabled
+diff --git a/lib/libcurl.vers.in b/lib/libcurl.vers.in
+new file mode 100644
+index 0000000..43ae5de
+--- /dev/null
++++ b/lib/libcurl.vers.in
 @@ -0,0 +1,13 @@
 +HIDDEN
 +{

@@ -1,7 +1,7 @@
-Index: curl/docs/index.html
-===================================================================
---- curl.orig/docs/index.html	2009-11-08 23:07:05.000000000 +0100
-+++ curl/docs/index.html	2009-11-08 23:07:08.000000000 +0100
+diff --git a/docs/index.html b/docs/index.html
+index 4390378..f53411b 100644
+--- a/docs/index.html
++++ b/docs/index.html
 @@ -12,7 +12,7 @@
  <br><a href="curl.html">curl</A>
  
