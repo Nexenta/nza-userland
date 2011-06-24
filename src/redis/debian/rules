@@ -1,0 +1,53 @@
+#!/usr/bin/make -f
+
+BUILD = build-tree
+
+CFLAGS += -std=c99 -pedantic -Wall -O2 -W -D__EXTENSIONS__ -D_XPG6 \
+		  -I../deps/hiredis -I../deps/linenoise
+
+CC_32 = gcc -m32
+CC_64 = gcc -m64
+
+CFLAGS_32 =
+CFLAGS_64 =
+
+LIBS = -ldl -lnsl -lsocket -lm -lpthread
+
+LDFLAGS += #-Wl,--as-needed 
+LDFLAGS_32 = -L/usr/lib -R/usr/lib  $(LIBS)
+LDFLAGS_64 = -L/usr/lib/amd64 -R/usr/lib/amd64  $(LIBS)
+
+
+build install  binary binary-arch binary-indep clean:
+	dh $@
+
+# Nothing:
+override_dh_auto_configure:
+
+override_dh_auto_build: build64 build32
+
+# Redis has a Makefile build system.
+# Copy its source tree as is.
+build%:
+	mkdir -p $(BUILD)/$@
+	cp -a \
+		src deps \
+		Makefile \
+		$(BUILD)/$@/
+
+	$(MAKE) -C $(BUILD)/$@ \
+		CC="$(CC_$*)" \
+		LDFLAGS="$(LDFLAGS) $(LDFLAGS_$*)" \
+		CFLAGS="$(CFLAGS) $(CFLAGS_$*)"
+
+	touch $@
+
+override_dh_auto_install:
+
+override_dh_auto_test:
+	# Testsuite requires working TCP/IP and a non-interactive mode
+
+override_dh_auto_clean:
+	rm -rf $(BUILD)
+	rm -f build64 build32
+

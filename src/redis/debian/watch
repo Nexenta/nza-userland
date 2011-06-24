@@ -1,0 +1,2 @@
+version=3
+opts="uversionmangle=s/-beta/~beta/" http://code.google.com/p/redis/downloads/list http://redis.googlecode.com/files/redis-(.*).tar.gz

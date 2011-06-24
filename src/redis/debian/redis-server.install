@@ -1,0 +1,10 @@
+build-tree/build32/src/redis-server		/usr/bin/i86/
+build-tree/build64/src/redis-server		/usr/bin/amd64/
+
+build-tree/build32/src/redis-benchmark		/usr/bin/i86/
+build-tree/build64/src/redis-benchmark		/usr/bin/amd64/
+
+build-tree/build32/src/redis-cli		/usr/bin/i86/
+build-tree/build64/src/redis-cli		/usr/bin/amd64/
+
+debian/redis.conf	/etc/redis/
