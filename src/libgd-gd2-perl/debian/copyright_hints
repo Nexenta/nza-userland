@@ -1,0 +1,87 @@
+*No copyright* UNKNOWN []: ChangeLog
+	GD/Polyline.pm
+	GD/Simple.pm
+	MANIFEST
+	META.yml
+	Makefile.PL
+	README.QUICKDRAW
+	README.unix
+	bdf_scripts/README
+	bdf_scripts/bdf2gdfont.PLS
+	bdf_scripts/bdf2gdfont.pl
+	bdf_scripts/bdftogd
+	demos/brushes.pl
+	demos/copies.pl
+	demos/fills.pl
+	demos/font_list.png
+	demos/fonttest
+	demos/gd_example.cgi
+	demos/polys.pl
+	demos/shapes.pl
+	demos/tile.png
+	demos/transform.pl
+	demos/truetype_test
+	demos/ttf.pl
+	qd.pl
+	t/GD.t
+	t/Generic.ttf
+	t/Polyline.t
+	t/frog.jpg
+	t/frog.xpm
+	t/palettemap.png
+	t/test.out.1.png
+	t/test.out.10.gif
+	t/test.out.10.jpeg
+	t/test.out.10.png
+	t/test.out.10.png-2
+	t/test.out.10.png-3
+	t/test.out.2.gif
+	t/test.out.2.jpeg
+	t/test.out.2.png
+	t/test.out.2.png-1
+	t/test.out.3.gif
+	t/test.out.3.jpeg
+	t/test.out.3.png
+	t/test.out.3.png-1
+	t/test.out.4.gif
+	t/test.out.4.jpeg
+	t/test.out.4.png
+	t/test.out.4.png-1
+	t/test.out.4.png-2
+	t/test.out.5.gif
+	t/test.out.5.jpeg
+	t/test.out.5.png
+	t/test.out.5.png-1
+	t/test.out.6.gif
+	t/test.out.6.jpeg
+	t/test.out.6.png
+	t/test.out.6.png-1
+	t/test.out.7.gif
+	t/test.out.7.jpeg
+	t/test.out.7.png
+	t/test.out.7.png-1
+	t/test.out.8.gif
+	t/test.out.8.jpeg
+	t/test.out.8.png-1
+	t/test.out.8.png-2
+	t/test.out.8.png-3
+	t/test.out.8.png-4
+	t/test.out.8.png-5
+	t/test.out.9.jpeg
+	t/tile.gif
+	t/tile.jpeg
+	t/tile.png
+	typemap
+UNKNOWN [D<M6-qBTQ)E!7]: t/test.out.8.png
+	t/test.out.8.png-6
+*No copyright* GENERATED FILE []: demos/polyline.pl
+GENERATED FILE [1995-2005, Lincoln D. Stein. It is]: GD/Image.pm.PLS
+UNKNOWN [1995 - 1998, Lincoln D. Stein. See accompanying README file for]: GD.xs
+UNKNOWN [1995 Lincoln D. Stein. See accompanying README file for]: GD.pm
+UNKNOWN [1995-2004, Lincoln D. Stein. It is]: README
+UNKNOWN [1995-2005, Lincoln D. Stein. It is]: GD/Polygon.pm
+UNKNOWN [L+7hF;DflW[5<Elf[&~[8gWtYz74n\C7H9G7Ydl4!%DTqw?oI7xPFp`hFdE9=tr C|&@_$9W$d7de:il<ADl|a@}QeY*zYgWlD\\Px/|Pr,4HD\DqUDBy_mQTtx`@W\<dM,|iBfDwo9xL9J(c'\1\MIYs79*L12Pj<8U[ \b<(BGV!8thDVTwyT~Tz\l8%^w['%aA{Gl<\7T7=.pLp$$HRh<7T4,<TdH>G32(,00?rzzL P<"arE)Z2,^NA"B Of E%24*)ByvBdjGY@Ue{lZsx>A(R(l6Y<^Q;$E0@"SHx"T('8b.Sw#q6rc!Wcm*!1}~XNNxP+_K$I#v@"E1+?d'L0r!YGIBICLe/h+VBqU"cHe Xr' \' P!<L2+d[q=q@1vb1+G!7 B2Op||&d!N-O@:QCO!loL1F"|:*+c SDc7Z3S9dr"?04`| Ms=FA<IqI!.`p?lcC,F/P@?@<]: t/test.out.9.gif
+UNKNOWN [L+7hF;DflW[5<Elf[&~[8gWtYz74n\C7H9G7Ydl4!%DTqw?oI7xPFp`hFdE9=tr C|&@_$9W$d7de:il<ADl|a@}QeY*zYgWlD\\Px/|Pr,4HD\DqUDBy_mQTtx`@W\<dM,|iBfDwo9xL9J(c'\1\MIYs79*L12Pj<8U[ \b<(BGV!8thDVTwyT~Tz\l8%^w['%aA{Gl<\7T7=.pLp$$HRh<7T4,<TdH>G32(0IDATHmTXS>:U~$2hpgECb"nOhtZnSeb)86-s}}{~}<Zv}WIyV+y=|mV,lLaO / ^Vpsv@%"4V4pK`J%'0QrSX3I#RL&]: t/test.out.9.png-1
+UNKNOWN [L+7hF;DflW[5<Elf[&~[8gWtYz74n\C7H9G7Ydl4!%DTqw?oI7xPFp`hFdE9=tr C|&@_$9W$d7de:il<ADl|a@}QeY*zYgWlD\\Px/|Pr,4HD\DqUDBy_mQTtx`@W\<dM,|iBfDwo9xL9J(c'\1\MIYs79*L12Pj<8U[ \b<(BGV!8thDVTwyT~Tz\l8%^w['%aA{Gl<\7T7=.pLp$$HRh<7T4,<TdH>G32(0IDATmTXS>:U~$2hpgECb"nOhtZnSeb)86-s}}{~}<Zv}WIyV+y=|mV,lLaO / ^Vpsv@%"4V4pK`J%'0QrSX3I#RL&]: t/test.out.9.png-2
+UNKNOWN [L+7hF;DflW[5<Elf[&~[8gWtYz74n\C7H9G7Ydl4!%DTqw?oI7xPFp`hFdE9=tr C|&@_$9W$d7de:il<ADl|a@}QeY*zYgWlD\\Px/|Pr,4HD\DqUDBy_mQTtx`@W\<dM,|iBfDwo9xL9J(c'\1\MIYs79*L12Pj<8U[ \b<(BGV!8thDVTwyT~Tz\l8%^w['%aA{Gl<\7T7=.pLp$$HRh<7T4,<TdH>G32(0IDATxmTXS>:U~$2hpgECb"nOhtZnSeb)86-s}}{~}<Zv}WIyV+y=|mV,lLaO / ^Vpsv@%"4V4pK`J%'0QrSX3I#RL&]: t/test.out.9.png
+UNKNOWN [L+7hF;DflW[5<Elf[&~[8gWtYz74n\C7H9G7Ydl4!%DTqw?oI7xPFp`hFdE9=tr C|&@_$9W$d7de:il<ADl|a@}QeY*zYgWlD\\Px/|Pr,4HD\DqUDBy_mQTtx`@W\<dM,|iBfDwo9xL9J(c'\1\MIYs79*L12Pj<8U[ \b<(BGV!8thDVTwyT~Tz\l8%^w['%aA{Gl<\7T7=.pLp$$HRh<7T4,<TdH>G32(0IDATxmT\SvZ\O e/>J&-h> nVmKaVPKiYGYS~hKCGmC{?"^_/6{ch!J\Q]: t/test.out.10.png-1

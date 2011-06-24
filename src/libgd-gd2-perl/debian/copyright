@@ -1,0 +1,30 @@
+This is the perl module GD packaged for Debian GNU systems.
+
+Upstream source: http://www.cpan.org/modules/by-module/GD/
+
+Upstream author: Lincoln Stein <lstein@cshl.org>
+
+Copyright and licensing info, most files:
+
+The GD.pm interface is copyright 1995-2004, Lincoln D. Stein.  It is
+covered by the Perl "Artistic License", which allows for free usage
+and redistribution.  See the Artistic License in the Perl source
+package for details.
+
+
+
+Copyright and licensing info, bdf_scripts/bdf2gdfont.{pl,PLS}:
+
+Lincoln Stein <lstein@cshl.org>, heavily adapted from bdftogd from
+Jan Pazdziora <adelton@fi.muni.cz>.
+
+Copyright (c) 2004 Cold Spring Harbor Laboratory
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
+
+
+
+On Debian GNU/Linux systems, the complete text of the Artistic Licence
+(the license used for Perl itself) can be found in
+`/usr/share/common-licenses/Artistic'.
