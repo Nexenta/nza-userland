@@ -1,3 +1,10 @@
+debhelper (40-0-4) unstable; urgency=low
+
+  * dh_installsvc:
+    added options to specify SMF manifest and method
+
+ -- Igor Pashev <igor.pashev@nexenta.com>  Fri, 24 Jun 2011 16:41:47 +0400
+
 debhelper (40-0-3) unstable; urgency=low
 
   * dh_isaexec: do not remove/create isaexec hard links on upgrades
