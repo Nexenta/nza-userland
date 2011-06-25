@@ -73,7 +73,7 @@ Suggests: libcurl3-dbg
 Provides: libcurl-dev, libcurl-ssl-dev, libcurl3-openssl-dev, libcurl3-dev
 Replaces: libcurl-dev, libcurl-ssl-dev, libcurl3-openssl-dev, libcurl3-dev (<< 7.14.1-1)
 Conflicts: libcurl-dev
-Depends: libcurl3 (= ${binary:Version}), libc6-dev | libc-dev, libssl-dev, zlib1g-dev, libidn11-dev, libkrb5-dev, libssh2-1-dev, libldap2-dev, ${misc:Depends}
+Depends: libcurl3 (= ${binary:Version}), libc6-dev | libc-dev, libssl-dev, zlib1g-dev, libidn11-dev, libkrb5-dev | system-security-kerberos-5, libssh2-1-dev, libldap2-dev, ${misc:Depends}
 Description: Development files and documentation for libcurl (OpenSSL)
  These files (ie. includes, static library, manual pages) allow to
  build software which uses libcurl.
@@ -89,7 +89,7 @@ Suggests: libcurl3-dbg
 Provides: libcurl-dev, libcurl-ssl-dev, libcurl3-gnutls-dev, libcurl4-dev
 Replaces: libcurl-dev, libcurl-ssl-dev, libcurl3-gnutls-dev, libcurl4-dev
 Conflicts: libcurl-dev
-Depends: libcurl3-gnutls (= ${binary:Version}), libc6-dev | libc-dev, libgnutls-dev, zlib1g-dev, libidn11-dev, libkrb5-dev, libldap2-dev, ${misc:Depends}
+Depends: libcurl3-gnutls (= ${binary:Version}), libc6-dev | libc-dev, libgnutls-dev, zlib1g-dev, libidn11-dev, libkrb5-dev | system-security-kerberos-5, libldap2-dev, ${misc:Depends}
 Description: Development files and documentation for libcurl (GnuTLS)
  These files (ie. includes, static library, manual pages) allow to
  build software which uses libcurl.
@@ -105,7 +105,7 @@ Suggests: libcurl3-dbg
 Provides: libcurl-dev, libcurl-ssl-dev, libcurl3-nss-dev, libcurl4-dev
 Replaces: libcurl-dev, libcurl-ssl-dev, libcurl3-nss-dev, libcurl4-dev
 Conflicts: libcurl-dev
-Depends: libcurl3-nss (= ${binary:Version}), libc6-dev | libc-dev, libnss3-dev, zlib1g-dev, libidn11-dev, libkrb5-dev, libldap2-dev, ${misc:Depends}
+Depends: libcurl3-nss (= ${binary:Version}), libc6-dev | libc-dev, libnss3-dev, zlib1g-dev, libidn11-dev, libkrb5-dev | system-security-kerberos-5, libldap2-dev, ${misc:Depends}
 Description: Development files and documentation for libcurl (NSS)
  These files (ie. includes, static library, manual pages) allow to
  build software which uses libcurl.
