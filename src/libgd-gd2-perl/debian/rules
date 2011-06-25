@@ -32,7 +32,7 @@ common-binary-post-install-arch::
 
 # Manually clean leftovers
 clean::
-	rm -f GD.html pod2html*
+	rm -f GD.html pod2html* .config.cache GD/Image.pm *.tmp
 
 # Needed for by upstream build process
 CDBS_BUILD_DEPENDS := $(CDBS_BUILD_DEPENDS), libgd2-xpm-dev (>= 2.0.28), libjpeg62-dev, libpng12-dev, libz-dev, libfreetype6-dev, libxpm-dev, libx11-dev

@@ -8,6 +8,7 @@ Vcs-Svn: svn://svn.debian.org/svn/pkg-gd/libgd-gd2-perl/trunk
 Vcs-Browser: http://svn.debian.org/wsvn/pkg-gd/libgd-gd2-perl/trunk
 Standards-Version: 3.7.2
 Homepage: http://search.cpan.org/dist/GD/
+Upstream-Version: 1:2.39-2nexenta0
 
 Package: libgd-gd2-perl
 Architecture: any

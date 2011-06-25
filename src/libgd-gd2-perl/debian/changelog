@@ -1,3 +1,13 @@
+libgd-gd2-perl (1:40-0-0) unstable; urgency=low
+
+  * Rebuilt to remove sunwcslr, sunwlibm dependencies.
+  * Adopted new version scheme.
+  * Used source format 3.0 (quilt)
+  * debian/rules:
+    + Clean unneeded leftovers
+
+ -- Kartik Mistry <kartik.mistry@nexenta.com>  Fri, 24 Jun 2011 22:39:27 +0530
+
 libgd-gd2-perl (1:2.39-2nexenta0) unstable; urgency=low
 
   * Port to NCP 
