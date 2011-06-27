@@ -1,0 +1,28 @@
+#! /bin/sh -e
+
+# DP: SVN updates of the release25-maint branch (until 200x-xx-xx).
+
+dir=
+if [ $# -eq 3 -a "$2" = '-d' ]; then
+    pdir="-d $3"
+    dir="$3/"
+elif [ $# -ne 1 ]; then
+    echo >&2 "usage: `basename $0`: -patch|-unpatch [-d <srcdir>]"
+    exit 1
+fi
+case "$1" in
+    -patch)
+        patch $pdir -f --no-backup-if-mismatch -p0 < $0
+        ;;
+    -unpatch)
+        patch $pdir -f --no-backup-if-mismatch -R -p0 < $0
+        ;;
+    *)
+	echo >&2 "usage: `basename $0`: -patch|-unpatch [-d <srcdir>]"
+        exit 1
+esac
+exit 0
+
+# svn diff http://svn.python.org/projects/python/tags/r253 http://svn.python.org/projects/python/branches/release25-maint
+# diff -urN --exclude=.svn Python-2.5 svn
+

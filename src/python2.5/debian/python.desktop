@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=KonsoleApplication
+Name=Python 2.4 Interpreter
+Comment=Python
+Exec=/usr/bin/python2.4
+Icon=python2.4.xpm

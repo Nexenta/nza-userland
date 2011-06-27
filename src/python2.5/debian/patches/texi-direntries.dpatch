@@ -1,0 +1,37 @@
+#! /bin/sh -e
+
+# DP: Add direntries to texi files
+
+dir=
+if [ $# -eq 3 -a "$2" = '-d' ]; then
+    pdir="-d $3"
+    dir="$3/"
+elif [ $# -ne 1 ]; then
+    echo >&2 "usage: `basename $0`: -patch|-unpatch [-d <srcdir>]"
+    exit 1
+fi
+case "$1" in
+    -patch)
+        patch $pdir -f --no-backup-if-mismatch -p0 < $0
+        ;;
+    -unpatch)
+        patch $pdir -f --no-backup-if-mismatch -R -p0 < $0
+        ;;
+    *)
+	echo >&2 "usage: `basename $0`: -patch|-unpatch [-d <srcdir>]"
+        exit 1
+esac
+exit 0
+
+--- Doc/tools/mkinfo~	2003-09-29 17:26:08.000000000 +0000
++++ Doc/tools/mkinfo	2010-03-15 17:33:27.981843958 +0000
+@@ -58,6 +58,9 @@
+     -f kill-emacs
+ echo Done
+ 
++DOCID=$(basename $TEXINAME .texi)
++sed -i 's/^@top \(.*\)/@top \1 (v2.5)\n@dircategory Python\n@direntry\n* '$DOCID': ('$DOCID').\t\t\1 (v2.5)\n@end direntry\n/' \
++    $TEXINAME
+ 
+ # generate the .info files:
+ 

@@ -1,0 +1,54 @@
+#! /bin/sh -e
+
+# DP: Allow setting BASECFLAGS, OPT and EXTRA_LDFLAGS (like, CC, CXX, CPP,
+# DP: CFLAGS, CPPFLAGS, CCSHARED, LDSHARED) from the environment.
+
+dir=
+if [ $# -eq 3 -a "$2" = '-d' ]; then
+    pdir="-d $3"
+    dir="$3/"
+elif [ $# -ne 1 ]; then
+    echo >&2 "usage: `basename $0`: -patch|-unpatch [-d <srcdir>]"
+    exit 1
+fi
+case "$1" in
+    -patch)
+        patch $pdir -f --no-backup-if-mismatch -p0 < $0
+        ;;
+    -unpatch)
+        patch $pdir -f --no-backup-if-mismatch -R -p0 < $0
+        ;;
+    *)
+	echo >&2 "usage: `basename $0`: -patch|-unpatch [-d <srcdir>]"
+        exit 1
+esac
+exit 0
+
+--- Lib/distutils/sysconfig.py.orig	2008-04-27 10:39:39.000000000 +0200
++++ Lib/distutils/sysconfig.py	2008-04-27 11:09:50.000000000 +0200
+@@ -146,8 +146,8 @@
+     varies across Unices and is stored in Python's Makefile.
+     """
+     if compiler.compiler_type == "unix":
+-        (cc, cxx, opt, cflags, ccshared, ldshared, so_ext) = \
+-            get_config_vars('CC', 'CXX', 'OPT', 'CFLAGS',
++        (cc, cxx, opt, extra_cflags, basecflags, cflags, ccshared, ldshared, so_ext) = \
++            get_config_vars('CC', 'CXX', 'OPT', 'EXTRA_CFLAGS', 'BASECFLAGS', 'CFLAGS',
+                             'CCSHARED', 'LDSHARED', 'SO')
+ 
+         if os.environ.has_key('CC'):
+@@ -162,8 +162,13 @@
+             cpp = cc + " -E"           # not always
+         if os.environ.has_key('LDFLAGS'):
+             ldshared = ldshared + ' ' + os.environ['LDFLAGS']
++        if os.environ.has_key('BASECFLAGS'):
++            basecflags = os.environ['BASECFLAGS']
++        if os.environ.has_key('OPT'):
++            opt = os.environ['OPT']
++        cflags = ' '.join(str(x) for x in (basecflags, opt, extra_cflags) if x)
+         if os.environ.has_key('CFLAGS'):
+-            cflags = opt + ' ' + os.environ['CFLAGS']
++            cflags = ' '.join(str(x) for x in (basecflags, opt, os.environ['CFLAGS'], extra_cflags) if x)
+             ldshared = ldshared + ' ' + os.environ['CFLAGS']
+         if os.environ.has_key('CPPFLAGS'):
+             cpp = cpp + ' ' + os.environ['CPPFLAGS']

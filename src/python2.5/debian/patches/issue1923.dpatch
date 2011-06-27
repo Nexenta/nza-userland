@@ -1,0 +1,38 @@
+#! /bin/sh -e
+
+# DP: Issue #1923: Fixed the removal of meaningful spaces when PKG-INFO is
+# DP: generated in Distutils.
+
+dir=
+if [ $# -eq 3 -a "$2" = '-d' ]; then
+    pdir="-d $3"
+    dir="$3/"
+elif [ $# -ne 1 ]; then
+    echo >&2 "usage: `basename $0`: -patch|-unpatch [-d <srcdir>]"
+    exit 1
+fi
+case "$1" in
+    -patch)
+        patch $pdir -f --no-backup-if-mismatch -p0 < $0
+        ;;
+    -unpatch)
+        patch $pdir -f --no-backup-if-mismatch -R -p0 < $0
+        ;;
+    *)
+	echo >&2 "usage: `basename $0`: -patch|-unpatch [-d <srcdir>]"
+        exit 1
+esac
+exit 0
+
+Index: Lib/distutils/util.py
+===================================================================
+--- Lib/distutils/util.py	(Revision 76684)
++++ Lib/distutils/util.py	(Revision 76685)
+@@ -559,6 +559,5 @@
+     RFC-822 header, by ensuring there are 8 spaces space after each newline.
+     """
+     lines = string.split(header, '\n')
+-    lines = map(string.strip, lines)
+     header = string.join(lines, '\n' + 8*' ')
+     return header
+

@@ -1,0 +1,37 @@
+#! /bin/sh -e
+
+# DP: Enable the build of the fpectl module.
+
+dir=
+if [ $# -eq 3 -a "$2" = '-d' ]; then
+    pdir="-d $3"
+    dir="$3/"
+elif [ $# -ne 1 ]; then
+    echo >&2 "usage: `basename $0`: -patch|-unpatch [-d <srcdir>]"
+    exit 1
+fi
+case "$1" in
+    -patch)
+        patch $pdir -f --no-backup-if-mismatch -p0 < $0
+        ;;
+    -unpatch)
+        patch $pdir -f --no-backup-if-mismatch -R -p0 < $0
+        ;;
+    *)
+	echo >&2 "usage: `basename $0`: -patch|-unpatch [-d <srcdir>]"
+        exit 1
+esac
+exit 0
+
+--- setup.py~	2005-01-04 18:23:29.000000000 +0100
++++ setup.py	2005-01-04 18:52:18.000000000 +0100
+@@ -689,6 +689,9 @@
+                                    libraries = ['panel'] + curses_libs) )
+ 
+ 
++        #fpectl fpectlmodule.c ...
++        exts.append( Extension('fpectl', ['fpectlmodule.c']) )
++
+         # Andrew Kuchling's zlib module.  Note that some versions of zlib
+         # 1.1.3 have security problems.  See CERT Advisory CA-2002-07:
+         # http://www.cert.org/advisories/CA-2002-07.html

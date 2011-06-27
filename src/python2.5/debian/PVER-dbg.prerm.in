@@ -1,0 +1,10 @@
+#! /bin/sh -e
+
+PACKAGE=@PVER@-dbg
+
+rmdir /usr/local/lib/@PVER@/site-packages/debug 2>/dev/null && \
+        rmdir /usr/local/lib/@PVER@/site-packages 2>/dev/null || \
+        rmdir /usr/local/lib/@PVER@ 2>/dev/null || \
+        true
+
+#DEBHELPER#

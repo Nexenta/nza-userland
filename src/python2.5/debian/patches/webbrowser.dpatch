@@ -1,0 +1,50 @@
+#! /bin/sh -e
+
+# DP: Recognize other browsers: www-browser, x-www-browser, iceweasel, iceape.
+
+dir=
+if [ $# -eq 3 -a "$2" = '-d' ]; then
+    pdir="-d $3"
+    dir="$3/"
+elif [ $# -ne 1 ]; then
+    echo >&2 "usage: `basename $0`: -patch|-unpatch [-d <srcdir>]"
+    exit 1
+fi
+case "$1" in
+    -patch)
+        patch $pdir -f --no-backup-if-mismatch -p0 < $0
+        ;;
+    -unpatch)
+        patch $pdir -f --no-backup-if-mismatch -R -p0 < $0
+        ;;
+    *)
+	echo >&2 "usage: `basename $0`: -patch|-unpatch [-d <srcdir>]"
+        exit 1
+esac
+exit 0
+
+--- Lib/webbrowser.py~	2007-01-11 14:37:11.000000000 +0100
++++ Lib/webbrowser.py	2007-01-12 01:52:03.000000000 +0100
+@@ -443,8 +443,11 @@
+         if retncode is None and commd:
+             register("gnome", None, BackgroundBrowser(commd))
+ 
++    if _iscommand("x-www-browser"):
++        register("x-www-browser", None, BackgroundBrowser("x-www-browser"))
++
+     # First, the Mozilla/Netscape browsers
+-    for browser in ("mozilla-firefox", "firefox",
++    for browser in ("mozilla-firefox", "firefox", "iceweasel", "iceape",
+                     "mozilla-firebird", "firebird",
+                     "seamonkey", "mozilla", "netscape"):
+         if _iscommand(browser):
+@@ -483,6 +486,9 @@
+ 
+ # Also try console browsers
+ if os.environ.get("TERM"):
++    if _iscommand("www-browser"):
++        register("www-browser", None, GenericBrowser("www-browser"))
++
+     # The Links/elinks browsers <http://artax.karlin.mff.cuni.cz/~mikulas/links/>
+     if _iscommand("links"):
+         register("links", None, GenericBrowser("links"))
