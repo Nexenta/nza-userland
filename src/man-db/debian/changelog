@@ -1,26 +1,54 @@
-man-db (2.5.7-4nexenta11) unstable; urgency=low
+man-db (40-0-0) unstable; urgency=low
 
-  * Updated to NCP4
+  * Rebuilt from Squeeze source to cleanup direct upstream changes.
+  * Adopted new version scheme.
+  * debian/rules:
+    + Add more sections in manpath.config, Thanks to Yuri (Closes: #5557)
+  * debian/patches/getopt-fix.patch:
+    + Imported from NCP4 changes
+  * debian/patches/iconv-solaris.patch:
+    + Do not call manconv function on solaris (Closes: #5457)
 
- -- Igor Kozhukhov <igor.kozhukhov@nexenta.com>  Sun, 29 May 2011 1:13:32 +0300
+ -- Kartik Mistry <kartik.mistry@nexenta.com>  Fri, 24 Jun 2011 18:59:58 +0530
 
-man-db (2.5.7-4nexenta1) unstable; urgency=low
+man-db (2.5.7-8) unstable; urgency=low
 
-  * Updated to NCP4
+  * Avoid assertion if no path elements with manpaths were found (closes:
+    #608490).
 
- -- Igor Kozhukhov <igor.kozhukhov@nexenta.com>  Wed, 9 Feb 2011 22:57:32 +0300
+ -- Colin Watson <cjwatson@debian.org>  Mon, 03 Jan 2011 01:13:19 +0000
 
-man-db (2.5.7-4stormos1) unstable; urgency=low
+man-db (2.5.7-7) unstable; urgency=low
 
-  * Rebuild against zlib from StormOS.
+  * Backport from 2.5.8:
+    - Warnings about unrecognised locales are now suppressed if the
+      DPKG_RUNNING_VERSION environment variable is set (i.e. man-db is
+      running within a Debian package's maintainer script), since the system
+      locales are often out of sync with the C library in that context.
+      Thanks to the Debian Perl maintainers for the idea (closes: #605790).
 
- -- Andrew Stormont (astormont) <andyjstormont@googlemail.com>  Mon, 04 Oct 2010 01:09:55 +0200
+ -- Colin Watson <cjwatson@debian.org>  Sat, 04 Dec 2010 13:39:38 +0000
 
-man-db (2.5.7-4stormos0) unstable; urgency=low
+man-db (2.5.7-6) unstable; urgency=low
 
-  * Package for StormOS.
+  * Move po/fr.gmo aside during build so that it gets regenerated based on
+    translation-fr.patch, and build-depend directly on gettext for this
+    (closes: #598066).
 
- -- Andrew Stormont (astormont) <andyjstormont@googlemail.com>  Wed, 01 Sep 2010 20:17:09 +0200
+ -- Colin Watson <cjwatson@debian.org>  Thu, 14 Oct 2010 17:59:18 +0100
+
+man-db (2.5.7-5) unstable; urgency=low
+
+  * Use CFLAGS and LDFLAGS from hardening-includes, since man and mandb are
+    optionally setuid man.
+  * Update French translation from Translation Project (thanks, David
+    Prévot; closes: #598621).
+  * Make sure that man/po4a/po/* are kept unchanged during a
+    patch/build/clean cycle.
+  * Update French documentation translation from Translation Project
+    (thanks, David Prévot; closes: #598066).
+
+ -- Colin Watson <cjwatson@debian.org>  Tue, 05 Oct 2010 14:44:06 +0100
 
 man-db (2.5.7-4) unstable; urgency=low
 

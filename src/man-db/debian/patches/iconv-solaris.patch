@@ -1,0 +1,46 @@
+Description: Upstream changes introduced in version 2.5.7-8
+ This patch has been created by dpkg-source during the package build.
+ Here's the last changelog entry, hopefully it gives details on why
+ those changes were made:
+ .
+ man-db (2.5.7-8) unstable; urgency=low
+ .
+   * Avoid assertion if no path elements with manpaths were found (closes:
+     #608490).
+ .
+ The person named in the Author field signed this changelog entry.
+Author: Colin Watson <cjwatson@debian.org>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: http://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: <YYYY-MM-DD>
+
+--- man-db-2.5.7.orig/src/manconv.c
++++ man-db-2.5.7/src/manconv.c
+@@ -56,6 +56,8 @@
+ #include "encodings.h"
+ #include "manconv.h"
+ 
++#ifdef solaris
++
+ #ifdef HAVE_ICONV
+ 
+ static int try_iconv (pipeline *p, const char *try_from_code, const char *to,
+@@ -269,6 +271,8 @@ void manconv (pipeline *p, char * const
+ 	}
+ }
+ 
++#endif /* solaris */
++
+ #else /* !HAVE_ICONV */
+ 
+ /* If we don't have iconv, there isn't much we can do; just pass everything

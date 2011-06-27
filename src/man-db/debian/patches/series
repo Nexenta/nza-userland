@@ -1,6 +1,8 @@
 man-l-assertion.patch
 catman-iconv-order.patch
-debian-changes-2.5.7-4stormos0
-debian-changes-2.5.7-4stormos1
-debian-changes-2.5.7-4nexenta1
-debian-changes-2.5.7-4nexenta2
+translation-fr.patch
+translation-man-fr.patch
+locale-warnings.patch
+manpath-assertion.patch
+getopt-fix.patch
+iconv-solaris.patch
