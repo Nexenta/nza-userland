@@ -1,8 +1,9 @@
-libtool (1.5.22-0nexenta1) unstable; urgency=low
+libtool (40-0-0) unstable; urgency=low
 
-  * Updated to NCP4 from SFW
+  * Rebuilt from Squeeze source
+  * Adopted new version scheme
 
- -- Igor Kozhukhov <igor.kozhukhov@nexenta.com>  Tue, 29 Mar 2011 10:57:32 +0300
+ -- Kartik Mistry <kartik.mistry@nexenta.com>  Tue, 28 Jun 2011 10:34:12 +0530
 
 libtool (2.2.6b-2) unstable; urgency=low
 

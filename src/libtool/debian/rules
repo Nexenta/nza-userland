@@ -24,7 +24,7 @@ DEB_HOST_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
 DEB_BUILD_GNU_TYPE ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
 ifeq ($(DEB_BUILD_GNU_TYPE), $(DEB_HOST_GNU_TYPE))
 	confflags += --build=$(DEB_HOST_GNU_TYPE)
-#	make_check = yes
+	make_check = yes
 else
 	confflags += --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE)
 	make_check = no
@@ -46,110 +46,57 @@ patch-stamp:
 
 unpatch:
 	QUILT_PATCHES=debian/patches quilt pop -a || test $$? = 2
-	rm -rf patch-stamp debian/patched .pc
+	rm -rf patch-stamp debian/patched
 
 clean: clean-patched unpatch
 clean-patched:
 	dh_testdir
 	dh_testroot
-	rm -f build32-stamp config32-stamp build64-stamp config64-stamp
+	rm -f build-stamp config-stamp
 	dh_clean
 
-	-[ ! -f Makefile ] || $(MAKE) -k distclean
+	[ ! -f Makefile ] || $(MAKE) -k distclean
 	-rm config.log
 	-rm -f *demo*.tar.gz
 	find . -name 'stamp-*' | xargs rm -f
-#	find . -name 'configure' | xargs rm -f
-#	rm -f *.in */*.in
-#	rm -f *.m4 */*.m4
-#	find tests -name '*.in' -o -name '*.m4' | xargs rm -f
-#	find libltdl/config -type f -a ! -name '*.m4sh' -a ! -name 'mkstamp' | xargs rm -f
-#	rm -f libltdl/Makefile.am
-#	rm -f libltdl/m4/ltversion.m4
-#	rm -f COPYING INSTALL commit tests-failed
-#	rm -f doc/libtool.info-1 doc/libtool.info-2
-#	rm -f tests/testsuite
-#	rm -f doc/version.texi doc/notes.txt doc/stamp-vti doc/libtool.info
-	
-	rm -rf debian/64 debian/32
-
+	find . -name 'configure' | xargs rm -f
+	rm -f *.in */*.in
+	rm -f *.m4 */*.m4
+	find tests -name '*.in' -o -name '*.m4' | xargs rm -f
+	find libltdl/config -type f -a ! -name '*.m4sh' -a ! -name 'mkstamp' | xargs rm -f
+	rm -f libltdl/Makefile.am
+	rm -f libltdl/m4/ltversion.m4
+	rm -f COPYING INSTALL commit tests-failed
+	rm -f doc/libtool.info-1 doc/libtool.info-2
+	rm -f tests/testsuite
+	rm -f doc/version.texi doc/notes.txt doc/stamp-vti doc/libtool.info
 # Undo the version change if there is any.
-#	sed -i -e 's/@VERSION@.*/@VERSION@/' libtoolize.m4sh
-#	sed -i -e 's/^\(#.*@VERSION@\).*/\1/' libltdl/config/ltmain.m4sh
-#	sed -i -e 's/^VERSION.*/VERSION=@VERSION@/' libltdl/config/ltmain.m4sh
+	sed -i -e 's/@VERSION@.*/@VERSION@/' libtoolize.m4sh
+	sed -i -e 's/^\(#.*@VERSION@\).*/\1/' libltdl/config/ltmain.m4sh
+	sed -i -e 's/^VERSION.*/VERSION=@VERSION@/' libltdl/config/ltmain.m4sh
 
-
-config64: config64-stamp
-Makefile: config64
-config64-stamp: patch-stamp
+config: config-stamp
+Makefile: config-stamp
+config-stamp: patch-stamp
 	dh_testdir
-	dh_testroot
-#	-[ ! -f Makefile ] || $(MAKE) -k distclean
-
-#	sed -i -e 's/^#.*progname.*@VERSION@$$/& Debian-$(DEBIAN_REVISION)/' libtoolize.m4sh
-#	sed -i -e 's/^#.*progname.*@VERSION@$$/& Debian-$(DEBIAN_REVISION)/' libltdl/config/ltmain.m4sh
-#	sed -i -e 's/^VERSION.*/VERSION="@VERSION@ Debian-$(DEBIAN_REVISION)"/' libltdl/config/ltmain.m4sh
-#	./bootstrap
-	CONFIG_SHELL=/bin/bash /bin/bash \
-		./configure --prefix=/usr \
-		$(confflags) \
-		CC="gcc -m64" \
-		CPPFLAGS="-m64" \
-		CXX="g++ -m64" \
-		CXXFLAGS="-m64" \
-		FFLAGS="-m64 -w" \
-		CFLAGS="$(CFLAGS) -m64"
-
-	touch config64-stamp
-
-
-config32: config32-stamp
-#Makefile: config-stamp
-#Makefile: config64-stamp
-config32-stamp: patch-stamp
-	dh_testdir
-	dh_testroot
-	-[ ! -f Makefile ] || $(MAKE) -k distclean
 
 #	These go into the libtool-doc `examples' directory.
 #	Create them while we still have a clean source tree
-#	for demo in cdemo demo depdemo f77demo fcdemo mdemo mdemo2 pdemo tagdemo; do \
-#	    GZIP=--best tar zcf ./$$demo.tar.gz tests/$$demo; \
-#	done
+	for demo in cdemo demo depdemo f77demo fcdemo mdemo mdemo2 pdemo tagdemo; do \
+	    GZIP=--best tar zcf ./$$demo.tar.gz tests/$$demo; \
+	done
 
-#	sed -i -e 's/^#.*progname.*@VERSION@$$/& Debian-$(DEBIAN_REVISION)/' libtoolize.m4sh
-#	sed -i -e 's/^#.*progname.*@VERSION@$$/& Debian-$(DEBIAN_REVISION)/' libltdl/config/ltmain.m4sh
-#	sed -i -e 's/^VERSION.*/VERSION="@VERSION@ Debian-$(DEBIAN_REVISION)"/' libltdl/config/ltmain.m4sh
-#	./bootstrap
-	CONFIG_SHELL=/bin/bash /bin/bash ./configure \
-		--prefix=/usr \
-		$(confflags) \
-		CFLAGS="$(CFLAGS)"
+	sed -i -e 's/^#.*progname.*@VERSION@$$/& Debian-$(DEBIAN_REVISION)/' libtoolize.m4sh
+	sed -i -e 's/^#.*progname.*@VERSION@$$/& Debian-$(DEBIAN_REVISION)/' libltdl/config/ltmain.m4sh
+	sed -i -e 's/^VERSION.*/VERSION="@VERSION@ Debian-$(DEBIAN_REVISION)"/' libltdl/config/ltmain.m4sh
+	./bootstrap
+	CONFIG_SHELL=/bin/bash /bin/bash ./configure --prefix=/usr $(confflags) CFLAGS="$(CFLAGS)"
+	touch config-stamp
 
-	touch config32-stamp
 
-config: config64
-
-build64: build64-stamp
-build64-stamp: config64-stamp
+build: build-stamp
+build-stamp: config-stamp
 	dh_testdir
-	dh_testroot
-
-#	Fix some permissions
-	chmod a+x tests/mdemo2-*.test
-
-	$(MAKE)
-
-	rm -rf debian/64
-	$(MAKE) prefix=`pwd`/debian/64 install
-
-	touch build64-stamp
-
-
-build32: build32-stamp
-build32-stamp: config32-stamp
-	dh_testdir
-	dh_testroot
 
 #	Fix some permissions
 	chmod a+x tests/mdemo2-*.test
@@ -181,7 +128,7 @@ build32-stamp: config32-stamp
 	sed -e 's/^\(predep_objects\)=.*/\1=""/' \
 	    -e 's/^\(postdep_objects\)=.*/\1=""/' \
 	    -e 's/^\(compiler_lib_search_path\)=.*/\1=""/' \
-	    -e 's:^\(sys_lib_search_path_spec\)=.*:\1="/lib/ /lib/amd64/ /usr/lib/ /usr/lib/amd64/ /usr/gnu/lib/ /usr/gnu/lib/amd64/ /usr/X11R6/lib/ /usr/local/lib/":' \
+	    -e 's:^\(sys_lib_search_path_spec\)=.*:\1="/lib/ /usr/lib/ /usr/X11R6/lib/ /usr/local/lib/":' \
 	    -e 's/^\(archive_cmds=\".*\) -nostdlib /\1 /' \
 	    -e 's/^\(archive_expsym_cmds=\".*\) -nostdlib /\1 /' \
 	    < libtool > libtool.gcc-indep
@@ -202,28 +149,20 @@ ifeq ($(make_check), yes)
 	@test ! -f tests-failed
 endif
 
-	rm -rf debian/32
-	$(MAKE) prefix=`pwd`/debian/32 install
+	touch build-stamp
 
-	touch build32-stamp
-
-
-build: build64 build32
-
-#install: build
-#	dh_testdir
-#	dh_testroot
-
-# Build architecture-independent files here.
-binary-indep: build64 build32
-	dh_testdir -i
-	dh_testroot -i
-
+install: build
+	dh_testdir
+	dh_testroot
 	dh_prep
 	dh_installdirs
 
-	mkdir -p `pwd`/debian/tmp/usr
-	cp -ax `pwd`/debian/32/* `pwd`/debian/tmp/usr/
+	$(MAKE) prefix=`pwd`/debian/tmp/usr install
+
+# Build architecture-independent files here.
+binary-indep: build install
+	dh_testdir -i
+	dh_testroot -i
 
 	dh_movefiles -i
 
@@ -240,30 +179,18 @@ binary-indep: build64 build32
 	dh_builddeb -i
 
 # Build architecture-dependent files here.
-binary-arch: build64 build32
+binary-arch: build install
 	dh_testdir -a
 	dh_testroot -a
-
-	dh_prep
-	dh_installdirs
-
-	mkdir -p `pwd`/debian/tmp/usr
-	cp -ax `pwd`/debian/32/* `pwd`/debian/tmp/usr/
-	mkdir -p `pwd`/debian/tmp/usr/lib/amd64
-	cp -ax `pwd`/debian/64/lib/* `pwd`/debian/tmp/usr/lib/amd64
 
 	dh_movefiles -a -Nlibtool
 	dh_movefiles -plibtool
 
 	# Create symlinks to the one in autotools-dev
-#	rm -f debian/libtool/usr/share/libtool/config/config.guess
-	rm -f debian/libtool/usr/share/libtool/config.guess
-#	ln -s ../../misc/config.guess debian/libtool/usr/share/libtool/config
-	ln -s ../misc/config.guess debian/libtool/usr/share/libtool
-#	rm -f debian/libtool/usr/share/libtool/config/config.sub
-	rm -f debian/libtool/usr/share/libtool/config.sub
-#	ln -s ../../misc/config.sub debian/libtool/usr/share/libtool/config
-	ln -s ../misc/config.sub debian/libtool/usr/share/libtool
+	rm -f debian/libtool/usr/share/libtool/config/config.guess
+	ln -s ../../misc/config.guess debian/libtool/usr/share/libtool/config
+	rm -f debian/libtool/usr/share/libtool/config/config.sub
+	ln -s ../../misc/config.sub debian/libtool/usr/share/libtool/config
 
 	dh_installdocs -plibtool
 	dh_installdocs -plibltdl7
@@ -284,4 +211,4 @@ binary-arch: build64 build32
 	dh_builddeb -a
 
 binary: binary-indep binary-arch
-.PHONY: build64 build32 build config64 config32 config clean patch unpatch binary-indep binary-arch binary
+.PHONY: build clean config patch unpatch binary-indep binary-arch binary install
