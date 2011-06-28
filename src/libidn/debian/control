@@ -5,10 +5,11 @@ Maintainer: Anibal Monsalve Salazar <anibal@debian.org>
 Uploaders: Simon Josefsson <simon@josefsson.org>
 XS-Dm-Upload-Allowed: yes
 Standards-Version: 3.8.4
-Build-Depends: debhelper (>= 6), gcj-jdk [!arm !hppa !hurd-i386], fastjar [!arm !hppa !hurd-i386]
+Build-Depends: debhelper (>= 6), gcj-jdk [!arm !hppa !hurd-i386 !solaris-i386], fastjar [!arm !hppa !hurd-i386 !solaris-i386]
 Vcs-Cvs: :pserver:anonymous@cvs.savannah.gnu.org:/sources/libidn
 Vcs-Browser: http://cvs.savannah.gnu.org/viewvc/debian-libidn/?root=libidn
 Homepage: http://www.gnu.org/software/libidn/
+Upstream-Version: 1.18-1nexenta1
 
 Package: idn
 Section: misc

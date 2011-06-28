@@ -1,3 +1,13 @@
+libidn (40-0-0) unstable; urgency=low
+
+  * Rebuilt on NCP4 for libintl and libiconv transitions. (Closes: #5526, #5584)
+  * Adopted new version scheme.
+  * debian/control:
+    + Do not Build-Depends on gcj-jdk, fastjar for solaris-i386 as we have
+      disabled java package.
+
+ -- Kartik Mistry <kartik.mistry@nexenta.com>  Tue, 28 Jun 2011 19:51:58 +0530
+
 libidn (1.18-1nexenta1) unstable; urgency=low
 
   * NCP package
