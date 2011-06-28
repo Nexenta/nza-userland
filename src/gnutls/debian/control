@@ -9,6 +9,7 @@ Standards-Version: 3.8.4
 Vcs-Svn: svn://svn.debian.org/svn/pkg-gnutls/packages/gnutls26/trunk
 Vcs-Browser: http://svn.debian.org/wsvn/pkg-gnutls/packages/gnutls26/trunk/
 Homepage: http://www.gnutls.org/
+Upstream-Version: 2.8.6-1nexenta3
 
 Package: libgnutls-dev
 Priority: optional
