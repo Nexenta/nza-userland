@@ -4,6 +4,7 @@ Priority: optional
 Maintainer: Roland Stigge <stigge@antcom.de>
 Build-Depends-Indep: perl, perl-doc, netpbm (>= 2:9.20), texlive-base-bin, ghostscript-x [!solaris-i386], texlive-latex-recommended, texlive-latex-extra, patch
 Standards-Version: 3.9.1
+Upstream-Version: 2008-debian1-5nexenta0
 
 Package: latex2html
 Architecture: all
