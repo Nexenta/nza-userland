@@ -1,3 +1,12 @@
+python2.5 (40-0-0) unstable; urgency=low
+
+  * debian/control,{.in}:
+    + Build-Depends on libncurses5-dev instead of libncursesw5-dev
+  * Adopted new version scheme
+  * Use source format 3.0 (quilt)
+
+ -- Kartik Mistry <kartik.mistry@nexenta.com>  Mon, 27 Jun 2011 16:54:56 +0530
+
 python2.5 (2.5.5-11nexenta0) unstable; urgency=low
 
   * Package for NCP4.
