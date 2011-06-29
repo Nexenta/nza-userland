@@ -15,9 +15,11 @@ set -e
 
 case "$1" in
     configure)
+	apt-key update
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
+
     ;;
 
     *)

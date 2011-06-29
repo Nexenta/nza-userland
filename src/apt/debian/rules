@@ -14,6 +14,8 @@
 # create ../upload-<VER>, with all the files needed to be uploaded placed
 # in it.
 
+include /usr/share/quilt/quilt.make
+
 export DEB_HOST_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
 export DEB_BUILD_GNU_TYPE ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
 
@@ -36,6 +38,8 @@ else
     export CXXFLAGS = -O2 -g -Wall
   endif
 endif
+
+export CPPFLAGS = -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64
 
 # Default rule
 build:
@@ -107,12 +111,12 @@ build-doc: build/build-doc-stamp
 build/environment.mak: build/configure-stamp
 	@true
 
-configure: configure.in
+configure: patch configure.in
 build/configure-stamp: configure
 	dh_testdir
 	-mkdir build
 	cp COPYING debian/copyright
-	cd build && CXXFLAGS="$(CXXFLAGS)" ../configure $(confflags) --prefix=/usr
+	cd build && CXXFLAGS="$(CXXFLAGS)" ../configure $(confflags)
 	touch $@
 
 build/build-stamp: build/configure-stamp
@@ -122,10 +126,11 @@ build/build-stamp: build/configure-stamp
 
 build/build-doc-stamp: build/configure-stamp
 	# Add here commands to compile the package.
-#	$(MAKE) doc
+	$(MAKE) doc
 	touch $@
 
-clean:
+clean:	unpatch
+	
 	dh_testdir
 
 	[ ! -f Makefile ] || $(MAKE) clean distclean
@@ -144,13 +149,13 @@ libapt-pkg-doc: build-doc debian/shlibs.local
 #
 # libapt-pkg-doc install
 #
-#	dh_installdocs -p$@ $(BLD)/docs/design* \
-#			    $(BLD)/docs/dpkg-tech* \
-#			    $(BLD)/docs/files* \
-#			    $(BLD)/docs/method* \
-#			    doc/libapt-pkg2_to_3.txt \
-#			    doc/style.txt \
-#			    $(BLD)/doc/doxygen/html
+	dh_installdocs -p$@ $(BLD)/docs/design* \
+			    $(BLD)/docs/dpkg-tech* \
+			    $(BLD)/docs/files* \
+			    $(BLD)/docs/method* \
+			    doc/libapt-pkg2_to_3.txt \
+			    doc/style.txt \
+			    $(BLD)/doc/doxygen/html
 	dh_installexamples -p$@
 
 	dh_installchangelogs -p$@
@@ -162,19 +167,18 @@ libapt-pkg-doc: build-doc debian/shlibs.local
 	dh_md5sums -p$@
 	dh_builddeb -p$@
 
-#apt-doc: build-doc
-apt-doc: 
+apt-doc: build-doc
 	dh_testdir -p$@
 	dh_testroot -p$@
 	dh_clean -p$@ -k
 #
 # apt-doc install
 #
-#	# Copy the guides
-#	dh_installdocs -p$@ $(BLD)/docs/guide*.text \
-#			    $(BLD)/docs/guide*.html \
-#			    $(BLD)/docs/offline*.text \
-#			    $(BLD)/docs/offline*.html
+	# Copy the guides
+	dh_installdocs -p$@ $(BLD)/docs/guide*.text \
+			    $(BLD)/docs/guide*.html \
+			    $(BLD)/docs/offline*.text \
+			    $(BLD)/docs/offline*.html
 	dh_installchangelogs -p$@
 	dh_compress -p$@
 	dh_fixperms -p$@
@@ -189,8 +193,7 @@ apt-doc:
 
 binary-arch: apt libapt-pkg-dev apt-utils apt-transport-https
 apt_MANPAGES = apt-cache apt-cdrom apt-clone apt-config apt-get apt-key apt-mark apt-secure apt apt.conf apt_preferences sources.list
-#apt: build build-doc debian/shlibs.local
-apt: build debian/shlibs.local
+apt: build build-doc debian/shlibs.local
 	dh_testdir -p$@
 	dh_testroot -p$@
 	dh_clean -p$@ -k
@@ -198,6 +201,8 @@ apt: build debian/shlibs.local
 #
 # apt install
 #
+	install -o root -g bin -m 755 debian/apt-clone debian/$@/usr/bin/
+
 	cp $(BLD)/bin/apt-* debian/$@/usr/bin/
 
 	# Remove the bits that are in apt-utils
@@ -235,7 +240,7 @@ apt: build debian/shlibs.local
 	dh_installexamples -p$@ $(BLD)/docs/examples/*
 	dh_installman -p$@ $(wildcard $(patsubst %,doc/%.[158],$(apt_MANPAGES)) $(patsubst %,doc/*/%.*.[158],$(apt_MANPAGES)))
 	dh_installcron -p$@
-#	dh_installdocs -p$@
+	dh_installdocs -p$@
 	dh_installchangelogs -p$@
 	dh_strip -p$@
 	dh_compress -p$@
@@ -260,7 +265,7 @@ libapt-pkg-dev: build debian/shlibs.local
 #	ln -s libapt-pkg.so.$(LIBAPTPKG_MAJOR) debian/libapt-pkg-dev/usr/lib/libapt-pkg.so
 	cp $(BLD)/include/apt-pkg/*.h debian/libapt-pkg-dev/usr/include/apt-pkg/
 
-#	dh_installdocs -p$@
+	dh_installdocs -p$@
 
 	dh_installchangelogs -p$@
 	dh_strip -p$@
@@ -283,7 +288,7 @@ apt-utils: build debian/shlibs.local
 	find $(BLD)/bin/ -type l -name "libapt-inst*.so.*" -exec cp -a "{}" debian/$@/usr/lib/ \;
 
 	cp $(addprefix $(BLD)/bin/apt-,$(APT_UTILS)) debian/$@/usr/bin/
-#	dh_installdocs -p$@
+	dh_installdocs -p$@
 	dh_installexamples -p$@
 
 	# Install the man pages..
@@ -310,7 +315,7 @@ apt-transport-https: build debian/shlibs.local libapt-pkg-dev
 	mkdir --parents debian/$@/usr/lib/apt/methods
 	cp $(BLD)/bin/methods/https debian/$@/usr/lib/apt/methods
 
-#	dh_installdocs -p$@ debian/apt-transport-https.README
+	dh_installdocs -p$@ debian/apt-transport-https.README
 	dh_installexamples -p$@
 
 	# Install the man pages..
