@@ -1,10 +1,16 @@
+dpkg (40-0-4) unstable; urgency=low
+
+  * Rebase on dpkg version 1.15.8.11
+
+ -- Andrew Stormont (astormont) <andyjstormont@googlemail.com>  Wed, 29 Jun 2011 16:06:06 +0100
+
 dpkg (40-0-3) unstable; urgency=low
 
   * Add Upstream-Version support for source format 1.0. Closes: #5534
   * Change build-dep on libncursesw5-dev to libncurses5-dev. Closes: #5521
   * Remove CDDL code form 05-zones-support.diff. Closes: #5520
 
- -- Andrew Stormont (astormont)  <andyjstormont@googlemail.com>  Mon, 13 Jun 2011 08:22:24 +0100
+ -- Andrew Stormont (astormont) <andyjstormont@googlemail.com>  Mon, 13 Jun 2011 08:22:24 +0100
 
 dpkg (40-0-2) testing; urgency=low
 
