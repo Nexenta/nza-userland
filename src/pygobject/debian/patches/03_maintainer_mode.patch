@@ -1,0 +1,10 @@
+--- pygobject-2.15.1.orig/configure.ac	2008-08-11 17:28:58.000000000 +0200
++++ pygobject-2.15.1/configure.ac	2008-08-11 17:28:59.000000000 +0200
+@@ -27,6 +27,7 @@
+ AM_CONFIG_HEADER(config.h)
+ 
+ AM_INIT_AUTOMAKE
++AM_MAINTAINER_MODE
+ 
+ dnl put the ACLOCAL flags in the makefile
+ ACLOCAL="$ACLOCAL $ACLOCAL_FLAGS"
