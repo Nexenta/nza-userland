@@ -1,3 +1,9 @@
+pkg-config (40-0-0) unstable; urgency=low
+
+  * Rebuilt to use new versioning scheme
+
+ -- Alexander Eremin <a.eremin@nexenta.com>  Fri, 01 Jul 2011 18:12:10 +0300
+
 pkg-config (0.25-1.1nexenta3) unstable; urgency=low
 
   * Rebuilt to use libintl.so.1 (instead of libintl.so.8)

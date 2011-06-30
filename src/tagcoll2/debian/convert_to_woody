@@ -1,0 +1,17 @@
+#!/bin/sh
+
+echo "Converting changelog..."
+mv changelog changelog.tmp
+sed 's/ unstable;/ stable;/' < changelog.tmp > changelog
+rm changelog.tmp
+
+#echo "Converting .install files..."
+#mmv \*.install \#1.files
+
+#echo "Converting rules..."
+#mv rules rules.tmp
+#sed 's/dh_install --list-missing --sourcedir=debian\/tmp/dh_movefiles/' < rules.tmp > rules
+#rm rules.tmp
+#chmod +x rules
+
+echo "Done."
