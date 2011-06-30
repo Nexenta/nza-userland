@@ -3,7 +3,9 @@ Section: utils
 Priority: required
 Maintainer: Andreas Metzler <ametzler@debian.org>
 Uploaders: Chuan-kai Lin <cklin@debian.org>
-Build-Depends: texinfo, debhelper (>= 7.0.15), dpatch, autotools-dev, dejagnu
+Build-Depends: texinfo, debhelper (>= 7.0.15), dpatch, autotools-dev,
+ dejagnu, system-library-math-header-math [solaris-i386]
+Upstream-Version: 4.4.2-1
 Standards-Version: 3.8.1
 Vcs-Svn: svn://svn.debian.org/svn/pkg-findutils/trunk
 Vcs-Browser: http://svn.debian.org/wsvn/pkg-findutils/trunk/

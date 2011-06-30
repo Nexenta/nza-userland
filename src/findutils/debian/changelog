@@ -1,3 +1,9 @@
+findutils (40-0-0) unstable; urgency=low
+
+  * Move to new version scheme.
+
+ -- Andrew Stormont (astormont) <andyjstormont@googlemail.com>  Thu, 30 Jun 2011 06:39:40 +0100
+
 findutils (4.4.2-1nexenta3) unstable; urgency=low
 
   * debian/rules:
