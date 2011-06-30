@@ -1,3 +1,10 @@
+adduser (40-0-0) unstable; urgency=low
+
+  * Move to new version scheme.
+  * Rebase on version 3.113.
+
+ -- Andrew Stormont (astormont) <andyjstormont@googlemail.com>  Thu, 30 Jun 2011 12:39:39 +0100
+
 adduser (3.112nexenta2) unstable; urgency=low
 
   * Added patch to fix usermod issue. Thanks to Sham for patch

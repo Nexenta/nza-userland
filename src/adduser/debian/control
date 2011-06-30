@@ -4,6 +4,7 @@ Priority: important
 Maintainer: Debian Adduser Developers <adduser-devel@lists.alioth.debian.org>
 Uploaders: Joerg Hoh <joerg@joerghoh.de>, Roland Bauerschmidt <rb@debian.org>, Stephen Gran <sgran@debian.org>
 Standards-Version: 3.8.3
+Upstream-Version: 3.113
 Build-Depends: po-debconf
 Build-Depends-Indep: gettext (>= 0.13), po4a (>= 0.31)
 Vcs-Svn: svn://svn.debian.org/adduser/
