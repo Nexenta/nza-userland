@@ -25,6 +25,7 @@ XS-Python-Version: >= 2.5
 Standards-Version: 3.9.0
 Vcs-Svn: svn://svn.debian.org/svn/pkg-gnome/desktop/unstable/pygobject
 Vcs-Browser: http://svn.debian.org/viewsvn/pkg-gnome/desktop/unstable/pygobject
+Upstream-Version: 2.21.4+is.2.21.3-1
 
 Package: python-gobject
 Architecture: any

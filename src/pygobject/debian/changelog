@@ -1,3 +1,10 @@
+pygobject (40-0-0) unstable; urgency=low
+
+  * Rebuild to include python2.5 modules (Closes: #5487).
+  * Used new version scheme.
+
+ -- Kartik Mistry <kartik.mistry@nexenta.com>  Thu, 30 Jun 2011 08:39:31 +0530
+
 pygobject (2.21.4+is.2.21.3-1nexenta2) unstable; urgency=low
 
   * Rebuild on new environment.

@@ -5,10 +5,6 @@ include /usr/share/gnome-pkg-tools/1/rules/uploaders.mk
 
 CFLAGS += -Wall -g -O$(if $(findstring noopt,$(DEB_BUILD_OPTIONS)),0,2)
 
-CC = gcc
-CXX = g++
-CPPFLAGS = -I/usr/lib/libffi-3.0.9/include
-
 DEB_HOST_GNU_TYPE   ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
 DEB_BUILD_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
 
@@ -28,8 +24,6 @@ endif
 PYDEFAULTVER := $(shell pyversions --default --version)
 PYVERS := $(shell pyversions --requested --version debian/control)
 PYVERS := $(filter-out $(PYDEFAULTVER), $(PYVERS)) $(PYDEFAULTVER)
-PYDEFAULTVER := 2.6
-PYVERS := 2.6
 
 # how to call quilt
 PATCH_DIR := $(CURDIR)/debian/patches
@@ -65,11 +59,7 @@ build-%/configure-stamp: patch-stamp
 	dh_testdir
 	mkdir -p build-$*
 	cd build-$* && \
-		PYTHON=/usr/bin/python$* \
-		CC="$(CC)" \
-		CXX="$(CXX)" \
-		CPPFLAGS="$(CPPFLAGS)" \
-		CFLAGS="$(CFLAGS)" \
+		PYTHON=/usr/bin/python$* CFLAGS="$(CFLAGS)" \
 			$(CURDIR)/configure $(configure_flags)
 	touch $@
 
@@ -91,8 +81,7 @@ dbg-build-%/build-stamp: dbg-build-%/configure-stamp
 	PYTHON=/usr/bin/python$*-dbg $(MAKE) -C dbg-build-$*
 	touch $@
 
-#build: $(PYVERS:%=build-%/build-stamp) $(PYVERS:%=dbg-build-%/build-stamp)
-build: $(PYVERS:%=build-%/build-stamp)
+build: $(PYVERS:%=build-%/build-stamp) $(PYVERS:%=dbg-build-%/build-stamp)
 
 build-%/check-stamp: build-%/build-stamp
 	-PYTHON=/usr/bin/python$* $(MAKE) -C build-$* check
@@ -102,8 +91,7 @@ dbg-build-%/check-stamp: dbg-build-%/build-stamp
 	-PYTHON=/usr/bin/python$*-dbg $(MAKE) -C dbg-build-$* check
 	touch $@
 
-#check: $(PYVERS:%=build-%/check-stamp) $(PYVERS:%=dbg-build-%/check-stamp)
-check: $(PYVERS:%=build-%/check-stamp)
+check: $(PYVERS:%=build-%/check-stamp) $(PYVERS:%=dbg-build-%/check-stamp)
 
 build-%/install-stamp: build-%/build-stamp
 	dh_testdir
@@ -119,26 +107,24 @@ dbg-build-%/install-stamp: dbg-build-%/build-stamp
 	find debian/python-gobject-dbg -type d -empty -delete
 	touch $@
 
-#install-stamp: $(PYVERS:%=build-%/build-stamp) $(PYVERS:%=dbg-build-%/build-stamp)
-install-stamp: $(PYVERS:%=build-%/build-stamp)
+install-stamp: $(PYVERS:%=build-%/build-stamp) $(PYVERS:%=dbg-build-%/build-stamp)
 	dh_testdir
 	dh_testroot
 	# remove the install stamps to force a reinstall (since dh_clean is
 	# removing the package dirs)
 	dh_prep
 	rm -f $(PYVERS:%=build-%/install-stamp) $(PYVERS:%=dbg-build-%/install-stamp)
-#	$(MAKE) -f debian/rules $(PYVERS:%=build-%/install-stamp) $(PYVERS:%=dbg-build-%/install-stamp)
-	$(MAKE) -f debian/rules $(PYVERS:%=build-%/install-stamp)
+	$(MAKE) -f debian/rules $(PYVERS:%=build-%/install-stamp) $(PYVERS:%=dbg-build-%/install-stamp)
 	find debian/python-gobject-dev -name \*.la -delete
 	mkdir -p debian/python-gobject/usr/lib
 	mv debian/python-gobject-dev/usr/lib/pymodules debian/python-gobject/usr/lib/
 	mv debian/python-gobject-dev/usr/lib/libpyglib-*so.* \
 	   debian/python-gobject/usr/lib
 	rm -rf debian/python-gobject-dev/usr/lib/python*
-#	for i in $$(find debian/python-gobject-dbg -name '*.so' -path 'debian/python-gobject-dbg/usr/lib/python*/site-packages/*'); do \
-#		b=$$(basename $$i .so); \
-#		mv $$i $$(dirname $$i)/$${b}_d.so; \
-#	done
+	for i in $$(find debian/python-gobject-dbg -name '*.so' -path 'debian/python-gobject-dbg/usr/lib/python*/site-packages/*'); do \
+		b=$$(basename $$i .so); \
+		mv $$i $$(dirname $$i)/$${b}_d.so; \
+	done
 
 	touch $@
 
