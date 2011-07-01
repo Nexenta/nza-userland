@@ -1,0 +1,57 @@
+Description: Provide fmemopen fix
+Author: Alexander Eremin alexander.eremin@nexenta.com, Kartik Mistry <kartik.mistry@nexenta.com>
+Origin: Nexenta
+Last-Update: 2011-06-30
+
+--- tagcoll2-40-0.orig/tagcoll/TextFormat-tut.cc
++++ tagcoll2-40-0/tagcoll/TextFormat-tut.cc
+@@ -34,6 +34,19 @@ struct tagcoll_textformat_shar {
+ };
+ TESTGRP(tagcoll_textformat);
+ 
++FILE *fmemopen (void *buf, size_t size, const char *opentype)
++{
++    FILE *f;
++    if (opentype[0] != 'r')
++        return NULL;
++
++    f = tmpfile();
++    fwrite(buf, 1, size, f);
++    rewind(f);
++
++    return f;
++}
++
+ template<> template<>
+ void to::test<1>()
+ {
+--- tagcoll2-40-0.orig/tagcoll/tagexpr/TagexprParser.cc
++++ tagcoll2-40-0/tagcoll/tagexpr/TagexprParser.cc
+@@ -26,11 +26,27 @@
+ #include <wibble/exception.h>
+ #include <stdio.h>
+ #include <errno.h>
++#include <strings.h>
+ 
+ // using namespace std;
+ using namespace wibble;
+ using namespace tagcoll;
+ 
++FILE *fmemopen (void *buf, size_t size, const char *opentype)
++{
++   FILE *f;
++
++   if (opentype[0] != 'r')
++       return NULL;
++
++   f = tmpfile();
++   fwrite(buf, 1, size, f);
++   rewind(f);
++
++   return f;
++}
++
++
+ TagexprParser* TagexprParser::_instance = 0;
+ 
+ TagexprParser* TagexprParser::instance()
