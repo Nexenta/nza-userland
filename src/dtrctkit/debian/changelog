@@ -1,3 +1,14 @@
+dtrctkit (40-0-0) unstable; urgency=low
+
+  * Rebuilt for NCP4
+  * Updated to use new version scheme, source format 3.0 (quilt)
+  * debian/control:
+    + Do not Depends on cpp-4.2. Depends on cpp package instead (Closes: #5640).
+    + Added Homepage field.
+    + Updated long description.
+
+ -- Kartik Mistry <kartik.mistry@nexenta.com>  Mon, 04 Jul 2011 10:03:32 +0530
+
 dtrctkit (0.99-4) hardy; urgency=low
 
   * Initial port to ncp4 
