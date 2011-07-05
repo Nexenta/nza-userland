@@ -1,7 +1,12 @@
-usr/include/ncursesw
-usr/lib/libncursesw.so
-usr/lib/libticw.so
-usr/lib/libformw.so
-usr/lib/libmenuw.so
-usr/lib/libpanelw.so
-obj-wide-static/lib/*.a usr/lib
+usr/gnu/include/ncursesw            usr/include
+obj-wide/lib/libformw.so            usr/gnu/lib
+obj-wide/lib/libmenuw.so            usr/gnu/lib
+obj-wide/lib/libncursesw.so         usr/gnu/lib
+obj-wide/lib/libpanelw.so           usr/gnu/lib
+obj-wide/lib/libticw.so             usr/gnu/lib
+obj-wide-static/lib/libformw.a      usr/gnu/lib
+obj-wide-static/lib/libmenuw.a      usr/gnu/lib
+obj-wide-static/lib/libncurses++w.a usr/gnu/lib
+obj-wide-static/lib/libncursesw.a   usr/gnu/lib
+obj-wide-static/lib/libpanelw.a     usr/gnu/lib
+obj-wide-static/lib/libticw.a       usr/gnu/lib

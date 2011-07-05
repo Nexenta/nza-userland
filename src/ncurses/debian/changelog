@@ -1,3 +1,16 @@
+ncurses (40-0-0) unstable; urgency=low
+
+  * Move to new version scheme.
+  * Enable support for ticlib and c++.
+  * Install binaries to /usr/gnu and symlinks in /usr.
+  * Add missing shared library info to packages.
+  * Bring back missing packages:
+    + Enable building of debugging libraries
+    + Move wchar libraries back to the wchar packages
+    + Put symlinks in non-wchar packages for compat
+
+ -- Andrew Stormont (astormont) <andyjstormont@googlemail.com>  Tue, 05 Jul 2011 00:55:56 +0100
+
 ncurses (5.7+20100313-5nexenta1) unstable; urgency=low
 
   * Port to NCP4 with patches from SFW

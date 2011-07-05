@@ -1,5 +1,5 @@
-usr/lib/libncursesw.so.*  lib
-usr/lib/libticw.so.*      lib
-usr/lib/libpanelw.so.*
-usr/lib/libformw.so.*
-usr/lib/libmenuw.so.*
+obj-wide/lib/libncursesw.so.* usr/gnu/lib
+obj-wide/lib/libticw.so.*     usr/gnu/lib
+obj-wide/lib/libpanelw.so.*   usr/gnu/lib
+obj-wide/lib/libformw.so.*    usr/gnu/lib
+obj-wide/lib/libmenuw.so.*    usr/gnu/lib

@@ -4,10 +4,11 @@ Priority: required
 Maintainer: Craig Small <csmall@debian.org>
 Uploaders: Sven Joachim <svenjoac@gmx.de>
 Build-Depends: debhelper (>= 7),
-               g++-multilib [amd64 i386 kfreebsd-amd64 powerpc ppc64 s390 sparc],
-               libgpm-dev [!hurd-i386 !kfreebsd-amd64 !kfreebsd-i386],
+               g++-multilib [amd64 i386 kfreebsd-amd64 powerpc ppc64 s390 sparc solaris-i386],
+               libgpm-dev [!hurd-i386 !kfreebsd-amd64 !kfreebsd-i386 !solaris-i386],
                quilt (>= 0.40)
 Standards-Version: 3.8.4
+Upstream-Version: 5.7+20100313-5
 Vcs-Browser: http://git.debian.org/?p=collab-maint/ncurses.git
 Vcs-Git: git://git.debian.org/collab-maint/ncurses.git
 Homepage: http://invisible-island.net/ncurses/
@@ -15,8 +16,8 @@ Homepage: http://invisible-island.net/ncurses/
 Package: libncurses5
 Architecture: any
 Priority: required
-Depends: ${shlibs:Depends}, ${misc:Depends}
-Recommends: libgpm2 [!hurd-i386 !kfreebsd-amd64 !kfreebsd-i386]
+Depends: ${shlibs:Depends}, ${misc:Depends}, libncursesw5 [solaris-i386]
+Recommends: libgpm2 [!hurd-i386 !kfreebsd-amd64 !kfreebsd-i386 !solaris-i386]
 Description: shared libraries for terminal handling
  This package contains the shared libraries necessary to run programs
  compiled with ncurses.
@@ -26,7 +27,7 @@ Architecture: any
 Section: libdevel
 Priority: optional
 Depends: libncurses5 (= ${binary:Version}), ncurses-bin (= ${binary:Version}),
-	 libc-dev, ${misc:Depends}
+	 libc-dev | system-library, ${misc:Depends}
 Conflicts: ncurses-dev, libncurses-dev
 Replaces: ncurses-dev, libncurses-dev
 Provides: libncurses-dev, ncurses-dev
@@ -35,50 +36,76 @@ Description: developer's libraries and docs for ncurses
  and symbolic links that developers using ncurses will need.
  It also includes the libraries' man pages and other documentation.
 
-#Package: libncurses5-dbg
-#Architecture: any
-#Section: debug
-#Priority: extra
-#Depends: ${shlibs:Depends}, libncurses5-dev (= ${binary:Version}), ${misc:Depends}
-#Description: debugging/profiling libraries for ncurses
-# This package contains the debugging libraries for ncurses.
+Package: libncurses5-dbg
+Architecture: any
+Section: debug
+Priority: extra
+Depends: ${shlibs:Depends}, libncurses5-dev (= ${binary:Version}), ${misc:Depends}
+Description: debugging/profiling libraries for ncurses
+ This package contains the debugging libraries for ncurses.
 
-#Package: libncursesw5
-#Architecture: any
-#Priority: important
-#Depends: ${shlibs:Depends}, ${misc:Depends}
-#Recommends: libgpm2 [!hurd-i386 !kfreebsd-amd64 !kfreebsd-i386]
-#Description: shared libraries for terminal handling (wide character support)
-# This package contains the shared libraries necessary to run programs
-# compiled with ncursesw, which includes support for wide characters.
+Package: libncursesw5
+Architecture: any
+Priority: important
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Recommends: libgpm2 [!hurd-i386 !kfreebsd-amd64 !kfreebsd-i386 !solaris-i386]
+Description: shared libraries for terminal handling (wide character support)
+ This package contains the shared libraries necessary to run programs
+ compiled with ncursesw, which includes support for wide characters.
 
-#Package: libncursesw5-dev
-#Architecture: any
-#Section: libdevel
-#Priority: optional
-#Depends: libncursesw5 (= ${binary:Version}), ncurses-bin (= ${binary:Version}),
-#	 libc-dev, ${misc:Depends}
-#Suggests: libncurses5-dev
-#Description: developer's libraries for ncursesw
-# This package contains the header files, static libraries
-# and symbolic links that developers using ncursesw will need.
-# .
-# This package includes support for wide characters.
+Package: libncursesw5-dev
+Architecture: any
+Section: libdevel
+Priority: optional
+Depends: libncursesw5 (= ${binary:Version}), ncurses-bin (= ${binary:Version}),
+	 libc-dev | system-library, ${misc:Depends}
+Suggests: libncurses5-dev
+Description: developer's libraries for ncursesw
+ This package contains the header files, static libraries
+ and symbolic links that developers using ncursesw will need.
+ .
+ This package includes support for wide characters.
 
-#Package: libncursesw5-dbg
-#Architecture: any
-#Section: debug
-#Priority: extra
-#Depends: ${shlibs:Depends}, libncursesw5-dev (= ${binary:Version}), ${misc:Depends}
-#Description: debugging/profiling libraries for ncurses
-# This package contains the debugging libraries for ncursesw.
-# .
-# This package includes support for wide characters.
+Package: libncursesw5-dbg
+Architecture: any
+Section: debug
+Priority: extra
+Depends: ${shlibs:Depends}, libncursesw5-dev (= ${binary:Version}), ${misc:Depends}
+Description: debugging/profiling libraries for ncurses
+ This package contains the debugging libraries for ncursesw.
+ .
+ This package includes support for wide characters.
+
+Package: lib64ncursesw5
+Architecture: solaris-i386
+Priority: optional
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Replaces: amd64-libs (<= 1.2)
+Description: shared libraries for terminal handling (64-bit)
+ This package contains the shared libraries necessary to run programs
+ compiled with ncurses.
+ .
+ This package supports the 64-bit ABI variant of your system's
+ architecure.
+
+Package: lib64ncursesw5-dev
+Architecture: solaris-i386
+Section: libdevel
+Priority: optional
+Depends: lib64ncurses5 (= ${binary:Version}), libncurses5-dev, 
+	 lib64c-dev | system-library, ${misc:Depends}
+Replaces: amd64-libs-dev (<= 1.2)
+Description: developer's libraries for ncurses (64-bit)
+ This package contains the header files, static libraries
+ and symbolic links that developers using ncurses will need.
+ .
+ This package supports the 64-bit ABI variant of your system's
+ architecure.
 
 Package: lib64ncurses5
 Architecture: i386 powerpc sparc s390 solaris-i386
 Priority: optional
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, lib64ncursesw5 [solaris-i386]
 Replaces: amd64-libs (<= 1.2)
 Description: shared libraries for terminal handling (64-bit)
  This package contains the shared libraries necessary to run programs
@@ -91,7 +118,8 @@ Package: lib64ncurses5-dev
 Architecture: i386 powerpc sparc s390 solaris-i386
 Section: libdevel
 Priority: optional
-Depends: lib64ncurses5 (= ${binary:Version}), libncurses5-dev, lib64c-dev|system-library, ${misc:Depends}
+Depends: lib64ncurses5 (= ${binary:Version}), libncurses5-dev, 
+	 lib64c-dev | system-library, ${misc:Depends}
 Replaces: amd64-libs-dev (<= 1.2)
 Description: developer's libraries for ncurses (64-bit)
  This package contains the header files, static libraries

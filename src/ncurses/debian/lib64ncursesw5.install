@@ -1,0 +1,5 @@
+obj-wide-64/lib/libncursesw.so.* usr/gnu/lib/amd64
+obj-wide-64/lib/libticw.so.*     usr/gnu/lib/amd64
+obj-wide-64/lib/libpanelw.so.*   usr/gnu/lib/amd64
+obj-wide-64/lib/libformw.so.*    usr/gnu/lib/amd64
+obj-wide-64/lib/libmenuw.so.*    usr/gnu/lib/amd64

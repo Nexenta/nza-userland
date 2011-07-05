@@ -1,0 +1,8 @@
+#!/bin/sh -e
+
+# Temp hack to aid migration to new packages
+if [ "$1" = upgrade ] || [ "$1" = "install" ]; then
+	if [ -d /usr/include/ncurses ]; then
+		rm -rf /usr/include/ncurses
+	fi
+fi
