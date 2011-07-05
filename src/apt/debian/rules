@@ -202,6 +202,7 @@ apt: build build-doc debian/shlibs.local
 # apt install
 #
 	install -o root -g bin -m 755 debian/apt-clone debian/$@/usr/bin/
+	install -o root -g bin -m 755 debian/apt-satisfydepends debian/$@/usr/bin/
 
 	cp $(BLD)/bin/apt-* debian/$@/usr/bin/
 
