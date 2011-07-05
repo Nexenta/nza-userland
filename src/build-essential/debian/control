@@ -4,11 +4,12 @@ Priority: optional
 Maintainer: Matthias Klose <doko@debian.org>
 Uploaders: Scott James Remnant <scott@netsplit.com>
 Standards-Version: 3.8.4
+Upstream-Version: 11.5nexenta3
 Build-Depends: debhelper (>= 5.0), python (>= 2.1)
 
 Package: build-essential
 Architecture: any
-Depends: libc6-dev | libc-dev, gcc, gcc-multilib, g++, make, gawk, dpkg-dev (>= 1.13.5), developer-library-lint
+Depends: libc6-dev | libc-dev, gcc, gcc-multilib, g++, g++-multilib, libncurses5-dev, patch, quilt, make, gawk, dpkg-dev (>= 1.13.5), developer-library-lint
 Description: Informational list of build-essential packages
  If you do not plan to build Debian packages, you don't need this
  package.  Starting with dpkg (>= 1.14.18) this package is required

@@ -1,3 +1,10 @@
+build-essential (40-0-0) unstable; urgency=low
+
+  * Added g++-multilib, libncurses5-dev, quilt, patch as dependency
+  * New versioning scheme
+
+ -- Alexander Eremin <a.eremin@nexenta.com>  Wed, 06 Jul 2011 16:13:55 +0300
+
 build-essential (11.5nexenta3) unstable; urgency=low
 
   * Added gawk as dependency
