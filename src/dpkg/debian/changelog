@@ -1,3 +1,9 @@
+dpkg (40-0-5) testing; urgency=low
+
+  * Upload to siddy-testing.
+
+ -- Andrew Stormont (astormont) <andyjstormont@googlemail.com>  Tue, 05 Jul 2011 21:41:48 +0100
+
 dpkg (40-0-4) unstable; urgency=low
 
   * Rebase on dpkg version 1.15.8.11

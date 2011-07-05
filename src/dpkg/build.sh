@@ -2,16 +2,20 @@
 
 set -e
 
-# build script for dpkg
+# universal build script
 
-WEBARCHIVE_PATH="http://ftp.uk.debian.org/debian/pool/main/d/dpkg/"
+PKGNAME=`grep ^Source debian/control | sed 's/^Source:\s//'`
+PKGVERS=`grep ^Upstream-Version debian/control | sed 's/^Upstream-Version:\s//'`
 
-PKGNAME=dpkg
-PKGVERS=`grep Upstream-Version debian/control | sed 's/Upstream-Version:\s//'`
-PKGARCH="$PKGNAME"_"$PKGVERS.tar.bz2"
-PKGORIG="$PKGNAME"_"$PKGVERS.orig.tar.bz2"
-PKGDSC="$PKGNAME"_"$PKGVERS.dsc"
-PKGDIR="$PKGNAME-$PKGVERS"
+if [ -z "$PKGNAME" ]; then
+  echo "Cannot determine Source (upstream name)"
+  exit 1
+elif [ -z "$PKGVERS" ]; then
+  echo "Cannot determine Upstream-Version"
+  exit 1
+fi
+
+echo "Starting build of $PKGNAME version $PKGVERS"
 
 if [ -d build ]; then
   echo "Removing old build dir"
@@ -20,11 +24,13 @@ fi
 
 mkdir -p build cache && cd cache
 
-if [ -f "$PKGARCH" ]; then
-  echo "Using local $PKGARCH"
+PKGURL=http://ftp.uk.debian.org/debian/pool/main/`echo $PKGNAME | grep -o '^\(lib\)\?[a-z]'`/$PKGNAME
+PKGDSC="$PKGNAME"_"$PKGVERS.dsc"
+if [ -f "$PKGDSC" ]; then
+  echo "Using previously downloaded $PKGDSC"
 else
-  echo "Downloading $PKGARCH ...\c"
-  if wget -q -c $WEBARCHIVE_PATH/$PKGARCH; then
+  echo "Downloading $PKGDSC ...\c"
+  if wget -q -c "$PKGURL/$PKGDSC"; then
     echo " done"
   else
     echo " failed"
@@ -32,11 +38,24 @@ else
   fi
 fi
 
-if [ -f "$PKGDSC" ]; then
-  echo "Using local $PKGDSC"
+PKGORIGVERS=`echo $PKGVERS | sed 's/\(.*\)-\(.*\)/\1/'`
+PKGFORMAT=`grep ^Format "$PKGDSC" | sed 's/^Format:\s//'`
+PKGARCH=`grep -o "$PKGNAME"_"\($PKGVERS\|$PKGORIGVERS\)\(\.orig\)\?\.tar\.\(bz2\|gz\)" $PKGDSC | uniq`
+case "$PKGARCH" in
+  *.bz2)
+    PKGFMT=bz2
+    ;;
+  *)
+    PKGFMT=gz
+    ;;
+esac
+
+PKGORIG="$PKGNAME"_"$PKGORIGVERS.orig.tar.$PKGFMT"
+if [ -f "$PKGARCH" ]; then
+  echo "Using previously downloaded $PKGARCH"
 else
-  echo "Downloading $PKGDSC ...\c"
-  if wget -q -c $WEBARCHIVE_PATH/$PKGDSC; then
+  echo "Downloading $PKGARCH ...\c"
+  if wget -q -c "$PKGURL/$PKGARCH"; then
     echo " done"
   else
     echo " failed"
@@ -46,23 +65,45 @@ fi
 
 cd ../build
 
-if [ -f "../cache/$PKGORIG" ]; then
-  echo "Unpacking $PKGORIG ...\c"
-  tar -xf "../cache/$PKGORIG"
-  echo " done"
+# We need to create a .orig for native packages
+PKGDIR=`echo $PKGNAME | sed 's/[0-9]//g'`-"$PKGORIGVERS"
+if echo "$PKGFORMAT" | grep -q native; then
+  if [ -f "../cache/$PKGORIG" ]; then
+    echo "Unpacking previously generated $PKGORIG ...\c"
+    tar -xf "../cache/$PKGORIG"
+    echo " done"
+    [ -d "$PKGDIR" ] || PKGDIR="$PKGNAME"
+  else
+    echo "Unpacking $PKGARCH ...\c"
+    tar -xf "../cache/$PKGARCH" --exclude "debian"
+    echo " done"
+    [ -d "$PKGDIR" ] || PKGDIR="$PKGNAME"
+    echo "Creating $PKGORIG ...\c"
+    case "$PKGARCH" in
+      *.bz2)
+        TAROPTS=-cjf
+        ;;
+      *)
+        TAROPTS=-czf
+        ;;
+    esac
+    echo "Generating $PKGORIG ...\c"
+    tar $TAROPTS "../cache/$PKGORIG" "$PKGDIR"
+    echo " done"
+  fi
 else
+  echo "Using $PKGARCH as orig tarball"
   echo "Unpacking $PKGARCH ...\c"
-  tar -xf "../cache/$PKGARCH" --exclude "debian"
+  tar -xf "../cache/$PKGARCH"
   echo " done"
-  echo "Creating $PKGORIG ...\c"
-  tar -cjf "../cache/$PKGORIG" "$PKGDIR"
-  echo " done"
+  [ -d "$PKGDIR" ] || PKGDIR="$PKGNAME"
 fi
 
-echo "Applying our changes ...\c"
-cp "../cache/$PKGORIG" .
+echo "Applying our changes ..."
+cp "../cache/$PKGARCH" "$PKGORIG"
 cp -r ../debian "$PKGDIR/" && cd "$PKGDIR"
-QUILT_PATCHES=debian/patches quilt push -a
-echo " done"
+if [ -e debian/patches/series ]; then
+  QUILT_PATCHES=debian/patches quilt push -a
+fi
 
 DEB_BUILD_OPTIONS=nocheck dpkg-buildpackage -sa -uc -us
