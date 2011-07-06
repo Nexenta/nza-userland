@@ -1,7 +1,7 @@
-Index: debhelper-8.1.6/dh
+Index: debhelper/dh
 ===================================================================
---- debhelper-8.1.6.orig/dh	2011-05-16 14:21:21.000000000 +0400
-+++ debhelper-8.1.6/dh	2011-05-27 17:10:54.838279626 +0400
+--- debhelper.orig/dh	2011-07-05 14:37:05.734254125 +0400
++++ debhelper/dh	2011-07-05 14:39:09.945087240 +0400
 @@ -350,6 +350,7 @@
  	dh_installifupdown
  	dh_installinfo
@@ -10,8 +10,11 @@ Index: debhelper-8.1.6/dh
  	dh_installmenu
  	dh_installmime
  	dh_installmodules
-@@ -370,6 +371,7 @@
+@@ -368,8 +369,10 @@
+ 	dh_icons
+ 	dh_perl
  	dh_usrlocal
++	dh_obfuscate
  
  	dh_link
 +	dh_isaexec

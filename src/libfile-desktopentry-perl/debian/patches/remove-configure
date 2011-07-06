@@ -1,0 +1,7 @@
+Index: libfile-desktopentry-perl-0.04/configure
+===================================================================
+--- libfile-desktopentry-perl-0.04.orig/configure	2011-07-05 13:04:32.953342712 +0400
++++ /dev/null	1970-01-01 00:00:00.000000000 +0000
+@@ -1,2 +0,0 @@
+-#!/bin/sh
+-exec perl ./Makefile.PL "$@"
