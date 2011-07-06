@@ -1,0 +1,17 @@
+# Escape missing characters in POD
+Index: libfile-desktopentry-perl/lib/File/DesktopEntry.pm
+===================================================================
+--- libfile-desktopentry-perl.orig/lib/File/DesktopEntry.pm	2009-01-27 10:32:41.000000000 -0600
++++ libfile-desktopentry-perl/lib/File/DesktopEntry.pm	2009-01-27 10:37:33.000000000 -0600
+@@ -487,9 +487,9 @@
+ 	return undef;
+ }
+ 
+-=item C<set(KEY => VALUE, ...)>
++=item C<set(KEY =E<gt> VALUE, ...)>
+ 
+-=item C<set(GROUP, KEY => VALUE, ...)>
++=item C<set(GROUP, KEY =E<gt> VALUE, ...)>
+ 
+ Set values for one or more keys. If GROUP is not given "Desktop Entry" is used.
+ All values are treated as strings, backslashes, newlines and tabs are escaped.

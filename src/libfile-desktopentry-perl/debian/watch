@@ -1,0 +1,3 @@
+version=3
+
+http://search.cpan.org/dist/File-DesktopEntry/   .*/File-DesktopEntry-v?(\d[\d_.]+)\.(?:tar(?:\.gz|\.bz2)?|tgz|zip)

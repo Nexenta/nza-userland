@@ -1,0 +1,22 @@
+Source: libfile-desktopentry-perl
+Upstream-Version: 0.04
+Section: perl
+Priority: optional
+Build-Depends: debhelper, libmodule-build-perl
+Build-Depends-Indep: perl, libtest-pod-perl, libtest-pod-coverage-perl, libfile-basedir-perl
+Maintainer: Debian Perl Group <pkg-perl-maintainers@lists.alioth.debian.org>
+Uploaders: Florian Ragwitz <rafl@debian.org>, Gunnar Wolf <gwolf@debian.org>
+Standards-Version: 3.8.0
+Homepage: http://search.cpan.org/dist/File-DesktopEntry/
+Vcs-Svn: svn://svn.debian.org/pkg-perl/trunk/libfile-desktopentry-perl/
+Vcs-Browser: http://svn.debian.org/viewsvn/pkg-perl/trunk/libfile-desktopentry-perl/
+
+Package: libfile-desktopentry-perl
+Architecture: all
+Depends: ${misc:Depends}, ${perl:Depends}, libfile-basedir-perl
+Description: Perl module to handle freedesktop .desktop files
+ This module is used to work with .desktop files. The format of these files
+ is specified by the freedesktop "Desktp Entry" specification.
+ See 
+ http://standards.freedesktop.org/desktop-entry-spec/desktop-entry-spec-latest.html
+ For this module version 0.9.4 of the specification was used.

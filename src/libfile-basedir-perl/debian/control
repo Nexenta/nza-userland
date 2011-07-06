@@ -1,0 +1,22 @@
+Source: libfile-basedir-perl
+Upstream-Version: 0.03
+Section: perl
+Priority: optional
+Maintainer: Debian Perl Group <pkg-perl-maintainers@lists.alioth.debian.org>
+Uploaders: Ansgar Burchardt <ansgar@43-1.org>
+Build-Depends: debhelper (>= 7), perl (>= 5.10) | libmodule-build-perl
+Build-Depends-Indep: perl, libtest-pod-coverage-perl, libtest-pod-perl
+Standards-Version: 3.8.4
+Homepage: http://search.cpan.org/dist/File-BaseDir/
+Vcs-Svn: svn://svn.debian.org/pkg-perl/trunk/libfile-basedir-perl/
+Vcs-Browser: http://svn.debian.org/viewsvn/pkg-perl/trunk/libfile-basedir-perl/
+
+Package: libfile-basedir-perl
+Architecture: all
+Depends: ${misc:Depends}, ${perl:Depends}
+Description: Perl module to use the freedesktop basedir specification
+ The File::BaseDir module can be used to find directories and files as
+ specified by the XDG Base Directory Specification. It takes care of
+ defaults and uses File::Spec to make the output platform specific.
+ .
+ For this module the XDG basedir specification 0.6 was used.
