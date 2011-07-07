@@ -1,0 +1,71 @@
+--- plugins/snmpPlugin.c.orig	2006-02-05 14:31:57.000000000 +0300
++++ plugins/snmpPlugin.c	2006-02-05 14:32:04.000000000 +0300
+@@ -201,7 +201,9 @@
+ 
+ static oid* encodeEth(HostTraffic* el);
+ static oid* encodeIpv4(HostTraffic* el);
++#ifdef INET6
+ static oid* encodeIpv6(HostTraffic* el);
++#endif
+ static oid* encodeFc(HostTraffic* el);
+ #endif /* HAVE_SNMP */
+ 
+@@ -467,7 +469,8 @@
+       addrput (AF_INET, &(serial->value.ipSerial.ipAddress), &mod_value);
+ 
+       break;
+-
++      
++#ifdef INET6
+     case SERIAL_IPV6:
+       if (octet_data_length != 16)
+ 	return -1;
+@@ -484,6 +487,7 @@
+       addrput (AF_INET, &(serial->value.ipSerial.ipAddress), &mod_value);
+ 
+       break;
++#endif
+ 
+     case SERIAL_FC:
+       return -1;
+@@ -601,9 +605,11 @@
+   case SERIAL_IPV4:
+     tmp = encodeIpv4(el);
+     break;
++#ifdef INET6
+   case SERIAL_IPV6:
+     tmp = encodeIpv6(el);
+     break;
++#endif
+   case SERIAL_FC:
+     tmp = encodeFc(el);
+     break;
+@@ -693,6 +699,7 @@
+   return tmpoid;
+ }
+ 
++#ifdef INET6
+ static oid* encodeIpv6(HostTraffic* el){
+   oid* tmpoid = malloc(sizeof(oid)*17);
+   int i,j;
+@@ -708,6 +715,7 @@
+   }
+   return tmpoid;
+ }
++#endif
+ 
+ static oid* encodeEth(HostTraffic* el){
+   oid* tmpoid = malloc(sizeof(oid)*7);
+@@ -850,10 +858,12 @@
+ 	      cp = (char *)&traffic->hostSerial.value.ipSerial.ipAddress.Ip4Address.s_addr;
+ 	      size = 4;
+ 	      break;
++#ifdef INET6
+ 	    case SERIAL_IPV6:
+ 	      cp =(char *)&traffic->hostSerial.value.ipSerial.ipAddress.Ip6Address.s6_addr;
+ 	      size = 16;
+ 	      break;
++#endif
+ 	    case SERIAL_FC:
+ 	      /*TODO*/
+ 	      size = LEN_FC_ADDRESS_DISPLAY;

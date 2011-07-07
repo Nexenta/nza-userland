@@ -1,0 +1,17 @@
+From: Ansgar Burchardt <ansgar@43-1.org>
+Date: Wed, 24 Feb 2010 17:37:36 +0900
+Forwarded: https://rt.cpan.org/Public/Bug/Display.html?id=54929
+Subject: Correct spelling error
+
+Correct a spelling error found by lintian.
+--- libfile-basedir-perl.orig/lib/File/BaseDir.pm
++++ libfile-basedir-perl/lib/File/BaseDir.pm
+@@ -275,7 +275,7 @@
+ =head1 BACKWARDS COMPATIBILITY
+ 
+ The methods C<xdg_data_files()> and C<xdg_config_files()> are exported for
+-backwards compatibilty with version 0.02. They are identical to C<data_files()>
++backwards compatibility with version 0.02. They are identical to C<data_files()>
+ and C<config_files()> respectively but without the C<wantarray> behavior.
+ 
+ =head1 BUGS

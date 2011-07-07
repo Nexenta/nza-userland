@@ -1,0 +1,74 @@
+# ntop translation to spanish
+# Copyright (C) 2004 Software in the Public Interest
+# This file is distributed under the same license as the ntop package.
+#
+# Changes:
+# - Initial translation
+#       Rudy Godoy <rudy@kernel-panik.org>, 2006
+#
+#
+#  Traductores, si no conoce el formato PO, merece la pena leer la
+#  documentación de gettext, especialmente las secciones dedicadas a este
+#  formato, por ejemplo ejecutando:
+#         info -n '(gettext)PO Files'
+#         info -n '(gettext)Header Entry'
+#
+# Equipo de traducción al español, por favor lean antes de traducir
+# los siguientes documentos:
+#
+# - El proyecto de traducción de Debian al español
+#   http://www.debian.org/intl/spanish/coordinacion
+#   especialmente las notas de traducción en
+#   http://www.debian.org/intl/spanish/notas
+#
+# - La guía de traducción de po's de debconf:
+#   /usr/share/doc/po-debconf/README-trans
+#   o http://www.debian.org/intl/l10n/po-debconf/README-trans
+#
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: ntop 3.2\n"
+"Report-Msgid-Bugs-To: opal@debian.org\n"
+"POT-Creation-Date: 2006-08-16 07:38+0200\n"
+"PO-Revision-Date: 2006-12-25 12:11-0500\n"
+"Last-Translator: Rudy Godoy <rudy@kernel-panik.org>\n"
+"Language-Team: Debian l10n Spanish Team <debian-l10n-spanish@lists.debian.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. Type: string
+#. Description
+#: ../templates:1001
+msgid "Which is the name of the user to run the ntop daemon as ?"
+msgstr "¿Cuál es el usuario que debe ejecutar el demonio ntop?"
+
+#. Type: string
+#. Description
+#: ../templates:1001
+msgid ""
+"The selected user will be created if not already available. Don't choose "
+"root, it is not recommended and will be discarded anyway."
+msgstr "Se creará el usuario si no existe. No introduzca root, no se aconseja, y si lo hace se descartará en cualquier caso."
+
+#. Type: string
+#. Description
+#: ../templates:1001
+msgid ""
+"If you select an empty string no user will be created on the system and you "
+"will need to do that configuration yourself."
+msgstr "No se creará ningún usuario en el sistema si no introduce nada aquí, por lo que usted tendrá que hacer la configuración necesaria."
+
+#. Type: string
+#. Description
+#: ../templates:2001
+msgid "Which interfaces should ntop listen on?"
+msgstr "¿En qué interfaces debe escuchar ntop?"
+
+#. Type: string
+#. Description
+#: ../templates:2001
+msgid ""
+"Please enter a comma separated list of interfaces ntop should listen on."
+msgstr "Por favor introduzca la lista, separada por comas, de las interfaces en las que debe escuchar ntop."

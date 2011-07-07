@@ -1,0 +1,134 @@
+diff -Nru ntop-3.2.old/debian/init ntop-3.2/debian/init
+--- ntop-3.2.old/debian/init	2006-03-07 17:29:03.000000000 +0100
++++ ntop-3.2/debian/init	2006-03-07 18:19:10.000000000 +0100
+@@ -13,25 +13,106 @@
+ 
+ . $INIT
+ 
++sanity_check() {
++# Sanity check, we expect USER And INTERFACES to be defined
++# (we could also set defaults for them before calling INIT...)
++	if [ -z "$USER" ] ; then
++		echo -n "ERROR: Cannot start ntop since USER is not defined, check the configuration file $INIT" >&2
++		return 1
++	fi
++	if [ -z "$INTERFACES" ] ; then
++		echo "ERROR: Cannot start ntop since INTERFACES is not defined, check the configuration file $INIT" >&2
++		return 1
++	fi
++	return 0
++}
++
++check_log_dir() {
++# Does the logging directory belong to the User running the application
++        # If we cannot determine the logdir return without error
++        # (we will not check it)
++        [ -n "$LOGDIR" ] || return 0
++        [ -n "$USER" ] || return 0
++        if [ ! -e "$LOGDIR" ] ; then
++                echo -n "ERR: logging directory $LOGDIR does not exist"
++                return 1
++        elif [ ! -d "$LOGDIR" ] ; then
++                echo -n "ERR: logging directory $LOGDIR does not exist"
++                return 1
++        else
++                real_log_user=`stat -c %U $LOGDIR`
++        # An alternative way is to check if the the user can create
++        # a file there...
++                if [ "$real_log_user" != "$USER" ] ; then
++                        echo -n "ERR: logging directory $LOGDIR does not belong
++to the user $USER"
++                        return 1
++                fi
++        fi
++        return 0
++}
++
++check_interfaces() {
++# Check the interface status, abort with error if a configured one is not
++# available
++	[ -z "$INTERFACES" ] && return 0
++	{ echo $INTERFACES | awk -F , '{ for(i=1;i<=NF;i++) print $i }' |
++	while read iface ; do
++		if ! ifconfig "$iface" | grep -w UP >/dev/null; then
++			echo "ERR: interface $iface is DOWN..."
++			return 1
++		fi	
++	done
++	return 0
++	} 
++	return $?
++}
++
++
++
+ case "$1" in
+ start)
++  if pidof $DAEMON > /dev/null ; then
++     echo "Not starting $DESC, it has already been started."
++     exit 0
++  fi
+   echo -n "Starting $DESC: "
++  if ! sanity_check || ! check_log_dir || ! check_interfaces; then
++  	echo " will not start $DESC!"
++	exit 1
++  fi
+   start-stop-daemon --start --quiet --name $NAME --exec $DAEMON -- \
+   -d -L -u $USER -P $HOMEDIR --skip-version-check \
+   -a $LOGDIR/access.log -i "$INTERFACES" \
+   -p /etc/ntop/protocol.list \
+   -O $LOGDIR $GETOPT
+-  if ps xa | grep -v grep | grep /usr/sbin/ntop > /dev/null ; then
++  if pidof $DAEMON > /dev/null ; then
+       echo ntop
+   else
+-      echo "ntop not started. Read /usr/share/doc/ntop/README.Debian."
++  # WARNING: This might introduce a race condition in some (fast) systems
++  # Wait for a sec an try again
++      sleep 1
++      if ps xa | grep -v grep | grep $DAEMON > /dev/null ; then
++      	echo ntop
++      else
++        echo "ntop not started. Read /usr/share/doc/ntop/README.Debian."
++	exit 1
++      fi
+   fi
+   ;;
+ stop)
+   echo -n "Stopping $DESC: "
+   start-stop-daemon --stop --oknodo --name $NAME --user $USER --retry 9
+-  if ps xa | grep -v grep | grep /usr/sbin/ntop > /dev/null ; then
+-      echo "Ntop not stopped. Need to kill manually."
++  if pidof $DAEMON > /dev/null ; then
++  # WARNING: This might introduce a race condition in some (fast) systems
++  # Wait for a sec an try again
++      sleep 1 
++      if ps xa | grep -v grep | grep $DAEMON > /dev/null ; then
++         echo "Ntop not stopped. Need to kill manually."
++	 exit 1
++      else 
++         echo ntop
++      fi
+   else
+       echo ntop
+   fi
+@@ -42,15 +123,17 @@
+   $0 start
+   ;;
+ reload)
+-  if ps aux | grep -v grep | grep -q '/usr/sbin/ntop' ; then
++  if pidof $DAEMON > /dev/null ; then
+     $0 stop
+     sleep 2
+     $0 start
++  else
++  	echo  "Will not reload $DESC (not running)"
+   fi
+   ;;
+ *)
+   N=/etc/init.d/$NAME
+-  echo "Usage: $N {start|stop|restart|force-reload}" >&2
++  echo "Usage: $N {start|stop|restart|force-reload|reload}" >&2
+   exit 1
+   ;;
+ esac

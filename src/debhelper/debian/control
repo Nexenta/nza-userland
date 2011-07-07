@@ -10,8 +10,12 @@ Homepage: http://kitenet.net/~joey/code/debhelper/
 
 Package: debhelper
 Architecture: all
-Depends: ${perl:Depends}, ${misc:Depends}, perl-base, file, dpkg-dev, html2text, binutils, po-debconf, man-db | text-doctools, libxml-simple-perl
-Suggests: dh-make, python-manifold
+Depends: ${perl:Depends}, ${misc:Depends}, perl-base, file, dpkg-dev, html2text, binutils, po-debconf, man-db | text-doctools,
+# for dh_installsvc:
+ libxml-simple-perl,
+# for dh_obfuscate:
+ libpar-packer-perl, libfile-mimeinfo-perl, perl-compiler-kit
+Suggests: python-manifold
 Description: helper programs for debian/rules
  A collection of programs that can be used in a debian/rules file to
  automate common tasks related to building debian packages. Programs

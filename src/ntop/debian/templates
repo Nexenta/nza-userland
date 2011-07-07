@@ -1,0 +1,15 @@
+Template: ntop/user
+Type: string
+Default: ntop
+_Description: Which is the name of the user to run the ntop daemon as ?
+ The selected user will be created if not already available. Don't choose
+ root, it is not recommended and will be discarded anyway.
+ .
+ If you select an empty string no user will be created on the system and
+ you will need to do that configuration yourself.
+
+Template: ntop/interfaces
+Type: string
+Default: eth0
+_Description: Which interfaces should ntop listen on?
+ Please enter a comma separated list of interfaces ntop should listen on.

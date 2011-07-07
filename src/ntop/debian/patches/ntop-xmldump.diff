@@ -1,0 +1,13 @@
+--- xmldumpPlugin.c.old	2005-10-08 16:25:07.760558536 +0200
++++ xmldumpPlugin.c	2005-10-08 16:29:19.279226640 +0200
+@@ -486,8 +486,10 @@
+       return;
+     }
+ 
++#ifdef MAKE_WITH_XMLDUMP
+     /* Process it */
+     dumpXML(url);
++#endif
+ 
+ #if defined(PARM_FORK_CHILD_PROCESS) && (!defined(WIN32))
+     if(myGlobals.childntoppid != 0)

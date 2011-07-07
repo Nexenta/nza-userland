@@ -1,0 +1,71 @@
+libfile-mimeinfo-perl (40-0-0) unstable; urgency=low
+
+  * Ported to NCP4
+  * New version scheme
+  * Used 3.0 (quilt) source format
+
+ -- Igor Pashev <igor.pashev@nexenta.com>  Tue, 05 Jul 2011 13:11:45 +0400
+
+libfile-mimeinfo-perl (0.15-1) unstable; urgency=low
+
+  [ gregor herrmann ]
+  * Take over for the Debian Perl Group with maintainer's permission
+    (http://lists.debian.org/debian-perl/2008/06/msg00039.html)
+  * debian/control: Added: Vcs-Svn field (source stanza); Vcs-Browser
+    field (source stanza); Homepage field (source stanza). Changed:
+    Maintainer set to Debian Perl Group <pkg-perl-
+    maintainers@lists.alioth.debian.org> (was: Florian Ragwitz
+    <rafl@debian.org>); Florian Ragwitz <rafl@debian.org> moved to
+    Uploaders.
+  * Add debian/watch.
+
+  [ Damyan Ivanov ]
+  * New upstream release
+  * debian/copyright: update years, note we are taking over maintenance, use
+    dist-based upstream source location
+  * replace cdbs with debhelper 7
+    + rules: build target needed manual "configure" as dh_auto_configure is
+      fooled by the presence of an executable "./configure" file
+    + bumped debhelper compatibility level and build-dependency
+  * add lintian override about an unbreakable URL in File::MimeInfo
+  * add myself to Uploaders
+  * Standards-Version 3.8.0 (no change needed)
+
+ -- Damyan Ivanov <dmn@debian.org>  Mon, 23 Jun 2008 12:39:57 +0300
+
+libfile-mimeinfo-perl (0.13-1) unstable; urgency=low
+
+  * New upstream release.
+    + F:M::Applications now creates ~/.local/share/applications/ if it doesn't
+      exist already (Closes: #347462).
+  * Mention 'mimeopen' and 'mimetype' in the long Description (Closes: #347245).
+  * Use DH_COMPAT 5.
+
+ -- Florian Ragwitz <rafl@debian.org>  Sun, 26 Mar 2006 19:35:19 +0200
+
+libfile-mimeinfo-perl (0.12-4) unstable; urgency=low
+
+  * Fixed typo in new dependency to libfile-desktopentry-perl
+    (Closes: #340777).
+
+ -- Florian Ragwitz <rafl@debian.org>  Thu, 22 Dec 2005 16:11:20 +0100
+
+libfile-mimeinfo-perl (0.12-3) unstable; urgency=low
+
+  * Added dependency on libfile-desktopentry-perl (Closes: #340777).
+
+ -- Florian Ragwitz <rafl@debian.org>  Wed, 30 Nov 2005 16:15:16 +0100
+
+libfile-mimeinfo-perl (0.12-2) unstable; urgency=low
+
+  * Added dependency on shared-mime-info (Closes: #337426).
+  * Changed my Maintainer address.
+
+ -- Florian Ragwitz <rafl@debian.org>  Fri,  4 Nov 2005 13:27:07 +0100
+
+libfile-mimeinfo-perl (0.12-1) unstable; urgency=low
+
+  * Initial release.
+
+ -- Florian Ragwitz <rafl@debianforum.de>  Wed, 26 Oct 2005 16:45:07 +0200
+
