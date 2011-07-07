@@ -1,0 +1,3 @@
+usr/lib/amd64/lib*.a
+usr/lib/amd64/lib*.so
+usr/lib/amd64/pkgconfig/*
