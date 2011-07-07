@@ -1,0 +1,67 @@
+#! /bin/sh -e
+#
+# Copyright 2000,2001,2002 by Dennis Schoen <dennis@cobolt.net>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public
+# License along with this program; if not, write to the Free
+# Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+# MA  02111-1307  USA.
+
+# Source debconf library
+. /usr/share/debconf/confmodule
+
+check_interfaces() {
+# Check the interface status, abort with error if a configured one is not
+# available
+        [ -z "$INTERFACES" ] && return 0
+        { echo $INTERFACES | awk -F , '{ for(i=1;i<=NF;i++) print $i }' |
+        while read iface ; do
+                if ! ifconfig "$iface" | grep -w UP >/dev/null; then
+                        return 1
+                fi
+        done
+	return 0
+        }
+        return $?
+}
+
+
+if [ -e /etc/ntop/init.cfg ] && [ ! -e /var/lib/ntop/init.cfg ]; then
+    cp -a /etc/ntop/init.cfg /etc/ntop/init.cfg.dpkg-old || true
+    mv /etc/ntop/init.cfg /var/lib/ntop/init.cfg || true
+fi
+
+if [ -e /var/lib/ntop/init.cfg ]; then
+  # Read current state from configuration file
+  . /var/lib/ntop/init.cfg || true
+  db_set ntop/user $USER
+  db_set ntop/interfaces $INTERFACES
+fi
+
+# Interface default in case /var/lib/ntop/init.cfg does not exist
+[ -z "$INTERFACES" ]  && INTERFACES=eth0
+# Depending on whether the default interface is up or down we set the
+# question priority
+if check_interfaces
+then
+	db_input medium ntop/interfaces || true
+else
+	db_input high ntop/interfaces || true
+fi
+db_go
+db_get ntop/interfaces
+INTERFACES=$RET
+
+db_input medium ntop/user || true
+db_go
+db_get ntop/user
