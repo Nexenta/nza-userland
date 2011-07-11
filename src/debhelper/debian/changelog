@@ -1,3 +1,13 @@
+debhelper (40-0-6) unstable; urgency=low
+
+  * dh_obfuscate:
+     + remove -w flag from perl shebang
+     + allowed compiling of bleached Perl scripts
+  * dh_installsvc:
+     get global 'exec_method' if an instance does not have own
+
+ -- Igor Pashev <igor.pashev@nexenta.com>  Fri, 08 Jul 2011 12:34:41 +0400
+
 debhelper (40-0-5) unstable; urgency=low
 
   * Added `dh_obfuscate' with Perl support (bleach and bytecode)

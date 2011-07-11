@@ -110,7 +110,9 @@ foreach my $package (@{$dh{DOPACKAGES}}) {
     }    
     if (exists $xml->{'service'}->{'instance'}) {
         while (my ($k, $v) = each %{$xml->{'service'}->{'instance'}}) {
-            $instances{$k} = $v
+            $instances{$k} = $v;
+            $instances{$k}->{'exec_method'} = $xml->{'service'}->{'exec_method'}
+               unless exists $instances{$k}->{'exec_method'};
         }
     }
 
