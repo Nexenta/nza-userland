@@ -54,7 +54,8 @@ clean:
 	-rm -f config.status config.cache config.log
 	find . -type d -name ".deps" | xargs rm -Rf
 
-	dh_clean
+	#cleanup generated files
+	dh_clean plugins/*.inc plugins/*.la faq.html html/faq.html version.c
 
 install: build
 	dh_testdir
@@ -105,6 +106,7 @@ binary-arch: build install
 	dh_compress
 	dh_fixperms
 	dh_installdeb
+	dh_shlibdeps
 	dh_gencontrol
 	dh_md5sums
 	dh_builddeb

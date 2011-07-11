@@ -2,12 +2,13 @@ Source: ntop
 Section: contrib/net
 Priority: optional
 Maintainer: Ola Lundqvist <opal@debian.org>
-Build-Depends: debhelper (>= 4.1.39), autoconf, automake, libgdbm-dev, libpng12-dev, libncurses5-dev, libtool,  libgd2-noxpm-dev, libssl-dev, libjpeg62-dev, po-debconf
+Build-Depends: debhelper (>= 4.1.39), autoconf, automake, libgdbm-dev, libpng12-dev, libncurses5-dev, libtool, libgd2-noxpm-dev, libssl-dev, libjpeg62-dev, po-debconf, libpcap0.8-dev (>= 0.9.8)
 Standards-Version: 3.7.2
+Upstream-Version: 3:3.2-10.1nexenta1
 
 Package: ntop
 Architecture: any
-Depends: adduser, debconf (>= 1.2.0) | debconf-2.0, libpcap1.1.1,libfreetype6 (>= 2.3.5), libgcc1 (>= 1:4.2.1), libgd2-noxpm | libgd2-xpm, libgdbm3, libjpeg62,  libpng12-0 (>= 1.2.13-4), sunwcs, system-library, zlib1g (>= 1:1.2.3.3.dfsg-1)
+Depends: ${shlibs:Depends}, ${misc:Depends}, adduser
 Suggests: graphviz
 Description: display network usage in top-like format
  ntop is a Network Top program. It displays a summary of network usage by

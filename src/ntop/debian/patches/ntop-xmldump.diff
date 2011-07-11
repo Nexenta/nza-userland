@@ -1,12 +1,16 @@
---- xmldumpPlugin.c.old	2005-10-08 16:25:07.760558536 +0200
-+++ xmldumpPlugin.c	2005-10-08 16:29:19.279226640 +0200
+Index: ntop-40-0/plugins/xmldumpPlugin.c
+===================================================================
+--- ntop-40-0.orig/plugins/xmldumpPlugin.c	2011-07-07 13:43:02.142633903 +0530
++++ ntop-40-0/plugins/xmldumpPlugin.c	2011-07-07 13:43:06.949467614 +0530
 @@ -486,8 +486,10 @@
        return;
      }
  
+-    /* Process it */
+-    dumpXML(url);
 +#ifdef MAKE_WITH_XMLDUMP
-     /* Process it */
-     dumpXML(url);
++     /* Process it */
++     dumpXML(url);
 +#endif
  
  #if defined(PARM_FORK_CHILD_PROCESS) && (!defined(WIN32))

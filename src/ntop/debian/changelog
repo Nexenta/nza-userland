@@ -1,3 +1,20 @@
+ntop (40-0-0) unstable; urgency=low
+
+  * Updated to use new version scheme.
+  * Use source format 3.0 (quilt).
+  * debian/control:
+    + Fixed libpcap dependency (Closes: #5667).
+    + Use shlibs/misc:Depends instead of handcrafted dependencies.
+  * debian/rules:
+    + Cleanup generated files.
+    + Bring back dh_shlibdeps.
+  * debian/patches:
+    + Separated ntop-xmldump.diff from direct upstream changes.
+    + debian-changes-40-0-0 represent direct upstream changes so far from last
+      versions.
+
+ -- Kartik Mistry <kartik.mistry@nexenta.com>  Thu, 07 Jul 2011 10:08:04 +0530
+
 ntop (3:3.2-10.1nexenta1) hardy; urgency=low
 
   * Port for Nexenta 4
