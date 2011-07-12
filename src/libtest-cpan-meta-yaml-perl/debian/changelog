@@ -1,0 +1,16 @@
+libtest-cpan-meta-yaml-perl (40-0-0) unstable; urgency=low
+
+  * Port for NCP4 
+  * Used new version scheme
+
+ -- Peter Zaickin <peter.zaickin@nexenta.com>  Mon, 04 Jul 2011 18:19:46 +0300
+
+libtest-cpan-meta-yaml-perl (0.17-1) unstable; urgency=low
+
+  [ Jonathan Yu ]
+  * Initial Release (Closes: #615502).
+
+  [ Nicholas Bamber ]
+  * Added myself to Uploaders 
+
+ -- Nicholas Bamber <nicholas@periapt.co.uk>  Sun, 27 Feb 2011 00:21:29 +0000

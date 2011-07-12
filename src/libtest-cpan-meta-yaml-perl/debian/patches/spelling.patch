@@ -1,0 +1,26 @@
+Author: Nicholas Bamber <nicholas@periapt.co.uk>
+Last-Update: 2011-02-26
+Forwarded: no
+Subject: spelling errors
+--- a/lib/Test/CPAN/Meta/YAML.pm
++++ b/lib/Test/CPAN/Meta/YAML.pm
+@@ -181,7 +181,7 @@
+ However, it would help greatly if you are able to pinpoint problems or even
+ supply a patch.
+ 
+-Fixes are dependant upon their severity and my availablity. Should a fix not
++Fixes are dependent upon their severity and my availability. Should a fix not
+ be forthcoming, please feel free to (politely) remind me.
+ 
+ =head1 SEE ALSO
+--- a/lib/Test/CPAN/Meta/YAML/Version.pm
++++ b/lib/Test/CPAN/Meta/YAML/Version.pm
+@@ -779,7 +779,7 @@
+ However, it would help greatly if you are able to pinpoint problems or even
+ supply a patch.
+ 
+-Fixes are dependant upon their severity and my availablity. Should a fix not
++Fixes are dependent upon their severity and my availability. Should a fix not
+ be forthcoming, please feel free to (politely) remind me.
+ 
+ =head1 DSLIP
