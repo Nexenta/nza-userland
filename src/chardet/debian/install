@@ -1,0 +1,2 @@
+debian/chardet /usr/bin
+debian/chardet.1 /usr/share/man/man1/

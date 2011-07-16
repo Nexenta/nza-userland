@@ -1,0 +1,476 @@
+python-debian (40-0-0) unstable; urgency=low
+
+  * Ported to NCP4
+
+ -- Igor Pashev <igor.pashev@nexenta.com>  Sat, 16 Jul 2011 12:18:16 +0400
+
+python-debian (0.1.20) unstable; urgency=low
+
+  * Fix FTBFS, caused by referring to apt_pkg in a test with no
+    python-apt Build-Depends. (Closes: #623011)
+  * changelog: Implement __unicode__ in ChangeBlock and Changelog.
+    (Closes: #561805)
+
+ -- John Wright <jsw@debian.org>  Sun, 17 Apr 2011 17:37:44 -0700
+
+python-debian (0.1.19) unstable; urgency=low
+
+  * debian_support.BaseVersion: Disallow ':' in upstream version if
+    there is no epoch.  Original patch by Steve Kowalik.
+    (Closes: #619997)
+
+ -- John Wright <jsw@debian.org>  Fri, 15 Apr 2011 02:05:45 -0700
+
+python-debian (0.1.18+nmu1) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Migrate to new python-apt API (Closes: #604544)
+
+ -- Julian Andres Klode <jak@debian.org>  Tue, 05 Apr 2011 11:02:08 +0200
+
+python-debian (0.1.18) unstable; urgency=low
+
+  * Support installation together with older versions of python-apt.
+    Original patch by Jelmer Vernooij. (Closes: #590805)
+
+ -- John Wright <jsw@debian.org>  Wed, 04 Aug 2010 01:16:52 -0700
+
+python-debian (0.1.17) unstable; urgency=low
+
+  [ James Westby ]
+  * Use os.path.normpath to hide python version differences
+
+  [ John Wright ]
+  * test_deb822.py: Make test_gpg_info more robust (Closes: #582878)
+  * deb822: Use chardet to try to detect character encodings as necessary
+    - This is only used when the specified encoding doesn't work.  It's mainly
+      useful for files containing multiple deb822 paragraphs with mixed
+      encodings, like etch's Sources file. (Closes: #586021)
+
+ -- John Wright <jsw@debian.org>  Sun, 25 Jul 2010 02:07:11 -0700
+
+python-debian (0.1.16) unstable; urgency=low
+
+  * debian_support: Be more careful in case apt_pkg is not available
+    - If apt_pkg is not available, AptPkgVersion now raises
+      NotImplementedError on any initialization attempt
+    - test_debian_support.py now doesn't try to test AptPkgVersion if
+      apt_pkg is not available
+  * test_deb822.py: Don't test gpg info if debian-keyring is not
+    available (Closes: #573934)
+  * Use the warnings system to report deprecation warnings
+    (Closes: #573945)
+  * Change examples and control file to refer to debian instead of
+    debian_bundle
+
+ -- John Wright <jsw@debian.org>  Mon, 15 Mar 2010 20:02:17 -0600
+
+python-debian (0.1.15) unstable; urgency=low
+
+  [ John Wright ]
+  * deb822: Don't ignore leading newlines on field data with apt_pkg
+    (Closes: #466753)
+  * changelog: Consistently parse different types of inputs.  The
+    previous implementation added extra newlines when given a file
+    object as input, rather than the result of str.splitlines().
+    (Closes: #539316)
+  * deb822: Faster non-shared storage by keeping a TagFile object
+    around for each Deb822 object yielded
+
+  [ Stefano Zacchiroli ]
+  * make debian_support.Version hashable, patch from Piotr Ożarowski
+    (Closes: #543223)
+
+  [ Filippo Giunchedi ]
+  * changelog: add iterator over changelog blocks (Closes: #539334)
+  * changelog: split tests into tests/test_changelog.py for consistency
+
+  [ John Wright ]
+  * deb822: Use the apt_pkg.TagFile class instead of apt_pkg.ParseTagFile()
+    (Closes: #552190)
+  * test_deb822.py: Update to support new gpg "SIG_ID" algorithm
+  * deb822: Better support for non-ascii values.  Deb822 objects now
+    always contain unicode objects instead of strings.  Use the encoding
+    argument to Deb822's initializer and its iter_paragraphs class
+    method if the encoding of a file you are reading in is not utf-8.
+    (The dump method also takes an encoding argument, if you wish the
+    output not to be utf-8-encoded.) (Closes: #495272)
+  * Use the apt_pkg.TagFile iterator interface instead of hacking its
+    offset.  As of python-apt version 0.7.94, that interface doesn't use
+    shared storage. (Closes: #571470)
+  * debian_support: Add a native python Version class, based on Raphael
+    Hertzog's DpkgVersion class in the PTS (Closes: #562257, #573009)
+
+  [ Jelmer Vernooij ]
+  * Remove unused imports in the debfile and debtags modules
+
+  [ John Wright ]
+  * changelog: Use debian_support.Version directly
+  * Deprecate the 'debian_bundle' package in favor of a new 'debian'
+    package (Closes: #570210)
+  * debian_support: split tests into tests/test_debian_support.py for
+    consistency
+  * Convert to "3.0 (native)" source format and update Standards-Version
+    to 3.8.4 (no changes necessary)
+
+ -- John Wright <jsw@debian.org>  Sun, 14 Mar 2010 05:04:50 -0600
+
+python-debian (0.1.14) unstable; urgency=low
+
+  [ Stefano Zacchiroli ]
+  * setup.py.in: switch to setuptools, which are able to generate eggs;
+    add matching build-dep on python-setuptools (Closes: #525694)
+  * examples/deb822/: add new example render-dctrl, to render packages in
+    a dctrl-tools pipeline (using Markdown as long description syntax)
+  * deb822: use __new__ to sub-class strings for case-insensitiveness;
+    former approach is deprecated with python 2.6.
+    Thanks to Loïc Minier for the patch. (Closes: #524061)
+
+  [ Filippo Giunchedi ]
+  * deb822: parse also Binary as PkgRelation, thus add .binary attribute
+
+  [ Muharem Hrnjadovic ]
+  * fixed changelog parser exception raised when dealing with empty
+    changelog files (LP: #400589).
+
+ -- Stefano Zacchiroli <zack@debian.org>  Sat, 18 Jul 2009 21:26:40 +0200
+
+python-debian (0.1.13) unstable; urgency=low
+
+  [ John Wright ]
+  * deb822: Correctly handle deletion of keys that only exist in a pre-parsed
+    dictionary
+
+  [ Stefano Zacchiroli ]
+  * change naming convention to match PEP 8, with backward compatibility
+    (and deprecation warnings) for all old names. Thanks to Ben Finney for
+    the patch. (Closes: #489722)
+  * Switch from "sha" module to "hashlib": fix a deprecation warning of
+    Python 2.6. As a consequence, update pyversions to require a minimum
+    of Python 2.5, which is available also in stable now. (Closes: #518427)
+  * debian_support.PackageFile: allow for stanza separators made of tabs
+    and spaces in addition to newlines (Closes: #501927)
+  * bump Standards-Version to 3.8.1 (no changes needed)
+
+ -- Stefano Zacchiroli <zack@debian.org>  Tue, 07 Apr 2009 10:21:04 +0200
+
+python-debian (0.1.12) unstable; urgency=low
+
+  [ Filippo Giunchedi ]
+  * Add initial support to deb822 for gpg signature checking (Closes: #485829)
+  * Suggest gpgv for signature checking
+
+  [ Stefano Zacchiroli ]
+  * deb822: add support for pretty printing structured inter-package
+    relationships (and relevant tests)
+  * debfile: add support for .tar.bz2 parts contained in .deb packages, and
+    relative regression test. Thanks to Cameron Dale and Tom Parker.
+    (Closes: #462859).
+
+  [ John Wright ]
+  * deb822: allow the use of unicode objects in __getitem__
+  * changelog: fix the "topline" regular expression to match the one in dpkg's
+    Dpkg/Changelog/Debian.pm so that it allows '.' and '+' in the distribution
+    field
+  * deb822: Add a use_apt_pkg parameter to Deb822.iter_paragraphs.  Now,
+    callers can set use_apt_pkg=True and shared_storage=False (now the default)
+    in order to take advantage of apt_pkg's speed and still be able to use
+    values across iterations.  (Closes: #504413)
+
+ -- John Wright <jsw@debian.org>  Wed, 05 Nov 2008 16:03:40 -0700
+
+python-debian (0.1.11) unstable; urgency=low
+
+  [ James Westby ]
+  * Allow urgency=HIGH and other words made of capital letters there, see
+    fuse's changelog.
+  * Allow any number of spaces before "urgency" in the header line of a
+    changelog, see lvm2's changelog in Ubuntu.
+  * Overhaul the parsing code to follow that used by dpkg-parsechangelog.py,
+    making it much more robust.
+    - There is now a "strict" option to turn warnings in to errors. It is
+      on by default.
+  * The file parameter in the changelog can now be a file-like object,
+    to save reading a file to a string first. Thanks to Tilman Koschnick.
+    (Closes: #487797)
+
+  [ John Wright ]
+  * debian/control:
+    - Fix a typo in the Description field (Closes: #483688)
+  * debian_bundle/deb822.py: Checksums-Sha1 and Checksums-Sha256 don't have
+    section or priority subfields (Closes: #487902)
+
+  [ Stefano Zacchiroli ]
+  * debian_bundle/deb822.py: add support for "parsed" dependencies and other
+    inter-package relationships. See examples/deb822/depgraph for sample usage
+  * examples/deb822/ add new example "depgraph"
+  * tests/test_deb822.py: add tests for inter-package relationships
+  * debian_bundle/debfile.py: add has_key (same implementation of
+    __contains__) to better emulate dictionary containers
+  * minor revamp of README pointing to deb822.py for Packages parsing and
+    mentioning debfile.py
+  * debian/control:
+    - fix Vcs-* fields to point to the new git repository (bzr is gone)
+  * bump Standards-Version to 3.8.0, no changes needed though profit of the
+    possibility of wrapping Uploaders in debian/control
+
+  [ Filippo Giunchedi ]
+  * Add test case for changes file with checksums (see #487902)
+
+ -- Stefano Zacchiroli <zack@debian.org>  Wed, 06 Aug 2008 23:48:38 -0300
+
+python-debian (0.1.10) unstable; urgency=low
+
+  * debian_bundle/deb822.py, tests/test_deb822.py:
+    - Do not cache _CaseInsensitiveString objects, since it causes case
+      preservation issues under certain circumstances (Closes: #473254)
+    - Add a test case
+  * debian_bundle/deb822.py:
+    - Add support for fixed-length subfields in multivalued fields.  I updated
+      the Release and PdiffIndex classes to use this.  The default behavior for
+      Release is that of apt-ftparchive, just because it's simpler.  Changing
+      the behavior to resemble dak requires simply setting the
+      size_field_behavior attribute to 'dak'.  (Ideally, deb822 would detect
+      which behavior to use if given an actual Release file as input, but this
+      is not implemented yet.)  (Closes: #473259)
+    - Add support for Checksums-{Sha1,Sha256} multivalued fields in Dsc and
+      Changes classes
+  * debian/control:
+    - "python" --> "Python" in the Description field
+    - Change the section to "python"
+
+ -- John Wright <jsw@debian.org>  Wed, 30 Apr 2008 23:58:24 -0600
+
+python-debian (0.1.9) unstable; urgency=low
+
+  * Promote python-apt from Suggests to Recommends. (Closes: #462845)
+
+ -- Adeodato Simó <dato@net.com.org.es>  Wed, 06 Feb 2008 15:36:02 +0100
+
+python-debian (0.1.8) unstable; urgency=low
+
+  [ Filippo Giunchedi ]
+  * Move tests to a separate subdirectory.
+
+  [ Stefano Zacchiroli ]
+  * Add examples dir for deb822 with a simple example.
+
+  [ Adeodato Simó ]
+
+  * Sync debian_support.py with the latest version from the secure-testing
+    repository. Note that this removes support for version comparison without
+    apt_pkg. (Our copy was modified in 0.1.2 to *accept* ~ in version strings,
+    but comparison without apt_pkg was already broken by then.)
+
+    Also, undo the change introduced for #431087, since we shouldn't be
+    keeping incompatible versions of debian_support.py around, plus the
+    desired functionality in that bug report is best provided by the deb822
+    module. (Closes: #457697, #457854)
+
+  * While rewriting the grep-maintainer example to use deb822.Packages to
+    accommodate the above change, make it cope with stanzas without a
+    maintainer field as well. (Closes: #457855)
+
+  * Fix dump() method of deb822._multivalued. (Closes: #457929)
+
+  * Small improvements to the exception handling in the grep-maintainer
+    example.
+
+  * Bump Standards-Version to 3.7.3 (no changes needed).
+
+ -- Adeodato Simó <dato@net.com.org.es>  Fri, 28 Dec 2007 19:46:13 +0100
+
+python-debian (0.1.7) unstable; urgency=low
+
+  [ John Wright ]
+  * debian_bundle/deb822.py, debian_bundle/test_deb822.py
+    - Bug fix: Allow fields with blank (empty string) values.  Previously,
+      these were parsed fine, but if you tried to dump the resulting Deb822
+      object, you'd get an IndexError (because of how we handled fields whose
+      values start with newlines).  Added a test case.
+    - Fix the copy method of Deb822Dict so that it returns an object of the
+      same type, rather than explicitly instantiating Deb822Dict (so that
+      subclasses like Deb822 can directly use the copy method and have it "just
+      work").  Added a test case.
+
+  [ Stefano Zacchiroli ]
+  * debian/control
+    - mention the debfile module in the long description
+    - promote Vcs-Bzr to a real field, now that dpkg supports it
+
+ -- John Wright <jsw@debian.org>  Tue, 27 Nov 2007 16:25:33 -0700
+
+python-debian (0.1.6) unstable; urgency=low
+
+  [ Stefano Zacchiroli ]
+  * debfile.py
+    - bugfix: make md5sums top-level method acts as a proxy instead of
+      returning a method
+    - bugfix: use readlines() to iterate over the md5sums file since direct
+      iteration on files is available only in python >= 2.5 (closes: #438804)
+    - bugfix: support spaces in filenames when accessing md5sums; thanks to
+      Romain Francoise for the patch (closes: #438909)
+
+  [ John Wright ]
+  * debian/pyversions:
+    - Since there are some Python 2.4-isms in this package, support only Python
+      >= 2.4, rather than all versions (Closes: #438920)
+
+ -- Stefano Zacchiroli <zack@debian.org>  Sat, 08 Sep 2007 10:12:20 +0200
+
+python-debian (0.1.5) unstable; urgency=low
+
+  [ Stefano Zacchiroli ]
+  * debfile.py
+    - do not fail if extra ar members exist in a .deb, according to deb(5)
+      extra ar members should be ignored (Closes: #438486). Also add the
+      corresponding regression test to test_debfile.py
+    - support both the (buggy) file naming scheme for TarFile of python << 2.5
+      (e.g. "control") and of python >= 2.5 (e.g. "./control"). In addition,
+      enable users to specify file members in three equivalent formats:
+      "file", "./file", and "/file" (Closes: #438603)
+  * deb822.py
+    - add a deprecation warning (printed on stderr) when accessing the module
+      as a top-level one; it should be rather used as "debian_bundle.deb822"
+
+  [ John Wright ]
+  * examples/debfile/ar, examples/debfile/changelog_head,
+    examples/debfile/dpkg-info, examples/debfile/extract_cron:
+    - Fix ImportError caused by importing modules as if they were top-level
+      modules, rather than modules in the debian_bundle package
+      (Closes: #438428)
+
+ -- Stefano Zacchiroli <zack@debian.org>  Sun, 19 Aug 2007 09:38:20 +0200
+
+python-debian (0.1.4) unstable; urgency=low
+
+  [ James Westby ]
+  * changelog.py
+    - Add allow_empty_author option to changelog to allow the author line
+      to have no information.
+
+  [ Stefano Zacchiroli ]
+  * debian/control
+    - joining the team: add myself as an uploader
+    - add Vcs-Bzr field pointing to our Bzr repository on bzr.debian.org
+  * arfile.py / debfile.py
+    - new modules implementing (read-only) dpkg-deb like access to .deb
+      packages; when possible, access to information contained in .deb is made
+      available via other debian_bundle classes (e.g. Changelog, Deb822, ...)
+    - code contributed by Stefano Zacchiroli and Filippo Giunchedi
+    - corresponding examples in examples/debfile
+  * debian_support.py
+    - yield dictionaries instead of tuples in Packages parsing and normalize
+      to lower case 822 field names (Closes: #431087)
+    - no longer require a space after a ':' in RFC 822 fields; fix bogus
+      parse errors of Packages-like file with PackageFile() class
+  * examples/
+    - added grep-maintainer example to show the Packages parsing API
+
+  [ John Wright ]
+  * debian_bundle/deb822.py, debian_bundle/test_deb822.py, deb822.py:
+    - Import latest version of deb822, and create a "dummy" top-level module
+      for compatibility
+    - For multiline fields that start with a newline (e.g. Files in a .dsc,
+      MD5Sum in Release files), the line with the "Field:" should not end in
+      trailing whitespace.  Fixed and added test cases.
+  * setup.py:
+    - The version wasn't getting updated, so I've renamed it to setup.py.in,
+      and added a __CHANGELOG_VERSION__ placeholder
+  * debian/rules:
+    - Generate generate setup.py from setup.py.in, filling in the version
+      information from debian/changelog
+    - No longer delete deb822 files
+  * debian/control:
+    - Add myself as an uploader
+    - Add Provides, Conflicts, and Replaces fields for python-deb822
+    - When describing features, mention which modules they are implemented in
+  * HISTORY.deb822, debian/docs:
+    - Install old changelog for deb822 as
+      /usr/share/doc/python-debian/HISTORY.deb822
+  * debian_bundle/changelog.py:
+    - Accept numbers, '+', and '.' in the distribution field, to match dpkg's
+      behavior
+
+ -- John Wright <jsw@debian.org>  Sun,  5 Aug 2007 00:41:24 -0600
+
+python-debian (0.1.3) unstable; urgency=low
+
+  [ James Westby ]
+  * changelog.py
+    - Add max_blocks parameter to Changelog constructor. This limits the
+      number of blocks that will be parsed to that number. If you only need
+      the latest entry then pass max_blocks=1 and you will only have one
+      block. This is also useful to avoid trying to parse old changelog
+      entries that don't follow the current format. (Closes: #429357)
+
+  [ Reinhard Tartler ]
+  * debian_bundle/changelog.py: don't fail if a changelog block is not
+    parseable. Just return all changelog blocks we've been able to parse
+    so far. (Closes: #429299)
+
+ -- James Westby <jw+debian@jameswestby.net>  Sun, 17 Jun 2007 13:25:20 +0100
+
+python-debian (0.1.2) unstable; urgency=low
+
+  [ James Westby ]
+  * debian_support.py
+    - Support ~ in version numbers when python-apt is not installed.
+  * Turn on the testsuites of changelog.py, and debtags.py in the build.
+  * debtags.py
+    - Rename with to with_ to avoid a warning on python2.5 as with will be
+      a keyword in 2.6. (Closes: #409333)
+  * Suggest python-apt and mention why in the README.
+
+  [Reinhard Tartler]
+  * Fix the regex matching the end line of a debian/changelog. Using
+    improved regex contributed by Francois-Denis Gonthier, thanks!
+    (Closes: #410880)
+  * disable python_support.py testrun, it is missing in the branch.
+  * add myself to uploaders.
+
+ -- Reinhard Tartler <siretart@tauware.de>  Thu, 14 Jun 2007 19:54:13 +0100
+
+python-debian (0.1.1) unstable; urgency=low
+
+  [ John Wright ]
+  * changelog.py:
+    - Version class:
+      + Subclass debian_support.Version, for rich comparison
+      + Changing any attribute now automatically updates any other affected
+        attribute (i.e. changing full_version will update all of the other
+        attributes; changing debian_version will update full_version)
+    - Changelog class:
+      + Many "getter" and "setter" methods were replaced with properties (so
+        they appear as regular object attributes).  Most set_* methods remain
+        for compatibility, and they're the actual set methods for the
+        properties anyway.  Please see README.changelog.
+      + You can now assign a string to the version attribute, and it will be
+        coerced into a Version object
+
+  [ James Westby ]
+  * changelog.py:
+    - Added a method to write the changelog to an open file.
+    - Allow single digit day with no extra space in the endline of a
+      changelog. Hopefully this wont allow things to be parsed that will
+      be rejected by the more important tools. It does allow more files
+      to be parsed and used, and I'm not entirely sure what is right.
+    - Allow uppercase characters in the version number when parsing
+      changelogs. Thanks to Jelmer Vernooij for the report and the fix.
+  * README.changelog:
+    - Update the documentation to reflect the changes mentioned above
+  * Add debian/NEWS to warn of the API changes.
+
+  [ Enrico Zini ]
+  * debtags.py:
+    - Added various methods after the work on the inferrer of tag
+      relationships
+    - Added tagminer and pkgwalk examples
+
+ -- James Westby <jw+debian@jameswestby.net>  Tue, 30 Jan 2007 20:56:44 +0000
+
+python-debian (0.1.0) experimental; urgency=low
+
+  * Initial release. (Closes: #381599)
+
+ -- James Westby <jw+debian@jameswestby.net>  Tue, 15 Aug 2006 18:57:57 +0100

@@ -1,0 +1,43 @@
+chardet (40-0-0) unstable; urgency=low
+
+  * Ported to NCP4
+
+ -- Igor Pashev <igor.pashev@nexenta.com>  Sat, 16 Jul 2011 12:30:58 +0400
+
+chardet (2.0.1-1) unstable; urgency=low
+
+  [ Sandro Tosi ]
+  * Switch Vcs-Browser field to viewsvn
+
+  [ Piotr Ożarowski ]
+  * New upstream release (no changes in the code)
+  * Add /usr/bin/chardet (thanks to Ben Finney, closes: #479178)
+  * Convert package to dh sequencer and python-support
+  * debian/watch file updated (now points to the Python 2.X version)
+  * Bump Standards-Version to 3.8.3 (no changes needed)
+
+ -- Piotr Ożarowski <piotr@debian.org>  Wed, 11 Nov 2009 14:14:10 +0100
+
+chardet (1.0.1-1.1) unstable; urgency=low
+
+  * NMU. Rebuild to move files to /usr/share/pyshared. Closes: #490452.
+
+ -- Matthias Klose <doko@debian.org>  Fri, 18 Jul 2008 15:58:15 +0000
+
+chardet (1.0.1-1) unstable; urgency=low
+
+  * New upstream release
+  * New co-maintainer: Mark Pilgrim
+  * Changed my address to piotr@debian.org
+  * Added Vcs-Svn, Vcs-Browser and Homepage fields
+  * Debian packaging is now licenced under LGPL as well
+  * Bump Standards-Version to 3.7.3 (no changes needed)
+
+ -- Piotr Ożarowski <piotr@debian.org>  Wed, 05 Mar 2008 20:26:06 +0100
+
+chardet (1.0-1) unstable; urgency=low
+
+  * Initial release (closes: #375809)
+
+ -- Piotr Ozarowski <ozarow@gmail.com>  Sat,  8 Jul 2006 16:12:00 +0200
+
