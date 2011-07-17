@@ -1,0 +1,42 @@
+#!/bin/sh -e
+## 138_gold_asneeded.dpatch
+##
+## DP: Description: PR gold/11042: COPY relocs need for the dynamic object
+
+if [ $# -ne 1 ]; then
+    echo >&2 "`basename $0`: script expects -patch|-unpatch as argument"
+    exit 1
+fi
+
+[ -f debian/patches/00patch-opts ] && . debian/patches/00patch-opts
+patch_opts="${patch_opts:--f --no-backup-if-mismatch}"
+
+case "$1" in
+       -patch) patch $patch_opts -p1 < $0;;
+       -unpatch) patch $patch_opts -p1 -R < $0;;
+        *)
+                echo >&2 "`basename $0`: script expects -patch|-unpatch as argument"
+                exit 1;;
+esac
+
+exit 0
+
+2010-01-07  Ian Lance Taylor  <iant@google.com>
+
+	PR 11042
+	* copy-relocs.cc (Copy_relocs::emit_copy_reloc): Mark the dynamic
+	object as needed.
+
+@DPATCH@
+--- ./gold/copy-relocs.cc	30 Dec 2009 06:57:17 -0000	1.7
++++ ./gold/copy-relocs.cc	7 Jan 2010 19:32:05 -0000
+@@ -132,6 +132,9 @@ Copy_relocs<sh_type, size, big_endian>::
+   while ((value & (addralign - 1)) != 0)
+     addralign >>= 1;
+ 
++  // Mark the dynamic object as needed for the --as-needed option.
++  sym->object()->set_is_needed();
++
+   if (this->dynbss_ == NULL)
+     {
+       this->dynbss_ = new Output_data_space(addralign, "** dynbss");

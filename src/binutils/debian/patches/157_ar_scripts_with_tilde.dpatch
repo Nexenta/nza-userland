@@ -1,0 +1,34 @@
+#!/bin/sh -e
+## 157_ar_scripts_with_tilde.dpatch
+##
+## DP: Description: Allow ar scripts to contain ~ in the filename.
+
+if [ $# -ne 1 ]; then
+    echo >&2 "`basename $0`: script expects -patch|-unpatch as argument"
+    exit 1
+fi
+
+[ -f debian/patches/00patch-opts ] && . debian/patches/00patch-opts
+patch_opts="${patch_opts:--f --no-backup-if-mismatch}"
+
+case "$1" in
+       -patch) patch $patch_opts -p0 < $0;;
+       -unpatch) patch $patch_opts -p0 -R < $0;;
+        *)
+                echo >&2 "`basename $0`: script expects -patch|-unpatch as argument"
+                exit 1;;
+esac
+
+exit 0
+
+--- binutils/arlex.l
++++ binutils/arlex.l
+@@ -77,7 +77,7 @@
+ "("             { return '('; }
+ ")"             { return ')'; }
+ ","             { return ','; }
+-[A-Za-z0-9/\\$:.\-\_]+  { 	
++[A-Za-z0-9/\\$:.\-\_~]+  { 	
+ 		yylval.name =  xstrdup (yytext);
+ 		return FILENAME;
+ 		}

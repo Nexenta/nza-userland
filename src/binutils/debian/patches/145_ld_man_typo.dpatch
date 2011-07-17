@@ -1,0 +1,46 @@
+#!/bin/sh -e
+## 145_ld_man_typo.dpatch
+##
+## DP: Description: Fix typo in ld documentation.
+
+if [ $# -ne 1 ]; then
+    echo >&2 "`basename $0`: script expects -patch|-unpatch as argument"
+    exit 1
+fi
+
+[ -f debian/patches/00patch-opts ] && . debian/patches/00patch-opts
+patch_opts="${patch_opts:--f --no-backup-if-mismatch}"
+
+case "$1" in
+       -patch) patch $patch_opts -p1 < $0;;
+       -unpatch) patch $patch_opts -p1 -R < $0;;
+        *)
+                echo >&2 "`basename $0`: script expects -patch|-unpatch as argument"
+                exit 1;;
+esac
+
+exit 0
+
+@DPATCH@
+--- ./ld/ld.texinfo~	2010-03-08 13:42:15.301086114 +0100
++++ ./ld/ld.texinfo	2010-03-08 13:45:15.141094088 +0100
+@@ -1340,7 +1340,7 @@
+ relocations.  See @samp{--entry} and @samp{--undefined}.
+ 
+ This option can be set when doing a partial link (enabled with option
+-@samp{-r}).  In this case the root of symbols kept must be explicitely 
++@samp{-r}).  In this case the root of symbols kept must be explicitly
+ specified either by an @samp{--entry} or @samp{--undefined} option or by
+ a @code{ENTRY} command in the linker script.
+ 
+--- ./ld/ld.1~	2009-10-16 13:52:15.000000000 +0200
++++ ./ld/ld.1	2010-03-08 13:46:21.222335894 +0100
+@@ -1199,7 +1199,7 @@
+ relocations.  See \fB\-\-entry\fR and \fB\-\-undefined\fR.
+ .Sp
+ This option can be set when doing a partial link (enabled with option
+-\&\fB\-r\fR).  In this case the root of symbols kept must be explicitely 
++\&\fB\-r\fR).  In this case the root of symbols kept must be explicitly 
+ specified either by an \fB\-\-entry\fR or \fB\-\-undefined\fR option or by
+ a \f(CW\*(C`ENTRY\*(C'\fR command in the linker script.
+ .IP "\fB\-\-print\-gc\-sections\fR" 4

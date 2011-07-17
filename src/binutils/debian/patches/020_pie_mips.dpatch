@@ -1,0 +1,41 @@
+#!/bin/sh -e
+## 020_pie_mips.dpatch
+##
+## DP: Description: Fix -pie on mips/mipsel
+## DP: Author: Alan Modra <amodra@bigpond.net.au>
+## DP: Upstream status: in BTS, not yet merged
+
+if [ $# -ne 1 ]; then
+    echo >&2 "`basename $0`: script expects -patch|-unpatch as argument"
+    exit 1
+fi
+
+[ -f debian/patches/00patch-opts ] && . debian/patches/00patch-opts
+patch_opts="${patch_opts:--f --no-backup-if-mismatch}"
+
+case "$1" in
+       -patch) patch $patch_opts -p1 < $0;;
+       -unpatch) patch $patch_opts -p1 -R < $0;;
+        *)
+                echo >&2 "`basename $0`: script expects -patch|-unpatch as argument"
+                exit 1;;
+esac
+
+exit 0
+
+@DPATCH@
+--- a/bfd/elfxx-mips.c	18 Sep 2009 20:34:30 -0000	1.262
++++ b/bfd/elfxx-mips.c	4 Nov 2009 01:50:24 -0000
+@@ -5688,9 +5688,9 @@ mips_elf_create_dynamic_relocation (bfd 
+ 
+   /* We must now calculate the dynamic symbol table index to use
+      in the relocation.  */
+-  if (h != NULL
+-      && (!h->root.def_regular
+-	  || (info->shared && !info->symbolic && !h->root.forced_local)))
++  if (!(h == NULL
++	|| (h->root.def_regular
++	    && (info->executable || info->symbolic || h->root.forced_local))))
+     {
+       indx = h->root.dynindx;
+       if (SGI_COMPAT (output_bfd))

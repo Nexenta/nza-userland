@@ -1,0 +1,169 @@
+#!/bin/sh -e
+## 137_pr11138.dpatch.dpatch
+##
+## DP: Description: PR ld/11138: internal error when DSO is before object files
+
+if [ $# -ne 1 ]; then
+    echo >&2 "`basename $0`: script expects -patch|-unpatch as argument"
+    exit 1
+fi
+
+[ -f debian/patches/00patch-opts ] && . debian/patches/00patch-opts
+patch_opts="${patch_opts:--f --no-backup-if-mismatch}"
+
+case "$1" in
+       -patch) patch $patch_opts -p1 < $0;;
+       -unpatch) patch $patch_opts -p1 -R < $0;;
+        *)
+                echo >&2 "`basename $0`: script expects -patch|-unpatch as argument"
+                exit 1;;
+esac
+
+exit 0
+
+bfd/
+
+2010-01-07  H.J. Lu  <hongjiu.lu@intel.com>
+
+	PR ld/11138
+	* elflink.c (elf_link_check_versioned_symbol): Don't abort if
+	a symbol referenced by DSO is is defined in a non-shared object
+	and forced local.
+
+ld/testsuite/
+
+2010-01-07  H.J. Lu  <hongjiu.lu@intel.com>
+
+	PR ld/11138
+	* ld-elf/pr11138-1.c: New.
+	* ld-elf/pr11138-1.map: Likewise.
+	* ld-elf/pr11138-2.c: Likewise.
+	* ld-elf/pr11138-2.map: Likewise.
+	* ld-elf/pr11138.out: Likewise.
+
+	* ld-elf/shared.exp (build_tests): Add libpr11138-1.so and
+	libpr11138-2.o.
+	(run_tests): Add 2 tests for PR ld/11138.
+
+@DPATCH@
+diff --git a/bfd/elflink.c b/bfd/elflink.c
+index 297d46b..a27dc50 100644
+--- a/bfd/elflink.c
++++ b/bfd/elflink.c
+@@ -8492,10 +8492,14 @@ elf_link_check_versioned_symbol (struct bfd_link_info *info,
+ 
+ 	  _bfd_elf_swap_versym_in (input, ever, &iver);
+ 
+-	  if ((iver.vs_vers & VERSYM_HIDDEN) == 0)
++	  if ((iver.vs_vers & VERSYM_HIDDEN) == 0
++	      && !(h->def_regular
++		   && h->forced_local))
+ 	    {
+ 	      /* If we have a non-hidden versioned sym, then it should
+-		 have provided a definition for the undefined sym.  */
++		 have provided a definition for the undefined sym unless
++		 it is defined in a non-shared object and forced local.
++	       */
+ 	      abort ();
+ 	    }
+ 
+diff --git a/ld/testsuite/ld-elf/pr11138-1.c b/ld/testsuite/ld-elf/pr11138-1.c
+new file mode 100644
+index 0000000..2aab815
+--- /dev/null
++++ b/ld/testsuite/ld-elf/pr11138-1.c
+@@ -0,0 +1,13 @@
++#include <stdio.h>
++
++void
++bar (void)
++{
++  printf ("DSO bar\n");
++}
++
++void
++foo (void)
++{
++  bar ();
++}
+diff --git a/ld/testsuite/ld-elf/pr11138-1.map b/ld/testsuite/ld-elf/pr11138-1.map
+new file mode 100644
+index 0000000..8676b1f
+--- /dev/null
++++ b/ld/testsuite/ld-elf/pr11138-1.map
+@@ -0,0 +1,4 @@
++VERS_1 {
++  global: bar; foo;
++  local: *;
++};
+diff --git a/ld/testsuite/ld-elf/pr11138-2.c b/ld/testsuite/ld-elf/pr11138-2.c
+new file mode 100644
+index 0000000..ccca280
+--- /dev/null
++++ b/ld/testsuite/ld-elf/pr11138-2.c
+@@ -0,0 +1,17 @@
++#include <stdio.h>
++
++extern void foo (void);
++
++void
++bar (void)
++{
++  printf ("MAIN bar\n");
++}
++
++int
++main (void)
++{
++  bar ();
++  foo ();
++  return 0;
++}
+diff --git a/ld/testsuite/ld-elf/pr11138-2.map b/ld/testsuite/ld-elf/pr11138-2.map
+new file mode 100644
+index 0000000..1f8fb15
+--- /dev/null
++++ b/ld/testsuite/ld-elf/pr11138-2.map
+@@ -0,0 +1,4 @@
++{
++        global: main;
++        local: *;
++};
+diff --git a/ld/testsuite/ld-elf/pr11138.out b/ld/testsuite/ld-elf/pr11138.out
+new file mode 100644
+index 0000000..6dbdc49
+--- /dev/null
++++ b/ld/testsuite/ld-elf/pr11138.out
+@@ -0,0 +1,2 @@
++MAIN bar
++DSO bar
+diff --git a/ld/testsuite/ld-elf/shared.exp b/ld/testsuite/ld-elf/shared.exp
+index 3128e05..d0c3478 100644
+--- a/ld/testsuite/ld-elf/shared.exp
++++ b/ld/testsuite/ld-elf/shared.exp
+@@ -148,6 +148,12 @@ set build_tests {
+   {"Build libpr9679.so"
+    "-shared" "-fPIC -O0"
+    {pr9679-1.c pr9679-2.c} {{readelf {-s} pr9679.rd}} "libpr9679.so"}
++  {"Build libpr11138-1.so"
++   "-shared -Wl,--version-script=pr11138-1.map" "-fPIC"
++   {pr11138-1.c} {} "libpr11138-1.so"}
++  {"Build libpr11138-2.o"
++   "-r -nostdlib" ""
++   {pr11138-2.c} {} "libpr11138-2.o"}
+ }
+ 
+ set run_tests {
+@@ -266,6 +272,12 @@ set run_tests {
+     {"Run with comm1.o libfunc1.so"
+      "tmpdir/comm1.o tmpdir/libfunc1.so" ""
+      {dummy.c} "comm1" "pass.out"}
++    {"Run with pr11138-2.c libpr11138-1.so"
++     "--version-script=pr11138-2.map tmpdir/pr11138-2.o tmpdir/libpr11138-1.so" ""
++     {dummy.c} "pr11138a" "pr11138.out"}
++    {"Run with libpr11138-1.so pr11138-2.c"
++     "--version-script=pr11138-2.map tmpdir/libpr11138-1.so tmpdir/pr11138-2.o" ""
++     {dummy.c} "pr11138b" "pr11138.out"}
+ }
+ 
+ run_cc_link_tests $build_tests

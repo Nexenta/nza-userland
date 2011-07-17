@@ -1,0 +1,430 @@
+#!/bin/sh -e
+## 155_arm_attribute_support.dpatch
+# DP: Update ARM attribute support for Tag_DIV_use and Tag_MPextension_use
+
+if [ $# -ne 1 ]; then
+    echo >&2 "`basename $0`: script expects -patch|-unpatch as argument"
+    exit 1
+fi
+
+[ -f debian/patches/00patch-opts ] && . debian/patches/00patch-opts
+patch_opts="${patch_opts:--f --no-backup-if-mismatch}"
+
+case "$1" in
+       -patch) patch $patch_opts -p1 < $0;;
+       -unpatch) patch $patch_opts -p1 -R < $0;;
+        *)
+                echo >&2 "`basename $0`: script expects -patch|-unpatch as argument"
+                exit 1;;
+esac
+
+exit 0
+
+bfd/
+
+2010-02-18  Matthew Gretton-Dann  <matthew.gretton-dann@arm.com>
+
+	* elf32-arm.c (elf32_arm_merge_eabi_attributes): Add support for
+	merging Tag_DIV_use, Tag_MPextension_use, and
+	Tag_MPextension_use_legacy tags.
+
+binutils/
+
+2010-02-18  Matthew Gretton-Dann  <matthew.gretton-dann@arm.com>
+
+	* readelf.c (arm_attr_tag_Advanced_SIMD_arch): Add description of
+	newly permitted attribute values.
+	(arm_attr_tag_Virtualization_use): Likewise.
+	(arm_attr_tag_DIV_use): Add description of new attribute.
+	(arm_attr_tag_MPextension_use_legacy): Likewise.
+
+gas/
+
+2010-02-18  Matthew Gretton-Dann  <matthew.gretton-dann@arm.com>
+
+	* config/tc-arm.c (arm_convert_symbolic_attribute): Add Tag_DIV_use.
+	* doc/c-arm.texi: Likewise.
+
+gas/testsuite/
+
+2010-02-18  Matthew Gretton-Dann  <matthew.gretton-dann@arm.com>
+
+	* gas/arm/attr-order.d: Fix test for new names for attribute 
+	values.
+
+
+include/elf/
+
+2010-02-18  Matthew Gretton-Dann  <matthew.gretton-dann@arm.com>
+
+	* arm.h (Tag_MPextension_use): Renumber.
+	(Tag_DIV_use): Add.
+	(Tag_MPextension_use_legacy): Likewise.
+
+ld/testsuite/
+
+2010-02-18  Matthew Gretton-Dann  <matthew.gretton-dann@arm.com>
+
+	* ld-arm/attr-merge-6.attr: Add new test.  Missed off last commit.
+
+2010-02-18  Matthew Gretton-Dann  <matthew.gretton-dann@arm.com>
+
+	* ld-arm/attr-merge-3.attr: Fix test for new attribute values.
+	* ld-arm/attr-merge-3b.s: Likewise.
+	* ld-arm/attr-merge-unknown-1.d: Fix test now that 42 is a recognised
+	attribute ID.
+	* ld-arm/attr-merge-unknown-1.s: Likewise.
+	* ld-arm/attr-merge-6.attr: New test.
+	* ld-arm/attr-merge-6a.s: Likewise.
+	* ld-arm/attr-merge-6b.s: Likewise.
+	* ld-arm/attr-merge-7.attr: Likewise.
+	* ld-arm/attr-merge-7a.s: Likewise.
+	* ld-arm/attr-merge-7b.s: Likewise.
+	* ld-arm/arm-elf.exp: Run the new tests.
+
+@DPATCH@
+diff --git a/bfd/elf32-arm.c b/bfd/elf32-arm.c
+index 0661369..a0694c1 100644
+--- a/bfd/elf32-arm.c
++++ b/bfd/elf32-arm.c
+@@ -9812,11 +9812,33 @@ elf32_arm_merge_eabi_attributes (bfd *ibfd, bfd *obfd)
+       /* This is the first object.  Copy the attributes.  */
+       _bfd_elf_copy_obj_attributes (ibfd, obfd);
+ 
++      out_attr = elf_known_obj_attributes_proc (obfd);
++
+       /* Use the Tag_null value to indicate the attributes have been
+ 	 initialized.  */
+-      elf_known_obj_attributes_proc (obfd)[0].i = 1;
++      out_attr[0].i = 1;
+ 
+-      return TRUE;
++      /* We do not output objects with Tag_MPextension_use_legacy - we move
++	 the attribute's value to Tag_MPextension_use.  */
++      if (out_attr[Tag_MPextension_use_legacy].i != 0)
++	{
++	  if (out_attr[Tag_MPextension_use].i != 0
++	      && out_attr[Tag_MPextension_use_legacy].i
++	        != out_attr[Tag_MPextension_use].i)
++	    {
++	      _bfd_error_handler
++		(_("Error: %B has both the current and legacy "
++		   "Tag_MPextension_use attributes"), ibfd);
++	      result = FALSE;
++	    }
++
++	  out_attr[Tag_MPextension_use] =
++	    out_attr[Tag_MPextension_use_legacy];
++	  out_attr[Tag_MPextension_use_legacy].type = 0;
++	  out_attr[Tag_MPextension_use_legacy].i = 0;
++	}
++
++      return result;
+     }
+ 
+   in_attr = elf_known_obj_attributes_proc (ibfd);
+@@ -10151,6 +10173,52 @@ elf32_arm_merge_eabi_attributes (bfd *ibfd, bfd *obfd)
+ 	    out_attr[i].i = in_attr[i].i;
+ 	  break;
+ 
++	case Tag_DIV_use:
++	  /* This tag is set to zero if we can use UDIV and SDIV in Thumb
++	     mode on a v7-M or v7-R CPU; to one if we can not use UDIV or
++	     SDIV at all; and to two if we can use UDIV or SDIV on a v7-A
++	     CPU.  We will merge as follows: If the input attribute's value
++	     is one then the output attribute's value remains unchanged.  If
++	     the input attribute's value is zero or two then if the output
++	     attribute's value is one the output value is set to the input
++	     value, otherwise the output value must be the same as the
++	     inputs.  */ 
++	  if (in_attr[i].i != 1 && out_attr[i].i != 1) 
++	    { 
++	      if (in_attr[i].i != out_attr[i].i)
++		{
++		  _bfd_error_handler
++		    (_("DIV usage mismatch between %B and %B"),
++		     ibfd, obfd); 
++		  result = FALSE;
++		}
++	    } 
++
++	  if (in_attr[i].i != 1)
++	    out_attr[i].i = in_attr[i].i; 
++	  
++	  break;
++
++	case Tag_MPextension_use_legacy:
++	  /* We don't output objects with Tag_MPextension_use_legacy - we
++	     move the value to Tag_MPextension_use.  */
++	  if (in_attr[i].i != 0 && in_attr[Tag_MPextension_use].i != 0)
++	    {
++	      if (in_attr[Tag_MPextension_use].i != in_attr[i].i)
++		{
++		  _bfd_error_handler
++		    (_("%B has has both the current and legacy "
++		       "Tag_MPextension_use attributes"), 
++		     ibfd);
++		  result = FALSE;
++		}
++	    }
++
++	  if (in_attr[i].i > out_attr[Tag_MPextension_use].i)
++	    out_attr[Tag_MPextension_use] = in_attr[i];
++
++	  break;
++
+ 	case Tag_nodefaults:
+ 	  /* This tag is set if it exists, but the value is unused (and is
+ 	     typically zero).  We don't actually need to do anything here -
+diff --git a/binutils/readelf.c b/binutils/readelf.c
+index 6994289..b5d766f 100644
+--- a/binutils/readelf.c
++++ b/binutils/readelf.c
+@@ -9071,7 +9071,8 @@ static const char * arm_attr_tag_THUMB_ISA_use[] =
+ static const char * arm_attr_tag_VFP_arch[] =
+   {"No", "VFPv1", "VFPv2", "VFPv3", "VFPv3-D16", "VFPv4", "VFPv4-D16"};
+ static const char * arm_attr_tag_WMMX_arch[] = {"No", "WMMXv1", "WMMXv2"};
+-static const char * arm_attr_tag_Advanced_SIMD_arch[] = {"No", "NEONv1"};
++static const char * arm_attr_tag_Advanced_SIMD_arch[] = 
++  {"No", "NEONv1", "NEONv1 with Fused-MAC"};
+ static const char * arm_attr_tag_PCS_config[] =
+   {"None", "Bare platform", "Linux application", "Linux DSO", "PalmOS 2004",
+    "PalmOS (reserved)", "SymbianOS 2004", "SymbianOS (reserved)"};
+@@ -9114,10 +9115,17 @@ static const char * arm_attr_tag_VFP_HP_extension[] =
+   {"Not Allowed", "Allowed"};
+ static const char * arm_attr_tag_ABI_FP_16bit_format[] =
+   {"None", "IEEE 754", "Alternative Format"};
++static const char * arm_attr_tag_MPextension_use[] = 
++  {"Not Allowed", "Allowed"};
++static const char * arm_attr_tag_DIV_use[] =
++  {"Allowed in Thumb-ISA, v7-R or v7-M", "Not allowed", 
++    "Allowed in v7-A with integer division extension"};
+ static const char * arm_attr_tag_T2EE_use[] = {"Not Allowed", "Allowed"};
+ static const char * arm_attr_tag_Virtualization_use[] =
++  {"Not Allowed", "TrustZone", "Virtualization Extensions", 
++    "TrustZone and Virtualization Extensions"};
++static const char * arm_attr_tag_MPextension_use_legacy[] = 
+   {"Not Allowed", "Allowed"};
+-static const char * arm_attr_tag_MPextension_use[] = {"Not Allowed", "Allowed"};
+ 
+ #define LOOKUP(id, name) \
+   {id, #name, 0x80 | ARRAY_SIZE(arm_attr_tag_##name), arm_attr_tag_##name}
+@@ -9155,12 +9163,14 @@ static arm_attr_public_tag arm_attr_public_tags[] =
+   LOOKUP(34, CPU_unaligned_access),
+   LOOKUP(36, VFP_HP_extension),
+   LOOKUP(38, ABI_FP_16bit_format),
++  LOOKUP(42, MPextension_use),
++  LOOKUP(44, DIV_use),
+   {64, "nodefaults", 0, NULL},
+   {65, "also_compatible_with", 0, NULL},
+   LOOKUP(66, T2EE_use),
+   {67, "conformance", 1, NULL},
+   LOOKUP(68, Virtualization_use),
+-  LOOKUP(70, MPextension_use)
++  LOOKUP(70, MPextension_use_legacy)
+ };
+ #undef LOOKUP
+ 
+diff --git a/gas/config/tc-arm.c b/gas/config/tc-arm.c
+index 4706600..04b3f70 100644
+--- a/gas/config/tc-arm.c
++++ b/gas/config/tc-arm.c
+@@ -23043,12 +23043,14 @@ arm_convert_symbolic_attribute (const char *name)
+       T (Tag_CPU_unaligned_access),
+       T (Tag_VFP_HP_extension),
+       T (Tag_ABI_FP_16bit_format),
++      T (Tag_MPextension_use),
++      T (Tag_DIV_use),
+       T (Tag_nodefaults),
+       T (Tag_also_compatible_with),
+       T (Tag_conformance),
+       T (Tag_T2EE_use),
+       T (Tag_Virtualization_use),
+-      T (Tag_MPextension_use)
++      /* We deliberately do not include Tag_MPextension_use_legacy.  */
+ #undef T
+     };
+   unsigned int i;
+diff --git a/gas/doc/c-arm.texi b/gas/doc/c-arm.texi
+index 69ed6b6..11d7215 100644
+--- a/gas/doc/c-arm.texi
++++ b/gas/doc/c-arm.texi
+@@ -587,9 +587,10 @@ The @var{tag} is either an attribute number, or one of the following:
+ @code{Tag_ABI_optimization_goals}, @code{Tag_ABI_FP_optimization_goals},
+ @code{Tag_compatibility}, @code{Tag_CPU_unaligned_access},
+ @code{Tag_VFP_HP_extension}, @code{Tag_ABI_FP_16bit_format},
++@code{Tag_MPextension_use}, @code{Tag_DIV_use},
+ @code{Tag_nodefaults}, @code{Tag_also_compatible_with},
+ @code{Tag_conformance}, @code{Tag_T2EE_use},
+-@code{Tag_Virtualization_use}, @code{Tag_MPextension_use}
++@code{Tag_Virtualization_use}
+ 
+ The @var{value} is either a @code{number}, @code{"string"}, or
+ @code{number, "string"} depending on the tag.
+diff --git a/gas/testsuite/gas/arm/attr-order.d b/gas/testsuite/gas/arm/attr-order.d
+index 3f10867..83f9f68 100644
+--- a/gas/testsuite/gas/arm/attr-order.d
++++ b/gas/testsuite/gas/arm/attr-order.d
+@@ -16,4 +16,4 @@ File Attributes
+   Tag_unknown_63: "val"
+   Tag_also_compatible_with: v6-M
+   Tag_T2EE_use: Allowed
+-  Tag_Virtualization_use: Allowed
++  Tag_Virtualization_use: TrustZone
+diff --git a/include/elf/arm.h b/include/elf/arm.h
+index 6011780..94c44d4 100644
+--- a/include/elf/arm.h
++++ b/include/elf/arm.h
+@@ -288,13 +288,18 @@ enum
+   Tag_undefined37,
+   Tag_ABI_FP_16bit_format,
+   Tag_undefined39,
++  Tag_undefined40,
++  Tag_undefined41,
++  Tag_MPextension_use,
++  Tag_undefined_43,
++  Tag_DIV_use,
+   Tag_nodefaults = 64,
+   Tag_also_compatible_with,
+   Tag_T2EE_use,
+   Tag_conformance,
+   Tag_Virtualization_use,
+   Tag_undefined69,
+-  Tag_MPextension_use
++  Tag_MPextension_use_legacy
+ };
+ 
+ #endif
+diff --git a/ld/testsuite/ld-arm/arm-elf.exp b/ld/testsuite/ld-arm/arm-elf.exp
+index a207a79..ed9cb74 100644
+--- a/ld/testsuite/ld-arm/arm-elf.exp
++++ b/ld/testsuite/ld-arm/arm-elf.exp
+@@ -296,6 +296,15 @@ set armeabitests {
+      {"EABI attribute merging 5" "-r" "" {attr-merge-5.s attr-merge-5.s}
+       {{readelf -A attr-merge-5.attr}}
+       "attr-merge-5"}
++     {"EABI attribute merging 6" "-r" "" {attr-merge-6a.s attr-merge-6b.s}
++      {{readelf -A attr-merge-6.attr}}
++      "attr-merge-6"}
++     {"EABI attribute merging 6 reversed" "-r" "" {attr-merge-6b.s attr-merge-6a.s}
++      {{readelf -A attr-merge-6.attr}}
++      "attr-merge-6r"}
++     {"EABI attribute merging 7" "-r" "" {attr-merge-7a.s attr-merge-7b.s}
++      {{readelf -A attr-merge-7.attr}}
++      "attr-merge-7"}
+      {"EABI attribute arch merging 1" "-r" "" {arch-v6k.s arch-v6t2.s}
+       {{readelf -A attr-merge-arch-1.attr}}
+       "attr-merge-arch-1"}
+diff --git a/ld/testsuite/ld-arm/attr-merge-3.attr b/ld/testsuite/ld-arm/attr-merge-3.attr
+index e4e06e1..b865181 100644
+--- a/ld/testsuite/ld-arm/attr-merge-3.attr
++++ b/ld/testsuite/ld-arm/attr-merge-3.attr
+@@ -26,6 +26,6 @@ File Attributes
+   Tag_ABI_VFP_args: VFP registers
+   Tag_CPU_unaligned_access: v6
+   Tag_VFP_HP_extension: Allowed
+-  Tag_T2EE_use: Allowed
+-  Tag_Virtualization_use: Allowed
+   Tag_MPextension_use: Allowed
++  Tag_T2EE_use: Allowed
++  Tag_Virtualization_use: TrustZone
+diff --git a/ld/testsuite/ld-arm/attr-merge-3b.s b/ld/testsuite/ld-arm/attr-merge-3b.s
+index b858482..73d6590 100644
+--- a/ld/testsuite/ld-arm/attr-merge-3b.s
++++ b/ld/testsuite/ld-arm/attr-merge-3b.s
+@@ -33,6 +33,6 @@
+ 	.eabi_attribute Tag_nodefaults, 1
+ 	@ .eabi_attribute Tag_also_compatible_with,
+ 	.eabi_attribute Tag_T2EE_use, 1
+-	.eabi_attribute Tag_conformance, "2.07"
++	.eabi_attribute Tag_conformance, "2.08"
+ 	.eabi_attribute Tag_Virtualization_use, 1
+ 	.eabi_attribute Tag_MPextension_use, 1
+diff --git a/ld/testsuite/ld-arm/attr-merge-6.attr b/ld/testsuite/ld-arm/attr-merge-6.attr
+new file mode 100644
+index 0000000..e996c93
+--- /dev/null
++++ b/ld/testsuite/ld-arm/attr-merge-6.attr
+@@ -0,0 +1,9 @@
++Attribute Section: aeabi
++File Attributes
++  Tag_CPU_name: "CORTEX-A9"
++  Tag_CPU_arch: v7
++  Tag_CPU_arch_profile: Application
++  Tag_ARM_ISA_use: Yes
++  Tag_THUMB_ISA_use: Thumb-2
++  Tag_MPextension_use: Allowed
++
+diff --git a/ld/testsuite/ld-arm/attr-merge-6a.s b/ld/testsuite/ld-arm/attr-merge-6a.s
+new file mode 100644
+index 0000000..056d8c8
+--- /dev/null
++++ b/ld/testsuite/ld-arm/attr-merge-6a.s
+@@ -0,0 +1,4 @@
++	.cpu cortex-a9
++	.fpu softvfp
++	.eabi_attribute 70, 1
++	.file	"attr-merge-6a.s"
+diff --git a/ld/testsuite/ld-arm/attr-merge-6b.s b/ld/testsuite/ld-arm/attr-merge-6b.s
+new file mode 100644
+index 0000000..b9ef4d2
+--- /dev/null
++++ b/ld/testsuite/ld-arm/attr-merge-6b.s
+@@ -0,0 +1,3 @@
++	.cpu cortex-a9
++	.fpu softvfp
++	.file	"attr-merge-6b.s"
+diff --git a/ld/testsuite/ld-arm/attr-merge-7.attr b/ld/testsuite/ld-arm/attr-merge-7.attr
+new file mode 100644
+index 0000000..e996c93
+--- /dev/null
++++ b/ld/testsuite/ld-arm/attr-merge-7.attr
+@@ -0,0 +1,9 @@
++Attribute Section: aeabi
++File Attributes
++  Tag_CPU_name: "CORTEX-A9"
++  Tag_CPU_arch: v7
++  Tag_CPU_arch_profile: Application
++  Tag_ARM_ISA_use: Yes
++  Tag_THUMB_ISA_use: Thumb-2
++  Tag_MPextension_use: Allowed
++
+diff --git a/ld/testsuite/ld-arm/attr-merge-7a.s b/ld/testsuite/ld-arm/attr-merge-7a.s
+new file mode 100644
+index 0000000..d875d28
+--- /dev/null
++++ b/ld/testsuite/ld-arm/attr-merge-7a.s
+@@ -0,0 +1,4 @@
++	.cpu cortex-a9
++	.fpu softvfp
++	.eabi_attribute 70, 1
++	.file	"attr-merge-7a.s"
+diff --git a/ld/testsuite/ld-arm/attr-merge-7b.s b/ld/testsuite/ld-arm/attr-merge-7b.s
+new file mode 100644
+index 0000000..2e83e71
+--- /dev/null
++++ b/ld/testsuite/ld-arm/attr-merge-7b.s
+@@ -0,0 +1,4 @@
++	.cpu cortex-a9
++	.fpu softvfp
++	.eabi_attribute Tag_MPextension_use, 1
++	.file	"attr-merge-7b.s"
+diff --git a/ld/testsuite/ld-arm/attr-merge-unknown-1.d b/ld/testsuite/ld-arm/attr-merge-unknown-1.d
+index 395d2b6..38acff9 100644
+--- a/ld/testsuite/ld-arm/attr-merge-unknown-1.d
++++ b/ld/testsuite/ld-arm/attr-merge-unknown-1.d
+@@ -2,4 +2,4 @@
+ #source: blank.s
+ #as:
+ #ld:
+-#error: Unknown mandatory EABI object attribute 42
++#error: Unknown mandatory EABI object attribute 40
+diff --git a/ld/testsuite/ld-arm/attr-merge-unknown-1.s b/ld/testsuite/ld-arm/attr-merge-unknown-1.s
+index 298c673..d2cff1f 100644
+--- a/ld/testsuite/ld-arm/attr-merge-unknown-1.s
++++ b/ld/testsuite/ld-arm/attr-merge-unknown-1.s
+@@ -1,3 +1,3 @@
+ 	@ This attrubute is supposed to be unknown.
+ 	@ If this number should become known, change it.
+-	.eabi_attribute  42, 1
++	.eabi_attribute  40, 1

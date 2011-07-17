@@ -1,0 +1,45 @@
+#!/bin/sh -e
+## 132_libiberty_sh.dpatch
+##
+## DP: Description: libiberty build fix for sh
+## DP: Author: Nobuhiro Iwamatsu
+
+if [ $# -ne 1 ]; then
+    echo >&2 "`basename $0`: script expects -patch|-unpatch as argument"
+    exit 1
+fi
+
+[ -f debian/patches/00patch-opts ] && . debian/patches/00patch-opts
+patch_opts="${patch_opts:--f --no-backup-if-mismatch}"
+
+case "$1" in
+       -patch) patch $patch_opts -p1 < $0;;
+       -unpatch) patch $patch_opts -p1 -R < $0;;
+        *)
+                echo >&2 "`basename $0`: script expects -patch|-unpatch as argument"
+                exit 1;;
+esac
+
+exit 0
+
+@DPATCH@
+--- a/libiberty/configure.ac
++++ b/libiberty/configure.ac
+@@ -217,6 +217,7 @@ if [[ "${shared}" = "yes" ]]; then
+ 			  * ) PICFLAG=-fPIC ;;
+ 			esac ;;
+     s390*-*-*)		PICFLAG=-fpic ;;
++    sh*-*-*)		PICFLAG=-fPIC ;;
+   esac
+ fi
+ AC_SUBST(PICFLAG)
+--- a/libiberty/configure
++++ b/libiberty/configure
+@@ -4860,6 +4860,7 @@ if [ "${shared}" = "yes" ]; then
+ 			  * ) PICFLAG=-fPIC ;;
+ 			esac ;;
+     s390*-*-*)		PICFLAG=-fpic ;;
++    sh*-*-*)	PICFLAG=-fPIC ;;
+   esac
+ fi
+ 

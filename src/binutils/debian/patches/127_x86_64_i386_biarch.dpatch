@@ -1,0 +1,42 @@
+#!/bin/sh -e
+## 127_x86_64_i386_biarch.dpatch
+##
+## DP: Description: Add (/usr)/lib32 to the search paths on x86_64.
+## DP: Author: Aurelien Jarno <aurel32.debian.org>
+## DP: Upstream status: Debian specific
+
+if [ $# -ne 1 ]; then
+    echo >&2 "`basename $0`: script expects -patch|-unpatch as argument"
+    exit 1
+fi
+
+[ -f debian/patches/00patch-opts ] && . debian/patches/00patch-opts
+patch_opts="${patch_opts:--f --no-backup-if-mismatch}"
+
+case "$1" in
+       -patch) patch $patch_opts -p1 < $0;;
+       -unpatch) patch $patch_opts -p1 -R < $0;;
+        *)
+                echo >&2 "`basename $0`: script expects -patch|-unpatch as argument"
+                exit 1;;
+esac
+
+exit 0
+
+@DPATCH@
+--- ./ld/emulparams/elf_i386.sh~	2009-07-29 16:59:23.000000000 +0200
++++ ./ld/emulparams/elf_i386.sh	2009-08-05 10:38:57.000000000 +0200
+@@ -13,3 +13,13 @@
+ NO_SMALL_DATA=yes
+ SEPARATE_GOTPLT=12
+ IREL_IN_PLT=
++
++# Linux modify the default library search path to first include
++# a 32-bit specific directory.
++case "$target" in
++  x86_64*-linux* | i[3-7]86*-linux* | x86_64*-kfreebsd*-gnu | i[3-7]86*-kfreebsd*-gnu)
++    case "$EMULATION_NAME" in
++      *i386*) LIBPATH_SUFFIX=32 ;;
++    esac
++    ;;
++esac

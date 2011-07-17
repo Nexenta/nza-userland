@@ -1,0 +1,2 @@
+libbfd 2.20.1-spu.20100303 binutils-spu (>= 2.20.1), binutils-spu (<< 2.20.2)
+libopcodes 2.20.1-spu.20100303 binutils-spu (>= 2.20.1), binutils-spu (<< 2.20.2)

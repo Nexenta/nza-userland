@@ -1,0 +1,201 @@
+#!/bin/sh -e
+## 151_arm_opt_merge_exidx_entries.dpatch
+##
+## DP: Description: ARM: Add option to disable merging of adjacent exidx
+## DP: Description: unwinder entries.
+
+if [ $# -ne 1 ]; then
+    echo >&2 "`basename $0`: script expects -patch|-unpatch as argument"
+    exit 1
+fi
+
+[ -f debian/patches/00patch-opts ] && . debian/patches/00patch-opts
+patch_opts="${patch_opts:--f --no-backup-if-mismatch}"
+
+case "$1" in
+       -patch) patch $patch_opts -p0 < $0;;
+       -unpatch) patch $patch_opts -p0 -R < $0;;
+        *)
+                echo >&2 "`basename $0`: script expects -patch|-unpatch as argument"
+                exit 1;;
+esac
+
+exit 0
+
+Subject: Patch: ARM disable merging of adjacent exidx unwinder entries
+
+Merging exidx unwinder entries makes stack unwinding in gcj impossible.
+This patch adds a new linker switch, --no-merge-exidx-entries, which
+turns it off.  I've been quite careful not to affect the anything in
+elf32_arm_fix_exidx_coverage except this one thing.
+
+OK to apply?
+
+More info at http://gcc.gnu.org/bugzilla/show_bug.cgi?id=40860
+
+Andrew.
+
+
+2010-04-15  Andrew Haley  <aph@redhat.com>
+
+	* emultempl/armelf.em (merge_exidx_entries): New variable.
+	(OPTION_NO_MERGE_EXIDX_ENTRIES): New definition.
+	("no-merge-exidx-entries"): New option.
+	* ld.texinfo (merge-exidx-entries): Document this option.
+
+2010-04-15  Andrew Haley  <aph@redhat.com>
+
+	* bfd-in.h (elf32_arm_fix_exidx_coverage): Add new flag:
+	merge_exidx_entries.
+	* bfd-in2.h: Likewise.
+	* elf32-arm.c (elf32_arm_fix_exidx_coverage): Likewise.  Use it to
+	control merging of exidx entries.
+	
+@DPATCH@
+Index: bfd/bfd-in.h
+===================================================================
+RCS file: /cvs/src/src/bfd/bfd-in.h,v
+retrieving revision 1.150
+diff -u -r1.150 bfd-in.h
+--- bfd/bfd-in.h	26 Mar 2010 08:34:24 -0000	1.150
++++ bfd/bfd-in.h	15 Apr 2010 17:48:44 -0000
+@@ -906,7 +906,7 @@
+ 
+ /* ARM unwind section editing support.  */
+ extern bfd_boolean elf32_arm_fix_exidx_coverage
+-  (struct bfd_section **, unsigned int, struct bfd_link_info *);
++(struct bfd_section **, unsigned int, struct bfd_link_info *, bfd_boolean);
+ 
+ /* PowerPC @tls opcode transform/validate.  */
+ extern unsigned int _bfd_elf_ppc_at_tls_transform
+Index: bfd/bfd-in2.h
+===================================================================
+RCS file: /cvs/src/src/bfd/bfd-in2.h,v
+retrieving revision 1.511
+diff -u -r1.511 bfd-in2.h
+--- bfd/bfd-in2.h	1 Apr 2010 09:47:13 -0000	1.511
++++ bfd/bfd-in2.h	15 Apr 2010 17:48:45 -0000
+@@ -913,7 +913,7 @@
+ 
+ /* ARM unwind section editing support.  */
+ extern bfd_boolean elf32_arm_fix_exidx_coverage
+-  (struct bfd_section **, unsigned int, struct bfd_link_info *);
++  (struct bfd_section **, unsigned int, struct bfd_link_info *, bfd_boolean);
+ 
+ /* PowerPC @tls opcode transform/validate.  */
+ extern unsigned int _bfd_elf_ppc_at_tls_transform
+Index: bfd/elf32-arm.c
+===================================================================
+RCS file: /cvs/src/src/bfd/elf32-arm.c,v
+retrieving revision 1.231
+diff -u -r1.231 elf32-arm.c
+--- bfd/elf32-arm.c	29 Mar 2010 20:42:55 -0000	1.231
++++ bfd/elf32-arm.c	15 Apr 2010 17:48:46 -0000
+@@ -9215,6 +9215,8 @@
+      2. Duplicate entries are merged together (EXIDX_CANTUNWIND, or unwind
+         codes which have been inlined into the index).
+ 
++   If MERGE_EXIDX_ENTRIES is false, duplicate entries are not merged.
++
+    The edits are applied when the tables are written
+    (in elf32_arm_write_section).
+ */
+@@ -9222,7 +9224,8 @@
+ bfd_boolean
+ elf32_arm_fix_exidx_coverage (asection **text_section_order,
+ 			      unsigned int num_text_sections,
+-			      struct bfd_link_info *info)
++			      struct bfd_link_info *info,
++			      bfd_boolean merge_exidx_entries)
+ {
+   bfd *inp;
+   unsigned int last_second_word = 0, i;
+@@ -9334,7 +9337,8 @@
+ 	  /* Inlined unwinding data.  Merge if equal to previous.  */
+ 	  else if ((second_word & 0x80000000) != 0)
+ 	    {
+-	      if (last_second_word == second_word && last_unwind_type == 1)
++	      if (merge_exidx_entries
++		   && last_second_word == second_word && last_unwind_type == 1)
+ 		elide = 1;
+ 	      unwind_type = 1;
+ 	      last_second_word = second_word;
+Index: ld/ld.texinfo
+===================================================================
+RCS file: /cvs/src/src/ld/ld.texinfo,v
+retrieving revision 1.258
+diff -u -r1.258 ld.texinfo
+--- ld/ld.texinfo	5 Apr 2010 09:04:08 -0000	1.258
++++ ld/ld.texinfo	15 Apr 2010 17:48:50 -0000
+@@ -5939,6 +5939,10 @@
+ 
+ The erratum only affects Thumb-2 code.  Please contact ARM for further details.
+ 
++@kindex --merge-exidx-entries
++@kindex --no-merge-exidx-entries
++The @samp{--no-merge-exidx-entries} switch disables the merging of adjacent exidx entries in debuginfo.
++
+ @ifclear GENERIC
+ @lowersections
+ @end ifclear
+Index: ld/emultempl/armelf.em
+===================================================================
+RCS file: /cvs/src/src/ld/emultempl/armelf.em,v
+retrieving revision 1.78
+diff -u -r1.78 armelf.em
+--- ld/emultempl/armelf.em	5 Feb 2010 13:57:47 -0000	1.78
++++ ld/emultempl/armelf.em	15 Apr 2010 17:48:50 -0000
+@@ -41,6 +41,7 @@
+ static int no_enum_size_warning = 0;
+ static int no_wchar_size_warning = 0;
+ static int pic_veneer = 0;
++static int merge_exidx_entries = -1;
+ 
+ static void
+ gld${EMULATION_NAME}_before_parse (void)
+@@ -314,7 +315,8 @@
+ 	
+       qsort (sec_list, sec_count, sizeof (asection *), &compare_output_sec_vma);
+       
+-      if (elf32_arm_fix_exidx_coverage (sec_list, sec_count, &link_info))
++      if (elf32_arm_fix_exidx_coverage (sec_list, sec_count, &link_info,
++					   merge_exidx_entries))
+ 	need_laying_out = 1;
+       
+       free (sec_list);
+@@ -526,6 +528,7 @@
+ #define OPTION_NO_WCHAR_SIZE_WARNING	313
+ #define OPTION_FIX_CORTEX_A8		314
+ #define OPTION_NO_FIX_CORTEX_A8		315
++#define OPTION_NO_MERGE_EXIDX_ENTRIES   316
+ '
+ 
+ PARSE_AND_LIST_SHORTOPTS=p
+@@ -547,6 +550,7 @@
+   { "no-wchar-size-warning", no_argument, NULL, OPTION_NO_WCHAR_SIZE_WARNING},
+   { "fix-cortex-a8", no_argument, NULL, OPTION_FIX_CORTEX_A8 },
+   { "no-fix-cortex-a8", no_argument, NULL, OPTION_NO_FIX_CORTEX_A8 },
++  { "no-merge-exidx-entries", no_argument, NULL, OPTION_NO_MERGE_EXIDX_ENTRIES },
+ '
+ 
+ PARSE_AND_LIST_OPTIONS='
+@@ -574,6 +578,8 @@
+                            the linker should choose suitable defaults.\n"
+  		   ));
+   fprintf (file, _("  --[no-]fix-cortex-a8        Disable/enable Cortex-A8 Thumb-2 branch erratum fix\n"));
++  fprintf (file, _("  --no-merge-exidx-entries    Disable merging exidx entries\n"));
++ 
+ '
+ 
+ PARSE_AND_LIST_ARGS_CASES='
+@@ -653,6 +659,10 @@
+     case OPTION_NO_FIX_CORTEX_A8:
+       fix_cortex_a8 = 0;
+       break;
++
++   case OPTION_NO_MERGE_EXIDX_ENTRIES:
++      merge_exidx_entries = 0;
++
+ '
+ 
+ # We have our own before_allocation etc. functions, but they call

@@ -1,0 +1,52 @@
+#!/bin/sh -e
+## 001_ld_makefile_patch.dpatch
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: Description: correct where ld scripts are installed
+## DP: Author: Chris Chimelis <chris@debian.org>
+## DP: Upstream status: N/A
+## DP: Date: ??
+
+if [ $# -ne 1 ]; then
+    echo >&2 "`basename $0`: script expects -patch|-unpatch as argument"
+    exit 1
+fi
+
+[ -f debian/patches/00patch-opts ] && . debian/patches/00patch-opts
+patch_opts="${patch_opts:--f --no-backup-if-mismatch}"
+
+case "$1" in
+       -patch) patch $patch_opts -p1 < $0;;
+       -unpatch) patch $patch_opts -p1 -R < $0;;
+        *)
+                echo >&2 "`basename $0`: script expects -patch|-unpatch as argument"
+                exit 1;;
+esac
+
+exit 0
+
+@DPATCH@
+diff -urNad --exclude=CVS --exclude=.svn ./ld/Makefile.am /tmp/dpep-work.eKU2vW/binutils-2.16.1cvs20050902/ld/Makefile.am
+--- ./ld/Makefile.am	2005-08-31 03:27:36.000000000 +0000
++++ /tmp/dpep-work.eKU2vW/binutils-2.16.1cvs20050902/ld/Makefile.am	2005-09-02 21:42:18.000000000 +0000
+@@ -20,7 +20,7 @@
+ # We put the scripts in the directory $(scriptdir)/ldscripts.
+ # We can't put the scripts in $(datadir) because the SEARCH_DIR
+ # directives need to be different for native and cross linkers.
+-scriptdir = $(tooldir)/lib
++scriptdir = $(libdir)
+ 
+ EMUL = @EMUL@
+ EMULATION_OFILES = @EMULATION_OFILES@
+diff -urNad --exclude=CVS --exclude=.svn ./ld/Makefile.in /tmp/dpep-work.eKU2vW/binutils-2.16.1cvs20050902/ld/Makefile.in
+--- ./ld/Makefile.in	2005-08-31 03:27:36.000000000 +0000
++++ /tmp/dpep-work.eKU2vW/binutils-2.16.1cvs20050902/ld/Makefile.in	2005-09-02 21:43:37.259127535 +0000
+@@ -268,7 +268,7 @@
+ # We put the scripts in the directory $(scriptdir)/ldscripts.
+ # We can't put the scripts in $(datadir) because the SEARCH_DIR
+ # directives need to be different for native and cross linkers.
+-scriptdir = $(tooldir)/lib
++scriptdir = $(libdir)
+ BASEDIR = $(srcdir)/..
+ BFDDIR = $(BASEDIR)/bfd
+ INCDIR = $(BASEDIR)/include

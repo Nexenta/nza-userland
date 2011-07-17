@@ -1,0 +1,212 @@
+#!/bin/sh -e
+## 140_gold_pr10979_2.dpatch
+##
+## DP: Description: PR gold/10979: Fix internal errors
+
+if [ $# -ne 1 ]; then
+    echo >&2 "`basename $0`: script expects -patch|-unpatch as argument"
+    exit 1
+fi
+
+[ -f debian/patches/00patch-opts ] && . debian/patches/00patch-opts
+patch_opts="${patch_opts:--f --no-backup-if-mismatch}"
+
+case "$1" in
+       -patch) patch $patch_opts -p1 < $0;;
+       -unpatch) patch $patch_opts -p1 -R < $0;;
+        *)
+                echo >&2 "`basename $0`: script expects -patch|-unpatch as argument"
+                exit 1;;
+esac
+
+exit 0
+
+2009-12-30  Ian Lance Taylor  <iant@google.com>
+
+	PR 10979
+	* common.cc (Sort_commons::operator()): Stabilize sort when both
+	entries are NULL.
+	(Symbol_table::do_allocate_commons_list): When allocating common
+	symbols, skip a symbol which is no longer common.
+	* symtab.h (Symbol::is_common): Test whether the symbol comes from
+	an object before checking its type.
+	* testsuite/common_test_2.c: New file.
+	* testsuite/common_test_3.c: New file.
+	* testsuite/Makefile.am (check_PROGRAMS): Add common_test_2.
+	(common_test_2_SOURCES, common_test_2_DEPENDENCIES): Define.
+	(common_test_2_LDFLAGS, common_test_2_LDADD): Define.
+	(common_test_2_pic.o, common_test_2.so): New targets.
+	(common_test_3_pic.o, common_test_3.so): New targets.
+	* testsuite/Makefile.in: Rebuild.
+
+@DPATCH@
+Index: common.cc
+===================================================================
+RCS file: /cvs/src/src/gold/common.cc,v
+retrieving revision 1.21
+diff -p -u -r1.21 common.cc
+--- ./gold/common.cc	31 Dec 2009 01:57:55 -0000	1.21
++++ ./gold/common.cc	31 Dec 2009 05:04:24 -0000
+@@ -91,7 +91,16 @@ bool
+ Sort_commons<size>::operator()(const Symbol* pa, const Symbol* pb) const
+ {
+   if (pa == NULL)
+-    return false;
++    {
++      if (pb == NULL)
++	{
++	  // Stabilize sort.  The order really doesn't matter, because
++	  // these entries will be discarded, but we want to return
++	  // the same result every time we compare pa and pb.
++	  return pa < pb;
++	}
++      return false;
++    }
+   if (pb == NULL)
+     return true;
+ 
+@@ -312,6 +321,17 @@ Symbol_table::do_allocate_commons_list(
+       Symbol* sym = *p;
+       if (sym == NULL)
+ 	break;
++
++      // Because we followed forwarding symbols above, but we didn't
++      // do it reliably before adding symbols to the list, it is
++      // possible for us to have the same symbol on the list twice.
++      // This can happen in the horrible case where a program defines
++      // a common symbol with the same name as a versioned libc
++      // symbol.  That will show up here as a symbol which has already
++      // been allocated and is therefore no longer a common symbol.
++      if (!sym->is_common())
++	continue;
++
+       Sized_symbol<size>* ssym = this->get_sized_symbol<size>(sym);
+ 
+       // Record the symbol in the map file now, before we change its
+Index: symtab.h
+===================================================================
+RCS file: /cvs/src/src/gold/symtab.h,v
+retrieving revision 1.102
+diff -p -u -r1.102 symtab.h
+--- ./gold/symtab.h	31 Dec 2009 01:57:55 -0000	1.102
++++ ./gold/symtab.h	31 Dec 2009 05:04:24 -0000
+@@ -478,10 +478,10 @@ class Symbol
+   bool
+   is_common() const
+   {
+-    if (this->type_ == elfcpp::STT_COMMON)
+-      return true;
+     if (this->source_ != FROM_OBJECT)
+       return false;
++    if (this->type_ == elfcpp::STT_COMMON)
++      return true;
+     bool is_ordinary;
+     unsigned int shndx = this->shndx(&is_ordinary);
+     return !is_ordinary && Symbol::is_common_shndx(shndx);
+Index: testsuite/Makefile.am
+===================================================================
+RCS file: /cvs/src/src/gold/testsuite/Makefile.am,v
+retrieving revision 1.114
+diff -p -u -r1.114 Makefile.am
+--- ./gold/testsuite/Makefile.am	30 Dec 2009 22:35:48 -0000	1.114
++++ ./gold/testsuite/Makefile.am	31 Dec 2009 05:04:24 -0000
+@@ -407,6 +407,20 @@ common_test_1_DEPENDENCIES = gcctestdir/
+ common_test_1_LDFLAGS = -Bgcctestdir/
+ common_test_1_LDADD =
+ 
++check_PROGRAMS += common_test_2
++common_test_2_SOURCES = common_test_1.c
++common_test_2_DEPENDENCIES = common_test_2.so common_test_3.so gcctestdir/ld
++common_test_2_LDFLAGS = -Bgcctestdir/ -Wl,-R,.
++common_test_2_LDADD = common_test_2.so common_test_3.so
++common_test_2_pic.o: common_test_2.c
++	$(COMPILE) -c -fpic -o $@ $<
++common_test_2.so: common_test_2_pic.o common_test_3.so gcctestdir/ld
++	$(LINK) -Bgcctestdir/ -shared common_test_2_pic.o common_test_3.so
++common_test_3_pic.o: common_test_3.c
++	$(COMPILE) -c -fpic -o $@ $<
++common_test_3.so: common_test_3_pic.o ver_test_2.script gcctestdir/ld
++	$(LINK) -Bgcctestdir/ -shared common_test_3_pic.o -Wl,--version-script,$(srcdir)/ver_test_2.script
++
+ check_PROGRAMS += exception_test
+ check_PROGRAMS += exception_static_test
+ check_PROGRAMS += exception_shared_1_test
+Index: testsuite/common_test_2.c
+===================================================================
+RCS file: testsuite/common_test_2.c
+diff -N testsuite/common_test_2.c
+--- /dev/null	1 Jan 1970 00:00:00 -0000
++++ ./gold/testsuite/common_test_2.c	31 Dec 2009 05:04:25 -0000
+@@ -0,0 +1,33 @@
++/* common_test_2.c -- test common symbol name conflicts
++
++   Copyright 2009 Free Software Foundation, Inc.
++   Written by Ian Lance Taylor <iant@google.com>
++
++   This file is part of gold.
++
++   This program is free software; you can redistribute it and/or modify
++   it under the terms of the GNU General Public License as published by
++   the Free Software Foundation; either version 3 of the License, or
++   (at your option) any later version.
++
++   This program is distributed in the hope that it will be useful,
++   but WITHOUT ANY WARRANTY; without even the implied warranty of
++   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++   GNU General Public License for more details.
++
++   You should have received a copy of the GNU General Public License
++   along with this program; if not, write to the Free Software
++   Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston,
++   MA 02110-1301, USA.  */
++
++/* Call a function.  The function will come from a shared library.  */
++
++extern void c1 (void);
++
++void fn (void);
++
++void
++fn (void)
++{
++  c1 ();
++}
+Index: testsuite/common_test_3.c
+===================================================================
+RCS file: testsuite/common_test_3.c
+diff -N testsuite/common_test_3.c
+--- /dev/null	1 Jan 1970 00:00:00 -0000
++++ ./gold/testsuite/common_test_3.c	31 Dec 2009 05:04:25 -0000
+@@ -0,0 +1,32 @@
++/* common_test_3.c -- test common symbol name conflicts
++
++   Copyright 2009 Free Software Foundation, Inc.
++   Written by Ian Lance Taylor <iant@google.com>
++
++   This file is part of gold.
++
++   This program is free software; you can redistribute it and/or modify
++   it under the terms of the GNU General Public License as published by
++   the Free Software Foundation; either version 3 of the License, or
++   (at your option) any later version.
++
++   This program is distributed in the hope that it will be useful,
++   but WITHOUT ANY WARRANTY; without even the implied warranty of
++   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++   GNU General Public License for more details.
++
++   You should have received a copy of the GNU General Public License
++   along with this program; if not, write to the Free Software
++   Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston,
++   MA 02110-1301, USA.  */
++
++/* Define a function with a default version whose name is the same as
++   a common symbol.  This file will wind up in a shared library.  */
++
++void c1_v1 (void);
++
++void
++c1_v1 (void)
++{
++}
++__asm__ (".symver c1_v1,c1@@VER1");
