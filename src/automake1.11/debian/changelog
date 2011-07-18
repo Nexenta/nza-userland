@@ -1,3 +1,11 @@
+automake1.11 (40-0-0) unstable; urgency=low
+
+  * Rebuilt from fresh Squeeze source:
+    + Do not use /usr/gnu prefix (Closes: #5744)
+  * Updated to new version scheme
+
+ -- Kartik Mistry <kartik.mistry@nexenta.com>  Mon, 18 Jul 2011 09:05:01 +0530
+
 automake1.11 (1:1.11.1-1) unstable; urgency=low
 
   * New upstream release. Contains fix for CVE-2009-4029, which created
