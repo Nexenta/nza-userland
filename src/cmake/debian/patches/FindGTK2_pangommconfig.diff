@@ -1,0 +1,21 @@
+Author: Sune Vuorela <reportbug@pusling.com>
+Description: Find pangommconfig include directory in FindGTK2
+ There is a small bug in FindGTK2.cmake that makes the include dirs not
+ set properly when using pangomm. Pangomm has, like many of the other
+ libraries, now two include dirs, one for the arch specific 'config'
+ header, and another dir for the arch independent headers.
+Forwarded: no
+Bug-Debian: http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=579718
+Origin: vendor, http://bugs.debian.org/cgi-bin/bugreport.cgi?msg=5;filename=cmake-find-gtk2-pangomm-config;att=1;bug=579718
+Last-Update: 2010-04-30
+
+--- a/Modules/FindGTK2.cmake
++++ b/Modules/FindGTK2.cmake
+@@ -439,6 +439,7 @@ foreach(_GTK2_component ${GTK2_FIND_COMP
+         _GTK2_FIND_LIBRARY    (GTK2_CAIROMM_LIBRARY cairomm true true)
+ 
+         _GTK2_FIND_INCLUDE_DIR(GTK2_PANGOMM_INCLUDE_DIR pangomm.h)
++        _GTK2_FIND_INCLUDE_DIR(GTK2_PANGOMMCONFIG_INCLUDE_DIR pangommconfig.h)
+         _GTK2_FIND_LIBRARY    (GTK2_PANGOMM_LIBRARY pangomm true true)
+ 
+         _GTK2_FIND_INCLUDE_DIR(GTK2_SIGC++_INCLUDE_DIR sigc++/sigc++.h)

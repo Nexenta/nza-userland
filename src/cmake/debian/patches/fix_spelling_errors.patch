@@ -1,0 +1,323 @@
+Author: Kai Wasserbäch <debian@carbon-project.org>
+Origin: vendor
+Last-Update: 2010-07-02
+Subject: Fix all the spelling errors reported by Lintian.
+Forwarded: yes
+Bug: http://public.kitware.com/Bug/view.php?id=10928
+---
+ Modules/CPackRPM.cmake                  |    4 ++--
+ Modules/FindCUDA.cmake                  |    4 ++--
+ Modules/FindSWIG.cmake                  |    2 +-
+ Modules/FindwxWidgets.cmake             |    4 ++--
+ Source/CPack/cpack.cxx                  |    2 +-
+ Source/CTest/cmCTestCoverageHandler.cxx |    6 +++---
+ Source/CTest/cmCTestRunScriptCommand.h  |    2 +-
+ Source/CTest/cmCTestSubmitHandler.cxx   |    2 +-
+ Source/CursesDialog/form/fld_info.c     |    2 +-
+ Source/CursesDialog/form/fld_user.c     |    4 ++--
+ Source/CursesDialog/form/frm_user.c     |    4 ++--
+ Source/cmCTest.cxx                      |    2 +-
+ Source/cmIncludeDirectoryCommand.cxx    |    2 +-
+ Source/cmLocalGenerator.cxx             |    2 +-
+ Source/cmProjectCommand.h               |    2 +-
+ Source/cmSetCommand.cxx                 |    2 +-
+ Source/cmTryRunCommand.cxx              |    2 +-
+ Source/cmake.cxx                        |    2 +-
+ Tests/CMakeTests/FindBaseTest.cmake.in  |    2 +-
+ Utilities/cmcurl/curl/multi.h           |    2 +-
+ Utilities/cmcurl/url.c                  |    2 +-
+ 21 files changed, 28 insertions(+), 28 deletions(-)
+
+--- a/Modules/CPackRPM.cmake
++++ b/Modules/CPackRPM.cmake
+@@ -81,7 +81,7 @@
+ #  CPACK_RPM_PACKAGE_DEBUG
+ #     Mandatory : NO
+ #     Default   : -
+-#     May be set when invoking cpack in order to trace debug informations 
++#     May be set when invoking cpack in order to trace debug information
+ #     during CPack RPM run. For example you may launch CPack like this 
+ #     cpack -D CPACK_RPM_PACKAGE_DEBUG=1 -G RPM
+ #  CPACK_RPM_USER_BINARY_SPECFILE
+@@ -260,7 +260,7 @@ ENDIF(NOT CPACK_RPM_PACKAGE_VENDOR)
+ 
+ # CPACK_RPM_PACKAGE_DESCRIPTION
+ # The variable content may be either
+-#   - explicitely given by tthe user or
++#   - explicitly given by the user or
+ #   - filled with the content of CPACK_PACKAGE_DESCRIPTION_FILE
+ #     if it is defined
+ #   - set to a default value
+--- a/Modules/FindCUDA.cmake
++++ b/Modules/FindCUDA.cmake
+@@ -165,7 +165,7 @@
+ #     and will link in the resulting object file automatically.
+ #
+ #     This script will also generate a separate cmake script that is used at
+-#     build time to invoke nvcc.  This is for serveral reasons.
++#     build time to invoke nvcc.  This is for several reasons.
+ #
+ #       1. nvcc can return negative numbers as return values which confuses
+ #       Visual Studio into thinking that the command succeeded.  The script now
+@@ -811,7 +811,7 @@ endfunction()
+ ##############################################################################
+ # This helper macro populates the following variables and setups up custom
+ # commands and targets to invoke the nvcc compiler to generate C or PTX source
+-# dependant upon the format parameter.  The compiler is invoked once with -M
++# dependent upon the format parameter.  The compiler is invoked once with -M
+ # to generate a dependency file and a second time with -cuda or -ptx to generate
+ # a .cpp or .ptx file.
+ # INPUT:
+--- a/Modules/FindSWIG.cmake
++++ b/Modules/FindSWIG.cmake
+@@ -5,7 +5,7 @@
+ #  SWIG_EXECUTABLE - the path to the swig executable
+ #  SWIG_VERSION   - the version number of the swig executable
+ #
+-# All informations are collected from the SWIG_EXECUTABLE so the
++# All information is collected from the SWIG_EXECUTABLE so the
+ # version to be found can be changed from the command line by
+ # means of setting SWIG_EXECUTABLE
+ #
+--- a/Modules/FindwxWidgets.cmake
++++ b/Modules/FindwxWidgets.cmake
+@@ -57,14 +57,14 @@
+ #   FIND_PACKAGE(wxWidgets COMPONENTS base core gl net)
+ #   IF(wxWidgets_FOUND)
+ #     INCLUDE(${wxWidgets_USE_FILE})
+-#     # and for each of your dependant executable/library targets:
++#     # and for each of your dependent executable/library targets:
+ #     TARGET_LINK_LIBRARIES(<YourTarget> ${wxWidgets_LIBRARIES})
+ #   ENDIF(wxWidgets_FOUND)
+ #
+ # If wxWidgets is required (i.e., not an optional part):
+ #   FIND_PACKAGE(wxWidgets REQUIRED base core gl net)
+ #   INCLUDE(${wxWidgets_USE_FILE})
+-#   # and for each of your dependant executable/library targets:
++#   # and for each of your dependent executable/library targets:
+ #   TARGET_LINK_LIBRARIES(<YourTarget> ${wxWidgets_LIBRARIES})
+ 
+ #=============================================================================
+--- a/Source/CPack/cpack.cxx
++++ b/Source/CPack/cpack.cxx
+@@ -203,7 +203,7 @@ int main (int argc, char *argv[])
+   if ( verbose )
+     {
+     log.SetVerbose(verbose);
+-    cmCPack_Log(&log, cmCPackLog::LOG_OUTPUT, "Enable Verbse" << std::endl);
++    cmCPack_Log(&log, cmCPackLog::LOG_OUTPUT, "Enable Verbose" << std::endl);
+     }
+   if ( debug )
+     {
+--- a/Source/CTest/cmCTestCoverageHandler.cxx
++++ b/Source/CTest/cmCTestCoverageHandler.cxx
+@@ -429,7 +429,7 @@ int cmCTestCoverageHandler::ProcessHandl
+   //std::string fullBinaryDir = binaryDir + "/";
+   cmCTestLog(this->CTest, HANDLER_OUTPUT, std::endl);
+   cmCTestLog(this->CTest, HANDLER_OUTPUT,
+-    "   Acumulating results (each . represents one file):" << std::endl);
++    "   Accumulating results (each . represents one file):" << std::endl);
+   cmCTestLog(this->CTest, HANDLER_OUTPUT, "    ");
+ 
+   std::vector<std::string> errorsWhileAccumulating;
+@@ -508,7 +508,7 @@ int cmCTestCoverageHandler::ProcessHandl
+     cmCTestCoverageHandlerContainer::SingleFileCoverageVector::size_type cc;
+     std::string line;
+     cmCTestLog(this->CTest, HANDLER_VERBOSE_OUTPUT,
+-      "Actually perfoming coverage for: " << fullFileName << std::endl);
++      "Actually performing coverage for: " << fullFileName << std::endl);
+     for ( cc= 0; cc < fcov.size(); cc ++ )
+       {
+       if ( !cmSystemTools::GetLineFromStream(ifs, line) &&
+@@ -593,7 +593,7 @@ int cmCTestCoverageHandler::ProcessHandl
+     int untested = 0;
+     std::string line;
+     cmCTestLog(this->CTest, HANDLER_VERBOSE_OUTPUT,
+-      "Actually perfoming coverage for: " << i->c_str() << std::endl);
++      "Actually performing coverage for: " << i->c_str() << std::endl);
+     while (cmSystemTools::GetLineFromStream(ifs, line))
+       {
+       covLogFile << "\t\t<Line Number=\"" << untested << "\" Count=\"0\">"
+--- a/Source/CTest/cmCTestRunScriptCommand.h
++++ b/Source/CTest/cmCTestRunScriptCommand.h
+@@ -68,7 +68,7 @@ public:
+       "Runs a script or scripts much like if it was run from ctest -S. "
+       "If no argument is provided then the current script is run using "
+       "the current settings of the variables. If NEW_PROCESS is specified "
+-      "then each script will be run in a seperate process."
++      "then each script will be run in a separate process."
+       "If RETURN_VALUE is specified the return value of the last script "
+       "run will be put into var.";
+     }
+--- a/Source/CTest/cmCTestSubmitHandler.cxx
++++ b/Source/CTest/cmCTestSubmitHandler.cxx
+@@ -589,7 +589,7 @@ bool cmCTestSubmitHandler::TriggerUsingH
+           << turl.c_str() << std::endl);
+         cmCTestLog(this->CTest, ERROR_MESSAGE, "   Error message was: "
+           << error_buffer << std::endl);
+-        *this->LogFile << "\tTrigerring failed with error: " << error_buffer
++        *this->LogFile << "\tTriggering failed with error: " << error_buffer
+                        << std::endl
+                        << "   Error message was: " << error_buffer 
+                        << std::endl;
+--- a/Source/CursesDialog/form/fld_info.c
++++ b/Source/CursesDialog/form/fld_info.c
+@@ -69,7 +69,7 @@ int field_info(const FIELD *field,
+ |                                           int *drows, int *dcols,
+ |                                           int *maxgrow)
+ |   
+-|   Description   :  Retrieve informations about a dynamic fields current
++|   Description   :  Retrieve information about a dynamic fields current
+ |                    dynamic parameters.
+ |
+ |   Return Values :  E_OK           - success
+--- a/Source/CursesDialog/form/fld_user.c
++++ b/Source/CursesDialog/form/fld_user.c
+@@ -39,7 +39,7 @@ MODULE_ID("$Id$")
+ |   Function      :  int set_field_userptr(FIELD *field, void *usrptr)
+ |   
+ |   Description   :  Set the pointer that is reserved in any field to store
+-|                    application relevant informations
++|                    application relevant information
+ |
+ |   Return Values :  E_OK         - on success
+ +--------------------------------------------------------------------------*/
+@@ -54,7 +54,7 @@ int set_field_userptr(FIELD * field, voi
+ |   Function      :  void *field_userptr(const FIELD *field)
+ |   
+ |   Description   :  Return the pointer that is reserved in any field to
+-|                    store application relevant informations.
++|                    store application relevant information.
+ |
+ |   Return Values :  Value of pointer. If no such pointer has been set,
+ |                    NULL is returned
+--- a/Source/CursesDialog/form/frm_user.c
++++ b/Source/CursesDialog/form/frm_user.c
+@@ -39,7 +39,7 @@ MODULE_ID("$Id$")
+ |   Function      :  int set_form_userptr(FORM *form, void *usrptr)
+ |   
+ |   Description   :  Set the pointer that is reserved in any form to store
+-|                    application relevant informations
++|                    application relevant information
+ |
+ |   Return Values :  E_OK         - on success
+ +--------------------------------------------------------------------------*/
+@@ -54,7 +54,7 @@ int set_form_userptr(FORM * form, void *
+ |   Function      :  void *form_userptr(const FORM *form)
+ |   
+ |   Description   :  Return the pointer that is reserved in any form to
+-|                    store application relevant informations.
++|                    store application relevant information.
+ |
+ |   Return Values :  Value of pointer. If no such pointer has been set,
+ |                    NULL is returned
+--- a/Source/cmCTest.cxx
++++ b/Source/cmCTest.cxx
+@@ -2121,7 +2121,7 @@ int cmCTest::Run(std::vector<std::string
+       i++;
+       std::string targ = args[i];
+       // AddTestsForDashboard parses the dashborad type and converts it
+-      // into the seperate stages
++      // into the separate stages
+       if (!this->AddTestsForDashboardType(targ))
+         {
+         performSomeTest = false;
+--- a/Source/cmIncludeDirectoryCommand.cxx
++++ b/Source/cmIncludeDirectoryCommand.cxx
+@@ -63,7 +63,7 @@ bool cmIncludeDirectoryCommand
+ // "   /foo/bar
+ //    /boo/hoo /dingle/berry "
+ //
+-// ideally that should be three seperate arguments but when sucking the
++// ideally that should be three separate arguments but when sucking the
+ // output from a program and passing it into a command the cleanup doesn't
+ // always happen
+ //
+--- a/Source/cmLocalGenerator.cxx
++++ b/Source/cmLocalGenerator.cxx
+@@ -3045,7 +3045,7 @@ bool cmLocalGenerator::CheckDefinition(s
+   if(define.find_first_of("#") != define.npos)
+     {
+     cmOStringStream e;
+-    e << "WARNING: Peprocessor definitions containing '#' may not be "
++    e << "WARNING: Preprocessor definitions containing '#' may not be "
+       << "passed on the compiler command line because many compilers "
+       << "do not support it.\n"
+       << "CMake is dropping a preprocessor definition: " << define << "\n"
+--- a/Source/cmProjectCommand.h
++++ b/Source/cmProjectCommand.h
+@@ -66,7 +66,7 @@ public:
+       "Optionally you can specify which languages your project supports.  "
+       "Example languages are CXX (i.e. C++), C, Fortran, etc. "
+       "By default C and CXX are enabled.  E.g. if you do not have a "
+-      "C++ compiler, you can disable the check for it by explicitely listing "
++      "C++ compiler, you can disable the check for it by explicitly listing "
+       "the languages you want to support, e.g. C.  By using the special "
+       "language \"NONE\" all checks for any language can be disabled.";
+     }
+--- a/Source/cmSetCommand.cxx
++++ b/Source/cmSetCommand.cxx
+@@ -99,7 +99,7 @@ bool cmSetCommand
+       }
+     }
+ 
+-  // collect any values into a single semi-colon seperated value list
++  // collect any values into a single semi-colon separated value list
+   if(static_cast<unsigned short>(args.size()) >
+      static_cast<unsigned short>(1 + ignoreLastArgs))
+     {
+--- a/Source/cmTryRunCommand.cxx
++++ b/Source/cmTryRunCommand.cxx
+@@ -361,7 +361,7 @@ void cmTryRunCommand::DoNotRunExecutable
+ 
+     std::string errorMessage = "TRY_RUN() invoked in cross-compiling mode, "
+                                "please set the following cache variables "
+-                               "appropriatly:\n";
++                               "appropriately:\n";
+     errorMessage += "   " + this->RunResultVariable + " (advanced)\n";
+     if (out!=0)
+       {
+--- a/Source/cmake.cxx
++++ b/Source/cmake.cxx
+@@ -954,7 +954,7 @@ void CMakeCommandUsage(const char* progr
+     << "  echo [string]...          - displays arguments as text\n"
+     << "  echo_append [string]...   - displays arguments as text but no new "
+        "line\n"
+-    << "  environment               - display the current enviroment\n"
++    << "  environment               - display the current environment\n"
+     << "  make_directory dir        - create a directory\n"
+     << "  md5sum file1 [...]        - compute md5sum of files\n"
+     << "  remove_directory dir      - remove a directory and its contents\n"
+--- a/Tests/CMakeTests/FindBaseTest.cmake.in
++++ b/Tests/CMakeTests/FindBaseTest.cmake.in
+@@ -55,7 +55,7 @@ if(NOT "${FOO_H_5}" STREQUAL "${_HEADER_
+    message(FATAL_ERROR "Did not find \"${_HEADER_FULL}\"\ngot ${FOO_H_5} instead !")
+ endif(NOT "${FOO_H_5}" STREQUAL "${_HEADER_FULL}")
+ 
+-# by explicitely disabling CMAKE_FIND_ROOT_PATH again it shouldn't be found
++# by explicitly disabling CMAKE_FIND_ROOT_PATH again it shouldn't be found
+ find_file(FOO_H_6 ${_HEADER} NO_CMAKE_FIND_ROOT_PATH)
+ if(FOO_H_6)
+    message(FATAL_ERROR "${_HEADER} found: ${FOO_H_6}, it should not exist !")
+--- a/Utilities/cmcurl/curl/multi.h
++++ b/Utilities/cmcurl/curl/multi.h
+@@ -181,7 +181,7 @@ CURL_EXTERN CURLMcode curl_multi_cleanup
+  *          curl_multi_cleanup().
+  *
+  *          The 'CURLMsg' struct is meant to be very simple and only contain
+- *          very basic informations. If more involved information is wanted,
++ *          very basic information. If more involved information is wanted,
+  *          we will provide the particular "transfer handle" in that struct
+  *          and that should/could/would be used in subsequent
+  *          curl_easy_getinfo() calls (or similar). The point being that we
+--- a/Utilities/cmcurl/url.c
++++ b/Utilities/cmcurl/url.c
+@@ -3983,7 +3983,7 @@ static CURLcode SetupConnection(struct c
+         conn->bits.tcpconnect = FALSE;
+ 
+       /* if the connection was closed by the server while exchanging
+-         authentication informations, retry with the new set
++         authentication information, retry with the new set
+          authentication information */
+       if(conn->bits.proxy_connect_closed) {
+         /* reset the error buffer */

@@ -1,0 +1,22 @@
+Description: CPack: units of the deb Installed-Size field are rounded up bytes / 1024
+ Units of the Installed-Size field in debs are estimated installed size in
+ bytes, divided by 1024 and rounded up. See Debian Polucy 5.6.20 for more
+ information:
+ http://www.debian.org/doc/debian-policy/ch-controlfields.html#s-f-Installed-Size
+Author: Simone Rossetto <simros85@gmail.com>
+Author: Modestas Vainius <modax@debian.org>
+Bug: http://public.kitware.com/Bug/view.php?id=10296
+Forwarded: yes
+Last-Update: 2010-05-17
+
+--- a/Source/CPack/cmCPackDebGenerator.cxx
++++ b/Source/CPack/cmCPackDebGenerator.cxx
+@@ -121,7 +121,7 @@ int cmCPackDebGenerator::CompressFiles(c
+         totalSize += cmSystemTools::FileLength(fileIt->c_str());
+         }
+     }
+-    out << "Installed-Size: " << totalSize << "\n";
++    out << "Installed-Size: " << (totalSize + 1023) / 1024 << "\n";
+     out << "Maintainer: " << maintainer << "\n";
+     out << "Description: " << desc << "\n";
+     out << std::endl;

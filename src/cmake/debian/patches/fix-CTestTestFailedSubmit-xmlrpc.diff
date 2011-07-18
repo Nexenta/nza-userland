@@ -1,0 +1,22 @@
+Subject: pass the CTestTestFailedSubmit-xmlrpc test when there is "Submission problem" in the output
+ This is at least applicable to XMLRPC. Full error message is below:
+ ------
+ Submission problem: Curl failed to perform HTTP POST request.  curl_easy_perform() says: <url> malformed (-504)
+ .
+   Problems when submitting via XML-RPC
+ ------
+Author: Modestas Vainius <modax@debian.org>
+Forwarded: no
+Origin: vendor
+Last-Update: 2010-07-02
+
+--- a/Tests/CMakeLists.txt
++++ b/Tests/CMakeLists.txt
+@@ -1413,6 +1413,7 @@ ${CMake_BINARY_DIR}/bin/cmake -DVERSION=
+   set(regex "${regex}|The requested URL returned error")
+   set(regex "${regex}|libcurl was built with SSL disabled. https: not supported)")
+   set(regex "${regex}|Submission method .xmlrpc. not compiled into CTest")
++  set(regex "${regex}|Submission problem")
+   set(regex "${regex}|Submission successful)")
+ 
+   set(ctest_coverage_labels_args "")

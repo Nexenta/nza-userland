@@ -1,0 +1,10 @@
+Document: cmake-modules
+Title: Reference of available CMake modules
+Section: Programming
+
+Format: HTML
+Index: /usr/share/doc/cmake-docs/cmake-modules.html
+Files: /usr/share/doc/cmake-docs/cmake-modules.html
+
+Format: Text
+Files: /usr/share/doc/cmake-docs/cmake-modules.txt.gz
