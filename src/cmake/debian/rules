@@ -1,0 +1,39 @@
+#!/usr/bin/make -f
+
+BUILD_FLAGS_FILE = build-flags.cmake
+
+$(BUILD_FLAGS_FILE):
+	touch $@
+	echo 'set(CMAKE_SKIP_RPATH YES CACHE BOOL "Skip rpath" FORCE)'          >> $@
+	echo 'set(CMAKE_USE_RELATIVE_PATHS YES CACHE BOOL "Use relative paths" FORCE)' >> $@
+	echo 'set(CMAKE_VERBOSE_MAKEFILE ON CACHE BOOL "Verbose build" FORCE)'  >> $@
+	echo 'set(CMAKE_C_FLAGS "$(CFLAGS)" CACHE STRING "C flags" FORCE)'      >> $@
+	echo 'set(CMAKE_CXX_FLAGS "$(CFLAGS)" CACHE STRING "C++ flags" FORCE)'  >> $@
+	echo 'set(CMAKE_SKIP_BOOTSTRAP_TEST ON CACHE BOOL "Skip BootstrapTest" FORCE)' >> $@
+#	echo 'set(BUILD_WXDialog ON CACHE STRING "Build WXDialog" FORCE)'      >> $@
+	echo 'set(BUILD_CursesDialog TRUE CACHE BOOL "Build curses GUI" FORCE)' >> $@
+	echo 'set(BUILD_QtDialog TRUE CACHE BOOL "Build Qt4 GUI" FORCE)'        >> $@
+	echo 'set(MINGW_CC_LINUX2WIN_EXECUTABLE "" CACHE FILEPATH "Never detect mingw" FORCE)' >> $@
+#	echo 'set(TARGET_VERSION CACHE STRING ""FORCE)'                        >> $@
+#	echo 'set(TARGET_SOVERSION CACHE STRING "" FORCE)'                     >> $@
+#	echo 'set(BUILD_DOCUMENTATION ON CACHE BOOL "" FORCE)'                 >> $@
+#	echo 'set(BUILD_DOXYGEN ON CACHE BOOL "" FORCE)'                       >> $@
+	echo 'set(CMAKE_USE_SYSTEM_LIBARCHIVE YES CACHE BOOL "" FORCE)'        >> $@
+	echo 'set(CTEST_USE_XMLRPC YES CACHE BOOL "" FORCE)'                   >> $@
+
+override_dh_auto_configure: $(BUILD_FLAGS_FILE)
+	rm -rf Build && mkdir -p Build
+	+cd Build && ../bootstrap --prefix=/usr --docdir=/share/doc/cmake --mandir=/share/man \
+	                         --init=../$(BUILD_FLAGS_FILE) --system-libs $(CONFIGURE_PARALLEL)
+
+override_dh_auto_test:
+	HOME="`pwd`/Build" dh_auto_test
+
+override_dh_auto_clean:
+	dh_auto_clean
+	rm -f $(BUILD_FLAGS_FILE)
+
+%:
+	dh --parallel --builddirectory=Build --dbg-package=cmake-dbg $@
+
+.PHONY: override_dh_auto_configure override_dh_auto_clean

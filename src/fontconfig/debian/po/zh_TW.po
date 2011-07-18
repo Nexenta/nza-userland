@@ -1,86 +1,87 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fontconfig 2.4.2-1.2\n"
-"Report-Msgid-Bugs-To: Source: fontconfig@packages.debian.org\n"
-"POT-Creation-Date: 2010-02-20 10:27-0800\n"
+"Report-Msgid-Bugs-To: fontconfig@packages.debian.org\n"
+"POT-Creation-Date: 2009-12-31 13:48-0800\n"
 "PO-Revision-Date: 2007-04-18 00:23+0800\n"
 "Last-Translator: Tetralet <tetralet@gmail.com>\n"
 "Language-Team: Debian-user in Chinese [Big5] <debian-chinese-big5@lists."
 "debian.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #. Type: select
 #. Choices
-#: ../fontconfig-config.templates:1001
+#: ../fontconfig-config.templates:2001
 msgid "Native"
 msgstr "原生"
 
 #. Type: select
 #. Choices
-#: ../fontconfig-config.templates:1001
+#: ../fontconfig-config.templates:2001
 msgid "Autohinter"
 msgstr "自動微調"
 
 #. Type: select
 #. Choices
-#: ../fontconfig-config.templates:1001
+#: ../fontconfig-config.templates:2001
 msgid "None"
 msgstr "無"
 
 #. Type: select
 #. Description
-#: ../fontconfig-config.templates:1002
+#: ../fontconfig-config.templates:2002
 msgid "Font tuning method for screen:"
 msgstr "字型在螢幕上的調整方式："
 
 #. Type: select
 #. Description
-#: ../fontconfig-config.templates:1002
+#: ../fontconfig-config.templates:2002
 msgid ""
 "Please select the preferred method for tuning fonts for screen rendering."
 msgstr "請替在螢幕顯示時的字型選定某個偏好方式。"
 
 #. Type: select
 #. Description
-#: ../fontconfig-config.templates:1002
+#: ../fontconfig-config.templates:2002
 msgid ""
-"Select 'Native' if you mostly use Bitstream Vera (the default in Debian) or "
-"any of the Microsoft fonts. Select 'Autohinter' if you mostly use other "
-"TrueType fonts. Select 'None' if you want blurry text."
+"Select 'Native' if you mostly use DejaVu (the default in Debian) or any of "
+"the Microsoft fonts. Select 'Autohinter' if you mostly use other TrueType "
+"fonts. Select 'None' if you want blurry text."
 msgstr ""
-"如果您大多是使用 Bitstream Vera（Debian 的預設字型）或是任何的 Microsoft 字"
-"型，請選擇【原生】。如果您大多是使用其它的 TrueType 字型，請選擇【自動微"
-"調】。如果您喜歡模糊不清的字體，請選擇【無】。"
+"如果您大多是使用 DejaVu（Debian 的預設字型）或是任何的 Microsoft 字型，請選擇"
+"【原生】。如果您大多是使用其它的 TrueType 字型，請選擇【自動微調】。如果您喜"
+"歡模糊不清的字體，請選擇【無】。"
 
 #. Type: select
 #. Choices
-#: ../fontconfig-config.templates:2001
+#: ../fontconfig-config.templates:3001
 msgid "Automatic"
 msgstr "自動"
 
 #. Type: select
 #. Choices
-#: ../fontconfig-config.templates:2001
+#: ../fontconfig-config.templates:3001
 msgid "Always"
 msgstr "總是"
 
 #. Type: select
 #. Choices
-#: ../fontconfig-config.templates:2001
+#: ../fontconfig-config.templates:3001
 msgid "Never"
 msgstr "從不"
 
 #. Type: select
 #. Description
-#: ../fontconfig-config.templates:2002
+#: ../fontconfig-config.templates:3002
 msgid "Enable subpixel rendering for screen:"
 msgstr "在螢幕上啟用次像素渲染 (subpixel rendering)："
 
 #. Type: select
 #. Description
-#: ../fontconfig-config.templates:2002
+#: ../fontconfig-config.templates:3002
 msgid ""
 "Rendering text at a subpixel level generally makes it look a bit better on "
 "flat (LCD) screens, but can show color artifacts on CRT screens. The "
@@ -92,13 +93,13 @@ msgstr ""
 
 #. Type: boolean
 #. Description
-#: ../fontconfig-config.templates:3001
+#: ../fontconfig-config.templates:4001
 msgid "Enable bitmapped fonts by default?"
 msgstr "是否預設上啟用點陣字？"
 
 #. Type: boolean
 #. Description
-#: ../fontconfig-config.templates:3001
+#: ../fontconfig-config.templates:4001
 msgid ""
 "By default, only outline fonts are used by applications which support "
 "fontconfig."
@@ -107,7 +108,7 @@ msgstr ""
 
 #. Type: boolean
 #. Description
-#: ../fontconfig-config.templates:3001
+#: ../fontconfig-config.templates:4001
 msgid ""
 "Outline fonts are fonts which scale well to various sizes. In contrast, "
 "bitmapped fonts are often lower quality. Enabling this option will affect "

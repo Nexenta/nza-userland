@@ -1,3 +1,14 @@
+ca-certificates (40-0-0) unstable; urgency=low
+
+  * Rebuilt with new version scheme
+  * Package is non-native now
+  * Used source format 3.0 (quilt)
+  * debian/patches/echo_fix.diff:
+    + Added patch to remove 'echo -n' from update-ca-certificates script
+      (Closes: #3991)
+
+ -- Kartik Mistry <kartik.mistry@nexenta.com>  Tue, 19 Jul 2011 13:51:41 +0530
+
 ca-certificates (20090814+nmu2-0nexenta2) unstable; urgency=low
 
   * Should depend on openssl

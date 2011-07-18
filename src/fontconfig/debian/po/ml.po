@@ -7,43 +7,44 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fontconfig 20070421\n"
-"Report-Msgid-Bugs-To: Source: fontconfig@packages.debian.org\n"
-"POT-Creation-Date: 2010-02-20 10:27-0800\n"
+"Report-Msgid-Bugs-To: fontconfig@packages.debian.org\n"
+"POT-Creation-Date: 2009-12-31 13:48-0800\n"
 "PO-Revision-Date: 2007-04-21 02:22-0600\n"
 "Last-Translator: Praveen|പ്രവീണ്‍ A|എ <pravi.a@gmail.com>\n"
 "Language-Team: Swathanthra|സ്വതന്ത്ര Malayalam|മലയാളം Computing|കമ്പ്യൂട്ടിങ്ങ് <smc-"
 "discuss@googlegroups.com>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #. Type: select
 #. Choices
-#: ../fontconfig-config.templates:1001
+#: ../fontconfig-config.templates:2001
 msgid "Native"
 msgstr "നാറ്റീവ്"
 
 #. Type: select
 #. Choices
-#: ../fontconfig-config.templates:1001
+#: ../fontconfig-config.templates:2001
 msgid "Autohinter"
 msgstr "ഓട്ടോഹിന്റര്‍"
 
 #. Type: select
 #. Choices
-#: ../fontconfig-config.templates:1001
+#: ../fontconfig-config.templates:2001
 msgid "None"
 msgstr "ഒന്നുമില്ല"
 
 #. Type: select
 #. Description
-#: ../fontconfig-config.templates:1002
+#: ../fontconfig-config.templates:2002
 msgid "Font tuning method for screen:"
 msgstr "സ്ക്രീനിന് വേണ്ട അക്ഷരരൂപ പാകപ്പെടുത്തല്‍:"
 
 #. Type: select
 #. Description
-#: ../fontconfig-config.templates:1002
+#: ../fontconfig-config.templates:2002
 msgid ""
 "Please select the preferred method for tuning fonts for screen rendering."
 msgstr ""
@@ -52,11 +53,16 @@ msgstr ""
 
 #. Type: select
 #. Description
-#: ../fontconfig-config.templates:1002
+#: ../fontconfig-config.templates:2002
+#, fuzzy
+#| msgid ""
+#| "Select 'Native' if you mostly use Bitstream Vera (the default in Debian) "
+#| "or any of the Microsoft fonts. Select 'Autohinter' if you mostly use "
+#| "other TrueType fonts. Select 'None' if you want blurry text."
 msgid ""
-"Select 'Native' if you mostly use Bitstream Vera (the default in Debian) or "
-"any of the Microsoft fonts. Select 'Autohinter' if you mostly use other "
-"TrueType fonts. Select 'None' if you want blurry text."
+"Select 'Native' if you mostly use DejaVu (the default in Debian) or any of "
+"the Microsoft fonts. Select 'Autohinter' if you mostly use other TrueType "
+"fonts. Select 'None' if you want blurry text."
 msgstr ""
 "നിങ്ങള്‍ ബിറ്റ്സ്ട്രീം വെര (ഡെബിയനിലെ ഡിഫാള്‍ട്ട്) അല്ലെങ്കില്‍ ഏതെങ്കിലും മൈക്രോസോഫ്റ്റ് "
 "അക്ഷരരൂപങ്ങളാണ് കൂടുതലുപയോഗിയ്ക്കുന്നതെങ്കില്‍ 'നാറ്റീവ്' തിരഞ്ഞെടുക്കുക. മറ്റ് ട്രൂടൈപ് അക്ഷരരൂപങ്ങളാമണ് "
@@ -65,31 +71,31 @@ msgstr ""
 
 #. Type: select
 #. Choices
-#: ../fontconfig-config.templates:2001
+#: ../fontconfig-config.templates:3001
 msgid "Automatic"
 msgstr "സ്വതവേ"
 
 #. Type: select
 #. Choices
-#: ../fontconfig-config.templates:2001
+#: ../fontconfig-config.templates:3001
 msgid "Always"
 msgstr "എല്ലായ്പോഴും"
 
 #. Type: select
 #. Choices
-#: ../fontconfig-config.templates:2001
+#: ../fontconfig-config.templates:3001
 msgid "Never"
 msgstr "ഒരിക്കലും വേണ്ട"
 
 #. Type: select
 #. Description
-#: ../fontconfig-config.templates:2002
+#: ../fontconfig-config.templates:3002
 msgid "Enable subpixel rendering for screen:"
 msgstr "സ്ക്രീനിന് സബ്പിക്സല്‍ ചിത്രീകരണം പ്രാവര്‍ത്തികമാക്കട്ടേ:"
 
 #. Type: select
 #. Description
-#: ../fontconfig-config.templates:2002
+#: ../fontconfig-config.templates:3002
 msgid ""
 "Rendering text at a subpixel level generally makes it look a bit better on "
 "flat (LCD) screens, but can show color artifacts on CRT screens. The "
@@ -101,13 +107,13 @@ msgstr ""
 
 #. Type: boolean
 #. Description
-#: ../fontconfig-config.templates:3001
+#: ../fontconfig-config.templates:4001
 msgid "Enable bitmapped fonts by default?"
 msgstr "ബിറ്റ്മാപ് ചെയ്ത അക്ഷരരൂപങ്ങള്‍ ഡിഫാള്‍ട്ടായി പ്രാവര്‍ത്തികമാക്കണോ?"
 
 #. Type: boolean
 #. Description
-#: ../fontconfig-config.templates:3001
+#: ../fontconfig-config.templates:4001
 msgid ""
 "By default, only outline fonts are used by applications which support "
 "fontconfig."
@@ -117,7 +123,7 @@ msgstr ""
 
 #. Type: boolean
 #. Description
-#: ../fontconfig-config.templates:3001
+#: ../fontconfig-config.templates:4001
 msgid ""
 "Outline fonts are fonts which scale well to various sizes. In contrast, "
 "bitmapped fonts are often lower quality. Enabling this option will affect "

@@ -26,7 +26,7 @@ then be used in these programs.
 A few of these applications, using Xft1, can benefit of antialiasing 
 with vector fonts, but it is deprecated.
 
-The new font renderer in XFree86 is called freetype2, and applications
+The new font renderer in X is called freetype2, and applications
 using it access fonts on the client side. Most of them (including all
 GTK2/GNOME2 and KDE3 applications) do it using fontconfig, which
 provides listing and matching facilities for all fonts installed on the

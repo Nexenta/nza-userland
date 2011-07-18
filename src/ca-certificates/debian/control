@@ -5,6 +5,7 @@ Maintainer: Philipp Kern <pkern@debian.org>
 Build-Depends: debhelper (>> 4.1.16), po-debconf
 Build-Depends-Indep: python
 Standards-Version: 3.8.2
+Upstream-Version: 20090814+nmu2
 
 Package: ca-certificates
 Architecture: all

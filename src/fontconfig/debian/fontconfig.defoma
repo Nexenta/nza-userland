@@ -129,6 +129,8 @@ sub clean_oldstyle_dirs {
 sub term {
   return unless $Id;
 
+  -e "/etc/fonts/fonts.conf" or return 0;
+ 
   clean_oldstyle_dirs ();
   #
   # Update modified directories

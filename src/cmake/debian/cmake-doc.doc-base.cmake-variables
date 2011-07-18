@@ -1,0 +1,10 @@
+Document: cmake-variables
+Title: Reference of CMake variables.
+Section: Programming
+
+Format: HTML
+Index: /usr/share/doc/cmake-docs/cmake-variables.html
+Files: /usr/share/doc/cmake-docs/cmake-variables.html
+
+Format: Text
+Files: /usr/share/doc/cmake-docs/cmake-variables.txt.gz

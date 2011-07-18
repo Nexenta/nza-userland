@@ -1,16 +1,18 @@
 Source: fontconfig
-Section: libs
+Section: fonts
 Priority: optional
-Maintainer: Ubuntu Core developers <ubuntu-devel-discuss@lists.ubuntu.com>
-XSBC-Original-Maintainer: Keith Packard <keithp@debian.org>
+Maintainer: Keith Packard <keithp@debian.org>
 Uploaders: Josselin Mouette <joss@debian.org>
-Build-Depends: cdbs (>= 0.4.5.4), debhelper (>= 5.0.22), libfreetype6-dev (>= 2.1.7)
-Standards-Version: 3.7.2
+Build-Depends: cdbs (>= 0.4.5.4), debhelper (>= 7), libfreetype6-dev (>= 2.1.7), libexpat1-dev, defoma (>= 0.7.0), binutils (>= 2.12.90.0.9), po-debconf
+Standards-Version: 3.8.3
+Upstream-Version: 2.8.0
 
 Package: fontconfig
-Section: utils
+Section: fonts
 Architecture: any
-Depends: system-library, fontconfig-config
+Depends: ${shlibs:Depends}, ${misc:Depends}, fontconfig-config
+Replaces: fontconfig-config (<< 2.5.93-1)
+Suggests: defoma (>= 0.7.0)
 Description: generic font configuration library - support binaries
  Fontconfig is a font configuration and customization library, which
  does not depend on the X Window System. It is designed to locate
@@ -29,11 +31,9 @@ Description: generic font configuration library - support binaries
  available to fontconfig applications.
 
 Package: fontconfig-config
-Section: libs
+Section: fonts
 Architecture: all
-Depends: system-library, ttf-dejavu | ttf-bitstream-vera | ttf-freefont | gsfonts-x11 | msttcorefonts
-Replaces: fontconfig (<< 2.3.2-2)
-Conflicts: fontconfig (<< 2.3.2-2)
+Depends: ${misc:Depends}, ucf (>= 0.29), ttf-dejavu-core | ttf-bitstream-vera | ttf-freefont | gsfonts-x11
 Description: generic font configuration library - configuration
  Fontconfig is a font configuration and customization library, which
  does not depend on the X Window System. It is designed to locate
@@ -45,7 +45,7 @@ Description: generic font configuration library - configuration
 Package: libfontconfig1-dev
 Section: libdevel
 Architecture: any
-Depends: libfontconfig1 (= ${binary:Version}), libexpat1-dev, libfreetype6-dev (>= 2.1.7), pkg-config
+Depends: libfontconfig1 (= ${binary:Version}), ${misc:Depends}, libexpat1-dev, libfreetype6-dev (>= 2.1.7), pkg-config
 Provides: libfontconfig-dev
 Description: generic font configuration library - development
  Fontconfig is a font configuration and customization library, which
@@ -59,7 +59,8 @@ Description: generic font configuration library - development
 Package: libfontconfig1
 Section: libs
 Architecture: any
-Depends: system-library, fontconfig-config (= ${source:Version})
+Depends: ${shlibs:Depends}, ${misc:Depends}, fontconfig-config (= ${source:Version})
+Provides: libfontconfig
 Description: generic font configuration library - runtime
  Fontconfig is a font configuration and customization library, which
  does not depend on the X Window System. It is designed to locate
@@ -70,10 +71,10 @@ Description: generic font configuration library - runtime
  using fontconfig.
 
 Package: libfontconfig1-dbg
-Section: libdevel
+Section: debug
 Priority: extra
 Architecture: any
-Depends: libfontconfig1 (= ${binary:Version})
+Depends: ${misc:Depends}, libfontconfig1 (= ${binary:Version})
 Description: generic font configuration library - debugging symbols
  Fontconfig is a font configuration and customization library, which
  does not depend on the X Window System. It is designed to locate
