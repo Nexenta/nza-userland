@@ -1,3 +1,11 @@
+glib2.0 (40-0-0) unstable; urgency=low
+
+  * Move to new version scheme.
+  * Rebase on new upstream version 2.28.6
+  * Add /usr/lib/glib-2.0/glib-compile-schemas.  Closes: #5295
+
+ -- Andrew Stormont (astormont) <andyjstormont@googlemail.com>  Sun, 17 Jul 2011 23:39:55 +0100
+
 glib2.0 (2.28.0-1nexenta2) unstable; urgency=low
 
   * Added 64 bit libs

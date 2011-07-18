@@ -7,10 +7,7 @@
 debian/install/deb32/usr/lib/*.so.* usr/lib
 debian/install/deb64/usr/lib/*.so.* usr/lib/amd64
 
-debian/install/deb32/usr/lib/charset.alias usr/lib
-debian/install/deb64/usr/lib/charset.alias usr/lib/amd64
-
-#debian/install/deb32/usr/bin/gio-querymodules usr/lib/glib-2.0
-#debian/install/deb64/usr/bin/gio-querymodules usr/lib/amd64/glib-2.0
-#debian/install/deb32/usr/bin/glib-compile-schemas usr/lib/glib-2.0
-#debian/install/deb64/usr/bin/glib-compile-schemas usr/lib/amd64/glib-2.0
+debian/install/deb32/usr/bin/gio-querymodules usr/lib/glib-2.0
+debian/install/deb64/usr/bin/gio-querymodules usr/lib/amd64/glib-2.0
+debian/install/deb32/usr/bin/glib-compile-schemas usr/lib/glib-2.0
+debian/install/deb64/usr/bin/glib-compile-schemas usr/lib/amd64/glib-2.0
