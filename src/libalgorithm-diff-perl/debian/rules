@@ -1,0 +1,17 @@
+#!/usr/bin/make -f
+
+#include /usr/share/quilt/quilt.make
+
+PACKAGE = $(shell dh_listpackages)
+TMP     = $(CURDIR)/debian/$(PACKAGE)
+
+%:
+	quilt push -a || test $$? = 2
+	dh $@
+
+clean:
+	quilt pop -a || test $$? = 2
+
+override_dh_auto_install:
+	dh_auto_install
+	rm $(TMP)/usr/share/perl5/Algorithm/*.pl
