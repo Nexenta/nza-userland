@@ -4,11 +4,13 @@ Priority: optional
 Maintainer: Modestas Vainius <modax@debian.org>
 Uploaders: A. Maitland Bottoms <bottoms@debian.org>, Kai Wasserbäch <debian@carbon-project.org>
 Build-Depends: debhelper (>= 7.3), libcurl4-gnutls-dev, libxmlrpc-c3-dev, libexpat1-dev, zlib1g-dev,
- libncurses5-dev, libqt4-dev (>= 4.4.0), procps [!hurd-any], libarchive-dev
+ libncurses5-dev, libqt4-dev (>= 4.4.0), procps [!hurd-any], libarchive-dev, system-library-math-header-math,
+ libnss3-1d
 Standards-Version: 3.9.0
 Vcs-Git: git://git.debian.org/git/collab-maint/cmake.git
 Vcs-Browser: http://git.debian.org/?p=collab-maint/cmake.git;a=summary
 Homepage: http://cmake.org/
+Upstream-Version: 2.8.2+dfsg.1-0+squeeze1
 
 Package: cmake
 Architecture: any

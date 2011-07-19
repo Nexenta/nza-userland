@@ -1,3 +1,12 @@
+cmake (40-0-0) unstable; urgency=low
+
+  * Rebuilt on NCP4 for nexenta-libcrypto removal (Closes: #5756).
+  * Used new version scheme.
+  * debian/control:
+    + Added missing build-dep: system-library-math-header-math, libnss3-1d
+
+ -- Kartik Mistry <kartik.mistry@nexenta.com>  Fri, 15 Jul 2011 17:39:01 +0530
+
 cmake (2.8.2+dfsg.1-0+nexenta2) stable-proposed-updates; urgency=low
 
   * Package for NCP4.
