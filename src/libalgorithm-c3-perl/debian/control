@@ -1,0 +1,26 @@
+Source: libalgorithm-c3-perl
+Section: perl
+Priority: optional
+Build-Depends: debhelper (>= 7), perl-modules (>= 5.10) | libmodule-build-perl
+Build-Depends-Indep: libtest-pod-coverage-perl, libtest-pod-perl
+Maintainer: Debian Perl Group <pkg-perl-maintainers@lists.alioth.debian.org>
+Uploaders: Krzysztof Krzyzaniak (eloy) <eloy@debian.org>,
+ Ryan Niebur <ryanryan52@gmail.com>
+Standards-Version: 3.8.1
+Homepage: http://search.cpan.org/dist/Algorithm-C3/
+Vcs-Svn: svn://svn.debian.org/pkg-perl/trunk/libalgorithm-c3-perl/
+Vcs-Browser: http://svn.debian.org/viewsvn/pkg-perl/trunk/libalgorithm-c3-perl/
+Upstream-Version: 0.08-1
+
+Package: libalgorithm-c3-perl
+Architecture: all
+Depends: ${misc:Depends}, ${perl:Depends}
+Description: Perl module for merging hierarchies using the C3 algorithm
+ The Algorithm::C3 module implements the C3 algorithm.
+ .
+ C3 is the name of an algorithm which aims to provide a sane method resolution
+ order under multiple inheritence. It was first introduced in the langauge
+ Dylan, and then later adopted as the preferred MRO (Method Resolution Order)
+ for the new-style classes in Python 2.3. Most recently it has been adopted as
+ the 'canonical' MRO for Perl 6 classes, and the default MRO for Parrot
+ objects as well.

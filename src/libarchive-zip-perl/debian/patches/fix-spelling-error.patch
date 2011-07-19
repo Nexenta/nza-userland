@@ -1,0 +1,18 @@
+Description: Fix spelling error in manpage reported by lintian.
+Origin: vendor
+Bug: https://rt.cpan.org/Public/Bug/Display.html?id=59102
+Forwarded: yes
+Author: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
+Last-Update: 2010-07-05
+
+--- a/lib/Archive/Zip.pm
++++ b/lib/Archive/Zip.pm
+@@ -2014,7 +2014,7 @@
+ 
+ * Handle tainted paths correctly
+ 
+-* Work on better compatability with other IO:: modules
++* Work on better compatibility with other IO:: modules
+ 
+ =head1 SUPPORT
+ 

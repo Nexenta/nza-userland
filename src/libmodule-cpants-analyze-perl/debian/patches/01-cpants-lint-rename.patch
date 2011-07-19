@@ -1,0 +1,35 @@
+Description: cpants_lint.pl is installed as cpants_lint
+Origin: vendor
+Forwarded: not-needed
+Author: Jonathan Yu <frequency@cpan.org>
+Reviewed-by: gregor herrmann <gregoa@debian.org>
+Last-Update: 2011-04-07
+
+--- a/bin/cpants_lint.pl
++++ b/bin/cpants_lint.pl
+@@ -135,11 +135,11 @@
+ 
+ =head1 NAME
+ 
+-cpants_lint.pl - commandline frontend to Module::CPANTS::Analyse
++cpants_lint - commandline frontend to Module::CPANTS::Analyse
+ 
+ =head1 SYNOPSIS
+ 
+-    cpants_lint.pl path/to/Foo-Dist-1.42.tgz
++    cpants_lint path/to/Foo-Dist-1.42.tgz
+ 
+     Options:
+         --help              brief help message
+@@ -156,9 +156,9 @@
+ 
+ =head1 DESCRIPTION
+ 
+-C<cpants_lint.pl> checks the B<Kwalitee> of CPAN distributions. More exact, it checks how a given tarball will be rated on C<http://cpants.perl.org>, without needing to upload it first.
++C<cpants_lint> checks the B<Kwalitee> of CPAN distributions. More exact, it checks how a given tarball will be rated on C<http://cpants.perl.org>, without needing to upload it first.
+ 
+-C<cpants_lint.pl> is also used by C<cpants.perl.org> itself to check all dists on CPAN.
++C<cpants_lint> is also used by C<cpants.perl.org> itself to check all dists on CPAN.
+ 
+ For more information on Kwalitee, and the whole of CPANTS, see C<http://cpants.perl.org> and / or C<Module::CPANTS::Analyse>.
+ 
