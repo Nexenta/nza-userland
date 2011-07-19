@@ -1,3 +1,9 @@
+adduser (40-0-1) unstable; urgency=low
+
+  * Use passwd -l to lock accounts.  Closes: #5820
+
+ -- Andrew Stormont (astormont) <andyjstormont@googlemail.com>  Tue, 19 Jul 2011 14:55:15 +0100
+
 adduser (40-0-0) unstable; urgency=low
 
   * Move to new version scheme.
