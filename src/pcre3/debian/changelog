@@ -1,3 +1,10 @@
+pcre3 (40-0-0) unstable; urgency=low
+
+  * New version scheme
+  * Actually built pcregrep with zip and bzip2
+
+ -- Igor Pashev <igor.pashev@nexenta.com>  Tue, 19 Jul 2011 14:34:11 +0400
+
 pcre3 (8.12-6) unstable; urgency=low
 
   * Used name `libpcre3' (back for good), added symlink libpcre.so.0 -> libpcre.so.3
