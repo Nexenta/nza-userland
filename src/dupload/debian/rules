@@ -1,0 +1,42 @@
+#!/usr/bin/make -f
+
+tmp := debian/dupload
+
+build: build-stamp
+build-stamp:
+	dh_testdir
+	$(MAKE) prefix=/usr
+	touch $@
+
+clean:
+	dh_testdir
+	$(MAKE) clean
+	rm -f build-stamp
+	dh_clean
+
+binary: binary-indep binary-arch
+
+binary-arch:
+# do nothing here
+
+binary-indep: DH_OPTIONS=-i
+binary-indep: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	$(MAKE) prefix=$(tmp)/usr mandir=$(tmp)/usr/share/man install
+	dh_installdirs etc
+	dh_install dupload.conf etc/
+# Link for the old name of dupload.conf.5
+	dh_link usr/share/man/man5/dupload.conf.5.gz usr/share/man/man5/dupload.5.gz
+	dh_installdocs CREDITS TODO
+	dh_installchangelogs
+	dh_installman
+	dh_compress
+	dh_fixperms
+	dh_installdeb
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+.PHONY: build clean binary binary-arch binary-indep
