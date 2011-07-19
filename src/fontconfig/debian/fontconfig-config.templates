@@ -1,3 +1,12 @@
+# These templates have been reviewed by the debian-l10n-english
+# team
+#
+# If modifications/additions/rewording are needed, please ask
+# for an advice to debian-l10n-english@lists.debian.org
+#
+# Even minor modifications require translation updates and such
+# changes should be coordinated with translators and reviewers.
+
 Template: fontconfig/hinting_type
 Type: select
 __Choices: Native, Autohinter, None
@@ -5,7 +14,7 @@ Default: Native
 _Description: Font tuning method for screen:
  Please select the preferred method for tuning fonts for screen rendering.
  .
- Select 'Native' if you mostly use Bitstream Vera (the default in Debian) or
+ Select 'Native' if you mostly use DejaVu (the default in Debian) or
  any of the Microsoft fonts. Select 'Autohinter' if you mostly use other
  TrueType fonts. Select 'None' if you want blurry text.
 

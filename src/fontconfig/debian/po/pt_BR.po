@@ -14,11 +14,12 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fontconfig\n"
-"Report-Msgid-Bugs-To: keithp@debian.org\n"
-"POT-Creation-Date: 2007-04-16 18:03+0200\n"
+"Report-Msgid-Bugs-To: fontconfig@packages.debian.org\n"
+"POT-Creation-Date: 2009-12-31 13:48-0800\n"
 "PO-Revision-Date: 2006-11-09 20:32-0200\n"
 "Last-Translator: André Luís Lopes <andrelop@debian.org>\n"
 "Language-Team: l10n portuguese <debian-l10n-portuguese@lists.debian.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -61,14 +62,14 @@ msgstr ""
 #. Description
 #: ../fontconfig-config.templates:2002
 msgid ""
-"Select 'Native' if you mostly use Bitstream Vera (the default in Debian) or "
-"any of the Microsoft fonts. Select 'Autohinter' if you mostly use other "
-"TrueType fonts. Select 'None' if you want blurry text."
+"Select 'Native' if you mostly use DejaVu (the default in Debian) or any of "
+"the Microsoft fonts. Select 'Autohinter' if you mostly use other TrueType "
+"fonts. Select 'None' if you want blurry text."
 msgstr ""
-"Selecione 'Nativo' caso você utilize principalmente Bistream Vera (a fonte "
-"padrão no Debian) ou quaisquer fontes Microsoft. Selecione 'Autohinter' caso "
-"você utilize principalemnte outras fontes TrueType. Selecione 'Nenhum' caso "
-"você queira texto borrado."
+"Selecione 'Nativo' caso você utilize principalmente DejaVu (a fonte padrão "
+"no Debian) ou quaisquer fontes Microsoft. Selecione 'Autohinter' caso você "
+"utilize principalemnte outras fontes TrueType. Selecione 'Nenhum' caso você "
+"queira texto borrado."
 
 #. Type: select
 #. Choices
@@ -143,10 +144,6 @@ msgstr ""
 
 #~ msgid "Automatic, Always, Never"
 #~ msgstr "Automático, Sempre, Nunca"
-
-#, fuzzy
-#~ msgid "Enable subpixel rendering of text?"
-#~ msgstr "Habilitar renderiza��o de texto de sub-pixel ?"
 
 #~ msgid "With what method should fonts be hinted?"
 #~ msgstr "Os textos devem ser renderizados usando qual método ?"

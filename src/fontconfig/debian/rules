@@ -2,8 +2,6 @@
 # -*- mode: makefile; coding: utf-8 -*-
 # Copyright © 2002,2003 Colin Walters <walters@gnu.org>
 
-SHELL=/bin/bash
-
 # This ensures the fontconfig package is built after libfontconfig1
 binary/fontconfig:: binary/libfontconfig1
 
@@ -11,46 +9,37 @@ include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/rules/simple-patchsys.mk
 include /usr/share/cdbs/1/class/autotools.mk
 
-DEB_CONFIGURE_EXTRA_FLAGS := --disable-docs --with-add-fonts=/usr/share/X11/fonts,/usr/local/share/fonts
-DEB_CONFIGURE_SCRIPT_ENV += LDFLAGS=" -Wl,-Bsymbolic-functions"
+DEB_BUILD_GNU_TYPE=$(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
+ifneq ($(DEB_HOST_GNU_TYPE),$(DEB_BUILD_GNU_TYPE))
+WITHARCH=--with-arch=$(DEB_HOST_GNU_TYPE)
+else
+WITHARCH=
+endif
+
+DEB_CONFIGURE_EXTRA_FLAGS := $(WITHARCH) --disable-docs --with-add-fonts=/usr/X11R6/lib/X11/fonts,/usr/local/share/fonts
 
 # tight versioning
-DEB_DH_MAKESHLIBS_ARGS_libfontconfig1 := -V"libfontconfig1 (>= 2.4.0)"
+DEB_DH_MAKESHLIBS_ARGS_libfontconfig1 := -V"libfontconfig1 (>= 2.8.0)"
 
 DEB_SHLIBDEPS_LIBRARY_fontconfig := libfontconfig1
 DEB_SHLIBDEPS_INCLUDE_fontconfig := debian/libfontconfig1/usr/lib/
 
-DEB_DH_STRIP_ARGS := --dbg-package=libfontconfig1
+DEB_DH_STRIP_ARGS := --dbg-package=libfontconfig1-dbg
 
 DEB_MAKE_ENVVARS := LC_ALL=C
 
 clean::
 	chmod +w debian/po/*.po
 	debconf-updatepo
-	rm -f config/Makedefs Makefile {src,fontconfig}/Makefile fc-{cache,list}/Makefile fontconfig-config fontconfig.pc config.h
-	rm -f doc/Makefile doc/version.sgml
+	rm -f config/Makedefs Makefile src/Makefile fontconfig/Makefile doc/Makefile doc/version.sgml
+	rm -f fc-cache/Makefile fc-list/Makefile fontconfig-config fontconfig.pc config.h
+
+# An empty file will do for enabling bitmaps
+binary-post-install/fontconfig-config::
+	cd debian/fontconfig-config/etc/fonts/conf.avail && \
+		mv 70-yes-bitmaps.conf 70-force-bitmaps.conf
+	cp debian/70-yes-bitmaps.conf debian/fontconfig-config/etc/fonts/conf.avail
 
 # defoma stuff
 binary-post-install/fontconfig::
 	dh_installdefoma
-
-common-binary-fixup-arch::
-	t=libfontconfig1; \
-	for p in $$(dh_listpackages -a -N$$t); do \
-	  rm -rf debian/$$p/usr/share/doc/$$p; \
-	  ln -s $$t debian/$$p/usr/share/doc/$$p; \
-	  if [ -f debian/$$p.docs ]; then \
-	    mkdir -p debian/$$p/usr/share/doc/$$t; \
-	    cp -a $$(eval echo $$(cat debian/$$p.docs)) debian/$$p/usr/share/doc/$$t/; \
-	    dh_compress -p$$p; \
-	  fi; \
-	  ( \
-	    echo "# doc dir is now a symlink to $$p"; \
-	    echo 'if [ "$$1" = upgrade ] && [ ! -L /usr/share/doc/'$$p' ]; then'; \
-	    echo "    rm -rf /usr/share/doc/$$p"; \
-	    echo "fi"; \
-	  ) >> debian/$$p.preinst.debhelper; \
-	done
-
-common-binary-fixup-indep::
-	rm -f debian/fontconfig-config/usr/share/doc/fontconfig-config/changelog.gz

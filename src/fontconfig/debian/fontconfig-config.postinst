@@ -81,11 +81,6 @@ fi
 
 case "$enable_bitmaps" in
 "true")
-# We create the appropriate symlink either way.  In the future
-# (ie, when we no longer have to care about upgrades from dapper
-# or earlier), this will make it possible to preserve configuration
-# changes made by hand in /etc, because the state in the filesystem
-# will then always be unambiguous and therefore useable.
 	ln -s $CONFAVAIL/$yes_bitmaps $CONFDIR/$yes_bitmaps
 	;;
 *)

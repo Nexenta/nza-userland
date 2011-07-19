@@ -4,7 +4,7 @@ Author: Keith Packard
 Abstract: Developer reference for the fontconfig library.
  Fontconfig is a library designed to provide system-wide font
  configuration, customization and application access.
-Section: Apps/Programming
+Section: Programming
 
 Format: PDF
 Files: /usr/share/doc/libfontconfig1-dev/fontconfig-devel.pdf.gz
@@ -13,5 +13,5 @@ Format: Text
 Files: /usr/share/doc/libfontconfig1-dev/fontconfig-devel.txt.gz
 
 Format: HTML
-Index: /usr/share/doc/libfontconfig1-dev/fontconfig-devel/index.html
+Index: /usr/share/doc/libfontconfig1-dev/fontconfig-devel/t1.html
 Files: /usr/share/doc/libfontconfig1-dev/fontconfig-devel/*.html

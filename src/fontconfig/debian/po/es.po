@@ -32,42 +32,43 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fontconfig 2.2.3-3\n"
-"Report-Msgid-Bugs-To: Source: fontconfig@packages.debian.org\n"
-"POT-Creation-Date: 2010-02-20 10:27-0800\n"
+"Report-Msgid-Bugs-To: fontconfig@packages.debian.org\n"
+"POT-Creation-Date: 2009-12-31 13:48-0800\n"
 "PO-Revision-Date: 2007-04-17 02:01-0500\n"
 "Last-Translator: Rudy Godoy <rudy@stone-head.org>\n"
 "Language-Team: Debian Spanish <debian-l10n-spanish@lists.debian.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #. Type: select
 #. Choices
-#: ../fontconfig-config.templates:1001
+#: ../fontconfig-config.templates:2001
 msgid "Native"
 msgstr "Nativo"
 
 #. Type: select
 #. Choices
-#: ../fontconfig-config.templates:1001
+#: ../fontconfig-config.templates:2001
 msgid "Autohinter"
 msgstr "Autosugerido"
 
 #. Type: select
 #. Choices
-#: ../fontconfig-config.templates:1001
+#: ../fontconfig-config.templates:2001
 msgid "None"
 msgstr "Ninguno"
 
 #. Type: select
 #. Description
-#: ../fontconfig-config.templates:1002
+#: ../fontconfig-config.templates:2002
 msgid "Font tuning method for screen:"
 msgstr "Método para el afinamiento de tipo de letra para pantalla:"
 
 #. Type: select
 #. Description
-#: ../fontconfig-config.templates:1002
+#: ../fontconfig-config.templates:2002
 msgid ""
 "Please select the preferred method for tuning fonts for screen rendering."
 msgstr ""
@@ -76,44 +77,44 @@ msgstr ""
 
 #. Type: select
 #. Description
-#: ../fontconfig-config.templates:1002
+#: ../fontconfig-config.templates:2002
 msgid ""
-"Select 'Native' if you mostly use Bitstream Vera (the default in Debian) or "
-"any of the Microsoft fonts. Select 'Autohinter' if you mostly use other "
-"TrueType fonts. Select 'None' if you want blurry text."
+"Select 'Native' if you mostly use DejaVu (the default in Debian) or any of "
+"the Microsoft fonts. Select 'Autohinter' if you mostly use other TrueType "
+"fonts. Select 'None' if you want blurry text."
 msgstr ""
-"Elija «Nativo» si va a utilizar Bitstream Vera (el predeterminado en Debian) "
-"o cualquiera de los tipos de letra de Microsoft. Elija «Autosugerido» si "
-"generalmente utiliza otros tipos de letra «TrueType». Elija «Ninguno» si desea "
-"texto difuso."
+"Elija «Nativo» si va a utilizar DejaVu (el predeterminado en Debian) o "
+"cualquiera de los tipos de letra de Microsoft. Elija «Autosugerido» si "
+"generalmente utiliza otros tipos de letra «TrueType». Elija «Ninguno» si "
+"desea texto difuso."
 
 #. Type: select
 #. Choices
-#: ../fontconfig-config.templates:2001
+#: ../fontconfig-config.templates:3001
 msgid "Automatic"
 msgstr "Automático"
 
 #. Type: select
 #. Choices
-#: ../fontconfig-config.templates:2001
+#: ../fontconfig-config.templates:3001
 msgid "Always"
 msgstr "Siempre"
 
 #. Type: select
 #. Choices
-#: ../fontconfig-config.templates:2001
+#: ../fontconfig-config.templates:3001
 msgid "Never"
 msgstr "Nunca"
 
 #. Type: select
 #. Description
-#: ../fontconfig-config.templates:2002
+#: ../fontconfig-config.templates:3002
 msgid "Enable subpixel rendering for screen:"
 msgstr "Activar el acabado de sub-pixel para pantalla:"
 
 #. Type: select
 #. Description
-#: ../fontconfig-config.templates:2002
+#: ../fontconfig-config.templates:3002
 msgid ""
 "Rendering text at a subpixel level generally makes it look a bit better on "
 "flat (LCD) screens, but can show color artifacts on CRT screens. The "
@@ -121,18 +122,18 @@ msgid ""
 msgstr ""
 "El acabado de texto a nivel de subpixel generalmente hace éste que se vea "
 "mejor en las pantallas planas (LCD), pero puede presentar problemas de color "
-"en pantallas CRT. La opción «Automático» lo activará únicamente si se detecta "
-"una pantalla LCD."
+"en pantallas CRT. La opción «Automático» lo activará únicamente si se "
+"detecta una pantalla LCD."
 
 #. Type: boolean
 #. Description
-#: ../fontconfig-config.templates:3001
+#: ../fontconfig-config.templates:4001
 msgid "Enable bitmapped fonts by default?"
 msgstr "¿Activar los tipos de letra «bitmapped» por omisión?"
 
 #. Type: boolean
 #. Description
-#: ../fontconfig-config.templates:3001
+#: ../fontconfig-config.templates:4001
 msgid ""
 "By default, only outline fonts are used by applications which support "
 "fontconfig."
@@ -142,7 +143,7 @@ msgstr ""
 
 #. Type: boolean
 #. Description
-#: ../fontconfig-config.templates:3001
+#: ../fontconfig-config.templates:4001
 msgid ""
 "Outline fonts are fonts which scale well to various sizes. In contrast, "
 "bitmapped fonts are often lower quality. Enabling this option will affect "
