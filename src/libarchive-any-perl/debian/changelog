@@ -1,0 +1,14 @@
+libarchive-any-perl (40-0-0) unstable; urgency=low
+
+  * Port for NCP4 
+  * Used new version scheme 
+
+ -- Peter Zaickin <peter.zaickin@nexenta.com>  Tue, 05 Jul 2011 16:32:59 +0300
+
+libarchive-any-perl (0.0932-1) unstable; urgency=low
+
+  * Initial Release (Closes: #483704).
+  * Included copyright clarification e-mail received from upstream
+    author.
+
+ -- Ernesto Hernández-Novich (USB) <emhn@usb.ve>  Thu, 19 Jun 2008 15:44:16 -0430
