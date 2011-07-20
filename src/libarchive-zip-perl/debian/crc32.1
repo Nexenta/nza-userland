@@ -1,0 +1,22 @@
+.TH CRC32 1 "June 21, 2005"
+.SH NAME
+crc32 \- compute CRC-32 checksums for the given files
+.SH SYNOPSIS
+.B crc32
+\fIfilename\fP [ \fIfilename\fP ... ]
+.SH DESCRIPTION
+\fBcrc32\fP is a simple utility that calculates the CRC-32 checksum for
+each of the given files.
+.PP
+Note that the CRC-32 checksum is merely used for error detection in
+transmission and storage.  It is not intended to guard against the
+malicious modification of files (i.e., it is not a cryptographic hash).
+.PP
+This utility is supplied with the \fBArchive::Zip\fP module for Perl.
+.SH SEE ALSO
+.BR Archive::Zip (3pm).
+.SH AUTHOR
+The Archive::Zip module was written by Ned Konz.
+.br
+This manual page was prepared by Ben Burton <bab@debian.org>
+for the Debian GNU/Linux system (but may be used by others).

@@ -1,0 +1,39 @@
+Format-Specification: http://svn.debian.org/wsvn/dep/web/deps/dep5.mdwn?op=file&rev=135
+Maintainer: Ned Konz <perl@bike-nomad.com>
+Source: http://search.cpan.org/dist/Archive-Zip/
+Name: Archive-Zip
+
+Files: *
+Copyright: 2000-2004 Ned Konz <perl@bike-nomad.com>
+ 2005 Steve Peters <steve@fisharerojo.org>
+ 2006-2009 Adam Kennedy <adamk@cpan.org>
+License: Artistic or GPL-1+
+
+Files: lib/Archive/Zip/MemberRead.pm
+Copyright: 2002 Sreeji K. Das, <sreeji_k@yahoo.com>
+License: Artistic or GPL-1+
+
+Files: debian/*
+Copyright: 2001, 2002, 2003, Ivo Timmermans <ivo@debian.org>
+ 2004, Matthias Klose <doko@debian.org>
+ 2005, 2007, Ben Burton <bab@debian.org>
+ 2009, 2010, Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
+ 2009, Ernesto Hernández-Novich (USB) <emhn@usb.ve>
+ 2010, gregor herrmann <gregoa@debian.org>
+License: Artistic or GPL-1+
+
+License: Artistic
+ This program is free software; you can redistribute it and/or modify
+ it under the terms of the Artistic License, which comes with Perl.
+ .
+ On Debian GNU/Linux systems, the complete text of the Artistic License
+ can be found in `/usr/share/common-licenses/Artistic'.
+
+License: GPL-1+
+ This program is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 1, or (at your option)
+ any later version.
+ .
+ On Debian GNU/Linux systems, the complete text of the GNU General
+ Public License can be found in `/usr/share/common-licenses/GPL'.

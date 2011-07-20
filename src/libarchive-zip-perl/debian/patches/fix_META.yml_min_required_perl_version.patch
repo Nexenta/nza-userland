@@ -1,0 +1,22 @@
+Description: libarchive-zip-perl FTBFS with Perl::MinimumVersion >=
+ 1.22. libarchive-zip-perl uses functions in tests which requires Perl
+ >= 5.6. Bump required version of Perl in META.yml.
+Origin: vendor
+Bug: http://rt.cpan.org/Public/Bug/Display.html?id=52696
+Bug-Debian: http://bugs.debian.org/560632
+Forwarded: yes
+Author: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
+Last-Update: 2010-05-06
+Applied-Upstream: yes, http://svn.ali.as/cpan/trunk/Archive-Zip/
+
+--- a/META.yml
++++ b/META.yml
+@@ -21,7 +21,7 @@
+     IO::File:             0
+     IO::Handle:           0
+     IO::Seekable:         0
+-    perl:                 5.00396
++    perl:                 5.006
+     Test::More:           0.42
+     Time::Local:          0
+ no_index:
