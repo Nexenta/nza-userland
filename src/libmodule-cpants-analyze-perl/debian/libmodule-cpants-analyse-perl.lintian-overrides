@@ -1,0 +1,2 @@
+# not a license but a module for checking if there is a license
+libmodule-cpants-analyse-perl: extra-license-file usr/share/man/man3/Module::CPANTS::Kwalitee::License.3pm.gz

@@ -1,0 +1,18 @@
+#!/usr/bin/make -f
+#include /usr/share/quilt/quilt.make
+PACKAGE = $(shell dh_listpackages)
+TMP     = $(CURDIR)/debian/$(PACKAGE)
+
+%:	
+	quilt push -a || test $$? = 2
+	dh $@
+clean:
+	quilt pop -a || test $$? = 2
+
+override_dh_auto_test:
+	dh_auto_test -- --test_files "$(shell ls t/*.t | grep -v analyse | grep -v t/calc_test_yaml_meta.t | grep -v t/unpack | grep -v t/calc.t | grep -v t/generated_files.t | grep -v t/moose_as_strict.t | grep -v t/plugin_manifest.t)"
+
+override_dh_auto_install:
+	dh_auto_install
+	mv $(TMP)/usr/bin/cpants_lint.pl $(TMP)/usr/bin/cpants_lint
+	mv $(TMP)/usr/share/man/man1/cpants_lint.pl.1p $(TMP)/usr/share/man/man1/cpants_lint.1p
