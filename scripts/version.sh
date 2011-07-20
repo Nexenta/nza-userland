@@ -10,19 +10,21 @@
 for i in $*
 do
 
- cd packaging/src/$i
+ cd src/$i
  HGVER=`dpkg-parsechangelog --count 1 | grep "Version:"`
  SQUVER=`rmadison -s squeeze $i | cut -d "|" -f 2`
  SIDVER1=`apt-cache show $i|grep -s Filename:|cut -d "/" -f 6|cut -d "_" -f 2|head -1`
  SIDVER2=`apt-cache show $i|grep -s Filename:|cut -d "/" -f 6|cut -d "_" -f 2|tail -1`
+ LOCALVER=`dpkg -s $i | grep Version: | head -1 | cut -d " " -f 2`
 
  echo "$i has following versions:"
+ echo "Installed version is at: $LOCALVER"
  echo "HG repo is at: $HGVER"
  echo "Squeeze is at:$SQUVER"
  echo "Siddy-testing is at:" $SIDVER1
  echo "Siddy-unstable is at:" $SIDVER2
- echo "-------------------------------"
+ echo " "
 
- cd -
+ cd ../
 
 done

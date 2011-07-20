@@ -1,0 +1,2 @@
+build-tree/32/usr/lib/lib*.so.* usr/lib/
+build-tree/64/usr/lib/lib*.so.* usr/lib/amd64/

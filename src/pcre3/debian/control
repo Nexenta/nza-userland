@@ -1,10 +1,10 @@
 Source: pcre3
+Upstream-Version: 8.12
 Section: libs
 Priority: optional
-Maintainer:  Mark Baker <mark@mnb.org.uk>
+Maintainer: Mark Baker <mark@mnb.org.uk>
 Standards-Version: 3.9.1
-Build-Depends: debhelper (>= 8.1.6),
-    libbz2-dev, lib64bz2-dev
+Build-Depends: debhelper, libbz2-dev, zlib1g-dev, g++-multilib
 
 Package: libpcre3
 Section: libs
@@ -67,7 +67,6 @@ Package: pcregrep
 Section: utils
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Replaces: pgrep (<<4.5)
 Description: grep utility that uses perl 5 compatible regexes.
  Perl-style regexps have many useful features that the standard POSIX ones
  don't; this is basically the same as grep but with the different

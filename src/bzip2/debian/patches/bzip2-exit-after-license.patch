@@ -1,0 +1,47 @@
+Index: TMP/bzip2.c
+===================================================================
+--- TMP.orig/bzip2.c	2011-07-19 17:25:07.184231971 +0400
++++ TMP/bzip2.c	2011-07-19 17:25:09.076443343 +0400
+@@ -1890,7 +1890,9 @@
+                case '8': blockSize100k    = 8; break;
+                case '9': blockSize100k    = 9; break;
+                case 'V':
+-               case 'L': license();            break;
++               case 'L': license();
++			 exit ( 0 );
++			 break;
+                case 'v': verbosity++; break;
+                case 'h': usage ( progName );
+                          exit ( 0 );
+@@ -1916,8 +1918,8 @@
+       if (ISFLAG("--keep"))              keepInputFiles   = True;    else
+       if (ISFLAG("--small"))             smallMode        = True;    else
+       if (ISFLAG("--quiet"))             noisy            = False;   else
+-      if (ISFLAG("--version"))           license();                  else
+-      if (ISFLAG("--license"))           license();                  else
++      if (ISFLAG("--version"))           { license(); exit ( 0 ); }  else
++      if (ISFLAG("--license"))           { license(); exit ( 0 ); }  else
+       if (ISFLAG("--exponential"))       workFactor = 1;             else 
+       if (ISFLAG("--repetitive-best"))   redundant(aa->name);        else
+       if (ISFLAG("--repetitive-fast"))   redundant(aa->name);        else
+@@ -2003,12 +2005,14 @@
+             testf ( aa->name );
+ 	 }
+       }
+-      if (testFailsExist && noisy) {
+-         fprintf ( stderr,
+-           "\n"
+-           "You can use the `bzip2recover' program to attempt to recover\n"
+-           "data from undamaged sections of corrupted files.\n\n"
+-         );
++      if (testFailsExist) {
++	 if (noisy) {
++            fprintf ( stderr,
++               "\n"
++               "You can use the `bzip2recover' program to attempt to recover\n"
++               "data from undamaged sections of corrupted files.\n\n"
++            );
++	 }
+          setExit(2);
+          exit(exitValue);
+       }
