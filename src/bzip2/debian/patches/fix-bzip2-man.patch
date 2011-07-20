@@ -1,0 +1,43 @@
+Index: TMP/bzip2.1
+===================================================================
+--- TMP.orig/bzip2.1	2011-07-19 17:10:04.144664750 +0400
++++ TMP/bzip2.1	2011-07-19 17:10:11.416760129 +0400
+@@ -14,6 +14,9 @@
+ [
+ .I "filenames \&..."
+ ]
++.br
++.B bzip2
++.RB [ " \-h|--help " ]
+ .ll -8
+ .br
+ .B bunzip2
+@@ -22,12 +25,18 @@
+ .I "filenames \&..."
+ ]
+ .br
++.B bunzip2
++.RB [ " \-h|--help " ]
++.br
+ .B bzcat
+ .RB [ " \-s " ]
+ [ 
+ .I "filenames \&..."
+ ]
+ .br
++.B bzcat
++.RB [ " \-h|--help " ]
++.br
+ .B bzip2recover
+ .I "filename"
+ 
+@@ -240,6 +249,9 @@
+ Further \-v's increase the verbosity level, spewing out lots of
+ information which is primarily of interest for diagnostic purposes.
+ .TP
++.B \-h --help
++Print a help message and exit.
++.TP
+ .B \-L --license -V --version
+ Display the software version, license terms and conditions.
+ .TP

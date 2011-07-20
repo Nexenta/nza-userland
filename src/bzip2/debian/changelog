@@ -1,3 +1,10 @@
+bzip2 (40-0-0) unstable; urgency=low
+
+  * New version scheme
+  * Added 64-bits library
+
+ -- Igor Pashev <igor.pashev@nexenta.com>  Tue, 19 Jul 2011 14:48:56 +0400
+
 bzip2 (1.0.5-4nexenta1) unstable; urgency=low
 
   * Updated to NCP4
