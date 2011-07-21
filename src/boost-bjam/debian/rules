@@ -1,0 +1,61 @@
+#!/usr/bin/make -f
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+build: build-stamp
+build-stamp: debian/bjam.1
+	dh_testdir
+
+	sh build.sh gcc --symbols && mv bin.*/bjam .
+
+	touch build-stamp
+
+%.1: %.man.sgml
+	docbook-to-man $< > $@
+
+debian/bjam.1: debian/jam.1
+	sed -e 's#doc/jam/Jam.html#__HTMLDOCLOCATION__#' \
+	    -e 's/\<J\([aA][mM]\)\>/BJ\1/g' \
+	    -e 's/\<j\([aA][mM]\)\>/bj\1/g' \
+	    -e 's#__HTMLDOCLOCATION__#doc/bjam/index.html#' \
+	$< > $@
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp
+	rm -rf bin.* bootstrap
+	rm -f jam0 bjam debian/jam.1 debian/bjam.1
+	dh_clean
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+	dh_install -pbjam bjam usr/bin
+	dh_install -pbjam debian/bjam.1 usr/share/man/man1
+
+
+# Build architecture-independent files here.
+binary-indep: build install
+# We have nothing to do by default.
+
+# Build architecture-dependent files here.
+binary-arch: build install
+	dh_testdir
+	dh_testroot
+	dh_installdocs Jambase
+	dh_installchangelogs 
+	dh_strip
+	dh_compress
+	dh_fixperms
+	dh_installdeb
+	dh_shlibdeps
+	dh_md5sums
+	dh_gencontrol
+	dh_builddeb
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install configure

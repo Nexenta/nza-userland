@@ -1,0 +1,140 @@
+boost-jam (40-0-0) unstable; urgency=low
+
+  * Port for NCP4
+  * Used new version scheme 
+
+ -- Peter Zaickin <peter.zaickin@nexenta.com>  Wed, 20 Jul 2011 19:50:24 +0300
+
+boost-jam (3.1.16-1) unstable; urgency=low
+
+  * New upstream.
+  
+  * debian/control: Update homepage URL.
+
+ -- Steve M. Robbins <smr@debian.org>  Mon, 07 Apr 2008 22:27:08 -0500
+
+boost-jam (3.1.14-3) unstable; urgency=low
+
+  * build.jam: Build using -fno-strict-aliasing.  Patch obtained from upstream
+    changeset 41036; c.f. bug #367825 and boost ticket 977
+    (http://svn.boost.org/trac/boost/ticket/977).  Closes: #466250.
+
+ -- Steve M. Robbins <smr@debian.org>  Mon, 18 Feb 2008 20:22:06 -0600
+
+boost-jam (3.1.14-2) unstable; urgency=low
+
+  * debian/rules: Change bjam manpage SEE ALSO to correct location
+    (thanks, Jorda Polo).  Closes: #404791.  Add --symbols to build.sh
+    execution; this changes the compilation flags from -s to -g so symbols
+    are retained.  Closes: #436600.
+  
+  * debian/control: Move URL from description to Homepage field.  Update
+    to standards-version 3.7.3 (no changes).
+
+ -- Steve M. Robbins <smr@debian.org>  Mon, 28 Jan 2008 00:14:20 -0600
+
+boost-jam (3.1.14-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Domenico Andreoli <cavok@debian.org>  Sun, 13 May 2007 23:34:17 +0200
+
+boost-jam (3.1.13-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Domenico Andreoli <cavok@debian.org>  Tue,  7 Nov 2006 15:21:50 +0100
+
+boost-jam (3.1.12-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Rene Rivera <grafik@redshift-software.com>  Sat, 01 Oct 2005 00:00:00 +0000
+
+boost-jam (3.1.11-1) unstable; urgency=low
+
+  * New upstream release.
+
+  * The Debian Boost Team now maintains the package.
+
+ -- Domenico Andreoli <cavok@debian.org>  Thu, 22 Dec 2005 12:55:20 +0100
+
+boost-jam (3.1.10-1) unstable; urgency=low
+
+  * New upstream release.
+
+  * debian/copyright: Add location of upstream sources.
+    Closes: #257871.
+
+  * Install as alternative for "jam".  Closes: #256735.
+
+ -- Steve M. Robbins <smr@debian.org>  Wed,  7 Jul 2004 20:03:13 -0400
+
+boost-jam (3.1.9-3) unstable; urgency=low
+
+  * First upload to Debian from separate boost-jam package (formerly,
+    bjam was built from the boost source package).
+
+  * Changes from upstream's debian build:
+    - change source package to boost-jam, to match upstream tarball name
+    - update build-depends to debhelper v4
+    - update standards-version to 3.6.1
+    - replace content of debian/copyright with LICENSE_1_0.txt
+    - install "bjam.1" (not "jam.1") as manual page
+    - remove x86 assumption in build process
+
+ -- Steve M. Robbins <smr@debian.org>  Sat, 29 May 2004 11:14:05 -0400
+
+bjam (3.1.9-2) unstable; urgency=low
+
+  * Use default value of BOOST_BUILD_PATH is not is set in environment.
+
+ -- Vladimir Prus <ghost@zigzag.lvk.cs.msu.su>  Wed, 17 Dec 2003 16:44:35 +0300
+
+bjam (3.1.9-1) unstable; urgency=low
+
+  * Implement NATIVE_FILE builtin and several native rules.
+
+ -- Vladimir Prus <ghost@zigzag.lvk.cs.msu.su>  Thu, 11 Dec 2003 13:15:26 +0300
+
+bjam (3.1.8-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Vladimir Prus <ghost@zigzag.lvk.cs.msu.su>  Tue,  4 Nov 2003 20:50:43 +0300
+
+bjam (3.1.7-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Vladimir Prus <ghost@zigzag.lvk.cs.msu.su>  Thu, 11 Sep 2003 10:45:44 +0400
+
+bjam (3.1.6-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Vladimir Prus <ghost@zigzag.lvk.cs.msu.su>  Tue,  1 Jul 2003 09:12:18 +0400
+
+bjam (3.1.5-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Vladimir Prus <ghost@zigzag.lvk.cs.msu.su>  Mon, 19 May 2003 14:05:13 +0400
+
+bjam (3.1.3-2) unstable; urgency=low
+
+  * Changed Debian package to be similar to Jam's package.
+
+ -- Vladimir Prus <ghost@cs.msu.su>  Thu, 10 Oct 2002 18:43:26 +0400
+
+bjam (3.1.3-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Vladimir Prus <ghost@zigzag.lvk.cs.msu.su>  Fri,  4 Oct 2002 18:16:54 +0400
+
+bjam (3.1.2-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Vladimir Prus <ghost@cs.msu.su>  Wed, 14 Aug 2002 14:08:00 +0400

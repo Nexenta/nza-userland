@@ -1,0 +1,109 @@
+.TH "BJAM" "1" 
+.SH "NAME" 
+BJam/MR \(em Make(1) Redux 
+.SH "SYNOPSIS" 
+.PP 
+\fBjam\fR [\fB-a\fP]  [\fB-n\fP]  [\fB-v\fP]  [\fB-d \fIdebug\fR\fP]  [\fB-f \fIjambase\fR\fP]  [\fB-j \fIjobs\fR\fP]  [\fB-o \fIactionsfile\fR\fP]  [\fB-s \fIvar\fR=\fIvalue\fR\fP]  [\fB-t \fItarget\fR\fP]  [\fB\fItarget\fR\fP \&...]  
+.SH "DESCRIPTION" 
+.PP 
+BJam is a program construction tool, like make(1). 
+.PP 
+BJam recursively builds target files from source files, using 
+dependency information and updating actions expressed in the 
+Jambase file, which is written in bjam's own interpreted language. 
+The default Jambase is compiled into bjam and provides a 
+boilerplate for common use, relying on a user-provide file 
+"Jamfile" to enumerate actual targets and sources. 
+.SH "OPTIONS" 
+.IP "\fB-a\fP" 10 
+Build all targets anyway, even if they are up-to-date. 
+.IP "\fB-d \fIn\fR\fP" 10 
+Enable cummulative debugging levels from 1 to 
+\fIn\fR. Interesting values are: 
+ 
+ 
+.RS 
+.IP "1" 10 
+.PP 
+Show 
+actions (the default) 
+.IP "2" 10 
+.PP 
+Show 
+"quiet" actions and display all action 
+text 
+.IP "3" 10 
+.PP 
+Show 
+dependency analysis, and target/source 
+timestamps/paths 
+.IP "4" 10 
+.PP 
+Show shell 
+arguments 
+.IP "5" 10 
+.PP 
+Show rule 
+invocations and variable 
+expansions 
+.IP "6" 10 
+.PP 
+Show 
+directory/header file/archive 
+scans 
+.IP "7" 10 
+.PP 
+Show 
+variable settings 
+.IP "8" 10 
+.PP 
+Show 
+variable fetches 
+.IP "9" 10 
+.PP 
+Show 
+variable manipulation, scanner 
+tokens 
+.RE 
+ 
+.IP "\fB-d +\fIn\fR\fP" 10 
+Enable debugging level \fIn\fR. 
+.IP "\fB-d 0\fP" 10 
+Turn off all debugging levels. Only errors are not 
+suppressed. 
+.IP "\fB-f \fIjambase\fR\fP" 10 
+Read \fIjambase\fR instead of using the 
+built-in Jambase. Only one \fB-f\fP flag is permitted, 
+but the \fIjambase\fR may explicitly include other 
+files. 
+.IP "\fB-j \fIn\fR\fP" 10 
+Run up to \fIn\fR shell commands concurrently 
+(UNIX and NT only). The default is 1. 
+.IP "\fB-n\fP" 10 
+Don't actually execute the updating actions, but do 
+everything else. This changes the debug level default to 
+\fB-d2\fP. 
+.IP "\fB-o \fIfile\fR\fP" 10 
+Write the updating actions to the specified file 
+instead of running them (or outputting them, as on the 
+Mac). 
+.IP "\fB-s \fIvar\fR=\fIvalue\fR\fP" 10 
+Set the variable \fIvar\fR to 
+\fIvalue\fR, overriding both internal variables and 
+variables imported from the environment.  
+.IP "\fB-t \fItarget\fR\fP" 10 
+Rebuild \fItarget\fR and everything that 
+depends on it, even if it is up-to-date. 
+.IP "\fB-v\fP" 10 
+Print the version of bjam and exit. 
+.SH "SEE ALSO" 
+.PP 
+BJam is documented fully in HTML pages available on Debian 
+systems from 
+\fB/usr/share/doc/bjam/index.html\fP. 
+.SH "AUTHOR" 
+.PP 
+This manual page was created by Yann Dirson dirson@debian.org from 
+the \fBJam.html\fP documentation, for the \fBDebian GNU/Linux\fP system 
+(but may be used by others). 
+.\" created by instant / docbook-to-man, Wed 20 Jul 2011, 19:59 
