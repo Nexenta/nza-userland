@@ -6,6 +6,7 @@ Uploaders: Chris Waters <xtifr@debian.org>, Sergei Golovan <sgolovan@debian.org>
 Build-Depends: debhelper (>= 5.0.0), quilt
 Standards-Version: 3.8.3
 Homepage: http://www.tcl.tk/
+Upstream-Version: 8.4.19-4nexenta2
 
 Package: tcl8.4
 Section: interpreters

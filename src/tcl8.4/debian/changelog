@@ -1,3 +1,14 @@
+tcl8.4 (40-0-0) unstable; urgency=low
+
+  * debian/rules:
+    + Enable dh_shlibdeps for correct runtime dependencies
+  * debian/tcl8.4.files:
+    + Also install symlink libtcl8.4.so to fix linking for tclsh8.4 (Closes: #5474)
+  * Updated to use new version scheme
+  * Use source format 3.0 (quilt)
+
+ -- Kartik Mistry <kartik.mistry@nexenta.com>  Thu, 21 Jul 2011 20:11:02 +0530
+
 tcl8.4 (8.4.19-4nexenta2) unstable; urgency=low
 
   * Moved tcl8.4.m4 to /usr/gnu/share/aclocal
