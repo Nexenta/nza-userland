@@ -1,0 +1,527 @@
+dupload (40-0-0) unstable; urgency=low
+
+  * Move to new version scheme.
+  * Add Nexenta defaults.
+
+ -- Andrew Stormont (astormont) <andyjstormont@googlemail.com>  Tue, 19 Jul 2011 02:06:54 +0100
+
+dupload (2.6.6-0nexenta0) unstable; urgency=low
+
+  * Package for NCP4.
+
+ -- Andrew Stormont (astormont) <andyjstormont@googlemail.com>  Mon, 31 Jan 2010 20:50:21 +0100
+
+dupload (2.6.6) unstable; urgency=low
+
+  * Update definitions for ftp-master, anonymous-ftp-master and
+    delayed to use ssh.upload.debian.org and ftp.upload.debian.org.
+    (Closes: #499637)
+
+ -- Frank Lichtenheld <djpig@debian.org>  Sun, 21 Sep 2008 18:24:34 +0200
+
+dupload (2.6.5) unstable; urgency=low
+
+  * Update definition of DELAYED queue to use ssh-delayed.upload.debian.org.
+  * Bump Standards-Version to 3.8.0 (no changes).
+  * Drop versioning from Perl dependency, even bo fulfilled it.
+
+ -- Frank Lichtenheld <djpig@debian.org>  Fri, 12 Sep 2008 04:35:31 +0200
+
+dupload (2.6.4) unstable; urgency=low
+
+  * Add myself to Uploaders with Josip's approval
+    + acknowledge NMUs 
+  * Make a few clean-ups I refrained from in the NMUs:
+    + Increase debhelper compat level to 5
+    + Add some missing dh_* calls (md5sums and installman)
+    + Use dh_install and dh_link instead of install and ln
+    + Bump Standards-Version to 3.7.3 (no changes)
+
+ -- Frank Lichtenheld <djpig@debian.org>  Fri, 02 May 2008 13:43:03 +0200
+
+dupload (2.6.3.4) unstable; urgency=low
+
+  * Non-maintainer upload (Closes: #477220)
+  * Update mentors.debian.net configuration. Patch by Charles Plessy.
+    (Closes: #226101)
+  * Add volatile configuration. (Closes: #420693)
+  * Add backports.org configuration.
+  * Abort upload if distribution is UNRELEASED. (Closes: #384703)
+    (also remove support for "frozen")
+  * Add support for parsing and testing new checksums-* fields.
+    dupload will not complain if the fields are absent.
+    (Closes: #473518)
+  * Check file sizes, too. (Closes: #360161)
+
+ -- Frank Lichtenheld <djpig@debian.org>  Fri, 25 Apr 2008 23:51:29 +0200
+
+dupload (2.6.3.3) unstable; urgency=low
+
+  * NMU (with maintainers consent) (Closes: #398135)
+  * Recommend openssh-client instead of ssh, keep ssh as alternative
+    for now. Reported by Aaron Schrab (Closes: #387678)
+  * Setting $default_host from a local dupload.conf is now possible
+    again. Reported by martin f krafft (Closes: #249341)
+  * Add empty binary-arch target in debian/rules. Reported by
+    Aurelien Jarno (Closes: #395593)
+  * Treat DEBDELAY=0 correctly. Patch by Matej Vela (Closes: #356780)
+  * Fix headers of man pages. Reported by Denis Barbier (Closes: #222934)
+  * Update location of security upload queues. Reported by adrian
+    (Closes: #345078)
+  * Fix move of files to the queuedir. Patch by Bob Proulx
+    (Closes: #279308)
+  * Remove build-stamp in debian/rules' clean target
+
+ -- Frank Lichtenheld <djpig@debian.org>  Sat, 11 Nov 2006 21:17:38 +0100
+
+dupload (2.6.3.2) unstable; urgency=low
+
+  * NMU during BSP.
+  * Try to differentiate between different gpg --verify error reasons
+    to allow uploads from hosts where the public key is not available.
+    (Closes: #321126)
+
+ -- Frank Lichtenheld <djpig@debian.org>  Sat,  6 Aug 2005 20:14:23 +0200
+
+dupload (2.6.3.1) unstable; urgency=low
+
+  * NMU to remove obsolete queues, based on 
+    http://www.debian.org/doc/developers-reference/ch-pkgs.en.html
+    and
+    http://lists.debian.org/debian-devel/2004/debian-devel-200401/msg01950.html>
+    also cleaned up the bug list.
+  * Removed non-functioning upload queues: anonymous-non-us, non-us,
+    chiark, erlangen, uk, jp, and samosa. (Closes: #222938, #229744)
+  * Added notes extracted from the Developer's reference regarding 
+    uploads to security and commented out these entries to prevent
+    developers from uploading there unintentionally. (Closes: #251286)
+  * Added a default configuration for uploading to mentors.debian.net
+    (Closes: #226101)
+  * Changed default (commented) upload queue to be anonymous-ftp-master
+  * Use Goswin's patch to add an 'options' field in the configuration file
+    which can be used to setup --progress and -L in rsync calls, or 
+    additional options to SSH if needed (Closes: #98949, #319910, #225400)
+  * Check the .changes signature using gpg or pgp (if available) in order to
+    prevent unsigned uploads. This is active by default for GPG but can be 
+    disabled in dupload.conf at will. Also, added two new simple scripts
+    gpg-check and pgp-check to provide a wrapper to the check so that the
+    error message in case of a failure is more user-friendly. I've implemented
+    this as hooks rather than as new code in dupload to allow users to
+    customise as needed. Note: DSC files are not checked since that should
+    be done in a separate hook (and there is none for those files).
+    (Closes: #54344, #56877, #65630, #101882)
+  * Related to the above add references to the preupload/postupload hooks
+    in the dupload.conf file.
+
+ -- Javier Fernandez-Sanguino Pen~a <jfs@computer.org>  Tue, 26 Jul 2005 23:45:04 +0200
+
+dupload (2.6.3) unstable; urgency=medium
+
+  * Fixed package build directory to actually include the contents
+    in the .deb (d'oh!), closes: #212093.
+
+ -- Josip Rodin <joy-packages@debian.org>  Mon, 22 Sep 2003 11:39:54 +0200
+
+dupload (2.6.2) unstable; urgency=low
+
+  * Added security.debian.org:/org/security.debian.org/queue/unchecked
+    to the config file.
+  * Properly detects Changes and Files multi-line tags, thanks to
+    Matthias Urlichs, closes: #195903.
+  * Added testing to the list of accepted distributions because of
+    mini-dinstall, by request of Bruno Rodrigues, closes: #179711.
+  * Added the delayed upload stuff from the Developer's Reference
+    to the config file, but renamed the DELAY variable to DEBDELAY
+    to cause less namespace pollution, closes: #146840.
+
+ -- Josip Rodin <joy-packages@debian.org>  Tue, 16 Sep 2003 12:40:59 +0200
+
+dupload (2.6.1) unstable; urgency=low
+
+  * Ignore uploads to security.debian.org in the non-US sanity check,
+    and introduce a "nonus" flag for hosts to be able to force this,
+    closes: #164320.
+
+ -- Josip Rodin <jrodin@jagor.srce.hr>  Fri, 11 Oct 2002 20:37:07 +0200
+
+dupload (2.6) unstable; urgency=low
+
+  * Added libnet-perl into Build-Depends, closes: #147530.
+  * Added back the $mailto || $mailtx warning.
+  * Added the non-US sanity check, closes: #103525.
+
+ -- Josip Rodin <jrodin@jagor.srce.hr>  Thu, 11 Apr 2002 21:02:39 +0200
+
+dupload (2.5) unstable; urgency=high
+
+  * New maintainer, closes: #141847, #55691, #55752.
+  * Reduced priority of the mail stuff because it's no longer used by
+    default, closes: #109260. dupload will now just warn (or be quiet)
+    about the lack of /usr/sbin/sendmail.
+  * Remove the .upload file when a batch method fails, which really
+    closes: #44624.
+  * No longer displays the statistics if they weren't calculated,
+    closes: #57868.
+  * Fixed .changes file check to ignore regexps, closes: #69383.
+  * Check if the configuration file has any contents before trying to
+    load it, closes: #86120.
+  * Renamed Build-Depends into Build-Depends-Indep, closes: #92168.
+  * Replaced the note in the configuration file to explain the situation
+    with master.debian.org, closes: #112822. I'd rather not warn, because
+    if someone really wants to use it still they'll get spurious warnings.
+  * Removed giano from the configuration file, closes: #122777.
+  * Use the host FQDN instead of the host nickname in .upload files,
+    closes: #133286.
+  * Proofreading in the manual pages. Ugh!
+  * Removed a bunch of implied stuff from the default configuration file.
+    Removed mention of debian*-changes mailing lists because we no longer
+    want/allow dupload mails to them.
+    Added anonymous-ftp-master host definition.
+  * Polishing in the packaging.
+  * Removed fucked up makefile commands that overwrote my dupload with the
+    contents of dupload.pl for no actual practical purpose. Fuck.
+  * Removed checking of the Format: field in the changes file for >= 1.6,
+    since the fact dinstall's mails started somewhere at about the same time
+    is not really related. Simply respect the $dinstall_runs variable which
+    is set for all the default Debian hosts in the configuration file.
+
+ -- Josip Rodin <jrodin@jagor.srce.hr>  Wed, 10 Apr 2002 18:01:26 +0200
+
+dupload (2.4.3) frozen unstable; urgency=high
+
+  * No longer reads (by default) a configuration file in the current
+    directory. Although not formally reported as a bug, it is a serious
+    security hole.
+
+ -- Stephane Bortzmeyer <bortzmeyer@debian.org>  Fri, 13 Apr 2001 20:37:47 +0200
+
+dupload (2.4.2) frozen unstable; urgency=low
+
+  * New configuration file (ftp-master, anonymous non-US).
+    Closes: #63809, #64003, #92418, #78829
+  * Small documentation bug about ssh. Closes: #63660
+  * Build dependencies. Closes: #70279
+	
+ -- Stephane Bortzmeyer <bortzmeyer@debian.org>  Tue, 10 Apr 2001 20:47:05 +0200
+
+dupload (2.4.1) frozen unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Lintian clean.
+    * Ported to debhelper.
+    * FHS 2.1 compliant
+    * Upgraded standards version.
+  * Added support for rsync, modeled after scpb.  Patch from Adam Heath
+    <doogie@debian.org>
+  * Fixed typo in warning message.  Closes: #48812.
+  * Don't upload files that have already been uploaded when processing
+    multiple .changes.  Closes: #53273.
+  * Don't log a successful upload for scpb/rsync until the upload has
+    finished.  Closes: #44624, #48577.
+  * When cc'ing, display the address that the email is cc'd to.  Closes:
+    #52840.
+  * Only wishlist bugs now remain on dupload.  :)
+
+ -- Adam Heath <doogie@debian.org>  Wed, 19 Jan 2000 22:52:27 -0600
+
+dupload (2.4) unstable; urgency=low
+
+  * Patch (both from Joey Hess <joey@kitenet.net> and myself) to fix hooks.
+    Hooks are now seriously tested. Closes: #43644 
+  * $dinstall_runs is now set for every host which transfers to master.
+    Closes #43722.
+  * The fact that the "scpb" method is the recommened one is now clear
+    in dupload(1). Closes #42342.
+	
+ -- Stephane Bortzmeyer <bortzmeyer@debian.org>  Mon, 30 Aug 1999 12:46:56 +0200
+
+dupload (2.3) unstable; urgency=low
+
+  * --help option. Closes #39901
+  * An entry for non-us. Closes #39707
+  * Complies with the new Perl policy. Closes #40563
+
+ -- Stephane Bortzmeyer <bortzmeyer@debian.org>  Wed,  7 Jul 1999 14:17:15 +0200
+
+dupload (2.2) unstable; urgency=low
+
+  * A completely new system to run pre and post-upload scripts: hooks.
+    Now, you can run any shell command before uploading (uploading will
+    be cancelled if they fail) and after successful uploading.
+    See dupload.conf(5). Closes #34883 and, I hope, almost all the future
+    wishlists "Can you add such and such in dupload" :-)
+  * Small improvment to the automatic changelog detection code. Closes 
+    #39072
+  * Several cleanings of the source code and dependencies, thanks to 
+    Julian Gilbey <J.D.Gilbey@qmw.ac.uk> 
+  * New upload queue samosa.debian.org. Closes #38838
+
+ -- Stephane Bortzmeyer <bortzmeyer@debian.org>  Thu,  3 Jun 1999 11:26:03 +0200
+
+dupload (2.1) unstable; urgency=low
+
+  * Recognizes the new (1.6) changelog format and, if used and if the
+    per-host variable dinstall_runs is set, do not send mail uselessly.
+    Patch by Brian Almeida <bma@debian.org>. Closes #35308
+  * Implements --quiet. Patch by Julian Gilbey <J.D.Gilbey@qmw.ac.uk>
+  * Adds a new line to the .upload file to record successful uploading. 
+    Patch by Julian Gilbey <J.D.Gilbey@qmw.ac.uk>. Closes #34209
+  * New global configuration variable default_host. --to is no longer
+    mandatory. Closes #34208 and probably #31684 by a side-effect.
+  * New option --mailonly for unconditionnal announcements. Closes
+    #31616
+  * Allows a new global configuration variable to suppress
+    parentheses around full names. Closes #16685
+  * ssh no longer requires X forwarding. Closes #38061
+  * dupload(5) -> dupload.conf(5) and updated. Closes #35643
+  * Fatal error handling rewritten: util.pm suppressed but it is not
+    a complete return to pre-2.0: fatal() now uses caller() instead
+    of croaking (patch by Julian Gilbey <J.D.Gilbey@qmw.ac.uk>).
+    Closes #35626 and #35625 by a side-effect.
+  * Properly documents the extra 'announce' files. Closes #26685
+  * Japanese upload queue added. Closes #37803
+  * Mode-optimization for ssh (do not remote-chmod if the mode is already
+    correct) now works also for the 'scpb' method. Allows to close #13243,
+    longest dupload bug ever, 604 days old.
+  * Announcements are sent according to the Debian Developer's Reference and
+    documented as such (there is nothing in the Policy Manual about 
+    announcements). Closes #37521
+  * New way to set the passive mode. Should close #36087
+  * Copyright updated (again, pre-2.0 souvenirs). Closes #35603
+  * Moved to subsection 'devel'. Closes #35602
+  * Various typos fixed, as well as errors in the documentation
+    (mostly pre-2.0 souvenirs).	Closes #35518
+
+ -- Stephane Bortzmeyer <bortzmeyer@debian.org>  Thu, 20 May 1999 09:23:58 +0200
+
+dupload (2.0) unstable; urgency=low
+
+  * New dependencies: recommends a mail-transport-agent (the 
+    announcement is really important) and suggests lintian
+    (see #34883).
+  * When using SSH, do not chmod on the remote host if the local mode
+    is already 0644. Half-closes #13243.
+  * Patch from Chris Waters <xtifr@dsp.net> to prevent emacs from
+    showing password. Closes #34248.
+  * scpb method documented.
+  * --nomail now works according to the documentation (running
+    dupload again sends the announce). Closes #31616, #32977.
+  * New configuration file options, "archive" (the announcement)
+    and "passive" (for FTP).
+  * Do not ask for password when doing a dry run. Closes #31597
+  * Routines that croak() are now in a separate package, to avoid
+    displaying the stack, with its passwords. Thanks to 
+    Guy Decoux <decoux@moulon.inra.fr>. Closes #10003
+  * New dupload.conf. Closes #34943
+  * Now uses Net::FTP module instead of a custom FTP module. And
+    depends on libnet-perl. Uses better error messages. Closes 
+    #28283, #7541, #33437
+
+ -- Stephane Bortzmeyer <bortzmeyer@debian.org>  Thu, 25 Mar 1999 15:47:39 +0100
+d
+dupload (1.17) unstable; urgency=low
+
+  * Ability to add a "X-No-Archive: yes" header. Closes #33896
+  * Now does correct computations on kilobytes. Closes #31955
+  * Default method for master is now scp/ssh. Closes #16241
+  * New (undocumented) method "scpb" by Guy Maor <maor@ece.utexas.edu>.
+    Closes #13383
+  * Do not display all parameters (including password) when failing to log
+    in. Closes #31216
+  * Cc: now works. Closes #19034
+  * Accept quotes in full names. Closes #13120
+  * New maintainer.
+
+ -- Stephane Bortzmeyer <bortzmeyer@debian.org>  Sat, 27 Feb 1999 21:44:13 +0100
+
+dupload (1.16.4) frozen unstable; urgency=low
+
+  * Non-maintainer upload
+  * Added dupload.conf entry for ftp://ftp3.linux.it/pub/Linux/UploadQueue/ 
+  * Made appropriate /usr/doc/dupload/copyright file,
+    which fixes #14390, #24699, #29766.
+  * Fixed the section/priority according to the overriding Packages file
+  * Suggests: mail-transport-agent (because of the announcing feature)
+
+ -- Josip Rodin <jrodin@jagor.srce.hr>  Mon, 11 Jan 1999 00:22:13 +0100
+
+dupload (1.16.3) unstable; urgency=low
+
+  * Non-maintainer upload
+  * Implemented the --nomail option. Closes #18512
+
+ -- Stephane Bortzmeyer <bortzmeyer@debian.org>  Tue,  5 Jan 1999 10:10:51 +0100
+
+dupload (1.16.2) frozen unstable; urgency=medium
+
+  * Non-maintainer release.
+  * Fix brokenness in last NMU using patch from Martin Bialasinski
+    posted to debian-devel.
+  * Add patch from Bug#23927 (sends mail for frozen-only uploads).
+  * Use scp -q, as scp's progress display does not mesh nicely with
+    dupload's output.
+
+ -- Joel Klecker <espy@debian.org>  Sun, 20 Dec 1998 05:38:45 -0800
+
+dupload (1.16.1) frozen unstable; urgency=low
+
+  * Non-maintainer upload
+  * Fix logic error in uploading using FTP (Bug# 30202)
+
+ -- Wichert Akkerman <wakkerma@debian.org>  Fri, 18 Dec 1998 16:13:35 +0100
+
+dupload (1.16) unstable; urgency=low
+
+  * small enhancement from Rob Browning <rlb@cs.utexas.edu> for
+    dry run and sendmail command
+  * read local config files too (should fix bug #7539
+  * upload queue in erlangen (germany) added
+  * handle odd characters in package names (1st try)
+
+ -- Heiko Schlittermann <heiko@lotte.sax.de>  Fri, 29 Aug 1997 22:27:35 +0200
+
+dupload (1.15) stable unstable; urgency=low
+
+  * fixed bug regarding ``+'' in package names (#????)
+  * Updated man page to real life:
+    visiblename (!) is the real name of the ``visibledomain''
+    config directive. (#????)
+  * Option for suppressing mail added (#7771)
+  * Point to global config as example for local config (#8826).
+
+ -- Heiko Schlittermann <heiko@lotte.sax.de>  Wed, 25 Jun 1997 21:32:06 +0200
+
+dupload (1.14) stable unstable; urgency=low
+
+  * copyright refers no to /usr/doc/copyright (bug #7199)
+  * don't assume the uploading person as lazy any longer
+    (bugs #6397, #6620)
+  * when uploaded a package via scp, a `ssh chmod 0644' is done to
+    (bug #7166)
+  * put it into stable
+
+ -- Heiko Schlittermann <heiko@lott.sax.de>  Thu, 13 Feb 1997 09:09:05 +0100
+
+dupload (1.12) unstable; urgency=low
+
+  * set visible name and domain in the announcement mail
+    (as a way to work around the anti spamming of the list processor
+    if you send your announcements from several hosts)
+
+ -- Heiko Schlittermann <heiko@lotte.sax.de>  Wed, 27 Nov 1996 12:33:38 +0100
+
+dupload (1.11) unstable; urgency=low
+
+  * Option -p will print the nick name too
+  * exit code according do success or failure
+  * announcement according to policy
+    (is `frozen' a valid distribution code?)
+  * changed distribution to unstable
+
+ -- Heiko Schlittermann <heiko@lotte.sax.de>  Wed, 27 Nov 1996 06:53:09 +0100
+
+dupload (1.10) experimental; urgency=low
+
+  * temporary fix for perl-5.003
+
+ -- Heiko Schlittermann <heiko@lotte.sax.de>  Mon, 4 Nov 1996 08:37:52 +0100
+
+dupload (1.9) experimental; urgency=low
+
+  * stylistic changes in man pages
+  * 1kB == 1000 B
+
+ -- Heiko Schlittermann <heiko@lotte.sax.de>  Thu, 24 Oct 1996 21:42:45 +0200
+
+dupload (1.8) experimental; urgency=low
+
+  * scp is supported now
+  * address of chiark matches changed reality again
+  * avoid duplicate announcements
+  * extra announcement file name had typo 
+  * now looking for following extra files 
+    - package.announce
+    - package_version.announce
+    - package_version-debian.announce
+    and prepend 'em in that order to the announcement (.changes)
+    NOTE: text before the pgp-signed part of a message is not shown
+    in some MUAs (elm).
+  * suppressing the stars while entering a password
+  * non-echo mode is entered before issuing the password prompt (should
+    cure the problem that the password is shown on heavily loaded
+    machines)
+
+ -- Heiko Schlittermann <heiko@lotte.sax.de>  Sat, 5 Oct 1996 23:36:59 +0200
+
+dupload (1.7) experimental; urgency=low
+
+  * include `X-dupload: version' in mail header
+  * niced the manual pages (due to eric)
+  * --Version option
+  * better detecting of non-changes files
+  * if a file was uploaded to host A, dupload refused
+    an upload to host B
+
+ -- Heiko Schlittermann <heiko@lotte.sax.de>  Wed, 18 Sep 1996 10:26:06 +0200
+
+dupload (1.6) experimental; urgency=medium
+
+  * didn't respected already done uploads
+
+ -- Heiko Schlittermann <heiko@lotte.sax.de>  Sat, 14 Sep 1996 01:06:39 +0200
+
+dupload (1.5) experimental; urgency=high
+
+  * announced always to mailto and mailtx
+  * prepend $package-$version.announce, if exists, to the
+    announcement
+
+ -- Heiko Schlittermann <heiko@lotte.sax.de>  Fri, 13 Sep 1996 21:35:00 +0200
+
+dupload (1.4) experimental; urgency=high
+
+  * we should upload the .changes file too
+  * in ftp modules: output unbuffered if $ftp_show
+  * hmm, back the arch in announcements subject (so
+    we have different subjects for different binaries)
+  * option --keep to skip broken packages (instead of bailing
+    out)
+  * md5sums should be compared with `eq' rather then `=='
+
+ -- Heiko Schlittermann <heiko@lotte.sax.de>  Fri, 13 Sep 1996 21:35:00 +0200
+
+dupload (1.3) experimental; urgency=low
+
+  * login/password support (due to Dominik)
+  * support for master.debian.org (due to Yves)
+  * hash marks while uploading
+  * new config file format
+  * firewall aware (I hope) (due to Dominik)
+  * default host not supported any longer
+  * now stripping of the architecture from the *.upload file
+    and from the announcements subject (due to Yves)
+  * --force option to ignore contents of *.upload file
+  * not taking the architecture from the changes file name into
+    the jobname and announcement (due to Yves)
+  * log the announcement too
+
+ -- Heiko Schlittermann <heiko@lotte.sax.de>  Thu, 12 Sep 1996 23:44:04 +0200
+
+dupload (1.2) experimental; urgency=medium
+
+  * silly bug prevented it from sending the announcement
+
+ -- Heiko Schlittermann <heiko@lotte.sax.de>  Thu, 12 Sep 1996 17:44:04 +0200
+
+dupload (1.1) experimental; urgency=low
+
+  * configuration files /etc/dupload.conf, ~/.dupload, ./dupload.conf
+  * option -n for dry run
+
+ -- Heiko Schlittermann <heiko@lotte.sax.de>  Thu, 12 Sep 1996 11:15:22 +0200
+
+dupload (1.0-1) experimental; urgency=low
+
+  * initial release
+
+ -- Heiko Schlittermann <heiko@lotte.sax.de>  Wed, 11 Sep 1996 13:28:10 +0200

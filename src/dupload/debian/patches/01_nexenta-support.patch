@@ -1,0 +1,100 @@
+--- ./dupload.conf.bak	2011-07-19 02:09:35.770485695 +0100
++++ ./dupload.conf	2011-07-19 02:14:15.524551617 +0100
+@@ -62,78 +62,22 @@
+ # Pre-defined hosts
+ # -----------------
+ 
+-$cfg{'ftp-master'} = {
+-	fqdn => "ssh.upload.debian.org",
++$cfg{'siddy-unstable'} = {
++	fqdn => "nabat",
+ 	method => "scpb",
+-	incoming => "/srv/upload.debian.org/UploadQueue/",
++	incoming => "/var/tmp/ncp4-upload",
+ 	# files pass on to dinstall on ftp-master which sends emails itself
+ 	dinstall_runs => 1,
+ };
+-$cfg{'anonymous-ftp-master'} = {
+-	fqdn => "ftp.upload.debian.org",
+-	incoming => "/pub/UploadQueue/",
+-	# The dinstall on ftp-master sends emails itself
+-	dinstall_runs => 1,
+-};
+-
+-# see http://www.debian.org/devel/debian-volatile/ for more information
+-$cfg{'volatile'} = {
+-        fqdn => "volatile-master.debian.org",
+-        incoming => "/pub/UploadQueue/",
+-        # files pass on to dinstall on ftp-master which sends emails itself
+-        dinstall_runs => 1,
+-        passive => 1,
+-};
+-
+-# For Delayed uploads use this. You can use 0-day, which is uploaded
+-# one hour before dinstall runs.
+-$delay = (defined($ENV{DEBDELAY}) ? $ENV{DEBDELAY} : 7);
+-$cfg{'delayed'} = {
+-	fqdn => "ftp.upload.debian.org",
+-	incoming => "/pub/UploadQueue/DELAYED/$delay-day/",
+-	# The dinstall on ftp-master sends emails itself
+-	dinstall_runs => 1,
+-};
+ 
+-# Mentors upload queue, see
+-# http://mentors.debian.net/cgi-bin/maintainer-intro
+-$cfg{'mentors'} = {
+-	fqdn    =>'mentors.debian.net',
+-	incoming=>'/',
++$cfg{'siddy-testing'} = {
++	fqdn => "nabat",
++	method => "scpb",
++	incoming => "/var/tmp/ncp4-upload-testing",
++	# files pass on to dinstall on ftp-master which sends emails itself
+ 	dinstall_runs => 1,
+-	passive => 1,
+-};
+-
+-# see http://www.backports.org/dokuwiki/doku.php?id=contribute for more information
+-$cfg{'bpo'} = {
+-    fqdn => "www.backports.org",
+-    incoming => "/",
+ };
+ 
+-# NOTE: Do _NOT_ upload a package to the security upload queue 
+-# (oldstable-security, stable-security, etc.) without prior authorization 
+-# from the security team. Please read:
+-# http://www.debian.org/doc/developers-reference/ch-pkgs.en.html#s-bug-security
+-
+-# Notice: There are login restriction on this host, scp will not
+-# work unless you are authorised.
+-#$cfg{'security'} = {
+-#	fqdn => "security-master.debian.org",
+-#	method => "scpb",
+-#	incoming => "/org/security.debian.org/queue/unchecked",
+-#	# The dinstall on security sends emails itself
+-#	dinstall_runs => 1,
+-#	nonus => 1,
+-#};
+-#$cfg{'anonymous-security'} = {
+-#	fqdn => "security-master.debian.org",
+-#	incoming => "/pub/SecurityUploadQueue",
+-#	# files pass on to dinstall on security which sends emails itself
+-#	dinstall_runs => 1,
+-#	nonus => 1,
+-#};
+-
+-
+ # Don't remove the following line.  Perl needs it.
+ 1;
+ 
+--- ./dupload.bak	2011-07-19 11:49:41.647521627 +0100
++++ ./dupload	2011-07-19 11:49:59.657243305 +0100
+@@ -26,7 +26,7 @@
+ my $version = "2.6";
+ my $progname = basename($0);
+ my $user = getlogin() || $ENV{LOGNAME} || $ENV{USER};
+-my $myhost = `hostname --fqdn`; chomp $myhost;
++my $myhost = `hostname`; chomp $myhost;
+ my $cwd = cwd();
+ 
+ my $debug = 0;	# for somewhat more verbose output from the ftp module
