@@ -1,3 +1,14 @@
+popt (40-0-0) unstable; urgency=low
+
+  * Rebuilt with new version scheme
+  * debian/control, debian/rules:
+    + Removed udeb generation
+  * debian/rules:
+    + Removed udeb generation
+    + Bring back dh_shlibdeps
+
+ -- Kartik Mistry <kartik.mistry@nexenta.com>  Thu, 21 Jul 2011 19:08:48 +0530
+
 popt (1.16-1nexenta2) unstable; urgency=low
 
   * Rebuilt on NCP4b2
