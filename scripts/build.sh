@@ -7,8 +7,10 @@ BUILDDIR=/tmp/build-pkg
 
 SRC_BASE_URL="
 http://apt.nexenta.org/wip/dists/unstable/main/source
+http://apt.nexenta.org/wip/dists/testing/main/source
 http://apt.nexenta.org/wip/dists/stable/main/source
 http://ftp.fi.debian.org/debian/pool/main
+http://ftp.uk.debian.org/debian/pool/main
 http://ftp.de.debian.org/debian/pool/main
 "
 
@@ -16,7 +18,7 @@ LOCAL_TARBALL=''
 FORCE='no'
 INSTALL_BUILD_DEPS='yes'
 DPKG_BP_OPTIONS='-sa'
-DPUT_TARGET=''
+UPLOAD_CMD=''
 
 QUILT_PATCHES=${QUILT_PATCHES:-debian/patches}
 CWD="$PWD"
@@ -36,9 +38,11 @@ Options:
     -d                    Do not install build dependancies
     -B "dpkg-buildpackage options" ($DPKG_BP_OPTIONS)
 
+    -U <target>           Ship built packages with \`dupload --to <target>'
+                          (see /etc/dupload.conf
+
     -P <target>           Ship built packages with \`dput -f <target>'
                           (see /etc/dput.cf).
-
     -L                    Same as \`-P local'
 
     -h                    This help message
@@ -47,7 +51,7 @@ USAGE
 }
 
 
-while getopts LP:B:dfo:h? opt; do
+while getopts U:PL:B:dfo:h? opt; do
     case $opt in
         o)
             if [ ! -f "$OPTARG" ]; then
@@ -65,8 +69,9 @@ while getopts LP:B:dfo:h? opt; do
 
         d) INSTALL_BUILD_DEPS='no' ;;
 
-        P) DPUT_TARGET="$OPTARG" ;;
-        L) DPUT_TARGET='local' ;;
+        U) UPLOAD_CMD="dupload --to $OPTARG" ;;
+        P) UPLOAD_CMD="dput -f $OPTARG" ;;
+        L) UPLOAD_CMD='dput -f local' ;;
 
         f) FORCE=yes ;;
 
@@ -245,8 +250,8 @@ cd "$PKGNAME"
 dpkg-buildpackage $DPKG_BP_OPTIONS
 cd -
 
-if [ -n "$DPUT_TARGET" ]; then
-    dput -f "$DPUT_TARGET" "$PKGBUILDDIR"/*.changes
+if [ -n "$UPLOAD_CMD" ]; then
+    $UPLOAD_CMD "$PKGBUILDDIR"/*.changes
 fi
 
 echo "New package(s):"
