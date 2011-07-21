@@ -1,3 +1,11 @@
+libwibble (40-0-0) unstable; urgency=low
+
+  * Rebuilt with new version scheme
+  * Used new source format 3.0 (quilt)
+  * Converted direct changes to patches.
+
+ -- Kartik Mistry <kartik.mistry@nexenta.com>  Thu, 21 Jul 2011 09:14:59 +0530
+
 libwibble (0.1.26-1nexenta1) unstable; urgency=low
 
   * Rebuild for NCP4
