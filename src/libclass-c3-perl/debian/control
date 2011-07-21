@@ -1,0 +1,28 @@
+Source: libclass-c3-perl
+Section: perl
+Priority: optional
+Build-Depends: debhelper (>= 7)
+Build-Depends-Indep: perl, libtest-exception-perl, libtest-pod-perl,
+ libtest-pod-coverage-perl, libsub-name-perl, libalgorithm-c3-perl
+Maintainer: Debian Perl Group <pkg-perl-maintainers@lists.alioth.debian.org>
+Uploaders: Krzysztof Krzyżaniak (eloy) <eloy@debian.org>,
+ Jonathan Yu <jawnsy@cpan.org>, gregor herrmann <gregoa@debian.org>
+Standards-Version: 3.9.1
+Homepage: http://search.cpan.org/dist/Class-C3/
+Vcs-Svn: svn://svn.debian.org/pkg-perl/trunk/libclass-c3-perl/
+Vcs-Browser: http://svn.debian.org/viewsvn/pkg-perl/trunk/libclass-c3-perl/
+Upstream-Version: 0.23-1
+
+Package: libclass-c3-perl
+Architecture: all
+Depends: ${perl:Depends}, ${misc:Depends}, libalgorithm-c3-perl
+Recommends: libclass-c3-xs-perl
+Description: pragma for using the C3 method resolution order
+ Class::C3 is a Perl pragma that modifies the standard method resolution order
+ from depth-first left-to-right to the more sophisticated C3 method resolution
+ order.
+ .
+ The C3 algorithm aims to provide a sane method resolution order with multiple
+ inheritance. It was first introduced in the Dylan language, later adopted for
+ Python 2.3. It is also the canonical MRO implementation for Perl 6 classes
+ and is the default for Parrot objects as well.

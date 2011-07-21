@@ -1,0 +1,63 @@
+Description: fix POD spelling
+Origin: vendor
+Forwarded: no
+Author: Jonathan Yu <jawnsy@cpan.org>
+Reviewed-by: gregor herrmann <gregoa@debian.org>
+Last-Update: 2011-03-05
+
+--- a/lib/Class/C3.pm
++++ b/lib/Class/C3.pm
+@@ -34,7 +34,7 @@
+ # this:
+ #
+ #   $MRO{$class} = {
+-#      MRO => [ <class precendence list> ],
++#      MRO => [ <class precedence list> ],
+ #      methods => {
+ #          orig => <original location of method>,
+ #          code => \&<ref to original method>
+@@ -280,13 +280,13 @@
+ 
+ C3 is the name of an algorithm which aims to provide a sane method resolution order under multiple
+ inheritance. It was first introduced in the langauge Dylan (see links in the L<SEE ALSO> section),
+-and then later adopted as the prefered MRO (Method Resolution Order) for the new-style classes in
++and then later adopted as the preferred MRO (Method Resolution Order) for the new-style classes in
+ Python 2.3. Most recently it has been adopted as the 'canonical' MRO for Perl 6 classes, and the
+ default MRO for Parrot objects as well.
+ 
+ =head2 How does C3 work.
+ 
+-C3 works by always preserving local precendence ordering. This essentially means that no class will
++C3 works by always preserving local precedence ordering. This essentially means that no class will
+ appear before any of its subclasses. Take the classic diamond inheritance pattern for instance:
+ 
+      <A>
+@@ -340,7 +340,7 @@
+ 
+ =item B<initialize>
+ 
+-This B<must be called> to initalize the C3 method dispatch tables, this module B<will not work> if
++This B<must be called> to initialize the C3 method dispatch tables, this module B<will not work> if
+ you do not do this. It is advised to do this as soon as possible B<after> loading any classes which
+ use C3. Here is a quick code example:
+ 
+@@ -445,7 +445,7 @@
+ 
+ =item Use of C<SUPER::>.
+ 
+-The idea of C<SUPER::> under multiple inheritance is ambigious, and generally not recomended anyway.
++The idea of C<SUPER::> under multiple inheritance is ambiguous, and generally not recomended anyway.
+ However, its use in conjuntion with this module is very much not recommended, and in fact very
+ discouraged. The recommended approach is to instead use the supplied C<next::method> feature, see
+ more details on its usage above.
+--- a/lib/Class/C3/next.pm
++++ b/lib/Class/C3/next.pm
+@@ -83,7 +83,7 @@
+ =head1 DESCRIPTION
+ 
+ This module is used internally by L<Class::C3> when
+-neccesary, and shouldn't be used (or required in
++necessary, and shouldn't be used (or required in
+ distribution dependencies) directly.  It
+ defines C<next::method>, C<next::can>, and
+ C<maybe::next::method> in pure perl.
