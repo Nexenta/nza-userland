@@ -1,0 +1,2 @@
+version=3
+http://search.cpan.org/dist/File-Find-Rule/   .*/File-Find-Rule-v?(\d[\d.]+)\.(?:tar(?:\.gz|\.bz2)?|tgz|zip)

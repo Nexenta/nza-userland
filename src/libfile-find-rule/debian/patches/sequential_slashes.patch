@@ -1,0 +1,15 @@
+Description: handle sequential slashes properly
+Author: Niko Tyni <ntyni@debian.org>
+Bug: http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=329377
+Origin: vendor
+Forwarded: no
+--- a/lib/File/Find/Rule.pm
++++ b/lib/File/Find/Rule.pm
+@@ -540,6 +540,7 @@
+     my $topdir;
+     my $code = 'sub {
+         (my $path = $File::Find::name)  =~ s#^(?:\./+)+##;
++        $path = "." if ($path eq ""); # See Debian bug #329377
+         my @args = ($_, $File::Find::dir, $path);
+         my $maxdepth = $self->{maxdepth};
+         my $mindepth = $self->{mindepth};
