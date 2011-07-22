@@ -1,0 +1,3 @@
+
+extend-diff-ignore = "(ltmain.sh|build-output.mk|configure|config\.log|config\.nice|build/lt.*|build/config\.sub|build/config\.guess|build/libtool\.m4|include/private/apu_config\.h)"
+
