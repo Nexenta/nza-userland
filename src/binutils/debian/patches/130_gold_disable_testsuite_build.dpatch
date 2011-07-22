@@ -1,0 +1,48 @@
+#!/bin/sh -e
+## 130_gold_disable_testsuite_build.dpatch
+##
+## DP: Description: Disable build of gold/testsuite
+## DP: Author: Matthias Klose
+## DP: Upstream status: local
+
+if [ $# -ne 1 ]; then
+    echo >&2 "`basename $0`: script expects -patch|-unpatch as argument"
+    exit 1
+fi
+
+[ -f debian/patches/00patch-opts ] && . debian/patches/00patch-opts
+patch_opts="${patch_opts:--f --no-backup-if-mismatch}"
+
+case "$1" in
+       -patch) patch $patch_opts -p1 < $0;;
+       -unpatch) patch $patch_opts -p1 -R < $0;;
+        *)
+                echo >&2 "`basename $0`: script expects -patch|-unpatch as argument"
+                exit 1;;
+esac
+
+exit 0
+
+@DPATCH@
+--- ./gold/Makefile.am~	2009-10-06 14:35:04.000000000 +0000
++++ ./gold/Makefile.am	2009-08-24 05:55:55.000000000 +0000
+@@ -2,7 +2,7 @@
+ 
+ AUTOMAKE_OPTIONS = foreign
+ 
+-SUBDIRS = po testsuite
++SUBDIRS = po
+ 
+ tooldir = $(exec_prefix)/$(target_alias)
+ 
+--- ./gold/Makefile.in~	2009-10-06 14:35:19.000000000 +0000
++++ ./gold/Makefile.in	2009-08-24 05:55:55.000000000 +0000
+@@ -327,7 +327,7 @@
+ top_builddir = @top_builddir@
+ top_srcdir = @top_srcdir@
+ AUTOMAKE_OPTIONS = foreign
+-SUBDIRS = po testsuite
++SUBDIRS = po
+ tooldir = $(exec_prefix)/$(target_alias)
+ ACLOCAL_AMFLAGS = -I ../bfd -I ../config
+ AM_CFLAGS = $(WARN_CFLAGS) $(LFS_CFLAGS) $(RANDOM_SEED_CFLAGS)

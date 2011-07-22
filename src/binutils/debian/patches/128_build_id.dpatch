@@ -1,0 +1,64 @@
+#!/bin/sh -e
+## 128_build_id.dpatch
+##
+## DP: Description: Fix ld corrupt build ID generation
+## DP: Author: Nick Clifton
+## DP: Upstream status: Taken from Fedora (BZ 501582)
+
+if [ $# -ne 1 ]; then
+    echo >&2 "`basename $0`: script expects -patch|-unpatch as argument"
+    exit 1
+fi
+
+[ -f debian/patches/00patch-opts ] && . debian/patches/00patch-opts
+patch_opts="${patch_opts:--f --no-backup-if-mismatch}"
+
+case "$1" in
+       -patch) patch $patch_opts -p1 < $0;;
+       -unpatch) patch $patch_opts -p1 -R < $0;;
+        *)
+                echo >&2 "`basename $0`: script expects -patch|-unpatch as argument"
+                exit 1;;
+esac
+
+exit 0
+
+@DPATCH@
+--- ./bfd/section.c.orig	2009-09-09 23:40:20.000000000 +0200
++++ ./bfd/section.c	2009-09-10 17:09:57.000000000 +0200
+@@ -1496,7 +1496,7 @@
+     return TRUE;
+ 
+   p = (bfd_byte *)
+-      bfd_malloc (sec->rawsize > sec->size ? sec->rawsize : sec->size);
++      bfd_zmalloc (sec->rawsize > sec->size ? sec->rawsize : sec->size);
+   if (p == NULL)
+     return FALSE;
+   *buf = p;
+--- ./bfd/elfcode.h.orig	2009-09-09 23:40:19.000000000 +0200
++++ ./bfd/elfcode.h	2009-09-10 17:08:49.000000000 +0200
+@@ -1139,6 +1139,24 @@
+ 
+       if (i_shdr.contents)
+ 	(*process) (i_shdr.contents, i_shdr.sh_size, arg);
++      else
++	{
++	  asection *sec;
++
++	  sec = bfd_section_from_elf_index (abfd, count);
++	  if (sec != NULL)
++	    {
++	      if (sec->contents == NULL)
++		{
++		  /* Force rereading from file.  */
++		  sec->flags &= ~SEC_IN_MEMORY;
++		  if (! bfd_malloc_and_get_section (abfd, sec, & sec->contents))
++		    continue;
++		}
++	      if (sec->contents != NULL)
++		(*process) (sec->contents, i_shdr.sh_size, arg);
++	    }
++	}
+     }
+ 
+   return TRUE;
