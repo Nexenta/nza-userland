@@ -1,0 +1,26 @@
+Source: libclass-inspector-perl
+Section: perl
+Priority: optional
+Maintainer: Debian Perl Group <pkg-perl-maintainers@lists.alioth.debian.org>
+Uploaders: Gunnar Wolf <gwolf@debian.org>,
+ gregor herrmann <gregoa@debian.org>,
+ Krzysztof Krzyzaniak (eloy) <eloy@debian.org>,
+ Damyan Ivanov <dmn@debian.org>, Brian Cassidy <brian.cassidy@gmail.com>
+Build-Depends: debhelper (>= 7)
+Build-Depends-Indep: perl (>= 5.6.0-16), libtest-pod-perl
+Standards-Version: 3.8.1
+Homepage: http://search.cpan.org/dist/Class-Inspector/
+Vcs-Svn: svn://svn.debian.org/pkg-perl/trunk/libclass-inspector-perl/
+Vcs-Browser: http://svn.debian.org/viewsvn/pkg-perl/trunk/libclass-inspector-perl/
+Upstream-Version: 1.24-1
+
+Package: libclass-inspector-perl
+Architecture: all
+Depends: ${misc:Depends}, ${perl:Depends}
+Description: Perl module that provides information about classes
+ Class::Inspector allows you to get information about a loaded class.
+ Most or all of this information can be found in other ways, but they
+ aren't always very friendly, and usually involve a relatively high level
+ of Perl wizardry, or strange and unusual looking code. Class::Inspector
+ attempts to provide an easier, more friendly interface to this
+ information.
