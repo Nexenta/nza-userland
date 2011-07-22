@@ -1,0 +1,111 @@
+libcpan-distnameinfo-perl (40-0-0) unstable; urgency=low
+
+  * Port for NCP4
+  * Used new version scheme 
+
+ -- Peter Zaickin <peter.zaickin@nexenta.com>  Tue, 05 Jul 2011 16:09:54 +0300
+
+libcpan-distnameinfo-perl (0.10-1) unstable; urgency=low
+
+  * New upstream release.
+  * Convert to source format 3.0 (quilt).
+  * Set Standards-Version to 3.8.4 (no changes).
+
+ -- gregor herrmann <gregoa@debian.org>  Sun, 28 Mar 2010 18:55:50 +0200
+
+libcpan-distnameinfo-perl (0.09-1) unstable; urgency=low
+
+  [ Jonathan Yu ]
+  * New upstream release
+  * Add myself to Uploaders and Copyright
+  * Rewrite control description
+  * Standards-Version 3.8.3 (drop perl version dep)
+  * Use new short debhelper rules format
+  * Refresh copyright information
+
+  [ Nathan Handler ]
+  * debian/watch: Update to ignore development releases.
+
+ -- Jonathan Yu <jawnsy@cpan.org>  Fri, 04 Dec 2009 06:00:22 -0500
+
+libcpan-distnameinfo-perl (0.08-1) unstable; urgency=low
+
+  [ Brian Cassidy ]
+  * New upstream release
+  * debian/compat: 6 => 7
+  * debian/control:
+    + debhelper 7 required
+    + added myself to Uploaders
+    + Standards-Version to 3.8.1
+  * debian/copyright: updated to newer standards
+  * debian/watch: tidied up
+  * debian/rules: use new template
+
+  [ gregor herrmann ]
+  * debian/control: Changed: Switched Vcs-Browser field to ViewSVN
+    (source stanza).
+
+  [ Ryan Niebur ]
+  * Remove Florian Ragwitz from Uploaders (Closes: #523208)
+
+ -- Brian Cassidy <brian.cassidy@gmail.com>  Wed, 06 May 2009 17:07:19 -0300
+
+libcpan-distnameinfo-perl (0.07-1) unstable; urgency=low
+
+  * debian/watch: add author-based URL to catch newer releases.
+  * New upstream release.
+  * Set Standards-Version to 3.8.0 (no changes).
+  * debian/control: change my email address.
+  * debian/copyright: add copyright/license information for inc/* and upstream
+    URL for newer releases.
+  * Refresh debian/rules, no functional changes.
+
+ -- gregor herrmann <gregoa@debian.org>  Sat, 05 Jul 2008 13:55:33 +0200
+
+libcpan-distnameinfo-perl (0.06-2) unstable; urgency=low
+
+  [ Joachim Breitner ]
+  * Removed myself from uploaders.
+
+  [ gregor herrmann ]
+  * debian/control: Added: Vcs-Svn field (source stanza); Vcs-Browser
+    field (source stanza); Homepage field (source stanza). Removed: XS-
+    Vcs-Svn fields. Added: /me to Uploaders.
+  * debian/rules:
+    - delete /usr/lib/perl5 only if it exists (closes: #467738)
+    - update with dh-make-perl's help
+    - don't install README any more (text version of the POD documentation)
+    - enable tests
+  * debian/watch: use dist-based URL.
+  * Set Standards-Version to 3.7.3 (no changes).
+  * Set debhelper compatibility level to 5.
+  * debian/copyright: add upstream source location.
+
+  [ Gunnar Wolf ]
+  * Bumping up debhelper compat to 6
+
+ -- Gunnar Wolf <gwolf@debian.org>  Fri, 07 Mar 2008 17:01:59 -0600
+
+libcpan-distnameinfo-perl (0.06-1) unstable; urgency=low
+
+  [ Florian Ragwitz ]
+  * New upstream release. (Closes: #329504)
+  * Added me to uploaders.
+
+  [ Niko Tyni ]
+  * Don't ignore the return code of 'make realclean'.
+  * Upgrade to Standards-Version 3.6.2. No changes needed.
+  * Added myself to Uploaders as well.
+  * Don't install an empty /usr/lib/perl5 directory.
+  
+  [ Krzysztof Krzyzaniak (eloy) ]
+  * Added debian/watch file
+
+ -- Niko Tyni <ntyni@iki.fi>  Fri,  6 Jan 2006 19:49:39 +0200
+
+libcpan-distnameinfo-perl (0.03-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Joachim Breitner <nomeata@debian.org>  Mon,  5 Jan 2004 17:52:56 +0100
+
