@@ -1,3 +1,10 @@
+tagcoll2 (40-0-1) unstable; urgency=low
+
+  * debian/control:
+    + Fixed libwibble dependency
+
+ -- Kartik Mistry <kartik.mistry@nexenta.com>  Fri, 22 Jul 2011 19:27:14 +0530
+
 tagcoll2 (40-0-0) unstable; urgency=low
 
   * Rebuilt for NCP4.
