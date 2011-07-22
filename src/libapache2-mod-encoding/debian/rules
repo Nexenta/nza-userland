@@ -1,0 +1,41 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+
+BUILD = build-tree
+
+CC_32 = gcc -m32
+CC_64 = gcc -m64
+
+LDFLAGS = -Wl,-liconv_hook
+LDFLAGS_32 = -Wl,-L/usr/lib -Wl,-R/usr/lib
+LDFLAGS_64 = -Wl,-L/usr/lib/amd64 -Wl,-R/usr/lib/amd64
+
+APXS_32 = /usr/bin/apxs
+APXS_64 = /usr/bin/amd64/apxs
+
+MODULE = mod_encoding
+
+
+build binary binary-indep binary-arch clean:
+	dh $@
+
+override_dh_auto_build: build32 build64
+
+build32 build64 : build% :
+	mkdir -p $(BUILD)/$@
+	cp $(MODULE).c $(BUILD)/$@/
+	cd $(BUILD)/$@ && $(APXS_$*) \
+		-S CC="$(CC_$*)" \
+		$(LDFLAGS_$*) $(LDFLAGS) -c $(MODULE).c
+	touch $@
+
+override_dh_auto_install:
+	mkdir -p $(CURDIR)/debian/tmp/usr/lib/apache2/modules
+	mkdir -p $(CURDIR)/debian/tmp/usr/lib/apache2/modules/amd64
+	cp $(BUILD)/build32/.libs/$(MODULE).so $(CURDIR)/debian/tmp/usr/lib/apache2/modules/
+	cp $(BUILD)/build64/.libs/$(MODULE).so $(CURDIR)/debian/tmp/usr/lib/apache2/modules/amd64/
+
+override_dh_auto_clean:
+	rm -f build32 build64
+	rm -rf $(BUILD)
+

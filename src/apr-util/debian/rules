@@ -9,8 +9,8 @@ LDFLAGS = -lssp_nonshared -lssp -Wl,-z,relro
 CC_32 = gcc -m32
 CC_64 = gcc -m64
 
-CFLAGS_32 = 
-CFLAGS_64 = 
+CFLAGS_32 =
+CFLAGS_64 =
 
 LDFLAGS_32 = -m32 -L/usr/lib -R/usr/lib
 LDFLAGS_64 = -m64 -L/usr/lib/amd64 -R/usr/lib/amd64
@@ -19,7 +19,8 @@ LDFLAGS_64 = -m64 -L/usr/lib/amd64 -R/usr/lib/amd64
 APR_LAYOUT32=Nexenta
 APR_LAYOUT64=$(APR_LAYOUT32)-amd64
 
-APR = $(shell apr-1-config --srcdir)
+APR_32 = $(shell /usr/bin/apr-1-config --srcdir)
+APR_64 = $(shell /usr/bin/amd64/apr-1-config --srcdir)
 
 CONFIGURE_OPTIONS_COMMON = \
     --with-expat=/usr \
@@ -51,10 +52,12 @@ build binary clean binary-indep binary-arch install:
 
 # We use specific configure options
 override_dh_auto_configure:
+
 override_dh_auto_build: build64 build32 $(BUILD)/build32/docs/dox/apr.tag
 
-configure: buildconf
-	/bin/bash ./buildconf --with-apr=$(APR)
+configure32 configure64: configure% : buildconf
+	/bin/bash ./buildconf --with-apr=$(APR_$*)
+	mv configure $@
 
 # Build docs
 $(BUILD)/build32/docs/dox/apr.tag:
@@ -66,10 +69,10 @@ $(BUILD)/build32/docs/dox/apr.tag:
 # /usr/share/apr-1.0/build/apr_rules.mk
 # So we need command line options to override it.
 # See: http://bugs.gentoo.org/show_bug.cgi?id=309335
-build32 build64 : build% : configure
+build32 build64 : build% : configure%
 	dh_testdir
 	mkdir -p $(BUILD)/$@
-	cd $(BUILD)/$@ && $(CURDIR)/configure \
+	cd $(BUILD)/$@ && $(CURDIR)/configure$* \
 		$(CONFIGURE_OPTIONS_COMMON) \
 		$(CONFIGURE_OPTIONS_$*) \
 		CC="$(CC_$*)" \
@@ -81,32 +84,20 @@ build32 build64 : build% : configure
 		LDFLAGS="$(LDFLAGS_$*) $(LDFLAGS)"
 	touch $@
 
+override_dh_auto_test:
+
+override_dh_strip:
+	dh_strip -p libaprutil1 --dbg-package=libaprutil1-dbg
+	dh_strip --remaining-packages
+
+
 override_dh_auto_install:
 	make -C $(BUILD)/build32 install DESTDIR=$(CURDIR)/debian/tmp
 	make -C $(BUILD)/build64 install DESTDIR=$(CURDIR)/debian/tmp
 
 
 override_dh_auto_clean:
-	rm -f \
-		test/data/test-db \
-		test/data/test-sdbm.dir \
-		test/data/test-sdbm.pag
-	rm -f \
-		xml/expat/aclocal.m4 \
-		xml/expat/configure \
-		xml/expat/conftools/ltmain.sh
-	rm -f \
-		configure \
-		build/lt* \
-		build/config.guess \
-		build/config.sub \
-		build/libtool.m4 \
-		build/apr_common.m4 \
-		build-outputs.mk \
-		include/private/apu_config.h \
-		config.log \
-		config.nice
 	rm -rf $(BUILD)
 	rm -f net
-	rm -f build32 build64
-
+	rm -f build{32,64}
+	rm -f configure{32,64}

@@ -1,6 +1,11 @@
 usr/include/apache2/
 usr/share/apache2/build/
 
-# It's a perl script:
+usr/include/amd64/apache2/
+usr/share/apache2/amd64/build/
+
 build-tree/mpm32-worker/support/apxs usr/bin/
+build-tree/mpm64-worker/support/apxs usr/bin/amd64/
+
 usr/share/man/man8/apxs2.8
+

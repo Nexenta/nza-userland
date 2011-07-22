@@ -14,7 +14,9 @@ Build-Depends: debhelper,
  lib64sqlite3-dev,
 #libpq-dev,
  libldap2-dev,
- python, libmysqlclient-dev, freetds-dev, doxygen
+ libmysqlclient-dev, freetds-dev, doxygen,
+# really needed, see buildconf
+ python
 Standards-Version: 3.8.3
 Vcs-Browser: http://svn.debian.org/wsvn/pkg-apache/trunk/apr-util
 Vcs-svn: svn://svn.debian.org/pkg-apache/trunk/apr-util
