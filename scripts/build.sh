@@ -172,21 +172,25 @@ if [ -z "$LOCAL_TARBALL" ]; then
                 SOURCE_TARBALL="${TARBALL_TMPL}.$c"
                 case "$base_url" in
                     *.debian.org/*)      # work for ksh and bash:
-                        src_url="$base_url/${PKGNAME:0:1}/$PKGNAME/$SOURCE_TARBALL"
+                        urls="$base_url/${PKGNAME:0:1}/$PKGNAME/$SOURCE_TARBALL"
+                        # maybe package is native for Debian?
+                        urls+=" $base_url/${PKGNAME:0:1}/$PKGNAME/${SOURCE_TARBALL/.orig/}"
                         ;;
                     *)
-                        src_url="$base_url/$SECTION/$SOURCE_TARBALL"
+                        urls="$base_url/$SECTION/$SOURCE_TARBALL"
                         ;;
                 esac
-                printf "Trying $src_url ... "
-                if curl -f --head -s -w '%{http_code}' -o /dev/null "$src_url"; then
-                    echo
-                    curl -f -# -o "$SOURCE_TARBALL" "$src_url";
-                    break 2 # Exit from two for-loops
-                else
-                    echo
-                    rm -f "$SOURCE_TARBALL"
-                fi
+                for s in $urls ; do
+                    printf "Trying $s ... "
+                    if curl -f --head -s -w '%{http_code}' -o /dev/null "$s"; then
+                        echo
+                        curl -f -# -o "$SOURCE_TARBALL" "$s";
+                        break 3 # Exit from three for-loops
+                    else
+                        echo
+                        rm -f "$SOURCE_TARBALL"
+                    fi
+                done
             done
         done
         if [ ! -f "$SOURCE_TARBALL" ] ; then
