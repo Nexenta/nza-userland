@@ -16,6 +16,7 @@ http://ftp.de.debian.org/debian/pool/main
 
 LOCAL_TARBALL=''
 FORCE='no'
+INSTALL='no'
 INSTALL_BUILD_DEPS='yes'
 DPKG_BP_OPTIONS='-sa'
 UPLOAD_CMD=''
@@ -39,19 +40,20 @@ Options:
     -B "dpkg-buildpackage options" ($DPKG_BP_OPTIONS)
 
     -U <target>           Ship built packages with \`dupload --to <target>'
-                          (see /etc/dupload.conf
+                          (see /etc/dupload.conf)
 
     -P <target>           Ship built packages with \`dput -f <target>'
                           (see /etc/dput.cf).
-    -L                    Same as \`-P local'
 
+    -L                    Same as \`-P local'
+    -I                    Install all built packages (*.deb)
     -h                    This help message
 
 USAGE
 }
 
 
-while getopts U:PL:B:dfo:h? opt; do
+while getopts IU:PL:B:dfo:h? opt; do
     case $opt in
         o)
             if [ ! -f "$OPTARG" ]; then
@@ -66,15 +68,12 @@ while getopts U:PL:B:dfo:h? opt; do
             ;;
 
         B) DPKG_BP_OPTIONS="$OPTARG" ;;
-
         d) INSTALL_BUILD_DEPS='no' ;;
-
         U) UPLOAD_CMD="dupload --to $OPTARG" ;;
         P) UPLOAD_CMD="dput -f $OPTARG" ;;
         L) UPLOAD_CMD='dput -f local' ;;
-
-        f) FORCE=yes ;;
-
+        f) FORCE='yes' ;;
+        I) INSTALL='yes' ;;
         h|\?)
             usage
             exit 0
@@ -256,6 +255,10 @@ cd -
 
 if [ -n "$UPLOAD_CMD" ]; then
     $UPLOAD_CMD "$PKGBUILDDIR"/*.changes
+fi
+
+if [ "$INSTALL" = 'yes' ]; then
+    dpkg -i "$PKGBUILDDIR"/*.deb
 fi
 
 echo "New package(s):"
