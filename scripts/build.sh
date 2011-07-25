@@ -53,7 +53,7 @@ USAGE
 }
 
 
-while getopts IU:PL:B:dfo:h? opt; do
+while getopts IU:P:LB:dfo:h? opt; do
     case $opt in
         o)
             if [ ! -f "$OPTARG" ]; then
