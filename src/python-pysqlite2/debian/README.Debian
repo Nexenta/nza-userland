@@ -1,0 +1,7 @@
+This package is built against SQLite 3.
+
+For an interface to SQLite 2, see the package python-sqlite.
+
+An alternative Python SQLite 3 module is packaged as python-apsw.
+
+ -- Joel Rosdahl <joel@debian.org>, Fri Sep  9 18:14:13 2005

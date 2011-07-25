@@ -1,0 +1,13 @@
+# 01_disable_ez_setup.dpatch by Piotr Ożarowski <piotr@debian.org>
+#
+# this patch disables ez_setup which is checking if proper setuptools
+# version is installed (we're forcing correct version via Build-Depends:)
+
+--- pastescript-1.7.3.orig/setup.py
++++ pastescript-1.7.3/setup.py
+@@ -1,5 +1,3 @@
+-import ez_setup
+-ez_setup.use_setuptools()
+ from setuptools import setup, find_packages
+ import re, os
+ 

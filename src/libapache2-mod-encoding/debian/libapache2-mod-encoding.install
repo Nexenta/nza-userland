@@ -1,0 +1,2 @@
+debian/tmp/usr/lib
+debian/*.load /etc/apache2/mods-available/

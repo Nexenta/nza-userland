@@ -1,0 +1,35 @@
+python-peak.util (40-0-0) unstable; urgency=low
+
+  * Ported to NCP4
+
+ -- Igor Pashev <igor.pashev@nexenta.com>  Mon, 18 Jul 2011 16:03:21 +0400
+
+python-peak.util (20090610-3) unstable; urgency=low
+
+  * QA upload.
+
+  [ Piotr Ożarowski ]
+  * Add debian/source/format file (with "1.0" inside)
+
+  [ Stefano Zacchiroli ]
+  * debian/copyright: document download origin (Closes: #606481)
+
+  [ Jakub Wilk ]
+  * Remove Stefano Zacchiroli from uploaders.
+  * Set Maintainer to Debian QA Group.
+
+ -- Jakub Wilk <jwilk@debian.org>  Tue, 14 Dec 2010 14:36:40 +0100
+
+python-peak.util (20090610-2) unstable; urgency=low
+
+  * debian/copyright: remove some leftover cruft
+  * first upload to unstable
+  * debian/control: bump Standards-Version to 3.8.2 (no changes needed)
+
+ -- Stefano Zacchiroli <zack@debian.org>  Sun, 02 Aug 2009 12:58:20 +0200
+
+python-peak.util (20090610-1) experimental; urgency=low
+
+  * First release (Closes: #532625)
+
+ -- Stefano Zacchiroli <zack@debian.org>  Wed, 10 Jun 2009 16:04:32 +0200

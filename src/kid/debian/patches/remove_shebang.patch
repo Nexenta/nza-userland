@@ -1,0 +1,9 @@
+Index: kid-0.9.6/kid/release.py
+===================================================================
+--- kid-0.9.6.orig/kid/release.py	2011-07-18 14:56:47.363697357 +0400
++++ kid-0.9.6/kid/release.py	2011-07-18 14:56:51.831674631 +0400
+@@ -1,4 +1,3 @@
+-#!/usr/bin/env python
+ # -*- coding: utf-8 -*-
+ 
+ """Pythonic, XML Templating

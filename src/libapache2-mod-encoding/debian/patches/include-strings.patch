@@ -1,0 +1,12 @@
+Index: libapache2-mod-encoding-20040616/mod_encoding.c
+===================================================================
+--- libapache2-mod-encoding-20040616.orig/mod_encoding.c	2011-05-24 02:24:22.347248695 +0400
++++ libapache2-mod-encoding-20040616/mod_encoding.c	2011-05-24 02:24:36.516076703 +0400
+@@ -68,6 +68,7 @@
+ 
+ */
+ 
++#include <strings.h>
+ #include <regex.h>
+ #include <httpd.h>
+ #include <http_config.h>

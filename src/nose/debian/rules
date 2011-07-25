@@ -1,0 +1,10 @@
+#!/usr/bin/make -f
+
+%:
+	dh $@
+
+# Manpages are in /usr/share/man:
+override_dh_installman:
+	dh_installman
+	rm -rf debian/python-nose/usr/man/
+

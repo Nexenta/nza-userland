@@ -1,0 +1,113 @@
+python-markdown (40-0-0) unstable; urgency=low
+
+  * Ported to NCP4
+
+ -- Igor Pashev <igor.pashev@nexenta.com>  Mon, 18 Jul 2011 11:50:22 +0400
+
+python-markdown (2.0.3-2) unstable; urgency=low
+
+  * Rename /usr/bin/markdown to /usr/bin/markdown_py for now. The Python
+    implementation is not compatible enough to be an alternative for the Perl
+    version yet. (Closes: #567378)
+  * Get rid of the new source format mess, we use the default.
+  * Add .PHONY to debian/rules. 
+  * Bump Standards-Version to 3.8.4 - no changes needed.
+  * Drop XB-Python-Version, not needed.
+
+ -- Bernd Zeimetz <bzed@debian.org>  Wed, 24 Feb 2010 23:24:10 +0100
+
+python-markdown (2.0.3-1) unstable; urgency=low
+
+  [ Raphaël Hertzog ]
+  * New upstream release. Closes: #525563
+  * Remove myself from Uploaders.
+  * Update watch file to point to pypi.
+  * Switch to source format "3.0 (quilt)".
+  * Fix URL in README.Debian. Closes: #532416
+  * Switch to debhelper 7 tiny rules files and compat mode 7.
+  * Build-depends on python instead of python-dev.
+  * Update Standards-Version to 3.8.3.
+
+ -- Debian Python Modules Team <python-modules-team@lists.alioth.debian.org>  Wed, 27 Jan 2010 17:48:00 +0100
+
+python-markdown (1.7-2) unstable; urgency=low
+
+  [ Sandro Tosi ]
+  * debian/control
+    - switch Vcs-Browser field to viewsvn
+
+  [ Emilio Pozuelo Monfort ]
+  * debian/rules: Don't rely on python-support directory
+    structure. Thanks Josselin Mouette. Closes: #517061.
+  * Standards-Version is 3.8.0. No changes needed.
+
+ -- Debian Python Modules Team <python-modules-team@lists.alioth.debian.org>  Wed, 25 Feb 2009 23:35:20 +0100
+
+python-markdown (1.7-1) unstable; urgency=low
+
+  [ Bernd Zeimetz ]
+  * New upstream version.
+  * debian/control:
+    - Adding Homepage field, removing pseudo-field from description
+    - Rename XS-Vcs-* fields to Vcs-* (dpkg supports them now)
+    - Updating my email address
+    - Bumping Standards-Version to 3.7.3 - no changes needed.
+
+  [ Sandro Tosi ]
+  * debian/control
+    - uniforming Vcs-Browser field
+
+ -- Bernd Zeimetz <bzed@debian.org>  Sun, 02 Mar 2008 23:43:50 +0100
+
+python-markdown (1.6b-1) unstable; urgency=low
+
+  * New upstream version
+
+ -- Bernd Zeimetz <bernd@bzed.de>  Sun, 19 Aug 2007 01:41:04 +0200
+
+python-markdown (1.6a-1) unstable; urgency=low
+
+  * New upstream version (Closes: #398856)
+  * debian/control:
+    - Added XS-Vcs-Browser, XS-Vcs-Svn field
+    - Moved python-support to Build-Depends, fixing lintian
+      error clean-should-be-satisfied-by-build-depends
+  * debian/watch:
+    - Updating watch file - upstream ships a .zip file now
+  * debian/changelog.pointer:
+    - Removing file, upstream ships a changelog now
+  * debian/README.Debian:
+    - Updated, upstream ships a changelog now
+  * debian/copyright:
+    - Reflecting upstreams change in licensing, markdown is dual-licensed
+      under GPL-2 and BSD now
+  * debian/dirs:
+    - Removing file, not needed anymore
+  * debian/compat:
+    - Bumping to level 5
+
+ -- Bernd Zeimetz <bernd@bzed.de>  Sat, 18 Aug 2007 14:36:15 +0200
+
+python-markdown (1.4-2) unstable; urgency=low
+
+  * Acknowledge previous NMU. Closes: #374865
+  * Update to new python policy. Closes: #373326
+  * Updated Standards-Version.
+  * Added myself to uploaders.
+
+ -- Raphael Hertzog <hertzog@debian.org>  Fri, 23 Jun 2006 10:48:53 +0200
+
+python-markdown (1.4-1.1) unstable; urgency=high
+
+  * Non-maintainer upload.
+  * Build-depend on python-dev instead of python; fixes FTBFS, patch from
+    Andreas Jochens. (Closes: #373201)
+
+ -- Steinar H. Gunderson <sesse@debian.org>  Tue, 20 Jun 2006 23:53:45 +0200
+
+python-markdown (1.4-1) unstable; urgency=low
+
+  * Initial release Closes: #364082
+
+ -- Fredrik Steen <stone@debian.org>  Fri, 21 Apr 2006 13:18:31 +0200
+

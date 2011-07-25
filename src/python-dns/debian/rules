@@ -1,0 +1,13 @@
+#!/usr/bin/make -f
+
+%:
+	dh $@
+
+override_dh_clean:
+	rm -f DNS/*.pyc
+	dh_clean
+
+override_dh_install:
+	find debian/python-dns -name win32dns.py -delete
+	dh_install
+

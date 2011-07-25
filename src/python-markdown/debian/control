@@ -1,0 +1,24 @@
+Source: python-markdown
+Upstream-Version: 2.0.3
+Section: python
+Priority: optional
+Maintainer: Debian Python Modules Team <python-modules-team@lists.alioth.debian.org>
+Uploaders: Fredrik Steen <stone@debian.org>, Bernd Zeimetz <bzed@debian.org>
+Build-Depends: debhelper, python, python-support
+Standards-Version: 3.8.4
+Homepage: http://www.freewisdom.org/projects/python-markdown/
+Vcs-Svn: svn://svn.debian.org/python-modules/packages/python-markdown/trunk/
+Vcs-Browser: http://svn.debian.org/viewsvn/python-modules/packages/python-markdown/trunk/
+
+Package: python-markdown
+Architecture: all
+Depends: ${python:Depends}, ${misc:Depends}
+Description: text-to-HTML conversion library/tool
+ Markdown is a text-to-HTML conversion tool for web writers. Markdown 
+ allows you to write using an easy-to-read, easy-to-write plain text 
+ format, then convert it to structurally valid XHTML (or HTML).
+ .
+ This is a Python implementation of John Gruber's Markdown. The current
+ version of python-markdown implements all Markdown syntax features and 
+ fully passes Markdown Test Suite 1.0. It also supports footnotes and 
+ attributes. 

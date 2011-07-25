@@ -1,3 +1,10 @@
+libept (40-0-1) unstable; urgency=low
+
+  * debian/control:
+    + Fixed dependency for libwibble version
+
+ -- Kartik Mistry <kartik.mistry@nexenta.com>  Fri, 22 Jul 2011 19:29:47 +0530
+
 libept (40-0-0) unstable; urgency=low
 
   * Rebuilt for NCP4

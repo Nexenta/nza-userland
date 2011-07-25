@@ -1,0 +1,7 @@
+#! /usr/bin/make -f
+
+
+# Blame makefile:
+%:
+	dh $@ --buildsystem=python_distutils
+

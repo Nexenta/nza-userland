@@ -1,0 +1,42 @@
+--- pastescript-1.7.3.orig/paste/script/templates.py
++++ pastescript-1.7.3/paste/script/templates.py
+@@ -5,6 +5,7 @@ import os
+ import inspect
+ import copydir
+ import command
++import re
+ 
+ from paste.util.template import paste_script_template_renderer
+ 
+@@ -45,13 +46,29 @@ class Template(object):
+         mod = sys.modules[self.__class__.__module__]
+         return os.path.dirname(mod.__file__)
+ 
++    def _distro_dir(self, args):
++        """Returns full path to template directory if it's found in
++        /usr/local/share/paster_templates/ or /usr/share/paster_templates/"""
++
++        tpldir_pattern = re.compile('[^/]*templates/')
++
++        for d in ('/usr/local/share/paster_templates/', '/usr/share/paster_templates/'):
++            directory = os.path.join(d, *args)
++            if os.path.isdir(directory):
++                return directory
++            # remove .*templates directory if it's in the args and try again
++            args_joined = os.path.join(*args)
++            directory = os.path.abspath(os.path.join(d, tpldir_pattern.sub('./', args_joined)))
++            if os.path.isdir(directory):
++                return directory
++
+     def template_dir(self):
+         assert self._template_dir is not None, (
+             "Template %r didn't set _template_dir" % self)
+         if isinstance( self._template_dir, tuple):
+-            return self._template_dir
++            return self._distro_dir(self._template_dir) or self._template_dir
+         else:
+-            return os.path.join(self.module_dir(), self._template_dir)
++            return self._distro_dir((self._template_dir,)) or os.path.join(self.module_dir(), self._template_dir)
+ 
+     def run(self, command, output_dir, vars):
+         self.pre(command, output_dir, vars)

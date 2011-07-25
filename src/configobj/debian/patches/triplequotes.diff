@@ -1,0 +1,65 @@
+Description: write out the right kind of triple quotes
+Author: Alexander Belchenko
+Origin: cherrypicked from Bazaar's trunk, commit:bialix@ukr.net-20110220150125-740pnd2s46ovhler
+Bug: http://code.google.com/p/configobj/issues?detail?id=31
+Bug-Debian: http://bugs.debian.org/618349
+
+diff -ur configobj-4.7.2/configobj.py configobj-4.7.2.new/configobj.py
+--- configobj-4.7.2/configobj.py	2011-03-14 17:09:10.000000000 +0100
++++ configobj-4.7.2.new/configobj.py	2011-03-14 17:09:53.000000000 +0100
+@@ -1817,9 +1817,9 @@
+         if (value.find('"""') != -1) and (value.find("'''") != -1):
+             raise ConfigObjError('Value "%s" cannot be safely quoted.' % value)
+         if value.find('"""') == -1:
+-            quot = tdquot
++            quot = tsquot
+         else:
+-            quot = tsquot 
++            quot = tdquot
+         return quot
+ 
+ 
+diff -ur configobj-4.7.2/tests/functionaltests/test_configobj.py configobj-4.7.2.new/tests/functionaltests/test_configobj.py
+--- configobj-4.7.2/tests/functionaltests/test_configobj.py	2011-03-14 17:09:10.000000000 +0100
++++ configobj-4.7.2.new/tests/functionaltests/test_configobj.py	2011-03-14 17:10:09.000000000 +0100
+@@ -7,6 +7,7 @@
+     import unittest
+ 
+ from configobj import ConfigObj
++from StringIO import StringIO
+ 
+ try:
+     # Python 2.6 only
+@@ -99,6 +100,19 @@
+         # This raises a MissingInterpolationOption exception in 4.7.1 and earlier
+         repr(c)
+ 
++    def test_triple_quotes(self):
++        triple_quotes_value = '''spam
++""" that's my spam """
++eggs'''
++        co = ConfigObj()
++        co['test'] = triple_quotes_value
++        outfile = StringIO()
++        co.write(outfile=outfile)
++        lines = outfile.getvalue().splitlines()
++        # now we're trying to read it back
++        co2 = ConfigObj(lines)
++        self.assertEquals(triple_quotes_value, co2['test'])
++
+     def test_as_functions(self):
+         a = ConfigObj()
+         a['a'] = 'fish'
+--- configobj-4.7.2/tests/test_configobj.py	2011-03-14 17:09:19.000000000 +0100
++++ configobj-4.7.2.new/tests/test_configobj.py	2011-03-14 17:16:18.000000000 +0100
+@@ -374,7 +374,6 @@ def _doctest():
+     >>> cfg.write()
+-    ["key1 = '''Multiline\\nValue'''", 'key2 = "Value" with \\'quotes\\' !']
++    ['key1 = \"\"\"Multiline\\nValue\"\"\"', 'key2 = "Value" with \\'quotes\\' !']
+     >>> cfg.list_values = True
+-    >>> cfg.write() == ["key1 = '''Multiline\\nValue'''",
+-    ... 'key2 = \\'\\'\\'"Value" with \\'quotes\\' !\\'\\'\\'']
+-    1
++    >>> cfg.write()
++    ['key1 = \"\"\"Multiline\\nValue\"\"\"', 'key2 = \"\"\""Value" with \\'quotes\\' !\"\"\"']
+     

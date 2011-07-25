@@ -1,0 +1,33 @@
+Index: python-support-1.0.14/tests/testparseversions.leading-newline.control
+===================================================================
+--- python-support-1.0.14.orig/tests/testparseversions.leading-newline.control	2011-07-18 19:07:07.754880647 +0400
++++ python-support-1.0.14/tests/testparseversions.leading-newline.control	2011-07-18 19:07:31.142471824 +0400
+@@ -1,6 +1,6 @@
+ # comment
+ 
+ Source: source
+-XS-Python-Version: >= 2.6
++XS-Python-Version: >= 2.5
+ 
+ Package: package
+Index: python-support-1.0.14/tests/testparseversions.regular.control
+===================================================================
+--- python-support-1.0.14.orig/tests/testparseversions.regular.control	2011-07-18 19:06:02.166381271 +0400
++++ python-support-1.0.14/tests/testparseversions.regular.control	2011-07-18 19:07:31.224639926 +0400
+@@ -1,4 +1,4 @@
+ Source: source
+-XS-Python-Version: >= 2.6
++XS-Python-Version: >= 2.5
+ 
+ Package: package
+Index: python-support-1.0.14/tests/testparseversions.second-paragraph.control
+===================================================================
+--- python-support-1.0.14.orig/tests/testparseversions.second-paragraph.control	2011-07-18 19:06:02.258919201 +0400
++++ python-support-1.0.14/tests/testparseversions.second-paragraph.control	2011-07-18 19:07:31.225808872 +0400
+@@ -1,4 +1,4 @@
+ Source: source
+ 
+ Package: package
+-XS-Python-Version: >= 2.6
++XS-Python-Version: >= 2.5
+

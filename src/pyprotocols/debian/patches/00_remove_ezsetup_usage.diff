@@ -1,0 +1,19 @@
+
+  - added; setup.py now uses ez_setup, which is actually not needed
+    or sane to use in the debian package
+  [..]
+
+ -- Gustavo Noronha Silva <kov@debian.org>  Mon, 25 Jun 2007 21:46:07 -0300
+
+--- a/setup.py	(revisão 2316)
++++ b/setup.py	(cópia de trabalho)
+@@ -1,8 +1,7 @@
+ #!/usr/bin/env python
+ 
+ """Distutils setup file"""
+-import ez_setup, sys
+-ez_setup.use_setuptools()
++import sys
+ from setuptools import setup, Feature, Extension, find_packages
+ 
+ # Metadata

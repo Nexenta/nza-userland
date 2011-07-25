@@ -1,3 +1,9 @@
+apr (40-0-1) unstable; urgency=low
+
+  * Shipped with 32 and 64 bits headers and settings (Re #5449)
+
+ -- Igor Pashev <igor.pashev@nexenta.com>  Fri, 22 Jul 2011 16:55:47 +0400
+
 apr (40-0-0) unstable; urgency=low
 
   * New version scheme

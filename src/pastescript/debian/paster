@@ -1,0 +1,12 @@
+#! /bin/sh
+
+# determine desired Python version from filename
+VERSION="${0##*paster}"
+
+if [ ! -f /usr/bin/python$VERSION ]
+then
+	echo "Please install python$VERSION package" >&2
+	exit 1
+else
+	exec python$VERSION -c "import sys; sys.argv[0] = '/usr/bin/paster$VERSION'; from paste.script import command; command.run()" $@
+fi

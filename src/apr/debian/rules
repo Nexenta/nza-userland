@@ -22,20 +22,22 @@ APR_LAYOUT32=Nexenta
 APR_LAYOUT64=$(APR_LAYOUT32)-amd64
 
 CONFIGURE_OPTIONS_COMMON = \
- 	--includedir=\$${prefix}/usr/include/apr-1.0 \
-	--with-installbuilddir=\$${prefix}/usr/share/apr-1.0/build \
     --enable-threads \
     --enable-other-child \
     --enable-nonportable-atomics \
     --enable-shared
 
 CONFIGURE_OPTIONS_32 = \
+    --includedir=\$${prefix}/usr/include/apr-1.0 \
+    --with-installbuilddir=\$${prefix}/usr/share/apr-1.0/build \
     --enable-layout=${APR_LAYOUT32} \
-	--target=i386-pc-solaris2.11
+    --target=i386-pc-solaris2.11
 
 CONFIGURE_OPTIONS_64 = \
+    --includedir=\$${prefix}/usr/include/amd64/apr-1.0 \
+    --with-installbuilddir=\$${prefix}/usr/share/apr-1.0/amd64/build/ \
     --enable-layout=${APR_LAYOUT64} \
-	--target=x86_64-pc-solaris2.11
+    --target=x86_64-pc-solaris2.11
 
 build binary clean binary-indep binary-arch install:
 	dh $@
@@ -67,22 +69,20 @@ build32 build64 : build% : configure
 	make -C $(BUILD)/$@
 	touch $@
 
+override_dh_auto_test:
+
+override_dh_strip:
+	dh_strip -p libapr1 --dbg-package=libapr1-dbg
+	dh_strip --remaining-packages
+
 override_dh_auto_install:
 	make -C $(BUILD)/build32 install DESTDIR=$(CURDIR)/debian/tmp
 	make -C $(BUILD)/build64 install DESTDIR=$(CURDIR)/debian/tmp
+	sed -i "s,^dependency_libs=.*,dependency_libs=''," \
+		$(CURDIR)/debian/tmp/usr/lib/{,amd64/}libapr-1.la
 
 
 override_dh_auto_clean:
-	rm -f \
-		configure \
-		build/lt* \
-		build/config.guess \
-		build/config.sub \
-		build/libtool.m4 \
-		build-outputs.mk \
-		include/arch/unix/apr_private.h.in \
-		config.log \
-		config.nice 
 	rm -rf $(BUILD)
 	rm -f build32 build64
 	rm -f net

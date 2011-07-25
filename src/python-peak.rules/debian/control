@@ -1,0 +1,42 @@
+Source: python-peak.rules
+Upstream-Version: 0.5a1+r2600
+Section: python
+Priority: optional
+Maintainer: Debian Python Modules Team <python-modules-team@lists.alioth.debian.org>
+Uploaders:
+ Stefano Zacchiroli <zack@debian.org>
+Build-Depends:
+ debhelper,
+ cdbs,
+ python-dev,
+ python-support,
+ python-setuptools,
+ python-decoratortools,
+ python-peak.util
+Standards-Version: 3.8.2
+Homepage: http://pypi.python.org/pypi/PEAK-Rules
+Vcs-Svn: svn://svn.debian.org/python-modules/packages/python-peak.rules/trunk/
+Vcs-Browser: http://svn.debian.org/viewsvn/python-modules/packages/python-peak.rules/trunk/
+
+Package: python-peak.rules
+Architecture: all
+Depends:
+ ${misc:Depends},
+ ${python:Depends},
+ python-peak.util.decorators,
+ python-peak.util
+Provides: python-prioritized-methods
+Description: generic functions support for Python
+ PEAK-Rules is a highly-extensible framework for creating and using
+ generic functions in Python.
+ .
+ PEAK-Rules supports out of the box: multiple-dispatch on positional
+ arguments using tuples of types, full predicate dispatch using
+ strings containing Python expressions, and CLOS-like method
+ combining.  Additionally, PEAK-Rules allows to mix and match dispatch
+ engines and custom method combinations.
+ .
+ This package also provides some third party contribution over
+ PEAK-Rules, in particular:
+ .
+  * prioritized_methods - prioritize methods to resolve dispatch ambiguities
