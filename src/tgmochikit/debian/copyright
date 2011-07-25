@@ -1,0 +1,32 @@
+This work was packaged for Debian by:
+
+    Federico Ceratto <federico.ceratto@gmail.com> on Wed, 07 Oct 2009 15:44:35 +0100
+
+It was downloaded from http://docs.turbogears.org/tgMochiKit
+
+Upstream Authors:
+
+    Diez B. Roggisch
+    Bob Ippolito
+
+Copyright:
+
+    Copyright (C) 2008 Diez B. Roggisch
+    Bob Ippolito
+
+License:
+
+    MIT for the Python part
+    MIT/AFL for the JavaScript part
+
+All Mochikit JavaScript files report "All Rights Reserved". This is, from the
+point of view of MochiKit upstream, a way to redirect the licensing to the
+LICENSE.txt files that can be found in the distribution root (which dual
+licenses it MIT and AFL). See: http://markmail.org/message/doxccpq5mefweeay
+
+The Debian packaging is:
+
+    Copyright (C) 2009 Federico Ceratto <federico.ceratto@gmail.com>
+
+and is licensed under the GPL version 3, 
+see `/usr/share/common-licenses/GPL-3'.

@@ -1,0 +1,4 @@
+version=3
+opts="downloadurlmangle=s|/([0-9.]+)/$|/nose-$1.tar.gz|,filenamemangle=s|.*/([0-9.]+)/|nose-$1.tar.gz|" \
+  http://somethingaboutorange.com/mrl/projects/nose/ \
+  ./([0-9.]+)/

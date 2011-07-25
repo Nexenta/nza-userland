@@ -1,0 +1,102 @@
+decoratortools (40-0-0) unstable; urgency=low
+
+  * Ported to NCP4
+
+ -- Igor Pashev <igor.pashev@nexenta.com>  Mon, 18 Jul 2011 15:21:03 +0400
+
+decoratortools (1.8-2) unstable; urgency=low
+
+  * debian/control
+    - Removed Chris and added Debian Python Modules Team to Maintainer
+    - Added myself to Uploaders (Closes: #590781)
+    - Switched Vcs-* fields to DPMT subversion repository
+    - Updated Homepage
+    - Removed Provides field and XB-Python-Version
+    - Bumped Standards-Version to 3.9.2 (no changes needed)
+    - Added python-nose as build-dep
+    - Renamed binary package from python-decoratortools to
+      python-peak.util.decorators to comply with Debian Python Policy
+    - Added a transitional dummy package for transition from
+      python-decoratortools to python-peak.util.decorators
+  * debian/copyright
+    - Updated to the latest DEP-5 version
+  * debian/python-peak.util.decorators.docs
+    - Renamed to match binary package
+  * debian/python-peak.util.decorators.install
+    - Added to make python-support install files correctly
+  * debian/rules
+    - Added override_dh_auto_test to run tests at build time using python-nose
+
+ -- Daniele Tricoli <eriol@mornie.org>  Sun, 26 Jun 2011 23:44:40 +0200
+
+decoratortools (1.8-1) unstable; urgency=low
+
+  * New upstream release.
+  * Bump Standards-Version to 3.9.1.
+  * Update git repository URLs.
+  * Depend on a newer python-setuptools.
+  * Drop Build-Depends on python-all-dev; no arch:any packages being built.
+  * Move to '3.0 (quilt)' source format.
+  * Add missing ${misc:Depends}.
+  * Set XS-Python-Version: >= 2.5 as this version requires a new
+    python-setuptools that doesn't seem to work with Python 2.4.
+
+ -- Chris Lamb <lamby@debian.org>  Sun, 01 Aug 2010 16:49:56 -0400
+
+decoratortools (1.7-3) unstable; urgency=low
+
+  * New maintainer (Closes: #493791)
+  * Move from CDBS to Debhelper 7.
+  * Move to machine-parsable debian/copyright.
+  * Remove versioned dependencies where the version is available in Etch.
+  * Update package description.
+  * Bump Standards-Version to 3.8.0.
+
+ -- Chris Lamb <lamby@debian.org>  Sun, 12 Oct 2008 23:33:11 +0100
+
+decoratortools (1.7-2) unstable; urgency=low
+
+  * Orphaning package.
+
+ -- Gustavo Noronha Silva <kov@debian.org>  Mon, 04 Aug 2008 19:08:02 -0300
+
+decoratortools (1.7-1) unstable; urgency=low
+
+  * New upstream release
+  * debian/control:
+  - remove -1 from setuptools' version on build-depends; thanks to lintian
+
+ -- Gustavo Noronha Silva <kov@debian.org>  Sun, 10 Feb 2008 21:45:59 -0200
+
+decoratortools (1.6-1) unstable; urgency=low
+
+  [ Piotr Ożarowski ]
+  * Vcs-Browser and Homepage fields added
+  * XS-Vcs-Svn renamed to Vcs-Svn
+
+  [ Sandro Tosi ]
+  * debian/control
+    - fix Vcs-Browser field
+
+  [ Gustavo Noronha Silva ]
+  * New upstream release
+  * debian/control:
+  - update Standards-Version to 3.7.3, no changes
+  * debian/copyright:
+  - fix downloaded from so that it does not include a specific version
+
+ -- Gustavo Noronha Silva <kov@debian.org>  Thu, 03 Jan 2008 22:07:49 -0200
+
+decoratortools (1.4-2) unstable; urgency=low
+
+  * debian/copyright:
+  - fix 'downloaded from' URL
+
+ -- Gustavo Noronha Silva <kov@debian.org>  Tue, 04 Sep 2007 22:05:55 -0300
+
+decoratortools (1.4-1) experimental; urgency=low
+
+  * Initial Release (Closes: #425761)
+
+ -- Gustavo Noronha Silva <kov@debian.org>  Wed, 23 May 2007 17:25:58 -0300
+

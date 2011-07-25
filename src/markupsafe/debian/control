@@ -1,0 +1,38 @@
+Source: markupsafe
+Upstream-Version: 0.12
+Section: python
+Priority: optional
+Maintainer: Piotr Ożarowski <piotr@debian.org>
+Uploaders: Debian Python Modules Team <python-modules-team@lists.alioth.debian.org>
+Build-Depends: debhelper,
+ python-all-dev,
+ python-setuptools
+Standards-Version: 3.9.1
+Homepage: http://pypi.python.org/pypi/MarkupSafe
+Vcs-Svn: svn://svn.debian.org/python-modules/packages/markupsafe/trunk
+Vcs-Browser: http://svn.debian.org/viewsvn/python-modules/packages/markupsafe/trunk/
+
+Package: python-markupsafe
+Architecture: any
+Depends: ${misc:Depends}, ${python:Depends}, ${shlibs:Depends}
+Provides: ${python:Provides}
+Description: XML/HTML/XHTML Markup safe string for Python
+ MarkupSafe implements a unicode subclass that supports HTML strings:
+ .
+  >>> from markupsafe import Markup, escape
+  >>> escape("<script>alert(document.cookie);</script>")
+  Markup(u'&lt;script&gt;alert(document.cookie);&lt;/script&gt;')
+  >>> tmpl = Markup("<em>%s</em>")
+  >>> tmpl % "Peter > Lustig"
+  Markup(u'<em>Peter &gt; Lustig</em>')
+ .
+ If you want to make an object unicode that is not yet unicode
+ but don't want to lose the taint information, you can use the
+ `soft_unicode` function:
+ .
+  >>> from markupsafe import soft_unicode
+  >>> soft_unicode(42)
+  u'42'
+  >>> soft_unicode(Markup('foo'))
+  Markup(u'foo')
+

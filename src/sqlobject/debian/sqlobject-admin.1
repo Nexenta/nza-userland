@@ -1,0 +1,131 @@
+'\" t
+.\"     Title: sqlobject-admin
+.\"    Author: [see the "AUTHORS" section]
+.\" Generator: DocBook XSL Stylesheets v1.75.1 <http://docbook.sf.net/>
+.\"      Date: 06/03/2010
+.\"  Language: English
+.\"
+.TH "SQLOBJECT\-ADMIN" "1" "06/03/2010"
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
+.\" disable hyphenation
+.nh
+.\" disable justification (adjust text to left margin only)
+.ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
+.SH "NAME"
+sqlobject-admin \- manage your database as defined with SQLObject classes
+.SH "SYNOPSIS"
+.sp
+\fBsqlobject\-admin\fR [\fIoptions\fR] \fIcommand\fR
+.SH "DESCRIPTION"
+.sp
+The sqlobject\-admin tool included with SQLObject allows you to manage your database as defined with SQLObject classes\&.
+.sp
+Some of the features include creating tables, checking the status of the database, recording a version of a schema, and updating the database to match the version of the schema in your code\&.
+.SH "COMMANDS"
+.sp
+The following commands are recognized:
+.PP
+\fBhelp\fR
+.RS 4
+Show the help text\&.
+.RE
+.PP
+\fBcreate\fR
+.RS 4
+Find the tables and create them\&. Existing tables are simply skipped\&.
+.RE
+.PP
+\fBsql\fR
+.RS 4
+Show the SQL to create all the tables\&.
+.RE
+.PP
+\fBdrop\fR
+.RS 4
+Drop tables\&. Missing tables are skipped\&.
+.RE
+.PP
+\fBexecute\fR
+.RS 4
+Execute an arbitrary SQL expression\&.
+.RE
+.PP
+\fBlist\fR
+.RS 4
+List out all the found classes\&.
+.RE
+.PP
+\fBstatus\fR
+.RS 4
+Show if tables are present in the database\&.
+.RE
+.PP
+\fBrecord\fR
+.RS 4
+Record historical information about the database status
+.RE
+.PP
+\fBupgrade\fR
+.RS 4
+Update the database to a new version (as created by record)
+.RE
+.SH "OPTIONS"
+.PP
+\fB\-c\fR \fICONNECTION\fR\fB, \-\-connection\fR=\fICONNECTION\fR
+.RS 4
+Connection string for the database \&.
+.RE
+.PP
+\fB\-f\fR \fIFILENAME\fR\fB, \-\-config\-file=\fR\fIFILENAME\fR
+.RS 4
+Configuration file from which to get the connection to the database\&.
+.RE
+.PP
+\fB\-m\fR \fIMODULE\fR\fB, \-\-module=\fR\fIMODULE\fR
+.RS 4
+A module to look in for classes\&.
+.RE
+.PP
+\fB\-p\fR \fIPACKAGE\fR\fB, \-\-package=\fR\fIPACKAGE\fR
+.RS 4
+A package to look in\&.
+.RE
+.PP
+\fB\-\-class\fR=\fICLASSMATCH\fR
+.RS 4
+Restricting the found classes to the matching classes\&.
+.RE
+.PP
+\fB\-\-egg\fR=\fIEGG_SPEC\fR
+.RS 4
+Egg description that should be loaded\&.
+.RE
+.SH "AUTHORS"
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+This manual page was written by Carl Chenet <chaica@ohmytux\&.com>\&.
+.fi
+.if n \{\
+.RE
+.\}
+.SH "LICENSE"
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+This package is licensed under the GNU Lesser General Public License\&. You can
+find the full text of the LGPL in /usr/share/common\-licenses/LGPL in your
+Debian system\&.
+.fi
+.if n \{\
+.RE
+.\}
