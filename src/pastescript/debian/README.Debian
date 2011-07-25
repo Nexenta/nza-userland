@@ -1,0 +1,30 @@
+paster for Debian
+-----------------
+
+paste.script.templates module (i.e. `paster create --template=foo`) is modified
+in Debian to look for templates in ``/usr/local/share/paster_templates/`` and
+``/usr/share/paster_templates/`` before it will try standard locations.
+
+This allows package maintainers to move templates outside site-packages
+directory (think about FHS) and local administrators to modify these templates.
+
+
+To package maintainers
+----------------------
+There's no need to patch upstream code in order to remove .*templates directory
+from _template_dir - modified paster will try to guess the right directory.
+
+examples:
+^^^^^^^^^
+
+ | in:  ``_template_dir = ('pylons', 'templates/default_project')``
+ | out: ``/usr/share/paster_templates/pylons/default_project``
+
+ | in:  ``_template_dir = ('formalchemy', 'paster_templates/pylons_fa')``
+ | out: ``/usr/share/paster_templates/formalchemy/pylons_fa``
+
+ | in:  ``_template_dir = 'paster_templates/paste_deploy'``
+ | out: ``/usr/share/paster_templates/paste_deploy``
+
+ | in:  ``_template_dir = 'foo/templates/bar'``
+ | out: ``/usr/share/paster_templates/foo/bar``

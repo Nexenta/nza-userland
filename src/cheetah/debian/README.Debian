@@ -1,0 +1,39 @@
+Cheetah on Debian
+=================
+
+Cheetah is a  developer-centric library, and as such,  it is important
+to provide multiple Python  version-specific packages.  In most cases,
+Python  is  backwards-compatible   for  language  syntax.   That  same
+"guarantee" does not exist  for the byte-compiled code, therefore, the
+cheetah software on Debian uses python-support to provide byte-compiled
+files for all supported Python versions.
+
+Code Incompatibility between 1.0 and 0.9.16
+==============================================
+Once again, the structure of the compiled templates has changed.  Make
+sure you recompile static templates and clear the cache saved for
+dynamic templates.
+
+Code Incompatibility between 0.9.15 and 0.9.16
+==============================================
+From http://sourceforge.net/mailarchive/message.php?msg_id=10636026::
+
+   From: Tavis Rudd <tavis@da...>
+   important note about upgrading to / testing 0.9.16  
+   2005-01-23 12:35
+
+   The new release outputs significantly different python code.  Thus, if you
+   have a set of .tmpl files you compile statically you should recompile them
+   when upgrading, or more importantly, when downgrading if you run into
+   problems with the new release.  Tavis
+ 
+
+Additional References and Documentation
+=======================================
+Developer and User reference guides [1]_ are provided by the Cheetah
+Development Team at their website. [2]_  They are released under the
+Open Publication License, and as such may be eligable for packaging
+and distributing in Debian.
+
+.. [1] http://cheetahtemplate.org/learn.html
+.. [2] http://cheetahtemplate.sourceforge.net

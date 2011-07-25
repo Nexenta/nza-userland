@@ -1,0 +1,38 @@
+Source: python-peak.util
+Upstream-Version: 20090610
+Section: python
+Priority: optional
+Maintainer: Debian QA Group <packages@qa.debian.org>
+Build-Depends:
+ debhelper,
+ cdbs,
+ python-dev,
+ python-support,
+ python-setuptools
+Standards-Version: 3.8.2
+Vcs-Svn: svn://svn.debian.org/python-modules/packages/python-peak.util/trunk/
+Vcs-Browser: http://svn.debian.org/viewsvn/python-modules/packages/python-peak.util/trunk/
+
+Package: python-peak.util
+Architecture: all
+Depends:
+ ${misc:Depends},
+ ${python:Depends},
+ python-peak.util.decorators,
+Description: utilities from the Python Enterprise Application Kit
+ The Python Enterprise Application Kit (PEAK) is a set of Python
+ libraries to help develop large-scale Python applications.
+ .
+ PEAK includes libraries and frameworks to support: component
+ integration, component configuration , document-driven testing,
+ event-driven programming, storage management and persistence, domain
+ modelling, and much more.
+ .
+ This package provides a subset of utilities related to PEAK, and
+ commonly found as dependencies for PEAK-based components. In
+ particular, this package provides:
+ .
+  * AddOns - dynamic mixins with private attribute and methods
+  * BytecodeAssembler - code object generation assembling bytecode
+  * Extremes - absolute max and min values (PEP 326 implementation)
+  * SymbolType - symbol type, i.e., enumerations

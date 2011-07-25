@@ -1,0 +1,4 @@
+version=3
+http://files.turbogears.org/eggs/TurboGears-([\d\.]+)\.tar\.gz
+# The regexp does not matches beta and rc versions by choice
+

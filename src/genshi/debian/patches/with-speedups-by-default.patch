@@ -1,0 +1,13 @@
+Index: genshi-0.6/setup.py
+===================================================================
+--- genshi-0.6.orig/setup.py	2011-07-18 12:14:28.544608665 +0400
++++ genshi-0.6/setup.py	2011-07-18 12:14:37.001457961 +0400
+@@ -64,7 +64,7 @@
+ if Feature:
+     speedups = Feature(
+         "optional C speed-enhancements",
+-        standard = False,
++        standard = True,
+         ext_modules = [
+             Extension('genshi._speedups', ['genshi/_speedups.c']),
+         ],

@@ -1,0 +1,162 @@
+turbojson (40-0-0) unstable; urgency=low
+
+  * Ported to NCP4
+
+ -- Igor Pashev <igor.pashev@nexenta.com>  Mon, 18 Jul 2011 16:39:09 +0400
+
+turbojson (1.3.1-1) unstable; urgency=low
+
+  * New upstream release.
+  * Packaging repository moved to git
+  * debian/rules: switch to dh7
+  * debian/control
+    - new Maintainer: Federico Ceratto <federico.ceratto@gmail.com>
+    - bump Standards-Version to 3.9.1
+
+ -- Federico Ceratto <federico.ceratto@gmail.com>  Sun, 03 Apr 2011 19:12:39 +0200
+
+turbojson (1.2.1-4) unstable; urgency=low
+
+  * uploading to unstable
+
+ -- Stefano Zacchiroli <zack@debian.org>  Sun, 02 Aug 2009 16:26:25 +0200
+
+turbojson (1.2.1-3) experimental; urgency=low
+
+  * Adopting package
+  * Major packaging revamping
+  * debian/rules: switch to CDBS + distutils + python-support
+  * debian/control
+    - set maintainer to Python Modules Team, me as the Uploader
+    - bump Standards-Version to 3.8.2 (no changes needed)
+    - sync (build-)dependencies with what is actually required by latest
+      upstream release. Note that prioritized_methods is shipped in Debian
+      as a contrib of peak.rules. (Closes: #507909, #527512)
+    - revamp short and long descriptions
+  * debian/copyright: simplify markup, move packaging (redone) to GPL
+  * debian/docs: ship upstream README.txt
+  * debian/watch: add watch file
+
+ -- Stefano Zacchiroli <zack@debian.org>  Sat, 20 Jun 2009 16:46:24 +0200
+
+turbojson (1.2.1-2) unstable; urgency=low
+
+  * Orphaning package.
+
+ -- Daniel Baumann <daniel@debian.org>  Tue, 16 Jun 2009 08:14:00 +0200
+
+turbojson (1.2.1-1) unstable; urgency=low
+
+  * Adding ${misc:Depends} in control.
+  * Merging upstream version 1.2.1.
+  * Tidy rules file.
+  * Updating to standards 3.8.1.
+  * Updating year in copyright file.
+  * Using correct rfc-2822 date formats in changelog.
+
+ -- Daniel Baumann <daniel@debian.org>  Mon, 18 May 2009 20:51:26 +0200
+
+turbojson (1.2-2) unstable; urgency=low
+
+  * New maintainer (Closes: #507792).
+  * Redone debian packaging from scratch.
+
+ -- Daniel Baumann <daniel@debian.org>  Sun, 11 Jan 2009 16:13:00 -0500
+
+turbojson (1.2-1) unstable; urgency=low
+
+  [ Gustavo Noronha Silva ]
+  * New upstream release
+  * Orphaning the package
+  * debian/control:
+  - updated standards version, no changes
+
+  [ Sandro Tosi ]
+  * debian/control
+    - switch Vcs-Browser field to viewsvn
+
+ -- Gustavo Noronha Silva <kov@debian.org>  Thu, 04 Dec 2008 11:45:48 -0200
+
+turbojson (1.1.2-1) unstable; urgency=low
+
+  * New upstream release
+  * debian/control:
+  - added dependency on python-pkg-resources
+
+ -- Gustavo Noronha Silva <kov@debian.org>  Sat, 10 May 2008 11:38:22 -0300
+
+turbojson (1.1.1-1) unstable; urgency=low
+
+  * New upstream release
+  * debian/control:
+  - updated Standards-Version to 3.7.3
+  - remove -1 from setuptools' version requirement
+
+ -- Gustavo Noronha Silva <kov@debian.org>  Sun, 10 Feb 2008 23:50:08 -0200
+
+turbojson (1.0-2) UNRELEASED; urgency=low
+
+  [ Piotr Ożarowski ]
+  * New python-support handles egg's directory name correctly
+    - bump python-support required version
+    - remove mv part from debian/rules
+  * Vcs-Browser and Homepage fields added
+  * XS-Vcs-Svn field renamed to Vcs-Svn
+
+  [ Sandro Tosi ]
+  * debian/control
+    - uniforming Vcs-Browser field
+
+ -- Piotr Ożarowski <piotr@debian.org>  Sat, 06 Oct 2007 23:47:32 +0200
+
+turbojson (1.0-1) unstable; urgency=low
+
+  [ Piotr Ozarowski ]
+  * Added XS-Vcs-Svn field
+
+  [ Gustavo Noronha Silva ]
+  * New upstream release
+  * debian/watch:
+  - new watch file to monitor new upstream versions
+  * debian/control:
+  - updated build-deps version requirement for python-support
+    and moved it and python-all-dev to build-deps, since they are
+    needed on clean
+  * debian/rules:
+  - removed the 'dev' from the upstream version when moving the
+    egg-info file, since that is no longer used
+  * debian/pycompat:
+  - removed; no longer needed according to the policy
+
+ -- Gustavo Noronha Silva <kov@debian.org>  Sat, 12 May 2007 15:53:58 -0300
+
+turbojson (0.9.5-1) unstable; urgency=low
+
+  * New upstream release
+  * debian/control:
+  - require newer versions of cdbs and debhelper which respect the
+    minimal python version when calling setup.py
+  * debian/rules:
+  - use DEB_UPSTREAM_VERSION from cdbs, and use shell glob when renaming
+    the egg-info directory
+
+ -- Gustavo Noronha Silva <kov@debian.org>  Mon, 24 Jul 2006 21:38:55 -0300
+
+turbojson (0.9.3-2) unstable; urgency=low
+
+  * New Python Policy (Closes: #374697)
+  - this release also depend on the new-policy-compliant version of
+    python-sqlobject (Closes: #374690)
+  * debian/python-turbojson.{postinst,prerm}, debian/python-support.version:
+  - handled by dh_pysupport now
+  * debian/rules:
+  - rename the egg-info directory so it doesn't contain the python
+    version
+
+ -- Gustavo Noronha Silva <kov@debian.org>  Fri, 23 Jun 2006 16:41:37 -0300
+
+turbojson (0.9.3-1) experimental; urgency=low
+
+  * Initial release (Closes: #367285)
+
+ -- Gustavo Noronha Silva <kov@debian.org>  Sat, 13 May 2006 18:59:40 -0300

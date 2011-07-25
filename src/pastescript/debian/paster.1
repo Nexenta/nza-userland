@@ -1,0 +1,58 @@
+.TH PASTER 1 "may 6, 2006"
+.SH NAME
+paster \- pluggable command-line frontend,
+including commands to setup package file layouts
+.SH SYNOPSIS
+.B paster
+.RI paster\ [OPTION]\ COMMAND\ [command_options]
+.br
+.SH DESCRIPTION
+This manual page documents briefly the
+.B paster
+command.
+.PP
+\fBpaster\fP is a program that can create file layouts for packages
+and serve up web applications, with configuration based on paste.deploy.
+It can for instance create a setuptools-ready file layout.
+.SH OPTIONS
+These programs follow the usual GNU command line syntax, with long
+options starting with two dashes (`-').
+A summary of options is included below.
+.TP
+.B \-h, \-\-help
+Show summary of options.
+.TP
+.B \-\-version
+Show version of program.
+.TP
+.B \-\-plugin=PLUGINS
+Add a plugin to the list of commands (plugins are Egg
+specs; will also require() the Egg)
+.br
+.SH COMMANDS
+.TP
+.B create
+Create the file layout for a Python distribution
+.TP
+.B grep
+Search project for symbol
+.TP
+.B help
+Display help
+.TP
+.B make-config
+Install a package and create a fresh config file/directory
+.TP
+.B points
+Show information about entry points
+.TP
+.B serve
+Serve the described application
+.TP
+.B setup-app
+Setup an application, given a config file
+.SH AUTHOR
+paster was written by Ian Bicking <ianb@colorstudy.com>.
+.PP
+This manual page was written by Piotr Ozarowski <ozarow@gmail.com>,
+for the Debian project (but may be used by others).

@@ -1,0 +1,5 @@
+# this file comes with two copies: debian/watch and debian/peak.rules.watch
+# will go away with symlink support in dpkg-* soon; in the meantime update both
+version=3
+opts="uversionmangle=s/\.dev-(r\d+)/+$1/" \
+http://peak.telecommunity.com/snapshots/PEAK-Rules-([0-9a-z.-]+)\.tar\.gz

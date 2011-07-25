@@ -1,0 +1,15 @@
+This package was debianized by Carlos Perelló Marín <carlos@pemas.net>
+on Wed, 20 Oct 2004. It was orphaned and is now maintained by
+Debian Python Modules Team.
+
+It was downloaded from 'http://www.sqlobject.org'.
+
+Upstream Author: Ian Bicking
+
+Copyright (C) 2000-2008 Ian Bicking
+
+License:
+
+This package is licensed under the GNU Lesser General Public License. You can
+find the full text of the LGPL in /usr/share/common-licenses/LGPL in your
+Debian system.

@@ -1,0 +1,23 @@
+Source: python-formencode
+Upstream-Version: 1.2.4
+Section: python
+Priority: optional
+Build-Depends: debhelper, python-all, python-setuptools, python-support
+Maintainer: Fabio Tranchitella <kobold@debian.org>
+Uploaders: Debian Python Modules Team <python-modules-team@lists.alioth.debian.org>,
+ Piotr Ożarowski <piotr@debian.org>
+Standards-Version: 3.9.2
+Vcs-Svn: svn://svn.debian.org/python-modules/packages/python-formencode/trunk/
+Vcs-Browser: http://svn.debian.org/viewsvn/python-modules/packages/python-formencode/trunk/
+Homepage: http://formencode.org
+
+Package: python-formencode
+Architecture: all
+Depends: ${python:Depends}, ${misc:Depends}, python-dns, python-pkg-resources,
+ python | python-elementtree
+Suggests: python-egenix-mxdatetime
+Description: validation and form generation Python package
+ FormEncode is a validation and form generation package. The validation can 
+ be used separately from the form generation. The validation works on compound 
+ data structures, with all parts being nestable. It is separate from HTTP or 
+ any other input mechanism.

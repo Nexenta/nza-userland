@@ -1,0 +1,37 @@
+Source: dbus-python
+Upstream-Version: 0.84.0
+Section: devel
+Priority: optional
+Maintainer: Utopia Maintenance Team <pkg-utopia-maintainers@lists.alioth.debian.org>
+Uploaders: Sjoerd Simons <sjoerd@debian.org>,
+           Sebastian Dröge <slomo@debian.org>,
+           Simon McVittie <smcv@debian.org>,
+           Loic Minier <lool@dooz.org>
+Build-Depends: debhelper,
+               xmlto,
+               python-all-dev,
+               python-support,
+               libdbus-1-dev,
+               libdbus-glib-1-dev,
+               autotools-dev
+Standards-Version: 3.9.2
+Homepage: http://www.freedesktop.org/wiki/Software/DBusBindings#Python
+Vcs-Git: git://anonscm.debian.org/git/pkg-utopia/dbus-python.git
+Vcs-Browser: http://anonscm.debian.org/gitweb/?p=pkg-utopia/dbus-python.git
+
+Package: python-dbus
+Section: python
+Architecture: any
+Depends: ${shlibs:Depends},
+         ${misc:Depends},
+         ${python:Depends}
+Provides: ${python:Provides}
+Description: simple interprocess messaging system (Python interface)
+ D-Bus is a message bus, used for sending messages between applications.
+ Conceptually, it fits somewhere in between raw sockets and CORBA in
+ terms of complexity.
+ .
+ This package provides a Python interface to D-Bus.
+ .
+ See the dbus description for more information about D-Bus in general.
+

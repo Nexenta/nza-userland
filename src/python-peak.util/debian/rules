@@ -1,0 +1,23 @@
+#!/usr/bin/make -f
+DEB_PYTHON_SYSTEM = pysupport
+include /usr/share/cdbs/1/rules/debhelper.mk
+include /usr/share/cdbs/1/class/python-distutils.mk
+
+PKG = python-peak.util
+UPSTREAMS = \
+	peak.util-addons \
+	peak.util-bytecodeassembler \
+	peak.util-extremes \
+	peak.util-symboltype \
+	$(NULL)
+export SUBDIRS = $(UPSTREAMS)
+
+DEB_PYTHON_INSTALL_ARGS_ALL += --single-version-externally-managed
+
+# avoid installing tests: useless at runtime and prone to name clashes
+install/$(PKG)::
+	rm -rf debian/$(PKG)/usr/lib/python*/site-packages/tests/
+	rm -f debian/$(PKG)/usr/lib/python*/site-packages/*.pth
+
+USCAN_EXTRA_ARGS = --repack
+-include debian/get-orig-source.mk

@@ -1,0 +1,30 @@
+Source: python-cherrypy
+Upstream-Version: 2.3.0
+Section: python
+Priority: extra
+Maintainer: Gustavo Noronha Silva <kov@debian.org>
+Uploaders: Debian Python Modules Team <python-modules-team@lists.alioth.debian.org>
+Build-Depends: debhelper, python-setuptools, python-dev, python-support
+Standards-Version: 3.8.2
+Homepage: http://www.cherrypy.org/
+XS-Python-Version: all
+Vcs-Svn: svn://svn.debian.org/python-modules/packages/python-cherrypy/trunk/
+Vcs-Browser: http://svn.debian.org/viewsvn/python-modules/packages/python-cherrypy/trunk/
+
+Package: python-cherrypy
+Architecture: all
+XB-Python-Version: ${python:Versions}
+Depends: ${python:Depends}
+Provides: ${python:Provides}
+Description: Python web development framework
+ CherryPy is a pythonic, object-oriented web development framework. It
+ provides the foundation over which complex web-based applications can
+ be written, with little or no knowledge of the underlying
+ protocols. CherryPy allows developers to build web applications in
+ much the same way they would build any other object-oriented Python
+ program. This usually results in smaller source code developed in
+ less time.
+ .
+ This version is backwards incompatible with the 2.0 version, and is
+ the version used by the Turbo Gears framework. Visit the Turbo Gears
+ webpage for more: http://www.turbogears.org/

@@ -1,0 +1,4 @@
+usr/lib/python*/*-packages/SQLAlchemy*
+usr/lib/python*/*-packages/sqlalchemy/*.py
+usr/lib/python*/*-packages/sqlalchemy/*/*
+usr/lib/python*/*-packages/sqlalchemy_nose

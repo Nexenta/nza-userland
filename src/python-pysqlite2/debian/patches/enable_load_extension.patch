@@ -1,0 +1,13 @@
+Description: Make it possible to use enable_load_extension()
+Author: Joel Rosdahl <joel@debian.org>
+
+Index: python-pysqlite2/setup.cfg
+===================================================================
+--- python-pysqlite2.orig/setup.cfg	2010-05-16 15:40:16.986416847 +0200
++++ python-pysqlite2/setup.cfg	2010-05-16 15:40:21.216411055 +0200
+@@ -3,4 +3,4 @@
+ #include_dirs=/usr/local/include
+ #library_dirs=/usr/local/lib
+ libraries=sqlite3
+-define=SQLITE_OMIT_LOAD_EXTENSION
++#define=SQLITE_OMIT_LOAD_EXTENSION

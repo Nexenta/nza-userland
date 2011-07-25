@@ -73,16 +73,6 @@ override_dh_auto_install:
 
 
 override_dh_auto_clean:
-	rm -f \
-		configure \
-		build/lt* \
-		build/config.guess \
-		build/config.sub \
-		build/libtool.m4 \
-		build-outputs.mk \
-		include/arch/unix/apr_private.h.in \
-		config.log \
-		config.nice 
 	rm -rf $(BUILD)
 	rm -f build32 build64
 	rm -f net

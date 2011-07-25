@@ -1,0 +1,48 @@
+Description: C extension fails to build because of PyUnicode_FromFormat only available on Python >= 2.6
+Author: Arnaud Fontaine <arnau@debian.org>
+Forwarded: http://sourceforge.net/mailarchive/message.php?msg_name=sa5634dmm5b.fsf%40Orfeo.duckcorp.org
+
+--- a/cheetah/c/cheetah.h	2010-02-08 04:17:23.000000000 +0000
++++ b/cheetah/c/cheetah.h	2010-03-30 22:42:49.000000000 +0100
+@@ -37,6 +37,9 @@
+ 
+ #if PY_MAJOR_VERSION >= 3
+ #define IS_PYTHON3
++#elif PY_MAJOR_VERSION == 2 && PY_MINOR_VERSION <= 5
++/* PyUnicode_FromFormat is only available on Python >= 2.6 */
++#define IS_PYTHON25_OR_LESS
+ #endif
+ 
+ #define TRUE 1
+--- a/cheetah/c/_namemapper.c	2010-02-08 04:17:23.000000000 +0000
++++ b/cheetah/c/_namemapper.c	2010-03-30 22:40:01.000000000 +0100
+@@ -35,7 +35,13 @@
+ static void setNotFoundException(char *key, PyObject *namespace)
+ {
+     PyObject *exceptionStr = NULL;
++#ifdef IS_PYTHON25_OR_LESS
++    exceptionStr = Py_BuildValue("s", "cannot find '");
++    PyString_ConcatAndDel(&exceptionStr, Py_BuildValue("s", key));
++    PyString_ConcatAndDel(&exceptionStr, Py_BuildValue("s", "'"));
++#else
+     exceptionStr = PyUnicode_FromFormat("cannot find \'%s\'", key);
++#endif
+     PyErr_SetObject(NotFound, exceptionStr);
+     Py_XDECREF(exceptionStr);
+ }
+@@ -58,8 +64,15 @@
+ 
+         if (isAlreadyWrapped != NULL) {
+             if (PyLong_AsLong(isAlreadyWrapped) == -1) {
++#ifdef IS_PYTHON25_OR_LESS
++                newExcValue = Py_BuildValue("U", excValue);
++                PyString_ConcatAndDel(&newExcValue, Py_BuildValue("s", "while searching for '"));
++                PyString_ConcatAndDel(&newExcValue, Py_BuildValue("s", fullName));
++                PyString_ConcatAndDel(&newExcValue, Py_BuildValue("s", "'"));
++#else                                      
+                 newExcValue = PyUnicode_FromFormat("%U while searching for \'%s\'",
+                         excValue, fullName);
++#endif
+             }
+             Py_DECREF(isAlreadyWrapped);
+         }
