@@ -1,0 +1,26 @@
+Source: libdata-optlist-perl
+Section: perl
+Priority: optional
+Build-Depends: debhelper (>= 8)
+Build-Depends-Indep: perl,
+ libparams-util-perl, libsub-install-perl,
+  perl 
+Maintainer: Debian Perl Group <pkg-perl-maintainers@lists.alioth.debian.org>
+Uploaders: Krzysztof Krzyzaniak (eloy) <eloy@debian.org>, 
+ gregor herrmann <gregoa@debian.org>, Jonathan Yu <jawnsy@cpan.org>,
+ Antonio Radici <antonio@dyne.org>, Jotam Jr. Trejo <jotamjr@debian.org.sv>
+Standards-Version: 3.9.2
+Homepage: http://search.cpan.org/dist/Data-OptList/
+Vcs-Svn: svn://svn.debian.org/pkg-perl/trunk/libdata-optlist-perl/
+Vcs-Browser: http://svn.debian.org/viewsvn/pkg-perl/trunk/libdata-optlist-perl/
+Upstream-Version: 0.107-1
+
+
+Package: libdata-optlist-perl
+Architecture: all
+Depends: ${perl:Depends}, ${misc:Depends}, libparams-util-perl,
+ libsub-install-perl
+Description: module to parse and validate simple name/value option pairs
+ Data::OptList is a Perl module useful for working with simple name-and-value
+ option pairs. It assumes any defined scalar is a name and any reference after
+ it is its value.

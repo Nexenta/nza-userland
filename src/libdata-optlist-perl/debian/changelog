@@ -1,0 +1,107 @@
+libdata-optlist-perl (40-0-0) unstable; urgency=low
+
+  * Port for NCP4 
+  * Used new version scheme 
+
+ -- Peter Zaickin <peter.zaickin@nexenta.com>  Tue, 05 Jul 2011 16:05:35 +0300
+
+libdata-optlist-perl (0.107-1) unstable; urgency=low
+
+  [ Jonathan Yu ]
+  * New upstream release
+  * Standards-Version 3.8.4 (drop perl version dep)
+  * Add myself to Uploaders and Copyright
+  * Rewrite control description
+  * No longer perform Perl::Critic tests
+  * Use new short debhelper 7 rules format
+  * Update copyright to new DEP5 format
+
+  [ Nathan Handler ]
+  * debian/watch: Update to ignore development releases.
+
+  [ Jotam Jr. Trejo ]
+  * New upstream release
+  * debian/copyright: refresh, remove copyright and license for
+    already deleted files (inc/Module/*) and use Debian systems
+    instead of Debian GNU/Linux systems
+  * Switch to Source Format 3.0 (quilt)
+  * Bump Standards Version to 3.9.2
+  * debian/control: add version (>= 0.96) for Test::More dependency
+  * debian/patches/spelling.patch: patch to fix a spelling error
+  * Bump DH compat level to 8
+  * debian/control: remove libtest-pod-coverage-perl and libtest-pod-perl
+    from B-D-I, not planning to run release tests
+  * Add myself to Uploaders and Copyright
+
+ -- Jotam Jr. Trejo <jotamjr@debian.org.sv>  Thu, 12 May 2011 00:48:03 -0600
+
+libdata-optlist-perl (0.104-1) unstable; urgency=low
+
+  [ Antonio Radici ]
+  * New upstream release
+  * debian/control:
+    + adding myself to the Uploaders
+    + upgrade of Standards-Version to 3.8.0
+  * debian/copyright:
+    + new format
+    + adding gregor and mself to the debian/ (c) holders
+
+  [ gregor herrmann ]
+  * debian/control: Changed: Switched Vcs-Browser field to ViewSVN
+    (source stanza).
+  * debian/control: change my email address.
+  * debian/copyright: add information about files under inc/.
+  * Set debhelper compatibility level to 7; adapt
+    debian/{control,compat,rules}.
+
+ -- Antonio Radici <antonio@dyne.org>  Fri, 20 Feb 2009 21:28:02 +0000
+
+libdata-optlist-perl (0.103-2) unstable; urgency=low
+
+  * debian/rules:
+    - delete /usr/lib/perl5 only if it exists (closes: #467751)
+    - let install-stamp target depend on build-stamp
+  * debian/watch: use dist-based URL.
+  * Set Standards-Version to 3.7.3 (no changes).
+  * Set debhelper compatibility level to 5.
+  * Enable perl-critic test.
+
+ -- gregor herrmann <gregor+debian@comodo.priv.at>  Sat, 08 Mar 2008 00:26:49 +0100
+
+libdata-optlist-perl (0.103-1) unstable; urgency=low
+
+  * New upstream release.
+  * debian/control: Added: Vcs-Svn field (source stanza); Vcs-Browser
+    field (source stanza); Homepage field (source stanza). Removed: XS-
+    Vcs-Svn fields.
+  * Add libtest-pod-perl, libtest-pod-coverage-perl to Build-Depends-Indep.
+  * debian/rules:
+    - Install upstream changelog.
+    - Remove unused dh_* calls.
+    - Move test to build target.
+    - Remove unused OPTIMIZE variable.
+    - Call dh_clean before make distclean.
+  * debian/copyright:
+    - Use generic upstream URL instead of versioned one.
+    - Update years of copyright according to README.
+
+ -- gregor herrmann <gregor+debian@comodo.priv.at>  Fri, 02 Nov 2007 17:31:42 +0100
+
+libdata-optlist-perl (0.102-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Krzysztof Krzyzaniak (eloy) <eloy@debian.org>  Wed, 11 Jul 2007 12:16:53 +0200
+
+libdata-optlist-perl (0.101-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Krzysztof Krzyzaniak (eloy) <eloy@debian.org>  Wed, 21 Jun 2006 10:15:42 +0200
+
+libdata-optlist-perl (0.100-1) unstable; urgency=low
+
+  * Initial Release (closes: #370707).
+
+ -- Krzysztof Krzyzaniak (eloy) <eloy@debian.org>  Tue,  6 Jun 2006 14:58:29 +0200
+
