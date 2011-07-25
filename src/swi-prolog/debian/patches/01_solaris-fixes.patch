@@ -1,0 +1,47 @@
+--- ./packages/xpce/src/unx/proto.h.bak	2011-07-25 06:29:29.688601694 +0100
++++ ./packages/xpce/src/unx/proto.h	2011-07-25 06:38:00.418390883 +0100
+@@ -41,7 +41,7 @@
+ 
+ /* /home/jan/src/pl/packages/xpce/src/unx/socket.c */
+ COMMON(Name)	SockError(void);
+-COMMON(status)	acceptSocket(Socket s);
++status		acceptSocket(Socket s);
+ COMMON(status)	makeClassSocket(Class class);
+ 
+ /* /home/jan/src/pl/packages/xpce/src/unx/stream.c */
+--- ./src/pl-term.c.bak	2011-07-25 05:55:58.338569847 +0100
++++ ./src/pl-term.c	2011-07-25 06:39:56.036578177 +0100
+@@ -52,11 +52,13 @@
+ #include <ncurses/curses.h>
+ #endif
+ 
++#ifndef __sun
+ #ifdef HAVE_TERM_H
+ #include <term.h>
+ #elif HAVE_NCURSES_TERM_H
+ #include <ncurses/term.h>
+ #endif
++#endif
+ 
+ #define MAX_TERMBUF	1024		/* Conforming manual */
+ #define STAT_START	0
+--- ./src/pl-os.c.bak	2011-07-25 06:01:48.054771156 +0100
++++ ./src/pl-os.c	2011-07-25 06:02:17.477576718 +0100
+@@ -1545,17 +1545,6 @@
+   if ( CWDlen == 0 )
+   { char buf[MAXPATHLEN];
+     char *rval;
+-
+-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+-On SunOs, getcwd() is using popen() to read the output of /bin/pwd.  This
+-is slow and appears not to cooperate with profile/3.  getwd() is supposed
+-to be implemented directly.  What about other Unixes?
+-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+-
+-#if defined(HAVE_GETWD) && (defined(__sun__) || defined(__sun))
+-#undef HAVE_GETCWD
+-#endif
+-
+ #if defined(HAVE_GETWD) && !defined(HAVE_GETCWD)
+     rval = getwd(buf);
+ #else

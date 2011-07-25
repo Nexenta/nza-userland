@@ -1,0 +1,194 @@
+#!/usr/bin/make -f
+
+export PLARCH ?= $(shell dpkg-architecture -qDEB_BUILD_ARCH)
+export ARCH ?= $(shell dpkg-architecture -qDEB_BUILD_ARCH)
+export DEB_HOST_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
+export DEB_BUILD_GNU_TYPE ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
+export DEB_HOST_ARCH_OS   ?= $(shell dpkg-architecture -qDEB_HOST_ARCH_OS)
+
+ifeq ($(DEB_BUILD_GNU_TYPE), $(DEB_HOST_GNU_TYPE))
+  CONFFLAGS += --build $(DEB_HOST_GNU_TYPE)
+else
+  CONFFLAGS += --build $(DEB_BUILD_GNU_TYPE) --host $(DEB_HOST_GNU_TYPE)
+endif
+
+CONFFLAGS += --with-world
+
+export CFLAGS=-fPIC
+
+# Don't optimise or build GPL on arm (old ABI)
+ifeq ($(PLARCH),arm)
+    export COFLAGS=-O0
+    CONFFLAGS += --without-jpl
+endif
+
+# Don't build JPL on hppa
+ifeq ($(PLARCH),hppa)
+    CONFFLAGS += --without-jpl
+endif
+
+# Don't build JPL on GNU/kFreeBSD
+ifeq ($(DEB_HOST_ARCH_OS),kfreebsd)
+    CONFFLAGS += --without-jpl
+endif
+
+build: build-stamp
+build-stamp:
+	dh_testdir
+
+	for DIR in src/ packages/xpce/src/ packages/xpce/ packages/jpl; do \
+		cp -f /usr/share/misc/config.sub $$DIR/config.sub; \
+		cp -f /usr/share/misc/config.guess $$DIR/config.guess; \
+	done
+
+	# Build shared object first
+	./configure $(CONFFLAGS) --enable-shared \
+		--prefix=/usr '--mandir=$${prefix}/share/man'
+	$(MAKE)
+	$(MAKE) prefix=$(CURDIR)/debian/swi-prolog-shared/usr install-lite
+	$(MAKE) ARCH=$(PLARCH) PLARCH=$(PLARCH) clean
+	$(MAKE) ARCH=$(PLARCH) PLARCH=$(PLARCH) distclean
+
+	./configure $(CONFFLAGS)  \
+		--prefix=/usr '--mandir=$${prefix}/share/man' PL="swipl"
+
+	$(MAKE) ARCH=$(PLARCH) PLARCH=$(PLARCH) 
+
+	touch $@
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp
+
+	# Upstream's clean targets are not clean enough
+	rm -f packages/xpce/man/reference/index.obj
+	rm -f packages/xpce/lib/amd64
+	rm -f packages/xpce/src/find_names
+	rm -f .pkg-config
+	rm -f src/defatom
+	rm -f src/mkvmi
+	rm -f packages/xpce/src/find_names
+
+	[ ! -f Makefile ] || $(MAKE) ARCH=$(PLARCH) PLARCH=$(PLARCH) clean
+	[ ! -f Makefile ] || $(MAKE) ARCH=$(PLARCH) PLARCH=$(PLARCH) distclean
+	[ ! -f packages/jpl/Makefile ] || $(MAKE) -C packages/jpl distclean
+	find packages/jpl/examples/java -name '*.class' -delete
+	find packages/jpl/src/java -name '*.class' -delete
+
+	rm -rf debian/swi-prolog-shared
+
+	dh_clean
+
+install:
+install: build
+	dh_testdir -s
+	dh_testroot -s
+	dh_clean -k
+
+	# XPCE below needs a working SWI-Prolog to be installed; this is done
+	# in a temporary installation directory. We generate a list of files
+	# so we can seperate them later.
+
+	$(MAKE) prefix=$(CURDIR)/debian/swi-prolog-tmp/usr \
+		PLBASE=$(CURDIR)/debian/swi-prolog-tmp/usr/lib/swi-prolog \
+		ARCH=$(PLARCH) install-lite
+
+	cd debian/swi-prolog-tmp && find * -type f > ../swi-prolog-nox.install
+	cd debian/swi-prolog-tmp && find * -type l >> ../swi-prolog-nox.install
+
+	for i in "clib     swi-prolog-nox"   \
+		 "jpl      swi-prolog-java"    \
+		 "http     swi-prolog-nox"   \
+		 "semweb   swi-prolog-nox" \
+		 "sgml     swi-prolog-nox"   \
+		 "sgml/RDF swi-prolog-nox"   \
+		 "table    swi-prolog-nox"  \
+		 "odbc     swi-prolog-odbc"   \
+		 "xpce     swi-prolog-tmp"    \
+		 "chr      swi-prolog-nox"    \
+		               ; do \
+		FROM=$$(echo $$i | cut -d " " -f1); \
+		TO=$$(echo $$i | cut -d " " -f2); \
+		mkdir -p $(CURDIR)/debian/$$TO/usr/lib/swi-prolog/library; \
+		$(MAKE) -C packages/$$FROM \
+			prefix=$(CURDIR)/debian/$$TO/usr \
+			PLBASE=$(CURDIR)/debian/$$TO/usr/lib/swi-prolog \
+			PLARCH=$(PLARCH) \
+			PL=$(CURDIR)/src/swipl PLEXE=$(CURDIR)/src/swipl \
+			install; \
+	done
+
+	# Seperate XPCE and basic SWI-Prolog
+	dh_install -p swi-prolog-nox --sourcedir=debian/swi-prolog-tmp
+
+	# Remove the basic SWI-Prolog installation from the XPCE install dir
+	xargs --arg-file=debian/swi-prolog-nox.install --delimiter='\n' -I{} \
+		rm -v debian/swi-prolog-tmp/{}
+
+	# Install standalone shared library
+	cp -r debian/swi-prolog-shared/usr/lib/swipl-*/lib/*/libswipl.so* \
+		debian/swi-prolog-nox/usr/lib/
+
+	# Remove dbuild .pwd file (see #285894)
+	rm debian/swi-prolog-tmp/usr/lib/swi-prolog/xpce/prolog/lib/.pwd
+	
+	# Empty directories remain, but XPCE depends on SWI-Prolog
+	mv debian/swi-prolog-tmp debian/swi-prolog-x
+
+	# These two links are absolute, but we want them relative
+	cd debian/swi-prolog-x/usr/bin && \
+		rm xpce; ln -s ../lib/swi-prolog/bin/*/xpce .; \
+		rm xpce-client; ln -s ../lib/swi-prolog/xpce-*/bin/*/xpce-client .
+	
+	# Remove superfluous copies of the GPL
+	rm -f debian/swi-prolog-x/usr/lib/swi-prolog/xpce-*/COPYING
+
+	# Override lintian warnings
+	for PKG in swi-prolog-nox swi-prolog-x; do \
+		mkdir -p debian/$$PKG/usr/share/lintian/overrides; \
+		cp debian/$$PKG.lintian.override debian/$$PKG/usr/share/lintian/overrides/$$PKG; \
+	done
+
+	# Remove empty directories
+	find debian/ -depth -type d -empty -exec rm -rfv {} \;
+
+	# Remove RPATH from pl2xpce.so and libswipl.so
+	chrpath --delete debian/swi-prolog-x/usr/lib/swi-prolog/xpce-*/lib/*/pl2xpce.so || true
+	chrpath --delete debian/swi-prolog-nox/usr/lib/libswipl.so || true
+
+binary-common:
+	dh_testdir
+	dh_testroot
+	dh_installchangelogs
+	dh_installchangelogs -pswi-prolog-x packages/xpce/ChangeLog
+	dh_installchangelogs -pswi-prolog-odbc packages/odbc/ChangeLog
+ifneq ($(PLARCH),arm)
+ifneq ($(PLARCH),hpppa)
+	dh_installchangelogs -pswi-prolog-java packages/jpl/ChangeLog
+endif
+endif
+	dh_installdocs
+	dh_installmenu
+	dh_installman
+	dh_strip
+	dh_link
+	dh_compress
+	dh_fixperms
+	dh_makeshlibs
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary-indep: build install
+
+binary-arch: build install
+	$(MAKE) -f debian/rules DH_OPTIONS=-s binary-common
+
+binary-%: build install
+	make -f debian/rules binary-common DH_OPTIONS=-p$*
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary-common binary install
