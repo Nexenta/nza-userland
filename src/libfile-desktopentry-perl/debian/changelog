@@ -1,3 +1,9 @@
+libfile-desktopentry-perl (40-0-1) unstable; urgency=low
+
+  * Used --buildsystem=perl_build
+
+ -- Igor Pashev <igor.pashev@nexenta.com>  Mon, 25 Jul 2011 12:57:44 +0400
+
 libfile-desktopentry-perl (40-0-0) unstable; urgency=low
 
   * Ported to NCP4
