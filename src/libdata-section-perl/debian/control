@@ -1,0 +1,27 @@
+Source: libdata-section-perl
+Section: perl
+Priority: optional
+Build-Depends: debhelper (>= 8)
+Build-Depends-Indep: perl,
+ libmro-compat-perl,
+ libsub-exporter-perl
+Maintainer: Debian Perl Group <pkg-perl-maintainers@lists.alioth.debian.org>
+Uploaders: Peter Pentchev <roam@ringlet.net>, Jonathan Yu <jawnsy@cpan.org>,
+ Nathan Handler <nhandler@ubuntu.com>, gregor herrmann <gregoa@debian.org>,
+ Jotam Jr. Trejo <jotamjr@debian.org.sv>
+Standards-Version: 3.9.2
+Homepage: http://search.cpan.org/dist/Data-Section/
+Vcs-Svn: svn://svn.debian.org/pkg-perl/trunk/libdata-section-perl/
+Vcs-Browser: http://svn.debian.org/viewsvn/pkg-perl/trunk/libdata-section-perl/
+Upstream-Version: 0.101621-1
+
+Package: libdata-section-perl
+Architecture: all
+Depends: ${misc:Depends}, ${perl:Depends},
+ libmro-compat-perl,
+ libsub-exporter-perl
+Description: module to read chunks of data from a module's DATA section
+ Data::Section is a Perl module that provides an easy way to access multiple
+ named chunks of line-oriented data in your module's DATA section. It was
+ written to allow modules to store their own templates, but is probably useful
+ for other purposes as well.
