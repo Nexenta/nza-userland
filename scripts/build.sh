@@ -18,6 +18,7 @@ LOCAL_TARBALL=''
 FORCE='no'
 INSTALL='no'
 INSTALL_BUILD_DEPS='yes'
+DEB_BUILD_OPTIONS=''
 DPKG_BP_OPTIONS='-sa'
 UPLOAD_CMD=''
 
@@ -37,6 +38,7 @@ Options:
     -o <orig-tarball>     Do not download tarball, but get this one
     -f                    Overwrite files if they exist
     -d                    Do not install build dependancies
+    -t                    Do not perform tests
     -B "dpkg-buildpackage options" ($DPKG_BP_OPTIONS)
 
     -U <target>           Ship built packages with \`dupload --to <target>'
@@ -53,7 +55,7 @@ USAGE
 }
 
 
-while getopts IU:P:LB:dfo:h? opt; do
+while getopts IU:P:LB:tdfo:h? opt; do
     case $opt in
         o)
             if [ ! -f "$OPTARG" ]; then
@@ -67,6 +69,7 @@ while getopts IU:P:LB:dfo:h? opt; do
             fi
             ;;
 
+        t) DEB_BUILD_OPTIONS="nocheck" ;;
         B) DPKG_BP_OPTIONS="$OPTARG" ;;
         d) INSTALL_BUILD_DEPS='no' ;;
         U) UPLOAD_CMD="dupload --to $OPTARG" ;;
@@ -136,6 +139,9 @@ else
     echo "Section is \`$SECTION'"
 fi
 
+# Debian use the more traditional pool layout
+DEBDIR=`echo $PKGNAME | grep -o '^\(lib\)\?[a-z]'`
+
 UPSTREAM_VERSION=`grep '^Upstream-Version:' "$CONTROL" | grep -wo '\S*$' || true`
 if [ -z "$UPSTREAM_VERSION" ]; then
     echo "Field \`Upstream-Version' is not set. Please update the package to the new version scheme (40-0-0)."
@@ -170,10 +176,10 @@ if [ -z "$LOCAL_TARBALL" ]; then
             for c in gz bz2 xz lzma; do
                 SOURCE_TARBALL="${TARBALL_TMPL}.$c"
                 case "$base_url" in
-                    *.debian.org/*)      # work for ksh and bash:
-                        urls="$base_url/${PKGNAME:0:1}/$PKGNAME/$SOURCE_TARBALL"
+                    *.debian.org/*)
+                        urls="$base_url/$DEBDIR/$PKGNAME/$SOURCE_TARBALL"
                         # maybe package is native for Debian?
-                        urls+=" $base_url/${PKGNAME:0:1}/$PKGNAME/${SOURCE_TARBALL/.orig/}"
+                        urls+=" $base_url/$DEBDIR/$PKGNAME/${SOURCE_TARBALL/.orig/}"
                         ;;
                     *)
                         urls="$base_url/$SECTION/$SOURCE_TARBALL"
@@ -250,7 +256,7 @@ fi
 
 echo "Building package"
 cd "$PKGNAME"
-dpkg-buildpackage $DPKG_BP_OPTIONS
+DEB_BUILD_OPTIONS="$DEB_BUILD_OPTIONS" dpkg-buildpackage $DPKG_BP_OPTIONS
 cd -
 
 if [ -n "$UPLOAD_CMD" ]; then
