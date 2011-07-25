@@ -6,7 +6,7 @@ Priority: optional
 Maintainer: Kurt Roeckx <kurt@roeckx.be>
 Standards-Version: 3.8.3
 Homepage: http://www.gnu.org/software/libtool/
-Upstream-Version: 2.2.6b-2
+Upstream-Version: 2.2.6b
 
 Package: libtool
 Architecture: any

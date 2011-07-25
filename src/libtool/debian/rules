@@ -39,17 +39,7 @@ endif
 #	make_check = no
 #endif
 
-patch: patch-stamp
-patch-stamp:
-	QUILT_PATCHES=debian/patches quilt push -a || test $$? = 2
-	touch patch-stamp
-
-unpatch:
-	QUILT_PATCHES=debian/patches quilt pop -a || test $$? = 2
-	rm -rf patch-stamp debian/patched
-
-clean: clean-patched unpatch
-clean-patched:
+clean:
 	dh_testdir
 	dh_testroot
 	rm -f build-stamp config-stamp
@@ -77,7 +67,7 @@ clean-patched:
 
 config: config-stamp
 Makefile: config-stamp
-config-stamp: patch-stamp
+config-stamp:
 	dh_testdir
 
 #	These go into the libtool-doc `examples' directory.
@@ -211,4 +201,4 @@ binary-arch: build install
 	dh_builddeb -a
 
 binary: binary-indep binary-arch
-.PHONY: build clean config patch unpatch binary-indep binary-arch binary install
+.PHONY: build clean config binary-indep binary-arch binary install
