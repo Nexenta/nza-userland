@@ -1,0 +1,6 @@
+version=3
+
+# opts="uversionmangle=s/pre/~pre/" \
+#   http://www.cs.unipr.it/ppl/Download/ftp/snapshots/ppl-(.*)\.tar\.gz
+http://www.cs.unipr.it/ppl/Download/ftp/releases/LATEST/ppl-(.*)\.tar\.gz
+

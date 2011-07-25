@@ -1,0 +1,39 @@
+From: Roberto Bagnara <bagnara@cs.unipr.it>
+Date: Wed, 17 Feb 2010 11:33:34 +0000 (+0100)
+Subject: Cater for systems where setitimer() is not provided (part 4).
+X-Git-Url: http://www.cs.unipr.it/git/gitweb.cgi?p=ppl%2Fppl.git;a=commitdiff_plain;h=777f298702f1005f6c4f026fb7a4663bb8dadd0e
+
+Cater for systems where setitimer() is not provided (part 4).
+---
+
+diff --git a/Watchdog/src/pwl_header.hh b/Watchdog/src/pwl_header.hh
+index 4ac7d7e..3a65df6 100644
+--- a/Watchdog/src/pwl_header.hh
++++ b/Watchdog/src/pwl_header.hh
+@@ -31,6 +31,9 @@ site: http://www.cs.unipr.it/ppl/ . */
+ #include "pwl-config.h"
+ #include "pwl_include_files.hh"
+ 
++//! Defined to 1 if PWL::Watchdog objects are supported, to 0 otherwise.
++#define PWL_WATCHDOG_OBJECTS_ARE_SUPPORTED PWL_HAVE_DECL_SETITIMER
++
+ #ifdef PWL_SAVE_NDEBUG
+ # ifndef NDEBUG
+ #  define NDEBUG 1
+diff --git a/Watchdog/tests/simple1.cc b/Watchdog/tests/simple1.cc
+index ea86ec0..6876c5f 100644
+--- a/Watchdog/tests/simple1.cc
++++ b/Watchdog/tests/simple1.cc
+@@ -56,6 +56,12 @@ test01() {
+     interrupt = false;
+     return ok;
+   }
++#if !PWL_WATCHDOG_OBJECTS_ARE_SUPPORTED
++  catch (std::runtime_error& e) {
++    nout << "runtime_error: " << e.what() << endl << endl;
++    return true;
++  }
++#endif // !PWL_WATCHDOG_OBJECTS_ARE_SUPPORTED
+   catch (...) {
+     return false;
+   }
