@@ -1,0 +1,87 @@
+libmodule-extract-use-perl (40-0-0) unstable; urgency=low
+
+  * Port for NCP4
+  * Used new version scheme
+
+ -- Peter Zaickin <peter.zaickin@nexenta.com>  Tue, 05 Jul 2011 15:37:50 +0300
+
+libmodule-extract-use-perl (1.01-1) unstable; urgency=low
+
+  [ Jotam Jr. Trejo ]
+  * New upstream release
+  * debian/control: Bump Standards Version to 3.9.2 (no changes)
+  * debian/compat: Bump to debhelper compat 8, the changelog of the
+    last version mention the upgrade but did not apply the compat level 
+    in the debian/compat file
+  * Add myself to Uploaders and Copyright
+
+  [ gregor herrmann ]
+  * debian/copyright: remove separate stanza for single file which is now
+    covered by the general copyright statement.
+
+ -- Jotam Jr. Trejo <jotamjr@debian.org.sv>  Tue, 19 Apr 2011 23:42:24 -0600
+
+libmodule-extract-use-perl (0.18-1) unstable; urgency=low
+
+  [ Jonathan Yu ]
+  * New upstream release
+  * Use new 3.0 (quilt) source format
+  * Bump to debhelper compat 8
+  * Standards-Version 3.9.1 (no changes)
+  * Drop unnecessary versioned dependencies
+
+  [ Ryan Niebur ]
+  * Email change: Jonathan Yu -> jawnsy@cpan.org
+  * Email change: Ryan Niebur -> ryan@debian.org
+
+  [ gregor herrmann ]
+  * debian/control: remove versions from (build) dependencies that are already
+    satisfied in oldstable.
+
+ -- Jonathan Yu <jawnsy@cpan.org>  Wed, 23 Mar 2011 20:58:25 -0400
+
+libmodule-extract-use-perl (0.17-1) unstable; urgency=low
+
+  [ Jonathan Yu ]
+  * New upstream release
+    -> Cosmetic changes to META.yml (via META_MERGE magic)
+  * Updated copyright years
+
+  [ Nathan Handler ]
+  * debian/watch: Update to ignore development releases.
+
+  [ Ryan Niebur ]
+  * New upstream release, fixes failing test (closes: #543104)
+  * Debian Policy 3.8.3
+
+  [ Salvatore Bonaccorso ]
+  * debian/control: Changed: Replace versioned (build-)dependency on
+    perl (>= 5.6.0-{12,16}) with an unversioned dependency on perl (as
+    permitted by Debian Policy 3.8.3).
+
+  [ gregor herrmann ]
+  * Add /me to Uploaders.
+
+ -- gregor herrmann <gregoa@debian.org>  Sat, 22 Aug 2009 21:02:30 +0200
+
+libmodule-extract-use-perl (0.15-1) unstable; urgency=low
+
+  [ Jonathan Yu ]
+  * New upstream release
+    -> Fix to detect 'use' AND compile-time 'require'
+  * Removed libtest-output-perl from Depends
+  * Added libtest-manifest-perl to B-D-I
+  * Removed quilt patch since Brian fixed this
+  * Added an example file
+
+  [ Ryan Niebur ]
+  * New upstream release
+  * Add myself to Uploaders
+
+ -- Ryan Niebur <ryanryan52@gmail.com>  Mon, 01 Jun 2009 08:18:28 -0700
+
+libmodule-extract-use-perl (0.13-1) unstable; urgency=low
+
+  * Initial Release. (Closes: #526196)
+
+ -- Jonathan Yu <frequency@cpan.org>  Wed, 29 Apr 2009 17:02:58 -0400
