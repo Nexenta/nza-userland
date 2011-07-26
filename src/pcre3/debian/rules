@@ -86,6 +86,8 @@ override_dh_clean:
 		config.h.in \
 		config.sub
 
+override_dh_strip:
+	dh_strip --dbg-package=libpcre3-dbg
 
 
 build build-indeb build-arch install clean binary:
