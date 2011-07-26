@@ -1,0 +1,47 @@
+dh-autoreconf (40-0-0) unstable; urgency=low
+
+  * New version scheme
+
+ -- Igor Pashev <igor.pashev@nexenta.com>  Tue, 26 Jul 2011 16:27:49 +0400
+
+dh-autoreconf (3-1) unstable; urgency=low
+
+  * Ported to NCP4
+
+ -- Igor Pashev <igor.pashev@nexenta.com>  Thu, 12 May 2011 18:54:31 +0400
+
+dh-autoreconf (3) unstable; urgency=low
+
+  [ Cyril Brulebois ]
+  * dh-autoreconf.pod: Update rules example for debhelper 8 (Closes: #611414)
+
+  [ Julian Andres Klode ]
+  * autoreconf.mk: Run dh_autoreconf only once (Closes: #618580)
+  * Make it possible to run on sub directories only (Closes: #582114)
+  * autoreconf.mk: Add to CDBS_BUILD_DEPENDS (Closes: #610163)
+  * autoreconf.mk: Run dh_autoreconf_clean before clean (Closes: #596099)
+  * debian/control: Set Standards-Version to 3.9.1
+  * dh_autoreconf: Ignore common VCS directories (Closes: #611864)
+  * dh_autoreconf_clean: Remove 'before' file even if autoreconf failed
+
+  [ Marcin Owsiany ]
+  * dh-autoreconf.pod: Document conflict with autotools-dev (Closes: #587102)
+
+ -- Julian Andres Klode <jak@debian.org>  Mon, 04 Apr 2011 16:06:13 +0200
+
+dh-autoreconf (2) unstable; urgency=low
+
+  [ Didier Roche ]
+  * Fix issue in find | xargs when files contain spaces (Closes:
+    #586755).
+
+  [ Julian Andres Klode ]
+  * Set Standards-Version to 3.9.0.
+
+ -- Julian Andres Klode <jak@debian.org>  Fri, 23 Jul 2010 13:24:44 +0200
+
+dh-autoreconf (1) unstable; urgency=low
+
+  * Initial release (Closes: #575938).
+
+ -- Julian Andres Klode <jak@debian.org>  Sat, 17 Apr 2010 15:18:49 +0200
