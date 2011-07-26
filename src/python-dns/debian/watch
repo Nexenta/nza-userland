@@ -1,0 +1,3 @@
+version=3
+http://sf.net/pydns/pydns-(.*).tar.gz debian uupdate
+

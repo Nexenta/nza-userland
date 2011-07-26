@@ -1,0 +1,12 @@
+#!/bin/sh -e
+
+PACKAGE=swi-prolog-odbc
+
+# Update library index if SWI prolog is still installed
+if [ -x /usr/bin/swipl ]
+then
+    rm -f /usr/lib/swi-prolog/library/INDEX.pl
+    echo "make_library_index('/usr/lib/swi-prolog/library/')." | swipl >/dev/null 2>&1
+fi
+
+#DEBHELPER#

@@ -1,0 +1,30 @@
+Source: turbojson
+Upstream-Version: 1.3.1
+Section: python
+Priority: optional
+Maintainer: Federico Ceratto <federico.ceratto@gmail.com>
+Build-Depends:
+ debhelper,
+ python-nose,
+ python-peak.rules,
+ python-pysqlite2,
+ python-setuptools,
+ python-sqlalchemy,
+ python-sqlobject,
+ python-support,
+Standards-Version: 3.9.1
+Homepage: http://www.turbogears.org/
+Vcs-Git: git://git.debian.org/git/collab-maint/turbojson.git
+Vcs-Browser: http://git.debian.org/?p=collab-maint/turbojson.git
+
+Package: python-turbojson
+Architecture: all
+Depends:
+ ${misc:Depends},
+ ${python:Depends},
+ python-peak.rules,
+ python-simplejson
+Description: plugin to use JSON templates in Python templating engines
+ TurboJson is a template engine plugin, allowing to easily use JSON
+ via the simplejson module with TurboGears, Bufffer, or other systems
+ that support Python's python.templating.engines.

@@ -1,0 +1,30 @@
+tgmochikit (40-0-0) unstable; urgency=low
+
+  * Ported to NCP4
+
+ -- Igor Pashev <igor.pashev@nexenta.com>  Mon, 18 Jul 2011 12:21:32 +0400
+
+tgmochikit (1.4.2-2) unstable; urgency=low
+
+  [ Jakub Wilk ]
+  * Add ‘Depends: ${python:Depends}’ (closes: #591999).
+  * Drop .Depends: ${shlibs:Depends}’, not needed.
+
+  [ Federico Ceratto ]
+  * Added Build-Depends: python-all, removed python-dev
+  * Priority set to optional
+
+ -- Federico Ceratto <federico.ceratto@gmail.com>  Mon, 06 Sep 2010 11:44:10 +0100
+
+tgmochikit (1.4.2-1) unstable; urgency=low
+
+  * New upstream release: LICENSE.txt file added
+  * debian/watch: updated to match non-beta versions
+
+ -- Federico Ceratto <federico.ceratto@gmail.com>  Sat, 17 Oct 2009 16:24:14 +0100
+
+tgmochikit (1.4.2~beta1-1) unstable; urgency=low
+
+  * Initial release (Closes: #550326) 
+
+ -- Federico Ceratto <federico.ceratto@gmail.com>  Fri, 09 Oct 2009 09:25:39 +0100

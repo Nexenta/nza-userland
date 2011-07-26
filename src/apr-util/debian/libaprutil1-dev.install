@@ -1,9 +1,11 @@
-debian/tmp/usr/include/apr-1.0
+debian/tmp/usr/include/
 debian/tmp/usr/lib/libapr*a
 debian/tmp/usr/lib/libaprutil-1.so
 debian/tmp/usr/lib/pkgconfig
 debian/tmp/usr/bin/apu-1-config
-build-tree/build32/docs/dox/html usr/share/doc/libaprutil1-dev
+
+build-tree/build32/docs/dox/html usr/share/doc/libaprutil1-dev/
+
 debian/tmp/usr/lib/amd64/libapr*a
 debian/tmp/usr/lib/amd64/libaprutil-1.so
 debian/tmp/usr/lib/amd64/pkgconfig

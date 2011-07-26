@@ -3,7 +3,7 @@ Section: libdevel
 Priority: important
 Maintainer: Enrico Zini <enrico@debian.org>
 Uploaders: Petr Rockai <mornfall@debian.org>
-Build-Depends: cdbs, debhelper (>> 5), dh-buildinfo, doxygen, libapt-pkg-dev (>= 0.6.46.1), libwibble-dev (>= 0.1.23), libwibble-dev (<< 0.2), libtagcoll2-dev (>= 2.0.6), pkg-config, libxapian-dev (>= 1.0.5), cmake (>= 2.6)
+Build-Depends: cdbs, debhelper (>> 5), dh-buildinfo, doxygen, libapt-pkg-dev (>= 0.6.46.1), libwibble-dev (>= 0.1.23), libtagcoll2-dev (>= 2.0.6), pkg-config, libxapian-dev (>= 1.0.5), cmake (>= 2.6)
 Standards-Version: 3.9.0.0
 Vcs-Git: git://git.debian.org/git/debtags/libept.git
 Vcs-Browser: http://git.debian.org/?p=debtags/libept.git
@@ -13,7 +13,7 @@ Package: libept-dev
 Section: libdevel
 Architecture: any
 Recommends: pkg-config
-Depends: libept1 (= ${binary:Version}), libwibble-dev (>= 0.1.21), libwibble-dev (<< 0.2), libtagcoll2-dev (>= 2.0.6), libapt-pkg-dev (>= 0.6.46.1), libxapian-dev (>= 1.0.5), ${misc:Depends}
+Depends: libept1 (= ${binary:Version}), libwibble-dev (>= 0.1.21), libtagcoll2-dev (>= 2.0.6), libapt-pkg-dev (>= 0.6.46.1), libxapian-dev (>= 1.0.5), ${misc:Depends}
 Conflicts: debtags (<< 0.7)
 Description: High-level library for managing Debian package information
  The library defines a very minimal framework in which many sources of data

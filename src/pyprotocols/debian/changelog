@@ -1,0 +1,134 @@
+pyprotocols (40-0-0) unstable; urgency=low
+
+  * Ported to NCP4
+
+ -- Igor Pashev <igor.pashev@nexenta.com>  Mon, 18 Jul 2011 16:26:10 +0400
+
+pyprotocols (1.0a.svn20070625-5) unstable; urgency=low
+
+  * Remove (unused) doctest embedded code copy. (Closes: #555433)
+  * New maintainer email address.
+  * Use minimal dh7 style.
+  * Add description to 00_remove_ezsetup_usage.diff.
+  * debian/control:
+    - Add ${misc:Depends} to debhelper-based binary package.
+    - Bump Standards-Version to 3.8.3.
+
+ -- Chris Lamb <lamby@debian.org>  Tue, 01 Dec 2009 00:36:17 +0000
+
+pyprotocols (1.0a.svn20070625-4) unstable; urgency=low
+
+  * New maintainer (Closes: #493804)
+  * Move from CDBS to Debhelper 7 and Quilt.
+  * Move to machine-parsable debian/copyright.
+  * Remove versioned dependencies where the version is available in Etch.
+  * Add ${shlibs:Depends} to avoid missing dependency on libc.
+  * Bump Standards-Version to 3.8.0.
+
+ -- Chris Lamb <chris@chris-lamb.co.uk>  Tue, 02 Sep 2008 00:24:14 +0100
+
+pyprotocols (1.0a.svn20070625-3) unstable; urgency=low
+
+  [ Piotr Ożarowski ]
+  * Vcs-Browser and Homepage fields added
+  * XS-Vcs-Svn field renamed to Vcs-Svn
+
+  [ Sandro Tosi ]
+  * debian/control
+    - uniforming Vcs-Browser field
+
+  [ Jan Dittberner ]
+  * add debian/watch
+
+  [ Gustavo Noronha Silva ]
+  * Orphaning.
+
+ -- Gustavo Noronha Silva <kov@debian.org>  Mon, 04 Aug 2008 20:01:08 -0300
+
+pyprotocols (1.0a.svn20070625-2) unstable; urgency=low
+
+  * Releasing to unstable.
+
+ -- Gustavo Noronha Silva <kov@debian.org>  Tue, 11 Sep 2007 11:28:49 -0300
+
+pyprotocols (1.0a.svn20070625-1) experimental; urgency=low
+
+  * Upstream snapshot; since upstream does not release versions
+    I decided to follow SVN to some extent
+  * debian/copyright:
+  - updated to reflect the real source of the code: the svn repository
+  * debian/patches/00_remove_ezsetup_usage.diff:
+  - added; setup.py now uses ez_setup, which is actually not needed
+    or sane to use in the debian package
+  * debian/control:
+  - add dependency on python-decoratortools >= 1.3
+
+ -- Gustavo Noronha Silva <kov@debian.org>  Mon, 25 Jun 2007 21:46:07 -0300
+
+pyprotocols (1.0a0dev-6) unstable; urgency=low
+
+  * debian/control:
+  - updated build-deps of python-support and python-all-dev according to policy
+    python-support requirement also involves the egg-info fix bellow
+  * debian/rules:
+  - remove hack to move the egg-info directory from the rules file; this is
+    now handled by python-support, since 0.6.4 (Closes: #424440)
+  * debian/pycompat:
+  - removed; no longer needed
+
+ -- Gustavo Noronha Silva <kov@debian.org>  Sat, 19 May 2007 16:33:22 -0300
+
+pyprotocols (1.0a0dev-5) unstable; urgency=low
+
+  * Piotr Ozarowski <ozarow@gmail.com>:
+  - Added XS-Vcs-Svn field
+
+  * Gustavo Noronha:
+  - debian/rules:
+    + fix code to handle the case in which the egg-info directory
+      is in /usr/share/python-support already (Closes: #401166)
+  - debian/control:
+    + add build-depends on python-support >= 0.3.4
+
+ -- Gustavo Noronha Silva <kov@debian.org>  Mon,  4 Dec 2006 22:39:08 -0200
+
+pyprotocols (1.0a0dev-4) unstable; urgency=low
+
+  * debian/control:
+  - added XS-Python-Version again, since vorlon convinced me it
+    can be useful
+  - make debhelper dependency more strict, to avoid problems with
+    generated dependencies being too strict (Closes: #383302)
+
+ -- Gustavo Noronha Silva <kov@debian.org>  Mon, 21 Aug 2006 23:41:20 -0300
+
+pyprotocols (1.0a0dev-3) unstable; urgency=low
+
+  * debian/control:
+  - remoed XS-Python-Version, deprecated by debian/pyversions
+  - increase required cdbs version
+  * debian/rules:
+  - make the egg-info directory renaming more robust, so it won't fail
+    when the default python version changes (Closes: #375527)
+
+ -- Gustavo Noronha Silva <kov@debian.org>  Sat, 24 Jun 2006 17:07:08 -0300
+
+pyprotocols (1.0a0dev-2) unstable; urgency=low
+
+  * New Python Policy
+  * debian/control:
+  - fixed small typo (Closes: #374123)
+  - package is now Arch: any, because it includes the speedup extension
+  * debian/rules, debian/python-support.version:
+  - no longer need to take care of that manually; dh_support
+    will help here
+  * debian/rules:
+  - rename egg-info directory to remove specific python version
+
+ -- Gustavo Noronha Silva <kov@debian.org>  Sat, 24 Jun 2006 17:01:08 -0300
+
+pyprotocols (1.0a0dev-1) unstable; urgency=low
+
+  * Initial release (Closes: #338692)
+
+ -- Gustavo Noronha Silva <kov@debian.org>  Wed, 10 May 2006 08:00:40 -0300

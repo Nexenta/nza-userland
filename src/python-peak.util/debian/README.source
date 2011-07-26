@@ -1,0 +1,49 @@
+
+Upgrade to a new upstream
+=========================
+
+This package is a multi-upstream source package, i.e., its
+.orig.tar.gz is composed by several upstream tarballs, possibly
+released by independent authors.
+
+To obtain a new orig tarball you can invoke the get-orig-source target
+of debian/rules as follows:
+
+   $ debian/rules get-orig-source
+
+If all goes well, that should leave aroung a tarball called
+
+   PACKAGE-YYYYMMDD.orig.tar.gz
+
+where PACKAGE is the source package name and YYYYMMDD is today's date
+in year/month/day format.
+
+Note that the target does not check whether creating a new upstream
+version is needed: invoke it only if you know that some of the
+upstream parts of this package need updates. Otherwise, use "apt-get
+source PACKAGE" to work on the latest uploaded upstream release.
+
+
+Adding a new utility
+====================
+
+As this is a utility collection package, it is natural to expect that
+in the future new utilities will be added. To add one to the package
+follow a few simple rules:
+
+1) add the module name (usually the egg name) to the $(UPSTREAMS)
+   Makefile variable in debian/rules
+
+2) add the per-utility watch file as debian/NAME.watch, where NAME is
+   the module name
+
+3) add license and copyright information about the new module to
+   debian/copyright
+
+4) run "debian/rules get-orig-source" to recreate the new tarball
+
+5) if the new module has docs, have a look at debian/*.{install,dirs}
+   to ship it where appropriate
+
+ -- Stefano Zacchiroli <zack@debian.org>, Wed, 10 Jun 2009 16:45:07 +0200
+

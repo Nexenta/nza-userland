@@ -162,7 +162,7 @@ $(MPM32) $(MPM64):
 ######## INSTALL STUFF #########
 override_dh_auto_install:
 	# debian/tmp has files for `threaded-dev' (worker) (headers differ)
-	# install main MPM, icons, docs, mans, modules for i386
+	# install main MPM, icons, docs, mans, modules, headers for i386
 	$(MAKE) -C $(BUILD)/mpm32-worker -j1 install DESTDIR=$(CURDIR)/debian/tmp
 
 	# installing `prefork' stuff (headers and build files, which differ from `threaded')
@@ -170,14 +170,19 @@ override_dh_auto_install:
 		install-build \
 		install-include \
 		DESTDIR=$(CURDIR)/debian/tmp/prefork
+	$(MAKE) -C $(BUILD)/mpm64-prefork -j1 \
+		install-build \
+		install-include \
+		DESTDIR=$(CURDIR)/debian/tmp/prefork
 
-	# install modules and utilities for amd64
+	# install modules, utilities, headers for amd64
+	$(MAKE) -C $(BUILD)/mpm64-worker -j1 install-build install-include DESTDIR=$(CURDIR)/debian/tmp
 	$(MAKE) -C $(BUILD)/mpm64-worker/modules -j1 install DESTDIR=$(CURDIR)/debian/tmp
 	$(MAKE) -C $(BUILD)/mpm64-worker/support -j1 install DESTDIR=$(CURDIR)/debian/tmp
 	$(MAKE) -C $(BUILD)/mpm64-worker  -j1 install-suexec DESTDIR=$(CURDIR)/debian/tmp
 
 	rm -r debian/tmp/etc/apache2/original
-	rm  debian/tmp/usr/share/man/man8/httpd.8 # We install our own
+	rm    debian/tmp/usr/share/man/man8/httpd.8 # We install our own
 	mv debian/tmp/usr/share/man/man8/apxs.8 debian/tmp/usr/share/man/man8/apxs2.8
 	mv debian/tmp/usr/share/man/man8/apachectl.8 debian/tmp/usr/share/man/man8/apache2ctl.8
 
@@ -208,6 +213,9 @@ override_dh_fixperms:
 	chgrp $(APACHE_GROUP) \
 		debian/apache2-suexec/usr/lib/apache2/suexec \
 		debian/apache2-suexec/usr/lib/amd64/apache2/suexec
+
+override_dh_strip:
+	dh_strip --dbg-package=apache2-dbg
 
 override_dh_compress:
 	# don't compress manual (in apache2-doc)
@@ -242,8 +250,6 @@ override_dh_installdocs:
 
 override_dh_install: $(MPM_SCRIPTS)
 	dh_install
-	dh_bash-completion
-
 
 override_dh_auto_clean:
 	rm -rf $(BUILD)

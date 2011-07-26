@@ -1,0 +1,154 @@
+pastedeploy (40-0-0) unstable; urgency=low
+
+  * Ported to NCP4
+
+ -- Igor Pashev <igor.pashev@nexenta.com>  Tue, 19 Jul 2011 12:42:10 +0400
+
+pastedeploy (1.5.0-1) unstable; urgency=low
+
+  * New upstream release
+  * Convert to dh_python2
+    - recommend python-pastescript >= 1.7.3-6~
+  * Source format changed to 3.0 (quilt)
+  * Standards-Version bumped to 3.9.2 (no changes needed)
+
+ -- Piotr Ożarowski <piotr@debian.org>  Sat, 28 May 2011 17:31:01 +0200
+
+pastedeploy (1.3.3-3) unstable; urgency=low
+
+  * Make sure all Python versions use site-packages as temporary
+    installation directory for modules (closes: #547833)
+  * Standards-Version bumped to 3.8.3 (no changes needed)
+
+ -- Piotr Ożarowski <piotr@debian.org>  Fri, 25 Sep 2009 22:39:45 +0200
+
+pastedeploy (1.3.3-2) unstable; urgency=low
+
+  * Upload to unstable
+
+ -- Piotr Ożarowski <piotr@debian.org>  Sun, 15 Feb 2009 20:38:48 +0100
+
+pastedeploy (1.3.3-1) unstable; urgency=low
+
+  [ Sandro Tosi ]
+  * debian/control
+    - switch Vcs-Browser field to viewsvn
+
+  [ Piotr Ożarowski ]
+  * New upstream release
+  * Change Debian packaging license to match upstream
+
+ -- Piotr Ożarowski <piotr@debian.org>  Thu, 12 Feb 2009 20:27:12 +0100
+
+pastedeploy (1.3.2-1) unstable; urgency=low
+
+  * New upstream release
+  * Don't feed rst2html with new subdirectories of docs directory
+  * Standards-Version bumped to 3.8.0:
+    + debian/README.source file added
+
+ -- Piotr Ożarowski <piotr@debian.org>  Sat, 14 Jun 2008 11:46:40 +0200
+
+pastedeploy (1.3.1-3) unstable; urgency=low
+
+  * Replace python-setuptools with python-pkg-resources in Depends
+    (closes: #468715)
+  * Remove paste-common dependency, python-support will provide all needed
+    namespace
+  * Move paster_templates to /usr/share/
+    + 01_change_templates_path patch added, dpatch added to build depends
+    + recommend python-pastescript (>= 1.6.2-3)
+  * Add "~" to python-setuptools minimum required build dependency to ease
+    backporting
+
+ -- Piotr Ożarowski <piotr@debian.org>  Sat, 24 May 2008 18:56:13 +0200
+
+pastedeploy (1.3.1-2) unstable; urgency=low
+
+  * Switch to python-support. All paste packages will now depend on
+    paste-common (>= 1.6-1) to make sure all use pysupport
+  * Compress binary package with bzip2
+  * Homepage field added
+  * Rename XS-Vcs-* fields to Vcs-* (dpkg supports them now)
+  * Bump Standards-Version to 3.7.3 (no changes needed)
+
+ -- Piotr Ożarowski <piotr@debian.org>  Sat,  6 Oct 2007 23:46:42 +0200
+
+pastedeploy (1.3.1-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Piotr Ożarowski <piotr@debian.org>  Tue, 26 Jun 2007 20:56:38 +0200
+
+pastedeploy (1.3-1) unstable; urgency=low
+
+  * New upstream release
+  * Cleaned debian/rules file a little bit
+
+ -- Piotr Ożarowski <piotr@debian.org>  Wed, 11 Apr 2007 18:18:57 +0200
+
+pastedeploy (1.1-2) unstable; urgency=low
+
+  * Upload to unstable
+  * Changed my address to piotr@debian.org
+
+ -- Piotr Ożarowski <piotr@debian.org>  Sun, 08 Apr 2007 16:56:39 +0200
+
+pastedeploy (1.1-1) experimental; urgency=low
+
+  * New upstream release (upload to experimental due to Etch freeze)
+  * Added XS-Vcs-Svn and XS-Vcs-Browser fields to debian/control
+
+ -- Piotr Ozarowski <ozarow@gmail.com>  Mon, 18 Dec 2006 14:25:23 +0100
+
+pastedeploy (1.0-1) unstable; urgency=low
+
+  * New upstream release
+  * debian/rules cleaned:
+    + dh_python removed, dh_pycentral will generate all data now
+    + unneeded dh_installexamples, dh_strip and dh_shlibdeps calls removed
+  * debian/control:
+    + bumped debhelper and python-central required versions due to dh_python
+      call removal
+    + Homepage updated
+  * Test files are no longer installed as examples
+  * Added debian/pycompat file
+
+ -- Piotr Ozarowski <ozarow@gmail.com>  Mon, 23 Oct 2006 16:43:41 +0200
+
+pastedeploy (0.9.6-1) unstable; urgency=low
+
+  * New upstream release
+  * Documentation changes:
+    - Files are now generated from sources
+    - Add link in python-paste's docs
+    - Add python-docutils in build dependencies
+    - doc/news.txt file is installed as changelog
+
+ -- Piotr Ozarowski <ozarow@gmail.com>  Fri, 28 Jul 2006 01:00:54 +0200
+
+pastedeploy (0.5-4) unstable; urgency=low
+
+  * Update for the new python policy (closes: #373473)
+  * Convert to python-central
+
+ -- Piotr Ozarowski <ozarow@gmail.com>  Fri, 16 Jun 2006 00:19:46 +0200
+
+pastedeploy (0.5-3) unstable; urgency=low
+
+  * Common paste* modules file moved to paste-common package
+
+ -- Piotr Ozarowski <ozarow@gmail.com>  Sun, 14 May 2006 03:27:56 +0200
+
+pastedeploy (0.5-2) unstable; urgency=low
+
+  * Egg directory name fixed
+
+ -- Piotr Ozarowski <ozarow@gmail.com>  Wed, 10 May 2006 18:10:18 +0200
+
+pastedeploy (0.5-1) unstable; urgency=low
+
+  * Initial release (closes: #366041)
+
+ -- Piotr Ozarowski <ozarow@gmail.com>  Thu,  4 May 2006 18:26:28 +0200
+

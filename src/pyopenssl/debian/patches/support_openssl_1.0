@@ -1,0 +1,264 @@
+Index: pyopenssl-0.12/OpenSSL/crypto/crypto.h
+===================================================================
+--- pyopenssl-0.12.orig/OpenSSL/crypto/crypto.h	2011-05-30 13:57:31.000000000 +0200
++++ pyopenssl-0.12/OpenSSL/crypto/crypto.h	2011-05-30 13:57:35.000000000 +0200
+@@ -14,6 +14,19 @@
+ #define PyOpenSSL_CRYPTO_H_
+ 
+ #include <Python.h>
++/* Work around a bug in OpenSSL 1.0.0 which is caused by winsock.h being
++   included (from dtls1.h) too late by the OpenSSL header files, overriding
++   the fixes (in ossl_typ.h) for symbol clashes caused by this OS header
++   file.
++   
++   In order to have those fixes still take effect, we include winsock.h
++   here, prior to including any OpenSSL header files.
++   
++ */
++#ifdef _WIN32
++# include "winsock.h"
++#endif
++
+ #include "x509.h"
+ #include "x509name.h"
+ #include "netscape_spki.h"
+Index: pyopenssl-0.12/OpenSSL/crypto/pkcs12.c
+===================================================================
+--- pyopenssl-0.12.orig/OpenSSL/crypto/pkcs12.c	2011-05-30 13:57:31.000000000 +0200
++++ pyopenssl-0.12/OpenSSL/crypto/pkcs12.c	2011-05-30 13:57:35.000000000 +0200
+@@ -337,15 +337,25 @@
+     }
+ 
+     /* parse the PKCS12 lump */
+-    if (p12 && !PKCS12_parse(p12, passphrase, &pkey, &cert, &cacerts)) {
+-        /*
+-         * If PKCS12_parse fails, and it allocated cacerts, it seems to free
+-         * cacerts, but not re-NULL the pointer.  Zounds!  Make sure it is
+-         * re-set to NULL here, else we'll have a double-free below.
+-         */
+-        cacerts = NULL;
+-        exception_from_error_queue(crypto_Error);
+-        goto error;
++    if (p12) {
++        if (!PKCS12_parse(p12, passphrase, &pkey, &cert, &cacerts)) {
++	    /*
++             * If PKCS12_parse fails, and it allocated cacerts, it seems to
++             * free cacerts, but not re-NULL the pointer.  Zounds!  Make sure
++             * it is re-set to NULL here, else we'll have a double-free below.
++             */
++            cacerts = NULL;
++            exception_from_error_queue(crypto_Error);
++            goto error;
++        } else {
++	  /*
++	   * OpenSSL 1.0.0 sometimes leaves an X509_check_private_key error in
++	   * the queue for no particular reason.  This error isn't interesting
++	   * to anyone outside this function.  It's not even interesting to
++	   * us.  Get rid of it.
++	   */
++	  flush_error_queue();
++	}
+     }
+ 
+     if (!(self = PyObject_GC_New(crypto_PKCS12Obj, &crypto_PKCS12_Type))) {
+Index: pyopenssl-0.12/OpenSSL/ssl/context.c
+===================================================================
+--- pyopenssl-0.12.orig/OpenSSL/ssl/context.c	2011-05-30 13:57:31.000000000 +0200
++++ pyopenssl-0.12/OpenSSL/ssl/context.c	2011-05-30 13:57:35.000000000 +0200
+@@ -237,6 +237,15 @@
+     return;
+ }
+ 
++/*
++ * More recent builds of OpenSSL may have SSLv2 completely disabled.
++ */
++#ifdef OPENSSL_NO_SSL2
++#define SSLv2_METHOD_TEXT ""
++#else
++#define SSLv2_METHOD_TEXT "SSLv2_METHOD, "
++#endif
++
+ 
+ static char ssl_Context_doc[] = "\n\
+ Context(method) -> Context instance\n\
+@@ -244,10 +253,12 @@
+ OpenSSL.SSL.Context instances define the parameters for setting up new SSL\n\
+ connections.\n\
+ \n\
+-@param method: One of SSLv2_METHOD, SSLv3_METHOD, SSLv23_METHOD, or\n\
++@param method: One of " SSLv2_METHOD_TEXT "SSLv3_METHOD, SSLv23_METHOD, or\n\
+                TLSv1_METHOD.\n\
+ ";
+ 
++#undef SSLv2_METHOD_TEXT
++
+ static char ssl_Context_load_verify_locations_doc[] = "\n\
+ Let SSL know where we can find trusted certificates for the certificate\n\
+ chain\n\
+@@ -1107,11 +1118,19 @@
+  */
+ static ssl_ContextObj*
+ ssl_Context_init(ssl_ContextObj *self, int i_method) {
++#if (OPENSSL_VERSION_NUMBER >> 28) == 0x01
++    const
++#endif
+     SSL_METHOD *method;
+ 
+     switch (i_method) {
+         case ssl_SSLv2_METHOD:
++#ifdef OPENSSL_NO_SSL2
++            PyErr_SetString(PyExc_ValueError, "SSLv2_METHOD not supported by this version of OpenSSL");
++            return NULL;
++#else      
+             method = SSLv2_method();
++#endif
+             break;
+         case ssl_SSLv23_METHOD:
+             method = SSLv23_method();
+Index: pyopenssl-0.12/OpenSSL/test/test_crypto.py
+===================================================================
+--- pyopenssl-0.12.orig/OpenSSL/test/test_crypto.py	2011-05-30 13:57:31.000000000 +0200
++++ pyopenssl-0.12/OpenSSL/test/test_crypto.py	2011-05-30 13:57:35.000000000 +0200
+@@ -26,6 +26,13 @@
+ from OpenSSL.crypto import sign, verify
+ from OpenSSL.test.util import TestCase, bytes, b
+ 
++def normalize_certificate_pem(pem):
++    return dump_certificate(FILETYPE_PEM, load_certificate(FILETYPE_PEM, pem))
++
++
++def normalize_privatekey_pem(pem):
++    return dump_privatekey(FILETYPE_PEM, load_privatekey(FILETYPE_PEM, pem))
++
+ 
+ root_cert_pem = b("""-----BEGIN CERTIFICATE-----
+ MIIC7TCCAlagAwIBAgIIPQzE4MbeufQwDQYJKoZIhvcNAQEFBQAwWDELMAkGA1UE
+@@ -80,7 +87,7 @@
+ -----END CERTIFICATE-----
+ """)
+ 
+-server_key_pem = b("""-----BEGIN RSA PRIVATE KEY-----
++server_key_pem = normalize_privatekey_pem(b("""-----BEGIN RSA PRIVATE KEY-----
+ MIICWwIBAAKBgQC+pvhuud1dLaQQvzipdtlcTotgr5SuE2LvSx0gz/bg1U3u1eQ+
+ U5eqsxaEUceaX5p5Kk+QflvW8qdjVNxQuYS5uc0gK2+OZnlIYxCf4n5GYGzVIx3Q
+ SBj/TAEFB2WuVinZBiCbxgL7PFM1Kpa+EwVkCAduPpSflJJPwkYGrK2MHQIDAQAB
+@@ -95,7 +102,7 @@
+ NaeNCFfH3aeTrX0LyQJAMBWjWmeKM2G2sCExheeQK0ROnaBC8itCECD4Jsve4nqf
+ r50+LF74iLXFwqysVCebPKMOpDWp/qQ1BbJQIPs7/A==
+ -----END RSA PRIVATE KEY-----
+-""")
++"""))
+ 
+ client_cert_pem = b("""-----BEGIN CERTIFICATE-----
+ MIICJjCCAY+gAwIBAgIJAKxpFI5lODkjMA0GCSqGSIb3DQEBBQUAMFgxCzAJBgNV
+@@ -113,7 +120,7 @@
+ -----END CERTIFICATE-----
+ """)
+ 
+-client_key_pem = b("""-----BEGIN RSA PRIVATE KEY-----
++client_key_pem = normalize_privatekey_pem(b("""-----BEGIN RSA PRIVATE KEY-----
+ MIICXgIBAAKBgQDAZh/SRtNm5ntMT4qb6YzEpTroMlq2rn+GrRHRiZ+xkCw/CGNh
+ btPir7/QxaUj26BSmQrHw1bGKEbPsWiW7bdXSespl+xKiku4G/KvnnmWdeJHqsiX
+ eUZtqurMELcPQAw9xPHEuhqqUJvvEoMTsnCEqGM+7DtboCRajYyHfluARQIDAQAB
+@@ -128,7 +135,7 @@
+ JJEQjOMCVsEJlRk54WWjAkEAzoZNH6UhDdBK5F38rVt/y4SEHgbSfJHIAmPS32Kq
+ f6GGcfNpip0Uk7q7udTKuX7Q/buZi/C4YW7u3VKAquv9NA==
+ -----END RSA PRIVATE KEY-----
+-""")
++"""))
+ 
+ cleartextCertificatePEM = b("""-----BEGIN CERTIFICATE-----
+ MIIC7TCCAlagAwIBAgIIPQzE4MbeufQwDQYJKoZIhvcNAQEFBQAwWDELMAkGA1UE
+@@ -150,7 +157,8 @@
+ -----END CERTIFICATE-----
+ """)
+ 
+-cleartextPrivateKeyPEM = b("""-----BEGIN RSA PRIVATE KEY-----
++cleartextPrivateKeyPEM = normalize_privatekey_pem(b("""\
++-----BEGIN RSA PRIVATE KEY-----
+ MIICXQIBAAKBgQD5mkLpi7q6ROdu7khB3S9aanA0Zls7vvfGOmB80/yeylhGpsjA
+ jWen0VtSQke/NlEPGtO38tsV7CsuFnSmschvAnGrcJl76b0UOOHUgDTIoRxC6QDU
+ 3claegwsrBA+sJEBbqx5RdXbIRGicPG/8qQ4Zm1SKOgotcbwiaor2yxZ2wIDAQAB
+@@ -165,7 +173,7 @@
+ 6AWSeGAdtRFHVzR7oHjVAkB4hutvxiOeiIVQNBhM6RSI9aBPMI21DoX2JRoxvNW2
+ cbvAhow217X9V0dVerEOKxnNYspXRrh36h7k4mQA+sDq
+ -----END RSA PRIVATE KEY-----
+-""")
++"""))
+ 
+ cleartextCertificateRequestPEM = b("""-----BEGIN CERTIFICATE REQUEST-----
+ MIIBnjCCAQcCAQAwXjELMAkGA1UEBhMCVVMxCzAJBgNVBAgTAklMMRAwDgYDVQQH
+@@ -1438,7 +1446,11 @@
+         name.
+         """
+         cert = load_certificate(FILETYPE_PEM, self.pemData)
+-        self.assertEquals(cert.subject_name_hash(), 3350047874)
++        self.assertIn(
++            cert.subject_name_hash(), 
++            [3350047874, # OpenSSL 0.9.8, MD5
++             3278919224, # OpenSSL 1.0.0, SHA1
++             ])
+ 
+ 
+ 
+@@ -1659,7 +1671,7 @@
+             dumped_p12 = p12.export(passphrase=passwd, iter=2, maciter=3)
+             reloaded_p12 = load_pkcs12(dumped_p12, passwd)
+             self.assertEqual(
+-                p12.get_friendlyname(),reloaded_p12.get_friendlyname())
++                p12.get_friendlyname(), reloaded_p12.get_friendlyname())
+             # We would use the openssl program to confirm the friendly
+             # name, but it is not possible.  The pkcs12 command
+             # does not store the friendly name in the cert's
+Index: pyopenssl-0.12/OpenSSL/test/test_ssl.py
+===================================================================
+--- pyopenssl-0.12.orig/OpenSSL/test/test_ssl.py	2011-05-30 13:57:31.000000000 +0200
++++ pyopenssl-0.12/OpenSSL/test/test_ssl.py	2011-05-30 13:57:35.000000000 +0200
+@@ -520,12 +520,14 @@
+         """
+         capath = self.mktemp()
+         makedirs(capath)
+-        # Hash value computed manually with c_rehash to avoid depending on
+-        # c_rehash in the test suite.
+-        cafile = join(capath, 'c7adac82.0')
+-        fObj = open(cafile, 'w')
+-        fObj.write(cleartextCertificatePEM.decode('ascii'))
+-        fObj.close()
++        # Hash values computed manually with c_rehash to avoid depending on
++        # c_rehash in the test suite.  One is from OpenSSL 0.9.8, the other
++        # from OpenSSL 1.0.0.
++        for name in ['c7adac82.0', 'c3705638.0']:
++            cafile = join(capath, name)
++            fObj = open(cafile, 'w')
++            fObj.write(cleartextCertificatePEM.decode('ascii'))
++            fObj.close()
+ 
+         self._load_verify_locations_test(None, capath)
+ 
+Index: pyopenssl-0.12/OpenSSL/test/util.py
+===================================================================
+--- pyopenssl-0.12.orig/OpenSSL/test/util.py	2011-05-30 13:57:31.000000000 +0200
++++ pyopenssl-0.12/OpenSSL/test/util.py	2011-05-30 13:57:35.000000000 +0200
+@@ -50,6 +50,22 @@
+                 self.fail("Left over errors in OpenSSL error queue: " + repr(e))
+ 
+ 
++    def failUnlessIn(self, containee, container, msg=None):
++        """
++        Fail the test if C{containee} is not found in C{container}.
++
++        @param containee: the value that should be in C{container}
++        @param container: a sequence type, or in the case of a mapping type,
++                          will follow semantics of 'if key in dict.keys()'
++        @param msg: if msg is None, then the failure message will be
++                    '%r not in %r' % (first, second)
++        """
++        if containee not in container:
++            raise self.failureException(msg or "%r not in %r"
++                                        % (containee, container))
++        return containee
++    assertIn = failUnlessIn
++
+     def failUnlessIdentical(self, first, second, msg=None):
+         """
+         Fail the test if C{first} is not C{second}.  This is an
