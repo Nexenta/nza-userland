@@ -2,7 +2,7 @@ Format-Specification: http://svn.debian.org/wsvn/dep/web/deps/dep5.mdwn?rev=135
 Name: XZ Utils
 Maintainer: Lasse Collin <lasse.collin@tukaani.org>
 Source: http://tukaani.org/xz
- git://ctrl.tukaani.org/xz.git
+ http://git.tukaani.org/xz.git
 X-Authors:
  XZ Utils is developed and maintained upstream by Lasse Collin.  Major
  portions are based on code by other authors; see AUTHORS for details.
@@ -250,8 +250,8 @@ X-Generated-With: src/liblzma/check/crc32_tablegen.c,
 License: none
  No copyright to license.
 
-Files: .gitignore, m4/.gitignore, po/.gitignore, po/POTFILES.in
-Copyright: none; these are just short lists of files
+Files: .gitignore, m4/.gitignore, po/.gitignore, po/LINGUAS, po/POTFILES.in
+Copyright: none; these are just short lists.
 License: none
  No copyright to license.
 
@@ -269,11 +269,18 @@ License: PD
  The new files are just compiled and assembled object files,
  and thus don't contain any copyrighted code.
 
-Files: po/cs.po
-Copyright: 2009, Marek Černocký
-License: missing
- No copyright notice.  Probably intended to be released into the
- public domain like most of XZ Utils, but the file does not say so.
+Files: po/cs.po, po/de.po
+Copyright: 2010, Marek Černocký
+           2010, Andre Noll
+License: PD
+ This file is put in the public domain.
+
+Files: po/it.po
+Copyright: 2009, 2010, Gruppo traduzione italiano di Ubuntu-it
+           2010, Lorenzo De Liso
+           2009, 2010, Milo Casagrande
+License: PD
+ This file is in the public domain
 
 Files: dos/config.h
 Copyright: © 1992, 1993, 1994, 1999, 2000, 2001, 2002, 2005
@@ -371,10 +378,12 @@ License: LGPL-2.1+
 
 Files: INSTALL.generic
 Copyright: © 1994, 1995, 1996, 1999, 2000, 2001, 2002, 2004, 2005,
-             2006, 2007, 2008, 2009 Free Software Foundation, Inc.
-License: very-permissive
- This file is free documentation; the Free Software Foundation gives
- unlimited permission to copy, distribute and modify it.
+             2006, 2007, 2008, 2009, 2010 Free Software Foundation, Inc.
+License: permissive-nowarranty
+ Copying and distribution of this file, with or without modification,
+ are permitted in any medium without royalty provided the copyright
+ notice and this notice are preserved.  This file is offered as-is,
+ without warranty of any kind.
 
 Files: COPYING.GPLv2, COPYING.GPLv3, COPYING.LGPLv2.1
 Copyright: © 1989, 1991, 1999, 2007 Free Software Foundation, Inc.

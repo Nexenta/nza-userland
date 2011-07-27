@@ -38,8 +38,9 @@ while (my $line = <>) {
 '
 
 dh_testdir
-rm -fr build-aux
+rm -f debug/translation.bash tests/test_block.c ChangeLog
 rm -f ABOUT-NLS aclocal.m4 config.h.in configure
 (cd po && perl -e "$remove_files") < debian/generated-po.list
 (cd m4 && perl -e "$remove_files") < debian/generated-m4.list
+(cd build-aux && perl -e "$remove_files") < debian/generated-build-aux.list
 find . -name Makefile.in -delete

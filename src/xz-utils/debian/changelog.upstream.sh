@@ -21,13 +21,13 @@ version_line() {
 	fi
 }
 
-# If argument matches /^\* New upstream snapshot.*commit /,
+# If argument matches /^\* New.*snapshot.*commit /,
 # output remaining text.
 # Result is true if and only if argument matches.
 commit_id_line() {
 	local line result
 	line=$1
-	result=${line#\* New upstream snapshot*commit }
+	result=${line#\* New*snapshot*commit }
 
 	if test "$result" = "$line"
 	then
@@ -39,7 +39,7 @@ commit_id_line() {
 }
 
 # Read standard input, scanning for a changelog entry of the
-# form “New upstream snapshot, taken from upstream commit <blah>.”
+# form “New snapshot, taken from upstream commit <blah>.”
 # Output is <blah>.
 # Fails and writes a message to standard error if no such entry is
 # found before the next Version: line with a different upstream
@@ -93,6 +93,9 @@ add_version() {
 		echo "Version $last:"
 		echo "Version $last:" | tr "[:print:]" -
 		limiter=
+	elif test "$new" = "$last"
+	then
+		return 0
 	else
 		echo "Version $last; changes since $new:"
 		echo "Version $last; changes since $new:" | tr "[:print:]" -

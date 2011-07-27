@@ -1,3 +1,3 @@
-debian-soname-bump
-update-translation
-debian-changes-4.999.9beta+20100713-1nexenta1
+abi-reserved-fields
+abi-chunk-size-func
+abi-debian-soname

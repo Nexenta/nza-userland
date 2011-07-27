@@ -1,20 +1,108 @@
-xz-utils (4.999.9beta+20100713-1nexenta2) unstable; urgency=low
+xz-utils (40-0-0) unstable; urgency=low
 
-  * Fixed Dependencies
+  * Package for NCP4.
 
- -- Kartik Mistry <kartik.mistry@nexenta.com>  Fri, 03 Dec 2010 14:15:54 +0530
+ -- Andrew Stormont (astormont) <andyjstormont@googlemail.com>  Mon, 25 Jul 2011 19:59:04 +0100
 
-xz-utils (4.999.9beta+20100713-1nexenta1) unstable; urgency=low
+xz-utils (5.0.0-2) unstable; urgency=low
 
-  * Rebuilt for NCP4
+  * Upload to unstable.
+  * liblzma2, liblzma-dev, xz-lzma: Install release notes.
+  * debian/symbols: Bump the minimal versions for lzma_index_encoder,
+    lzma_index_decoder to the version in which they gained LZMA_FINISH
+    support.
+  * xz-utils/README.Debian: Document differences from upstream ABI.
+  * debian/changelog.upstream.sh: Avoid empty changelog entries when
+    multiple Debian revisions match an upstream tag.
 
- -- Kartik Mistry <kartik.mistry@nexenta.com>  Wed, 10 Nov 2010 20:51:46 +0530
+ -- Jonathan Nieder <jrnieder@gmail.com>  Thu, 11 Nov 2010 13:45:20 -0600
 
-xz-utils (4.999.9beta+20100713-1stormos0) unstable; urgency=low
+xz-utils (5.0.0-1) experimental; urgency=low
 
-  * Package for StormOS.
+  * Upload to experimental.
+  * New stable upstream release.  Closes: #592298.
+    - xz avoids SA_RESTART.  This should not have a visible effect
+      because xz already blocked signals during operations that
+      would be difficult to resume after interruption.
+    - liblzma: The coders returned by lzma_index_encoder() and
+      lzma_index_decoder() support an LZMA_FINISH action, with
+      identical semantics to LZMA_RUN.
+    - The printable (PDF and PS) versions of the manual are easier
+      to read.
+    - Many documentation and build system cleanups.
+  * liblzma: Back out upstream ABI tweaks.
+  * liblzma/README.Debian: Document ABI differences from upstream.
+  * Copy sample code not included in the release tarball from
+    the development upstream repository to debian/examples.
+  * debian/rules clean: Remove some files not included in the
+    release tarball.
+  * copyright: List new INSTALL.generic license.
+  * debian/rules clean: Take new build-aux scripts into account.
+  * debian/rules:  Adapt for upstream build system changes.
+    Closes: #540443.
+  * xz-utils, xzdec: Install release notes.
 
- -- Andrew Stormont (astormont) <andyjstormont@googlemail.com>  Wed, 04 Aug 2010 05:37:18 +0200
+ -- Jonathan Nieder <jrnieder@gmail.com>  Mon, 25 Oct 2010 05:45:18 -0500
+
+xz-utils (4.999.9beta+20100927-1) experimental; urgency=low
+
+  * New snapshot, taken from upstream commit cec0ddc.
+    - liblzma: The meaning of --extreme has been tweaked to address
+      cases in which it made the compression ratio worse.  Some files
+      might benefit slightly less from --extreme.
+    - xz: Table columns are not misaligned any more in messages with
+      multi-byte characters (e.g., file sizes with LANG=fi_FI.UTF-8).
+    - xz: New German and Italian translations.
+    - Various documentation, message, and translation updates.
+  * Update copyright file.
+  * debian/rules get-orig-source: Update upstream Git URL.
+  * xz-utils/README.Debian: Advertise XZ_DEFAULTS.
+
+ -- Jonathan Nieder <jrnieder@gmail.com>  Mon, 27 Sep 2010 16:22:22 -0500
+
+xz-utils (4.999.9beta+20100903-1) experimental; urgency=low
+
+  * New snapshot, taken from upstream commit 373ee26.
+    - liblzma: The settings for compression levels 0 through 5
+      (used by xz -0/.../-5) have been tweaked.  This affects the
+      speed, compression ratio, and memory usage at compression and
+      decompression time.
+    - Does not search so hard for a match when a low "nice match
+      length" setting is specified without a depth.
+    - xz: The -1/.../-9 preset options override any previously
+      specified filters, rather than vice versa.  To mix presets
+      with filter options, use the --lzma2=preset=n option.
+    - xz: Warns about --memlimit-compress settings that result in
+      compression settings changing even if no explicit -1/.../-9,
+      --lzma1, or --lzma2 option was used.
+    - "xz -v -v --compress" now prints an estimate of the memory
+      required to decompress a file.
+  * debian/copyright: Update upstream Git URL.
+  * debian/changelog.upstream.sh: Permit terser changelog lines.
+  * Standards-Version: 3.9.1 (checked).
+
+ -- Jonathan Nieder <jrnieder@gmail.com>  Fri, 03 Sep 2010 17:05:20 -0500
+
+xz-utils (4.999.9beta+20100810-1) unstable; urgency=low
+
+  * New upstream snapshot, taken from upstream commit d5653ba8a.
+    - xz: The memory usage limiter is now disabled by default.
+    - xz: Support for an XZ_DEFAULTS environment variable was added.
+      It contains user-specific default settings, such as memory usage
+      limits, and can be overridden by the command line and XZ_OPT.
+    - xz: The new --memlimit-compress and --memlimit-decompress
+      options allow the memory usage limit to be set separately for
+      compression and decompression.  A new --memlimit alias has been
+      added for the existing --memory option.
+    - xz: The --info-memory option (with or without --robot) now prints
+      how much RAM is installed in addition to the compression and
+      decompression memory limits.
+  * liblzma-doc: Simplify package description.
+  * debian/control: Build-Depends: autopoint | gettext (<< 0.18-1),
+    autopoint | cvs instead of autopoint, to help with backporting.
+    Thanks to Thorsten Glaser for a report.
+
+ -- Jonathan Nieder <jrnieder@gmail.com>  Tue, 10 Aug 2010 20:27:14 -0500
 
 xz-utils (4.999.9beta+20100713-1) unstable; urgency=low
 
