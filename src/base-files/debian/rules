@@ -4,7 +4,7 @@ package = base-files
 docdir = debian/tmp/usr/share/doc/$(package)
 
 OSNAME=Nexenta Core Platform
-VERSION=4.0 (b2)
+VERSION=4.0
 
 build:
 #	cd debian && sed -e "s&#VERSION#&$(VERSION)&" preinst.in > preinst
@@ -16,8 +16,8 @@ clean:
 	rm -rf debian/tmp debian/lsb-release-udeb debian/files* core debian/substvars
 
 	# update md5sums list for profile
-	LIST="`md5sum share/profile | cut -f 1 -d\  | cat share/profile.md5sums - | sort -u`"; \
-	echo "$$LIST" > share/profile.md5sums
+	LIST="`md5sum debian/share/profile | cut -f 1 -d\  | cat debian/share/profile.md5sums - | sort -u`"; \
+	echo "$$LIST" > debian/share/profile.md5sums
 
 binary-arch: build
 	rm -rf debian/tmp
@@ -33,35 +33,34 @@ binary-arch: build
 	cd debian/tmp && install -d `cat ../directory-list`
 	#do not symlink to bin
 	#cd debian/tmp && ln -s usr/bin bin
-	install -p -m 644 share/* debian/tmp/usr/share/base-files
-	install -p -m 644 licenses/* debian/tmp/usr/share/common-licenses
+	install -p -m 644 debian/share/* debian/tmp/usr/share/base-files
+	install -p -m 644 debian/licenses/* debian/tmp/usr/share/common-licenses
 	ln -s GFDL-1.2 debian/tmp/usr/share/common-licenses/GFDL
 	ln -s LGPL-3 debian/tmp/usr/share/common-licenses/LGPL
 	ln -s GPL-3 debian/tmp/usr/share/common-licenses/GPL
 
-	install -p -m 644 etc/debian_version debian/tmp/etc/
-	install -p -m 644 etc/host.conf debian/tmp/etc/
-	install -p -m 644 etc/lsb-release debian/tmp/etc/
-	install -p -m 644 etc/motd debian/tmp/etc/
-#	rm -f debian/tmp/etc/motd
+	install -p -m 644 debian/etc/debian_version debian/tmp/etc/
+	install -p -m 644 debian/etc/host.conf debian/tmp/etc/
+	install -p -m 644 debian/etc/motd debian/tmp/etc/
+	install -p -m 644 debian/etc/issue debian/tmp/etc/
+	install -p -m 644 debian/etc/issue.net debian/tmp/etc/
 	install -d debian/tmp/etc/default
-	install -p -m 644 etc/default/be debian/tmp/etc/default/
+	install -p -m 644 debian/etc/default/be debian/tmp/etc/default/
 
 ifeq ($(DEB_HOST_GNU_SYSTEM),gnu)
 	rmdir debian/tmp/proc
 endif
-	sed -e "s&#OSNAME#&$(OSNAME)&g" etc/motd \
-		> debian/tmp/usr/share/base-files/motd
-	sed -e "s&#OSNAME#&$(OSNAME)&g" share/info.dir \
-		> debian/tmp/usr/share/base-files/info.dir
+#	sed -e "s&#OSNAME#&$(OSNAME)&g" etc/motd \
+#		> debian/tmp/usr/share/base-files/motd
+#	sed -e "s&#OSNAME#&$(OSNAME)&g" share/info.dir \
+#		> debian/tmp/usr/share/base-files/info.dir
 
-	sed -e "s&#OSNAME#&$(OSNAME)&g" debian/postinst.tmpl \
-		> debian/postinst.temp
-	sed -e "s&#VERSION#&$(VERSION)&g" debian/postinst.temp \
-		> debian/postinst
-	rm -f debian/postinst.temp
-
-	cd debian && install -m 755 postinst tmp/DEBIAN
+#	sed -e "s&#OSNAME#&$(OSNAME)&g" debian/postinst.tmpl \
+#		> debian/postinst.temp
+#	sed -e "s&#VERSION#&$(VERSION)&g" debian/postinst.temp \
+#		> debian/postinst
+#	rm -f debian/postinst.temp
+#	cd debian && install -m 755 postinst tmp/DEBIAN
 
 	gzip -9 $(docdir)/changelog
 	chown -R root:root debian/tmp

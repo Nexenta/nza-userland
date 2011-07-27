@@ -1,3 +1,10 @@
+base-files (40-0-0) unstable; urgency=low
+
+  * Updated to new version scheme
+  * fixed issue #5777 - provide etc/issue, etc/issue.net
+
+ -- Igor Kozhukhov <igor.kozhukhov@nexenta.com>  Wed, 27 Jul 2011 12:53:28 +0300
+
 base-files (4.0.1-1nexenta47) unstable; urgency=low
 
   * Updated to 4.0b2
