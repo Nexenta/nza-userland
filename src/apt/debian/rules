@@ -202,6 +202,7 @@ apt: build build-doc debian/shlibs.local
 # apt install
 #
 	install -o root -g bin -m 755 debian/apt-clone debian/$@/usr/bin/
+	install -o root -g bin -m 755 debian/apt-zone debian/$@/usr/bin/
 	install -o root -g bin -m 755 debian/apt-satisfydepends debian/$@/usr/bin/
 
 	cp $(BLD)/bin/apt-* debian/$@/usr/bin/
@@ -224,7 +225,6 @@ apt: build build-doc debian/shlibs.local
 	cp debian/apt.logrotate debian/$@/etc/logrotate.d/apt
 
 	cp debian/apt.conf.autoremove debian/$@/etc/apt/apt.conf.d/01autoremove
-	cp debian/apt.conf.nexenta debian/$@/etc/apt/apt.conf.d/01nexenta
 
 	# copy lintian override
 	cp share/lintian-overrides debian/$@/usr/share/lintian/overrides/apt
@@ -242,6 +242,8 @@ apt: build build-doc debian/shlibs.local
 	dh_installman -p$@ $(wildcard $(patsubst %,doc/%.[158],$(apt_MANPAGES)) $(patsubst %,doc/*/%.*.[158],$(apt_MANPAGES)))
 	dh_installcron -p$@
 	dh_installdocs -p$@
+	cp debian/apt.conf.nexenta debian/$@/usr/share/doc/apt/examples
+
 	dh_installchangelogs -p$@
 	dh_strip -p$@
 	dh_compress -p$@
@@ -267,7 +269,6 @@ libapt-pkg-dev: build debian/shlibs.local
 	cp $(BLD)/include/apt-pkg/*.h debian/libapt-pkg-dev/usr/include/apt-pkg/
 
 	dh_installdocs -p$@
-
 	dh_installchangelogs -p$@
 	dh_strip -p$@
 	dh_compress -p$@
