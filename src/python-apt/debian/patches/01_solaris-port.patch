@@ -1,0 +1,54 @@
+--- ./python/apt_pkgmodule.h.orig	2011-04-11 02:59:19.866879484 +0100
++++ ./python/apt_pkgmodule.h	2011-04-11 02:59:52.341942888 +0100
+@@ -44,7 +44,9 @@
+ extern PyTypeObject PyTagFile_Type;
+ extern char *doc_ParseSection;
+ extern char *doc_ParseTagFile;
++#ifndef __sun
+ extern char *doc_RewriteSection;
++#endif
+ PyObject *ParseSection(PyObject *self,PyObject *Args);
+ PyObject *ParseTagFile(PyObject *self,PyObject *Args);
+ PyObject *RewriteSection(PyObject *self,PyObject *Args);
+--- ./python/tag.cc.orig	2011-04-11 02:57:29.510344618 +0100
++++ ./python/tag.cc	2011-04-11 02:58:44.705799737 +0100
+@@ -426,6 +426,7 @@
+ }
+ #endif
+ 									/*}}}*/
++#ifndef __sun
+ // RewriteSection - Rewrite a section..					/*{{{*/
+ // ---------------------------------------------------------------------
+ /* An interesting future extension would be to add a user settable
+@@ -495,7 +496,7 @@
+    return HandleErrors(ResObj);
+ }
+ 									/*}}}*/
+-
++#endif
+ // Method table for the Tag Section object
+ static PyMethodDef TagSecMethods[] =
+ {
+--- ./python/apt_pkgmodule.cc.orig	2011-04-11 03:00:15.893888284 +0100
++++ ./python/apt_pkgmodule.cc	2011-04-11 03:01:28.146194719 +0100
+@@ -508,8 +508,10 @@
+     "Translate the given string. This is much faster than Python's version\n"
+     "and only does translations after setlocale() has been called."},
+ 
++#ifndef __sun
+    // Tag File
+    {"rewrite_section",RewriteSection,METH_VARARGS,doc_RewriteSection},
++#endif
+ 
+    // Locking
+    {"get_lock",GetLock,METH_VARARGS,doc_GetLock},
+@@ -591,7 +593,9 @@
+ 
+    {"ParseSection",ParseSection,METH_VARARGS,doc_ParseSection},
+    {"ParseTagFile",ParseTagFile,METH_VARARGS,doc_ParseTagFile},
++#ifndef __sun
+    {"RewriteSection",RewriteSection,METH_VARARGS,doc_RewriteSection},
++#endif
+ 
+    {"GetLock",GetLock,METH_VARARGS,doc_GetLock},
+    {"PkgSystemLock",PkgSystemLock,METH_VARARGS,doc_PkgSystemLock},
