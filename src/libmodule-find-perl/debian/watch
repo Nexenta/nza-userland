@@ -1,0 +1,2 @@
+version=3
+http://search.cpan.org/dist/Module-Find/ .*/Module-Find-v?(\d[\d.-]+)\.(?:tar(?:\.gz|\.bz2)?|tgz|zip)

@@ -1,0 +1,26 @@
+Source: libmodule-find-perl
+Section: perl
+Priority: optional
+Build-Depends: debhelper (>= 7)
+Build-Depends-Indep: perl, libtest-pod-perl, libtest-pod-coverage-perl
+Maintainer: Debian Perl Group <pkg-perl-maintainers@lists.alioth.debian.org>
+Uploaders: Krzysztof Krzyzaniak (eloy) <eloy@debian.org>, Gunnar Wolf <gwolf@debian.org>,
+ Jonathan Yu <jawnsy@cpan.org>
+Standards-Version: 3.8.4
+Homepage: http://search.cpan.org/dist/Module-List
+Vcs-Svn: svn://svn.debian.org/pkg-perl/trunk/libmodule-find-perl/
+Vcs-Browser: http://svn.debian.org/viewsvn/pkg-perl/trunk/libmodule-find-perl
+Upstream-Version: 0.10-1
+
+Package: libmodule-find-perl
+Architecture: all
+Depends: ${misc:Depends}, ${perl:Depends}
+Description: module to find and use installed Perl modules
+ Module::Find is a Perl module that allows developers to find and use modules
+ in categories. This is useful for auto-detecting driver or plugin modules.
+ You can differentiate between looking in the category itself or in all
+ subcategories.
+ .
+ If you want Module::Find to search in a certain directory (like the plugins
+ directory of your software installation), make sure you modify @INC before
+ you call the Module::Find functions.
