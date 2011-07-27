@@ -1,0 +1,24 @@
+Source: libtest-yaml-valid-perl
+Section: perl
+Priority: optional
+Build-Depends: debhelper (>= 7.2.13)
+Build-Depends-Indep: perl, libyaml-perl, libyaml-syck-perl, 
+ libtest-pod-perl, libtest-pod-coverage-perl
+Maintainer: Debian Perl Group <pkg-perl-maintainers@lists.alioth.debian.org>
+Uploaders: Gunnar Wolf <gwolf@debian.org>, Jonathan Yu <jawnsy@cpan.org>,
+ gregor herrmann <gregoa@debian.org>
+Standards-Version: 3.8.3
+Homepage: http://search.cpan.org/dist/Test-YAML-Valid/
+Vcs-Svn: svn://svn.debian.org/pkg-perl/trunk/libtest-yaml-valid-perl/
+Vcs-Browser: http://svn.debian.org/viewsvn/pkg-perl/trunk/libtest-yaml-valid-perl/
+Upstream-Version:0.04-1
+
+Package: libtest-yaml-valid-perl
+Architecture: all
+Depends: ${perl:Depends}, ${misc:Depends}, libyaml-perl
+Recommends: libyaml-syck-perl | libyaml-libyaml-perl | libyaml-tiny-perl
+Description: module to test for valid YAML
+ Test::YAML::Valid is a Perl module that allows developers to easily test the
+ validity of arbitrary data structures serialized using YAML (YAML Ain't a
+ Markup Language). It provides a simple interface compatible for use with most
+ Test::Builder-based tests.
