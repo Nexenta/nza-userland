@@ -1,3 +1,13 @@
+fakeroot (40-0-0) unstable; urgency=low
+
+  * Updated for new version scheme
+  * debian/patches:
+    + Separated patches into better manner
+  * debian/control:
+    + Use ${shlibs:Depends}
+
+ -- Kartik Mistry <kartik.mistry@nexenta.com>  Wed, 27 Jul 2011 18:31:38 +0530
+
 fakeroot (1.14.5-1nexenta2) unstable; urgency=low
 
   * Bug #4535: Rebuild on NCP4

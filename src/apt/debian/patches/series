@@ -1,1 +1,15 @@
-01-nexenta.diff
+01-strutl.diff
+02-cfmakeraw.diff
+03-dpkgpm.diff
+04-deb_memrchr.diff
+05-openpty.diff
+06-apt-pkg_makefile.diff
+07-buildlib_env.diff
+08-apt-get.diff
+09-apt-key.diff
+10-cmdline_makefile.diff
+11-apt-clone.diff
+12-apt-verbatim.diff
+13-po4conf.diff
+14-cachedb.diff
+15-ftparch_memrchr.diff

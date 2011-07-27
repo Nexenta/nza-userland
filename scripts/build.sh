@@ -23,6 +23,7 @@ DPKG_BP_OPTIONS='-sa'
 UPLOAD_CMD=''
 
 QUILT_PATCHES=${QUILT_PATCHES:-debian/patches}
+USE_QUILT='yes'
 CWD="$PWD"
 
 
@@ -108,8 +109,9 @@ if [ ! -f "$CONTROL" ]; then
 fi
 
 if ! grep -q '3\.0  *(quilt)' "$PKGDIR/debian/source/format" ; then
-    echo "Source is not of \`3.0 (quilt)' format. Please update the package."
-    exit 1
+    echo "Warning: source is not of \`3.0 (quilt)' format."
+    USE_QUILT='no'
+    sleep 2
 fi
 
 PKGNAME=`basename "$PKGDIR"`
@@ -237,13 +239,16 @@ echo "Updating directory \`debian/'"
 [ -e "$PKGNAME/debian" ] && rm -rf "$PKGNAME/debian"
 cp -r "$PKGDIR/debian" "$PKGNAME/debian"
 
-cd "$PKGNAME"
-# Otherwise quilt will fail:
-if [ `quilt series | wc -l` != 0 ]; then
-    echo "Applying patches"
-    quilt push -a
+
+if [ "$USE_QUILT" = 'yes' ]; then
+    cd "$PKGNAME"
+    # Otherwise quilt will fail:
+    if [ `quilt series | wc -l` != 0 ]; then
+        echo "Applying patches"
+        quilt push -a
+    fi
+    cd -
 fi
-cd -
 
 #TODO: read dependancies from debian/control
 if [ "$INSTALL_BUILD_DEPS" = yes ]; then

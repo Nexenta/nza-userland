@@ -267,7 +267,8 @@ binary-arch: install
 #	dh_installdebconf -a
 #	dh_lintian -a
 
-#	dh_strip -plibldap-2.4-2 --dbg-package=libldap-2.4-2-dbg
+#	dh_strip -plibldap-2.4-2
+	dh_strip --dbg-package=libldap-2.4-2-dbg
 #	dh_strip -pslapd --dbg-package=slapd-dbg
 #	dh_strip -pldap-utils
 #	dh_strip -pslapd-smbk5pwd
@@ -297,8 +298,7 @@ binary-arch: install
 
 #	perl -w debian/dh_installscripts-common -p slapd
 
-#	dh_shlibdeps -a -L libldap-2.4-2 -l $(installdir)/usr/lib
-	dh_shlibdeps -a
+	dh_shlibdeps -a -L libldap-2.4-2 -l $(installdir)/usr/lib
 
 	# Strip duplicate dependency out of substvars.
 #	sed -i -e 's/ libldap-2.4-2,//' debian/*.substvars
