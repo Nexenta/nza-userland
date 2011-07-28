@@ -1,0 +1,25 @@
+Format-Specification: http://wiki.debian.org/Proposals/CopyrightFormat
+Upstream-Author: 
+Packaged-By: Florian Ragwitz <florian@mookooh.org>
+Packaged-Date: Tue, 12 Jul 2005 15:20:23 +0200.
+Original-Source-Location: http://search.cpan.org/dist/Test-NoWarnings/
+Original-Source-Command: uscan --force-download
+Original-Source-Depends: devscripts
+
+Files: *
+Copyright: © 2003 Fergal Daly <fergal@esatclear.ie>
+License: LGPL
+ This program is free software and comes with no warranty. It is distributed
+ under the LGPL license.
+
+Files: debian/*
+Copyright: © 2008 Debian Perl Group <debian-perl@lists.debian.org>
+           © 2008 Marc 'HE' Brockschmidt <he@debian.org>
+	   © 2005-2006 Florian Ragwitz <rafl@debian.org>
+License: other
+ It is being assumed that all previous maintainers did choose a license
+ compatible with the license used by upstream.
+
+On Debian GNU/Linux systems you can find the full text of the LGPL license in
+/usr/share/common-licenses/LGPL.
+
