@@ -120,6 +120,7 @@ endif
 
 hardening_patches =
 ifneq ($(distribution),Debian)
+ifneq ($(distribution),Nexenta)
   ifneq (,$(findstring gcc-4, $(PKGSOURCE)))
     hardening_patches += gcc-default-format-security \
 	gcc-default-fortify-source gcc-default-relro \
@@ -127,6 +128,7 @@ ifneq ($(distribution),Debian)
 	testsuite-hardening-fortify \
 	testsuite-hardening-printf-types
   endif
+endif
 endif
 ifeq ($(with_ssp)-$(with_ssp_default),yes-yes)
   hardening_patches += gcc-default-ssp

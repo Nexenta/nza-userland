@@ -1,0 +1,17 @@
+Document: gccint-4.4
+Title: Internals of the GNU C and C++ compiler
+Author: Various
+Abstract: This manual documents the internals of the GNU compilers,
+ including how to port them to new targets and some information about
+ how to write front ends for new languages.  It corresponds to GCC
+ version 4.4.x.  The use of the GNU compilers is documented in a
+ separate manual.
+Section: Programming
+
+Format: html
+Index: /usr/share/doc/gcc-4.4-base/gccint.html
+Files: /usr/share/doc/gcc-4.4-base/gccint.html
+
+Format: info
+Index: /usr/share/info/gccint-4.4.info.gz
+Files: /usr/share/info/gccint-4.4*

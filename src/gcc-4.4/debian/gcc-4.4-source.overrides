@@ -1,0 +1,5 @@
+gcc-4.4-source: changelog-file-not-compressed
+
+# these are patches taken over unmodified from 4.3
+gcc-4.4-source: script-not-executable
+gcc-4.4-source: shell-script-fails-syntax-check

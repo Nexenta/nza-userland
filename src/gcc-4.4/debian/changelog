@@ -1,3 +1,9 @@
+gcc-4.4 (4.4.5-12nexenta3) unstable; urgency=low
+
+  * Use sun linker by default.
+
+ -- Andrew Stormont (astormont) <andyjstormont@googlemail.com>  Mon, 25 Jul 2011 19:51:17 +0100
+
 gcc-4.4 (4.4.5-12nexenta2) unstable; urgency=medium
 
   * Added libssp

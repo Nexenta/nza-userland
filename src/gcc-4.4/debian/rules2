@@ -172,8 +172,8 @@ else
 	--with-system-zlib \
 	--with-gnu-as \
 	--with-as=/usr/gnu/bin/as \
-	--with-gnu-ld \
-	--with-ld=/usr/gnu/bin/ld \
+	--without-gnu-ld \
+	--with-ld=/usr/bin/ld \
 
 #	--with-gmp-include=/usr/include/gmp \
 #	--with-gmp-lib=/usr/lib \

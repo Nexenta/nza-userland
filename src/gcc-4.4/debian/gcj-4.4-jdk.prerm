@@ -1,0 +1,15 @@
+#! /bin/sh -e
+
+if [ "$1" = "remove" ] || [ "$1" = "deconfigure" ]; then
+    update-alternatives --quiet --remove javac /usr/bin/gcj-wrapper-4.4
+    update-alternatives --quiet --remove jar /usr/bin/gjar-4.4
+    update-alternatives --quiet --remove jarsigner /usr/bin/gjarsigner-4.4
+    update-alternatives --quiet --remove javah /usr/bin/gjavah-4.4
+    update-alternatives --quiet --remove javadoc /usr/bin/gjdoc-4.4
+    update-alternatives --quiet --remove native2ascii /usr/bin/gnative2ascii-4.4
+    update-alternatives --quiet --remove rmic /usr/bin/grmic-4.4
+    update-alternatives --quiet --remove serialver /usr/bin/gserialver-4.4
+    update-alternatives --quiet --remove tnameserv /usr/bin/gtnameserv-4.4
+fi
+
+#DEBHELPER#

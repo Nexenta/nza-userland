@@ -1,0 +1,2 @@
+g++-4.4-spu: non-standard-dir-in-usr usr/spu/
+g++-4.4-spu: file-in-unusual-dir

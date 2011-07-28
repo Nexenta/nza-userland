@@ -280,9 +280,10 @@ ifeq ($(with_check),yes)
 	  cp -p $(buildlibdir)/libstdc++-v3/testsuite/current_symbols.txt \
 	    $(d_dev)/$(docdir)/$(p_base)/C++/libstdc++_symbols.txt; \
 	fi
-endif
+
 	cp -p $(buildlibdir)/libstdc++-v3/src/libstdc++-symbols.ver \
 		$(d_pic)/$(gcc_lib_dir)/libstdc++_pic.map
+endif
 
 ifeq ($(with_libcxx),yes)
 	cp -a $(d)/$(usr_lib)/libstdc++.so.* \

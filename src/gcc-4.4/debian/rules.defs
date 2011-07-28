@@ -96,13 +96,13 @@ ifeq ($(DEB_TARGET_ARCH),)
   $(error Invalid architecure.)
 endif
 
-ifeq ($(distribution)-$(DEB_TARGET_ARCH),Ubuntu-i386)
+ifeq ($(distribution)-$(DEB_TARGET_ARCH_CPU),Ubuntu-i386)
   DEB_TARGET_GNU_CPU := i686
   DEB_TARGET_GNU_TYPE := i686-linux-gnu
 endif
-ifeq ($(distribution)-$(DEB_TARGET_ARCH),Debian-solaris-i386)
-  DEB_TARGET_GNU_CPU := i386
-  DEB_TARGET_GNU_TYPE := i386-pc-solaris2.11
+ifeq ($(distribution)-$(DEB_TARGET_ARCH_CPU),Nexenta-i386)
+  DEB_TARGET_GNU_CPU := i686
+  DEB_TARGET_GNU_TYPE := i686-pc-solaris2.11
 endif
 # including unversiond symlinks for binaries
 #with_unversioned = yes
@@ -172,7 +172,7 @@ else
   #  TARGET_ALIAS := i686-linux-gnu
   #endif
 
-#  TARGET_ALIAS := $(subst i386,i486,$(TARGET_ALIAS))
+  TARGET_ALIAS := $(subst i386,i486,$(TARGET_ALIAS))
 
   # configure as linux-gnu, not linux
   #ifeq ($(findstring linux,$(TARGET_ALIAS))/$(findstring linux-gnu,$(TARGET_ALIAS)),linux/)
@@ -342,17 +342,17 @@ else
   gcc_snapshot := yes
 endif
 
-#no_dummy_cpus := ia64 i386 hppa s390 sparc
-#ifneq (,$(filter $(DEB_TARGET_ARCH_CPU),$(no_dummy_cpus)))
-#  with_base_only	:= no
-#  with_common_libs	:= yes
-#  with_common_pkgs	:= yes
-#else
-#  with_base_only	:= yes
-#  with_common_libs	:= no
-#  with_common_pkgs	:= no
-#  with_dev		:= no
-#endif
+no_dummy_cpus := ia64 i386 hppa s390 sparc
+ifneq (,$(filter $(DEB_TARGET_ARCH_CPU),$(no_dummy_cpus)))
+  with_base_only	:= no
+  with_common_libs	:= yes
+  with_common_pkgs	:= yes
+else
+  with_base_only	:= yes
+  with_common_libs	:= no
+  with_common_pkgs	:= no
+  with_dev		:= no
+endif
 
 ifeq ($(versioned_packages),yes)
   pkg_ver := -$(BASE_VERSION)
@@ -787,17 +787,13 @@ ifeq ($(with_ssp),yes)
   endif
 endif
 
-with_mudflap := no
 # mudflap -------------------
-ifeq ($(DEB_HOST_ARCH_OS),solaris)
+ifeq ($(distribution),Nexenta)
   with_mudflap := no
-  with_libssp := yes
-  with_ssp := yes
-  with_ssp_default := yes
-#else
-#  with_mudflap := yes
-#  with_mudflap := $(call envfilt, mudflap, , , $(with_mudflap))
+else
+  with_mudflap := yes
 endif
+with_mudflap := $(call envfilt, mudflap, , , $(with_mudflap))
 
 # gomp --------------------
 with_gomp := yes
@@ -836,11 +832,10 @@ ifeq ($(extra_package),yes)
 else
   # libssp ------------------
   ifeq ($(with_ssp)-$(with_common_libs),yes-yes)
-    #ifneq ($(DEB_CROSS),yes)
-#      with_libssp := $(if $(wildcard $(builddir)/gcc/auto-host.h), \
-#                       $(shell if grep -qs '^\#define TARGET_LIBC_PROVIDES_SSP 1' $(builddir)/gcc/auto-host.h; then echo 'libc provides ssp'; else echo 'yes'; fi))
-       with_libssp := yes
-    #endif
+    ifneq ($(DEB_CROSS),yes)
+      with_libssp := $(if $(wildcard $(builddir)/gcc/auto-host.h), \
+                       $(shell if grep -qs '^\#define TARGET_LIBC_PROVIDES_SSP 1' $(builddir)/gcc/auto-host.h; then echo 'libc provides ssp'; else echo 'yes'; fi))
+    endif
   endif
 
   # libmudflap --------------
@@ -1038,10 +1033,8 @@ define gen_biarch
       with_lib$1gomp:= yes
     endif
 
-#    biarch_multidir_names = libiberty libgcc
-    biarch_multidir_names = libiberty libgcc libssp
+    biarch_multidir_names = libiberty libgcc
     ifneq (,$$(findstring gcc-, $$(PKGSOURCE)))
-#      biarch_multidir_names += libstdc++-v3 libobjc libgfortran libssp \
       biarch_multidir_names += libstdc++-v3 libobjc libgfortran \
 				libgomp libmudflap zlib
       ifeq ($$(with_objc_gc),yes)

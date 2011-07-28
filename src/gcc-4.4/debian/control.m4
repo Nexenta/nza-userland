@@ -45,6 +45,7 @@ Uploaders: Matthias Klose <doko@debian.org>
 Uploaders: Matthias Klose <doko@debian.org>, Arthur Loiret <aloiret@debian.org>
 ')dnl SRCNAME
 Standards-Version: 3.9.1
+Upstream-Version: 4.4.5
 ifdef(`TARGET',`dnl cross
 Build-Depends: dpkg-dev (>= 1.14.15), debhelper (>= 5.0.62), dpkg-cross (>= 1.25.99), LIBC_BUILD_DEP, LIBC_BIARCH_BUILD_DEP LIBUNWIND_BUILD_DEP LIBATOMIC_OPS_BUILD_DEP AUTOGEN_BUILD_DEP CLOOG_BUILD_DEP AUTO_BUILD_DEP SOURCE_BUILD_DEP CROSS_BUILD_DEP libmpfr-dev (>= 2.3.0), zlib1g-dev, gawk, lzma, xz-utils, patchutils, BINUTILS_BUILD_DEP, bison (>= 1:2.3), flex, realpath (>= 1.9.12), lsb-release, make (>= 3.81), quilt
 ',`dnl native
