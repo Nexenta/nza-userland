@@ -1,0 +1,22 @@
+From: Roberto Bagnara <bagnara@cs.unipr.it>
+Date: Sun, 21 Feb 2010 17:05:49 +0000 (+0100)
+Subject: Use the C++ compiler to perform the tests meant for C++.
+X-Git-Url: http://www.cs.unipr.it/git/gitweb.cgi?p=ppl%2Fppl.git;a=commitdiff_plain;h=3bbfa4bc9da9558d0b538c95c00607b2928bb9d1
+
+Use the C++ compiler to perform the tests meant for C++.
+---
+
+diff --git a/Watchdog/configure.ac b/Watchdog/configure.ac
+index d4e2b86..278a32d 100644
+--- a/Watchdog/configure.ac
++++ b/Watchdog/configure.ac
+@@ -306,6 +306,9 @@ AM_CONDITIONAL(HAVE_PERL, test x"$PERL" != xno)
+ AC_LANG(C)
+ AC_C_CONST
+ 
++# Use C++ for the remaining checks.
++AC_LANG(C++)
++
+ enableval=no
+ AC_MSG_CHECKING([whether tests should be run under Valgrind])
+ AC_ARG_ENABLE(valgrind-tests,

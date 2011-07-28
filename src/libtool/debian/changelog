@@ -1,3 +1,9 @@
+libtool (40-0-1) unstable; urgency=low
+
+  * Move to source format 3.0 (quilt)
+
+ -- Andrew Stormont (astormont) <andyjstormont@googlemail.com>  Mon, 25 Jul 2011 15:33:25 +0100
+
 libtool (40-0-0) unstable; urgency=low
 
   * Rebuilt from Squeeze source

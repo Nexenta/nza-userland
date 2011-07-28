@@ -1,0 +1,27 @@
+From: Roberto Bagnara <bagnara@cs.unipr.it>
+Date: Sat, 27 Feb 2010 06:33:22 +0000 (+0100)
+Subject: Exception handling fixed.
+X-Git-Url: http://www.cs.unipr.it/git/gitweb.cgi?p=ppl%2Fppl.git;a=commitdiff_plain;h=9a89bb0a926a098a6e06a18c36881786f45d678b
+
+Exception handling fixed.
+---
+
+diff --git a/tests/Polyhedron/watchdog1.cc b/tests/Polyhedron/watchdog1.cc
+index 5254d53..dd7271e 100644
+--- a/tests/Polyhedron/watchdog1.cc
++++ b/tests/Polyhedron/watchdog1.cc
+@@ -81,6 +81,14 @@ timed_compute_open_hypercube_generators(dimension_type dimension,
+     nout << " s" << endl;
+     return false;
+   }
++#if !PWL_WATCHDOG_OBJECTS_ARE_SUPPORTED
++  // If Watchdog objects are not supported, an std::logic_error exception
++  // will be thrown: this is normal.
++  catch (const std::runtime_error& e) {
++  nout << "std::runtime_error exception caught: \n" << e.what() << std::endl;
++  exit(0);
++}
++#endif // !PWL_WATCHDOG_OBJECTS_ARE_SUPPORTED
+   catch (...) {
+     exit(1);
+   }

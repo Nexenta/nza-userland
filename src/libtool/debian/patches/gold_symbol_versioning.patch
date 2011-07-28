@@ -11,16 +11,16 @@
  
 diff --git a/THANKS b/THANKS
 index 004dbd8..c8acd67 100644
---- a/THANKS
-+++ b/THANKS
-@@ -140,6 +140,7 @@
-   Paul Biggar			paul.biggar@gmail.com
+--- a/THANKS	2011-07-25 05:02:04.500147086 +0100
++++ b/THANKS	2011-07-25 05:02:17.276887065 +0100
+@@ -117,6 +117,7 @@
+   Patrick Welche		prlw1@newn.cam.ac.uk
    Paul Eggert			eggert@twinsun.com
    Peter Eisentraut		peter_e@gmx.net
 +  Peter Fritzsche		peter.fritzsche@gmx.de
    Peter Jeremy			peterjeremy@optushome.com.au
-   Peter Kjellerstedt		peter.kjellerstedt@axis.com
-   Rainer Emrich			r.emrich@de.tecosim.com
+   Rainer Orth			ro@TechFak.Uni-Bielefeld.DE
+   Rainer Tammer			tammer@tammer.net
 diff --git a/libltdl/m4/libtool.m4 b/libltdl/m4/libtool.m4
 index 65dd027..9abd147 100644
 --- a/libltdl/m4/libtool.m4

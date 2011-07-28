@@ -1,0 +1,180 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+# This file was originally written by Joey Hess and Craig Small.
+# As a special exception, when this file is copied by dh-make into a
+# dh-make output file, you may use that output file without restriction.
+# This special exception was added by Craig Small in version 0.37 of dh-make.
+#
+# Modified to make a template file for a multi-binary package with separated
+# build-arch and build-indep targets  by Bill Allombert 2001
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+# This has to be exported to make some magic below work.
+export DH_OPTIONS
+
+# These are used for cross-compiling and for saving the configure script
+# from having to guess our platform (since we know it already)
+DEB_HOST_GNU_TYPE   ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
+DEB_BUILD_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
+
+CFLAGS = -Wall -g
+
+ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
+	CFLAGS += -O0
+else
+	CFLAGS += -O2
+endif
+
+# FOR AUTOCONF 2.52 AND NEWER ONLY
+confflags += --build $(DEB_BUILD_GNU_TYPE) --host $(DEB_HOST_GNU_TYPE)
+# only build the C,C++,SWI-Prolog interfaces
+confflags += --enable-interfaces=c,cxx,swi_prolog --disable-ppl_lpsol --disable-ppl_lcdd
+
+# Prevent configure from failing on Nexenta
+ifeq ($(DEB_HOST_ARCH_OS),solaris)
+  confflags += CXXFLAGS=-D__GMP_BITS_PER_MP_LIMB=$(DEB_BUILD_ARCH_BITS)
+endif
+
+ifneq (,$(findstring nocheck,$(DEB_BUILD_OPTIONS)))
+  with_check := disabled by DEB_BUILD_OPTIONS.
+else
+  ifneq ($(DEB_HOST_GNU_TYPE),$(DEB_BUILD_GNU_TYPE))
+    with_check := disabled because cross-compiling.
+  else
+    with_check := yes
+  endif
+endif
+
+ifneq (,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
+  NJOBS := -j$(patsubst parallel=%,%,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
+endif
+
+# If the version string was set using automake then the build would
+# have to be configured before the dpkg-buildpackage command.
+PPL_VERSION = $(shell grep "^AC_INIT" $(CURDIR)/configure.ac | sed -e "s/^AC_INIT.\[[^]]*\],[ \t]*\[\([^]]*\)\],.*/\1/")
+
+
+configure: configure-stamp
+configure-stamp:
+	dh_testdir
+	cp -f /usr/share/misc/config.sub config.sub
+	cp -f /usr/share/misc/config.sub Watchdog/config.sub
+	cp -f /usr/share/misc/config.guess config.guess
+	cp -f /usr/share/misc/config.guess Watchdog/config.guess
+	./configure $(confflags) --prefix=/usr --mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info CFLAGS="$(CFLAGS)"
+	touch $@
+
+build: build-arch
+build-arch: build-arch-stamp
+build-arch-stamp: configure-stamp
+	$(MAKE) $(NJOBS)
+	touch $@
+
+check:
+	dh_testdir
+ifeq ($(with_check),yes)
+  ifeq (,$(filter-out alpha-linux-gnu arm-linux-gnueabi,$(DEB_HOST_GNU_TYPE)))
+	# There are some failures in the testsuite on alpha,
+	# maybe related to http://gcc.gnu.org/PR8966
+	# Testsuite is miscompiled on arm, see #593324
+	$(MAKE) $(NJOBS) -k check || true
+  else
+	$(MAKE) $(NJOBS) check
+  endif
+else
+	@echo "Testsuite not run: $(with_check)."
+endif
+
+build-indep: build-indep-stamp
+build-indep-stamp: configure-stamp
+	export save_size=10000 ; $(MAKE) -C doc user-configured
+	touch $@
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f configure-stamp build-stamp
+	rm -f build-arch-stamp build-indep-stamp
+	[ ! -e Makefile ] || $(MAKE) distclean
+	rm -f config.sub Watchdog/config.sub
+	rm -f config.guess Watchdog/config.guess
+	dh_clean
+
+install: install-indep install-arch
+
+# Destination directory for user manual.
+DOC_DIR=$(CURDIR)/debian/tmp/usr/share/doc/ppl
+install-indep: build-indep
+	dh_testdir
+	dh_testroot
+	dh_installdirs -i
+#	Build all the documentation, then move it into debian/tmp
+#	directories which have fixed names.
+	mkdir -p $(DOC_DIR)/html || exit 1
+	mv $(DOC_DIR)/ppl-user-$(PPL_VERSION)-html $(DOC_DIR)/html/user-manual
+	mv $(DOC_DIR)/ppl-user-$(PPL_VERSION).pdf $(DOC_DIR)/ppl-user-browse.pdf
+	mv $(DOC_DIR)/ppl-user-$(PPL_VERSION).ps.gz $(DOC_DIR)/ppl-user-print.ps.gz
+
+install-arch: build-arch check
+	dh_testdir
+	dh_testroot
+	dh_installdirs -s
+#	Add here commands to install the arch part of the package into
+# 	debian/tmp.
+	$(MAKE) install DESTDIR=$(CURDIR)/debian/tmp
+	$(MAKE) -C Watchdog install DESTDIR=$(CURDIR)/debian/tmp
+
+binary-arch: install-arch
+	dh_testdir
+	dh_testroot
+	dh_installchangelogs -s -Nlibpwl-dev -Nlibpwl4 ChangeLog
+	dh_installchangelogs -plibpwl-dev -plibpwl4 Watchdog/ChangeLog
+	dh_installdocs -s
+	dh_install -s --sourcedir=debian/tmp
+#	dh_installexamples -s
+#	dh_installinfo -s
+#	dh_installman -s
+#	These directories will be symlinks instead.
+	rm -rf debian/libppl-c2/usr/share/doc/libppl-c2
+	rm -rf debian/libppl-swi/usr/share/doc/libppl-swi
+	dh_link -s
+	dh_strip -s
+	dh_compress -s
+	dh_fixperms -s
+	dh_makeshlibs -s
+	dh_installdeb -s
+	dh_shlibdeps -s
+	dh_gencontrol -s
+	dh_md5sums -s
+	dh_builddeb -s
+
+binary-indep: install-indep
+	dh_testdir
+	dh_testroot
+	dh_install -i --sourcedir=debian/tmp
+	dh_installchangelogs -i ChangeLog
+	dh_installdocs -i
+	dh_link -i
+	dh_compress -i
+	dh_fixperms -i
+#	dh_lintian -i
+	dh_installdeb -i
+	dh_gencontrol -i
+	dh_md5sums -i
+	dh_builddeb -i
+
+binary: binary-arch binary-indep
+
+get-orig-source:
+	rm -f ppl_*.orig.tar.gz
+	wget ftp://ftp.cs.unipr.it/pub/ppl/snapshots/*.tar.gz
+	vers=`ls ppl-*.tar.gz | tail -1 | sed 's/^ppl-//' | sed 's/.tar.gz$$//'` ; \
+		debvers=`echo $$vers | sed 's/pre/~pre/'` ; \
+		tar xzf ppl-$$vers.tar.gz ; \
+		rm ppl-$$vers.tar.gz ; mv ppl-$$vers ppl-$$debvers ; \
+		tar czf ppl_$$debvers.orig.tar.gz ppl-$$debvers ; \
+		rm -r ppl-$$debvers
+
+.PHONY: configure build check clean binary-indep binary-arch binary install install-indep install-arch get-orig-source

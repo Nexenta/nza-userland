@@ -1,0 +1,355 @@
+From 325ba80abd8c06c5dd740d35064302bbe65e251b Mon Sep 17 00:00:00 2001
+From: Enea Zaffanella <zaffanella@cs.unipr.it>
+Date: Fri, 7 Aug 2009 10:39:38 +0200
+Subject: [PATCH] Corrected implementation of NNC_Polyhedron::upper_bound_assign_if_exact().
+ Added a few tests for regression checking.
+
+---
+ src/Polyhedron_nonpublic.cc          |  103 +++++++++++++++++------
+ tests/Polyhedron/polyhullifexact2.cc |  152 ++++++++++++++++++++++++++++++++++
+ 2 files changed, 227 insertions(+), 28 deletions(-)
+
+Edited by Michael Tautschnig <mt@debian.org>: Replaced PPL_ASSERT by assert as
+the former is not yet defined in this release
+
+diff --git a/src/Polyhedron_nonpublic.cc b/src/Polyhedron_nonpublic.cc
+index 26bfdf5..1a55c5f 100644
+--- a/src/Polyhedron_nonpublic.cc
++++ b/src/Polyhedron_nonpublic.cc
+@@ -1641,6 +1641,7 @@ PPL::Polyhedron::BHZ09_NNC_poly_hull_assign_if_exact(const Polyhedron& y) {
+     x.update_sat_g();
+   const Bit_Matrix& x_sat = x.sat_g;
+ 
++  Bit_Row x_cs_condition_3;
+   Bit_Row x_gs_condition_3;
+   Bit_Row all_ones;
+   all_ones.set_until(x_gs_num_rows);
+@@ -1658,6 +1659,7 @@ PPL::Polyhedron::BHZ09_NNC_poly_hull_assign_if_exact(const Polyhedron& y) {
+       return false;
+     if (x_c.is_strict_inequality()) {
+       // Postpone check for condition 3.
++      x_cs_condition_3.set(i);
+       set_intersection(x_closure_points, saturators, tmp_set);
+       set_union(x_gs_condition_3, tmp_set, x_gs_condition_3);
+     }
+@@ -1700,6 +1702,7 @@ PPL::Polyhedron::BHZ09_NNC_poly_hull_assign_if_exact(const Polyhedron& y) {
+     y.update_sat_g();
+   const Bit_Matrix& y_sat = y.sat_g;
+ 
++  Bit_Row y_cs_condition_3;
+   Bit_Row y_gs_condition_3;
+   all_ones.clear();
+   all_ones.set_until(y_gs_num_rows);
+@@ -1709,13 +1712,13 @@ PPL::Polyhedron::BHZ09_NNC_poly_hull_assign_if_exact(const Polyhedron& y) {
+     if (x.relation_with(y_c).implies(Poly_Con_Relation::is_included()))
+       continue;
+     set_difference(all_ones, y_sat[i], saturators);
+-    // CHECKME: do we really need to re-check condition 1?
+     // Check condition 1.
+     set_intersection(y_nonpoints_nonred_in_x, saturators, tmp_set);
+     if (!tmp_set.empty())
+       return false;
+     if (y_c.is_strict_inequality()) {
+       // Postpone check for condition 3.
++      y_cs_condition_3.set(i);
+       set_intersection(y_closure_points, saturators, tmp_set);
+       set_union(y_gs_condition_3, tmp_set, y_gs_condition_3);
+     }
+@@ -1727,7 +1730,29 @@ PPL::Polyhedron::BHZ09_NNC_poly_hull_assign_if_exact(const Polyhedron& y) {
+     }
+   }
+ 
+-  // Now check condition 3 on `x_gs_condition_3' and `y_gs_condition_3'.
++  // Now considering condition 3.
++
++  if (x_cs_condition_3.empty() && y_cs_condition_3.empty()) {
++    // No test for condition 3 is needed.
++    // The hull is exact: compute it.
++    for (dimension_type j = y_gs_num_rows; j-- > 0; )
++      if (y_gs_nonred_in_x[j])
++        add_generator(y_gs[j]);
++    return true;
++  }
++
++  // We have anyway to compute the upper bound and its constraints too.
++  Polyhedron ub(x);
++  for (dimension_type j = y_gs_num_rows; j-- > 0; )
++    if (y_gs_nonred_in_x[j])
++      ub.add_generator(y_gs[j]);
++  (void) ub.minimize();
++  assert(!ub.is_empty());
++
++  // NOTE: the following computation of x_gs_condition_3_not_in_y
++  // (resp., y_gs_condition_3_not_in_x) is not required for correctness.
++  // It is done so as to later apply a speculative test
++  // (i.e., a non-conclusive but computationally lighter test).
+ 
+   // Filter away from `x_gs_condition_3' those closure points
+   // that, when considered as points, would belong to `y',
+@@ -1751,7 +1776,6 @@ PPL::Polyhedron::BHZ09_NNC_poly_hull_assign_if_exact(const Polyhedron& y) {
+         break;
+     }
+   }
+-
+   // Symmetrically, filter away from `y_gs_condition_3' those
+   // closure points that, when considered as points, would belong to `x',
+   // i.e., those that violate no strict constraint in `x_cs'.
+@@ -1775,23 +1799,7 @@ PPL::Polyhedron::BHZ09_NNC_poly_hull_assign_if_exact(const Polyhedron& y) {
+     }
+   }
+ 
+-  if (x_gs_condition_3_not_in_y.empty()
+-      && y_gs_condition_3_not_in_x.empty()) {
+-    // The hull is exact: compute it.
+-    for (dimension_type j = y_gs_num_rows; j-- > 0; )
+-      if (y_gs_nonred_in_x[j])
+-        add_generator(y_gs[j]);
+-    return true;
+-  }
+-
+-  // We have anyway to compute the upper bound and its constraints too.
+-  Polyhedron ub(x);
+-  for (dimension_type j = y_gs_num_rows; j-- > 0; )
+-    if (y_gs_nonred_in_x[j])
+-      ub.add_generator(y_gs[j]);
+-  (void) ub.minimize();
+-  assert(!ub.is_empty());
+-
++  // NOTE: here we apply the speculative test.
+   // Check if there exists a closure point in `x_gs_condition_3_not_in_y'
+   // or `y_gs_condition_3_not_in_x' that belongs (as point) to the hull.
+   // If so, the hull is not exact.
+@@ -1820,15 +1828,54 @@ PPL::Polyhedron::BHZ09_NNC_poly_hull_assign_if_exact(const Polyhedron& y) {
+     }
+   }
+ 
+-  if (x_gs_condition_3_not_in_y.empty()
+-      && y_gs_condition_3_not_in_x.empty()) {
+-    // No closure point satisfies condition 3, hence the hull is exact.
+-    swap(ub);
+-    return true;
+-  }
+-  else
+-    // The hull is not exact.
++  if (!(x_gs_condition_3_not_in_y.empty()
++        && y_gs_condition_3_not_in_x.empty()))
++    // There exist a closure point satisfying condition 3,
++    // hence the hull is not exact.
+     return false;
++
++  // The speculative test was not successful:
++  // apply the expensive (but conclusive) test for condition 3.
++
++  // Consider strict inequalities in `x' violated by `y'.
++  for (dimension_type i = x_cs_condition_3.first();
++       i != ULONG_MAX; i = x_cs_condition_3.next(i)) {
++    const Constraint& x_cs_i = x_cs[i];
++    assert(x_cs_i.is_strict_inequality());
++    // Build the equality constraint induced by x_cs_i.
++    Constraint eq_i(Linear_Expression(x_cs_i) == 0);
++    assert(!(ub.relation_with(eq_i)
++                 .implies(Poly_Con_Relation::is_disjoint())));
++    Polyhedron ub_inters_hyperplane(ub);
++    ub_inters_hyperplane.add_constraint(eq_i);
++    Polyhedron y_inters_hyperplane(y);
++    y_inters_hyperplane.add_constraint(eq_i);
++    if (!y_inters_hyperplane.contains(ub_inters_hyperplane))
++      // The hull is not exact.
++      return false;
++  }
++
++  // Consider strict inequalities in `y' violated by `x'.
++  for (dimension_type i = y_cs_condition_3.first();
++       i != ULONG_MAX; i = y_cs_condition_3.next(i)) {
++    const Constraint& y_cs_i = y_cs[i];
++    assert(y_cs_i.is_strict_inequality());
++    // Build the equality constraint induced by y_cs_i.
++    Constraint eq_i(Linear_Expression(y_cs_i) == 0);
++    assert(!(ub.relation_with(eq_i)
++                 .implies(Poly_Con_Relation::is_disjoint())));
++    Polyhedron ub_inters_hyperplane(ub);
++    ub_inters_hyperplane.add_constraint(eq_i);
++    Polyhedron x_inters_hyperplane(x);
++    x_inters_hyperplane.add_constraint(eq_i);
++    if (!x_inters_hyperplane.contains(ub_inters_hyperplane))
++      // The hull is not exact.
++      return false;
++  }
++
++  // The hull is exact.
++  swap(ub);
++  return true;
+ }
+ 
+ bool
+diff --git a/tests/Polyhedron/polyhullifexact2.cc b/tests/Polyhedron/polyhullifexact2.cc
+index 1c77f4f..ede2d5f 100644
+--- a/tests/Polyhedron/polyhullifexact2.cc
++++ b/tests/Polyhedron/polyhullifexact2.cc
+@@ -303,6 +303,154 @@ test09() {
+   return ok;
+ }
+ 
++bool
++test10() {
++  Variable x(0);
++  Variable y(1);
++
++  NNC_Polyhedron ph1(2, UNIVERSE);
++  ph1.add_constraint(x > 0);
++  ph1.add_constraint(x < 1);
++  ph1.add_constraint(y > 0);
++  ph1.add_constraint(y < 2);
++
++  print_constraints(ph1, "*** ph1 ***");
++
++  NNC_Polyhedron ph2(2, UNIVERSE);
++  ph2.add_constraint(x > 1);
++  ph2.add_constraint(x < 2);
++  ph2.add_constraint(y > 0);
++  ph2.add_constraint(y < 2);
++
++  print_constraints(ph2, "*** ph2 ***");
++
++  NNC_Polyhedron known_result(ph1);
++
++  bool ok = !ph1.upper_bound_assign_if_exact(ph2);
++  ok &= (ph1 == known_result);
++
++  print_constraints(ph1, "*** ph1.upper_bound_assign_if_exact(ph2) ***");
++
++  return ok;
++}
++
++bool
++test11() {
++  Variable x(0);
++  Variable y(1);
++
++  NNC_Polyhedron ph1(2, UNIVERSE);
++  ph1.add_constraint(x > 0);
++  ph1.add_constraint(x < 1);
++  ph1.add_constraint(y > 0);
++  ph1.add_constraint(y < 2);
++
++  print_constraints(ph1, "*** ph1 ***");
++
++  NNC_Polyhedron ph2(2, UNIVERSE);
++  ph2.add_constraint(x >= 1);
++  ph2.add_constraint(x < 2);
++  ph2.add_constraint(y > 0);
++  ph2.add_constraint(y < 2);
++
++  print_constraints(ph2, "*** ph2 ***");
++
++  NNC_Polyhedron known_result(2, UNIVERSE);
++  known_result.add_constraint(x > 0);
++  known_result.add_constraint(x < 2);
++  known_result.add_constraint(y > 0);
++  known_result.add_constraint(y < 2);
++
++  bool ok = ph1.upper_bound_assign_if_exact(ph2);
++  ok &= (ph1 == known_result);
++
++  print_constraints(ph1, "*** ph1.upper_bound_assign_if_exact(ph2) ***");
++
++  return ok;
++}
++
++bool
++test12() {
++  Variable x(0);
++  Variable y(1);
++  Variable z(2);
++
++  NNC_Polyhedron ph1(3, UNIVERSE);
++  ph1.add_constraint(x > 0);
++  ph1.add_constraint(x <= 1);
++  ph1.add_constraint(y > 0);
++  ph1.add_constraint(y < 2);
++  ph1.add_constraint(z > 0);
++  ph1.add_constraint(z < 2);
++
++  print_constraints(ph1, "*** ph1 ***");
++
++  NNC_Polyhedron ph2(3, UNIVERSE);
++  ph2.add_constraint(x >= 1);
++  ph2.add_constraint(x < 2);
++  ph2.add_constraint(y > 0);
++  ph2.add_constraint(y < 2);
++  ph2.add_constraint(z > 0);
++  ph2.add_constraint(z < 2);
++
++  print_constraints(ph2, "*** ph2 ***");
++
++  NNC_Polyhedron known_result(3, UNIVERSE);
++  known_result.add_constraint(x > 0);
++  known_result.add_constraint(x < 2);
++  known_result.add_constraint(y > 0);
++  known_result.add_constraint(y < 2);
++  known_result.add_constraint(z > 0);
++  known_result.add_constraint(z < 2);
++
++  bool ok = ph1.upper_bound_assign_if_exact(ph2);
++  ok &= (ph1 == known_result);
++
++  print_constraints(ph1, "*** ph1.upper_bound_assign_if_exact(ph2) ***");
++
++  return ok;
++}
++
++bool
++test13() {
++  Variable x(0);
++  Variable y(1);
++  Variable z(2);
++
++  NNC_Polyhedron ph1(3, UNIVERSE);
++  ph1.add_constraint(x > 0);
++  ph1.add_constraint(x <= 1);
++  ph1.add_constraint(y > 0);
++  ph1.add_constraint(y < 2);
++  ph1.add_constraint(z > 0);
++  ph1.add_constraint(z <= 2);
++  ph1.add_constraint(x + z < 3);
++
++  print_constraints(ph1, "*** ph1 ***");
++  print_generators(ph1.minimized_generators(), "*** ph1 ***");
++
++  NNC_Polyhedron ph2(3, UNIVERSE);
++  ph2.add_constraint(x >= 1);
++  ph2.add_constraint(x < 2);
++  ph2.add_constraint(y > 0);
++  ph2.add_constraint(y < 2);
++  ph2.add_constraint(z > 0);
++  ph2.add_constraint(z <= 2);
++  ph1.add_constraint(x - z > -1);
++
++  print_constraints(ph2, "*** ph2 ***");
++  print_generators(ph2.minimized_generators(), "*** ph2 ***");
++
++  NNC_Polyhedron known_result(ph1);
++
++  bool ok = !ph1.upper_bound_assign_if_exact(ph2);
++  ok &= (ph1 == known_result);
++
++  print_constraints(ph1, "*** ph1.upper_bound_assign_if_exact(ph2) ***");
++
++  return ok;
++}
++
+ } // namespace
+ 
+ BEGIN_MAIN
+@@ -315,4 +463,8 @@ BEGIN_MAIN
+   DO_TEST(test07);
+   DO_TEST(test08);
+   DO_TEST(test09);
++  DO_TEST(test10);
++  DO_TEST(test11);
++  DO_TEST(test12);
++  DO_TEST(test13);
+ END_MAIN
+-- 
+1.6.0.6
+

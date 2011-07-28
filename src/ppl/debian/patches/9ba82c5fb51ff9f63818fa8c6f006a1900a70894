@@ -1,0 +1,88 @@
+From: Roberto Bagnara <bagnara@cs.unipr.it>
+Date: Tue, 16 Feb 2010 20:35:54 +0000 (+0100)
+Subject: Use the right preprocessor conditionals for PPL_HAVE_DECL_SIGACTION.
+X-Git-Url: http://www.cs.unipr.it/git/gitweb.cgi?p=ppl%2Fppl.git;a=commitdiff_plain;h=9ba82c5fb51ff9f63818fa8c6f006a1900a70894
+
+Use the right preprocessor conditionals for PPL_HAVE_DECL_SIGACTION.
+---
+
+diff --git a/Watchdog/tests/pwl_test.cc b/Watchdog/tests/pwl_test.cc
+index 4100e5b..94d4c3b 100644
+--- a/Watchdog/tests/pwl_test.cc
++++ b/Watchdog/tests/pwl_test.cc
+@@ -43,7 +43,7 @@ uncaught_exception_handler() {
+   exit(1);
+ }
+ 
+-#ifdef PWL_HAVE_DECL_SIGACTION
++#if PWL_HAVE_DECL_SIGACTION
+ 
+ #if defined(PWL_HAVE_SIGINFO_T) && defined(SA_SIGINFO)
+ 
+@@ -157,7 +157,7 @@ fpe_handler(int sig) {
+ 
+ #endif // !defined(PWL_HAVE_SIGINFO_T) || !defined(SA_SIGINFO)
+ 
+-#endif // defined(PWL_HAVE_DECL_SIGACTION)
++#endif // PWL_HAVE_DECL_SIGACTION
+ 
+ } // namespace
+ 
+@@ -167,7 +167,7 @@ namespace Test {
+ 
+ void
+ set_handlers() {
+-#ifdef PWL_HAVE_DECL_SIGACTION
++#if PWL_HAVE_DECL_SIGACTION
+   struct sigaction action;
+   sigemptyset(&action.sa_mask);
+ #if defined(PWL_HAVE_SIGINFO_T) && defined(SA_SIGINFO)
+@@ -182,7 +182,7 @@ set_handlers() {
+ 	      << std::endl;
+     abort();
+   }
+-#endif // defined(PWL_HAVE_DECL_SIGACTION)
++#endif // PWL_HAVE_DECL_SIGACTION
+ 
+   std::set_unexpected(unexpected_exception_handler);
+   std::set_terminate(uncaught_exception_handler);
+diff --git a/tests/ppl_test.cc b/tests/ppl_test.cc
+index 9ec9f23..df44e71 100644
+--- a/tests/ppl_test.cc
++++ b/tests/ppl_test.cc
+@@ -43,7 +43,7 @@ uncaught_exception_handler() {
+   exit(1);
+ }
+ 
+-#ifdef PPL_HAVE_DECL_SIGACTION
++#if PPL_HAVE_DECL_SIGACTION
+ 
+ #if defined(PPL_HAVE_SIGINFO_T) && defined(SA_SIGINFO)
+ 
+@@ -157,7 +157,7 @@ fpe_handler(int sig) {
+ 
+ #endif // !defined(PPL_HAVE_SIGINFO_T) || !defined(SA_SIGINFO)
+ 
+-#endif // defined(PPL_HAVE_DECL_SIGACTION)
++#endif // PPL_HAVE_DECL_SIGACTION
+ 
+ } // namespace
+ 
+@@ -167,7 +167,7 @@ namespace Test {
+ 
+ void
+ set_handlers() {
+-#ifdef PPL_HAVE_DECL_SIGACTION
++#if PPL_HAVE_DECL_SIGACTION
+   struct sigaction action;
+   sigemptyset(&action.sa_mask);
+ #if defined(PPL_HAVE_SIGINFO_T) && defined(SA_SIGINFO)
+@@ -182,7 +182,7 @@ set_handlers() {
+ 	      << std::endl;
+     abort();
+   }
+-#endif // defined(PPL_HAVE_DECL_SIGACTION)
++#endif // PPL_HAVE_DECL_SIGACTION
+ 
+   std::set_unexpected(unexpected_exception_handler);
+   std::set_terminate(uncaught_exception_handler);

@@ -18,10 +18,12 @@ LOCAL_TARBALL=''
 FORCE='no'
 INSTALL='no'
 INSTALL_BUILD_DEPS='yes'
+DEB_BUILD_OPTIONS=''
 DPKG_BP_OPTIONS='-sa'
 UPLOAD_CMD=''
 
 QUILT_PATCHES=${QUILT_PATCHES:-debian/patches}
+USE_QUILT='yes'
 CWD="$PWD"
 
 
@@ -37,6 +39,7 @@ Options:
     -o <orig-tarball>     Do not download tarball, but get this one
     -f                    Overwrite files if they exist
     -d                    Do not install build dependancies
+    -t                    Do not perform tests
     -B "dpkg-buildpackage options" ($DPKG_BP_OPTIONS)
 
     -U <target>           Ship built packages with \`dupload --to <target>'
@@ -53,7 +56,7 @@ USAGE
 }
 
 
-while getopts IU:P:LB:dfo:h? opt; do
+while getopts IU:P:LB:tdfo:h? opt; do
     case $opt in
         o)
             if [ ! -f "$OPTARG" ]; then
@@ -67,6 +70,7 @@ while getopts IU:P:LB:dfo:h? opt; do
             fi
             ;;
 
+        t) DEB_BUILD_OPTIONS="nocheck" ;;
         B) DPKG_BP_OPTIONS="$OPTARG" ;;
         d) INSTALL_BUILD_DEPS='no' ;;
         U) UPLOAD_CMD="dupload --to $OPTARG" ;;
@@ -105,8 +109,9 @@ if [ ! -f "$CONTROL" ]; then
 fi
 
 if ! grep -q '3\.0  *(quilt)' "$PKGDIR/debian/source/format" ; then
-    echo "Source is not of \`3.0 (quilt)' format. Please update the package."
-    exit 1
+    echo "Warning: source is not of \`3.0 (quilt)' format."
+    USE_QUILT='no'
+    sleep 2
 fi
 
 PKGNAME=`basename "$PKGDIR"`
@@ -135,6 +140,9 @@ if [ -z "$SECTION" ]; then
 else
     echo "Section is \`$SECTION'"
 fi
+
+# Debian use the more traditional pool layout
+DEBDIR=`echo $PKGNAME | grep -o '^\(lib\)\?[a-z]'`
 
 UPSTREAM_VERSION=`grep '^Upstream-Version:' "$CONTROL" | grep -wo '\S*$' || true`
 if [ -z "$UPSTREAM_VERSION" ]; then
@@ -170,10 +178,10 @@ if [ -z "$LOCAL_TARBALL" ]; then
             for c in gz bz2 xz lzma; do
                 SOURCE_TARBALL="${TARBALL_TMPL}.$c"
                 case "$base_url" in
-                    *.debian.org/*)      # work for ksh and bash:
-                        urls="$base_url/${PKGNAME:0:1}/$PKGNAME/$SOURCE_TARBALL"
+                    *.debian.org/*)
+                        urls="$base_url/$DEBDIR/$PKGNAME/$SOURCE_TARBALL"
                         # maybe package is native for Debian?
-                        urls+=" $base_url/${PKGNAME:0:1}/$PKGNAME/${SOURCE_TARBALL/.orig/}"
+                        urls+=" $base_url/$DEBDIR/$PKGNAME/${SOURCE_TARBALL/.orig/}"
                         ;;
                     *)
                         urls="$base_url/$SECTION/$SOURCE_TARBALL"
@@ -231,13 +239,16 @@ echo "Updating directory \`debian/'"
 [ -e "$PKGNAME/debian" ] && rm -rf "$PKGNAME/debian"
 cp -r "$PKGDIR/debian" "$PKGNAME/debian"
 
-cd "$PKGNAME"
-# Otherwise quilt will fail:
-if [ `quilt series | wc -l` != 0 ]; then
-    echo "Applying patches"
-    quilt push -a
+
+if [ "$USE_QUILT" = 'yes' ]; then
+    cd "$PKGNAME"
+    # Otherwise quilt will fail:
+    if [ `quilt series | wc -l` != 0 ]; then
+        echo "Applying patches"
+        quilt push -a
+    fi
+    cd -
 fi
-cd -
 
 #TODO: read dependancies from debian/control
 if [ "$INSTALL_BUILD_DEPS" = yes ]; then
@@ -250,7 +261,7 @@ fi
 
 echo "Building package"
 cd "$PKGNAME"
-dpkg-buildpackage $DPKG_BP_OPTIONS
+DEB_BUILD_OPTIONS="$DEB_BUILD_OPTIONS" dpkg-buildpackage $DPKG_BP_OPTIONS
 cd -
 
 if [ -n "$UPLOAD_CMD" ]; then

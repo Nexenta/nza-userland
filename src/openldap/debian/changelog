@@ -1,6 +1,19 @@
+openldap (40-0-0) unstable; urgency=low
+
+  * Rebuilt on NCP4b2 with new version scheme
+  * Used source format 3.0 (quilt)
+  * debian/control:
+    + Bring back libldap-2.4-2-dbg
+    + Use Architecture wildcard to reduce diff against upstream, Thanks to
+      Andrew Stormont for help
+  * debian/rules:
+    + Use proper dh_shlibdeps
+    + Bring back libldap-2.4.2-dbg package
+
+ -- Kartik Mistry <kartik.mistry@nexenta.com>  Fri, 22 Jul 2011 13:36:41 +0530
+
 openldap (2.4.21-1nexenta1) unstable; urgency=low
 
   * Port from SFW
 
  -- Igor Kozhukhov <igor.kozhukhov@nexenta.com>  Sun, 03 Apr 2011 00:45:44 +0400
-

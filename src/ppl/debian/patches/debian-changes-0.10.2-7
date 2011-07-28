@@ -1,0 +1,55 @@
+Description: Upstream changes introduced in version 0.10.2-7
+ This patch has been created by dpkg-source during the package build.
+ Here's the last changelog entry, hopefully it gives details on why
+ those changes were made:
+ .
+ ppl (0.10.2-7) unstable; urgency=low
+ .
+   * Drop xpdf-utils from build depends to fix FTBFS. Closes: #591155.
+   * Bumped Standars-Version to 3.9.1 (no changes).
+ .
+ The person named in the Author field signed this changelog entry.
+Author: Michael Tautschnig <mt@debian.org>
+Bug-Debian: http://bugs.debian.org/591155
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: http://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: <YYYY-MM-DD>
+
+--- ppl-0.10.2.orig/interfaces/Prolog/SWI/Makefile.am
++++ ppl-0.10.2/interfaces/Prolog/SWI/Makefile.am
+@@ -229,14 +229,14 @@ LIBPPL_SWIPROLOG_LINK_OPTIONS = -L.libs
+ endif !ENABLE_STATIC
+ 
+ ppl_pl$(EXEEXT): libppl_swiprolog.la ppl_pl.o
+-	plld -pl $(SWI_PROLOG) -cc $(CC) -c++ $(CXX) -ld $(CXX) \
++	swipl-ld -pl $(SWI_PROLOG) -cc $(CC) -c++ $(CXX) -ld $(CXX) \
+ 		-ld-options`echo '' $(AM_CXXFLAGS) $(CXXFLAGS) | tr " " "/"` \
+ 		-o $@ $(LIBPPL_SWIPROLOG_LINK_OPTIONS) ppl_pl.o \
+ 		-L$(top_builddir)/src/.libs \
+ 		-lppl $(WATCHDOG_LINK_OPTIONS) @extra_libraries@ $(EXTRA_LINK_OPTIONS)
+ 
+ pl_clpq$(EXEEXT): libppl_swiprolog.la pl_clpq.o pl_clpq.pl ../tests/clpq.pl
+-	plld -pl $(SWI_PROLOG) -cc $(CC) -c++ $(CXX) -ld $(CXX) \
++	swipl-ld -pl $(SWI_PROLOG) -cc $(CC) -c++ $(CXX) -ld $(CXX) \
+ 		-ld-options`echo '' $(AM_CXXFLAGS) $(CXXFLAGS) | tr " " "/"` \
+ 		-o $@ $(LIBPPL_SWIPROLOG_LINK_OPTIONS) pl_clpq.o \
+                 $(srcdir)/pl_clpq.pl $(srcdir)/../tests/clpq.pl \
+@@ -245,7 +245,7 @@ pl_clpq$(EXEEXT): libppl_swiprolog.la pl
+ 
+ 
+ pl_clpq2$(EXEEXT): libppl_swiprolog.la pl_clpq.o pl_clpq.pl ../tests/clpq2.pl
+-	plld -pl $(SWI_PROLOG) -cc $(CC) -c++ $(CXX) -ld $(CXX) \
++	swipl-ld -pl $(SWI_PROLOG) -cc $(CC) -c++ $(CXX) -ld $(CXX) \
+ 		-ld-options`echo '' $(AM_CXXFLAGS) $(CXXFLAGS) | tr " " "/"` \
+ 		-o $@ $(LIBPPL_SWIPROLOG_LINK_OPTIONS) pl_clpq.o \
+                 $(srcdir)/pl_clpq.pl $(srcdir)/../tests/clpq2.pl \

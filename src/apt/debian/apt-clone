@@ -1142,6 +1142,14 @@ sub cannot_upgrade_exit {
 
 ################################ main #######################################
 
+# check global zone
+my $zone = `/sbin/zonename`;
+chomp $zone;
+if ($zone ne "global") {
+	print_error "E: apt-clone can only be run from global zone\n";
+	exit 1;
+}
+
 # flush stdout...
 select(STDOUT); $| = 1;
 

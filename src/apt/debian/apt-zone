@@ -1,0 +1,130 @@
+#!/usr/bin/bash
+
+##############################################################################
+##############################################################################
+#
+# apt-zone - APT-powered Nexenta Zone Utility
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
+#
+# Copyright (C) 2011 Nexenta Systems, Inc.
+# All rights reserved.
+#
+##############################################################################
+
+
+function usage {
+	cat <<EOT
+	Usage: apt-zone [-uh]
+	where:
+		-u	upgrade non-global nexenta zones
+		-h	print this help
+EOT
+}
+
+function log {
+    case "$*" in
+	"E: "*) 
+	    echo "$*" >&2
+	    ;;
+ 	"W: "*) 
+	    echo "$*" >&2
+	    ;;
+ 	"I: "*) 
+	    echo "$*"
+	    ;;
+	*)
+	    echo "malformed log message: $*"
+	    ;;
+    esac
+}
+
+
+function upgrade {
+	for ZONE in `zoneadm list -c | grep -v global`; do 
+	    zonecfg -z $ZONE export 2>&1 | grep -v 'No such zone configured' > /dev/null
+	    if [ $? == 0 ]; then
+		    export ZONE_STATE=`zoneadm -z $ZONE list -p | cut -d: -f3`
+		    export ZONEPATH=`zonecfg -z $ZONE info zonepath | awk '{print $2}'`
+		    case "$ZONE_STATE" in
+		    running)
+    			log "I: zone $ZONE is running, upgrading zone in $ZONEPATH"
+    			zlogin $ZONE "PATH=/usr/gnu/bin:/usr/bin:/usr/sbin:/sbin LOGNAME=root HOME=/root TERM=xterm /usr/bin/apt-get update"
+    			zlogin $ZONE "PATH=/usr/gnu/bin:/usr/bin:/usr/sbin:/sbin LOGNAME=root HOME=/root TERM=xterm /usr/bin/apt-get upgrade -f -y --force-yes"
+    			;;
+		    installed)
+    			log "I: zone $ZONE in installed state, trying to boot"
+    			zoneadm -z $ZONE boot
+    			if [ $? != 0 ]; then
+				log "E: Failed to boot zone $ZONE, skipping upgrade"
+			else
+				log "I: zone $ZONE is running, upgrading zone in $ZONEPATH"
+    				zlogin $ZONE "PATH=/usr/gnu/bin:/usr/bin:/usr/sbin:/sbin LOGNAME=root HOME=/root TERM=xterm /usr/bin/apt-get update"
+				zlogin $ZONE "PATH=/usr/gnu/bin:/usr/bin:/usr/sbin:/sbin LOGNAME=root HOME=/root TERM=xterm /usr/bin/apt-get upgrade -f -y --force-yes"
+    			fi
+    			;;
+		    configured)
+    			log "E: zone $ZONE in configured state, please reinstall"
+    			;;
+		    *)
+    			log "E: zone $ZONE is in $ZONE_STATE, skipping upgrade"
+    			;;
+		    esac
+	    fi
+	done
+}
+
+
+if [ "`/sbin/zonename`" != "global" ]; then
+	log "E: apt-zone can only be run from global zone"
+	exit 1
+fi
+
+params_found=0
+
+while getopts ":u:h:" param; do
+    if [ "${param}" = ":" ]; then
+	    param=${OPTARG}
+	    OPTARG=""
+	    param_found=1
+    fi
+
+    case ${param} in
+	"h" )
+		usage
+		exit 1
+		;;
+	"u" )
+		upgrade
+		;;
+	\? )
+		usage
+		break
+		;;
+	: )
+		usage
+		break
+		;;
+	* )
+		usage
+		break
+		;;
+    esac
+done
+
+if ((!param_found)); then
+	usage
+	exit 1
+fi
