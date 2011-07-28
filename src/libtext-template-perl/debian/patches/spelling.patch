@@ -1,0 +1,17 @@
+Description: fix a spelling mistake
+Origin: vendor
+Forwarded: no
+Author: gregor herrmann <gregoa@debian.org>
+Last-Update: 2011-01-10
+
+--- a/lib/Text/Template.pm
++++ b/lib/Text/Template.pm
+@@ -1478,7 +1478,7 @@
+ 
+ Because we didn't put C<use strict> at the top of the second fragment,
+ it was only active in the first fragment, and we didn't get any
+-C<strict> checking in the second fragment.  Then we mispelled C<$foo>
++C<strict> checking in the second fragment.  Then we misspelled C<$foo>
+ and the error wasn't caught.  
+ 
+ C<Text::Template> version 1.22 and higher has a new feature to make

@@ -1,0 +1,102 @@
+libtext-template-perl (40-0-0) unstable; urgency=low
+
+  * Port for NCP4 
+  * Used new version scheme
+
+ -- Peter Zaickin <peter.zaickin@nexenta.com>  Mon, 04 Jul 2011 17:35:53 +0300
+
+libtext-template-perl (1.45-2) unstable; urgency=low
+
+  [ Nathan Handler ]
+  * debian/watch: Update to ignore development releases.
+
+  [ Salvatore Bonaccorso ]
+  * debian/control: Changed: Replace versioned (build-)dependency on
+    perl (>= 5.6.0-{12,16}) with an unversioned dependency on perl (as
+    permitted by Debian Policy 3.8.3).
+
+  [ Ryan Niebur ]
+  * Update ryan52's email address
+
+  [ gregor herrmann ]
+  * Fix "Slow memory leak in _scrubpkg": add patch from CPAN RT#22031; thanks
+    to Dean Hamstead for the bug report (closes: #609528).
+  * Switch to source format 3.0 (quilt).
+  * Minimize debian/rules.
+  * Install upstream README as changelog.
+  * Add /me to Uploaders.
+  * Set Standards-Version to 3.9.1 (no changes).
+  * Refresh debian/copyright (formatting, license stanzas).
+  * Add a patch to fix a spelling mistake.
+
+ -- gregor herrmann <gregoa@debian.org>  Mon, 10 Jan 2011 17:25:37 +0100
+
+libtext-template-perl (1.45-1) unstable; urgency=low
+
+  * Take over for the Debian Perl Group; Closes: #519343 -- RFA
+  * Add debian/watch.
+  * New upstream release
+  * standards version 3.8.1
+  * machine readable copyright format
+  * remove sdier, add myself to uploaders
+  * debhelper 7
+  * mention module name in long description
+
+ -- Ryan Niebur <ryanryan52@gmail.com>  Fri, 20 Mar 2009 21:24:48 -0700
+
+libtext-template-perl (1.44-1.2) unstable; urgency=high
+
+  * Non-maintainer upload to fix release critical bug, high urgency.
+  * Fix test suite to cope with Perl 5.10, patch thanks to Niko Tyni.
+    Closes: #467283
+  * Update section to match override, closes: #259147.
+  * Drop two empty directories.
+
+ -- Thijs Kinkhorst <thijs@debian.org>  Sun, 15 Jun 2008 18:11:52 +0200
+
+libtext-template-perl (1.44-1.1) unstable; urgency=low
+
+  * NMU
+  * Fix FTBFS, add dependency on cdbs. Closes: #252416
+
+ -- Andreas Barth <aba@not.so.argh.org>  Sun, 27 Jun 2004 17:05:12 +0200
+
+libtext-template-perl (1.44-1) unstable; urgency=low
+
+  * New upstream release. (Closes: #226166)
+  * Converted to cdbs.
+
+ -- Scott M. Dier <sdier@debian.org>  Tue,  1 Jun 2004 14:34:16 -0500
+
+libtext-template-perl (1.42-3) unstable; urgency=low
+
+  * Fixed copyright Closes: #157658
+
+ -- Scott M. Dier <sdier@debian.org>  Thu, 19 Dec 2002 01:40:15 -0600
+
+libtext-template-perl (1.42-2) unstable; urgency=low
+
+  * Forgot to set the Arch: to all.
+
+ -- Scott M. Dier <sdier@debian.org>  Sun,  3 Feb 2002 15:14:57 -0600
+
+libtext-template-perl (1.42-1) unstable; urgency=low
+
+  * New upstream release.  Closes: #107566, #117593
+
+ -- Scott M. Dier <sdier@debian.org>  Sun,  3 Feb 2002 13:44:52 -0600
+
+libtext-template-perl (1.20-2) unstable; urgency=low
+
+  * added references to GPL and Artistic licenses to satisfy pedantic
+    fascists who find it difficult to comprehend plain language like
+    "You may copy and distribute this program under the same terms as
+    Perl iteself."
+
+ -- Craig Sanders <cas@taz.net.au>  Sun, 14 Nov 1999 10:56:05 +1100
+
+libtext-template-perl (1.20-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Craig Sanders <cas@taz.net.au>  Sat, 13 Nov 1999 09:59:18 +1100
