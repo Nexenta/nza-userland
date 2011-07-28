@@ -1,0 +1,49 @@
+libuniversal-require-perl (40-0-0) unstable; urgency=low
+
+  * Port for NCP4 
+  * Used new version scheme 
+
+ -- Peter Zaickin <peter.zaickin@nexenta.com>  Mon, 04 Jul 2011 17:56:36 +0300
+
+libuniversal-require-perl (0.13-1) unstable; urgency=low
+
+  [ gregor herrmann ]
+  * debian/control: Changed: Switched Vcs-Browser field to ViewSVN
+    (source stanza).
+  * debian/control: Added: ${misc:Depends} to Depends: field.
+
+  [ AGOSTINI Yves ]
+  * New upstream release
+  * Bump to Standards-Version: 3.8.1
+  * Refresh rules to dh7
+  * Fix copyright format
+
+ -- AGOSTINI Yves <agostini@univ-metz.fr>  Fri, 03 Apr 2009 16:17:57 +0200
+
+libuniversal-require-perl (0.11-1) unstable; urgency=low
+
+  [ AGOSTINI Yves ]
+  * Take over for the Debian Perl Group on maintainer's request
+  (sjq@debian.org)
+  "Thu, 1 May 2008 05:40:25 -0700 
+  I don't have a lot of time for Debian work at the moment so I'm more
+  than happy for the Debian Perl Group to take over maintaining
+  libuniversal-require-perl.
+  "
+  * fix watch in version 3 and cpan dist
+  * fix copyright format
+  * fix control with standards version: 3.7.3
+  * upgrade to 0.11 upstream (Closes: #432490)
+
+  [ gregor herrmann ]
+  * Refresh debian/rules, no functional changes.
+  * Bring debian/compat and the versioned dependency on debhelper in line.
+  * Add /me to Uploaders.
+
+ -- gregor herrmann <gregoa@debian.org>  Thu, 01 May 2008 17:51:37 +0200
+
+libuniversal-require-perl (0.10-1) unstable; urgency=low
+
+  * Initial Release, closes: #333309.
+
+ -- Stephen Quinney <sjq@debian.org>  Mon,  7 Nov 2005 19:52:03 +0000
