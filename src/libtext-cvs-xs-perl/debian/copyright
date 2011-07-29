@@ -1,0 +1,54 @@
+Format-Specification: http://svn.debian.org/wsvn/dep/web/deps/dep5.mdwn?op=file&rev=135
+Maintainer: H.Merijn Brand <h.m.brand@xs4all.nl>
+Source: http://search.cpan.org/dist/Text-CSV_XS/
+Name: Text-CSV_XS
+
+Files: *
+Copyright: 2007-2011, H. Merijn Brand <h.m.brand@xs4all.nl>
+ 1998-2001, Jochen Wiedmann <joe@ispsoft.de>
+ 1997, Alan Citterman <alan@mfgrtl.com>
+License: Artistic or GPL-1+
+
+Files: examples/csv2xls, examples/csv-check, examples/*.pl
+Copyright: 2007-2011, H. Merijn Brand <h.m.brand@xs4all.nl>
+License: Artistic or GPL-1+
+
+Files: ppport.h
+Copyright: 2004-2009, Marcus Holland-Moritz <mhx-cpan@gmx.net>
+ 2001, Paul Marquess <pmqs@cpan.org> (Version 2.x)
+ 1999, Kenneth Albanowski <kjahds@kjahds.com> (Version 1.x)
+License: Artistic or GPL-1+
+
+Files: debian/*
+Copyright: 2007-2010, gregor herrmann <gregoa@debian.org>
+ 2008-2010, Ansgar Burchardt <ansgar@debian.org>
+ 2009-2011, Jonathan Yu <jawnsy@cpan.org>
+ 2010, Franck Joncourt <franck@debian.org>
+ 2009, Ryan Niebur <ryan@debian.org>
+ 2007-2008, Damyan Ivanov <dmn@debian.org>
+ 2008, Jose Luis Rivas <ghostbar38@gmail.com>
+ 2008, Vincent Danjean <vdanjean@debian.org>
+ 2007, Krzysztof Krzyzaniak (eloy) <eloy@debian.org>
+ 2004-2006, Gunnar Wolf <gwolf@debian.org>
+ 2006, Niko Tyni <ntyni@iki.fi>
+ 2001-2004, Stephen Zander <gibreel@debian.org>
+ 2002, Brendan O'Dea <bod@debian.org>
+ 1999, Piotr Roszatycki <dexter@debian.org>
+ 1998, Craig Sanders <cas@taz.net.au>
+License: Artistic or GPL-1+
+
+License: Artistic
+ This program is free software; you can redistribute it and/or modify
+ it under the terms of the Artistic License, which comes with Perl.
+ .
+ On Debian systems, the complete text of the Artistic License can be
+ found in `/usr/share/common-licenses/Artistic'.
+
+License: GPL-1+
+ This program is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 1, or (at your option)
+ any later version.
+ .
+ On Debian systems, the complete text of version 1 of the GNU General
+ Public License can be found in `/usr/share/common-licenses/GPL-1'.
