@@ -1,0 +1,28 @@
+Source: libtask-weaken-perl
+Section: perl
+Priority: optional
+Build-Depends: debhelper (>= 7)
+Build-Depends-Indep: perl (>= 5.10.0), perl-modules (>= 5.8.9)
+Maintainer: Christian Sánchez <csanchez@unplug.org.ve>
+Standards-Version: 3.8.3
+Homepage: http://search.cpan.org/dist/Task-Weaken/
+Upstream-Version: 1.03-2
+
+Package: libtask-weaken-perl
+Architecture: all
+Depends: ${misc:Depends}, ${perl:Depends}, perl (>= 5.8.8)
+Description: Ensure that a platform has weaken support
+ One recurring problem in modules that use Scalar::Util's weaken function is
+ that it is not present in the pure-perl variant.
+ .
+ While this isn't necesarily always a problem in a straight CPAN-based Perl
+ environment, some operating system distributions only include the pure-Perl
+ versions, don't include the XS version, and so weaken is then "missing" from
+ the platform, despite passing a dependency on Scalar::Util successfully.
+ .
+ Most notably this is RedHat Linux at time of writing, but other come and go
+ and do the same thing, hence "recurring problem".
+ .
+ The normal solution is to manually write tests in each distribution to ensure
+ that weaken is available.
+
