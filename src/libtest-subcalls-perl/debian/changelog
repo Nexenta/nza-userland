@@ -1,0 +1,34 @@
+libtest-subcalls-perl (40-0-0) unstable; urgency=low
+
+  * Port for NCP4
+  * Used new version scheme	 
+
+ -- Peter Zaickin <peter.zaickin@nexenta.com>  Mon, 04 Jul 2011 20:35:29 +0300
+
+libtest-subcalls-perl (1.09-2) unstable; urgency=low
+
+  * Team Upload.
+
+  [ Salvatore Bonaccorso ]
+  * debian/control: Changed: Replace versioned (build-)dependency on
+    perl (>= 5.6.0-{12,16}) with an unversioned dependency on perl (as
+    permitted by Debian Policy 3.8.3).
+
+  [ Ryan Niebur ]
+  * Update jawnsy's email address
+
+  [ Ansgar Burchardt ]
+  * Do not run author tests. See also #589052.
+    * Remove build-dep on libtest-cpan-meta-perl, libtest-pod-perl,
+      libpod-simple-perl, libtest-minimumversion-perl.
+  * Use source format 3.0 (quilt).
+  * debian/copyright: Formatting changes for current DEP-5 proposal.
+  * Bump Standards-Version to 3.9.0.
+
+ -- Ansgar Burchardt <ansgar@43-1.org>  Thu, 15 Jul 2010 23:10:56 +0900
+
+libtest-subcalls-perl (1.09-1) unstable; urgency=low
+
+  * Initial Release (Closes: #539783)
+
+ -- Jonathan Yu <frequency@cpan.org>  Mon, 03 Aug 2009 08:25:48 -0400
