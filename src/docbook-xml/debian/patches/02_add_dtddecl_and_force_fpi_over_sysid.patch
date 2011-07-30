@@ -1,0 +1,100 @@
+Author: Adam Di Carlo <aph@debian.org>.
+Description: * docbook-4.x/docbook.cat: Adds DTDDECL declarations for convenience.
+Forces FPI to override SYSTEM IDs, if both are supplied.
+
+<URL:http://packages.debian.org/changelogs/pool/main/d/docbook-xml/current/changelog#versionversion4.1.2-2>
+<URL:http://packages.debian.org/changelogs/pool/main/d/docbook-xml/current/changelog#versionversion4.2-8>
+<URL:http://packages.debian.org/changelogs/pool/main/d/docbook-xml/current/changelog#versionversion4.5-1>
+--- a/docbook-4.1.2/docbook.cat
++++ b/docbook-4.1.2/docbook.cat
+@@ -16,10 +16,14 @@
+      on supplying and using catalog data.
+   --
+ 
++  -- public identifiers override system identifiers, if both are supplied   --
++OVERRIDE YES
++
+   -- ...................................................................... --
+   -- DocBook driver file .................................................. --
+ 
+ PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" "docbookx.dtd"
++DTDDECL "-//OASIS//DTD DocBook XML V4.1.2//EN" "/usr/share/xml/declaration/xml.dcl"
+ 
+   -- ...................................................................... --
+   -- DocBook modules ...................................................... --
+--- a/docbook-4.2/docbook.cat
++++ b/docbook-4.2/docbook.cat
+@@ -16,11 +16,16 @@
+      on supplying and using catalog data.
+   --
+ 
++  -- public identifiers override system identifiers, if both are supplied   --
++OVERRIDE YES
++
+   -- ...................................................................... --
+   -- DocBook driver file .................................................. --
+ 
+ PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+        "docbookx.dtd"
++DTDDECL "-//OASIS//DTD DocBook XML V4.2//EN"
++        "/usr/share/xml/declaration/xml.dcl"
+ 
+   -- ...................................................................... --
+   -- DocBook modules ...................................................... --
+--- a/docbook-4.3/docbook.cat
++++ b/docbook-4.3/docbook.cat
+@@ -16,11 +16,16 @@
+      on supplying and using catalog data.
+   --
+ 
++  -- public identifiers override system identifiers, if both are supplied   --
++OVERRIDE YES
++
+   -- ...................................................................... --
+   -- DocBook driver file .................................................. --
+ 
+ PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+        "docbookx.dtd"
++DTDDECL "-//OASIS//DTD DocBook XML V4.3//EN"
++        "/usr/share/xml/declaration/xml.dcl"
+ 
+   -- ...................................................................... --
+   -- DocBook modules ...................................................... --
+--- a/docbook-4.4/docbook.cat
++++ b/docbook-4.4/docbook.cat
+@@ -16,11 +16,16 @@
+      on supplying and using catalog data.
+   --
+ 
++  -- public identifiers override system identifiers, if both are supplied   --
++OVERRIDE YES
++
+   -- ...................................................................... --
+   -- DocBook driver file .................................................. --
+ 
+ PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+        "docbookx.dtd"
++DTDDECL "-//OASIS//DTD DocBook XML V4.4//EN"
++        "/usr/share/xml/declaration/xml.dcl"
+ 
+   -- ...................................................................... --
+   -- DocBook modules ...................................................... --
+--- a/docbook-4.5/docbook.cat
++++ b/docbook-4.5/docbook.cat
+@@ -16,11 +16,16 @@
+      on supplying and using catalog data.
+   --
+ 
++  -- public identifiers override system identifiers, if both are supplied   --
++OVERRIDE YES
++
+   -- ...................................................................... --
+   -- DocBook driver file .................................................. --
+ 
+ PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+        "docbookx.dtd"
++DTDDECL "-//OASIS//DTD DocBook XML V4.5//EN"
++        "/usr/share/xml/declaration/xml.dcl"
+ 
+   -- ...................................................................... --
+   -- DocBook modules ...................................................... --

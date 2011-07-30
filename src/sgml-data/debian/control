@@ -1,17 +1,16 @@
 Source: sgml-data
+Upstream-Version: 2.0.6
 Section: text
 Priority: optional
 Maintainer: Debian QA Group <packages@qa.debian.org>
 Standards-Version: 3.8.3
-Build-Depends: debhelper (>= 5.0.0)
-Build-Depends-Indep: xml-core (>= 0.06)
+Build-Depends: debhelper
+Build-Depends-Indep: xml-core
 
 Package: sgml-data
 Architecture: all
-Conflicts: sp (<= 1.1.1-2)
 Depends: ${perl:Depends}, ${misc:Depends}
 Suggests: perlsgml, doc-html-w3, opensp, libxml2-utils
-Replaces: docbook-xml (<= 3.1.3.6-1), sp (<< 1.3.4-1.2.1-14)
 Description: common SGML and XML data
  This package contains basic XML and SGML data shared and used by
  multiple packages.  The package provides the technical format

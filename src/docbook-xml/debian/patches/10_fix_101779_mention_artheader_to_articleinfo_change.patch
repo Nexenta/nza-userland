@@ -1,0 +1,26 @@
+Author: Adam Di Carlo <aph@debian.org>.
+Description: The removal of ArtHeader in 4.0 is not documented in ChangeLog. This
+patch fixes it.
+
+<URL:http://bugs.debian.org/bug=101779>
+<URL:http://packages.debian.org/changelogs/pool/main/d/docbook-xml/current/changelog#versionversion4.1.2-7>
+--- a/ChangeLog.upstream
++++ b/ChangeLog.upstream
+@@ -769,6 +769,7 @@
+ - Added synopsis markup for modern programming languages (e.g, object
+   oriented languages like Java, C++, and IDL)
+ - Renamed DocInfo to PrefaceInfo, ChapterInfo, AppendixInfo, etc.
++  (and ArtHeader to ArticleInfo)
+ - Comment was renamed Remark
+ - InterfaceDefinition was removed
+ 
+--- a/docbook-4.1.2/40chg.txt
++++ b/docbook-4.1.2/40chg.txt
+@@ -37,6 +37,7 @@
+ - Added synopsis markup for modern programming languages (e.g, object
+   oriented languages like Java, C++, and IDL)
+ - Renamed DocInfo to PrefaceInfo, ChapterInfo, AppendixInfo, etc.
++  (and ArtHeader to ArticleInfo)
+ - Comment was renamed Remark
+ - InterfaceDefinition was removed
+ 

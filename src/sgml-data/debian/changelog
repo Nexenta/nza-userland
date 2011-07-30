@@ -1,8 +1,25 @@
-sgml-data (2.0.4nexenta0) unstable; urgency=low
+sgml-data (40-0-0) unstable; urgency=low
 
-  * Port to NCP 
+  * Ported to NCP4
 
- -- Anil Gulecha <anil.verve@gmail.com>  Fri, 12 Nov 2010 08:41:32 +0530
+ -- Igor Pashev <igor.pashev@nexenta.com>  Fri, 29 Jul 2011 19:55:10 +0400
+
+sgml-data (2.0.6) unstable; urgency=low
+
+  * QA upload.
+  * Fix a piuparts failure involving /etc/xml and /etc/sgml still being
+    present post-purge when xml-core is removed first.
+
+ -- Philipp Kern <pkern@debian.org>  Sun, 29 May 2011 14:16:38 +0200
+
+sgml-data (2.0.5) unstable; urgency=low
+
+  * QA upload.
+  * Applied Martin Pitt's patch to reduce the dependency on perl to
+    perl-base only. Thanks, Martin! (closes: #602121).
+  * Converted to source format 3.0 (native).
+
+ -- Ralf Treinen <treinen@debian.org>  Sun, 05 Dec 2010 14:15:20 +0100
 
 sgml-data (2.0.4) unstable; urgency=low
 

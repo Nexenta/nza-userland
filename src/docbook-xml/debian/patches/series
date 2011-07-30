@@ -1,0 +1,14 @@
+01_use_the_entities_from_sgml_data.patch
+02_add_dtddecl_and_force_fpi_over_sysid.patch
+03_fix_wrong_371_fpi_in_40.patch
+05_add_doctype_to_catalog_xml.patch
+06_add_system_identifiers_to_catalog.patch
+07_add_fpi_for_htmltblx_mod_to_43_catalogs.patch
+10_fix_101779_mention_artheader_to_articleinfo_change.patch
+11_fix_dbpoolx_mod_header_comment_pubid.patch
+12_fix_256119_and_turn_on_sgml_mode.patch
+docbook-4.1.2_catalog.xml.patch
+docbook-4.0_docbook.cat.patch
+docbook-4.0_catalog.xml.patch
+catalog.patch
+catalog.xml.patch

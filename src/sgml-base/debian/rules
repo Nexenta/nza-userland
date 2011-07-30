@@ -1,59 +1,7 @@
 #!/usr/bin/make -f
-## ----------------------------------------------------------------------
-## debian/rules : package script for sgml-base
-## ----------------------------------------------------------------------
 
-## ----------------------------------------------------------------------
-## uncomment this to turn on verbose mode
-#export DH_VERBOSE=1
+%:
+	dh $@
+override_dh_auto_install:
+	$(MAKE) install prefix=$(CURDIR)/debian/tmp/usr
 
-## ----------------------------------------------------------------------
-TMP_DIR		= debian/tmp
-
-## ----------------------------------------------------------------------
-## targets
-
-clean:
-		dh_testdir
-		dh_testroot
-		dh_clean
-		rm -f build-stamp install-stamp
-
-build:		build-stamp
-build-stamp:
-		dh_testdir
-		$(MAKE)
-		touch build-stamp
-
-install:	install-stamp
-install-stamp:	build
-		dh_testdir
-		dh_testroot
-		dh_clean -k
-		dh_installdirs
-		$(MAKE) install prefix=$(PWD)/$(TMP_DIR)/usr
-		touch install-stamp
-
-binary-indep:	build install
-		dh_testdir
-		dh_testroot
-		dh_install --sourcedir=$(TMP_DIR)
-		dh_installdocs
-		dh_installexamples
-		dh_installchangelogs
-		dh_usrlocal
-		dh_compress
-		dh_fixperms
-		dh_installdeb
-		dh_perl
-		dh_gencontrol
-		dh_md5sums
-		dh_builddeb
-
-binary-arch:
-
-binary:		binary-indep binary-arch
-
-.PHONY:		clean build install binary-indep binary-arch binary
-
-## ----------------------------------------------------------------------

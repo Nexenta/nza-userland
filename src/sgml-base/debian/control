@@ -1,16 +1,16 @@
 Source: sgml-base
+Upstream-Version: 1.26
 Section: text
 Priority: optional
 Maintainer: Debian XML/SGML Group <debian-xml-sgml-pkgs@lists.alioth.debian.org>
 Uploaders: Ardo van Rangelrooij <ardo@debian.org>
 Standards-Version: 3.6.1
-Build-Depends: debhelper (>= 4.1)
+Build-Depends: debhelper
 
 Package: sgml-base
 Section: text
 Priority: optional
 Architecture: all
-Conflicts: sgml-data (<= 0.02), sgmltools-2 (<= 2.0.2-4)
 Depends: ${perl:Depends}
 Suggests: sgml-base-doc
 Description: SGML infrastructure and SGML catalog file support
