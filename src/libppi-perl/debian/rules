@@ -1,0 +1,12 @@
+#!/usr/bin/make -f
+
+PACKAGE = $(shell dh_listpackages)
+TMP     = $(CURDIR)/debian/$(PACKAGE)
+
+%:
+	dh $@
+
+override_dh_auto_install:
+	dh_auto_install
+	rm $(TMP)/usr/share/man/man3/PPI::Token::_QuoteEngine::Full.3pm
+	rm $(TMP)/usr/share/man/man3/PPI::Token::_QuoteEngine::Simple.3pm

@@ -1,0 +1,44 @@
+Source: libppi-perl
+Section: perl
+Priority: optional
+Build-Depends: debhelper (>= 8)
+Build-Depends-Indep: perl,
+ liblist-moreutils-perl,
+ libparams-util-perl,
+ libtask-weaken-perl,
+ libclone-perl (>= 40-0-0),
+ libio-string-perl,
+ libfile-remove-perl,
+ perl (>= 5.10.1) | libtest-simple-perl (>= 40-0-0),
+ libtest-subcalls-perl,
+ libtest-nowarnings-perl,
+ libclass-inspector-perl,
+ libtest-object-perl
+Maintainer: Debian Perl Group <pkg-perl-maintainers@lists.alioth.debian.org>
+Uploaders: Damyan Ivanov <dmn@debian.org>, Rene Mayorga <rmayorga@debian.org>,
+ gregor herrmann <gregoa@debian.org>, Jonathan Yu <jawnsy@cpan.org>
+Standards-Version: 3.9.1
+Homepage: http://search.cpan.org/dist/PPI/
+Vcs-Svn: svn://svn.debian.org/pkg-perl/trunk/libppi-perl
+Vcs-Browser: http://svn.debian.org/viewsvn/pkg-perl/trunk/libppi-perl/
+Upstream-Version: 1.215-1
+
+Package: libppi-perl
+Architecture: all
+Depends: ${perl:Depends}, ${misc:Depends},
+ libio-string-perl,
+ libtask-weaken-perl,
+ libclone-perl (>= 40-0-0),
+ libparams-util-perl,
+ liblist-moreutils-perl
+Description: module to parse, analyze and manipulate Perl code
+ PPI provides the ability to parse, analyze and manipulate Perl code without
+ actually executing the code, by implementing a lexer similar to what perl has
+ itself internally.
+ .
+ The purpose of PPI is not to parse Perl Code, but to parse Perl Documents. By
+ making this distinction and treating the problem this way, one could analyze
+ files containing Perl source code in isolation from any other resources and
+ without executing it, including other libraries. A significant feature of PPI
+ is the ability to analyze Perl source code without requiring an instance of
+ perl to run alongside or inside the parser.
