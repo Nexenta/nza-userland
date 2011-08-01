@@ -1,0 +1,17 @@
+Description: spelling mistake
+Origin: vendor
+Forwarded: no
+Author: gregor herrmann <gregoa@debian.org>
+Last-Update: 2010-05-28
+
+--- a/lib/Sub/Exporter/Util.pm
++++ b/lib/Sub/Exporter/Util.pm
+@@ -22,7 +22,7 @@
+ 
+ This module provides a number of utility functions for performing common or
+ useful operations when setting up a Sub::Exporter configuration.  All of the
+-utilites may be exported, but none are by default.
++utilities may be exported, but none are by default.
+ 
+ =head1 THE UTILITIES
+ 
