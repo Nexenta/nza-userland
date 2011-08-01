@@ -1,0 +1,45 @@
+Author: Adam Di Carlo <aph@debian.org> and
+Description: * docbook-4.{2,3,4,5}/catalog.xml: Adds the missing DOCTYPE.
+
+<URL:http://packages.debian.org/changelogs/pool/main/d/docbook-xml/current/changelog#versionversion4.2-8>
+<URL:http://packages.debian.org/changelogs/pool/main/d/docbook-xml/current/changelog#versionversion4.5-1>
+--- a/docbook-4.2/catalog.xml
++++ b/docbook-4.2/catalog.xml
+@@ -1,4 +1,7 @@
+ <?xml version='1.0'?>
++<!DOCTYPE catalog PUBLIC "-//OASIS//DTD Entity Resolution XML Catalog V1.0//EN"
++    "http://www.oasis-open.org/committees/entity/release/1.0/catalog.dtd">
++
+ <catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+ 
+ <!-- ...................................................................... -->
+--- a/docbook-4.3/catalog.xml
++++ b/docbook-4.3/catalog.xml
+@@ -1,4 +1,7 @@
+ <?xml version='1.0'?>
++<!DOCTYPE catalog PUBLIC "-//OASIS//DTD Entity Resolution XML Catalog V1.0//EN"
++    "http://www.oasis-open.org/committees/entity/release/1.0/catalog.dtd">
++
+ <catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+ 
+ <!-- ...................................................................... -->
+--- a/docbook-4.4/catalog.xml
++++ b/docbook-4.4/catalog.xml
+@@ -1,4 +1,7 @@
+ <?xml version='1.0'?>
++<!DOCTYPE catalog PUBLIC "-//OASIS//DTD Entity Resolution XML Catalog V1.0//EN"
++    "http://www.oasis-open.org/committees/entity/release/1.0/catalog.dtd">
++
+ <catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="public">
+ 
+ <!-- ...................................................................... -->
+--- a/docbook-4.5/catalog.xml
++++ b/docbook-4.5/catalog.xml
+@@ -1,4 +1,7 @@
+ <?xml version='1.0'?>
++<!DOCTYPE catalog PUBLIC "-//OASIS//DTD Entity Resolution XML Catalog V1.0//EN"
++    "http://www.oasis-open.org/committees/entity/release/1.0/catalog.dtd">
++
+ <catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="public">
+ 
+ <!-- ...................................................................... -->

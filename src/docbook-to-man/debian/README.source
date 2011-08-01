@@ -1,0 +1,5 @@
+
+In the debian version of docbook-to-man, various formatting errors
+were fixed. See debian/patches/* for details.
+
+ -- Philipp Benner <philipp@debian.org>, Tue, 16 Mar 2010 12:16:10 +0000

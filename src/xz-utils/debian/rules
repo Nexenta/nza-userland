@@ -11,16 +11,18 @@ override_dh_auto_clean:
 override_dh_auto_configure:
 	autoreconf -fis
 	dh_auto_configure --builddirectory debian/normal-build -- \
-		$(opt_optimize) $(opt_quiet) --enable-dynamic
+		$(opt_optimize) $(opt_quiet) \
+		--disable-xzdec --disable-lzmadec
 	dh_auto_configure --builddirectory debian/xzdec-build -- \
 		--disable-shared --disable-nls --disable-encoders \
 		--enable-small --disable-threads \
-		$(opt_optimize_small) $(opt_quiet)
+		$(opt_optimize_small) $(opt_quiet) \
+		--disable-lzmainfo --disable-scripts \
+		--disable-xz --disable-lzma-links
 
 override_dh_auto_build:
 	dh_auto_build --builddirectory debian/normal-build
-	$(MAKE) -C debian/xzdec-build/src/liblzma
-	$(MAKE) -C debian/xzdec-build/src/xzdec
+	dh_auto_build --builddirectory debian/xzdec-build
 	: 'Work around bug #478524'
 	set -e; if type doxygen >/dev/null 2>/dev/null; \
 	then \
@@ -30,11 +32,14 @@ override_dh_auto_build:
 
 override_dh_auto_test:
 	$(MAKE) -C debian/normal-build check
+	$(MAKE) -C debian/xzdec-build/tests create_compress_files
+	$(MAKE) -C debian/xzdec-build/tests \
+		TESTS="test_check test_files.sh test_compress.sh" \
+		check-TESTS
 
 override_dh_auto_install:
 	dh_auto_install --builddirectory debian/normal-build
-	$(MAKE) -C debian/xzdec-build/src/xzdec install \
-		DESTDIR=$$(pwd)/debian/tmp
+	dh_auto_install --builddirectory debian/xzdec-build
 
 override_dh_installchangelogs:
 	dh_installchangelogs debian/changelog.upstream
@@ -73,7 +78,7 @@ endif
 
 # Build a tarball with the latest upstream version.
 # This is made complicated by the need to choose a nice version number.
-REPO = git://ctrl.tukaani.org/xz.git
+REPO = http://git.tukaani.org/xz.git
 BRANCH = master
 get-orig-source:
 	mkdir debian-orig-source

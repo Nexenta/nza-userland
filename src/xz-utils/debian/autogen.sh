@@ -28,4 +28,7 @@ changelog_needs_update() {
 
 cp -f m4/.gitignore debian/generated-m4.list
 cp -f po/.gitignore debian/generated-po.list
+sed -n 's,^build-aux/,, p' .gitignore > debian/generated-build-aux.list
+cp -f doc/examples/xz_pipe_decomp.c debian/examples/xz_pipe_decomp.c
+cp -f doc/examples/xz_pipe_comp.c debian/examples/xz_pipe_comp.c
 ! changelog_needs_update || exec sh debian/changelog.upstream.sh

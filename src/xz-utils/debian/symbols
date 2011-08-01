@@ -39,9 +39,9 @@ liblzma.so.2 liblzma2 #MINVER#
  lzma_index_buffer_encode@Base 4.999.9beta+20100117
  lzma_index_cat@Base 4.999.9beta+20100117
  lzma_index_checks@Base 4.999.9beta+20100117
- lzma_index_decoder@Base 4.999.9beta
+ lzma_index_decoder@Base 5.0.0
  lzma_index_dup@Base 4.999.9beta
- lzma_index_encoder@Base 4.999.9beta+20100117
+ lzma_index_encoder@Base 5.0.0
  lzma_index_end@Base 4.999.9beta
  lzma_index_file_size@Base 4.999.9beta
  lzma_index_hash_append@Base 4.999.9beta

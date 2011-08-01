@@ -1,2 +1,2 @@
-doc/examples/xz_pipe_comp.c
-doc/examples/xz_pipe_decomp.c
+debian/examples/xz_pipe_comp.c
+debian/examples/xz_pipe_decomp.c

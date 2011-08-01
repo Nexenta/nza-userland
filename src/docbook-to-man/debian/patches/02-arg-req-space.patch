@@ -1,0 +1,17 @@
+Author: Philipp Benner <mail@philipp-benner.de>
+Description: Inserts missing space after required arguments in section synopsis.
+(Closes: #375951)
+--- a/Transpec/docbook-to-man.ts
++++ b/Transpec/docbook-to-man.ts
+@@ -1218,6 +1218,11 @@
+ EndText:	${_attval REP REPEAT 505}]\s
+ -
+ #
++GI:             ARG
++AttValue:       CHOICE REQ
++StartText:      \s
++-
++#
+ GI:		ARG
+ #	no special attrs -- just pass content through
+ EndText:	${_attval REP REPEAT 505}\s

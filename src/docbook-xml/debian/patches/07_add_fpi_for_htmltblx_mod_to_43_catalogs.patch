@@ -1,0 +1,30 @@
+Author: Adam Di Carlo <aph@debian.org>.
+Description: * docbook-4.3/{catalog.xml,docbook.cat}: The catalogs for DB 4.3 miss
+the FPI "-//OASIS//ELEMENTS DocBook XML HTML Tables V4.3//EN".
+
+<URL:http://bugs.debian.org/268364>
+<URL:http://packages.debian.org/changelogs/pool/main/d/docbook-xml/current/changelog#versionversion4.4-1>
+--- a/docbook-4.3/catalog.xml
++++ b/docbook-4.3/catalog.xml
+@@ -40,6 +40,9 @@
+ <public publicId="-//OASIS//DTD DocBook CALS Table Model V4.3//EN"
+         uri="calstblx.dtd"/>
+ 
++<public publicId="-//OASIS//ELEMENTS DocBook XML HTML Tables V4.3//EN"
++        uri="htmltblx.mod"/>
++
+ <public publicId="-//OASIS//DTD XML Exchange Table Model 19990315//EN"
+         uri="soextblx.dtd"/>
+ 
+--- a/docbook-4.3/docbook.cat
++++ b/docbook-4.3/docbook.cat
+@@ -37,6 +37,9 @@
+ PUBLIC "-//OASIS//DTD DocBook CALS Table Model V4.3//EN"
+        "calstblx.dtd"
+ 
++PUBLIC "-//OASIS//ELEMENTS DocBook XML HTML Tables V4.3//EN"
++       "htmltblx.mod"
++
+ PUBLIC "-//OASIS//DTD XML Exchange Table Model 19990315//EN"
+        "soextblx.dtd"
+ 

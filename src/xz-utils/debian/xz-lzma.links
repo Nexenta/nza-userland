@@ -1,6 +1,7 @@
 usr/share/doc/xz-utils/README.gz usr/share/doc/xz-lzma/README.gz
 usr/share/doc/xz-utils/AUTHORS usr/share/doc/xz-lzma/AUTHORS
 usr/share/doc/xz-utils/THANKS usr/share/doc/xz-lzma/THANKS
+usr/share/doc/xz-utils/NEWS.gz usr/share/doc/xz-lzma/NEWS.gz
 usr/share/doc/xz-utils/history.txt.gz usr/share/doc/xz-lzma/history.txt.gz
 usr/share/doc/xz-utils/extra usr/share/doc/xz-lzma/extra
 usr/share/man/man1/xz.1.gz usr/share/man/man1/lzma.1.gz

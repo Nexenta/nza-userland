@@ -1,0 +1,10 @@
+iepngfix-license.diff
+10_doc_debian_paths.diff
+12_more_usrbinenv.diff
+13_install_roman.diff
+14_use_setuptools.diff
+emacs-temporary-files.diff
+emacs-shell-quote.diff
+15_emacs_debian_paths.diff
+16_disable_picins.diff
+buildhtml-local.diff

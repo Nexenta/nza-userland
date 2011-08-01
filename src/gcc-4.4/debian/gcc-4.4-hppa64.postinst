@@ -1,0 +1,13 @@
+#! /bin/sh -e
+
+prio=$(echo 4.4 | sed 's/\.//g')
+
+update-alternatives --quiet \
+	--install /usr/bin/hppa64-linux-gnu-gcc \
+		hppa64-linux-gnu-gcc \
+		/usr/bin/hppa64-linux-gnu-gcc-4.4 \
+		$prio
+
+#DEBHELPER#
+
+exit 0

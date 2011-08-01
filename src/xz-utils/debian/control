@@ -3,10 +3,13 @@ Section: utils
 Priority: required
 Maintainer: Jonathan Nieder <jrnieder@gmail.com>
 Uploaders: Mohammed Adnène Trojette <adn+deb@diwi.org>
-Build-Depends: debhelper (>= 7.4.10), perl, autoconf (>= 2.64~), automake, libtool (>= 2.2), text-locale, autopoint
+Build-Depends: debhelper (>= 7.4.10), perl,
+ autoconf (>= 2.64~), automake, libtool (>= 2.2),
+ gettext, autopoint | gettext (<< 0.18-1), autopoint | cvs
 Build-Depends-Indep: doxygen
 Build-Conflicts: automake1.4
-Standards-Version: 3.9.0
+Standards-Version: 3.9.1
+Upstream-Version: 5.0.0
 Vcs-Browser: http://git.debian.org/?p=collab-maint/xz.git
 Vcs-Git: git://git.debian.org/collab-maint/xz.git
 Homepage: http://tukaani.org/xz/
@@ -14,7 +17,7 @@ Homepage: http://tukaani.org/xz/
 Package: liblzma2
 Section: libs
 Architecture: any
-Depends: libgcc1, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: XZ-format compression library
  XZ is the successor to the Lempel-Ziv/Markov-chain Algorithm
  compression format, which provides memory-hungry but powerful
@@ -26,7 +29,7 @@ Description: XZ-format compression library
 
 Package: xz-utils
 Architecture: any
-Depends: libgcc1, liblzma2 (>= 4.999.9beta+20100602), ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}
 Suggests: xz-lzma
 Breaks: xz-lzma (<< 4.999.9beta+20091004-1)
 Replaces: xz-lzma (<< 4.999.9beta+20091004-1)
@@ -72,7 +75,7 @@ Description: XZ-format compression utilities - compatibility commands
 Package: xzdec
 Priority: extra
 Architecture: any
-Depends: ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}
 Suggests: xz-utils
 Breaks: xz-lzma (<< 4.999.9beta+20091004-1)
 Replaces: xz-lzma (<< 4.999.9beta+20091004-1)
@@ -119,14 +122,6 @@ Architecture: all
 Depends: ${misc:Depends}
 Suggests: liblzma-dev
 Description: XZ-format compression library - API documentation
- XZ is the successor to the Lempel-Ziv/Markov-chain Algorithm
- compression format, which provides memory-hungry but powerful
- compression (often better than bzip2) and fast, easy decompression.
- .
- The native format of liblzma is XZ; it also supports raw (headerless)
- streams and the older LZMA format used by lzma. (For 7-Zip's related
- format, use the p7zip package instead.)
- .
  This package contains a reference manual for the liblzma data
  compression library, in Doxygen-generated HTML files. The purpose
  of each struct, macro, and function in the public interface is

@@ -1,0 +1,12 @@
+#! /bin/sh -e
+
+case "$1" in
+    configure)
+	docdir=/usr/share/doc/libgcj10
+	if [ -d $docdir ] && [ ! -h $docdir ]; then
+	  rm -rf /usr/share/doc/libgcj10
+	  ln -s gcj-4.4-base /usr/share/doc/libgcj10
+	fi
+esac
+
+#DEBHELPER#

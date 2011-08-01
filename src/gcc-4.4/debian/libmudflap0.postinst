@@ -1,0 +1,12 @@
+#! /bin/sh
+
+set -e
+
+case "$1" in configure)
+    if [ -d /usr/share/doc/libmudflap0 ] && [ ! -h /usr/share/doc/libmudflap0 ]; then
+	rm -rf /usr/share/doc/libmudflap0
+	ln -s gcc-4.4-base /usr/share/doc/libmudflap0
+    fi
+esac
+
+#DEBHELPER#

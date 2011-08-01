@@ -1,0 +1,2 @@
+# mere unpacking zope3 (= 3.4.0-1) completely breaks docutils
+python-docutils: conflicts-with-version zope3 (= 3.4.0-1)

@@ -1,6 +1,0 @@
-files
-sgml-data
-sgml-data.postinst.debhelper
-sgml-data.postrm.debhelper
-sgml-data.prerm.debhelper
-sgml-data.substvars

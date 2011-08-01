@@ -1,8 +1,8 @@
-sgml-base (1.26+nmu1nexenta0) unstable; urgency=low
+sgml-base (40-0-0) unstable; urgency=low
 
-  * Port to NCP 
+  * Ported to NCP4
 
- -- Anil Gulecha <anil.verve@gmail.com>  Fri, 12 Nov 2010 08:38:51 +0530
+ -- Igor Pashev <igor.pashev@nexenta.com>  Fri, 29 Jul 2011 19:36:16 +0400
 
 sgml-base (1.26+nmu1) unstable; urgency=low
 
