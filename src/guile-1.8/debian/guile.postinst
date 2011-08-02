@@ -1,0 +1,14 @@
+#!/bin/sh
+
+set -e
+
+if [ "$1" != "upgrade" ] ; then
+    update-alternatives \
+      --install \
+        /usr/bin/guile \
+        guile \
+        /usr/bin/guile-@DEB_SRC_EFF_VER@ \
+        @DEB_SRC_MAJ_VER@@DEB_SRC_MIN_VER@@DEB_SRC_MIC_VER@
+fi
+
+#DEBHELPER#
