@@ -1,0 +1,53 @@
+Source: dh-ocaml
+Section: ocaml
+Priority: extra
+Maintainer: Debian OCaml Maintainers <debian-ocaml-maint@lists.debian.org>
+Uploaders:
+ Mehdi Dogguy <mehdi@debian.org>,
+ Samuel Mimram <smimram@debian.org>,
+ Stéphane Glondu <glondu@debian.org>,
+ Sylvain Le Gall <gildor@debian.org>,
+ Ralf Treinen <treinen@debian.org>
+Build-Depends:
+ debhelper (>= 7)
+Build-Depends-Indep:
+ docbook-xml (>= 40-0-0),
+ docbook-xsl,
+ xsltproc,
+ libxml2-utils,
+ lynx
+Standards-Version: 3.9.1
+Vcs-Git: git://git.debian.org/git/pkg-ocaml-maint/packages/dh-ocaml.git
+Vcs-Browser: http://git.debian.org/?p=pkg-ocaml-maint/packages/dh-ocaml.git
+Upstream-Version: 0.9.6nexenta1
+
+Package: dh-ocaml
+Architecture: all
+Depends: ${misc:Depends}
+Recommends:
+ debhelper,
+ ocaml-nox
+Replaces:
+ ocaml-base-nox (<< 3.11.0~beta1-1),
+ ocaml (<< 3.11.0~beta1-1),
+ ocaml-nox (<< 3.11.0~beta1-1),
+ ocaml-base (<< 3.11.0~beta1-1)
+Breaks:
+ ocaml-base-nox (<< 3.11.0~beta1-1),
+ ocaml (<< 3.11.0~beta1-1),
+ ocaml-nox (<< 3.11.0~beta1-1),
+ ocaml-base (<< 3.11.0~beta1-1)
+Suggests:
+ git-core
+Description: helper tools for maintaining OCaml-related Debian packages
+ dh-ocaml is a set of tools and documents to help maintaining Debian
+ packages related to the Objective Caml (OCaml) programming language.
+ .
+ dh-ocaml notably contains the following components:
+  * Makefile helpers to write debian/rules files implementing OCaml
+    packaging best-practices (both for CDBS lovers and haters)
+  * the Debian OCaml Packaging Policy
+  * dh_ocaml debhelper to automatically computes dependencies among
+    binary OCaml packages
+  * ocaml-md5sums, the tool used to maintain the system registry of
+    OCaml module interface checksums

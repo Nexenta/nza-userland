@@ -1,0 +1,15 @@
+Document: ocaml-packaging-reference
+Title: Debian OCaml Packaging Reference
+Author: Mehdi Dogguy, Stéphane Glondu, Sylvain Le Gall, Sven Luther, Samuel Mimram, Ralf Treinen, and Stefano Zacchiroli
+Abstract: This policy describes the best practices for preparing
+ Debian packages containing programs and libraries related to the
+ Objective Caml (OCaml) programming language, following the rules
+ set in the OCaml Packaging Policy.
+Section: Debian
+
+Format: Text
+Files: /usr/share/doc/dh-ocaml/ocaml_packaging_reference.txt.gz
+
+Format: HTML
+Index: /usr/share/doc/dh-ocaml/ocaml_packaging_reference.html
+Files: /usr/share/doc/dh-ocaml/ocaml_packaging_reference.html

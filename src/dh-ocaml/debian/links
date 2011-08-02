@@ -1,0 +1,9 @@
+/usr/share/doc/dh-ocaml/ocaml_packaging_policy.txt.gz	/usr/share/doc/ocaml/ocaml_packaging_policy.txt.gz
+/usr/share/doc/dh-ocaml/ocaml_packaging_policy.txt.gz	/usr/share/doc/ocaml-nox/ocaml_packaging_policy.txt.gz
+/usr/share/doc/dh-ocaml/ocaml_packaging_policy.txt.gz	/usr/share/doc/ocaml-base/ocaml_packaging_policy.txt.gz
+/usr/share/doc/dh-ocaml/ocaml_packaging_policy.txt.gz	/usr/share/doc/ocaml-base-nox/ocaml_packaging_policy.txt.gz
+
+/usr/share/doc/dh-ocaml/ocaml_packaging_policy.html	/usr/share/doc/ocaml/ocaml_packaging_policy.html
+/usr/share/doc/dh-ocaml/ocaml_packaging_policy.html	/usr/share/doc/ocaml-nox/ocaml_packaging_policy.html
+/usr/share/doc/dh-ocaml/ocaml_packaging_policy.html	/usr/share/doc/ocaml-base/ocaml_packaging_policy.html
+/usr/share/doc/dh-ocaml/ocaml_packaging_policy.html	/usr/share/doc/ocaml-base-nox/ocaml_packaging_policy.html

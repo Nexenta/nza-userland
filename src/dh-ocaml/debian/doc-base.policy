@@ -1,0 +1,14 @@
+Document: ocaml-packaging-policy
+Title: Debian OCaml Packaging Policy
+Author: Mehdi Dogguy, Stéphane Glondu, Sylvain Le Gall, Sven Luther, Samuel Mimram, Ralf Treinen, and Stefano Zacchiroli
+Abstract: This policy describes the requirements for preparing
+ Debian packages containing programs and libraries related to the
+ Objective Caml (OCaml) programming language.
+Section: Debian
+
+Format: Text
+Files: /usr/share/doc/dh-ocaml/ocaml_packaging_policy.txt.gz
+
+Format: HTML
+Index: /usr/share/doc/dh-ocaml/ocaml_packaging_policy.html
+Files: /usr/share/doc/dh-ocaml/ocaml_packaging_policy.html

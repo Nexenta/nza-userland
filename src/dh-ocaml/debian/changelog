@@ -1,0 +1,267 @@
+dh-ocaml (40-0-0) unstable; urgency=low
+
+  * Used new version scheme
+
+ -- Peter Zaickin <peter.zaickin@nexenta.com>  Tue, 02 Aug 2011 17:28:53 +0300
+
+dh-ocaml (0.9.6nexenta1) unstable; urgency=low
+
+  * Packaged for NCP4
+
+ -- Igor Pashev <igor.pashev@nexenta.com>  Tue, 05 Apr 2011 17:30:05 +0400
+
+dh-ocaml (0.9.6) unstable; urgency=low
+
+  [ Stéphane Glondu ]
+  * debian/control:
+    - add git-core to Suggests
+    - bump Standards-Version to 3.9.1 (no changes)
+  * tools/:
+    - dom-new-git-repo: explicitly use sh when executing remote commands
+      via ssh (Closes: #588371)
+    - dom-git-checkout: check for existence of upstream/pristine-tar
+      remote branches before creating local ones (Closes: #591555)
+
+  [ Ralf Treinen ]
+  * policy/: continue work started by Sylvain Le Gall on splitting the 
+    document into policy and reference (thanks, Sylvain!):
+    - current value of ocaml version no longer mentionend in policy
+    - fix location of library directory (closes: #591556)
+    - refactor sections, many small changes all over the document
+    - streamline discussion on bytecode vs native code
+    - compiling with -custom is deprecated (closes: #500286)
+    - reference: add section on dh
+    - findlib integration: META files always go in the directory of the
+      library, debian-specific ones should have a comment.
+  * Makefile: generate the reference document
+  * update authors in doc-base registration for the policy
+  * add doc-base registration for the reference.
+  * Added myself to uploaders.
+
+ -- Ralf Treinen <treinen@debian.org>  Mon, 06 Sep 2010 20:30:15 +0200
+
+dh-ocaml (0.9.5) unstable; urgency=low
+
+  * Fix detection of Dynlink support.
+
+ -- Mehdi Dogguy <mehdi@debian.org>  Wed, 07 Jul 2010 19:03:26 +0200
+
+dh-ocaml (0.9.4) unstable; urgency=low
+
+  [ Mehdi Dogguy ]
+  * dh_ocamldoc:
+    + Use word boundaries to correctly detect ocamlfind options
+      instead of spaces (Closes: #555794).
+    + Add some bits to the manpage about how to deal with
+      several documentations.
+    + Make different titles when a package ships several documentations.
+    + Pass -sort to ocamldoc to sort the list of top-level modules before
+      generating the documentation.
+    + When "--doc-base-generate" is found in a .ocamldoc file, dh_ocamldoc
+      will generate the corresponding .doc-base file only (Closes: #549930)
+  * dom-git-checkout.1: Mention how to configure the username (Closes: #570363)
+
+  [ Stéphane Glondu ]
+  * debian/control:
+    + remove Stefano from Uploaders
+    + move debhelper to Build-Depends (needed for "clean" target)
+    + add debhelper to Recommends
+    + make dh-ocaml break previous versions of ocaml (Closes: #569195)
+    + bump Standards-Version to 3.9.0
+  * dh_ocamlinit: add support for DYN: lines
+  * ocamlvars.mk: add OCAML_NATDYNLINK
+  * Switch source package format to 3.0 (native)
+
+ -- Stéphane Glondu <glondu@debian.org>  Wed, 30 Jun 2010 01:54:24 +0200
+
+dh-ocaml (0.9.3) unstable; urgency=low
+
+  * Revert fix to #500869; -u is deprecated (Closes: #554510)
+
+ -- Stéphane Glondu <glondu@debian.org>  Thu, 05 Nov 2009 08:57:40 +0100
+
+dh-ocaml (0.9.2) unstable; urgency=low
+
+  [ Stéphane Glondu ]
+  * dom-new-git-repo: fail by default when executed out of a Git
+    repository and without tarball argument; don't fail if explicitly
+    given "--notifications"
+  * dh_ocaml: also take into account OCaml objects in non-lib packages;
+    don't assume all objects are in /usr/lib
+  * ocaml.mk: don't overwrite DEB_DH_GENCONTROL_ARGS and use -u instead of
+    -- to pass args to dpkg-gencontrol in a safer manner (thanks to Loïc
+    Minier) (Closes: #500869)
+
+  [ Mehdi Dogguy ]
+  * Use my debian address instead of the old ones, everywhere.
+  * Handle relations between libXXXX-camlp4-dev and libXXXX-camlp4
+    packages (Closes: #552392).
+  * dh_ocamlinit: Do not generate a stamp file after cleaning
+  * ocaml.mk: run dh_ocamldoc only on the current package
+  * OCAML_OCAMLDOC_PACKAGES is not needed anymore. Thus, removing each
+    occurence and reference to it.
+
+  [ Samuel Mimram ]
+  * dom-git-checkout: add --no-ssh option
+
+ -- Stéphane Glondu <glondu@debian.org>  Tue, 03 Nov 2009 20:35:55 +0100
+
+dh-ocaml (0.9.1) unstable; urgency=low
+
+  [ Stéphane Glondu ]
+  * dh_ocamldoc: fix typo in regexp (Closes: #549939)
+  * dh_ocaml: better error when /usr/lib doesn't exist in a relevant
+    binary package
+  * dom-new-git-repo:
+    - cope with new scheme of example hooks with recent versions of git
+    - issue a warning when nothing is pushed
+
+  [ Mehdi Dogguy ]
+  * Don't pass --nodefined-map to ocaml-lintian
+  * Add a variable to be able to desactivate dh_ocaml in a cdbs
+    package when needed. The variable WITH_DH_OCAML has to be set
+    to 0 to desactivate dh_ocaml.
+  * ocaml-md5sums: Print object file's name when failing
+  * Replace class/ocaml.mk with rules/ocaml.mk in policy/appendix-cdbs.xml
+    (Closes: #550378)
+
+  [ Stefano Zacchiroli ]
+  * dh_ocamldoc manpage improvements: mention how ocamlfind is detected
+    and that order is relevant when shipping doc elsewhere
+
+ -- Stéphane Glondu <glondu@debian.org>  Fri, 16 Oct 2009 00:31:24 +0200
+
+dh-ocaml (0.9.0) unstable; urgency=low
+
+  [ Stefano Zacchiroli ]
+  * dom-git-checkout manpage: clarify that the tool is d-o-m specific
+  * dom-new-git-repo manpage: clarify what pkg-ocaml-maint is
+
+  [ Sylvain Le Gall ]
+  * Rewrite ocaml-md5sums in perl and install it (Closes: #516502)
+  * dh_ocaml now computes automatically dependencies (Closes: #522831)
+  * Add dh-ocaml (>= 0.9) build dependency when generating debian/control
+    through CDBS
+  * Add ocaml-lintian and use it in dh_ocaml to dump information for
+    lintian check
+  * Use xsltproc and lynx rather than docbook2x to produce policy
+  * Convert policy to xinclude to be able to run xmllint and spot
+    precisely error
+
+  [ Mehdi Dogguy ]
+  * Install ocaml.pm to enable: dh --with ocaml
+  * Execute dh_ocaml before dh_gencontrol in the dh sequence
+  * Simplify build process
+  * Make the cdbs rule ocaml.mk work with the dh_ocaml scripts suite.
+  * Update email addresses and remove DMUA
+
+  [ Stéphane Glondu ]
+  * Remove compatibility symlinks from /usr/share/cdbs/1/class
+  * Update Standards-Version to 3.8.3
+
+ -- Stéphane Glondu <glondu@debian.org>  Tue, 22 Sep 2009 22:42:32 +0200
+
+dh-ocaml (0.5.0) unstable; urgency=low
+
+  [ Stephane Glondu ]
+  * Use "<<" for Replaces, not "<=" (Closes: #528241)
+  * Add ocaml-pkg-update-uploaders (Closes: #516764)
+  * Add dom-safe-pull
+
+  [ Mehdi Dogguy ]
+  * Add variables OCAML_RUNTIME and OCAML_RUNTIME_NOX in ocamlvars.mk: which
+    are, respectively, ocaml-base-nox-$(OCAML_ABI) and ocaml-base-$(OCAML_ABI)
+    on non-native archs.
+  * Install script tools dom-{new-git-repo,git-checkout,mrconfig} in
+    /usr/bin (Closes: #516777)
+  * Install dom-{apply,save}-patches in /usr/bin/ and update policy to
+    explain briefly how to use them.
+  * Add manpages for new tools
+  * Add docbook-xsl, libxml2-utils and xsltproc to generate manpages
+
+  [ Ralf Treinen ]
+  * Add a section on setting the archive section of ocaml programs.
+  * Set Section to ocaml
+
+  [ Sylvain Le Gall ]
+  * Add dom-switch-opt to test byte compilation on native arch
+
+ -- Mehdi Dogguy <dogguy@pps.jussieu.fr>  Sat, 18 Jul 2009 21:21:41 +0200
+
+dh-ocaml (0.4.1) unstable; urgency=low
+
+  [ Samuel Mimram ]
+  * Correct typo in dh_ocaml (Closes: #514996)
+
+  [ Stefano Zacchiroli ]
+  * switch versioning scheme to major.minor.micro: we will bump minor
+    only for significant changes, and micro for bugfixes (as usual)
+  * package description: clarify that debian/rules helpers are both for
+    CDBS and for generic debian/rules
+  * ocamlinit.mk: avoid stripping leading white spaces while filling .in
+    files. Rationale: that could break files for which spaces are relevant
+    (e.g. debian/patches/*.in)
+
+ -- Stefano Zacchiroli <zack@debian.org>  Sun, 22 Feb 2009 22:54:02 +0100
+
+dh-ocaml (0.4) unstable; urgency=low
+
+  * ocamlinit.mk: clean up ocamlinit-stamp upon ocamlinit-clean (it used
+    to induce very subtle FTBFSs)
+
+ -- Stefano Zacchiroli <zack@debian.org>  Sat, 21 Feb 2009 15:15:54 +0100
+
+dh-ocaml (0.3) unstable; urgency=low
+
+  [ Stephane Glondu ]
+  * CDBS / Makefile snippets:
+    - ocaml.mk: use ocamlinit.mk
+    - ocamlvars.mk: remove OCAML_IN_FILES, defined in ocamlinit.mk
+
+  [ Samuel Mimram ]
+  * Add variable OCAML_OCAMLDOC in ocamlvars.mk to get the best ocamldoc for
+    the architecture.
+  * Substitute everywhere in ocamlinit.
+  * Add myself to uploaders.
+
+  [ Mehdi Dogguy ]
+  * Add variable OCAML_BEST in ocamlvars.mk: 'opt' when ocamlopt is
+    present and 'byte' otherwise.
+  * Add myself to uploaders.
+
+  [ Stefano Zacchiroli ]
+  * Move CDBS' ocaml.mk from class/ to rules/; provide a symlink for
+    backward compatibility (Closes: #514517)
+  * uploading to unstable
+
+ -- Stefano Zacchiroli <zack@debian.org>  Sat, 21 Feb 2009 12:49:50 +0100
+
+dh-ocaml (0.2) experimental; urgency=low
+
+  [ Sylvain Le Gall ]
+  * Add a script to test "-custom" binary
+
+  [ Mehdi Dogguy ]
+  * Add HOWTO update/publish the policy section to README.Debian
+
+  [ Stephane Glondu ]
+  * Policy:
+    - remove XS- prefix in XS-Vcs-*
+    - add preliminary documentation for Git packaging
+  * CDBS:
+    - handle lines starting with "OPT: " in *.in files
+    - remove Julien from $(OCAML_TEAM)
+    - move parts of CDBS to /usr/share/ocaml
+  * Provide ocamlinit snippet in /usr/share/ocaml
+  * Set Maintainer to d-o-m, add Stefano and me to Uploaders
+  * Add DM-Upload-Allowed (with Stefano's blessing)
+
+ -- Stephane Glondu <steph@glondu.net>  Tue, 17 Feb 2009 15:31:22 +0100
+
+dh-ocaml (0.1) experimental; urgency=low
+
+  * Initial release
+  * Split this new package, out of other ocaml-* packages, to contain support
+    stuff used to maintain OCaml-related packages in Debian (Closes: #451675)
+
+ -- Stefano Zacchiroli <zack@debian.org>  Thu, 07 Aug 2008 00:54:00 -0300
