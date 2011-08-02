@@ -1,0 +1,13 @@
+Description: Set LD_LIBRARY_PATH_64 for sparcv9 and amd64 on Solaris.
+Author: Albert Lee <trisk@nexenta.com>
+--- fakeroot-40-0.orig/configure	2011-08-01 23:09:43.752164319 +0530
++++ fakeroot-40-0/configure	2011-08-01 23:11:03.485961868 +0530
+@@ -11793,6 +11793,8 @@
+ 		;;
+ 	(*:solaris*)
+ 		libcpath="/lib/libc.so.1"
++		LDLIBPATHVAR="LD_LIBRARY_PATH_32"
++		LDEXTRAVAR="LD_LIBRARY_PATH_64=\"$prefix/lib/64/libfakeroot\""
+ 		;;
+ 	(*:darwin*)
+ 		libcpath="/usr/lib/libSystem.dylib"
