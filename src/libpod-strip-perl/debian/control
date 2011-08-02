@@ -1,0 +1,22 @@
+Source: libpod-strip-perl
+Section: perl
+Priority: optional
+Build-Depends: debhelper (>= 7), libmodule-build-perl
+Build-Depends-Indep: perl (>= 5.6.10-12)
+Maintainer: Debian Perl Group <pkg-perl-maintainers@lists.alioth.debian.org>
+Uploaders: Damyan Ivanov <dmn@debian.org>
+Standards-Version: 3.8.0
+Homepage: http://search.cpan.org/dist/Pod-Strip/
+Vcs-Svn: svn://svn.debian.org/pkg-perl/trunk/libpod-strip-perl/
+Vcs-Browser: http://svn.debian.org/wsvn/pkg-perl/trunk/libpod-strip-perl/
+Upstream-Version: 1.02-2
+
+Package: libpod-strip-perl
+Architecture: all
+Depends: ${perl:Depends}, ${misc:Depends}
+Description: remove POD documentation from Perl code
+ Pod::Strip is a subclass of Pod::Simple that removes the POD (plain old
+ documentation) from Perl code. The POD may optionally be replaced with
+ comments so that line numbers of the code stay the same.
+ .
+ Pod::Strip is useful in Perl code parsers that don't want to bother about POD.
