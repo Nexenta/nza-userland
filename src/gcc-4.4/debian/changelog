@@ -1,3 +1,10 @@
+gcc-4.4 (4.4.5-12nexenta4) unstable; urgency=low
+
+  * Make -march=pentium4 the default.  Closes:  #5757
+  * Rebuild against libgmp3.
+
+ -- Andrew Stormont (astormont) <andyjstormont@googlemail.com>  Mon, 01 Aug 2011 14:32:24 +0100
+
 gcc-4.4 (4.4.5-12nexenta3) unstable; urgency=low
 
   * Use sun linker by default.

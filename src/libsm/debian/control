@@ -16,6 +16,7 @@ Build-Depends:
  xutils-dev (>= 1:7.4+4),
  quilt
 Standards-Version: 3.8.3
+Upstream-Version: 1.1.1
 Vcs-Git: git://git.debian.org/git/pkg-xorg/lib/libsm
 Vcs-Browser: http://git.debian.org/?p=pkg-xorg/lib/libsm.git
 
