@@ -1,6 +1,13 @@
-curl (40-0-1) unstable; urgency=low
+curl (40-0-2) unstable; urgency=low
 
   * debian/control:
+    + Added dependency on libnspr4-0d to curl binary (Closes: #5938)
+
+ -- Kartik Mistry <kartik.mistry@nexenta.com>  Tue, 02 Aug 2011 11:11:50 +0530
+
+curl (40-0-1) unstable; urgency=low
+
+  * debian/rules:
     + (Really) Depends on libkrb5-dev | system-security-kerberos-5 instead of
       libkrb5-dev alone.
 
