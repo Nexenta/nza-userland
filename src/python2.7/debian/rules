@@ -1,0 +1,241 @@
+#!/usr/bin/make -f
+
+VERSION = 2.7
+PYTHON = python$(VERSION)
+
+BUILD   = build-tree
+DESTDIR = $(CURDIR)/debian/tmp
+BUILD_static    = $(BUILD)/static
+BUILD_shared    = $(BUILD)/shared
+BUILD_static_d  = $(BUILD)/static/debug
+BUILD_shared_d  = $(BUILD)/shared/debug
+
+# Where to find GNU ncurses:
+NCURSES_INCS    =  -I/usr/include/ncursesw
+NCURSES_LDFLAGS =  -L/usr/gnu/lib -R/usr/gnu/lib
+
+CFLAGS    = $(NCURSES_INCS)
+CPPFLAGS  = $(NCURSES_INCS)
+LDFLAGS   = $(NCURSES_LDFLAGS)
+
+
+# fpectl requires ieee_handler() with is in libsunmath (from Sun Studio)
+CONFIGURE_COMMON = \
+        --with-system-ffi \
+        --with-system-expat \
+        --enable-ipv6 \
+        --enable-unicode=ucs4 \
+        --with-dbmliborder=bdb \
+        --without-fpectl
+
+CONFIGURE_static   = --disable-shared
+CONFIGURE_shared   = --enable-shared
+CONFIGURE_shared_d = $(CONFIGURE_shared) --with-pydebug
+CONFIGURE_static_d = $(CONFIGURE_static) --with-pydebug
+
+
+# Patches modify configure.in, so use autoreconf:
+build install clean build-arch build-indep binary:
+	dh $@ --with autoreconf
+
+override_dh_auto_configure: \
+	configure-shared-stamp \
+	configure-static-stamp \
+	configure-static_d-stamp \
+	configure-shared_d-stamp
+
+configure-shared-stamp \
+configure-static-stamp \
+configure-static_d-stamp \
+configure-shared_d-stamp : configure-%-stamp :
+	dh_auto_configure -B $(BUILD_$*) -- \
+        $(CONFIGURE_COMMON) \
+        $(CONFIGURE_$*) \
+        LDFLAGS="$(LDFLAGS)" \
+        CFLAGS="$(CFLAGS)" \
+        CPPFLAGS="$(CPPFLAGS)"
+	
+	grep -E '^#($(shell tr '\012' '|' < debian/extensions)=DUMMY=)' \
+		Modules/Setup.dist | sed 's,^#,,' >> $(BUILD_$*)/Modules/Setup.local
+	
+	cd $(BUILD_$*) && \
+		$(CURDIR)/Modules/makesetup -c $(CURDIR)/Modules/config.c.in -s Modules \
+		Modules/Setup.config Modules/Setup.local Modules/Setup && \
+		mv config.c Modules/
+
+	touch $@
+
+
+override_dh_auto_build:
+	$(MAKE) -C $(BUILD_shared)   LIBRARY=lib$(PYTHON)-pic.a
+	$(MAKE) -C $(BUILD_static)
+	$(MAKE) -C $(BUILD_shared_d) lib$(PYTHON)_d.so
+	$(MAKE) -C $(BUILD_static_d)
+
+
+override_dh_auto_test:
+#	$(MAKE) -C $(BUILD_shared) test TESTOPTS="$(TESTOPTS)"
+#	$(MAKE) -C $(BUILD_static) test TESTOPTS="$(TESTOPTS)"
+
+install-debug-stamp:
+	$(MAKE) -C $(BUILD_static_d) install DESTDIR=$(DESTDIR)/dbg
+
+	mkdir -p \
+		$(DESTDIR)/usr/bin \
+		$(DESTDIR)/usr/include/$(PYTHON)_d \
+		$(DESTDIR)/usr/lib/$(PYTHON) \
+	    $(DESTDIR)/usr/lib/pkgconfig \
+		$(DESTDIR)/usr/lib/$(PYTHON)/lib-dynload \
+		$(DESTDIR)/usr/lib/debug/usr/bin \
+		$(DESTDIR)/usr/lib/debug/usr/lib \
+		$(DESTDIR)/usr/share/man/man1
+
+	cp -r $(DESTDIR)/dbg/usr/lib/$(PYTHON)/config_d \
+          $(DESTDIR)/usr/lib/$(PYTHON)/
+
+	ln -sf ../../lib$(PYTHON)_d.so \
+		$(DESTDIR)/usr/lib/$(PYTHON)/config_d/lib$(PYTHON)_d.so
+	ln -sf lib$(PYTHON)_d.so \
+		$(DESTDIR)/usr/lib/$(PYTHON)/config_d/lib$(PYTHON).so
+	ln -sf lib$(PYTHON)_d.a \
+		$(DESTDIR)/usr/lib/$(PYTHON)/config_d/lib$(PYTHON).a
+
+
+	cp   $(BUILD_static_d)/python $(DESTDIR)/usr/bin/$(PYTHON)-dbg
+	sed 's,@EXENAME@,/usr/bin/$(PYTHON)-dbg,' \
+		Misc/python-config.in > $(DESTDIR)/usr/bin/$(PYTHON)-dbg-config
+
+	cp Tools/gdb/libpython.py $(DESTDIR)/usr/lib/debug/usr/bin/$(PYTHON)-gdb.py
+	ln -sf $(PYTHON)-gdb.py   $(DESTDIR)/usr/lib/debug/usr/bin/$(PYTHON)-dbg-gdb.py
+
+	ln -sf ../bin/$(PYTHON)-gdb.py \
+                              $(DESTDIR)/usr/lib/debug/usr/lib/lib$(PYTHON).so.1.0-gdb.py
+	ln -sf ../bin/$(PYTHON)-gdb.py \
+                              $(DESTDIR)/usr/lib/lib$(PYTHON)_d.so.1.0-gdb.py
+
+	cp -p $(BUILD_static_d)/build/lib*/*_d.so \
+				$(DESTDIR)/usr/lib/$(PYTHON)/lib-dynload/
+
+	# Headers are same
+	cd Include && for f in *.h; do \
+		ln -sf ../$(PYTHON)/$$f $(DESTDIR)/usr/include/$(PYTHON)_d/$$f ; \
+	done
+	# but pyconfig.h
+	cp $(BUILD_static_d)/pyconfig.h $(DESTDIR)/usr/include/$(PYTHON)_d/
+
+	sed -r '/^Libs:/s,-l$(PYTHON),-l$(PYTHON)_d,; /^Cflags:/s,$(PYTHON),$(PYTHON)_d,' \
+		$(BUILD_static_d)/Misc/python.pc \
+	    > $(DESTDIR)/usr/lib/pkgconfig/python-$(VERSION)-dbg.pc
+
+	cp $(BUILD_shared_d)/lib$(PYTHON).so.1.0 \
+            $(DESTDIR)/usr/lib/lib$(PYTHON)_d.so.1.0
+	ln -sf lib$(PYTHON)_d.so.1.0 $(DESTDIR)/usr/lib/lib$(PYTHON)_d.so.1
+	ln -sf lib$(PYTHON)_d.so.1   $(DESTDIR)/usr/lib/lib$(PYTHON)_d.so
+
+	ln -sf $(PYTHON).1 $(DESTDIR)/usr/share/man/man1/$(PYTHON)-dbg.1
+
+	touch $@
+
+override_dh_auto_install: install-debug-stamp
+	# Use python statically linked with libpython (as Debian does):
+	$(MAKE) -C $(BUILD_static) install DESTDIR=$(DESTDIR)
+
+	cp $(BUILD_shared)/lib$(PYTHON)-pic.a \
+       $(BUILD_static)/lib$(PYTHON).a     \
+            $(DESTDIR)/usr/lib/$(PYTHON)/config/
+
+	# Ordinary static lib is non-pic:
+	cp $(BUILD_static)/lib$(PYTHON).a \
+       $(BUILD_shared)/lib$(PYTHON).so.1.0 \
+            $(DESTDIR)/usr/lib/
+	ln -sf lib$(PYTHON).so.1.0 $(DESTDIR)/usr/lib/lib$(PYTHON).so.1
+	ln -sf lib$(PYTHON).so.1   $(DESTDIR)/usr/lib/lib$(PYTHON).so
+
+	mv $(DESTDIR)/usr/bin/pydoc{,$(VERSION)}
+	mv $(DESTDIR)/usr/bin/2to3{,-$(VERSION)}
+	mv $(DESTDIR)/usr/bin/idle{,-$(PYTHON)}
+
+	# pygettext is obsolete, though (xgettext supports python now)
+	cp -p Tools/i18n/pygettext.py $(DESTDIR)/usr/bin/pygettext$(VERSION)
+
+	ln -sf ../lib/python$(VERSION)/pdb.py $(DESTDIR)/usr/bin/pdb$(VERSION)
+
+	mkdir -p $(DESTDIR)/etc/$(PYTHON)
+
+	# Will compile when installing:
+	find $(DESTDIR) -type f -name '*.py[co]' -delete
+
+	# remove tests, some will fail on install:
+	( cd $(DESTDIR)/usr/lib/$(PYTHON)/test && for f in * ; do \
+		case $$f in \
+		regrtest.py|test_support.py|__init__.py|pystone.py) ;; \
+		*) rm -rf $$f ;; \
+		esac \
+	done )
+	rm -rf $(DESTDIR)/usr/lib/$(PYTHON)/bsddb/test
+	rm -rf $(DESTDIR)/usr/lib/$(PYTHON)/ctypes/test
+	rm -rf $(DESTDIR)/usr/lib/$(PYTHON)/distutils/tests
+	rm -rf $(DESTDIR)/usr/lib/$(PYTHON)/email/test
+	rm -rf $(DESTDIR)/usr/lib/$(PYTHON)/json/tests
+	rm -rf $(DESTDIR)/usr/lib/$(PYTHON)/lib-tk/test
+	rm -rf $(DESTDIR)/usr/lib/$(PYTHON)/lib2to3/tests
+	rm -rf $(DESTDIR)/usr/lib/$(PYTHON)/sqlite3/test
+	rm -rf $(DESTDIR)/usr/lib/$(PYTHON)/unittest/test
+
+	rm -f  $(DESTDIR)/usr/lib/$(PYTHON)/idlelib/idle.bat
+	rm -rf $(DESTDIR)/usr/lib/$(PYTHON)/ctypes/macholib
+
+	# Remove failed modules:
+	find $(DESTDIR) -type f -name '*_failed.so' -delete
+
+	# Fix shebangs:
+	for i in `find debian/*/usr -type f`; do \
+		if head -1 $$i | grep -q '^#!.*python.*'; then \
+			sed -i -r '1s,^#!.*python.*,#!/usr/bin/$(PYTHON),' $$i; \
+			echo "fixed shebang: $$i"; \
+		fi; \
+	done
+
+override_dh_install:
+	# files listed in debian/*.files will be *moved* into corresponding package
+	# it allows to install into the last package all *remaining* files
+	dh_movefiles -p $(PYTHON)-dbg
+	dh_movefiles -p idle-$(PYTHON)
+	dh_movefiles -p $(PYTHON)-minimal
+	dh_movefiles -p $(PYTHON)-dev
+	dh_movefiles -p lib$(PYTHON)
+	dh_movefiles -p $(PYTHON)
+	# for files not in debian/tmp:
+	dh_install
+
+override_dh_strip:
+	dh_strip -N$(PYTHON)-dbg -Xdebug -Xdbg --dbg-package=$(PYTHON)-dbg
+
+override_dh_compress:
+	dh_compress -Xexamples
+
+# Python is not a python module ;-)
+override_dh_pysupport:
+override_dh_python2:
+
+# Some packages have no own docdir, but a symlink to main package's one:
+override_dh_installdocs:
+	dh_installdocs -p$(PYTHON)-dbg --link-doc=$(PYTHON)
+	dh_installdocs -p$(PYTHON)-dev --link-doc=$(PYTHON)
+	dh_installdocs -plib$(PYTHON) --link-doc=$(PYTHON)
+	dh_installdocs --remaining-packages
+
+override_dh_fixperms:
+	dh_fixperms
+	find debian/$(PYTHON)-examples/usr/share/doc/$(PYTHON)/examples -type f -exec chmod 644 {} \;
+	for i in `find debian/*/usr -type f ! -perm 755`; do \
+		if head -1 $$i | grep -q '^#!'; then \
+			chmod 755 $$i; \
+			echo "made executable: $$i"; \
+		fi; \
+	done
+
+override_dh_auto_clean:
+	rm -rf $(BUILD)
+	rm -f *-stamp
+

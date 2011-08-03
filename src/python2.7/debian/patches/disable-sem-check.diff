@@ -1,0 +1,30 @@
+# DP: Assume working semaphores on Linux, don't rely on running kernel for the check.
+
+Index: b/configure.in
+===================================================================
+--- a/configure.in	2011-07-26 15:37:47.731580690 +0400
++++ b/configure.in	2011-07-26 15:37:49.893492575 +0400
+@@ -3633,6 +3633,11 @@
+ [ac_cv_posix_semaphores_enabled=no],
+ [ac_cv_posix_semaphores_enabled=yes])
+ )
++case $ac_sys_system in
++  Linux*)
++    # assume enabled, see https://launchpad.net/bugs/630511
++    ac_cv_posix_semaphores_enabled=yes
++esac
+ AC_MSG_RESULT($ac_cv_posix_semaphores_enabled)
+ if test $ac_cv_posix_semaphores_enabled = no
+ then
+@@ -3669,6 +3674,11 @@
+ [ac_cv_broken_sem_getvalue=yes],
+ [ac_cv_broken_sem_getvalue=yes])
+ )
++case $ac_sys_system in
++  Linux*)
++    # assume enabled, see https://launchpad.net/bugs/630511
++    ac_cv_broken_sem_getvalue=no
++esac
+ AC_MSG_RESULT($ac_cv_broken_sem_getvalue)
+ if test $ac_cv_broken_sem_getvalue = yes
+ then

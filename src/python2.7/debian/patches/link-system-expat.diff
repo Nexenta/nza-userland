@@ -1,0 +1,24 @@
+# DP: Link with the system expat
+
+Index: b/Modules/Setup.dist
+===================================================================
+--- a/Modules/Setup.dist	2011-07-26 15:37:30.054967150 +0400
++++ b/Modules/Setup.dist	2011-07-26 15:37:34.499886903 +0400
+@@ -180,7 +180,7 @@
+ #itertools itertoolsmodule.c	# Functions creating iterators for efficient looping 
+ #strop stropmodule.c		# String manipulations
+ #_functools _functoolsmodule.c	# Tools for working with functions and callable objects
+-#_elementtree -I$(srcdir)/Modules/expat -DHAVE_EXPAT_CONFIG_H -DUSE_PYEXPAT_CAPI _elementtree.c	# elementtree accelerator
++#_elementtree -DUSE_PYEXPAT_CAPI _elementtree.c	# elementtree accelerator
+ #_pickle _pickle.c	# pickle accelerator
+ #datetime datetimemodule.c	# date/time type
+ #_bisect _bisectmodule.c	# Bisection algorithms
+@@ -471,7 +471,7 @@
+ #
+ # More information on Expat can be found at www.libexpat.org.
+ #
+-#pyexpat expat/xmlparse.c expat/xmlrole.c expat/xmltok.c pyexpat.c -I$(srcdir)/Modules/expat -DHAVE_EXPAT_CONFIG_H -DUSE_PYEXPAT_CAPI
++#pyexpat pyexpat.c -lexpat
+ 
+ 
+ # Hye-Shik Chang's CJKCodecs

@@ -1,0 +1,20 @@
+Index: b/Lib/pydoc.py
+===================================================================
+--- a/Lib/pydoc.py	2011-07-26 15:34:56.974038395 +0400
++++ b/Lib/pydoc.py	2011-07-26 15:37:24.014850300 +0400
+@@ -1967,10 +1967,14 @@
+         if modname[-9:] == '.__init__':
+             modname = modname[:-9] + ' (package)'
+         print modname, desc and '- ' + desc
++    def onerror(modname):
++        # Ignore non-ImportError exceptions raised whilst trying to
++        # import modules
++        pass
+     try: import warnings
+     except ImportError: pass
+     else: warnings.filterwarnings('ignore') # ignore problems during import
+-    ModuleScanner().run(callback, key)
++    ModuleScanner().run(callback, key, onerror=onerror)
+ 
+ # --------------------------------------------------- web browser interface
+ 
