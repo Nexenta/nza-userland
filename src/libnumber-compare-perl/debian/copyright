@@ -1,0 +1,32 @@
+Format-Specification:
+    http://wiki.debian.org/Proposals/CopyrightFormat?action=recall&rev=196
+Upstream-Maintainer: Richard Clamp <richardc@unixbeard.net>
+Upstream-Source: http://search.cpan.org/dist/Number-Compare/
+Upstream-Name: Number-Compare
+
+Files: *
+Copyright: 2002, Richard Clamp <richardc@unixbeard.net>
+License-Alias: Perl
+License: Artistic | GPL-1+
+
+Files: debian/*
+Copyright: 2004, S. Zachariah Sprackett <zac@sprackett.com>
+ 2006, David Moreno Garza <damog@debian.org>
+ 2006, Matej Vela <vela@debian.org>
+ 2009, Tim Retout <tim@retout.co.uk>
+ 2006-2009, gregor herrmann <gregoa@debian.org>
+License: Artistic | GPL-1+
+
+License: Artistic
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the Artistic License, which comes with Perl.
+    On Debian GNU/Linux systems, the complete text of the Artistic License
+    can be found in `/usr/share/common-licenses/Artistic'
+
+License: GPL-1+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 1, or (at your option)
+    any later version.
+    On Debian GNU/Linux systems, the complete text of the GNU General
+    Public License can be found in `/usr/share/common-licenses/GPL'

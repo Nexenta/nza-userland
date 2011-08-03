@@ -1,0 +1,81 @@
+libnumber-compare-perl (40-0-0) unstable; urgency=low
+
+  * Port for NCP4 
+  * Used new version scheme
+
+ -- Peter Zaickin <peter.zaickin@nexenta.com>  Tue, 05 Jul 2011 14:34:51 +0300
+
+libnumber-compare-perl (0.01-6) unstable; urgency=low
+
+  [ gregor herrmann ]
+  * debian/control: Changed: Switched Vcs-Browser field to ViewSVN
+    (source stanza).
+  * debian/control: Added: ${misc:Depends} to Depends: field.
+
+  [ Nathan Handler ]
+  * debian/watch: Update to ignore development releases.
+
+  [ Tim Retout ]
+  * debian/rules: Switch to 3-line rules file.
+  * debian/compat: Bump to 7.
+  * debian/control:
+    + Update debhelper dependency.
+    + Update Standards-Version to 3.8.2. (No changes needed.)
+    + Add self to Uploaders, and fix gregor's email address.
+    + Add detail to extended description.
+
+  [ gregor herrmann ]
+  * debian/copyright: update formatting.
+  * debian/control:
+    - make short description a noun phrase
+    - mention module name in long description
+
+ -- Tim Retout <tim@retout.co.uk>  Mon, 03 Aug 2009 20:57:45 +0100
+
+libnumber-compare-perl (0.01-5) unstable; urgency=low
+
+  * debian/control: Added: Vcs-Svn field (source stanza); Vcs-Browser
+    field (source stanza); Homepage field (source stanza). Removed: XS-
+    Vcs-Svn fields.
+  * debian/watch: use dist-based URL.
+  * debian/rules:
+    - delete /usr/lib/perl5 only if it exists (closes: #467997)
+    - update based on dh-make-perl's templates
+  * Set Standards-Version to 3.7.3 (no changes).
+  * debian/copyright: use specific download URL, add actual copyright, fix
+    license, convert to new format.
+
+ -- gregor herrmann <gregor+debian@comodo.priv.at>  Sun, 09 Mar 2008 16:28:13 +0100
+
+libnumber-compare-perl (0.01-4) unstable; urgency=low
+
+  * New Maintainer: Debian Perl Group.
+  * Add watch files.
+  * Activate tests in debian/rules.
+
+ -- gregor herrmann <gregor+debian@comodo.priv.at>  Fri, 15 Sep 2006 00:39:17 +0200
+
+libnumber-compare-perl (0.01-3) unstable; urgency=low
+
+  * Adopting package (Closes: #357348).
+  * Updated Policy version.
+  * No need for dependency on perl-modules.
+
+ -- David Moreno Garza <damog@debian.org>  Tue, 30 May 2006 16:23:40 -0500
+
+libnumber-compare-perl (0.01-2) unstable; urgency=low
+
+  * QA upload.
+  * Package is orphaned (#357348); set maintainer to Debian QA Group.
+  * Switch to debhelper 5.
+  * debian/watch: Add.
+  * Conforms to Standards version 3.6.2.
+
+ -- Matej Vela <vela@debian.org>  Mon,  3 Apr 2006 19:11:17 +0200
+
+libnumber-compare-perl (0.01-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- S. Zachariah Sprackett <zac@sprackett.com>  Thu, 15 Jul 2004 20:44:09 -0400
+
