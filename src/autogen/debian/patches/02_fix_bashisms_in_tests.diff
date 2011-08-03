@@ -1,0 +1,26 @@
+Index: autogen/autoopts/test/cfg-edit.test
+===================================================================
+--- autogen.orig/autoopts/test/cfg-edit.test	2009-08-22 18:50:32.000000000 +0100
++++ autogen/autoopts/test/cfg-edit.test	2009-08-22 18:50:50.000000000 +0100
+@@ -225,7 +225,7 @@
+ * ) failure "members entry not removed"
+ esac
+ 
+-arg1=$'stumble, <foo>foo\tlish</foo>, <bar type=integer>1234</bar>, able'
++arg1=$(printf 'stumble, <foo>foo\tlish</foo>, <bar type=integer>1234</bar>, able')
+ arg2='foo, <bar type=integer>4321</bar> <gr type=nested>one, two=2, three</gr>'
+ dir=`echo ${TMPDIR} | sed "s@^\`pwd\`//*@@"`
+ out_file=${dir}/${testname}-out-file
+Index: autogen/autoopts/test/nested.test
+===================================================================
+--- autogen.orig/autoopts/test/nested.test	2009-08-22 18:50:28.000000000 +0100
++++ autogen/autoopts/test/nested.test	2009-08-22 18:51:02.000000000 +0100
+@@ -187,7 +187,7 @@
+ 
+ # # # # # # # # # # DOUBLE ARG TEST # # # # # # # # #
+ 
+-arg1=$'stumble, <foo>foo\tlish</foo>, <bar type=integer>1234</bar>, able'
++arg1=$(printf 'stumble, <foo>foo\tlish</foo>, <bar type=integer>1234</bar>, able')
+ arg2='foo, <bar type=integer>4321</bar> <gr type=nested>one, two=2, three</gr>'
+ (./${testname} -s "${arg1}" -s "${arg2}" \
+     | sed '/ nested:/s/ 0x.*/ 0xXXXXXXXX/' ) > ${testname}-res2.out || \
