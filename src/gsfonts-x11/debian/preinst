@@ -1,0 +1,63 @@
+#! /bin/sh
+#
+#   $Id: preinst,v 1.3 2000-01-08 22:32:05 roland Exp $
+#
+#   Copyright (c) 2000 Roland Rosenfeld <roland@spinnaker.de>
+#
+#   This program is free software; you can redistribute it and/or
+#   modify it under the terms of the GNU General Public License as
+#   published by the Free Software Foundation; either version 2 of
+#   the License, or (at your option) any later version.
+#
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+#   General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public License
+#   along with this program; if not, write to the Free Software
+#   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+#
+##########################################################################
+
+set -e
+
+#DEBHELPER#
+
+remove_old_fontpath() {
+    XF86CONFIG=/etc/X11/XF86Config
+    GSFONTS=/usr/lib/ghostscript/fonts
+
+    # No XF86Config found?:
+    [ -f $XF86CONFIG ] || return 0
+
+    if ! grep -q "$GSFONTS" $XF86CONFIG
+    then
+	# ghostscript fonts not in XF86Config, so don't do anything else here.
+	return 0
+    fi
+
+    if [ -L $XF86CONFIG ]
+    then
+	# XF86Config is a symlink, so don't edit it:
+	echo "gsfonts-x11: $XF86CONFIG is a symbolic link, please manually"
+	echo "              remove $GSFONTS from your font path."
+	return 0
+    fi
+
+    # Really remove $GSFONTS from font path:
+    grep -v "^[ 	]*FontPath[ 	]*\"$GSFONTS/\"" \
+        < $XF86CONFIG > $XF86CONFIG.nogsfonts-x11
+    mv $XF86CONFIG.nogsfonts-x11 $XF86CONFIG
+}
+
+case "$1" in
+    upgrade)
+	if dpkg --compare-versions $2 le 0.7
+	then
+	    remove_old_fontpath;
+	fi
+    ;;
+esac
+
+exit 0
