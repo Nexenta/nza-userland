@@ -1,8 +1,8 @@
 Source: python-peak.util
-Upstream-Version: 20090610
+Upstream-Version: 20110729
 Section: python
 Priority: optional
-Maintainer: Debian QA Group <packages@qa.debian.org>
+Maintainer: Debian Python Modules Team <python-modules-team@lists.alioth.debian.org>
 Build-Depends:
  debhelper,
  cdbs,

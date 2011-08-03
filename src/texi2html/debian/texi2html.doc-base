@@ -1,0 +1,10 @@
+Document: texi2html
+Title: texi2html Manual
+Author: Karl Heinz Marbaise, Derek Price, Patrice Dumas
+Abstract: This manual describes what texi2html is
+ and how it can be used.
+Section: Text
+
+Format: HTML
+Index: /usr/share/doc/texi2html/html/texi2html.html
+Files: /usr/share/doc/texi2html/html/*.html

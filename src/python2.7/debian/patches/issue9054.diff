@@ -1,0 +1,16 @@
+# DP: Proposed fix for issue 9054.
+
+Index: b/Modules/pyexpat.c
+===================================================================
+--- a/Modules/pyexpat.c	2011-07-26 15:34:55.106237533 +0400
++++ b/Modules/pyexpat.c	2011-07-26 15:37:32.673931253 +0400
+@@ -418,6 +418,9 @@
+     if (!have_handler(self, CharacterData))
+         return -1;
+ 
++    if (!have_handler(self, CharacterData))
++        return -1;
++
+     args = PyTuple_New(1);
+     if (args == NULL)
+         return -1;
