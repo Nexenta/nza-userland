@@ -1,9 +1,3 @@
-libsm (40-0-0) unstable; urgency=low
-
-  * Move to new version scheme
-
- -- Andrew Stormont (astormont) <andyjstormont@googlemail.com>  Mon, 01 Aug 2011 19:09:05 +0100
-
 libsm (2:1.1.1-1nexenta2) unstable; urgency=low
 
   * Packaged for NCP4
