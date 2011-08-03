@@ -1,0 +1,21 @@
+libparse-recdescent-perl (1.94.free-3) unstable; urgency=low
+
+    Realistically, the tutorial from the Perl Journal is not going to be
+    in Debian, even in the non-free section.  This tutorial (which was
+    included in the Debian package for versions << 1.94.free-1) can be
+    read at:
+
+    http://search.cpan.org/src/DCONWAY/Parse-RecDescent-1.94/tutorial/tutorial.html
+
+ -- Rafael Laboissiere <rafael@debian.org>  Fri,  9 Mar 2007 14:31:40 +0100
+
+libparse-recdescent-perl (1.94.free-2) unstable; urgency=low
+
+    The tutorial from The Perl Journal, which is shipped with the upstream
+    sources, is removed from the package (both source and binary) because
+    its licensing terms are not compatible with the DFSG.  A new package
+    called libparse-recdescent-perl-tutorial-nonfree containing this
+    tutorial has been created.
+
+ -- Rafael Laboissiere <rafael@debian.org>  Thu, 15 Sep 2005 15:11:57 +0200
+

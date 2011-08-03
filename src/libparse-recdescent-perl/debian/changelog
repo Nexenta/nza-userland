@@ -1,0 +1,387 @@
+libparse-recdescent-perl (40-0-0) unstable; urgency=low
+
+  * Port for NCP4
+  * Used new version scheme 
+
+ -- Peter Zaickin <peter.zaickin@nexenta.com>  Tue, 05 Jul 2011 14:21:04 +0300
+
+libparse-recdescent-perl (1.965001+dfsg-1) unstable; urgency=low
+
+  [ Jonathan Yu ]
+  * New upstream release
+  * Use new 3.0 (quilt) source format
+  * Remove stuff to fix opt/-based perl shebangs
+
+  [ gregor herrmann ]
+  * debian/copyright: update years, add information about a third-party file.
+  * Add /me to Uploaders.
+
+ -- gregor herrmann <gregoa@debian.org>  Mon, 24 May 2010 17:24:41 +0200
+
+libparse-recdescent-perl (1.964+dfsg-1) unstable; urgency=low
+
+  * New upstream release
+  * Standards-Version 3.8.4 (no changes)
+  * Remove extraneous copyright for d/patches
+
+ -- Jonathan Yu <jawnsy@cpan.org>  Tue, 16 Feb 2010 20:44:43 -0500
+
+libparse-recdescent-perl (1.963+dfsg-1) unstable; urgency=low
+
+  [ Jonathan Yu ]
+  * New upstream release
+  * Update overrides to be more consistent with debhelper.pod
+  * Update copyright to new DEP5 format
+
+  [ Ryan Niebur ]
+  * Update jawnsy's email address
+
+  [ gregor herrmann ]
+  * debian/control: Changed: (build-)depend on perl instead of perl-
+    modules.
+
+ -- Jonathan Yu <jawnsy@cpan.org>  Sun, 24 Jan 2010 00:07:39 -0500
+
+libparse-recdescent-perl (1.962.2+dfsg-1) unstable; urgency=low
+
+  * New upstream release
+    + Fixes regression caused by removal of $&
+
+ -- Jonathan Yu <frequency@cpan.org>  Fri, 28 Aug 2009 06:42:09 -0400
+
+libparse-recdescent-perl (1.962.0+dfsg-1) unstable; urgency=low
+
+  [ Jonathan Yu ]
+  * New upstream release
+    + Fix asymmetrical push/pop on @lines tracker
+    + Remove occurrences of $& so we don't affect other regexes
+  * d/control: change maintainer, add /me to Uploaders (Closes: #534358)
+  * Change Vcs field to our repository/viewer
+  * Change watch to a dist-based rather than author-based one
+  * Standards-Version 3.8.3 (no changes)
+  * Switch to new short debhelper rules format
+  * Depend on either perl-modules >= 5.10 OR libversion-perl
+  * Add files in demo/* so they are installed
+  * Change to repack.stub/local system
+  * Use new machine readable copyright format
+
+  [ gregor herrmann ]
+  * Remove debian/clean, *stamp files are removed by dh_clean, Makefile.old by
+    the build system.
+
+ -- Jonathan Yu <frequency@cpan.org>  Thu, 27 Aug 2009 04:42:36 -0400
+
+libparse-recdescent-perl (1.96.0+dfsg-3) unstable; urgency=low
+
+  * debian/control:
+    + Bump Standards-Version to 3.8.1 (Add file debian/README.source for
+      reporting the use of quilt and the stripping of the tutorial in the
+      upstream tarball)
+    + The package is now maintained with Git at alioth.debian.org.  Add
+      Vcs-Git field and change Vcs-Browser accordingly.
+  * debian/orig-tar.sh: Add script for building the DFSG-free upstream
+    tarball
+  * debian/watch: Call debian/orig-tar.sh
+
+ -- Rafael Laboissiere <rafael@debian.org>  Sat, 25 Apr 2009 14:50:43 +0200
+
+libparse-recdescent-perl (1.96.0+dfsg-2) unstable; urgency=low
+
+  * Upload to unstable
+  * debian/control: Fix Lintian warning debhelper-but-no-misc-depends
+  * debian/rules: Use dh_prep instead of dh_clean -k (fix Lintian warning)
+
+ -- Rafael Laboissiere <rafael@debian.org>  Sun, 15 Feb 2009 17:30:17 +0100
+
+libparse-recdescent-perl (1.96.0+dfsg-1) experimental; urgency=low
+
+  * New upstream release.  Uploaded to experimental until lenny is
+    released.
+
+ -- Rafael Laboissiere <rafael@debian.org>  Sat, 01 Nov 2008 09:56:45 +0100
+
+libparse-recdescent-perl (1.95.1+dfsg-3) unstable; urgency=low
+
+  The "tenth anniversary" release, just in time for lenny
+
+  * Switch from dpatch to quilt for patch management
+  * debian/control:
+    + Append trunk/ to the path in Vcs-Svn:, such that debcheckout works
+    + Bump Standards-Version to 3.8.0 (no changes needed)
+    + Make Homepage URL more general, independent of the upstream version
+  * debian/copyright:
+    + Update upstream URL and copyright years
+    + Add copyright information for the Debian packaging
+  * debian/watch: Mangle the Debian version instead of mangling the
+    upstream version in order to cope with the "+dfsg" suffix
+  * debian/rules, debian/control, debian/compat: Use debian/clean for
+    removing files and bump the build-depends to debhelper >= 7
+  * debian/clean: New file
+
+ -- Rafael Laboissiere <rafael@debian.org>  Sat, 12 Jul 2008 19:39:37 +0200
+
+libparse-recdescent-perl (1.95.1+dfsg-2) unstable; urgency=low
+
+  * debian/watch: Appended "+dfsg" to the upstream version to make it
+    correspond to the Debian version
+  * debian/control:
+    + Use the now official Vcs-* fields instead of the obsolete XS-Vcs-*
+    + Dropped the Homepage pseudo-header from the extended description
+    + Bumped Standards-Version to 3.7.3
+  * debian/rules:
+    + Removed empty directory /usr/lib
+    + Dropped call to dh_installdirs
+
+ -- Rafael Laboissiere <rafael@debian.org>  Sat, 15 Dec 2007 23:45:03 +0100
+
+libparse-recdescent-perl (1.95.1+dfsg-1) unstable; urgency=low
+
+  * New upstream release
+  * Changed the version numbering scheme for the upstream release naming
+    (use "+dfsg" instead of ".free")
+  * debian/patches/50_drop-tutorial-from-MANIFEST.dpatch: Adjusted for the
+    new upstream release
+  * debian/rules: Change mode of all examples to non-executable, avoiding
+    problems with scripts lacking the shebang line
+  * debian/watch: Updated regular expression for the HREF
+  * debian/control:
+    + Added libtest-pod-perl to Build-Depends-Indep, such that t/pod.t can
+      be tested
+    + Depends and build-depends-indep on libversion-perl
+    + Update URL of upstream homepage
+    + Added XS-Vcs-Svn, XS-Vcs-Browser, and Homepage fields
+
+ -- Rafael Laboissiere <rafael@debian.org>  Fri, 21 Sep 2007 17:57:06 +0200
+
+libparse-recdescent-perl (1.94.free-4) unstable; urgency=low
+
+  * debian/NEWS: Added note saying that I give up about having the
+    tutorial from The Perl Journal one day in Debian (closes: #369553)
+  * debian/control: Reintroduced Homepage pseudo-header
+  * debian/rules: Run tests after building the package
+
+ -- Rafael Laboissiere <rafael@debian.org>  Fri,  9 Mar 2007 14:41:53 +0100
+
+libparse-recdescent-perl (1.94.free-3) unstable; urgency=low
+
+  * debian/control: Dropped superfluous Build-Depends-Indep (which is
+    identical to Build-Depends), complying with section 7.6 of the Debian
+    Policy.
+
+ -- Rafael Laboissiere <rafael@debian.org>  Fri, 16 Jun 2006 12:15:04 +0200
+
+libparse-recdescent-perl (1.94.free-2) unstable; urgency=low
+
+  * debian/control:
+    - Upgraded Standards-Version to 3.7.2 (no changes needed)
+    - Build-depends on dpatch
+  * debian/rules: Adjusted for using dpatch
+  * debian/patches/50_drop-tutorial-from-MANIFEST.dpatch: New patch
+  * debian/NEWS: Announce the new package containing the tutorial from the
+    Perl Journal (libparse-recdescent-perl-tutorial-nonfree)
+
+ -- Rafael Laboissiere <rafael@debian.org>  Tue, 30 May 2006 18:57:48 +0200
+
+libparse-recdescent-perl (1.94.free-1) unstable; urgency=low
+
+  * "New" upstream release.  Okay, that is not really true.  I got it
+    wrong in my last upload because I tried to add the modified 1.94
+    upstream tarball but it existed already in the archive.  Hence the
+    funny upstream version number.
+
+ -- Rafael Laboissiere <rafael@debian.org>  Thu, 15 Sep 2005 20:11:40 +0200
+
+libparse-recdescent-perl (1.94-5) unstable; urgency=low
+
+  * Removed the TPJ tutorial from both the source and the binary packages,
+    since its licensing terms are not DFSG-compliant.  A new package,
+    called parse-recdescent-doc-nonfree containing the tutorial has been
+    created.
+  * debian/rules: Removed installation of the tutorial
+  * debian/docs, debian/doc-base: Removed files
+  * debian/copyright: Removed mention to the tutorial
+  * debian/NEWS: Added file announcing the removal of the tutorial
+  * debian/control: Removed build-dependency on imagemagick, which was
+    used to convert the *.gif files in the tutorial into *.png
+
+  * debian/watch: Added file
+
+  * debian/control: Upgraded Standards-Version to 3.6.2 (no changes
+    needed)
+
+ -- Rafael Laboissiere <rafael@debian.org>  Thu, 15 Sep 2005 15:02:58 +0200
+
+libparse-recdescent-perl (1.94-4) unstable; urgency=low
+
+  * debian/control: Hardcode the dependency on perl to >= 5.8, because
+    dh_perl was giving the minimal version 5.6.0-16.  The Text::Balanced
+    module, which is included in perl-modules version 5.8 and later, is
+    not included in libparse-recdescent-perl anymore, hence the necessity
+    of hard-coding the perl dependency (closes: #298298)
+  * debian/rules: Do not call dh_perl
+
+ -- Rafael Laboissiere <rafael@debian.org>  Sun,  6 Mar 2005 15:55:12 +0100
+
+libparse-recdescent-perl (1.94-3) unstable; urgency=low
+
+  * debian/README: Removed mention to the Debian data-dumper package,
+    becasue the Data::Dumper module is now in perl-base (closes: #297610)
+
+ -- Rafael Laboissiere <rafael@debian.org>  Tue,  1 Mar 2005 21:57:56 +0100
+
+libparse-recdescent-perl (1.94-2) unstable; urgency=low
+
+  * debian/copyright: Updated e-mail address of upstream author.
+
+ -- Rafael Laboissiere <rafael@debian.org>  Tue, 10 Feb 2004 12:49:45 +0100
+
+libparse-recdescent-perl (1.94-1) unstable; urgency=low
+
+  * New upstream release (closes: #218474).  The Text::Balanced module is
+    not installed by this package anymore.
+  * debian/control:
+    - Bumped Standards-Version to 3.6.1 (no changes needed).
+    - Removed mention to Text::Balanced module.
+  * debian/copyright: Updated upstream author e-mail address and tarball
+    location.
+  * debian/rules:  Got right this time the replacements "*.gif"-> "*.png" in
+    tutorial.html.
+
+ -- Rafael Laboissiere <rafael@debian.org>  Fri, 31 Oct 2003 20:14:43 +0100
+
+libparse-recdescent-perl (1.90-2) unstable; urgency=low
+
+  * Changed my e-mail addresses to the debian.org one.
+
+ -- Rafael Laboissiere <rafael@debian.org>  Tue,  8 Apr 2003 18:42:56 +0200
+
+libparse-recdescent-perl (1.90-1) unstable; urgency=low
+
+  * New upstream release.
+  * debian/control: Bumped Standards-Version to 3.5.9.  Changed Section to
+    perl, in order to conform to the newly reorganized sections in Debian.
+  * In the previous release of this package, Adam Heath
+    <doogie@debian.org> has detected a bug in which arguments being passed to
+    either implicit or alternations are lost when using the shorthand
+    leftop operator syntax('(s /foo/)').  This bug is apparently fixed in
+    the present version (closes: #166903).  I am using the test case
+    debian/test-arg-alternation.pl and I hope that it is sufficient.  If
+    not, this bug report should be reopened.
+  * This package includes a newer version of Text::Balanced than that
+    provided by perl-modules (closes: #177602).  I agreed with the bug
+    reporter that we will leave the situation as it is for now, since this
+    package install the module in /usr/share/perl5/, which tooks priority
+    in @INC to the place where perl-modules install its version of
+    Text::Balanced (/usr/share/perl/5.8.0/).  Thanks to "J.H.M. Dassen
+    (Ray)" <fsmla@xinara.org> for the discussions.
+
+ -- Rafael Laboissiere <rafael@debian.org>  Wed,  2 Apr 2003 16:07:08 +0200
+
+libparse-recdescent-perl (1.80-2) unstable; urgency=low
+
+  * debian/control: Fixed spelling errors in package description (thanks
+    to Matt Zimmerman <mdz@debian.org>, closes: #125014).
+
+ -- Rafael Laboissiere <rafael@debian.org>  Fri, 21 Dec 2001 16:57:10 +0100
+
+libparse-recdescent-perl (1.80-1) unstable; urgency=low
+
+  * debian/control:
+    - Changed Build-Depends to Build-Depends-Indep.  Lintian was
+      complaining about that.
+    - Changed dependencies (Build-Depends-Indep and Depends) from
+      versioned perl to plain perl (closes: #113206).
+    - Upgraded Standards-Version to 3.5.6.
+  * debian/rules:
+    - Removed bashisms like {Parse,Text}/*.pm.  A more robust way of
+      finding files under debian/tmp/usr is now used.
+    - Removed deprecated call to dh_testversion.  Moved the dependency
+      declaration to debian/control.
+    - The modules go now to /usr/share/perl5/, intead of /usr/lib/perl5/.
+
+ -- Rafael Laboissiere <rafael@debian.org>  Tue, 30 Oct 2001 23:38:29 +0100
+
+libparse-recdescent-perl (1.80-0.potato.3) unstable; urgency=low
+
+  * debian/control: Removed shellutils from Build-Depends, since it is an
+    essential package.
+
+ -- Rafael Laboissiere <rafael@icp.inpg.fr>  Mon,  7 May 2001 18:09:24 +0200
+
+libparse-recdescent-perl (1.80-0.potato.2) unstable; urgency=low
+
+  * debian/control: Changed section from devel to interpreters.  This
+    agrees with the override file used by dinstall.
+
+ -- Rafael Laboissiere <rafael@icp.inpg.fr>  Thu, 29 Mar 2001 09:12:48 +0200
+
+libparse-recdescent-perl (1.80-0.potato.1) unstable; urgency=low
+
+  * New upstream release (closes: #74475).  This Debian release works for
+    potato (2.2).
+  * debian/control:
+    - Added Build-Depends field.
+    - Since the *.pm in this package call "use 5.005", a dependency on
+      perl-5.005 | perl-5.6 is needed, otherwise lintian will complain.
+  * debian/rules: Corrected place for demo_*.pl files in the upstream
+    tarball.
+  * debian/fix-perl-path.pl: Removed file.  The fix for the Perl path in
+    the demos is simply done in debian/rules by calling perl with the -p
+    and -i options.  Also, put Perl path into demo_Cgrammar.pl.
+  * Added tutorial in HTML format and put permission note in
+    debian/copyright.  This document is registered through doc-base.  All
+    the GIF figures have been converted to the PNG format.  This is why
+    the package now Build-Depends on imagemagick.
+
+ -- Rafael Laboissiere <rafael@icp.inpg.fr>  Wed, 28 Mar 2001 11:39:44 +0200
+
+libparse-recdescent-perl (1.77-1) unstable; urgency=low
+
+  * New upstream release.
+  * Upgraded Standards-Version to 3.1.1.
+
+ -- Rafael Laboissiere <rafael@icp.inpg.fr>  Sun, 19 Mar 2000 19:41:48 +0100
+
+libparse-recdescent-perl (1.70-1) unstable; urgency=low
+
+  * New upstream version.
+  * Upgraded Standards-Version to 3.0.1.
+  * FHS compliant.
+  * Changed pointer of Artistic license in copyright file.
+  * Added mention in the README.Debian file that the example demo_lexer.pl
+    needs the Data::Dumper module to run (this is reported as a warning by
+    lintian).
+  * Installed examples are detected by name demo_*.pl.
+
+ -- Rafael Laboissiere <rafael@icp.inpg.fr>  Mon, 11 Oct 1999 00:30:21 +0200
+
+libparse-recdescent-perl (1.66-1) unstable; urgency=low
+
+  * New upstream release.
+  * Upgraded to the new Perl Policy.  Particularly, {perl:Depends} is used
+    in the debian/control file.  Also, the debian/rules file was revamped
+    according to the suggestins in the Perl Policy.
+  * Upgraded to Standards-Version 2.5.1
+
+ -- Rafael Laboissiere <rafael@icp.inpg.fr>  Tue, 13 Jul 1999 02:07:45 +0200
+
+libparse-recdescent-perl (1.51-2) unstable; urgency=low
+
+  * It is Lintian-clean now.
+
+ -- Rafael Laboissiere <rafael@icp.inpg.fr>  Fri,  9 Oct 1998 16:04:47 +0200
+
+libparse-recdescent-perl (1.51-1) unstable; urgency=low
+
+  * New upstream release.
+  * Corrected description in debian/control file.
+  * Added test file test.pl.
+  * Fixed a typos in files debian/copyright and debian/README.debian.
+
+ -- Rafael Laboissiere <rafael@icp.inpg.fr>  Fri,  9 Oct 1998 15:22:26 +0200
+
+libparse-recdescent-perl (1.33-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Rafael Laboissiere <rafael@icp.inpg.fr>  Fri,  5 Jun 1998 17:25:40 +0200

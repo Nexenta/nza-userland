@@ -1,0 +1,9 @@
+libparse-recdescent-perl for Debian
+-----------------------------------
+
+/usr/share/doc/libparse-recdescent-perl/examples/demo_{pre,build}calc.pl
+depend on the Coy module.  In order to run it, you have to install the
+Debian package libcoy-perl.
+
+ -- Rafael Laboissiere <rafael@debian.org>, Tue Mar  1 21:58:45 CET 2005
+
