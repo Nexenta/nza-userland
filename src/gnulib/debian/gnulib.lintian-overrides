@@ -1,0 +1,12 @@
+# gnulib's doc directory contains various important GNU files:
+# licenses, maintainers guide, etc.
+# The gnulib git repo is the canonical source for most or all
+# of these docs.
+gnulib: extra-license-file usr/share/gnulib/doc/COPYING.LESSERv2
+gnulib: extra-license-file usr/share/gnulib/doc/COPYING.LESSERv3
+
+# scripts below invoke themselves with excessively magical non-shebang lines
+gnulib: executable-not-elf-or-script usr/share/gnulib/build-aux/gitlog-to-changelog
+gnulib: executable-not-elf-or-script usr/share/gnulib/build-aux/announce-gen
+gnulib: executable-not-elf-or-script usr/share/gnulib/build-aux/useless-if-before-free
+gnulib: executable-not-elf-or-script usr/share/gnulib/build-aux/update-copyright
