@@ -62,10 +62,10 @@ review_regexes = [
     ]
 
 goahead = True
-if not filter(lambda x: re.search(x, msg), issue_regexes):
+if not filter(lambda x: re.search(x, msg, re.IGNORECASE), issue_regexes):
     print("** Warning: no issue ref (like 'Re #3141') in commit message")
     goahead = False
-if not filter(lambda x: re.search(x, msg), review_regexes):
+if not filter(lambda x: re.search(x, msg, re.IGNORECASE), review_regexes):
     print("** Warning: no review ref (like 'Rb 6022') in commit message")
     goahead = False
 
