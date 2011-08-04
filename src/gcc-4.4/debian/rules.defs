@@ -11,6 +11,12 @@ stampdir	= stamps
 distribution	:= $(shell lsb_release -is)
 distrelease	:= $(shell lsb_release -cs)
 
+# Nexenta has disowned lsb_release
+ifeq ($(DEB_HOST_ARCH_OS),solaris)
+distribution	:= Nexenta
+distrelease	:= siddy/testing
+endif
+
 # On non official archives, "lsb_release -cs" default to "n/a". Assume
 # sid in that case 
 ifeq ($(distrelease),n/a)

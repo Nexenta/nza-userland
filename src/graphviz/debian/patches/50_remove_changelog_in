@@ -1,0 +1,57 @@
+--- graphviz-2.26.0.orig/Makefile.in
++++ graphviz-2.26.0/Makefile.in
+@@ -40,7 +40,6 @@ DIST_COMMON = README $(am__configure_dep
+ 	$(srcdir)/Doxyfile.in $(srcdir)/Makefile.am \
+ 	$(srcdir)/Makefile.in $(srcdir)/config.h.in \
+ 	$(srcdir)/graphviz.spec.in $(top_srcdir)/configure \
+-	$(top_srcdir)/debian/changelog.in \
+ 	$(top_srcdir)/macosx/Info.plist.in \
+ 	$(top_srcdir)/macosx/build/graphviz.pmdoc/01local.xml.in \
+ 	$(top_srcdir)/macosx/build/graphviz.pmdoc/02graphviz.xml.in \
+@@ -64,7 +63,7 @@ am__CONFIG_DISTCLEAN_FILES = config.stat
+  configure.lineno config.status.lineno
+ mkinstalldirs = $(install_sh) -d
+ CONFIG_HEADER = config.h
+-CONFIG_CLEAN_FILES = debian/changelog macosx/Info.plist \
++CONFIG_CLEAN_FILES = macosx/Info.plist \
+ 	macosx/build/graphviz.pmdoc/01local.xml \
+ 	macosx/build/graphviz.pmdoc/02graphviz.xml \
+ 	windows/build/graphviz.wxs windows/Properties/AssemblyInfo.cs \
+@@ -517,8 +516,6 @@ $(srcdir)/config.h.in:  $(am__configure_
+ 
+ distclean-hdr:
+ 	-rm -f config.h stamp-h1
+-debian/changelog: $(top_builddir)/config.status $(top_srcdir)/debian/changelog.in
+-	cd $(top_builddir) && $(SHELL) ./config.status $@
+ macosx/Info.plist: $(top_builddir)/config.status $(top_srcdir)/macosx/Info.plist.in
+ 	cd $(top_builddir) && $(SHELL) ./config.status $@
+ macosx/build/graphviz.pmdoc/01local.xml: $(top_builddir)/config.status $(top_srcdir)/macosx/build/graphviz.pmdoc/01local.xml.in
+--- graphviz-2.26.0.orig/configure.ac
++++ graphviz-2.26.0/configure.ac
+@@ -3027,7 +3027,6 @@ rm -f conftest*
+ 
+ # Generate Makefiles
+ AC_CONFIG_FILES(Makefile
+-	debian/changelog
+ 	doc/Makefile
+ 	doc/info/Makefile
+ 	doc/schema/Makefile
+--- graphviz-2.26.0.orig/configure
++++ graphviz-2.26.0/configure
+@@ -35433,7 +35433,7 @@ rm -f conftest*
+ # -----------------------------------------------------------------------
+ 
+ # Generate Makefiles
+-ac_config_files="$ac_config_files Makefile debian/changelog doc/Makefile doc/info/Makefile doc/schema/Makefile contrib/Makefile contrib/prune/Makefile contrib/diffimg/Makefile graphs/Makefile graphs/directed/Makefile graphs/undirected/Makefile lib/Makefile lib/cdt/Makefile lib/cdt/libcdt.pc lib/graph/Makefile lib/graph/libgraph.pc lib/cgraph/Makefile lib/cgraph/libcgraph.pc lib/gd/Makefile lib/rbtree/Makefile lib/pathplan/Makefile lib/pathplan/libpathplan.pc lib/ast/Makefile lib/sfio/Makefile lib/sfio/Sfio_f/Makefile lib/vmalloc/Makefile lib/dotgen/Makefile lib/neatogen/Makefile lib/fdpgen/Makefile lib/sparse/Makefile lib/sfdpgen/Makefile lib/osage/Makefile lib/gvpr/Makefile lib/gvpr/libgvpr.pc lib/circogen/Makefile lib/twopigen/Makefile lib/patchwork/Makefile lib/pack/Makefile lib/ortho/Makefile lib/expr/Makefile lib/expr/libexpr.pc lib/common/Makefile lib/ingraphs/Makefile lib/vpsc/Makefile lib/gvc/Makefile lib/gvc/libgvc.pc lib/xdot/Makefile lib/xdot/libxdot.pc lib/topfish/Makefile lib/glcomp/Makefile macosx/Info.plist macosx/build/graphviz.pmdoc/01local.xml macosx/build/graphviz.pmdoc/02graphviz.xml windows/build/graphviz.wxs windows/Properties/AssemblyInfo.cs plugin/Makefile plugin/core/Makefile plugin/devil/Makefile plugin/gd/Makefile plugin/gdk_pixbuf/Makefile plugin/gdiplus/Makefile plugin/glitz/Makefile plugin/gs/Makefile plugin/gtk/Makefile plugin/lasi/Makefile plugin/ming/Makefile plugin/pango/Makefile plugin/quartz/Makefile plugin/rsvg/Makefile plugin/visio/Makefile plugin/xlib/Makefile plugin/dot_layout/Makefile plugin/neato_layout/Makefile cmd/Makefile cmd/dot/Makefile cmd/tools/Makefile cmd/gvpr/Makefile cmd/lefty/ws/x11/libfilereq/Makefile cmd/lefty/ws/x11/Makefile cmd/lefty/ws/mswin32/Makefile cmd/lefty/ws/Makefile cmd/lefty/os/unix/Makefile cmd/lefty/os/mswin32/Makefile cmd/lefty/os/Makefile cmd/lefty/dot2l/Makefile cmd/lefty/examples/Makefile cmd/lefty/Makefile cmd/lneato/Makefile cmd/dotty/Makefile cmd/smyrna/Makefile tclpkg/Makefile tclpkg/tclstubs/Makefile tclpkg/tkstubs/Makefile tclpkg/tclhandle/Makefile tclpkg/gdtclft/Makefile tclpkg/gdtclft/demo/Makefile tclpkg/tcldot/Makefile tclpkg/tcldot/demo/Makefile tclpkg/tclpathplan/Makefile tclpkg/tclpathplan/demo/Makefile tclpkg/tclpathplan/demo/pathplan_data/Makefile tclpkg/tkspline/Makefile tclpkg/tkspline/demo/Makefile tclpkg/gv/Makefile tclpkg/gv/demo/Makefile tclpkg/gv/META.gv rtest/Makefile share/Makefile share/examples/Makefile share/gui/Makefile graphviz.spec Doxyfile"
++ac_config_files="$ac_config_files Makefile doc/Makefile doc/info/Makefile doc/schema/Makefile contrib/Makefile contrib/prune/Makefile contrib/diffimg/Makefile graphs/Makefile graphs/directed/Makefile graphs/undirected/Makefile lib/Makefile lib/cdt/Makefile lib/cdt/libcdt.pc lib/graph/Makefile lib/graph/libgraph.pc lib/cgraph/Makefile lib/cgraph/libcgraph.pc lib/gd/Makefile lib/rbtree/Makefile lib/pathplan/Makefile lib/pathplan/libpathplan.pc lib/ast/Makefile lib/sfio/Makefile lib/sfio/Sfio_f/Makefile lib/vmalloc/Makefile lib/dotgen/Makefile lib/neatogen/Makefile lib/fdpgen/Makefile lib/sparse/Makefile lib/sfdpgen/Makefile lib/osage/Makefile lib/gvpr/Makefile lib/gvpr/libgvpr.pc lib/circogen/Makefile lib/twopigen/Makefile lib/patchwork/Makefile lib/pack/Makefile lib/ortho/Makefile lib/expr/Makefile lib/expr/libexpr.pc lib/common/Makefile lib/ingraphs/Makefile lib/vpsc/Makefile lib/gvc/Makefile lib/gvc/libgvc.pc lib/xdot/Makefile lib/xdot/libxdot.pc lib/topfish/Makefile lib/glcomp/Makefile macosx/Info.plist macosx/build/graphviz.pmdoc/01local.xml macosx/build/graphviz.pmdoc/02graphviz.xml windows/build/graphviz.wxs windows/Properties/AssemblyInfo.cs plugin/Makefile plugin/core/Makefile plugin/devil/Makefile plugin/gd/Makefile plugin/gdk_pixbuf/Makefile plugin/gdiplus/Makefile plugin/glitz/Makefile plugin/gs/Makefile plugin/gtk/Makefile plugin/lasi/Makefile plugin/ming/Makefile plugin/pango/Makefile plugin/quartz/Makefile plugin/rsvg/Makefile plugin/visio/Makefile plugin/xlib/Makefile plugin/dot_layout/Makefile plugin/neato_layout/Makefile cmd/Makefile cmd/dot/Makefile cmd/tools/Makefile cmd/gvpr/Makefile cmd/lefty/ws/x11/libfilereq/Makefile cmd/lefty/ws/x11/Makefile cmd/lefty/ws/mswin32/Makefile cmd/lefty/ws/Makefile cmd/lefty/os/unix/Makefile cmd/lefty/os/mswin32/Makefile cmd/lefty/os/Makefile cmd/lefty/dot2l/Makefile cmd/lefty/examples/Makefile cmd/lefty/Makefile cmd/lneato/Makefile cmd/dotty/Makefile cmd/smyrna/Makefile tclpkg/Makefile tclpkg/tclstubs/Makefile tclpkg/tkstubs/Makefile tclpkg/tclhandle/Makefile tclpkg/gdtclft/Makefile tclpkg/gdtclft/demo/Makefile tclpkg/tcldot/Makefile tclpkg/tcldot/demo/Makefile tclpkg/tclpathplan/Makefile tclpkg/tclpathplan/demo/Makefile tclpkg/tclpathplan/demo/pathplan_data/Makefile tclpkg/tkspline/Makefile tclpkg/tkspline/demo/Makefile tclpkg/gv/Makefile tclpkg/gv/demo/Makefile tclpkg/gv/META.gv rtest/Makefile share/Makefile share/examples/Makefile share/gui/Makefile graphviz.spec Doxyfile"
+ 
+ 
+ cat >confcache <<\_ACEOF
+@@ -36833,7 +36833,6 @@ do
+     "depfiles") CONFIG_COMMANDS="$CONFIG_COMMANDS depfiles" ;;
+     "libtool") CONFIG_COMMANDS="$CONFIG_COMMANDS libtool" ;;
+     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
+-    "debian/changelog") CONFIG_FILES="$CONFIG_FILES debian/changelog" ;;
+     "doc/Makefile") CONFIG_FILES="$CONFIG_FILES doc/Makefile" ;;
+     "doc/info/Makefile") CONFIG_FILES="$CONFIG_FILES doc/info/Makefile" ;;
+     "doc/schema/Makefile") CONFIG_FILES="$CONFIG_FILES doc/schema/Makefile" ;;

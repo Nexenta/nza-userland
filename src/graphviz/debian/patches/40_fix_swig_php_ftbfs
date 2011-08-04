@@ -1,0 +1,25 @@
+Description: use -php instead of -php5 with swig
+Author: Ludovico Cavedon <ludovico.cavedon@gmail.com>
+
+--- a/tclpkg/gv/Makefile.am
++++ b/tclpkg/gv/Makefile.am
+@@ -131,7 +131,7 @@ libgv_php_la_CPPFLAGS = $(AM_CPPFLAGS) $
+ gv.php: gv_php.cpp
+ php_gv.h: gv_php.cpp
+ gv_php.cpp: gv.i
+-	$(SWIG) -c++ -php5 -o gv_php.cpp $(srcdir)/gv.i
++	$(SWIG) -c++ -php -o gv_php.cpp $(srcdir)/gv.i
+ 
+ pkgpythondir = $(pkglibdir)/python
+ PYTHON_data = gv.py
+--- a/tclpkg/gv/Makefile.in
++++ b/tclpkg/gv/Makefile.in
+@@ -2521,7 +2521,7 @@ gv_perl.cpp: gv.i
+ gv.php: gv_php.cpp
+ php_gv.h: gv_php.cpp
+ gv_php.cpp: gv.i
+-	$(SWIG) -c++ -php5 -o gv_php.cpp $(srcdir)/gv.i
++	$(SWIG) -c++ -php -o gv_php.cpp $(srcdir)/gv.i
+ $(PYTHON_data): gv_python.cpp
+ gv_python.cpp: gv.i
+ 	$(SWIG) -c++ -python -o gv_python.cpp $(srcdir)/gv.i
