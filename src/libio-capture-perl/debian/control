@@ -1,0 +1,30 @@
+Source: libio-capture-perl
+Section: perl
+Priority: optional
+Build-Depends: debhelper (>= 6), quilt
+Build-Depends-Indep: perl (>= 5.8.0-7)
+Maintainer: Debian Perl Group <pkg-perl-maintainers@lists.alioth.debian.org>
+Uploaders: Krzysztof Krzyzaniak (eloy) <eloy@debian.org>
+Standards-Version: 3.7.3
+Homepage: http://search.cpan.org/dist/IO-Capture/
+Vcs-Svn: svn://svn.debian.org/pkg-perl/trunk/libio-capture-perl/
+Vcs-Browser: http://svn.debian.org/wsvn/pkg-perl/trunk/libio-capture-perl/
+Upstream-Version: 0.05-2
+
+Package: libio-capture-perl
+Architecture: all
+Depends: ${perl:Depends}, ${misc:Depends} 
+Description: Abstract Base Class to build modules to capture output
+ The IO::Capture Module defines an abstract base class that can be
+ used to build modules that capture output being sent on a filehandle 
+ such as STDOUT or STDERR.
+ .
+ Several modules that come with the distribution do just that.  
+ I.e., Capture STDOUT and STDERR.  Also see James Keenan's 
+ IO::Capture::Stdout::Extended on CPAN.
+ .
+ See IO::Capture::Overview for a 
+ discussion of these modules and examples of how to build a module to 
+ sub-class from IO::Capture yourself.   If after reading the overview, 
+ you would like to build a class from IO::Capture, look here for 
+ details on the internals.

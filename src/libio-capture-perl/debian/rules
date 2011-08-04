@@ -1,0 +1,21 @@
+#!/usr/bin/make -f
+# This debian/rules file is provided as a template for normal perl
+# packages. It was created by Marc Brockschmidt <marc@dch-faq.de> for
+# the Debian Perl Group (http://pkg-perl.alioth.debian.org/) but may
+# be used freely wherever it is useful.
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+# If set to a true value then MakeMaker's prompt function will
+# always return the default without waiting for user input.
+export PERL_MM_USE_DEFAULT=1
+
+
+override_dh_auto_configure:
+	/usr/bin/perl Makefile.PL INSTALLDIRS=vendor
+
+override_dh_auto_install:
+	$(MAKE) install PREFIX=`pwd`/debian/tmp/usr
+%:
+	dh $@

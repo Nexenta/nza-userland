@@ -1,0 +1,46 @@
+libio-capture-perl (40-0-0) unstable; urgency=low
+
+  * Port for NCP4 
+  * Used new version scheme 
+
+ -- Peter Zaickin <peter.zaickin@nexenta.com>  Tue, 05 Jul 2011 15:53:32 +0300
+
+libio-capture-perl (0.05-2) unstable; urgency=low
+
+  [ gregor herrmann ]
+  * debian/control: Added: Vcs-Svn field (source stanza); Vcs-Browser
+    field (source stanza); Homepage field (source stanza). Removed: XS-
+    Vcs-Svn fields.
+  * debian/rules: delete /usr/lib/perl5 only if it exists.
+
+  [ Rene Mayorga ]
+  * Make the package ready for perl 5.10 update
+  * debian/control
+    + Raise dephelper version to 6
+    + set standards-version to 3.7.3 ( no changes needed )
+    + Remove leading "," in Depends
+    + Add quilt to B-D
+  * Improve debian/watch
+  * debian/rules
+    + we use quilt now
+    + remove OPTIMIZE, we are not using it
+    + use $@ when touching -stamp files
+    + move test suites from install to build target
+    + Remove commented-out and un-ussed dh_ calls
+    + Don't install the README file
+  * Add a patch to fix bad what-is entry in Pod files.
+
+ -- Rene Mayorga <rmayorga@debian.org.sv>  Sun, 27 Jan 2008 23:56:31 -0600
+
+libio-capture-perl (0.05-1) unstable; urgency=low
+
+  * New upstream release (closes: #353141)
+
+ -- Krzysztof Krzyzaniak (eloy) <eloy@debian.org>  Wed, 28 Dec 2005 15:26:03 +0100
+
+libio-capture-perl (0.04-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Krzysztof Krzyzaniak (eloy) <eloy@debian.org>  Wed, 28 Dec 2005 15:06:12 +0100
+
