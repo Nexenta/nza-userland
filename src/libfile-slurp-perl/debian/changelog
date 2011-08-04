@@ -1,0 +1,117 @@
+libfile-slurp-perl (40-0-0) unstable; urgency=low
+
+  * Port for NCP4
+  * Used new version scheme 
+
+ -- Peter Zaickin <peter.zaickin@nexenta.com> Mon, 04 Jul 2011 17:39:21 +0300
+
+libfile-slurp-perl (9999.13-1) unstable; urgency=low
+
+  * New upstream release (closes: #546747)
+
+ -- Alexander Zangerl <az@debian.org>  Wed, 16 Sep 2009 09:56:44 +1000
+
+libfile-slurp-perl (9999.12-3) unstable; urgency=low
+
+  * added dpatch to build deps
+  * lifted standards version
+  * fixed too-low test plans (use_ok was missed) because 
+    the newer test::xx tools are picky (closes: #546620)
+
+ -- Alexander Zangerl <az@debian.org>  Tue, 15 Sep 2009 17:58:21 +1000
+
+libfile-slurp-perl (9999.12-2) unstable; urgency=low
+
+  * modified binmode behaviour to work with multibyte-encoded
+    files. Thanks to Allard Hoeve for the patch. (closes: #429933)
+    also added a test for reading utf8-encoded data.
+
+ -- Alexander Zangerl <az@debian.org>  Wed, 27 Jun 2007 21:08:04 +1000
+
+libfile-slurp-perl (9999.12-1) unstable; urgency=low
+
+  * New upstream release
+  * lifted standards version, enabled full build tests by depending
+    some more perl test modules.
+
+ -- Alexander Zangerl <az@debian.org>  Thu, 15 Feb 2007 13:28:14 +1000
+
+libfile-slurp-perl (9999.09-1) unstable; urgency=low
+
+  * New upstream release (closes: #329540)
+  * updated watch file, lifted standards version, updated homepage
+
+ -- Alexander Zangerl <az@debian.org>  Sat, 24 Sep 2005 11:46:28 +1000
+
+libfile-slurp-perl (9999.07-3) unstable; urgency=low
+
+  * changed priority to optional: most perl packages seem
+    to be in the optional class and there are a few other packages
+    now that depend on libfile-slurp-perl and seem to belong to optional
+    themselves.
+
+ -- Alexander Zangerl <az@debian.org>  Sat, 16 Apr 2005 22:59:53 +1000
+
+libfile-slurp-perl (9999.07-2) unstable; urgency=low
+
+  * i'm taking back the package after an...ahem, injudicious upload 
+    by a fellow developer. no names named, and thanks for telling 
+    me about your mistake. 
+  * upstream version lifted to 9999.07
+  * fixed watch file
+  * fixed copyright file with perl paragraph
+  
+ -- Alexander Zangerl <az@debian.org>  Mon, 11 Apr 2005 23:24:39 +1000
+
+libfile-slurp-perl (9999.01-1) unstable; urgency=low
+
+  * New upstream release, upstream maintainer changed, section corrected
+  * lifted standards version, added homepage to description
+
+ -- Alexander Zangerl <az@debian.org>  Thu, 11 Dec 2003 13:18:42 +1000
+
+libfile-slurp-perl (2004.0904-1) unstable; urgency=low
+
+  * new upstream version
+  * lifted standards version
+
+ -- Alexander Zangerl <az@debian.org>  Fri, 19 Sep 2003 19:52:23 +1000
+
+libfile-slurp-perl (2002.1031-2) unstable; urgency=low
+
+  * lifted standards version, debhelper cleanup
+
+ -- Alexander Zangerl <az@debian.org>  Sun,  9 Mar 2003 12:09:52 +1000
+
+libfile-slurp-perl (2002.1031-1) unstable; urgency=low
+
+  * New upstream release
+  * disabled /usr/doc transition stuff
+
+ -- Alexander Zangerl <az@debian.org>  Fri,  3 Jan 2003 16:00:10 +1000
+
+libfile-slurp-perl (2002.0305-1) unstable; urgency=low
+
+  * new upstream version which includes the changes in 2001.1103-3
+
+ -- Alexander Zangerl <az@debian.org>  Sat,  9 Mar 2002 20:43:23 +1000
+
+libfile-slurp-perl (2001.1103-3) unstable; urgency=low
+
+  * added handling of $TMPDIR, $TEMP or $TMP for the tests.
+  * added some more error handling
+
+ -- Alexander Zangerl <az@debian.org>  Wed,  6 Mar 2002 00:27:45 +1000
+
+libfile-slurp-perl (2001.1103-2) unstable; urgency=low
+
+  * fixed dpkg-source warnings, initial upload (Closes: Bug#136175)
+
+ -- Alexander Zangerl <az@debian.org>  Mon,  4 Mar 2002 13:43:09 +1000
+
+libfile-slurp-perl (2001.1103-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Alexander Zangerl <az@debian.org>  Wed, 27 Feb 2002 16:07:46 +1000
+

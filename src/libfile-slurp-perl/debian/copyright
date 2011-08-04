@@ -1,0 +1,15 @@
+This package was debianized by Alexander Zangerl <az@debian.org>.
+It was downloaded from http://www.cpan.org/authors/id/U/UR/URI/
+
+Upstream Author: Uri Guttman <uri@stemsystems.com>
+
+Copyright:
+
+"Copyright (C) 2003 Uri Guttman <uri@stemsystems.com>
+
+Licensed the same as Perl."
+
+Perl is distributed under your choice of the GNU General Public License or
+the Artistic License.  On Debian GNU/Linux systems, the complete text of the
+GNU General Public License can be found in `/usr/share/common-licenses/GPL'
+and the Artistic Licence in `/usr/share/common-licenses/Artistic'.
