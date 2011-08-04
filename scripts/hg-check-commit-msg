@@ -1,0 +1,79 @@
+#!/usr/bin/python
+"""
+Based on http://blog.deadpansincerity.com/2011/06/mercurial-hook-to-ensure-issue-references-in-tracredmine/
+
+Howto use:
+
+1. Add these lines into .hg/hgrc it they not exist,
+otherwise add only the last line:
+--------------------- >8 ----------
+[hooks]
+pretxncommit =
+pretxncommit.check-commit-msg = hg-check-commit-msg
+--------- 8< ----------------------
+
+2. Change `hg-check-commit-msg' to full path to it,
+or add its path into PATH evironment variable
+
+3. Now when committing with "hg commit dummy.txt -m 'Test'"
+you will get messages:
+--------------------- >8 ----------
+dummy.txt
+running hook pretxncommit.commit-msg: hg-check-commit-msg
+** Warning: no issue ref (like 'Re #3141') in commit message
+** Warning: no review ref (like 'Rb 6022') in commit message
+Commit message is:
+
+Test
+
+
+
+Continue anyway? (y/n)
+--------- 8< ----------------------
+
+4. Enter 'n' to abort commit, or 'y' to continue.
+
+5. In case you entered 'n' these messages appear:
+--------------------- >8 ----------
+transaction abort!
+rollback completed
+abort: pretxncommit.commit-msg hook exited with status 9
+--------- 8< ----------------------
+
+"""
+
+
+
+import os
+import re
+import subprocess
+import sys
+ 
+cmd = subprocess.Popen(['hg', 'log', '-vr', os.environ['HG_NODE']],
+                       stdout=subprocess.PIPE).communicate()[0]
+
+msg = cmd.split('description:')[1]
+
+issue_regexes = [
+    r're #\d+',
+    ]
+review_regexes = [
+    r'rb \d+',
+    ]
+
+goahead = True
+if not filter(lambda x: re.search(x, msg), issue_regexes):
+    print("** Warning: no issue ref (like 'Re #3141') in commit message")
+    goahead = False
+if not filter(lambda x: re.search(x, msg), review_regexes):
+    print("** Warning: no review ref (like 'Rb 6022') in commit message")
+    goahead = False
+
+if not goahead:
+    print("Commit message is:")
+    print(msg)
+    sys.stdout.write("Continue anyway? (y/n) ")
+    resp = raw_input().lower()
+    if resp == 'n':
+        sys.exit(9)
+
