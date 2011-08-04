@@ -1,0 +1,15 @@
+Author: Florian Ragwitz <rafl@debianforum.de>
+Forwarded: no
+Description: Fix overlong lines and typos in POD
+--- a/lib/Net/SSLeay.pm
++++ b/lib/Net/SSLeay.pm
+@@ -987,7 +987,8 @@
+     my $bio = Net::SSLeay::BIO_new_file($crlfilename, 'r');
+     my $crl = Net::SSLeay::PEM_read_bio_X509_CRL($bio);
+     if ($crl) {
+-        Net::SSLeay::X509_STORE_add_crl(Net::SSLeay::CTX_get_cert_store($ssl, $crl);
++        Net::SSLeay::X509_STORE_add_crl(
++            Net::SSLeay::CTX_get_cert_store($ssl, $crl);
+     } else {
+         error reading CRL....
+     }

@@ -1,0 +1,2 @@
+10fix_pod.patch
+20no-stray-libz-link.patch

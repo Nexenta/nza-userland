@@ -1,0 +1,17 @@
+Author: Damyan Ivanov <dmn@debian.org>
+Forwarded: no
+Description: avoids unnecessary dependency on libz
+
+--- a/inc/Module/Install/PRIVATE/Net/SSLeay.pm
++++ b/inc/Module/Install/PRIVATE/Net/SSLeay.pm
+@@ -94,8 +94,8 @@
+         $opts->{optimize} = '-O2 -g';
+         push @{ $opts->{lib_links} },
+              ($rsaref
+-              ? qw( ssl crypto RSAglue rsaref z )
+-              : qw( ssl crypto z )
++              ? qw( ssl crypto RSAglue rsaref )
++              : qw( ssl crypto )
+              );
+ 
+         if (($Config{cc} =~ /aCC/i) && $^O eq 'hpux') {

@@ -1,0 +1,26 @@
+Source: libnet-ssleay-perl
+Section: perl
+Priority: optional
+Maintainer: Debian Perl Group <pkg-perl-maintainers@lists.alioth.debian.org>
+Uploaders: Damyan Ivanov <dmn@debian.org>,
+ gregor herrmann <gregoa@debian.org>, Franck Joncourt <franck@debian.org>
+Standards-Version: 3.8.4
+Homepage: http://search.cpan.org/dist/Net-SSLeay/
+Vcs-Svn: svn://svn.debian.org/pkg-perl/trunk/libnet-ssleay-perl/
+Vcs-Browser: http://svn.debian.org/viewsvn/pkg-perl/trunk/libnet-ssleay-perl/
+Build-Depends: debhelper (>= 7.0.50), perl, libssl-dev, openssl,
+ libtest-pod-perl, libtest-exception-perl, libtest-warn-perl,
+ libtest-nowarnings-perl, libtest-kwalitee-perl
+Upstream-Version: 1.36-1
+
+Package: libnet-ssleay-perl
+Architecture: any
+Depends: ${misc:Depends}, ${perl:Depends}, ${shlibs:Depends}
+Suggests: libmime-base64-perl
+Description: Perl module for Secure Sockets Layer (SSL)
+ Net::SSLeay.pm is a perl module that allows you to call Secure Sockets
+ Layer (SSL) functions of the SSLeay library directly from your perl
+ scripts. It is useful if you want to program robots that access secure web
+ servers or if you want to build your own applications over SSL encrypted
+ tunnels. If you just want to view web pages on https servers, you do not
+ need this - your web browser already knows to do that.
