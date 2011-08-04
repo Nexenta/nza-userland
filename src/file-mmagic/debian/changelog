@@ -1,0 +1,133 @@
+file-mmagic (40-0-0) unstable; urgency=low
+
+  * Port for NCP4 
+  * Used new version scheme
+
+ -- Peter Zaickin <peter.zaickin@nexenta.com>  Mon, 04 Jul 2011 19:19:49 +0300
+
+file-mmagic (1.27-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- NOKUBI Takatsugu <knok@daionet.gr.jp>  Wed,  1 Nov 2006 15:28:57 +0900
+
+file-mmagic (1.26-1) unstable; urgency=low
+
+  * New upstream release
+
+ --  <knok@daionet.gr.jp>  Mon, 30 Jan 2006 05:51:14 +0000
+
+file-mmagic (1.25-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- NOKUBI Takatsugu <knok@daionet.gr.jp>  Sun, 28 Aug 2005 18:27:50 +0900
+
+file-mmagic (1.22-1) unstable; urgency=low
+
+  * New upstream release
+  * Changed to treat string/[BCc] as same as string, closes #237277.
+
+ -- NOKUBI Takatsugu <knok@daionet.gr.jp>  Mon, 15 Mar 2004 17:29:12 +0900
+
+file-mmagic (1.20-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- NOKUBI Takatsugu <knok@daionet.gr.jp>  Thu, 31 Jul 2003 22:05:54 +0900
+
+file-mmagic (1.17-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- NOKUBI Takatsugu <knok@daionet.gr.jp>  Mon,  3 Mar 2003 22:01:32 +0900
+
+file-mmagic (1.16-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- NOKUBI Takatsugu <knok@daionet.gr.jp>  Wed, 22 Jan 2003 16:50:25 +0900
+
+file-mmagic (1.15-4) unstable; urgency=low
+
+  * Oops, I had make a mistake... closes: Bug#157456.
+
+ -- NOKUBI Takatsugu <knok@daionet.gr.jp>  Tue, 27 Aug 2002 13:43:04 +0900
+
+file-mmagic (1.15-3) unstable; urgency=low
+
+  * Changed to make deb on binary-indep target, closes: Bug#15764.
+
+ -- NOKUBI Takatsugu <knok@daionet.gr.jp>  Wed, 21 Aug 2002 15:44:12 +0900
+
+file-mmagic (1.15-2) unstable; urgency=low
+
+  * Added debhelper in Build-Depends line, closes: Bug#141443.
+
+ -- NOKUBI Takatsugu <knok@daionet.gr.jp>  Mon,  8 Apr 2002 17:00:07 +0900
+
+file-mmagic (1.15-1) unstable; urgency=low
+
+  * New upstream release, Closes: Bug#131717.
+
+ -- NOKUBI Takatsugu <knok@daionet.gr.jp>  Fri, 22 Feb 2002 15:07:48 +0900
+
+file-mmagic (1.13-1) unstable; urgency=low
+
+  * New upstream release, Closes: Bug#100945, Bug#100946.
+
+ -- NOKUBI Takatsugu <knok@daionet.gr.jp>  Tue, 19 Jun 2001 14:27:03 +0900
+
+file-mmagic (1.12-1) unstable; urgency=low
+
+  * New upstream release
+
+  * Adapted to new perl policy, Closes: Bug#95424.
+
+ -- NOKUBI Takatsugu <knok@daionet.gr.jp>  Tue,  3 Apr 2001 16:29:54 +0900
+
+file-mmagic (1.11-1) unstable; urgency=low
+
+  * New upstream version.
+
+ -- NOKUBI Takatsugu <knok@daionet.gr.jp>  Fri,  9 Feb 2001 09:42:52 +0900
+
+file-mmagic (1.09-1) unstable; urgency=low
+
+  * New upstream version.
+
+ -- NOKUBI Takatsugu <knok@daionet.gr.jp>  Wed, 11 Oct 2000 09:52:32 +0900
+
+file-mmagic (1.08-3) unstable; urgency=low
+
+  * Fixed some packaging mistakes.
+
+ -- NOKUBI Takatsugu <knok@daionet.gr.jp>  Mon, 25 Sep 2000 18:22:32 +0900
+
+file-mmagic (1.08-2) unstable; urgency=low
+
+  * Removed Makefile.old.
+  
+  * Fixed bad original archives.
+
+ -- NOKUBI Takatsugu <knok@daionet.gr.jp>  Mon, 25 Sep 2000 17:36:54 +0900
+
+file-mmagic (1.08-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Takuo KITAME <kitame@northeye.org>  Wed, 13 Sep 2000 19:00:16 +0900
+
+file-mmagic (1.07-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Takuo KITAME <kitame@northeye.org>  Mon, 21 Aug 2000 11:47:07 +0900
+
+file-mmagic (1.06-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Takuo KITAME <kitame@northeye.org>  Thu,  6 Apr 2000 09:31:44 +0900
+
+
