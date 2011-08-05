@@ -1,0 +1,14 @@
+This is a Debian prepackaged version of the Test::Object.
+
+This package was put together by Joey Hess <joeyh@debian.org>, using
+sources from CPAN, http://www.cpan.org/
+
+The following copyright applies to this package:
+
+    Copyright 2005, 2006 Adam Kennedy. All rights reserved.
+
+    This program is free software; you can redistribute it and/or modify it
+    under the same terms as Perl itself.
+
+(Those terms are either of the Artistic license or the GPL; both licenses
+can be found in full in /usr/share/common-licenses/)

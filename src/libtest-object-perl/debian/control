@@ -1,0 +1,19 @@
+Source: libtest-object-perl
+Section: perl
+Priority: optional
+Build-Depends-Indep: perl (>= 5.8)
+Build-Depends: debhelper (>= 5)
+Maintainer: Debian Perl Group <pkg-perl-maintainers@lists.alioth.debian.org>
+Uploaders: Joey Hess <joeyh@debian.org>
+Standards-Version: 3.7.2
+XS-Vcs-Svn: svn://svn.debian.org/pkg-perl/trunk/libtest-object-perl
+XS-Vcs-Browser: http://svn.debian.org/wsvn/pkg-perl/trunk/libtest-object-perl/
+Upstream-Version: 0.07-1
+
+Package: libtest-object-perl
+Architecture: all
+Depends: ${perl:Depends}, ${misc:Depends}
+Description: Thoroughly testing objects via registered handlers
+ The Test::Object perl module aids testing deep trees of classes. 
+ It allows testing an object against the expected behavior of all the
+ classes in its inheritance tree.
