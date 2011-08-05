@@ -1,0 +1,27 @@
+Source: libtree-dagnode-perl
+Section: perl
+Priority: optional
+Maintainer: Debian Perl Group <pkg-perl-maintainers@lists.alioth.debian.org>
+Uploaders: Jay Bonci <jaybonci@debian.org>, Roberto C. Sanchez <roberto@debian.org>
+Build-Depends: debhelper (>= 6.0.0)
+Build-Depends-Indep: perl (>= 5.6.0-16)
+Standards-Version: 3.7.3
+Homepage: http://search.cpan.org/dist/Tree-DAG_Node/
+Vcs-Svn: svn://svn.debian.org/pkg-perl/trunk/libtree-dagnode-perl/
+Vcs-Browser: http://svn.debian.org/wsvn/pkg-perl/trunk/libtree-dagnode-perl/
+Upstream-Version: 1.06-1
+
+Package: libtree-dagnode-perl
+Architecture: all
+Depends: ${perl:Depends}, ${misc:Depends}
+Description: Tree::DAG_Node - (super)class for representing nodes in a tree 
+ Tree::DAG_Node is a (super)class for representing nodes in a tree.
+ .
+ This class encapsulates/makes/manipulates objects that represent nodes
+ in a tree structure.  The tree structure is not an object itself, but
+ is emergent from the linkages you create between nodes.  This class
+ provides the methods for making linkages that can be used to build up
+ a tree, while preventing you from ever making any kinds of linkages
+ which are not allowed in a tree (such as having a node be its own
+ mother or ancestor, or having a node have two mothers).
+
