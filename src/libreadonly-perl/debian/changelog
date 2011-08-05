@@ -1,0 +1,26 @@
+libreadonly-perl (40-0-0) unstable; urgency=low
+
+  * Port for NCP4 
+  * Used new version scheme
+
+ -- Peter Zaickin <peter.zaickin@nexenta.com>  Mon, 04 Jul 2011 17:42:31 +0300
+
+libreadonly-perl (1.03-2) unstable; urgency=low
+
+  * debian/rules:
+    - delete /usr/lib/perl5 only if it exists (closes: #467993)
+    - move dh_clean before make realclean and use it for removing stamp
+      files
+    - create install-stamp target
+  * debian/watch: use dist-based URL.
+  * Set Standards-Version to 3.7.3 (no changes).
+  * Add /me to Uploaders.
+
+ -- gregor herrmann <gregor+debian@comodo.priv.at>  Wed, 12 Mar 2008 21:58:04 +0100
+
+libreadonly-perl (1.03-1) unstable; urgency=low
+
+  * Initial release (Closes: #447685)
+
+ -- Rene Mayorga <rmayorga@debian.org.sv>  Mon, 22 Oct 2007 20:42:47 -0600
+
