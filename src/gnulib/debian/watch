@@ -1,0 +1,3 @@
+version=3
+# this package is based on snapshots of the gnulib git repo
+# so a watch file is irrelevant

@@ -1,3 +1,10 @@
+fakeroot (40-0-1) unstable; urgency=low
+
+  * debian/rules, debian/patches/solaris_libpath_64:
+    + Backported Solaris 64 bit support from NCP3, Thanks to Albert Lee.
+
+ -- Kartik Mistry <kartik.mistry@nexenta.com>  Mon, 01 Aug 2011 23:23:18 +0530
+
 fakeroot (40-0-0) unstable; urgency=low
 
   * Updated for new version scheme

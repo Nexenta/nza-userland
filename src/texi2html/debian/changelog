@@ -1,0 +1,177 @@
+texi2html (40-0-0) unstable; urgency=low
+
+  * Ported to NCP4
+
+ -- Igor Pashev <igor.pashev@nexenta.com>  Wed, 03 Aug 2011 19:37:36 +0400
+
+texi2html (1.82-1) unstable; urgency=low
+
+  * New upstream release (Closes: #534127)
+  * Closes: #451654: include a doc-base registration file
+  * updated Standard Version to 3.8.3
+  * [debian/control]: new Homepage field
+  * [debian/control]: update debhelper to version 7
+  * [debian/compat]: updated to level 7
+  * [debian/rules]: Updated
+  * [debian/copyright]: Updated 
+  * [debian/patches]: debian/patches/01_remove_doc_dir.diff
+    added, patch fixes dir.gz 
+
+ -- Francesco Cecconi <francesco.cecconi@gmail.com>  Wed, 21 Oct 2009 10:05:15 +0200
+
+texi2html (1.78-1) unstable; urgency=low
+
+  * New upstream version.
+
+ -- Francesco Cecconi <francesco.cecconi@gmail.com>  Thu, 19 Jul 2007 02:03:21 +0200
+
+texi2html (1.76-4) unstable; urgency=low
+
+  * New maintainer (Closes: #360947)
+  * [debian/rules] Updated 
+  * [debian/copyright] Updated
+
+ -- Francesco Cecconi <francesco.cecconi@gmail.com>  Sun,  9 Apr 2006 01:47:59 +0200
+
+texi2html (1.76-3) unstable; urgency=low
+
+  * New maintainer, many thanks to Nigel Jones for his great work
+    (Closes: #327441)
+  * Not using cdbs anymore, as I personally don't like it
+  * debian/changelog: remove cruft at the end
+  * debian/control:
+    + add Homepage to long description
+    + move debhelper from Build-Depends-Indep to Build-Depends
+    + add B-D-I on autotools-dev
+    + drop Replaces: tetex-bin (<< 1.0.7), even oldstable has a newer
+      version these days
+  * debian/copyright:
+    + list new upstream homepage
+    + list past and present maintainer(s)
+    + include AUTHORS file, dropping it from the deb
+    + fix typo
+  * debian/texi2html.docs:
+    + renamed to debian/docs
+    + include TODO
+  * debian/rules: complete redo, taking care so some cruft doesn't enter
+    the diff.gz
+  * debian/watch: added
+
+ -- Florian Ernst <florian@debian.org>  Thu, 22 Sep 2005 00:32:58 +0200
+
+texi2html (1.76-2) unstable; urgency=low
+
+  * Closes: #318536: Chokes on gnugo.texi
+  * Closes: #317863: Loops forever processing bbdb.texinfo
+  * Closes: #321586: Includes non-free images - Fixed by dual GPL/CC agreement
+  * New maintainer. (Closes: #314843: ITA: texi2html -- Convert Texinfo
+    files to HTML)
+  * Closes: #326048: gnugo: FTBFS: Undefined
+    subroutine &amp;main::normalize_space called at /usr/bin/texi2html
+    line 13756. (Caused by texi2html)
+
+ -- Nigel Jones <nigelj@gmail.com>  Sun,  4 Sep 2005 22:37:39 +1200
+
+texi2html (1.76-1) unstable; urgency=low
+
+  * QA Group upload
+  * debian/control:
+    - Maintainer set to QA Group
+    - Standards-Version set to 3.6.2
+  * New upstream (Closes: #242637)
+  * Acknowledge NMUs (Closes: #238881, #219991, #93348, #220609)
+  * debian/rules: upstream path to html has changed 
+
+ -- Luk Claes <luk@debian.org>  Wed,  6 Jul 2005 21:25:20 +0200
+
+texi2html (1.66-1.2) unstable; urgency=low
+
+  * NMU
+  * _Really_ suggest latex2html.
+
+ -- Andreas Metzler <ametzler@debian.org>  Fri, 19 Mar 2004 15:20:43 +0100
+
+texi2html (1.66-1.1) unstable; urgency=low
+
+  * NMU (Permitted by maintainer.)
+  * If recompiled on sid with /usr/sbin in $PATH the package would
+    contain /usr/share/info/dir.gz (Closes: #219991)
+  * Suggest latex2html because texi2html can make use of it.
+    (Closes: #220609)
+  * Needs at least debhelper 4 to build. Fix Build-Depends.
+
+ -- Andreas Metzler <ametzler@debian.org>  Fri, 19 Mar 2004 14:50:38 +0100
+
+texi2html (1.66-1) unstable; urgency=low
+
+  * New upstream version.
+  * New maintainer.  (Closes: #201381)
+  * debian/copyright: Changed upstream location.  The original upstream
+    maintainer, Oliver Bachmann, has gone missing.  Derek Price has
+    taken over the package upstream.
+  * debian/rules: Use cdbs.  (Closes: #95543)
+  * debian/control: Added build dependency on cdbs.
+
+ -- Ivo Timmermans <ivo@debian.org>  Sat, 19 Jul 2003 14:29:22 +0200
+
+texi2html (1.64-cvs20010402-2) unstable; urgency=low
+
+  * Fix -glossary bug (closes: #93348).
+  * Documentation tidyups, based on Michael Ernst's patch against 1.64.
+
+ -- Peter Moulder <pjm@bofh.asn.au>  Thu, 19 Apr 2001 23:54:09 +1000
+
+texi2html (1.64-cvs20010402-0.1) unstable; urgency=low
+
+  * New upstream version (closes: #68555).
+  * Build-Depends: texinfo (closes: #87669).
+  * Bump Standards-Version to 3.5.2 (no changes).
+  * Only warn rather than aborting if upstream version number greater
+    than debian version number.  (Upstream configure.in already says
+    1.65, but AFAICT 1.65 isn't released yet.)
+
+ -- Peter Moulder <pjm@bofh.asn.au>  Tue,  3 Apr 2001 00:56:45 +1000
+
+texi2html (1.64-0.1) unstable; urgency=low
+
+  * New upstream version (closes #65897, #66662).
+  * Add version info to `Replaces: tetex-bin'.
+
+ -- Peter Moulder <pjm@bofh.asn.au>  Thu,  6 Jul 2000 22:44:51 +1000
+
+texi2html (1.62.1-1) unstable; urgency=low
+
+  * Initial release to Debian.
+  * Sponsored upload for Peter Moulder <pjm@bofh.asn.au>.
+    + changed version number to -1 :)
+    + removed p* scripts, dh_* will generate them properly from scratch,
+      if needed
+    + moved binary-arch contents under binary-indep because it's an
+      Arch: all package.
+    + updated for policy 3.1.1 (Build-Depends: debhelper).
+
+ -- Josip Rodin <jrodin@jagor.srce.hr>  Wed, 26 Apr 2000 15:59:12 +0200
+
+texi2html (1.62.1-0.1) unstable; urgency=low
+
+  * New upstream version.
+
+ -- Peter Moulder <pjm@bofh.asn.au>  Thu, 13 Apr 2000 13:15:48 +1000
+
+texi2html (1.61.1-0.1) unstable; urgency=low
+
+  * New upstream version.  (Documentation changes.)
+
+ -- Peter Moulder <pjm@bofh.asn.au>  Sat,  8 Apr 2000 14:07:44 +1000
+
+texi2html (1.61-0.1) unstable; urgency=low
+
+  * New upstream version.  Includes extra documentation.
+
+ -- Peter Moulder <pjm@bofh.asn.au>  Sat,  1 Apr 2000 19:12:40 +1000
+
+texi2html (1.59.2-0.1) unstable; urgency=low
+
+  * Initial packaging of the 1.60 series of texi2html.
+
+ -- Peter Moulder <reiter@netspace.net.au>  Mon, 27 Dec 1999 12:57:58 +1100

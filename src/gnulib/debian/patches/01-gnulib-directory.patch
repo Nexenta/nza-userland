@@ -1,0 +1,16 @@
+Author: Daniel Baumann <daniel@debian.org>
+Description: Sets the gnulib directory.
+
+Index: gnulib/gnulib-tool
+===================================================================
+--- gnulib.orig/gnulib-tool	2011-06-10 02:19:25.000000000 +0100
++++ gnulib/gnulib-tool	2011-06-10 02:19:33.000000000 +0100
+@@ -438,7 +438,7 @@
+       * ) self_abspathname=`echo "$self_abspathname" | sed -e 's,/[^/]*$,,'`/"$linkval" ;;
+     esac
+   done
+-  gnulib_dir=`echo "$self_abspathname" | sed -e 's,/[^/]*$,,'`
++  gnulib_dir=/usr/share/gnulib
+ }
+ 
+ # func_tmpdir

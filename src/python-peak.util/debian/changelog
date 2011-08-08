@@ -1,3 +1,11 @@
+python-peak.util (40-0-1) unstable; urgency=low
+
+  * New upstream release to support Python 2.7:
+    - peak.util.addons 0.7
+    - peak.util.assembler 0.6
+
+ -- Igor Pashev <igor.pashev@nexenta.com>  Wed, 03 Aug 2011 16:33:44 +0400
+
 python-peak.util (40-0-0) unstable; urgency=low
 
   * Ported to NCP4

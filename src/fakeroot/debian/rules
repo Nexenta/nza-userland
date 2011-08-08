@@ -26,14 +26,20 @@ endif
 ifeq (x86_64-linux-gnu,$(DEB_HOST_GNU_TYPE))
 BIARCH_LIB_DIR=usr/lib32
 else
+ifeq (i686-pc-solaris2.11,$(DEB_HOST_GNU_TYPE))
+BIARCH_LIB_DIR=usr/lib/64
+else
 ifneq (,$(findstring $(DEB_HOST_GNU_TYPE), ppc64-linux-gnu x86_64-kfreebsd-gnu))
 BIARCH_LIB_DIR=usr/lib32
 else
 BIARCH_LIB_DIR=usr/lib64
 endif
 endif
+endif
 
-build: build-stamp
+build: build-arch build-biarch
+
+build-arch: build-stamp
 build-stamp:
 	$(checkdir)
 
@@ -61,7 +67,7 @@ clean: checkroot
 #	 Add here commands to clean up after the build process.
 	-cd obj-sysv && $(MAKE) distclean
 	-cd obj-tcp && $(MAKE) distclean
-ifneq (,$(findstring $(DEB_HOST_GNU_TYPE), sparc-linux-gnu s390-linux-gnu x86_64-linux-gnu i486-linux-gnu powerpc-linux-gnu ppc64-linux-gnu x86_64-kfreebsd-gnu))
+ifneq (,$(findstring $(DEB_HOST_GNU_TYPE), sparc-linux-gnu s390-linux-gnu x86_64-linux-gnu i486-linux-gnu powerpc-linux-gnu ppc64-linux-gnu x86_64-kfreebsd-gnu i686-pc-solaris2.11))
 	-cd obj64-sysv && $(MAKE) distclean
 	-cd obj64-tcp && $(MAKE) distclean
 endif
@@ -75,7 +81,7 @@ binary-indep: build
 # We have nothing to do by default.
 
 # Build architecture-dependent files here.
-binary-arch: build checkroot
+binary-arch: build-arch checkroot
 	$(checkdir)
 
 	cd obj-tcp && $(MAKE) DESTDIR="$(CURDIR)/debian/tmp" install
@@ -102,9 +108,6 @@ binary-arch: build checkroot
 #	cd obj-sysv && ./libtool --finish $(CURDIR)/debian/tmp/usr/lib/fakeroot
 	rm -f debian/tmp/usr/lib/libfakeroot/libfakeroot.*a*
 	rm -f debian/tmp/usr/bin/simple
-ifneq (,$(findstring $(DEB_HOST_GNU_TYPE), sparc-linux-gnu s390-linux-gnu x86_64-linux-gnu i486-linux-gnu powerpc-linux-gnu ppc64-linux-gnui x86_64-kfreebsd-gnu))
-	$(MAKE) -f debian/rules binary-biarch
-endif
 	$(INSTALL_FILE) debian/copyright debian/tmp/usr/share/doc/fakeroot/copyright
 	$(INSTALL_FILE) debian/changelog debian/tmp/usr/share/doc/fakeroot/changelog.Debian
 	gzip -9f debian/tmp/usr/share/man/man1/faked-sysv.1 \
@@ -135,6 +138,8 @@ ifeq (,$(findstring nostrip,$(DEB_BUILD_OPTIONS)))
 	strip --remove-section=.comment --remove-section=.note debian/tmp/usr/bin/faked-tcp
 #	strip --strip-debug debian/tmp/usr/lib/libfakeroot.a
 endif
+
+binary: binary-indep binary-arch binary-biarch
 	$(INSTALL_SCRIPT) debian/fakeroot.postrm debian/tmp/DEBIAN/postrm
 	$(INSTALL_SCRIPT) debian/fakeroot.prerm debian/tmp/DEBIAN/prerm
 ifneq ($(DEB_HOST_GNU_SYSTEM),gnu)
@@ -156,40 +161,52 @@ endif
 	cd debian/tmp && find * -type f ! -regex '^DEBIAN/.*' -print0 | xargs -r0 md5sum > DEBIAN/md5sums
 	dpkg-deb --build debian/tmp ..
 
-binary-biarch:
+build-biarch: build-biarch-stamp
+build-biarch-stamp:
+ifneq (,$(findstring $(DEB_HOST_GNU_TYPE), sparc-linux-gnu s390-linux-gnu x86_64-linux-gnu i486-linux-gnu powerpc-linux-gnu ppc64-linux-gnu x86_64-kfreebsd-gnu i686-pc-solaris2.11))
 	$(checkdir)
-	mkdir obj64-sysv obj64-tcp
 
+	mkdir obj64-sysv obj64-tcp
 ifneq (,$(findstring $(DEB_HOST_GNU_TYPE),sparc-linux-gnu))
-	cd obj64-sysv && CC="gcc -m64" ../configure --prefix=/usr --mandir=/usr/share/man --build=sparc-linux --host=sparc64-linux-gnu --program-suffix=-sysv $(CONFARGS)
-	cd obj64-tcp && CC="gcc -m64" ../configure --prefix=/usr --mandir=/usr/share/man --build=sparc-linux --host=sparc64-linux-gnu --with-ipc=tcp --program-suffix=-tcp $(CONFARGS)
+	cd obj64-sysv && CC="gcc -m64" CFLAGS="$(CFLAGS)" ../configure --prefix=/usr --mandir=/usr/share/man --build=sparc-linux --host=sparc64-linux-gnu --program-suffix=-sysv $(CONFARGS)
+	cd obj64-tcp && CC="gcc -m64" CFLAGS="$(CFLAGS)" ../configure --prefix=/usr --mandir=/usr/share/man --build=sparc-linux --host=sparc64-linux-gnu --with-ipc=tcp --program-suffix=-tcp $(CONFARGS)
 endif
 ifneq (,$(findstring $(DEB_HOST_GNU_TYPE),s390-linux-gnu))
-	cd obj64-sysv && CC="gcc -m64" ../configure --prefix=/usr --mandir=/usr/share/man --build=s390-linux --host=s390x-linux-gnu --program-suffix=-sysv $(CONFARGS)
-	cd obj64-tcp && CC="gcc -m64" ../configure --prefix=/usr --mandir=/usr/share/man --build=s390-linux --host=s390x-linux-gnu --with-ipc=tcp --program-suffix=-tcp $(CONFARGS)
+	cd obj64-sysv && CC="gcc -m64" CFLAGS="$(CFLAGS)" ../configure --prefix=/usr --mandir=/usr/share/man --build=s390-linux --host=s390x-linux-gnu --program-suffix=-sysv $(CONFARGS)
+	cd obj64-tcp && CC="gcc -m64" CFLAGS="$(CFLAGS)" ../configure --prefix=/usr --mandir=/usr/share/man --build=s390-linux --host=s390x-linux-gnu --with-ipc=tcp --program-suffix=-tcp $(CONFARGS)
 endif
 ifneq (,$(findstring $(DEB_HOST_GNU_TYPE),x86_64-linux-gnu))
-	cd obj64-sysv && CC="gcc -m32" ../configure --prefix=/usr --mandir=/usr/share/man --build=x86_64-linux --host=i486-linux-gnu --program-suffix=-sysv $(CONFARGS)
-	cd obj64-tcp && CC="gcc -m32" ../configure --prefix=/usr --mandir=/usr/share/man --build=x86_64-linux --host=i486-linux-gnu --with-ipc=tcp --program-suffix=-tcp $(CONFARGS)
+	cd obj64-sysv && CC="gcc -m32" CFLAGS="$(CFLAGS)" ../configure --prefix=/usr --mandir=/usr/share/man --build=x86_64-linux --host=i486-linux-gnu --program-suffix=-sysv $(CONFARGS)
+	cd obj64-tcp && CC="gcc -m32" CFLAGS="$(CFLAGS)" ../configure --prefix=/usr --mandir=/usr/share/man --build=x86_64-linux --host=i486-linux-gnu --with-ipc=tcp --program-suffix=-tcp $(CONFARGS)
 endif
 ifneq (,$(findstring $(DEB_HOST_GNU_TYPE),i486-linux-gnu))
-	cd obj64-sysv && CC="gcc -m64" ../configure --prefix=/usr --mandir=/usr/share/man --build=i486-linux --host=x86_64-linux-gnu --program-suffix=-sysv $(CONFARGS)
-	cd obj64-tcp && CC="gcc -m64" ../configure --prefix=/usr --mandir=/usr/share/man --build=i486-linux --host=x86_64-linux-gnu --with-ipc=tcp --program-suffix=-tcp $(CONFARGS)
+	cd obj64-sysv && CC="gcc -m64" CFLAGS="$(CFLAGS)" ../configure --prefix=/usr --mandir=/usr/share/man --build=i486-linux --host=x86_64-linux-gnu --program-suffix=-sysv $(CONFARGS)
+	cd obj64-tcp && CC="gcc -m64" CFLAGS="$(CFLAGS)" ../configure --prefix=/usr --mandir=/usr/share/man --build=i486-linux --host=x86_64-linux-gnu --with-ipc=tcp --program-suffix=-tcp $(CONFARGS)
 endif
 ifneq (,$(findstring $(DEB_HOST_GNU_TYPE),powerpc-linux-gnu))
-	cd obj64-sysv && CC="gcc -m64" ../configure --prefix=/usr --mandir=/usr/share/man --build=powerpc-linux --host=ppc64-linux-gnu --program-suffix=-sysv $(CONFARGS)
-	cd obj64-tcp && CC="gcc -m64" ../configure --prefix=/usr --mandir=/usr/share/man --build=powerpc-linux --host=ppc64-linux-gnu --with-ipc=tcp --program-suffix=-tcp $(CONFARGS)
+	cd obj64-sysv && CC="gcc -m64" CFLAGS="$(CFLAGS)" ../configure --prefix=/usr --mandir=/usr/share/man --build=powerpc-linux --host=ppc64-linux-gnu --program-suffix=-sysv $(CONFARGS)
+	cd obj64-tcp && CC="gcc -m64" CFLAGS="$(CFLAGS)" ../configure --prefix=/usr --mandir=/usr/share/man --build=powerpc-linux --host=ppc64-linux-gnu --with-ipc=tcp --program-suffix=-tcp $(CONFARGS)
 endif
 ifneq (,$(findstring $(DEB_HOST_GNU_TYPE),ppc64-linux-gnu))
-	cd obj64-sysv && CC="gcc -m32" ../configure --prefix=/usr --mandir=/usr/share/man --build=ppc64-linux --host=powerpc-linux-gnu --program-suffix=-sysv $(CONFARGS)
-	cd obj64-tcp && CC="gcc -m32" ../configure --prefix=/usr --mandir=/usr/share/man --build=ppc64-linux --host=powerpc-linux-gnu --with-ipc=tcp --program-suffix=-tcp $(CONFARGS)
+	cd obj64-sysv && CC="gcc -m32" CFLAGS="$(CFLAGS)" ../configure --prefix=/usr --mandir=/usr/share/man --build=ppc64-linux --host=powerpc-linux-gnu --program-suffix=-sysv $(CONFARGS)
+	cd obj64-tcp && CC="gcc -m32" CFLAGS="$(CFLAGS)" ../configure --prefix=/usr --mandir=/usr/share/man --build=ppc64-linux --host=powerpc-linux-gnu --with-ipc=tcp --program-suffix=-tcp $(CONFARGS)
 endif
 ifneq (,$(findstring $(DEB_HOST_GNU_TYPE),x86_64-kfreebsd-gnu))
-	cd obj64-sysv && CC="gcc -m32" ../configure --prefix=/usr --mandir=/usr/share/man --build=x86_64-kfreebsd --host=i486-kfreebsd-gnu --program-suffix=-sysv $(CONFARGS)
-	cd obj64-tcp && CC="gcc -m32" ../configure --prefix=/usr --mandir=/usr/share/man --build=x86_64-kfreebsd --host=i486-kfreebsd-gnu --with-ipc=tcp --program-suffix=-tcp $(CONFARGS)
+	cd obj64-sysv && CC="gcc -m32" CFLAGS="$(CFLAGS)" ../configure --prefix=/usr --mandir=/usr/share/man --build=x86_64-kfreebsd --host=i486-kfreebsd-gnu --program-suffix=-sysv $(CONFARGS)
+	cd obj64-tcp && CC="gcc -m32" CFLAGS="$(CFLAGS)" ../configure --prefix=/usr --mandir=/usr/share/man --build=x86_64-kfreebsd --host=i486-kfreebsd-gnu --with-ipc=tcp --program-suffix=-tcp $(CONFARGS)
+endif
+ifneq (,$(findstring $(DEB_HOST_GNU_TYPE),i686-pc-solaris2.11))
+	cd obj64-sysv && CC="gcc -m64" CFLAGS="$(CFLAGS)" ../configure --prefix=/usr --mandir=/usr/share/man --build=i686-pc-solaris2.11 --host=x86_64-pc-solaris2.11 --program-suffix=-sysv $(CONFARGS)
+	cd obj64-tcp && CC="gcc -m64" CFLAGS="$(CFLAGS)" ../configure --prefix=/usr --mandir=/usr/share/man --build=i686-pc-solaris2.11 --host=x86_64-pc-solaris2.11 --with-ipc=tcp --program-suffix=-tcp $(CONFARGS)
+	cd obj64-tcp && $(MAKE) libfakeroot.la
+	cd obj64-sysv && $(MAKE) libfakeroot.la
+endif
 endif
 
-	cd obj64-tcp && $(MAKE) libfakeroot.la
+	touch build-biarch-stamp
+
+binary-biarch: build-biarch checkroot
+ifneq (,$(findstring $(DEB_HOST_GNU_TYPE), sparc-linux-gnu s390-linux-gnu x86_64-linux-gnu i486-linux-gnu powerpc-linux-gnu ppc64-linux-gnu x86_64-kfreebsd-gnu i686-pc-solaris2.11))
 	$(INSTALL_DIR) debian/tmp/$(BIARCH_LIB_DIR)/libfakeroot
 	cd obj64-tcp && $(SHELL) ./libtool --mode=install install libfakeroot.la \
 		$(CURDIR)/debian/tmp/$(BIARCH_LIB_DIR)/libfakeroot/libfakeroot.la
@@ -197,7 +214,6 @@ endif
 	chmod 644 debian/tmp/$(BIARCH_LIB_DIR)/libfakeroot/libfakeroot-0.so
 	mv debian/tmp/$(BIARCH_LIB_DIR)/libfakeroot/libfakeroot-0.so debian/tmp/$(BIARCH_LIB_DIR)/libfakeroot/libfakeroot-tcp.so
 
-	cd obj64-sysv && $(MAKE) libfakeroot.la
 	$(INSTALL_DIR) debian/tmp/$(BIARCH_LIB_DIR)/libfakeroot
 	cd obj64-sysv && $(SHELL) ./libtool --mode=install install libfakeroot.la \
 		$(CURDIR)/debian/tmp/$(BIARCH_LIB_DIR)/libfakeroot/libfakeroot.la
@@ -210,12 +226,12 @@ ifeq (,$(findstring nostrip,$(DEB_BUILD_OPTIONS)))
 	strip --remove-section=.comment --remove-section=.note --strip-unneeded debian/tmp/$(BIARCH_LIB_DIR)/libfakeroot/libfakeroot-sysv.so
 	strip --remove-section=.comment --remove-section=.note --strip-unneeded debian/tmp/$(BIARCH_LIB_DIR)/libfakeroot/libfakeroot-tcp.so
 endif
+endif
 
 source diff:
 	@echo >&2 'source and diff are obsolete - use dpkg-source -b'; false
 
-binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary checkroot prebuild
+.PHONY: build-arch build-biarch build clean binary-indep binary-arch binary-biarch binary checkroot prebuild
 
 prebuild:
 	@echo prebuild handled differently now

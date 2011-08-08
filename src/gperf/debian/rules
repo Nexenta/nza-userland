@@ -1,0 +1,15 @@
+#!/usr/bin/make -f
+
+%:
+	dh $@
+
+
+override_dh_auto_install:
+	$(MAKE) install INSTALL="install -p" \
+		prefix=$(CURDIR)/debian/gperf/usr \
+		docdir=$(CURDIR)/debian/gperf/usr/share/doc/gperf/ \
+		mandir=$(CURDIR)/debian/gperf/usr/share/man \
+		infodir=$(CURDIR)/debian/gperf/usr/share/info
+	rm -rf debian/gperf/usr/share/man/dvi
+	rm -rf debian/gperf/usr/share/man/html
+
