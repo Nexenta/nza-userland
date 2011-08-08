@@ -1,12 +1,18 @@
+libevent (40-0-0) unstable; urgency=low
+
+  * New version scheme
+
+ -- Igor Pashev <igor.pashev@nexenta.com>  Mon, 08 Aug 2011 14:16:37 +0400
+
 libevent (1.4.13-stable-3) unstable; urgency=low
 
-  * Rebuild for NCP4  
+  * Rebuild for NCP4
 
  -- Super-User <peter.zaikin@nexenta.com>  Tue, 15 Mar 2011 11:21:15 +0000
 
 libevent (1.4.13-stable-2) unstable; urgency=low
 
-  * Port for Nexenta 4 
+  * Port for Nexenta 4
 
  -- Peter Zaikin <peter.zaikin@nexenta.com>  Sun, 20 Feb 2011 14:54:20 +0200
 

@@ -1,8 +1,9 @@
 Source: libevent
+Upstream-Version: 1.4.13
 Section: libs
 Priority: optional
 Maintainer: Anibal Monsalve Salazar <anibal@debian.org>
-Build-Depends: debhelper (>= 7), autotools-dev, libtool
+Build-Depends: debhelper, autotools-dev, libtool
 Standards-Version: 3.8.3
 Homepage: http://www.monkey.org/~provos/libevent/
 
