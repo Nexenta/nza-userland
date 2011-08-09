@@ -2,7 +2,7 @@
 """
 Based on http://blog.deadpansincerity.com/2011/06/mercurial-hook-to-ensure-issue-references-in-tracredmine/
 
-Howto use:
+How to use:
 
 1. Add these lines into .hg/hgrc it they not exist,
 otherwise add only the last line:
@@ -51,8 +51,11 @@ import sys
  
 cmd = subprocess.Popen(['hg', 'log', '-vr', os.environ['HG_NODE']],
                        stdout=subprocess.PIPE).communicate()[0]
+msg = cmd.split('description:')[1].strip()
 
-msg = cmd.split('description:')[1]
+ignore_regexes = [
+    r'^Automated merge with.*',
+    ]
 
 issue_regexes = [
     r're #\d+',
@@ -60,6 +63,10 @@ issue_regexes = [
 review_regexes = [
     r'rb \d+',
     ]
+
+if filter(lambda x: re.search(x, msg, re.IGNORECASE), ignore_regexes):
+    exit(0)
+
 
 goahead = True
 if not filter(lambda x: re.search(x, msg, re.IGNORECASE), issue_regexes):
@@ -70,8 +77,10 @@ if not filter(lambda x: re.search(x, msg, re.IGNORECASE), review_regexes):
     goahead = False
 
 if not goahead:
-    print("Commit message is:")
+    print('Commit message is:')
+    print('---------- >8 --------')
     print(msg)
+    print('---------- 8< --------')
     sys.stdout.write("Continue anyway? (y/n) ")
     resp = raw_input().lower()
     if resp == 'n':
