@@ -32,11 +32,6 @@ ifeq ($(DEB_HOST_ARCH_OS),kfreebsd)
     CONFFLAGS += --without-jpl
 endif
 
-# Needed to fix linking on Solaris
-ifeq ($(DEB_HOST_ARCH_OS),solaris)
-    LDFLAGS += -luuid -lsocket
-endif
-
 build: build-stamp
 build-stamp:
 	dh_testdir

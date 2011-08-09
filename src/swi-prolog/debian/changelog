@@ -1,9 +1,3 @@
-swi-prolog (40-0-1) unstable; urgency=low
-
-  * Fix FTBFS on fresh NCP4 install
-
- -- Andrew Stormont (astormont) <andyjstormont@googlemail.com>  Wed, 03 Aug 2011 08:22:31 +0100
-
 swi-prolog (40-0-0) unstable; urgency=low
 
   * Package for NCP4.
