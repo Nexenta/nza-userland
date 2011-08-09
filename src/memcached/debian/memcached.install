@@ -1,0 +1,6 @@
+usr/bin/
+usr/share/
+usr/include/memcached/
+debian/*.conf etc/
+scripts/memcached-tool usr/share/memcached/
+memcached_dtrace.d usr/share/memcached/
