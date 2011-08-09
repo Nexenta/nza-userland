@@ -1,5 +1,71 @@
 #!/usr/bin/make -f
 
+BUILD = build-tree
+
+CC_32 = gcc -m32
+CC_64 = gcc -m64
+
+CXX_32 = g++ -m32
+CXX_64 = g++ -m64
+
+CFLAGS_32 =
+CFLAGS_64 =
+
+CPPFLAGS_32 =
+CPPFLAGS_64 =
+
+LDFLAGS_32 =
+LDFLAGS_64 =
+
+CONFIGURE_OPTIONS_COMMON =
+
+# Headers are slightly arch-dependant
+CONFIGURE_OPTIONS_32 = \
+	--includedir=\$${prefix}/include \
+	--bindir=\$${prefix}/bin \
+	--libdir=\$${prefix}/lib
+
+CONFIGURE_OPTIONS_64 = \
+	--includedir=\$${prefix}/include/amd64 \
+	--bindir=\$${prefix}/bin/amd64 \
+	--libdir=\$${prefix}/lib/amd64
+
+override_dh_auto_configure: configure32-stamp configure64-stamp
+configure%-stamp:
+	dh_auto_configure -B $(BUILD)/$* -- \
+		$(CONFIGURE_OPTIONS_COMMON) \
+		$(CONFIGURE_OPTIONS_$*) \
+		CC="$(CC_$*)" \
+		CXX="$(CXX_$*)" \
+		LDFLAGS="$(LDFLAGS) $(LDFLAGS_$*)" \
+		CFLAGS="$(CFLAGS) $(CFLAGS_$*)" \
+		CPPFLAGS="$(CPPFLAGS) $(CPPFLAGS_$*)" \
+		CXXFLAGS="$(CXXFLAGS) $(CXXFLAGS_$*)"
+	touch $@
+
+override_dh_auto_build: build32-stamp build64-stamp
+build%-stamp: configure%-stamp
+	$(MAKE) -C $(BUILD)/$*
+	touch $@
+
+
+override_dh_auto_install: install32-stamp install64-stamp
+	(cd $(CURDIR)/debian/tmp/usr/include && for h in *.h; do \
+		if cmp -s $$h amd64/$$h ; then \
+			rm amd64/$$h && ln -sf ../$$h amd64/$$h; \
+		fi ; \
+	done)
+
+install%-stamp: build%-stamp
+	$(MAKE) -C $(BUILD)/$* install DESTDIR=$(CURDIR)/debian/tmp
+	touch $@
+
+
+override_dh_clean:
+	dh_clean
+	rm -rf $(BUILD)
+	rm -f *-stamp
+
 %:
 	dh $@
 
