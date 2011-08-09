@@ -19,10 +19,9 @@ LDFLAGS_64 =
 
 CONFIGURE_OPTIONS_COMMON =
 
-# Headers are slightly arch-dependant
 CONFIGURE_OPTIONS_32 = \
 	--includedir=\$${prefix}/include \
-	--bindir=\$${prefix}/bin \
+	--bindir=\$${prefix}/bin/i86 \
 	--libdir=\$${prefix}/lib
 
 CONFIGURE_OPTIONS_64 = \
@@ -44,10 +43,9 @@ configure%-stamp:
 	touch $@
 
 override_dh_auto_build: build32-stamp build64-stamp
-build%-stamp: configure%-stamp
+build%-stamp:
 	$(MAKE) -C $(BUILD)/$*
 	touch $@
-
 
 override_dh_auto_install: install32-stamp install64-stamp
 	(cd $(CURDIR)/debian/tmp/usr/include && for h in *.h; do \
@@ -60,9 +58,7 @@ install%-stamp: build%-stamp
 	$(MAKE) -C $(BUILD)/$* install DESTDIR=$(CURDIR)/debian/tmp
 	touch $@
 
-
-override_dh_clean:
-	dh_clean
+override_dh_auto_clean:
 	rm -rf $(BUILD)
 	rm -f *-stamp
 

@@ -1,0 +1,53 @@
+#!/sbin/sh
+
+. /lib/svc/share/smf_include.sh
+
+memcached=/usr/bin/memcached
+
+getprop() {
+    PROPVAL=""
+    svcprop -q -p $1 ${SMF_FMRI}
+    if [ $? -eq 0 ] ; then
+        PROPVAL=`svcprop -p $1 ${SMF_FMRI}`
+        if [ "${PROPVAL}" = "\"\"" ] ; then
+            PROPVAL=""
+        fi
+        return
+    fi
+    return
+}
+
+getprop application/config_file
+if [ -n "$PROPVAL" ]; then
+    conf="$PROPVAL"
+fi
+
+if [ -z "$conf" ]; then
+    instance="`echo $SMF_FMRI | sed 's/.*:\(.*\)/\1/'`"
+    if [ -n "$instance" ] && [ "$instance" != default ]; then
+        conf=/etc/memcached.$instance.conf
+    else
+        conf=/etc/memcached.conf
+    fi
+fi
+echo "conf: $conf"
+
+if [ -e "$conf" ]; then
+    # Join all lines into one,
+    # work with Sun and GNU tr:
+    params=`grep '^ *-..*' "$conf" | grep -v '^ *-\(d\|h\)' | tr '\n' ' '`
+    logfile=`awk '/^ *logfile / {print $2}' "$conf"`
+else
+    params='-u webservd'
+    logfile=''
+fi
+
+echo "params: $params"
+echo "logfile: $logfile"
+
+if [ -n "$logfile" ]; then
+    exec $memcached $params >> "$logfile" 2>&1
+else
+    exec $memcached $params
+fi
+

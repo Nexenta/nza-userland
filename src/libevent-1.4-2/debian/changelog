@@ -1,3 +1,9 @@
+libevent (40-0-1) unstable; urgency=low
+
+  * Added amd64 libs
+
+ -- Igor Pashev <igor.pashev@nexenta.com>  Mon, 08 Aug 2011 15:51:33 +0400
+
 libevent (40-0-0) unstable; urgency=low
 
   * New version scheme

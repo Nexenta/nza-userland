@@ -1,3 +1,5 @@
 usr/include/*
 usr/lib/lib*.a
+usr/lib/amd64/lib*.a
 usr/lib/lib*.so
+usr/lib/amd64/lib*.so
