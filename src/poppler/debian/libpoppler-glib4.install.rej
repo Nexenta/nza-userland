@@ -1,5 +1,0 @@
---- debian/libpoppler-glib4.install
-+++ debian/libpoppler-glib4.install
-@@ -1 +1 @@
--tail: cannot open `.pc/applied-patches' for reading: No such file or directory
-+debian/tmp/usr/lib/libpoppler-glib.so.*
