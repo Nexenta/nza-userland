@@ -1,0 +1,23 @@
+libjs-jquery-galleriffic for Debian
+-----------------------------------
+
+In order to make use of galleriffic in your html, include the following
+lines in your html header:
+
+    <script language="javascript" type="text/javascript"
+    src="/javascript/jquery/jquery.js"></script>
+
+    <script language="javascript" type="text/javascript"
+    src="/javascript/jquery-galleriffic/jquery.galleriffic.js"></script>
+
+    <script language="javascript" type="text/javascript"
+    src="/javascript/jquery-history/jquery.history.js"></script>
+
+    <script language="javascript" type="text/javascript"
+    src="/javascript/jquery-opacityrollover/jquery.opacityrollover.js"></script>
+
+    <link rel="stylesheet" type="text/css" media="screen"
+    href="/javascript/jquery-galleriffic/galleriffic.css" />
+
+
+ -- Marcelo Jorge Vieira (metal) <metal@alucinados.com>  Mon, 22 Jun 2009 20:25:00 -0300

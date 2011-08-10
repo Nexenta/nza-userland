@@ -1,0 +1,26 @@
+libjs-jquery-mousewheel for Debian
+----------------------------------
+
+In order to make use of mousewheel in your html, include the following
+lines in your html header:
+
+    <script language="javascript" type="text/javascript"
+    src="/javascript/jquery/jquery.js"></script>
+
+    <script language="javascript" type="text/javascript"
+    src="/javascript/jquery-tipsy/javascript/jquery.tipsy.js"></script>
+
+    <link rel="stylesheet" href="/javascript/jquery-tipsy/stylesheets/tipsy.css"
+    type="text/css" />
+
+
+Initialise Tipsy in your document.onload, e.g.:
+
+<script type='text/javascript'>
+    $(function() {
+        $('a[rel=tipsy]').tipsy({fade: true, gravity: 'n'});
+    });
+</script>
+
+
+ -- Marcelo Jorge Vieira (metal) <metal@alucinados.com>  Sat, 19 Feb 2011 18:09:00 -0200

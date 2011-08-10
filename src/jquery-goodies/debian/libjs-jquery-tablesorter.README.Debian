@@ -1,0 +1,21 @@
+libjs-jquery-tablesorter for Debian
+-----------------------------------
+
+In order to make use of tablesorter in your html, include the following
+lines in your html header:
+
+    <link type="text/css"
+    href="/javascript/jquery-tablesorter/themes/blue/style.css"
+    rel="stylesheet" />
+
+    <script language="javascript" type="text/javascript"
+    src="/javascript/jquery/jquery.js"></script>
+
+    <script language="javascript" type="text/javascript"
+    src="/javascript/jquery-metadata/jquery.metadata.js"></script>
+
+    <script language="javascript" type="text/javascript"
+    src="/javascript/jquery-tablesorter/jquery.tablesorter.js"></script>
+
+
+ -- Marcelo Jorge Vieira <metal@debian.org>  Fri, 15 Jul 2011 21:36:10 -0300
