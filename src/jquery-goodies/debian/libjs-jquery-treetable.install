@@ -1,0 +1,3 @@
+treetable/src/*.js /usr/share/javascript/jquery-treetable/
+treetable/src/*.css /usr/share/javascript/jquery-treetable/
+treetable/src/images /usr/share/javascript/jquery-treetable/

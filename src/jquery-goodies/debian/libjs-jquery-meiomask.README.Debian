@@ -1,0 +1,14 @@
+libjs-jquery-meiomask for Debian
+--------------------------------
+
+In order to make use of meiomask in your html, include the following
+lines in your html header:
+
+       <script language="javascript" type="text/javascript"
+       src="/javascript/jquery/jquery.js"></script>
+
+       <script language="javascript" type="text/javascript"
+       src="/javascript/jquery-meiomask/jquery.meiomask.js"></script>
+
+
+ -- Marcelo Jorge Vieira (metal) <metal@alucinados.com>  Mon, 22 Jun 2009 20:25:00 -0300

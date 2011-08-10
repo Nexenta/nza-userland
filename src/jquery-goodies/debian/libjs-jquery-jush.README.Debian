@@ -1,0 +1,17 @@
+libjs-jquery-jush for Debian
+----------------------------
+
+In order to make use of jush in your html, include the following
+lines in your html header:
+
+    <script language="javascript" type="text/javascript"
+    src="/javascript/jquery/jquery.js"></script>
+
+    <script language="javascript" type="text/javascript"
+    src="/javascript/jquery-jush/jush.js"></script>
+
+    <link rel="stylesheet" type="text/css" media="screen"
+    href="/javascript/jquery-jush/jush.css" />
+
+
+ -- Marcelo Jorge Vieira (metal) <metal@alucinados.com>  Mon, 22 Jun 2009 20:25:00 -0300

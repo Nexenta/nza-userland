@@ -1,0 +1,14 @@
+libjs-jquery-livequery for Debian
+---------------------------------
+
+In order to make use of livequery in your html, include the following
+lines in your html header:
+
+    <script language="javascript" type="text/javascript"
+    src="/javascript/jquery/jquery.js"></script>
+
+    <script language="javascript" type="text/javascript"
+    src="/javascript/jquery-metadata/jquery.livequery.js"></script>
+
+
+ -- Marcelo Jorge Vieira <metal@debian.org>  Tue, 19 Jul 2011 15:32:17 -0300
