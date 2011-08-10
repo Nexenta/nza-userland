@@ -42,7 +42,7 @@ endif
 ifeq ($(with_lib64ssp),yes)
 	dirs_sspd  += $(PF)/$(lib64)
 	files_sspd += $(PF)/$(lib64)/libssp.{a,so}
-#	files_sspd += $(PF)/$(lib64)/libssp_nonshared.a
+	files_sspd += $(PF)/$(lib64)/libssp_nonshared.a
 endif
 
 $(binary_stamp)-libssp: $(install_stamp)

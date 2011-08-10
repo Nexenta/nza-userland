@@ -1,3 +1,24 @@
+gcc-4.4 (40-0-0) unstable; urgency=low
+
+  * Move to new version scheme.
+
+ -- Andrew Stormont (astormont) <andyjstormont@googlemail.com>  Wed, 10 Aug 2011 07:13:43 +0100
+
+gcc-4.4 (4.4.5-12nexenta5) unstable; urgency=low
+
+  * Fix missing libssp0 regression.
+  * Enable --with-tune=generic.
+  * Bootstrap using bootstrap-lean.
+
+ -- Andrew Stormont (astormont) <andyjstormont@googlemail.com>  Tue, 09 Aug 2011 19:44:11 +0100
+
+gcc-4.4 (4.4.5-12nexenta4) unstable; urgency=low
+
+  * Fix FTBFS on fresh NCP4 install.
+  * Rebuild against libgmp3.
+
+ -- Andrew Stormont (astormont) <andyjstormont@googlemail.com>  Tue, 09 Aug 2011 13:41:27 +0100
+
 gcc-4.4 (4.4.5-12nexenta3) unstable; urgency=low
 
   * Use sun linker by default.

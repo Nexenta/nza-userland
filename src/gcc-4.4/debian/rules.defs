@@ -8,8 +8,14 @@ srcdir		= $(PWD)/src
 builddir	= $(PWD)/build
 stampdir	= stamps
 
-distribution	:= $(shell lsb_release -is)
-distrelease	:= $(shell lsb_release -cs)
+# Nexenta has disowned lsb_release :(
+ifeq ($(DEB_HOST_ARCH_OS),solaris)
+  distribution	:= Nexenta
+  distrelease	:= siddy
+else
+  distribution	:= $(shell lsb_release -is)
+  distrelease	:= $(shell lsb_release -cs)
+endif
 
 # On non official archives, "lsb_release -cs" default to "n/a". Assume
 # sid in that case 
@@ -47,6 +53,11 @@ DEB_VERSION := $(strip $(shell echo $(SOURCE_VERSION) | \
 EPOCH := 1
 DEB_EVERSION := $(EPOCH):$(DEB_VERSION)
 BASE_VERSION := $(shell echo $(DEB_VERSION) | sed -e 's/\([1-9]\.[0-9]\).*-.*/\1/')
+
+ifeq ($(distribution),Nexenta)
+  SOURCE_VERSION := $(shell grep ^Upstream-Version debian/control | awk '{ print $$2 }')
+  BASE_VERSION := $(shell echo $(SOURCE_VERSION) | sed -e 's/\([1-9]\.[0-9]\).*/\1/')
+endif
 
 ifneq (,$(findstring gdc,$(PKGSOURCE)))
   BASE_VERSION := $(shell echo $(DEB_VERSION) | sed -e 's/.*-\([1-9]\.[0-9]\).*-.*/\1/')
@@ -129,7 +140,7 @@ else
     DEB_CROSS = yes
   else
     # first ones are squeeze+1 and maverick
-    ifeq (,$(filter $(distrelease),lenny etch squeeze sid dapper hardy jaunty karmic lucid))
+    ifeq (,$(filter $(distrelease),lenny etch squeeze sid dapper hardy jaunty karmic lucid siddy))
       with_sysroot = /
     endif
   endif
@@ -301,18 +312,17 @@ with_common_pkgs := yes
 with_common_libs := yes
 # XXX: should with_common_libs be "yes" only if this is the default compiler
 # version on the targeted arch?
-ifeq (,$(filter $(distrelease),lenny etch squeeze sid dapper hardy jaunty karmic lucid Siddy))
-#ifeq (,$(filter $(distrelease),lenny etch dapper hardy jaunty karmic lucid))
+ifeq (,$(filter $(distrelease),lenny etch squeeze sid dapper hardy jaunty karmic lucid siddy))
   with_common_pkgs := no
   with_common_libs := no
 endif
-#ifneq (,$(filter $(distrelease),squeeze sid))
-#  ifneq (,$(filter $(DEB_TARGET_ARCH),amd64 i386))
-#    with_common_pkgs := no
-#    with_common_libs := no
-#  endif
-#  keep_in_control := yes
-#endif
+ifneq (,$(filter $(distrelease),squeeze sid))
+  ifneq (,$(filter $(DEB_TARGET_ARCH),amd64 i386))
+    with_common_pkgs := no
+    with_common_libs := no
+  endif
+  keep_in_control := yes
+endif
 
 ifneq ($(DEB_STAGE),stage1)
   # build a -base package.
@@ -833,8 +843,7 @@ else
   # libssp ------------------
   ifeq ($(with_ssp)-$(with_common_libs),yes-yes)
     ifneq ($(DEB_CROSS),yes)
-      with_libssp := $(if $(wildcard $(builddir)/gcc/auto-host.h), \
-                       $(shell if grep -qs '^\#define TARGET_LIBC_PROVIDES_SSP 1' $(builddir)/gcc/auto-host.h; then echo 'libc provides ssp'; else echo 'yes'; fi))
+      with_libssp := $(shell if grep -qs '^\#define TARGET_LIBC_PROVIDES_SSP 1' $(builddir)/gcc/auto-host.h; then echo 'libc provides ssp'; else echo 'yes'; fi)
     endif
   endif
 

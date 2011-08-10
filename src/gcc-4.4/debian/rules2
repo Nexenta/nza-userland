@@ -395,9 +395,9 @@ ifeq ($(DEB_TARGET_ARCH_OS),linux)
   endif
 endif
 
-ifneq (,$(filter $(DEB_TARGET_ARCH), amd64 i386 kfreebsd-i386 kfreebsd-amd64))
-  #CONFARGS += --with-arch-32=i486
-  ifeq ($(distribution),Ubuntu)
+ifneq (,$(filter $(DEB_TARGET_ARCH), amd64 i386 kfreebsd-i386 kfreebsd-amd64 solaris-i386 solaris-amd64))
+  CONFARGS += --with-arch-32=i486
+  ifneq (,$(filter $(distribution), Ubuntu Nexenta))
     CONFARGS += --with-arch-32=i686
   else
     CONFARGS += --with-arch-32=i586
@@ -412,7 +412,7 @@ ifeq ($(DEB_TARGET_ARCH),lpia)
   CONFARGS += --with-arch=pentium-m --with-tune=i586
 endif
 
-ifneq (,$(filter $(DEB_TARGET_ARCH), amd64 i386 hurd-i386 kfreebsd-i386 kfreebsd-amd64))
+ifneq (,$(filter $(DEB_TARGET_ARCH), amd64 i386 hurd-i386 kfreebsd-i386 kfreebsd-amd64 solaris-i386 solaris-amd64))
   CONFARGS += --with-tune=generic
 endif
 
@@ -498,11 +498,6 @@ ifeq ($(distribution),Ubuntu)
   endif
 endif
     bootstrap_target = bootstrap-lean
-
-# StormOS hack
-ifeq ($(DEB_HOST_ARCH_OS),solaris)
-  bootstrap_target = all
-endif
 
 DEJAGNU_TIMEOUT=300
 # Increase the timeout for one testrun on slow architectures
@@ -1895,8 +1890,10 @@ endif
 		install
 
 ifeq ($(with_common_gcclibdir),yes)
+  ifneq ($(BASE_VERSION),$(GCC_VERSION))
 	mv $(d)/$(subst /$(BASE_VERSION),/$(GCC_VERSION),$(gcc_lib_dir)) \
 		$(d)/$(gcc_lib_dir)
+  endif
   ifneq ($(gcc_lib_dir),$(gcc_lexec_dir))
 	mv $(d)/$(subst /$(BASE_VERSION),/$(GCC_VERSION),$(gcc_lexec_dir)) \
 		$(d)/$(gcc_lexec_dir)
