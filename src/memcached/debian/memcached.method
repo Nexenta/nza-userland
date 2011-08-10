@@ -32,14 +32,21 @@ if [ -z "$conf" ]; then
 fi
 echo "conf: $conf"
 
+# Memcached will start as root
+# and as a child (see SMF manifest memcached.xml),
+# so we have to avoid -d option
+# and specify -u if none.
 if [ -e "$conf" ]; then
     # Join all lines into one,
     # work with Sun and GNU tr:
-    params=`grep '^ *-..*' "$conf" | grep -v '^ *-\(d\|h\)' | tr '\n' ' '`
+    params=`grep '^ *-..*' "$conf" | grep -v '^ *-[dh]' | tr '\n' ' '`
     logfile=`awk '/^ *logfile / {print $2}' "$conf"`
 else
-    params='-u webservd'
     logfile=''
+fi
+
+if ! echo $params | grep -q '.*-u '; then
+    params="$params -u webservd"
 fi
 
 echo "params: $params"

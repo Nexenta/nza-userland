@@ -1,3 +1,11 @@
+memcached (40-0-1) unstable; urgency=low
+
+  * Fixed regex in /lib/svc/method/memcached
+    to filter memcached options (Re #6077)
+    (Sun/GNU grep issue)
+
+ -- Igor Pashev <igor.pashev@nexenta.com>  Tue, 09 Aug 2011 20:59:56 +0400
+
 memcached (40-0-0) unstable; urgency=low
 
   * Ported to NCP4:
