@@ -1,0 +1,18 @@
+Author: Bart Martens <bartm@knars.be>
+Description: Fix whatis entry in POD
+Origin: vendor
+Forwarded: probably not
+
+--- a/lib/XML/Simple/FAQ.pod
++++ b/lib/XML/Simple/FAQ.pod
+@@ -3,8 +3,9 @@
+ 
+ __END__
+ 
+-=head1 Frequently Asked Questions about XML::Simple
++=head1 NAME
+ 
++XML::Simple::FAQ - Frequently Asked Questions about XML::Simple
+ 
+ =head1 Basics
+ 
