@@ -1,0 +1,75 @@
+#!/usr/bin/make -f
+# -*- mode: makefile; coding: utf-8 -*-
+
+%:
+	dh $@
+
+PYVERS=$(shell pyversions -vd)
+
+override_dh_auto_build: $(PYVERS:%=build-python%)
+	$(MAKE) -C doc man
+ifeq (,$(filter nocheck,$(DEB_BUILD_OPTIONS)))
+	# Tests are not yet ready to be run in Debian build context
+	#$(MAKE) tests
+endif
+	# Do not start a line with a word with a dot in a manpage
+	sed -i -e 's,^[.]\(hgignore\|hg/hgrc\),\\fP\1,' doc/hg.1
+
+build-python%: mercurial/__version__.py
+	python$* setup.py build
+	touch $@
+
+override_dh_auto_install: $(PYVERS:%=install-python%)
+
+install-python%: build-python%
+	python$* setup.py install --root $(CURDIR)/debian/tmp --install-layout=deb
+	# Do not hardcode the python interpreter
+	sed -i '1c#!/usr/bin/python' debian/tmp/usr/bin/hg
+
+
+override_dh_install:
+	dh_install
+	if test -d $(CURDIR)/debian/mercurial ; then \
+		$(MAKE) -f debian/rules install-archdep ; \
+	fi
+	if test -d $(CURDIR)/debian/mercurial-common ; then \
+		$(MAKE) -f debian/rules install-archindep ;\
+	fi
+
+install-archdep:
+	# Install bash autocompletion.
+	install -m 644 \
+		contrib/bash_completion \
+		$(CURDIR)/debian/mercurial/etc/bash_completion.d/mercurial
+	# Install system-wide conffiles
+	echo "# system-wide mercurial configuration file" \
+		>  $(CURDIR)/debian/mercurial/etc/mercurial/hgrc
+	echo "# See hgrc(5) for more information" \
+		>>  $(CURDIR)/debian/mercurial/etc/mercurial/hgrc
+	install -m 644 \
+		contrib/mergetools.hgrc \
+		$(CURDIR)/debian/mercurial/etc/mercurial/hgrc.d/mergetools.rc
+	# remove arch-independent python stuff
+	find debian/mercurial/usr/lib \
+		! -name '*.so' ! -type d -delete , \
+		-type d -empty -delete
+
+install-archindep:
+	# remove arch-dependent python stuff
+	find debian/mercurial-common/usr/lib \
+		-name '*.so' ! -type d -delete , \
+		-type d -empty -delete
+
+override_dh_auto_clean: mercurial/__version__.py
+	cp -a mercurial/__version__.py mercurial/__version__.py.save
+	$(MAKE) clean
+	mv mercurial/__version__.py.save mercurial/__version__.py
+	$(RM) -rv tmp/
+	$(RM) build-python*
+
+mercurial/__version__.py:
+	@echo "$@ is missing (you probably call 'make clean' directly)."
+	@echo "Restore it from sources before building the package"
+	@echo "Aborting."
+	exit 1
+

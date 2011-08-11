@@ -1,0 +1,2 @@
+# The hg(1) man page is installed by mercurial-common.
+binary-without-manpage usr/bin/hg
