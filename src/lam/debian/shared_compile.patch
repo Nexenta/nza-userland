@@ -1,0 +1,27 @@
+Index: rpi_tcp.c
+===================================================================
+RCS file: /afs/nd.edu/user1/lsc/CVSROOT/lam/trillium/share/rpi/tcp/rpi_tcp.c,v
+retrieving revision 1.5
+retrieving revision 1.6
+diff -r1.5 -r1.6
+7c7
+<  *	$Id: rpi_tcp.c,v 1.5 2001/02/13 00:41:43 arodrig6 Exp $
+---
+>  *	$Id: rpi_tcp.c,v 1.6 2001/04/16 12:28:54 jsquyres Exp $
+12a13,25
+> 
+> #if !LAM_RPI_TCP
+> 
+> /* If we're not compiling the TCP RPI (e.g., it's one of the others
+>    that is only linking in this RPI so that it can be used for
+>    off-node communication), then effectively ignore this module. */
+> 
+> int lam_rpi_tcp_c_bogus_module = 1;
+> 
+> #else
+> 
+> /* Otherwise, compile in the whole module. */
+> 
+1198a1212,1213
+> 
+> #endif /* LAM_RPI_TCP */

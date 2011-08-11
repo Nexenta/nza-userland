@@ -1,0 +1,3 @@
+usr/bin/mpicc usr/bin/hcc
+usr/bin/mpif77 usr/bin/hf77
+usr/bin/mpiCC usr/bin/hcp

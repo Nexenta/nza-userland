@@ -1,0 +1,12 @@
+lam for DEBIAN
+----------------------
+
+Man pages for the MPI function calls are currently included in the 
+lam-mpidoc package.
+
+In the Debian lam-runtime package, the 'wipe' program produced by the
+upstream source has been renamed to 'lamwipe' in order to avoid a
+conflict with a file removal utility of the same name which is
+separately packaged and supplied by the distribution.
+
+Camm Maguire <camm@enhanced.com>, Thu,  8 Jul 1999 14:03:49 -0400

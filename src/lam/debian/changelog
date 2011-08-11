@@ -1,0 +1,814 @@
+lam (40-0-0) unstable; urgency=low
+
+  * Port for NCP4
+  * Used new version scheme
+
+ -- Peter Zaickin <peter.zaickin@nexenta.com>  Wed, 20 Jul 2011 14:38:14 +0300
+
+lam (7.1.2-2) unstable; urgency=low
+
+  * Bug fix: "Maintainer address seems to bounce", thanks to Alexander
+    Reichle-Schmehl (Closes: #590809).
+
+ -- Camm Maguire <camm@debian.org>  Wed, 15 Sep 2010 02:45:36 +0000
+
+lam (7.1.2-1.6) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * Fix CVE-2009-3726 in the internal ltdl copy (Closes: #559835)
+
+ -- Moritz Muehlenhoff <jmm@debian.org>  Tue, 27 Jul 2010 22:29:03 -0400
+
+lam (7.1.2-1.5) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * Fix bashism in debian/rules (Closes: #484396)
+  * Bump Standards-Version to 3.8.0.
+
+ -- Chris Lamb <chris@chris-lamb.co.uk>  Fri, 11 Jul 2008 21:57:10 +0100
+
+lam (7.1.2-1.4) unstable; urgency=low
+
+  * Non-maintainer upload to fix pending l10n issues.
+  * Remove debconf templates dealing with obsolete transitions.
+    Closes: #388914
+    This also closes pending debconf localization bug reports
+    Closes: #414761, #415532, #471696, #472687
+
+ -- Christian Perrier <bubulle@debian.org>  Mon, 17 Mar 2008 20:19:54 +0100
+
+lam (7.1.2-1.3) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Fix the second argument to main() in the test programs used by configure.
+    Fixes FTBFS with gcc-4.3.  (Closes: #468065)
+
+ -- James Vega <jamessan@debian.org>  Sun, 09 Mar 2008 00:13:40 -0500
+
+lam (7.1.2-1.2) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Upload to unstable
+
+ -- Riku Voipio <riku.voipio@iki.fi>  Sat, 09 Feb 2008 23:04:48 +0200
+
+lam (7.1.2-1.1) experimental; urgency=low
+
+  * Non-maintainer upload.
+  * transition to gfortran, closes: #456418
+  * rename package for long double transition, closes: #430241
+  * remove pre-depends on stone-age dpkg version
+  * remove versioned depends on essential package findutils and debianutils
+  * Depend on ssh-client instead of ssh, closes: #418988
+  * Edit changelog to get rid of lintian warning on long changelog
+
+ -- Riku Voipio <riku.voipio@iki.fi>  Tue, 29 Jan 2008 22:24:19 +0200
+
+lam (7.1.2-1) unstable; urgency=low
+
+  * New upstream release, Closes: #362168
+  * Accept NMU, Closes: #359118. Closes: #355245. 
+    Closes: #335721. Closes: #337843. Closes: #331881.
+  * Update README.Debian, Closes: #360226
+  * Add mpiexec to alternatives, Closes: #384065.
+
+ -- Camm Maguire <camm@enhanced.com>  Tue, 26 Sep 2006 10:55:25 -0400
+
+lam (7.1.1a-1.1) unstable; urgency=high
+
+  * Non-maintainer upload.
+  * Remove spurious confmodule invocation (Closes: #355245).
+  * Add debconf-2.0 alternative (Closes: #331881).
+  * Add Swedish debconf translation (Closes: #337843).
+  * Add support for GNU/kFreeBSD (Closes: #335721).
+
+ -- Luk Claes <luk@debian.org>  Sun, 26 Mar 2006 17:05:44 +0200
+
+lam (7.1.1a-1) unstable; urgency=low
+
+  * /u+x -> -u+x per findutils guru recommendation
+  * Bug fix: "lam: source package has (unused) APSL licensed code", thanks
+    to James Troup (Closes: #338249).  Files removed.
+
+ -- Camm Maguire <camm@enhanced.com>  Tue, 22 Nov 2005 23:48:04 +0000
+
+lam (7.1.1-5) unstable; urgency=high
+
+  * Versioned build-dep on findutils >= 4.2.25-1 for new perm argument
+    syntax.  Closes: #330103.
+  * Accepted NMU in -4 Closes: #318960.  Closes: #308554.
+
+ -- Camm Maguire <camm@enhanced.com>  Tue, 27 Sep 2005 14:18:35 +0000
+
+lam (7.1.1-4) unstable; urgency=high
+
+  * Accept NMU
+  * Lower optimization to O2 on m68k, Closes: #328206
+  * Czech po file, Closes: #318152
+  * Vietnamese po file, CLoses: #314272
+  * Add user.pdf and isntall.pdf to docs and doc-base, Closes: #314574
+  * Set CC, FC, F77, and CXX environment variables to configure to ensure
+    mpicc and the like only call compilers by their generic names, Closes:
+    #316815
+  * newer standards
+
+ -- Camm Maguire <camm@enhanced.com>  Thu, 22 Sep 2005 18:10:19 +0000
+
+lam (7.1.1-3.2) unstable; urgency=low
+
+  * NMU for the CXX transition according to
+    http://lists.debian.org/debian-devel-announce/2005/07/msg00001.html
+  * CXX transition: Rename lam4 to lam4c2; patch from doko:
+    https://bugzilla.ubuntu.com/show_bug.cgi?id=10708; closes: Bug#318960
+
+ -- Robert Jordens <jordens@debian.org>  Wed, 13 Jul 2005 23:43:52 +0200
+
+lam (7.1.1-3.1) unstable; urgency=high
+
+  * Non-maintainer upload.
+  * share/boot/asc_run.c: Re-enable stdin for rank 0, accidently disabled in
+    7.1.1.  Pulled from upstream revision 9923 of branch-7-1 
+    (closes: #308554).
+
+ -- Torsten Landschoff <torsten@debian.org>  Fri, 24 Jun 2005 22:16:52 +0200
+    
+lam (7.1.1-3) unstable; urgency=high
+
+  * Bug fix: "lam4-dev: /usr/include/lam/mpi++.h is a dangling symlink",
+    thanks to Laurent Bonnaud (Closes: #287569).  Remove link from
+    package.
+
+ -- Camm Maguire <camm@enhanced.com>  Tue, 22 Mar 2005 16:10:19 +0000
+
+lam (7.1.1-2) unstable; urgency=high
+
+  * Link liblam against -ldl, Closes: #278968.
+
+ -- Camm Maguire <camm@enhanced.com>  Sat, 30 Oct 2004 21:55:55 +0000
+
+lam (7.1.1-1) unstable; urgency=low
+
+  * New upstream release
+  * New watch file
+
+ -- Camm Maguire <camm@enhanced.com>  Mon,  4 Oct 2004 13:34:45 +0000
+
+lam (7.1-1) unstable; urgency=high
+
+  * New upstream release
+  * Don't db_input old lam3 template.  Closes: #272601.
+  * Undo wipe -> lamwipe transition in debian/rules as is taken care of
+    upstream now.
+  * Remove links in clean:
+
+ -- Camm Maguire <camm@enhanced.com>  Wed, 22 Sep 2004 17:38:10 +0000
+
+lam (7.0.6-4) unstable; urgency=low
+
+  * Bug fix: "lam-runtime: still contains files from lam3-dev", thanks to
+    Guido Guenther (Closes: #254669).  Move lam-runtime.links to
+    lam4-dev.links, which establishes hcc, hf77, and hcp.
+
+ -- Camm Maguire <camm@enhanced.com>  Tue, 22 Jun 2004 22:15:20 +0000
+
+lam (7.0.6-3) unstable; urgency=low
+
+  * Bug fix: "lam-runtime: contains files from lam3-dev", thanks to Guido
+    Guenther (Closes: #253636). Moved hcc.1, hf77.1 and hcp.1 manpages
+    from lam-runtime to lam4-dev.
+
+ -- Camm Maguire <camm@enhanced.com>  Thu, 10 Jun 2004 16:03:47 +0000
+
+lam (7.0.6-2) unstable; urgency=low
+
+  * Bug fix: "lam-runtime: lamssi*(7) man pages missing", thanks to Tilman
+    Koschnick (Closes: #251029).  Added lamssi manpages to lam-runtime
+  * Added missing manpages to lam-mpidoc
+  * add mpiexec and laminfo binaries and manpages to lam-runtime
+  * add old hcc, hf77, and hcp links and manpages to lam-runtime
+  * alter relink in rules to sub liblam for libmpi.la
+  * Bug fix: "[l10:ca] catalan debconf templates", thanks to Aleix Badia i
+    Bosch (Closes: #250125). Added submitted file as ca.po
+
+ -- Camm Maguire <camm@enhanced.com>  Mon, 31 May 2004 20:23:01 +0000
+
+lam (7.0.6-1) unstable; urgency=low
+
+  * New upstream release
+  * Bug fix: "lam4-dev: Cannot link statically", thanks to Erik Schnetter
+    (Closes: #249531).  Reorder library unpackings in debian/rules when
+    building final Debian versions of the libs/.
+  * Bug fix: "lam: [INTL:fr] French debconf templates translation", thanks
+    to Christian Perrier (Closes: #247907). Added fr.po -- thanks!
+  * Moved manpage libmpi.3 -> libmpi.7 to match internal .TH designations
+    (lintian cleanup)
+  * Set section in manpage lamd.1 from 7 to 1 (lintian cleanup)
+  * Add generated file ./share/include/mpif.hto clean target
+
+ -- Camm Maguire <camm@enhanced.com>  Thu, 20 May 2004 14:00:55 +0000
+
+lam (7.0.5-2) unstable; urgency=low
+
+  * Bug fix: "lam-runtime: Debconf-Note contains codes instead of
+    umlaute", thanks to Helge Kreutzmann (Closes: #237639).  Recoded
+    German translation as per email instructions from Denis Barbier
+    (barbier@linuxfr.org)
+
+ -- Camm Maguire <camm@enhanced.com>  Fri, 30 Apr 2004 21:19:53 +0000
+
+lam (7.0.5-1) unstable; urgency=low
+
+  * New upstream release
+  * Bug fix: "lam3: package description should expand "LAM:; acronym",
+    thanks to Branden Robinson (Closes: #231132).  Edited control file as
+    suggested.
+  * Bug fix: "lam4-dev: mpiCC command missing", thanks to Sjoerd Simons
+    (Closes: #231459).  mpiCC is now just a symlink to mpic++, as with
+    upstream.
+  * Bug fix: "lam-runtime: lamboot tries to source ~/.profile on remote
+    hosts while it doesn't exist", thanks to Sjoerd Simons (Closes:
+    #231460).  Minor edit to ssi_boot_rsh_inetexec.c to query the
+    existence of .profile before sourcing.
+  * Bug fix: "Please switch to gettext-based debconf templates", thanks to
+    Martin Quinson (Closes: #234761). Applied po-debconf patch as supplied
+    by bug submitter.
+  * Bug fix: "lam-runtime: inconsistent command naming and references",
+    thanks to Ross Boylan (Closes: #239728). Edited manpages, noted wipe
+    -> lamwipe name change in README.Debian.
+  * Bug fix: "lam-runtime: documentation doesn't seem to be for this
+    release", thanks to Ross Boylan (Closes: #241597). Refreshed release
+    notes.
+  * debconf compat level 4
+  * Lintian cleanups -- remove lam-runtime.conffiles, explicitly remove
+    self-depends in lam4.
+
+ -- Camm Maguire <camm@enhanced.com>  Fri, 30 Apr 2004 18:10:05 +0000
+
+lam (7.0.4-2) unstable; urgency=low
+
+  * liblam++ linked against liblam
+  * liblamio linked against liblam
+  * liblam linked against -lpthread
+  * liblam++ linked with g++
+
+ -- Camm Maguire <camm@enhanced.com>  Wed, 21 Jan 2004 22:57:47 +0000
+
+lam (7.0.4-1) unstable; urgency=low
+
+  * New upstream release
+  * Add share/include/lam_build_info.h to clean target
+
+ -- Camm Maguire <camm@enhanced.com>  Wed, 21 Jan 2004 21:34:13 +0000
+
+lam (7.0.3-4) unstable; urgency=low
+
+  * watch version 2
+
+ -- Camm Maguire <camm@enhanced.com>  Wed, 21 Jan 2004 21:22:51 +0000
+
+lam (7.0.3-3) unstable; urgency=low
+
+  * Fix errors and warnings in relink rule of debian/rules
+
+ -- Camm Maguire <camm@enhanced.com>  Wed, 21 Jan 2004 20:53:29 +0000
+
+lam (7.0.3-2) unstable; urgency=low
+
+  * Restore missing modifications in the 6.5.9 packages
+  * Link liblam.so.4.0 et. al. against -lutil for ease in LAM
+    development
+
+ -- Camm Maguire <camm@enhanced.com>  Sat, 20 Dec 2003 02:19:03 +0000
+
+lam (7.0.3-1) unstable; urgency=low
+
+  * New upstream release
+  * New release Closes: #206481, Closes: #214883
+
+ -- Camm Maguire <camm@enhanced.com>  Fri, 19 Dec 2003 22:37:01 +0000
+
+lam (7.0-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Camm Maguire <camm@enhanced.com>  Mon,  4 Aug 2003 14:57:45 +0000
+
+lam (6.5.9-3) unstable; urgency=low
+
+  * lam3 recommends lam-runtime, Closes: #207678
+  * Fix minor error in MPI_Allgather manpage, Closes: #219518
+
+ -- Camm Maguire <camm@enhanced.com>  Wed, 17 Dec 2003 19:21:47 +0000
+
+lam (6.5.9-2) unstable; urgency=low
+
+  * Remove dh_undocumented calls
+  * Make debian/mm executable for generated man pages
+
+ -- Camm Maguire <camm@enhanced.com>  Wed, 20 Aug 2003 19:24:02 +0000
+
+lam (6.5.9-1) unstable; urgency=low
+
+  * Rerelease against latest c++, Closes: #194126
+  * New upstream release, Closes: #187766
+  * Fixed mpi(7) and libmpi(3) man pages following 7.0 release, Closes:
+    #188497
+  * versioned build dep on debhelper
+  * remove periods from short descriptions
+  * lintian clean to copyright authors line
+  * Added lamd.1 to lam-runtime package
+  * Build manpages for lamnodes, lamhalt and balky via help2man, a new
+    build dependency
+
+ -- Camm Maguire <camm@enhanced.com>  Wed, 20 Aug 2003 16:13:03 +0000
+
+lam (6.5.8-2) unstable; urgency=low
+
+  * Remove more build generated romio files from diff
+  * load confmodule in lam-runtime.postinst
+
+ -- Camm Maguire <camm@enhanced.com>  Sun,  8 Dec 2002 22:12:55 -0500
+
+lam (6.5.8-1) unstable; urgency=low
+
+  * New upstream release
+  * Removed trailing space from -L in debian/rules for newer libtool
+    behavior
+  * update clean target
+  * lintian cleanups
+
+ -- Camm Maguire <camm@enhanced.com>  Sat,  7 Dec 2002 23:42:46 -0500
+
+lam (6.5.6-7) unstable; urgency=low
+
+  * Removed config/Makefile from diff
+
+ -- Camm Maguire <camm@enhanced.com>  Mon, 18 Mar 2002 14:59:34 -0500
+
+lam (6.5.6-6) unstable; urgency=low
+
+  * Reformatted lam-runtime description, Closes: #131578
+
+ -- Camm Maguire <camm@enhanced.com>  Thu, 31 Jan 2002 08:57:38 -0500
+
+lam (6.5.6-5) unstable; urgency=low
+
+  * Removed add-log-mailing-address from changelog
+  * With previous release, Closes: 127101
+
+ -- Camm Maguire <camm@enhanced.com>  Tue,  1 Jan 2002 22:45:39 -0500
+
+lam (6.5.6-4) unstable; urgency=low
+
+  * /usr/doc -> /usr/share/doc in lam-runtime.doc-base, Closes: #126958
+
+ -- Camm Maguire <camm@enhanced.com>  Sun, 30 Dec 2001 12:31:52 -0500
+
+lam (6.5.6-3) unstable; urgency=low
+
+  * Replaced missing Build-Depends on autotools-dev
+
+ -- Camm Maguire <camm@enhanced.com>  Thu, 20 Dec 2001 16:45:12 -0500
+
+lam (6.5.6-2) unstable; urgency=low
+
+  * Prevented hcc from linking in lammpi++ when using gcc to compile C,
+    not C++, Closes: #123151
+  * Also disabled -llammpi++ from hf77
+
+ -- Camm Maguire <camm@enhanced.com>  Mon, 10 Dec 2001 23:05:25 -0500
+
+lam (6.5.6-1) unstable; urgency=low
+
+  * New upstream release
+  * New watch file
+  * Depends on rsh-client | ssh,rsh-server | ssh, as user can override
+    compile-time dependency on rsh via LAMRSH environment variable, e.g.
+    export LAMRSH='ssh -x', Closes:# 115813
+
+ -- Camm Maguire <camm@enhanced.com>  Sat,  1 Dec 2001 17:46:46 -0500
+
+lam (6.5.5-2) unstable; urgency=low
+
+  * Added Build-Depends on autotools-dev and rules to update
+    config.{sub,guess}, Closes: #120143
+
+ -- Camm Maguire <camm@enhanced.com>  Mon, 19 Nov 2001 22:58:13 -0500
+
+lam (6.5.5-1) unstable; urgency=low
+
+  * New upstream release
+  * Removed -M and -S patch to hcc, now included upstream
+
+ -- Camm Maguire <camm@enhanced.com>  Fri, 16 Nov 2001 12:17:04 -0500
+
+lam (6.5.4-2) unstable; urgency=low
+
+  * Updated short descriptions for lam packages, Closes: #114263
+
+ -- Camm Maguire <camm@enhanced.com>  Thu,  4 Oct 2001 13:37:08 -0400
+
+lam (6.5.4-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Camm Maguire <camm@enhanced.com>  Mon,  1 Oct 2001 15:55:23 -0400
+
+lam (6.5.3-6) unstable; urgency=low
+
+  * Fixed German template, Closes: #108478
+  * Made /etc/lam/lam-helpfile a conffile, Closes: #107185
+  * Added support for update-cluster, Closes: #108028
+
+ -- Camm Maguire <camm@enhanced.com>  Mon, 20 Aug 2001 13:32:55 -0400
+
+lam (6.5.3-5) unstable; urgency=low
+
+  * Added german template file, Closes: #106895
+
+ -- Camm Maguire <camm@enhanced.com>  Mon, 30 Jul 2001 13:32:48 -0400
+
+lam (6.5.3-4) unstable; urgency=low
+
+  * Moved examples up one directory level and renamed a few dirs,
+    Closes: #105860
+
+ -- Camm Maguire <camm@enhanced.com>  Thu, 19 Jul 2001 10:01:59 -0400
+
+lam (6.5.3-3) unstable; urgency=low
+
+  * Removed share/include/debian inadvertantly but harmlessly included
+    in the diff
+
+ -- Camm Maguire <camm@enhanced.com>  Sat, 14 Jul 2001 19:44:08 -0400
+
+lam (6.5.3-2) unstable; urgency=low
+
+  * Fixed typos in debconf files preventing debconf from running
+
+ -- Camm Maguire <camm@enhanced.com>  Sat, 14 Jul 2001 10:31:30 -0400
+
+lam (6.5.3-1) unstable; urgency=low
+
+  * New upstream release
+  * Patched hcc to take -M and -S flags as in 6.3.2
+  * Disabled LAM_HAVE_OPENPTY to oviate need to link -lutil, and
+    preserve 'cc -I /usr/include/mpi foo.c -lmpi' compilation option
+  * Patched lamnet.h, renaming wipe to lamwipe as in 6.3.2
+  * Upgrade Close: #93451
+  * New man page layout Closes: #93451, noting that mpi{CC,cc,f77}
+    manpages are installed with alternative system
+  * Upgrade Closes: #93451
+  * Better upstream message in case of not having run lamboot, Closes:
+    #100882
+  * lam2 now obsolete, removed from woody, Closes: #103828
+  * _lam -> .lam, Closes: #100994
+  * Added lam-runtime template explaining binary incompatibility with
+    this release
+  * Disabled sysv ptys -- bsd work, and are the default on Linux, unix98
+    ptys being a kernel option
+
+ -- Camm Maguire <camm@enhanced.com>  Sat, 14 Jul 2001 01:07:25 -0400
+
+lam (6.3.2-11) unstable; urgency=low
+
+  * Put a 'Files' entry in lam-runtime.doc-base (Thanks Marcelo!)
+    Closes: #88328
+
+ -- Camm Maguire <camm@enhanced.com>  Tue,  6 Mar 2001 18:35:06 -0500
+
+lam (6.3.2-10) unstable; urgency=low
+
+  * lam-runtime in utils, lam2 in libs as in override file
+
+ -- Camm Maguire <camm@enhanced.com>  Thu,  1 Mar 2001 15:21:13 -0500
+
+lam (6.3.2-9) unstable; urgency=low
+
+  * Added Build-Depends line to control
+  * Doc-base replaces old dhelp files
+
+ -- Camm Maguire <camm@enhanced.com>  Thu,  1 Mar 2001 10:44:26 -0500
+
+lam (6.3.2-8) unstable; urgency=low
+
+  * Made package descriptions clearer, Closes: #78156
+  * Patched hcc.c to eliminate linker flags when invoked with -M,
+    Closes: #85895
+  * Set DEFFCONFIGH to conf.lam from conf.otb in boot.h, Closes: #87326
+  * Added -S support to hcc, Closes: #76140
+  * Added rm of man/index.bt to clean target of rules
+
+ -- Camm Maguire <camm@enhanced.com>  Sun, 25 Feb 2001 02:03:58 -0500
+
+lam (6.3.2-7) unstable; urgency=low
+
+  * Backported new inetexec.c from cvs to address erratic lamboot
+    failure.  closes: #65795
+  * Updated configure.in to substitute @RSH@ into inetexec.c
+  * Replaced 'make clean' with 'make distclean' in debian/rules
+  * Added inetexec.c to distclean target
+  * Added missing examples/* files to distclean target
+
+ -- Camm Maguire <camm@enhanced.com>  Wed, 20 Sep 2000 18:45:03 +0200
+
+lam (6.3.2-6) unstable; urgency=low
+
+  * Added dh_testversion logic to debian/rules to correctly install
+    examples with latest debhelper.  Closes: #66131.
+
+ -- Camm Maguire <camm@enhanced.com>  Tue, 27 Jun 2000 18:05:14 +0200
+
+lam (6.3.2-5) unstable; urgency=low
+
+  * Fixed minor typo in bug 63084 processing.  63084 wishlist now
+    closed.
+
+ -- Camm Maguire <camm@enhanced.com>  Wed, 14 Jun 2000 18:00:13 +0200
+
+lam (6.3.2-4) unstable; urgency=low
+
+  * Added dependency on version of dpkg to ensure that multi
+    conflicts/replaces are handled properly.  Added accompanying check
+    in preinst.  Closes #63084
+
+ -- Camm Maguire <camm@enhanced.com>  Tue, 13 Jun 2000 16:23:01 +0200
+
+lam (6.3.2-3) frozen unstable; urgency=low
+
+  * C++ bindings in frozen version didn't work, now fixed.
+  * ROMIO not built before, now fixed.
+  * Made build cleanly from source (closes #62381)
+
+ -- Camm Maguire <camm@enhanced.com>  Tue, 18 Apr 2000 00:14:35 +0200
+
+lam (6.3.2-2) unstable; urgency=low
+
+  * Included static libraries with ROMIO support
+  * Added libmpi.a and libmpi++.a slave links to -dev alternatives
+
+ -- Camm Maguire <camm@enhanced.com>  Thu, 13 Apr 2000 17:52:46 +0200
+
+lam (6.3.2-1) frozen unstable; urgency=low
+
+  * New upstream release fixing critical data-corruption bug in shared
+    memory routines
+  * Upgraded standards version in debian/control
+  * Corrected GPL path in debian/copyright
+
+ -- Camm Maguire <camm@enhanced.com>  Tue, 28 Mar 2000 22:42:51 +0200
+
+lam (6.3-7) unstable; urgency=low
+
+  * Updated upstream-shipped config.guess and config.sub to latest from
+  automake (closing #55908)
+  * Included 6.3.1 changes to configure.in to make sure correct compile 
+  flags are used on all systems.  (Previously released binaries were 
+  correctly compiled anyway.)
+
+ -- Camm Maguire <camm@enhanced.com>  Mon, 24 Jan 2000 14:31:25 -0500
+
+lam (6.3-6) unstable; urgency=low
+
+  * Moved sweep and manpage to lamsweep to avoid name conflict with 
+  geomview (closes #54699)
+  * Added upstream suggested #if !HAVE_IEEE_FP/#endif around all of 
+  ieee.c to allow compilation on Debian sparc (closes #51871)
+
+ -- Camm Maguire <camm@enhanced.com>  Wed, 12 Jan 2000 16:47:00 -0500
+
+lam (6.3-5) unstable; urgency=low
+
+  * Moved priority to extra, in keeping with policy descriptions, and 
+  to make dependency on rsh work
+
+ -- Camm Maguire <camm@enhanced.com>  Wed,  8 Dec 1999 15:58:37 -0500
+
+lam (6.3-4) unstable; urgency=low
+
+  * Added Replaces lam-runtime (<< 6.3-3) to control for lam2-dev, closing #51822.
+
+ -- Camm Maguire <camm@enhanced.com>  Fri,  3 Dec 1999 09:31:44 -0500
+
+lam (6.3-3) unstable; urgency=low
+
+  * Made lam2-dev architecture dependent
+  * Moved following from lam-runtime to lam2-dev: mpiCC,mpicc,mpif77,
+    hcc,hcp,hf77,balky
+  * Separated alternatives into devel set governed by mpi ->
+    /usr/include/lam, and runtime set governed by mpirun ->
+    /usr/bin/mpirun_lam 
+  * Removed libmpi.so.2 and libmpi++.so.2 from alternatives, 
+    as not used by system anyway
+
+ -- Camm Maguire <camm@enhanced.com>  Tue, 30 Nov 1999 13:59:51 -0500
+
+lam (6.3-2) unstable; urgency=low
+
+  * Added example files to lam2-dev
+  * Removed loose -Wl from LIBBIND in configure.in
+  * Fixed rules so that source will build on machines without lam installed :-) (closes 50930)
+
+ -- Camm Maguire <camm@enhanced.com>  Mon, 22 Nov 1999 14:56:35 -0500
+
+lam (6.3-1) unstable; urgency=low
+
+  * Altered build rules to avoid a complete remake with each debian/rules install
+  * Used smaller no-logo version of lam61.doc.ps
+  * Added C++ alternatives and files
+  * ROMIO files excluded, as support not built-in for shared libraries
+  * Added dhelp support
+  * Moved lamd.1 to lamd.8, apparently the appropriate place for daemon manpages
+  * New upstream release
+
+ -- Camm Maguire <camm@enhanced.com>  Mon,  1 Nov 1999 10:30:51 -0500
+
+lam (6.2b-pl5-2) unstable; urgency=low
+
+  * Hardcoded rsh path in debian/rules to enable builds on machines without rsh installed
+
+ -- Camm Maguire <camm@enhanced.com>  Mon,  1 Nov 1999 10:30:51 -0500
+
+lam (6.2b-pl5-1) unstable; urgency=low
+
+  * reinstated shortcircuit optimization
+  * New upstream release
+
+ -- Camm Maguire <camm@enhanced.com>  Wed, 22 Sep 1999 15:18:53 -0400
+
+lam (6.2b-pl4-2) unstable; urgency=low
+
+  * Made lamwipe use /etc/lam/bhost.def by default
+  * changed RPI to sysv, better for Linux uniprocessors
+  * added --without-shortcircuit config option -- fixes BLACS errors
+
+ -- Camm Maguire <camm@enhanced.com>  Wed, 22 Sep 1999 15:18:53 -0400
+
+lam (6.2b-pl4-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Camm Maguire <camm@enhanced.com>  Fri, 17 Sep 1999 00:04:38 -0400
+
+lam (6.2b-pl3-9) unstable; urgency=low
+
+  * Updated alternative manpage links to point to /usr/share/man
+
+ -- Camm Maguire <camm@enhanced.com>  Fri, 17 Sep 1999 00:04:38 -0400
+
+lam (6.2b-pl3-8) unstable; urgency=low
+
+  * Fixed lintian errors
+
+ -- Camm Maguire <camm@enhanced.com>  Sat, 11 Sep 1999 16:32:07 -0400
+
+lam (6.2b-pl3-7) unstable; urgency=low
+
+  * Renamed to lam2 because of new library setup
+  * Enabled lam1-dev to axe previous directory /usr/lib/lam/lib
+  * Updated alternatives to new library location
+  * Changed liblam soname to 1 from 1.0
+  * Removed -lmpi from mpicc and mpif77
+  * Changed hcc and hf77 to use -llam
+  * Removed double compile from rules
+  * Removed sub libraries
+  * Moved liblam to /usr/lib
+  * Linked binaries to merged liblam as permitted by upstream
+
+ -- Camm Maguire <camm@enhanced.com>  Sun, 15 Aug 1999 17:07:48 -0400
+
+lam (6.2b-pl3-6) unstable; urgency=low
+
+  * Made lam-runtime remove lam1-runtime
+  * Changed lam1-runtime package name to lam-runtime to fit policy
+
+ -- Camm Maguire <camm@enhanced.com>  Sat, 14 Aug 1999 15:26:03 -0400
+
+lam (6.2b-pl3-5) unstable; urgency=low
+
+  * Changed short description to fit and be acronym free
+
+ -- Camm Maguire <camm@enhanced.com>  Wed, 11 Aug 1999 18:22:56 -0400
+
+lam (6.2b-pl3-4) unstable; urgency=low
+
+  * Removed HBIND def for linux, fixes mpicc/hcc error
+  * Removed .ex files from debian
+  * Removed postinst/prerm from basedir
+
+ -- Camm Maguire <camm@enhanced.com>  Mon,  2 Aug 1999 18:17:25 -0400
+
+lam (6.2b-pl3-3) unstable; urgency=low
+
+  * Put back lam61.doc.gs in lam1-dev
+  * Renamed mater alternative to libmpi.so.1 to avoid breakage with older 'mpi'
+  * Divided alternatives appropriately among packages
+  * Changed wipe to lamwipe in lamnet.h
+  * Updated Replaces/Conflicts control mechanisms
+  * fixed mpicc and mpif77 alternatives bugs
+
+ -- Camm Maguire <camm@enhanced.com>  Thu, 29 Jul 1999 11:25:37 -0400
+
+lam (6.2b-pl3-2) unstable; urgency=low
+
+  * Changed scripts to /bin/sh, added set -e
+  * Symlink /usr/lib/lam/boot -> /etc/lam
+  * Moved /usr/lib/lam/boot to /etc/lam
+  * CC=cc
+
+ -- Camm Maguire <camm@enhanced.com>  Thu, 29 Jul 1999 11:07:22 -0400
+
+lam (6.2b-pl3-1) unstable; urgency=low
+
+  * Fixed hardoced paths in hboot, hcc,hf77,lamboot,lamwipe,mpicc,mpif77,mpirun_lam,recon
+  * mpicc undocumented binary
+  * Eliminated rpath from configure.in for shared libraries
+  * Added 'final-home' configuration option for paths hard-coded into some binaries
+  * Linked manpages PRCVC and PRCVO to psend, instead of PSND
+  * Disabled builtin install of manpages, used dh_installmanpages instead
+  * Moved to debhelper
+  * Split package into shared library, runtime, and dev
+  * New upstream release.
+
+ -- Camm Maguire <camm@enhanced.com>  Thu,  8 Jul 1999 14:03:49 -0400
+
+lam (6.1-8) unstable; urgency=low
+
+  * Changed 'wipe' to 'lamwipe' to co-exist with package 'wipe'
+
+ -- Camm Maguire <camm@enhanced.com>  Thu, 8 Jul 1999 11:29:09 -0400
+
+lam (6.1-7) unstable; urgency=low
+
+  * Added lamd manpage reference as directed by upstream.
+
+ -- Camm Maguire <camm@enhanced.com>  Thu, 22 Apr 1999 10:32:09 -0400
+
+lam (6.1-6) unstable; urgency=low
+
+  * Fixed lintian error: Perms for all manpages: 644
+  * Fixed lintian error: Perms for hcp and sweep: 755
+  * Fixed lintian error: lengthy man page symlinks
+  * Fixed lintian error: No tabs in Description
+  * Fixed lintian error: man page for lamd
+
+ -- Camm Maguire <camm@enhanced.com>  Mon, 12 Apr 1999 12:17:41 -0400
+
+lam (6.1-5) unstable; urgency=low
+
+  * Did same for mpirun
+  * Replaced DEFP* definitions in Makefiles under tools directory so default LAMHOME works
+
+ -- Camm Maguire <camm@enhanced.com>  Wed, 10 Mar 1999 13:06:24 -0500
+
+lam (6.1-4) unstable; urgency=low
+
+  * Updated README.Debian to point to mpi-doc for manpages
+  * Applied patch for powerpc and glibc-2.1
+
+ -- Camm Maguire <camm@enhanced.com>  Tue,  9 Mar 1999 11:39:32 -0500
+
+lam (6.1-3) unstable; urgency=low
+
+  * Applied patch to enable compilation on m68k, also gracefully fails
+    for non-supported CPUs (thanks Roman.Hodek@informatik.uni-erlangen.de!)
+
+ -- Camm Maguire <camm@enhanced.com>  Wed,  3 Feb 1999 10:19:54 -0500
+
+lam (6.1-2) unstable; urgency=low
+
+  * Modified debian/rules to compile on non-i386 architectures
+  * Modified debian/rules to allow make clean on newly unpacked source
+
+ -- Camm Maguire <camm@enhanced.com>  Tue, 26 Jan 1999 11:03:21 -0500
+
+lam (6.1-1) frozen unstable; urgency=low
+
+  * Hardcoded DEFP path in hcc and hf77 Makefiles
+  * Added compatability links h,bin, and man in /usr/lib/lam
+  * Handled alternative collisions: moved mpirun.1.gz to mpirun_lam.1.gz
+  * Handled alternative collisions: had mpirun built as mpirun_lam
+  * Moved man pages to /usr/man
+  * Moved binaries to /usr/bin
+  * Had debstd handle man pages instead of man/Makefile
+  * Used update-alternatives for /usr/include/mpi
+  * Used update-alternatives for /usr/man/man1/mpirun.1.gz
+  * Used update-alternatives for /usr/bin/mpirun
+  * Used update-alternatives for /usr/lib/libmpi.a
+  * Built merge library libmpi_merge.a in /usr/lib/lam/lib
+  * Converted lam61.doc.ps from lam61.doc.pdf on website
+  * Added lam61.doc.ps to /usr/doc/lam
+  * loaded examples and doc directory under /usr/doc/lam
+  * Added DESTDIR=`pwd`/debian/tmp to build make in debian/rules
+  * patched otb/t/etc/srfd.c to use msg.controllen in linux
+  * patched otb/t/etc/srfd.c to use msg.control in linux
+  * debian/rules sets config link back to sparc on clean
+  * debian/rules sets config link to linux on build
+  * Lam home set to /usr/lib/lam
+  * 
+  * 
+  * Initial Release.
+
+ -- Camm Maguire <camm@enhanced.com>  Tue, 15 Dec 1998 17:48:49 -0500
+
+

@@ -1,0 +1,11 @@
+Document: lam-installation-guide
+Title: Debian LAM Manual - installation guide
+Author: LAM team, llamas@mpi.nd.edu.
+Abstract: This manual documents the LAM
+ Message Passing Interface (MPI) system
+ for parallel computing.
+Section: Apps/Programming
+
+Format: PDF
+Index: /usr/share/doc/lam-runtime/install.pdf.gz
+Files: /usr/share/doc/lam-runtime/install.pdf.gz

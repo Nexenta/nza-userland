@@ -1,0 +1,11 @@
+Document: lam-user-guide
+Title: Debian LAM Manual - user guide
+Author: LAM team, llamas@mpi.nd.edu.
+Abstract: This manual documents the LAM
+ Message Passing Interface (MPI) system
+ for parallel computing.
+Section: Apps/Programming
+
+Format: PDF
+Index: /usr/share/doc/lam-runtime/user.pdf.gz
+Files: /usr/share/doc/lam-runtime/user.pdf.gz
