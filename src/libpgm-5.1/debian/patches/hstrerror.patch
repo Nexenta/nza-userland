@@ -1,0 +1,12 @@
+Index: libpgm-5.1.116~dfsg/openpgm/pgm/configure.ac
+===================================================================
+--- libpgm-5.1.116~dfsg.orig/openpgm/pgm/configure.ac	2011-08-12 10:12:10.356380783 +0400
++++ libpgm-5.1.116~dfsg/openpgm/pgm/configure.ac	2011-08-12 10:16:36.635368478 +0400
+@@ -45,6 +45,7 @@
+ 	AC_SEARCH_LIBS([gethostname], [nsl])
+ 	AC_SEARCH_LIBS([inet_aton], [resolv])
+ 	AC_SEARCH_LIBS([kstat_open], [kstat])
++	AC_SEARCH_LIBS([hstrerror], [resolv])
+ 	;;
+ *)
+ 	;;
