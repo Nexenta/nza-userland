@@ -6,7 +6,7 @@ CFLAGS += \
 		  -g -pipe -I/usr/include/xmltok -I/usr/include/openssl \
 		  -Wall -Wformat -Wformat-security -D_FORTIFY_SOURCE=2 -fstack-protector
 
-LDFLAGS += -lssp_nonshared -lssp -Wl,--as-needed -Wl,-z,relro
+LDFLAGS += -lssp_nonshared -lssp
 
 CC_32 = gcc -m32
 CC_64 = gcc -m64
@@ -14,8 +14,8 @@ CC_64 = gcc -m64
 CFLAGS_32 =
 CFLAGS_64 =
 
-LDFLAGS_32 = -L/usr/lib -R/usr/lib
-LDFLAGS_64 = -L/usr/lib/amd64 -R/usr/lib/amd64
+LDFLAGS_32 =
+LDFLAGS_64 =
 
 # See config.layout
 LAYOUT_32=Nexenta
@@ -46,7 +46,6 @@ CONFIGURE_OPTIONS_COMMON = \
 
 CONFIGURE_OPTIONS_32 = \
     --enable-layout=${LAYOUT_32} \
-	--target=i386-pc-solaris2.11 \
 	--with-ldap-lib=/usr/lib \
 	--with-suexec-bin=/usr/lib/apache2/suexec \
 	--with-apr=/usr/bin/apr-1-config \
@@ -55,7 +54,6 @@ CONFIGURE_OPTIONS_32 = \
 
 CONFIGURE_OPTIONS_64 = \
     --enable-layout=${LAYOUT_64} \
-	--target=x86_64-pc-solaris2.11 \
 	--with-ldap-lib=/usr/lib/amd64 \
 	--with-suexec-bin=/usr/lib/apache2/amd64/suexec \
 	--with-apr=/usr/bin/amd64/apr-1-config \
@@ -191,7 +189,6 @@ override_dh_auto_install:
 	# It was mpm-worker for 32 bits:
 	rm $(CURDIR)/debian/tmp/usr/sbin/apache2
 
-	# We do it beacuse Debhelper can't rename files:
 	mkdir -p $(CURDIR)/debian/tmp/usr/sbin/{i86,amd64}
 	cp $(BUILD)/mpm32-worker/apache2   $(CURDIR)/debian/tmp/usr/sbin/i86/apache2-worker
 	cp $(BUILD)/mpm32-prefork/apache2  $(CURDIR)/debian/tmp/usr/sbin/i86/apache2-prefork
