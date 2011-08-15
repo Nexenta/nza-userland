@@ -1,0 +1,38 @@
+From eb0f739ffb5563c005573939ac076ce78c3e79a8 Mon Sep 17 00:00:00 2001
+From: Lisandro Dalcin <dalcinl@gmail.com>
+Date: Tue, 5 Apr 2011 14:29:36 -0300
+Subject: [PATCH] additional fix and test for ticket #650
+
+---
+ Cython/Compiler/Nodes.py              |    4 +++-
+ tests/run/raise_memory_error_T650.pyx |    9 +++++++++
+ 2 files changed, 12 insertions(+), 1 deletions(-)
+
+--- a/Cython/Compiler/Nodes.py
++++ b/Cython/Compiler/Nodes.py
+@@ -3944,7 +3944,9 @@ class RaiseStatNode(StatNode):
+         if self.exc_type and not self.exc_value and not self.exc_tb:
+             exc = self.exc_type
+             import ExprNodes
+-            if isinstance(exc, ExprNodes.SimpleCallNode) and not exc.args:
++            if (isinstance(exc, ExprNodes.SimpleCallNode) and 
++                not (exc.args or (exc.arg_tuple is not None and 
++                                  exc.arg_tuple.args))):
+                 exc = exc.function # extract the exception type
+             if exc.is_name and exc.entry.is_builtin:
+                 self.builtin_exc_name = exc.name
+--- a/tests/run/raise_memory_error_T650.pyx
++++ b/tests/run/raise_memory_error_T650.pyx
+@@ -22,3 +22,12 @@ def raise_me_instance():
+     ... else: print('NOT RAISED!')
+     """
+     raise MemoryError()
++
++def raise_me_instance_value():
++    """
++    >>> raise_me_instance_value()
++    Traceback (most recent call last):
++        ...
++    MemoryError: oom
++    """
++    raise MemoryError("oom")

@@ -1,0 +1,6 @@
+0001-fix-makefile-for-embed-testcase.patch
+0001-fix-inline-textcase-to-not-use-default-HOME-.cython-.patch
+0001-fix-testcases-assuming-char-is-signed-thanks-to-Yaro.patch
+0001-additional-fix-and-test-for-ticket-650.patch
+0001-Python-3-fix-NumPy-support.patch
+deb_tempdisable_numpy_doctests
