@@ -1,0 +1,64 @@
+	Thread Support
+	--------------
+
+All debian libraries are supposed to be built with _REENTRANT defined
+(policy 10.2).  We thus use "<define>_REENTRANT" on the bjam command
+line in debian/rules.
+
+
+	Documentation
+	-------------
+
+Generate the list of documentation files using wget going through
+localhost to get the source tree
+
+    path=boost_1_37_0
+    cd ~/public_html
+    ... unpack boost
+    cd /tmp
+    wget -r --no-parent --domains=localhost \
+	http://localhost/~steve/$path/index.html
+    cd localhost/....
+    rm -rf boost
+    for f in `find * -type f`; do \
+        test -f ~/public_html/$path/$f && echo $f;
+    done > df1
+    find * -name '*.htm' -or -name '*.html' > df2
+    cat df1 df2 | sort | uniq > documentation-files
+
+* need to symlink .../HTML/boost to /usr/include/boost; when put
+  the symlink into the deb, it got converted to a directory during
+  installation; use dh_link to do it
+
+* use -Nlibboost-doc with dh_compress to inhibit compressing files in the HTML
+  tree
+
+
+	Examples
+	--------
+
+List of example directories obtained using
+
+    find * -name 'example*' -type d > debian/example-files
+
+
+	Interdependencies
+	-----------------
+
+Check using check-interdep.sh
+** must do this after installing the -dev packages **
+
+For 1.38
+
+date_time 	depends on serialization
+filesystem 	depends on system
+graph 		depends on serialization, test
+iostreams 	depends on regex
+math		depends on test
+mpi		depends on graph, python, serialization
+regex 		depends on thread
+thread 		depends on date_time
+wave 		depends on filesystem, serialization
+
+Also, bug report #480948 indicates that multi_index, from libboost-dev
+itself depends on serialization.

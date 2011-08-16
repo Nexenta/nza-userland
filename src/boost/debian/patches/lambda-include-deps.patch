@@ -1,0 +1,42 @@
+--- /dev/null
++++ boost1.42-1.42.0/trunk/boost/lambda/casts.hpp
+@@ -0,0 +1,4 @@
++#include "boost/lambda/core.hpp"
++
++template<class Act, class Args>
++struct return_type_N;
+--- /dev/null
++++ boost1.42-1.42.0/trunk/boost/lambda/construct.hpp
+@@ -0,0 +1,3 @@
++
++#include "boost/type_traits/remove_cv.hpp"
++#include "boost/type_traits/is_pointer.hpp"
+--- /dev/null
++++ boost1.42-1.42.0/trunk/boost/lambda/detail/lambda_functor_base.hpp
+@@ -0,0 +1,6 @@
++
++#include "boost/type_traits/add_reference.hpp"
++#include "boost/type_traits/add_const.hpp"
++#include "boost/type_traits/remove_const.hpp"
++#include "boost/lambda/detail/lambda_fwd.hpp"
++#include "boost/lambda/detail/lambda_traits.hpp"
+--- /dev/null
++++ boost1.42-1.42.0/trunk/boost/lambda/detail/lambda_traits.hpp
+@@ -0,0 +1 @@
++#include "boost/tuple/tuple.hpp"
+--- /dev/null
++++ boost1.42-1.42.0/trunk/boost/lambda/exceptions.hpp
+@@ -0,0 +1 @@
++#include "boost/lambda/core.hpp"
+--- boost1.42-1.42.0.orig/boost/lambda/construct.hpp
++++ boost1.42-1.42.0/boost/lambda/construct.hpp
+@@ -14,6 +14,9 @@
+ #if !defined(BOOST_LAMBDA_CONSTRUCT_HPP)
+ #define BOOST_LAMBDA_CONSTRUCT_HPP
+ 
++#include "boost/type_traits/remove_cv.hpp" 
++#include "boost/type_traits/is_pointer.hpp"
++
+ namespace boost { 
+ namespace lambda {
+ 

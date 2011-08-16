@@ -1,0 +1,101 @@
+Patch from Gaudenz Steinlin <gaudenz@debian.org>
+Debian bug: #552014
+Reported upstream: https://svn.boost.org/trac/boost/ticket/3544
+Fixed upstream: 2010-02-28 (post Boost 1.42)
+
+Add --xpythonid parameter to the build system to only add an identification 
+to Python libraries. The existing --buildid parameter adds an id to all 
+libraries and leads to uneccessary duplication of libraries if only the 
+Python version for the build is different.
+
+--- boost_1_41_0.orig/Jamroot
++++ boost_1_41_0/Jamroot
+@@ -342,6 +342,12 @@
+     constant BUILD_ID : [ regex.replace $(build-id) "[*\\/:.\"\' ]" "_" ] ;
+ }
+ 
++# Python build id (only for Python libraries)
++local python-id = [ MATCH "^--xpythonid=(.*)" : [ modules.peek : ARGV ] ] ;
++if $(python-id)
++{
++    constant PYTHON_ID : [ regex.replace $(python-id) "[*\\/:.\"\']" "_" ] ;
++}
+ 
+ # This rule is called by Boost.Build to determine the name of target. We use it
+ # to encode the build variant, compiler name and boost version in the target
+--- boost_1_41_0.orig/libs/python/build/Jamfile.v2
++++ boost_1_41_0/libs/python/build/Jamfile.v2
+@@ -3,6 +3,7 @@
+ # file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+ 
+ import os ;
++import indirect ;
+ import modules ;
+ import feature ;
+ 
+@@ -41,8 +42,27 @@
+ 
+ project boost/python
+   : source-location ../src
++  : requirements
++    -<tag>@$(BOOST_JAMROOT_MODULE)%$(BOOST_JAMROOT_MODULE).tag
++    <tag>@$(__name__).tag
+   ;
+ 
++rule tag ( name : type ? : property-set )
++{
++    local result = $(name) ;
++    if $(type) in STATIC_LIB SHARED_LIB IMPORT_LIB
++    {
++        if $(name) = boost_python && $(PYTHON_ID)
++        {
++            result = $(result)-$(PYTHON_ID) ;
++        }
++    }
++    
++    # forward to the boost tagging rule
++    return  [ indirect.call $(BOOST_JAMROOT_MODULE)%$(BOOST_JAMROOT_MODULE).tag 
++                $(result) : $(type) : $(property-set) ] ;
++}
++
+ rule cond ( test ? : yes * : no * ) { if $(test) { return $(yes) ; } else { return $(no) ; } }
+ rule unless ( test ? : yes * : no * ) { if ! $(test) { return $(yes) ; } else { return $(no) ; } }
+ 
+--- boost_1_41_0.orig/libs/mpi/build/Jamfile.v2
++++ boost_1_41_0/libs/mpi/build/Jamfile.v2
+@@ -9,6 +9,7 @@
+ #           Andrew Lumsdaine
+ 
+ import mpi ;
++import indirect ;
+ import python ;
+ 
+ libraries = ;
+@@ -18,8 +19,27 @@
+ 
+ project boost/mpi
+   : source-location ../src
++  : requirements
++    -<tag>@$(BOOST_JAMROOT_MODULE)%$(BOOST_JAMROOT_MODULE).tag
++    <tag>@$(__name__).tag
+   ;
+ 
++rule tag ( name : type ? : property-set )
++{
++    local result = $(name) ;
++    if $(type) in STATIC_LIB SHARED_LIB IMPORT_LIB
++    {
++        if $(name) = boost_mpi_python && $(PYTHON_ID)
++        {
++            result = $(result)-$(PYTHON_ID) ;
++        }
++    }
++    
++    # forward to the boost tagging rule
++    return  [ indirect.call $(BOOST_JAMROOT_MODULE)%$(BOOST_JAMROOT_MODULE).tag 
++                $(result) : $(type) : $(property-set) ] ;
++}
++
+ lib boost_mpi 
+   : 
+     broadcast.cpp
