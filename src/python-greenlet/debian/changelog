@@ -1,0 +1,25 @@
+python-greenlet (40-0-0) unstable; urgency=low
+
+  * Ported to NCP4
+
+ -- Igor Pashev <igor.pashev@nexenta.com>  Thu, 11 Aug 2011 23:35:37 +0400
+
+python-greenlet (0.3.1-1.1) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Add build-dependency on python-support (closes: #620282).
+
+ -- Jakub Wilk <jwilk@debian.org>  Fri, 08 Apr 2011 21:06:36 +0200
+
+python-greenlet (0.3.1-1) unstable; urgency=low
+
+  * New upstream version.
+  * Fixed dependency problem for build clean rule.
+
+ -- Örjan Persson <orange@fobie.net>  Thu, 27 May 2010 19:07:42 +0200
+
+python-greenlet (0.3-1) unstable; urgency=low
+
+  * Initial release (Closes: #532831).
+
+ -- Örjan Persson <orange@fobie.net>  Sun, 04 Apr 2010 15:39:26 +0200

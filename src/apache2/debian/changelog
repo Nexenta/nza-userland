@@ -1,3 +1,9 @@
+apache2 (40-0-2) unstable; urgency=low
+
+  * Fixed build with Sun ld
+
+ -- Igor Pashev <igor.pashev@nexenta.com>  Sun, 14 Aug 2011 19:51:00 +0400
+
 apache2 (40-0-1) unstable; urgency=low
 
   * Rebuild with proper APR (re #5494)

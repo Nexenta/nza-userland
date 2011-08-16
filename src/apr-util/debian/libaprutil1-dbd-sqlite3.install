@@ -1,6 +1,6 @@
-debian/tmp/usr/lib/apr-util-1/apr_dbd_sqlite3-1.so usr/lib/apr-util-1/
-debian/tmp/usr/lib/apr-util-1/apr_dbd_sqlite3.so usr/lib/apr-util-1/
+usr/lib/apr-util-1/apr_dbd_sqlite3-1.so usr/lib/apr-util-1/
+usr/lib/apr-util-1/apr_dbd_sqlite3.so usr/lib/apr-util-1/
 
-debian/tmp/usr/lib/amd64/apr-util-1/apr_dbd_sqlite3-1.so
-debian/tmp/usr/lib/amd64/apr-util-1/apr_dbd_sqlite3.so
+usr/lib/amd64/apr-util-1/apr_dbd_sqlite3-1.so
+usr/lib/amd64/apr-util-1/apr_dbd_sqlite3.so
 

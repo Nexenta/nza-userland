@@ -1,0 +1,42 @@
+This package was debianized by Ola Lundqvist <opal@debian.org> on
+Wed, 27 Jun 2001 16:15:47 +0200.
+
+Homepage:
+	http://inguza.com/software/debarchiver/
+
+Copyright:
+
+    Copyright (C) 2000-2009 Ola Lundqvist <ola@inguza.com>
+    Copyright (C) 2009      Franck Joncourt <franck.mail@dthconnex.com>
+    Copyright (C) 2004,2008 Michael Rash <mbr@cipherdyne.com>
+    Copyright (C) 2007      Turbo Fredriksson <turbo@bayour.com>
+    Copyright (C) 2004-2005 Russ Allbery <rra@stanford.edu>
+    Copyright (C) 2005      Joel Baker <lucifer@lightbearer.com>
+    Copyright (C) 2005      Daniel Leidert <daniel.leidert@wgdd.de>
+    Copyright (C) 2005      Bob Proulx <bob@proulx.com>
+    Copyright (C) 2005-2006 Valéry Perrin <valery.perrin@free.fr>
+    Copyright (C) 2006      Yaroslav Halchenko <debian@onerussian.com>
+    Copyright (C) 2006      Jérémy Bobbio <jeremy.bobbio@etu.upmc.fr>
+    Copyright (C) 2006      Michael Hanke <michael.hanke@gmail.com>
+    Copyright (C) 2006      Martin F Krafft <madduck@debian.org>
+    Copyright (C) 2006      Håkon Stordahl <haastord@online.no>
+
+    See the AUTHORS file for information on what the individual copyright
+    holder has contributed with.
+
+License:
+
+ This is free software; you can redistribute it and/or modify it under
+ the terms of the GNU General Public License as published by the Free
+ Software Foundation; either version 2, or (at your option) any later
+ version.
+ This is distributed in the hope that it will be useful, but WITHOUT
+ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+ for more details.
+
+ You should have received a copy of the GNU General Public License with
+ your Debian GNU/Linux system, in /usr/share/common-licenses/GPL, or with
+ the debarchiver source package as the file COPYING.  If not, write to the Free
+ Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ 02110-1301, USA.

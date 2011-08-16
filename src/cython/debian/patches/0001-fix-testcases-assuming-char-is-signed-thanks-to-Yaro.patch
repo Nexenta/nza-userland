@@ -1,0 +1,46 @@
+From 2651a5d4a6f990898217be97161d0b884fdf6f8f Mon Sep 17 00:00:00 2001
+From: Lisandro Dalcin <dalcinl@gmail.com>
+Date: Fri, 18 Feb 2011 16:11:11 -0300
+Subject: [PATCH] fix testcases assuming char is signed (thanks to Yaroslav Halchenko)
+
+---
+ tests/run/c_int_types_T255.pyx |    4 ++--
+ tests/run/dictintindex.pyx     |    5 ++++-
+ 2 files changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/tests/run/c_int_types_T255.pyx b/tests/run/c_int_types_T255.pyx
+index 23220d5..82ca0e5 100644
+--- a/tests/run/c_int_types_T255.pyx
++++ b/tests/run/c_int_types_T255.pyx
+@@ -93,10 +93,10 @@ def test_char(char x):
+    Traceback (most recent call last):
+        ...
+    OverflowError: ...
++   >>> if CHAR_MIN < 0: 
++   ...     assert test_char(-1) == -1
+    >>> test_char(CHAR_MIN) == CHAR_MIN
+    True
+-   >>> test_char(-1)
+-   -1
+    >>> test_char(0)
+    0
+    >>> test_char(1)
+diff --git a/tests/run/dictintindex.pyx b/tests/run/dictintindex.pyx
+index 2a83ac9..9e60f0d 100644
+--- a/tests/run/dictintindex.pyx
++++ b/tests/run/dictintindex.pyx
+@@ -4,7 +4,10 @@ def test_get_char_neg():
+     0
+     """
+     cdef char key = -1
+-    d = {-1:0}
++    if <char>-1 < 0:
++        d = {-1:0}
++    else:
++        d = {255:0}
+     return d[key]
+ def test_get_char_zero():
+     """
+-- 
+1.7.2.3
+
