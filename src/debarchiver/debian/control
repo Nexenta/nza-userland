@@ -3,14 +3,13 @@ Section: devel
 Priority: optional
 Maintainer: Ola Lundqvist <opal@debian.org>
 Build-Depends-Indep: perl (>= 5.6.0-16), po4a
-Build-Depends: debhelper (>> 4.0.0)
+Build-Depends: debhelper (>= 7)
 Standards-Version: 3.8.0
+Upstream-Version: 0.9.6
 
 Package: debarchiver
 Architecture: all
-#Depends: opalmod (>= 0.1.10), apt-utils | dpkg-dev, adduser
-Depends: opalmod (>= 0.1.10), apt-utils | dpkg-dev
-#Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: opalmod (>= 0.1.10), apt-utils, dpkg-dev, adduser
 Recommends: exim4 | mail-transport-agent | mailutils | bsd-mailx | mailx
 Suggests: devscripts, gnupg
 Description: Tool to handle Debian package archives

@@ -1,0 +1,416 @@
+Description: Nexenta specific scripts (and changes) to debarchiver
+Last-Update: 2011-08-16
+
+--- /dev/null
++++ debarchiver-40-0/src/ndput.sh
+@@ -0,0 +1,155 @@
++#!/bin/bash
++#
++# Copyright 2005 Nexenta Systems, Inc.  All rights reserved.
++# Use is subject to license terms.
++#
++# Re-Upload .deb packages to repository
++#
++
++DIST=siddy-unstable
++NEXENTA_LOCK_HELD=0
++OUTPUT_EMAIL="devnull@nexenta.com"
++KEEP=no
++SEND_EMAIL=no
++UPLOADED_FILES="files.uploaded"
++
++trap "aborted" INT
++
++fatal() {
++        echo "$@"
++        exit 1
++}
++
++cleanup() {
++	if [ $NEXENTA_LOCK_HELD -ne 0 ]; then
++		rmdir $NEXENTA_DEBLOCK >/dev/null 2>&1
++	fi
++}
++
++aborted() {
++	echo
++	echo "Aborted."
++	cleanup
++	exit 1
++}
++
++usage() {
++	echo "ndput <path-to-repository> [-h|--help] [-p package] -[kn]"
++	echo "  -h         display usage screen"
++	echo "  -p pkg     specify package or set name"
++	echo "  -d distro  specify distro name, i.e. siddy-testing..."
++	echo "  -k         do not remove packages after successfull upload"
++	echo "  -e         send e-mail notification"
++	exit 1
++}
++
++test "x$1" != x && REPOLOC="$1"
++shift
++while test "x$1" != x; do
++	test "x$1" != x-h -a \
++	     "x$1" != x--help -a \
++	     "x$1" != x-k -a \
++	     "x$1" != x-e -a \
++	     "x$1" != x-d -a \
++	     "x$1" != x--distro -a \
++	     "x$1" != x-p -a \
++	     "x$1" != x--package \
++		&& usage
++	test "x$1" = x-h -o "x$1" = x--help && usage
++	if test "x$1" = "x-p" -o "x$1" = x--package; then PACKAGE=$2; shift; shift; fi
++	if test "x$1" = "x-k"; then KEEP=yes; shift; fi
++	if test "x$1" = "x-e"; then SEND_EMAIL=yes; shift; fi
++	if test "x$1" = "x-d" -o "x$1" = x--distro; then DIST=$2; shift; shift; fi
++done
++
++test "x$REPOLOC" = x && usage
++
++NEXENTA_DEBLOCK=$REPOLOC/dists/debarchiver.lock
++NEXENTA_INCOMING=$REPOLOC/incoming
++
++test ! -x /usr/bin/ndrm && fatal "missing /usr/bin/ndrm"
++test ! -x /usr/bin/ndlist && fatal "missing /usr/bin/ndlist"
++
++if test "x$PACKAGE" = x -a "x$(ls *.changes 2>/dev/null|wc -l)" = "x1"; then
++	test -f ./*.changes && PACKAGE=$(echo *.changes|awk -F_ '{print $1}')
++	test ! -f ./${PACKAGE}_*.changes && fatal "missing ${PACKAGE}_*.changes"
++fi
++
++if test "x$PACKAGE" = x; then
++	echo "You must specify package or package set name. Use -p option."
++	exit 1
++fi
++
++echo -n "Trying to obtain '$REPOLOC' repository lock ..."
++while true; do
++	mkdir $NEXENTA_DEBLOCK >/dev/null 2>&1
++	if [ $? -ne 0 ]; then
++		echo -n "."
++		sleep 5
++		continue
++	fi
++	echo "success!"
++	NEXENTA_LOCK_HELD=1	
++	break
++done
++
++# To account for stray files that have been uploaded, only
++# put files related to changes
++echo > $UPLOADED_FILES
++for changes in *.changes; do
++
++	if [ ! -r $changes ]; then
++		continue
++	fi
++
++	# Remove old stuff..
++	pkg=$(echo $changes|awk -F_ '{print $1}')
++	ndrm $REPOLOC $pkg -n -y -d $DIST
++
++	source_files=`awk '
++		BEGIN {p=0;}
++		/^[A-Za-z]/ {p=0}
++		/^Files:/ {p=1}
++		/^ / {if( p == 1 ) { print $5; } }
++		' $changes;echo $changes`
++
++	# Move files into the incoming dir for automatic processing
++	if test "x$KEEP" = xno; then
++		mv $source_files $NEXENTA_INCOMING/$DIST
++	else
++		cp $source_files $NEXENTA_INCOMING/$DIST
++	fi
++
++	echo >> $UPLOADED_FILES
++	echo "$pkg:" >> $UPLOADED_FILES
++	echo $source_files|sed -e "s/ /\n/g" >> $UPLOADED_FILES
++
++done
++
++rm -rf /var/cache/debarchiver/cache.db
++/usr/bin/debarchiver --dl 1 --ql 0 --gpgkey maintainer@nexenta.com -o -x -i $REPOLOC/incoming
++if test $? != 0; then
++	cleanup
++	echo "Repository '$REPOLOC': package(s) NOT uploaded."
++	exit 1
++fi
++
++cleanup
++echo "Repository '$REPOLOC': package(s) uploaded."
++
++if test "x$SEND_EMAIL" = xno; then
++	rm -f $UPLOADED_FILES
++	exit 0
++fi
++
++# Email the record of the package
++/usr/local/bin/changes-email "Accepted Package: $PACKAGE" $OUTPUT_EMAIL <<EOF
++Accepted package(s) to $NEXENTA_INCOMING/$DIST
++
++$(cat $UPLOADED_FILES)
++EOF
++
++rm -f $UPLOADED_FILES
++
++# if e-mail not delivered still consider its a success...
++exit 0
+--- /dev/null
++++ debarchiver-40-0/src/ndrm.sh
+@@ -0,0 +1,140 @@
++#!/bin/bash
++
++##############################################################################
++#                      C O N F I G U R A T I O N
++##############################################################################
++
++ARCH=solaris-i386
++DISTRO="siddy-unstable"
++COMPONENTS="main non-free contrib"
++
++##############################################################################
++
++changes_files () {
++	perl -le '
++	$val="";
++	while (<STDIN>) {
++		chomp;
++		last if (/^Files:.*$/);
++	}
++	while (<STDIN>) {
++		if (/^ ([a-fA-F0-9]+) ([0-9]+) (.*) (.*) (.*)$/) {
++			$val = "$val $5";
++			next;
++		}
++		last;
++	}
++	printf ("%s", $val);
++	' "$@"
++}
++
++changes_getfield () {
++	perl -le '
++	$field = lc(shift @ARGV);
++	while (<STDIN>) {
++		if (/^([^:]*:)\s*(.*)$/) {
++			$f = lc($1); $v = $2;
++			if ($f eq $field) { $val = $v; last; }
++		}
++	}
++	printf ("%s", $val);
++	' "$@"
++}
++
++all_changes() {
++	echo "$REPOLOC/dists/$DISTRO/installed/$psource""_*""_$ARCH"".changes"
++}
++
++latest_changes() {
++	echo $(ls $(all_changes)|grep $REPOLOC|sort|tail -1)
++}
++
++ndlist() {
++	local changes=$(all_changes)
++	if ! ls $changes 1>/dev/null 2>&1; then
++		echo "$psource: not found"
++		return 1
++	fi
++	echo $(changes_files < $(latest_changes)) | tr ' ' '\n'
++	return 0
++}
++
++ndget() {
++	local changes=$(all_changes)
++	if ! ls $changes 1>/dev/null 2>&1; then
++		echo "ndget: $psource: not found"
++		return 1
++	fi
++	local vers=$(changes_getfield Version: < $(latest_changes))
++	psourcedir=$psource-$(echo $vers | sed -e "s/.*:\(.*\)/\1/")
++	rm -rf $psourcedir; mkdir $psourcedir
++	for f in $(ndlist); do
++		find $REPOLOC/dists/$DISTRO -name $f -exec cp {} $psourcedir/ \;
++	done
++	cp -a $changes $psourcedir/
++	return 0
++}
++
++generic_Yn_ask() {
++	test "x$allyes" != x && return
++	while true; do
++		echo -n "$1 [Y/n] "; read ans
++		test x$ans = x -o x$ans = xy -o x$ans = xY && return 0
++		test x$ans = xn -o x$ans = xN && return 1
++	done
++}
++
++ndrm() {
++	local changes=$(all_changes)
++	if ! ls $changes 1>/dev/null 2>&1; then
++		echo "ndrm: $psource: not found"
++		return 1
++	fi
++	generic_Yn_ask "Are you sure you want to remove $psource from '$REPOLOC/dists/$DISTRO'?" || return 1
++	for f in $(ndlist); do
++		echo "Removing $REPOLOC/dists/$DISTRO $f ..."
++		find $REPOLOC/dists/$DISTRO -name $f -exec rm -f {} \;
++	done
++	rm -f $changes
++	if test "x$nodebarch" = x; then
++		/usr/bin/debarchiver --dl 1 --ql 0 --gpgkey maintainer@nexenta.com -o -x -i $REPOLOC/incoming || return 1
++	fi
++	return 0
++}
++
++usage() {
++	echo "Usage: $mode <path-to-repository> <source package> [-h|--help|-n|-y] [-d distro]"
++	exit 0
++}
++
++mode=`basename $0`
++test "x$1" != x && REPOLOC="$1"
++shift
++test "x$1" != x && psource="$1"
++shift
++test "x$REPOLOC" = x -o "x$psource" = x && usage
++while test "x$1" != x; do
++	test "x$1" != x-h -a \
++	     "x$1" != x--help -a \
++	     "x$1" != x-n -a \
++	     "x$1" != x-d -a \
++	     "x$1" != x-y \
++		&& usage
++	test "x$1" = x-h -o "x$1" = x--help && usage
++	if test "x$1" = x-n; then nodebarch=yes; shift; fi
++	if test "x$1" = x-y; then allyes=yes; shift; fi
++	if test "x$1" = "x-d"; then DISTRO=$2; shift; shift; fi
++done
++
++if test $UID != 0 -a $mode != ndlist; then
++	echo "You must become root if you want to use nexenta_dput!"
++	exit 1
++fi
++
++if test $mode = ndlist; then
++	ndlist
++elif test $mode = ndget; then
++	ndget
++elif test $mode = ndrm; then
++	ndrm
++fi
+--- /dev/null
++++ debarchiver-40-0/src/ndmkrepo.sh
+@@ -0,0 +1,95 @@
++#!/bin/bash
++
++##############################################################################
++#                      C O N F I G U R A T I O N
++##############################################################################
++
++DNAME="siddy"
++DISTRO="$DNAME-unstable"
++SOURCES_LIST="/var/tmp/packages/nexenta-on-local.list"
++
++##############################################################################
++
++mkinput_conf() {
++	local output=$1
++	echo "\$distinputcriteria = \".*\\\\.deb\\\$\";" > $output
++	echo "%distinputdirs = (" >> $output
++	echo "	stable => '$DNAME-stable'," >> $output
++	echo "	testing => '$DNAME-testing'," >> $output
++	echo "	unstable => '$DNAME-unstable'" >> $output
++	echo "	);" >> $output
++	echo "@distributions = ('stable', 'testing', 'unstable');" >> $output
++	echo "%distmapping =" >> $output
++	echo "	(" >> $output
++	echo "	stable => '$DNAME-stable'," >> $output
++	echo "	testing => '$DNAME-testing'," >> $output
++	echo "	unstable => '$DNAME-unstable'" >> $output
++	echo "	);" >> $output
++	echo "@architectures = ('solaris-i386');" >> $output
++	echo "@sections = ('main', 'contrib', 'non-free');" >> $output
++	echo "%release = ('origin' => \"NexentaOS\"," >> $output
++	echo "	    'label' => \"NexentaOS\"," >> $output
++	echo "	    'description' => \"Nexenta GNU/OpenSolaris extension\");" >> $output
++	echo "\$gpgkey = \"Nexenta Systems <maintainer\@nexenta.com>\";" >> $output
++	echo "\$destdir = \"$repodir/dists\";" >> $output
++	echo "\$inputdir = \"$repodir/incoming\";" >>  $output
++}
++
++ndmkrepo() {
++	mkdir $repodir
++	mkdir $repodir/dists
++	mkdir $repodir/incoming
++	mkdir $repodir/incoming/$DISTRO
++	mkinput_conf "$repodir/incoming/input.conf"
++	echo -n "Creating new APT repository at $repodir ..."
++	debarchiver -o -x -i $repodir/incoming || return
++	echo "done"
++
++	echo "deb file://$repodir/ $DISTRO main contrib non-free" > $SOURCES_LIST
++	echo "deb-src file://$repodir/ $DISTRO main contrib non-free" >> $SOURCES_LIST
++	echo "Local APT repository configured: $SOURCES_LIST"
++
++	echo "sunay92" > ~/.gnupg/passphrase
++
++	echo "#!/bin/bash" > $uploadscript
++	echo "rm -f /var/cache/debarchiver/cache.db" >> $uploadscript
++	echo "/usr/bin/debarchiver --dl 1 --ql 0 --gpgkey maintainer@nexenta.com -o -x -i $repodir/incoming" >> $uploadscript
++	chmod 755 $uploadscript
++	echo "Upload script created: $uploadscript"
++}
++
++usage() {
++	echo "Usage: $mode <repodir> <uploadscript> [-h|--help]"
++	exit 0
++}
++
++mode="`basename $0`"
++test "x$1" != x && repodir="$1"
++shift
++test "x$1" != x && uploadscript="$1"
++shift
++test "x$repodir" = x -o \
++     "x$uploadscript" = x -o \
++     "x$repodir" = "x-h" -o \
++     "x$repodir" = "x--help" -o \
++     "x$repodir" = "x/" -o \
++     "x$repodir" = "x/export" \
++     && usage
++while test "x$1" != x; do
++	test "x$1" != x-h -a \
++	     "x$1" != x--help \
++		&& usage
++	test "x$1" = x-h -o "x$1" = x--help && usage
++done
++
++if test -d $repodir/incoming; then
++	echo "Error: destination '$repodir' already exists and it contains older repo"
++	exit 1
++fi
++
++if test $UID != 0; then
++	echo "You must become root!"
++	exit 1
++fi
++
++ndmkrepo
+--- debarchiver-40-0.orig/src/Makefile
++++ debarchiver-40-0/src/Makefile
+@@ -21,6 +21,11 @@ all:
+ install:
+ 	mkdir -p $(DESTDIR)/usr/bin
+ 	install -m755 debarchiver.pl $(DESTDIR)/usr/bin/debarchiver
++	install -m755 ndmkrepo.sh $(DESTDIR)/usr/bin/ndmkrepo
++	install -m755 ndput.sh $(DESTDIR)/usr/bin/ndput
++	install -m755 ndrm.sh $(DESTDIR)/usr/bin/ndrm
++	ln -s ndrm $(DESTDIR)/usr/bin/ndlist
++	ln -s ndrm $(DESTDIR)/usr/bin/ndget
+ 	mkdir -p $(DESTDIR)/usr/lib/debarchiver/signhelper
+ 
+ clean:

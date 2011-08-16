@@ -1,31 +1,33 @@
-debarchiver (0.9.4nexenta3) unstable; urgency=low
+debarchiver (40-0-0) unstable; urgency=low
 
-  * Updated with new environment
-
- -- Igor Kozhukhov <igor.kozhukhov@nexenta.com>  Fri, 27 May 2011 20:36:07 +0300
-
-debarchiver (0.9.4nexenta2) unstable; urgency=low
-
-  * debarchiver.postinst:
-    + Used solaris useradd instead of adduser
-
- -- Kartik Mistry <kartik.mistry@nexenta.com>  Sat, 19 Feb 2011 09:09:07 +0530
-
-debarchiver (0.9.4nexenta1) unstable; urgency=low
-
-  * Rebuilt for NCP4
-  * Backported NCP changes
-    + ndput.sh: Set siddy-unstable as default Distro
+  * Updated for new version scheme
+  * Sync with Squeeze release
+  * Used 3.0 (quilt) source format and non-native package format
+  * Backported NCP4 changes as patches format
   * debian/control:
-    + Fixed typo in 'Recommends' control field
+    + Explicitly Depends on apt-utils (Closes: #6139)
 
- -- Kartik Mistry <kartik.mistry@nexenta.com>  Mon, 22 Nov 2010 14:03:41 +0530
+ -- Kartik Mistry <kartik.mistry@nexenta.com>  Tue, 16 Aug 2011 10:50:38 +0530
+
+debarchiver (0.9.6) unstable; urgency=low
+
+  * Solved a misspelling of recomments to recommends in the control
+    file. Closes: #604432.
+
+ -- Ola Lundqvist <opal@debian.org>  Mon, 22 Nov 2010 18:04:56 +0100
+
+debarchiver (0.9.5) unstable; urgency=low
+
+  * Correction of debug for sendlist. Extended the suggestion from Mats
+    to make sure the list is properly ordered.
+
+ -- Ola Lundqvist <opal@debian.org>  Mon, 01 Nov 2010 21:39:44 +0100
 
 debarchiver (0.9.4) unstable; urgency=low
 
   * Applied patch for french language translation. Closes: #601185.
 
- -- Ola Lundqvist <opal@debian.org>  Mon, 01 Nov 2010 21:36:56 +0100
+ -- Ola Lundqvist <opal@debian.org>  Mon, 01 Nov 2010 21:38:35 +0100
 
 debarchiver (0.9.3) unstable; urgency=low
 
