@@ -1,3 +1,9 @@
+cloog-ppl (40-0-1) unstable; urgency=low
+
+  * Rebuild against libgmp3.
+
+ -- Andrew Stormont (astormont) <andyjstormont@googlemail.com>  Mon, 15 Aug 2011 21:57:42 +0100
+
 cloog-ppl (40-0-0) unstable; urgency=low
 
   * Package for NCP4.
