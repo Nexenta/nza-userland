@@ -1,0 +1,25 @@
+Source: debarchiver
+Section: devel
+Priority: optional
+Maintainer: Ola Lundqvist <opal@debian.org>
+Build-Depends-Indep: perl (>= 5.6.0-16), po4a
+Build-Depends: debhelper (>> 4.0.0)
+Standards-Version: 3.8.0
+
+Package: debarchiver
+Architecture: all
+#Depends: opalmod (>= 0.1.10), apt-utils | dpkg-dev, adduser
+Depends: opalmod (>= 0.1.10), apt-utils | dpkg-dev
+#Depends: ${shlibs:Depends}, ${misc:Depends}
+Recommends: exim4 | mail-transport-agent | mailutils | bsd-mailx | mailx
+Suggests: devscripts, gnupg
+Description: Tool to handle Debian package archives
+ This tool can create a potato like file structure that dselect,
+ apt-get and similar tools can use for easier installation.
+ .
+ You just have to place the package files into a incoming
+ directory and the tool does the sorting (if you place the
+ generated '.changes' file there too).
+ .
+ OBSERVE! This package will create a cronjob that does the
+ actual sorting.
