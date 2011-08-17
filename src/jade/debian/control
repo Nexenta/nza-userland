@@ -3,7 +3,8 @@ Section: text
 Priority: optional
 Maintainer: Neil Roeth <neil@debian.org>
 Standards-Version: 3.6.2
-Build-Depends: debhelper (>= 4.1.75), sgml-data (>= 1.3), m4, autotools-dev, dh-buildinfo
+Build-Depends: debhelper (>= 4.1.75), sgml-data (>= 40-0-0), m4, autotools-dev, dh-buildinfo
+Upstream-Version: 1.2.1-47
 
 Package: sp
 Architecture: any

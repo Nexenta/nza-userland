@@ -1,3 +1,9 @@
+jade (40-0-0) unstable; urgency=low
+
+  * Used new version scheme 
+
+ -- Peter Zaikin <peter.zaikin@nexenta.com>  Wed, 17 Aug 2011 15:17:00 +0300
+
 jade (1.2.1-47nexenta2) unstable; urgency=low
 
   * Port for Nexenta 4 
