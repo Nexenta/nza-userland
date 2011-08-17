@@ -5,25 +5,19 @@ ifneq (,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
 	MAKEFLAGS += -j$(NUMJOBS)
 endif
 
-include /usr/share/quilt/quilt.make
 
 DEB=debian/html2text
 
-ifeq ($(DEB_HOST_ARCH_OS),solaris)
-	CXX = gcc
-	LDFLAGS += -liconv
-	LIBSTDCXX_LIBS = /usr/lib/gcc/i486-pc-solaris2.11/4.4/libstdc++.a
-endif
 
 build: build-stamp
-build-stamp: debian/stamp-patched
+build-stamp: 
 	dh_testdir
 	./configure --prefix=$(DEB)/usr
 	sed -i 's/$$(CXXFLAGS)/$$(CXXFLAGS) $$(DEB_CXXFLAGS)/g' Makefile
 	$(MAKE) DEB_CXXFLAGS="$(CFLAGS)" LOCAL_LDFLAGS=-g LDFLAGS="$(LDFLAGS)" LIBSTDCXX_LIBS="$(LIBSTDCXX_LIBS)"
 	touch build-stamp
 
-clean: unpatch
+clean: 
 	dh_testdir
 	dh_testroot
 	rm -f build-stamp
