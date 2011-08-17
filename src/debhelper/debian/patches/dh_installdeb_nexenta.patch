@@ -1,0 +1,13 @@
+Index: debhelper/dh_installdeb
+===================================================================
+--- debhelper.orig/dh_installdeb	2011-08-17 20:33:50.775081192 +0400
++++ debhelper/dh_installdeb	2011-08-17 20:34:42.624097776 +0400
+@@ -129,7 +129,7 @@
+ 
+ 	# Automatic conffiles registration: If it is in /etc, it is a
+ 	# conffile.
+-	if (! compat(2) && -d "$tmp/etc" && ! is_udeb($package)) {
++	if (! compat(2) && -d "$tmp/etc" && ! is_udeb($package) && ! -f "$tmp/DEBIAN/conffiles") {
+ 		complex_doit("find $tmp/etc -type f -printf '/etc/%P\n' >> $tmp/DEBIAN/conffiles");
+ 		# Anything found?
+ 		if (-z "$tmp/DEBIAN/conffiles") {

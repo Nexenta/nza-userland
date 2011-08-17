@@ -6,6 +6,7 @@ set -u
 BUILDDIR=/tmp/build-pkg
 
 SRC_BASE_URL="
+http://apt.nexenta.org/wip/base/pool/main
 http://apt.nexenta.org/wip/dists/unstable/main/source
 http://apt.nexenta.org/wip/dists/testing/main/source
 http://apt.nexenta.org/wip/dists/stable/main/source
@@ -178,7 +179,12 @@ if [ -z "$LOCAL_TARBALL" ]; then
             for c in gz bz2 xz lzma; do
                 SOURCE_TARBALL="${TARBALL_TMPL}.$c"
                 case "$base_url" in
-                    *.debian.org/*)
+#                    *.debian.org/*)
+#                        urls="$base_url/$DEBDIR/$PKGNAME/$SOURCE_TARBALL"
+#                        # maybe package is native for Debian?
+#                        urls+=" $base_url/$DEBDIR/$PKGNAME/${SOURCE_TARBALL/.orig/}"
+#                        ;;
+                    *pool/main)
                         urls="$base_url/$DEBDIR/$PKGNAME/$SOURCE_TARBALL"
                         # maybe package is native for Debian?
                         urls+=" $base_url/$DEBDIR/$PKGNAME/${SOURCE_TARBALL/.orig/}"

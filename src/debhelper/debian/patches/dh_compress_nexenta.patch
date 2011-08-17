@@ -1,0 +1,31 @@
+Index: debhelper/dh_compress
+===================================================================
+--- debhelper.orig/dh_compress	2011-08-16 21:02:34.866631002 +0400
++++ debhelper/dh_compress	2011-08-16 21:01:36.421485381 +0400
+@@ -75,6 +75,8 @@
+ 
+ init();
+ 
++my $LN = '/usr/bin/ln';
++
+ foreach my $package (@{$dh{DOPACKAGES}}) {
+ 	my $tmp=tmpdir($package);
+ 	my $compress=pkgfile($package,"compress");
+@@ -174,7 +176,7 @@
+ 		# Remove old file.
+ 	    	doit("rm","-f","$_");
+ 		# Make new hardlink.
+-		doit("ln","$hardlinks{$_}.gz","$_.gz");
++		doit("$LN","$hardlinks{$_}.gz","$_.gz");
+ 	}
+ 
+ 	verbose_print("cd '$olddir'");
+@@ -193,7 +195,7 @@
+ 			my $linkval = readlink($link);
+ 			if (! -e "$directory/$linkval" && -e "$directory/$linkval.gz") {
+ 				doit("rm","-f",$link);
+-				doit("ln","-sf","$linkval.gz","$link.gz");
++				doit("$LN","-sf","$linkval.gz","$link.gz");
+ 				delete $links{$link};
+ 				$changed++;
+ 			}

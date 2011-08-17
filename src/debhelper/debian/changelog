@@ -1,3 +1,12 @@
+debhelper (40-0-7) unstable; urgency=low
+
+  * dh_compress:
+     Re:6061 changed lh to /usr/bin/ln
+  * dh_installdeb:
+     Re:6061 do not update .conffiles if package provide it
+
+ -- Igor Kozhukhov <igor.kozhukhov@nexenta.com>  Tue, 16 Jul 2011 20:26:41 +0400
+
 debhelper (40-0-6) unstable; urgency=low
 
   * dh_obfuscate:
