@@ -1,0 +1,453 @@
+diff -ur perl-5.12.4/Makefile.SH perl-5.12.4.2/Makefile.SH
+--- perl-5.12.4/Makefile.SH	2011-06-11 00:30:02.000000000 +0400
++++ perl-5.12.4.2/Makefile.SH	2011-08-08 13:07:44.798721792 +0400
+@@ -232,8 +232,7 @@
+ define|true)
+ 	dtrace_h='perldtrace.h' 
+ 	$dtrace -G -s perldtrace.d -o perldtrace.tmp >/dev/null 2>&1 \
+-		&& rm -f perldtrace.tmp && dtrace_o='perldtrace$(OBJ_EXT)' \
+-		&& minidtrace_o='miniperldtrace$(OBJ_EXT)'
++		&& rm -f perldtrace.tmp && dtrace_o='perldtrace$(OBJ_EXT)'
+ 	;;
+ esac
+ 
+@@ -346,7 +345,6 @@
+ DTRACE = $dtrace
+ DTRACE_H = $dtrace_h
+ DTRACE_O = $dtrace_o
+-MINIDTRACE_O = $minidtrace_o
+ 
+ FIRSTMAKEFILE = $firstmakefile
+ 
+@@ -480,10 +478,9 @@
+ obj2 = hv$(OBJ_EXT) av$(OBJ_EXT) run$(OBJ_EXT) pp_hot$(OBJ_EXT) sv$(OBJ_EXT) pp$(OBJ_EXT) scope$(OBJ_EXT) pp_ctl$(OBJ_EXT) pp_sys$(OBJ_EXT)
+ obj3 = doop$(OBJ_EXT) doio$(OBJ_EXT) regexec$(OBJ_EXT) utf8$(OBJ_EXT) taint$(OBJ_EXT) deb$(OBJ_EXT) universal$(OBJ_EXT) globals$(OBJ_EXT) perlio$(OBJ_EXT) perlapi$(OBJ_EXT) numeric$(OBJ_EXT) mathoms$(OBJ_EXT) locale$(OBJ_EXT) pp_pack$(OBJ_EXT) pp_sort$(OBJ_EXT)
+ 
+-minindt_obj = $(obj1) $(obj2) $(obj3) $(ARCHOBJS)
+-mini_obj = $(minindt_obj) $(MINIDTRACE_O)
+-ndt_obj = $(obj0) $(obj1) $(obj2) $(obj3) $(ARCHOBJS)
+-obj = $(ndt_obj) $(DTRACE_O)
++mini_obj = $(obj1) $(obj2) $(obj3) $(ARCHOBJS) $(DTRACE_O)
++ndt_obj = $(obj1) $(obj2) $(obj3) $(ARCHOBJS)
++obj = $(obj0) $(ndt_obj) $(DTRACE_O)
+ 
+ perltoc_pod_prereqs = extra.pods pod/perlapi.pod pod/perldelta.pod pod/perlintern.pod pod/perlmodlib.pod pod/perluniprops.pod
+ generated_pods = pod/perltoc.pod $(perltoc_pod_prereqs)
+@@ -738,11 +735,8 @@
+ 	case "$dtrace_o" in
+ 	?*)
+ 		$spitshell >>$Makefile <<'!NO!SUBS!'
+-$(DTRACE_O): perldtrace.d $(ndt_obj)
+-	$(DTRACE) -G -s perldtrace.d -o $(DTRACE_O) $(ndt_obj)
+-
+-$(MINIDTRACE_O): perldtrace.d $(minindt_obj)
+-	$(DTRACE) -G -s perldtrace.d -o $(MINIDTRACE_O) $(minindt_obj)
++$(DTRACE_O): perldtrace.d opmini$(OBJ_EXT) perlmini$(OBJ_EXT)
++	$(DTRACE) -G -s perldtrace.d -o $(DTRACE_O) $(ndt_obj) opmini$(OBJ_EXT) perlmini$(OBJ_EXT)
+ 
+ !NO!SUBS!
+ 		;;
+@@ -754,6 +748,7 @@
+ 	true)
+ 		$spitshell >>$Makefile <<'!NO!SUBS!'
+ 	rm -f $@
++	-@test -f perldtrace.o && $(DTRACE) -G -s perldtrace.d -o $(DTRACE_O) $(ndt_obj) op$(OBJ_EXT) perl$(OBJ_EXT)
+ 	$(LD) -o $@ $(SHRPLDFLAGS) $(obj) $(DYNALOADER) $(libs)
+ !NO!SUBS!
+ 		case "$osname" in
+diff -ur perl-5.12.4/mydtrace.h perl-5.12.4.2/mydtrace.h
+--- perl-5.12.4/mydtrace.h	2011-06-08 00:04:05.000000000 +0400
++++ perl-5.12.4.2/mydtrace.h	2011-08-08 12:55:14.307006909 +0400
+@@ -23,12 +23,48 @@
+ 	PERL_SUB_RETURN(func, file, line); 	\
+     }
+ 
++#  define NEW_SV_PROBE(probe_sv_ptr)		\
++    if (PERL_NEW_SV_ENABLED()) {		\
++       PERL_NEW_SV((void*)(probe_sv_ptr));	\
++    }                                                                 
++                                                                    
++#  define DEL_SV_PROBE(probe_sv_ptr)		\
++    if (PERL_DEL_SV_ENABLED()) {		\
++       PERL_DEL_SV((void*)(probe_sv_ptr));	\
++    }                                                                   
++                                                                    
++#  define MAIN_ENTER_PROBE()			\
++    if (PERL_MAIN_ENTER_ENABLED()) {		\
++       PERL_MAIN_ENTER();			\
++    }
++
++#  define MAIN_EXIT_PROBE()			\
++    if (PERL_MAIN_EXIT_ENABLED()) {		\
++       PERL_MAIN_EXIT();			\
++    }                                                                   
++                                                                                                                    
++#  define LOAD_MODULE_ENTRY_PROBE(probe_module_name_ptr)	\
++    if (PERL_LOAD_MODULE_ENTRY_ENABLED()) {			\
++       PERL_LOAD_MODULE_ENTRY((probe_module_name_ptr));		\
++    }                                                   
++                                                            
++#  define LOAD_MODULE_RETURN_PROBE(probe_module_name_ptr)	\
++    if (PERL_LOAD_MODULE_RETURN_ENABLED()) {			\
++       PERL_LOAD_MODULE_RETURN((probe_module_name_ptr));	\
++    }                                                   
++                                                                                                                
+ #else
+ 
+ /* NOPs */
+ #  define ENTRY_PROBE(func, file, line)
+ #  define RETURN_PROBE(func, file, line)
+-
++#  define NEW_SV_PROBE(probe_sv_ptr)                                                                                
++#  define DEL_SV_PROBE(probe_sv_ptr)                                                                                
++#  define MAIN_ENTER_PROBE()                                                                                        
++#  define MAIN_EXIT_PROBE()                                                                                         
++#  define LOAD_MODULE_ENTRY_PROBE(probe_module_name_ptr)                                                            
++#  define LOAD_MODULE_RETURN_PROBE(probe_module_name_ptr)                                                           
++      
+ #endif
+ 
+ /*
+diff -ur perl-5.12.4/op.c perl-5.12.4.2/op.c
+--- perl-5.12.4/op.c	2011-06-08 00:04:05.000000000 +0400
++++ perl-5.12.4.2/op.c	2011-08-05 19:55:03.339362830 +0400
+@@ -3916,6 +3916,23 @@
+     OP *pegop = newOP(OP_NULL,0);
+ #endif
+ 
++    char probe_output[256];                                                                                         
++    if (PERL_LOAD_MODULE_ENTRY_ENABLED() || PERL_LOAD_MODULE_RETURN_ENABLED())  {                                   
++       SV * sv = ((SVOP*)idop)->op_sv;                                                                              
++       if (SvTYPE(sv) == SVt_PV) {                                                                                  
++           snprintf(probe_output, 255,"%s\0",  SvPVX(sv));                                                          
++       } else if (SvTYPE(sv) == SVt_PVMG) {                                                                         
++           /* require 5.6 etc*/                                                                                     
++           MAGIC *magic = SvMAGIC(sv);                                                                              
++           if (magic->mg_len > 0) {                                                                                 
++               snprintf(probe_output, 255, "%s\0",  magic->mg_ptr);                                                 
++           }                                                                                                        
++       } else {                                                                                                     
++           snprintf(probe_output, 255,"TODO: SV not a ptr/number, its a 0x%x\0",  SvTYPE(sv));                      
++       }                                                                                                            
++       LOAD_MODULE_ENTRY_PROBE(probe_output);                                                                       
++    }  
++
+     PERL_ARGS_ASSERT_UTILIZE;
+ 
+     if (idop->op_type != OP_CONST)
+@@ -4015,6 +4032,7 @@
+     PL_parser->expect = XSTATE;
+     PL_cop_seqmax++; /* Purely for B::*'s benefit */
+ 
++    LOAD_MODULE_RETURN_PROBE(probe_output);
+ #ifdef PERL_MAD
+     if (!PL_madskills) {
+ 	/* FIXME - don't allocate pegop if !PL_madskills */
+@@ -4077,6 +4095,7 @@
+     OP *veop, *imop;
+     OP * const modname = newSVOP(OP_CONST, 0, name);
+ 
++    LOAD_MODULE_ENTRY_PROBE(SvPVX(name)); 
+     PERL_ARGS_ASSERT_VLOAD_MODULE;
+ 
+     modname->op_private |= OPpCONST_BARE;
+@@ -4113,6 +4132,7 @@
+     utilize(!(flags & PERL_LOADMOD_DENY), start_subparse(FALSE, 0),
+ 	    veop, modname, imop);
+     LEAVE;
++    LOAD_MODULE_RETURN_PROBE(SvPVX(name));
+ }
+ 
+ OP *
+@@ -4122,6 +4142,18 @@
+     OP *doop;
+     GV *gv = NULL;
+ 
++    char probe_output[256];                                                                                         
++    if (PERL_LOAD_MODULE_ENTRY_ENABLED() || PERL_LOAD_MODULE_RETURN_ENABLED()) {                                    
++	    if (term->op_type == OP_CONST) {                                                                             
++               SV * const sv = ((SVOP*)term)->op_sv;                                                                    
++               snprintf(probe_output, 255,"%s\0",  SvPVX(sv));                                                          
++            } else {                                                                                                     
++               /* TODO: the above crashed when its an OP_PADSV (9) */                                                   
++               snprintf(probe_output, 255, "TODO: modname not an OP_CONST, its a (%u)", term->op_type);                 
++            }                                                                                                            
++    }                                                                                                               
++    LOAD_MODULE_ENTRY_PROBE(probe_output); 
++
+     PERL_ARGS_ASSERT_DOFILE;
+ 
+     if (!force_builtin) {
+@@ -4141,6 +4173,7 @@
+     else {
+ 	doop = newUNOP(OP_DOFILE, 0, scalar(term));
+     }
++    LOAD_MODULE_RETURN_PROBE(probe_output); 
+     return doop;
+ }
+ 
+@@ -7616,6 +7649,26 @@
+ {
+     dVAR;
+     GV* gv = NULL;
++    
++        char probe_output[256];                                                                                         
++        if (PERL_LOAD_MODULE_ENTRY_ENABLED() || PERL_LOAD_MODULE_RETURN_ENABLED()) {                                    
++            SVOP * const kid = (SVOP*)cUNOPo->op_first;                                                                 
++            SV * sv = ((SVOP*)kid)->op_sv;                                                                              
++            if (kid->op_type != OP_PADSV) { /* for some reason, we'd segfault without this condition */                 
++                if (SvTYPE(sv) == SVt_PV) {                                                                             
++                    snprintf(probe_output, 255,"%s\0",  SvPVX(sv));                                                     
++                } else if (SvTYPE(sv) == SVt_NV) { /*looks like this has changed dramatically since 5.8*/               
++                    /* require 5.6 etc*/                                                                                
++                    snprintf(probe_output, 255,"%f\0",  SvNVX(sv));                                                     
++                } else {                                                                                                
++                    snprintf(probe_output, 255,"TODO: SV not a ptr/number, its a 0x%x\0",  SvTYPE(sv));                 
++                }                                                                                                       
++            } else {                                                                                                    
++                snprintf(probe_output, 255, "TODO: OP_PADSV, segfault avoided\0");                                      
++            }                                                                                                           
++        }                                                                                                               
++        LOAD_MODULE_ENTRY_PROBE(probe_output);    
++    
+ 
+     PERL_ARGS_ASSERT_CK_REQUIRE;
+ 
+@@ -7678,9 +7731,11 @@
+ 							   newGVOP(OP_GV, 0,
+ 								   gv))))));
+ 	op_getmad(o,newop,'O');
++	LOAD_MODULE_RETURN_PROBE(probe_output);     
+ 	return newop;
+     }
+ 
++    LOAD_MODULE_RETURN_PROBE(probe_output); 
+     return scalar(ck_fun(o));
+ }
+ 
+diff -ur perl-5.12.4/perl.c perl-5.12.4.2/perl.c
+--- perl-5.12.4/perl.c	2011-06-08 00:04:05.000000000 +0400
++++ perl-5.12.4.2/perl.c	2011-08-05 20:05:06.691098689 +0400
+@@ -205,11 +205,15 @@
+ perl_alloc(void)
+ {
+     PerlInterpreter *my_perl;
++    MAIN_ENTER_PROBE();
+ 
+     /* Newx() needs interpreter, so call malloc() instead */
+     my_perl = (PerlInterpreter*)PerlMem_malloc(sizeof(PerlInterpreter));
+ 
+     S_init_tls_and_interp(my_perl);
++    
++    MAIN_EXIT_PROBE(); 
++    
+ #ifndef PERL_TRACK_MEMPOOL
+     return (PerlInterpreter *) ZeroD(my_perl, 1, PerlInterpreter);
+ #else
+@@ -235,6 +239,8 @@
+ 
+     PERL_ARGS_ASSERT_PERL_CONSTRUCT;
+ 
++    MAIN_ENTER_PROBE();
++
+ #ifdef MULTIPLICITY
+     init_interp();
+     PL_perl_destruct_level = 1;
+@@ -390,7 +396,9 @@
+     PL_timesbase.tms_cutime = 0;
+     PL_timesbase.tms_cstime = 0;
+ #endif
+-
++    
++    MAIN_EXIT_PROBE();
++    
+     PL_osname = Perl_savepvn(aTHX_ STR_WITH_LEN(OSNAME));
+ 
+     PL_registered_mros = newHV();
+@@ -533,6 +541,8 @@
+ #ifdef DEBUG_LEAKING_SCALARS_FORK_DUMP
+     pid_t child;
+ #endif
++    
++    MAIN_ENTER_PROBE(); 
+ 
+     PERL_ARGS_ASSERT_PERL_DESTRUCT;
+ #ifndef MULTIPLICITY
+@@ -576,6 +586,8 @@
+     if (CALL_FPTR(PL_threadhook)(aTHX)) {
+         /* Threads hook has vetoed further cleanup */
+ 	PL_veto_cleanup = TRUE;
++	
++	MAIN_EXIT_PROBE();
+         return STATUS_EXIT;
+     }
+ 
+@@ -590,12 +602,14 @@
+ 
+ 	if(socketpair(AF_UNIX, SOCK_STREAM, 0, fd)) {
+ 	    perror("Debug leaking scalars socketpair failed");
++	    MAIN_EXIT_PROBE(); 
+ 	    abort();
+ 	}
+ 
+ 	child = fork();
+ 	if(child == -1) {
+ 	    perror("Debug leaking scalars fork failed");
++	    MAIN_EXIT_PROBE(); 
+ 	    abort();
+ 	}
+ 	if (!child) {
+@@ -624,6 +638,7 @@
+ 	    f = sysconf(_SC_OPEN_MAX);
+ 	    if(f < 0) {
+ 		where = "sysconf failed";
++		MAIN_EXIT_PROBE(); 
+ 		goto abort;
+ 	    }
+ 	    while (f--) {
+@@ -707,6 +722,7 @@
+ 		    goto abort;
+ 		}
+ 	    }
++	     MAIN_EXIT_PROBE(); 
+ 	    _exit(0);
+ 	abort:
+ 	    {
+@@ -724,6 +740,7 @@
+ 		   So sleep a bit to give the parent a fighting chance of
+ 		   reading the data.  */
+ 		sleep(2);
++		MAIN_EXIT_PROBE(); 
+ 		_exit((got == -1) ? errno : 0);
+ 	    }
+ 	    /* End of child.  */
+@@ -828,6 +845,7 @@
+ 	CopFILE_free(&PL_compiling);
+ 	CopSTASH_free(&PL_compiling);
+ 
++	MAIN_EXIT_PROBE(); 
+ 	/* The exit() function will do everything that needs doing. */
+         return STATUS_EXIT;
+     }
+@@ -1288,6 +1306,7 @@
+ 	Safefree(PL_mess_sv);
+ 	PL_mess_sv = NULL;
+     }
++    MAIN_EXIT_PROBE(); 
+     return STATUS_EXIT;
+ }
+ 
+@@ -1584,6 +1603,7 @@
+ 	S_set_caret_X(aTHX);
+ 	TAINT_NOT;
+ 	init_postdump_symbols(argc,argv,env);
++	MAIN_EXIT_PROBE(); 
+ 	return 0;
+     }
+ 
+@@ -1630,6 +1650,7 @@
+ 	break;
+     }
+     JMPENV_POP;
++    MAIN_EXIT_PROBE(); 
+     return ret;
+ }
+ 
+@@ -2212,6 +2233,8 @@
+     I32 oldscope;
+     int ret = 0;
+     dJMPENV;
++    
++    MAIN_ENTER_PROBE();
+ 
+     PERL_ARGS_ASSERT_PERL_RUN;
+ #ifndef MULTIPLICITY
+@@ -2258,6 +2281,7 @@
+     }
+ 
+     JMPENV_POP;
++    MAIN_EXIT_PROBE();
+     return ret;
+ }
+ 
+diff -ur perl-5.12.4/perldtrace.d perl-5.12.4.2/perldtrace.d
+--- perl-5.12.4/perldtrace.d	2011-06-08 00:04:05.000000000 +0400
++++ perl-5.12.4.2/perldtrace.d	2011-08-05 20:06:44.453147709 +0400
+@@ -4,6 +4,32 @@
+  */
+ 
+ provider perl {
+-	probe sub__entry(char *, char *, int);
+-    probe sub__return(char *, char *, int);
+-};
++    /* function, filename, line number */                                                                           
++    probe sub__entry(char *, char *, int);                                                                          
++    /* filename, line number */                                                                                     
++     probe sub__return(char *, char *, int);                                                                         
++                                                                                                                         
++         /* new & delete (perl uses reference counting gc, so there is no 'gc sweep') */                                 
++         /* function, SV* */                                                                                             
++         probe new__sv(void*);                                                                                           
++         /* function, SV* */                                                                                             
++         probe del__sv(void*);                                                                                           
++                                                                                                                         
++         /* Perl main processing (adds a probe to perl_alloc, perl_construct, perl_parse, perl_run, perl_deconstruct ) */
++         probe main__enter();                                                                                            
++         probe main__exit();                                                                                             
++                                                                                                                         
++         /* use, require, do */                                                                                          
++         /* function, char* module_name */                                                                               
++         probe load__module__entry(char *);                                                                              
++         /* function, char* module_name */                                                                               
++         probe load__module__return(char *);                                                                             
++};                                                                                                                  
++
++/* need to read up & set..                                                                                          
++#pragma D attributes Evolving/Evolving/Common provider perl provider                                                
++#pragma D attributes Private/Private/Common provider perl module                                                    
++#pragma D attributes Private/Private/Common provider perl function                                                  
++#pragma D attributes Evolving/Evolving/Common provider perl name                                                    
++#pragma D attributes Evolving/Evolving/Common provider perl args                                                    
++*/                    
+\ No newline at end of file
+diff -ur perl-5.12.4/sv.c perl-5.12.4.2/sv.c
+--- perl-5.12.4/sv.c	2011-06-08 00:04:05.000000000 +0400
++++ perl-5.12.4.2/sv.c	2011-08-05 20:23:26.488566661 +0400
+@@ -299,6 +299,8 @@
+ 
+     sv->sv_debug_serial = PL_sv_serial++;
+ 
++    NEW_SV_PROBE((sv));
++
+     MEM_LOG_NEW_SV(sv, file, line, func);
+     DEBUG_m(PerlIO_printf(Perl_debug_log, "0x%"UVxf": (%05ld) new_SV (from %s:%d [%s])\n",
+ 	    PTR2UV(sv), (long)sv->sv_debug_serial, file, line, func));
+@@ -318,6 +320,7 @@
+ 	SvREFCNT(p) = 1;				\
+ 	SvFLAGS(p) = 0;					\
+ 	MEM_LOG_NEW_SV(p, __FILE__, __LINE__, FUNCTION__);  \
++	NEW_SV_PROBE((p));				\
+     } STMT_END
+ #endif
+ 
+@@ -328,6 +331,7 @@
+ 
+ #define del_SV(p) \
+     STMT_START {					\
++	DEL_SV_PROBE(p); 				\
+ 	if (DEBUG_D_TEST)				\
+ 	    del_sv(p);					\
+ 	else						\
+@@ -364,7 +368,11 @@
+ 
+ #else /* ! DEBUGGING */
+ 
+-#define del_SV(p)   plant_SV(p)
++#define del_SV(p)		\
++    STMT_START {		\
++    DEL_SV_PROBE(p);		\
++    plant_SV(p);		\
++    } STMT_END       
+ 
+ #endif /* DEBUGGING */
+ 
