@@ -1,0 +1,78 @@
+Source: libwpd
+Section: devel
+Priority: optional
+Maintainer: Rene Engelhard <rene@debian.org>
+Uploaders: Masayuki Hatta (mhatta) <mhatta@debian.org>
+Build-Depends: automake1.9, autoconf, debhelper (>> 7), libbz2-dev, libgsf-1-dev (>= 1.13.2-1), libglib2.0-dev, libxml2-dev (>= 2.6.8-2), doxygen, libcppunit-dev
+Standards-Version: 3.7.2
+Upstream-Version: 0.8.14-1
+
+Package: libwpd8-dev
+Section: libdevel
+Architecture: any
+Replaces: libwpd-dev
+Provides: libwpd-dev
+Conflicts: libwpd-dev
+Depends: libwpd8c2a (= ${binary:Version}), libwpd-stream8c2a (= ${binary:Version}), libgsf-1-dev, libglib2.0-dev
+Description: Library for handling WordPerfect documents (development)
+ libwpd is a library for reading and writing WordPerfect(TM) documents.
+ Importing from WordPerfect 4/5/6/7/8/9/10/11 and WordPerfect for Macintosh
+ 1.x/2.x/3.5e files are supported.  libwpd has complete support for the
+ entire set of WordPerfect extended characters, too.
+ .
+ This package contains files used for development with libwpd.
+
+Package: libwpd8c2a
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}
+Replaces: libwpd0, libwpd2, libwpd3, libwpd4, libwpd5, libwpd6, libwpd8, libwpd8c2
+Conflicts: libwpd0, libwpd2, libwpd3, libwpd4, libwpd5, libwpd6, libwpd8, libwpd8c2
+Description: Library for handling WordPerfect documents (shared library)
+ libwpd is a library for reading and writing WordPerfect(TM) documents.
+ Importing from WordPerfect 4/5/6/7/8/9/10/11 and WordPerfect for Macintosh
+ 1.x/2.x/3.5e files are supported.  libwpd has complete support for the
+ entire set of WordPerfect extended characters, too.
+ .
+ This package contains the shared library.
+
+Package: libwpd-stream8c2a
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}
+Conflicts: libwpd-stream8, libwpd-stream8c2
+Replaces: libwpd-stream8, libwpd-stream8c2
+Description: Library for handling WordPerfect documents (shared library)
+ libwpd is a library for reading and writing WordPerfect(TM) documents.
+ Importing from WordPerfect 4/5/6/7/8/9/10/11 and WordPerfect for Macintosh
+ 1.x/2.x/3.5e files are supported.  libwpd has complete support for the
+ entire set of WordPerfect extended characters, too.
+ .
+ This package contains the shared library with stream support.
+
+Package: libwpd-tools
+Section: utils
+Architecture: any
+Depends: ${shlibs:Depends}
+Replaces: libwpd7 (<= 0.7.2-1)
+Description: Tools from libwpd for converting WordPerfect to HTML/RAW/Text
+ libwpd is a library for reading and writing WordPerfect(TM) documents.
+ Importing from WordPerfect 4/5/6/7/8/9/10/11 and WordPerfect for Macintosh
+ 1.x/2.x/3.5e files are supported.  libwpd has complete support for the
+ entire set of WordPerfect extended characters, too.
+ .
+ This package contains some little programs using libwpd to convert
+ WordPerfect files into HTML/Raw files and Text.
+
+Package: libwpd8-doc
+Section: doc
+Architecture: all
+Recommends: www-browser
+Description: Library for handling WordPerfect documents (documentation)
+ libwpd is a library for reading and writing WordPerfect(TM) documents.
+ Importing from WordPerfect 4/5/6/7/8/9/10/11 and WordPerfect for Macintosh
+ 1.x/2.x/3.5e files are supported.  libwpd has complete support for the
+ entire set of WordPerfect extended characters, too.
+ .
+ This package contains the API Documentation.
+
