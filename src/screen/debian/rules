@@ -7,9 +7,6 @@
 # Uncomment me to turn on debugging
 #export DH_VERBOSE=1
 
-#include /usr/share/dpatch/dpatch.make
-include /usr/share/quilt/quilt.make
-
 package := screen
 ROOT := $(CURDIR)/debian/$(package)
 # statically define this... sucko
@@ -21,7 +18,7 @@ ROOT := $(CURDIR)/debian/$(package)
 #CC_OPTFLAGS := -O2 -g
 #endif
 
-clean: unpatch
+clean:
 	dh_testdir
 	dh_testroot
 	rm -f configure-stamp build-stamp install-stamp
@@ -31,7 +28,7 @@ clean: unpatch
 	dh_clean
 
 configure: configure-stamp
-configure-stamp: patch
+configure-stamp:
 	dh_testdir
 	./configure --prefix=/usr \
 		    --infodir='$$(prefix)/share/info' \
@@ -78,6 +75,8 @@ install-stamp: build-stamp
 	# lintian overrides for the setgid bin etc
 	install -m 755 -d $(ROOT)/usr/share/lintian/overrides
 	install -m 644 debian/screen.lintian.overrides $(ROOT)/usr/share/lintian/overrides/screen
+	# remove unneeded info file
+	rm $(ROOT)/usr/share/info/dir
 	
 	touch $@
 

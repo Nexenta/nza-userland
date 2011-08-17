@@ -1,0 +1,26 @@
+## 15manpage_typos.dpatch by  <hesso@pool.math.tu-berlin.de>
+##
+## DP: Fix a few typos and groff errors in the documentation.
+
+@DPATCH@
+diff -Naur screen-4.0.3.orig/doc/screen.1 screen-4.0.3/doc/screen.1
+--- screen-4.0.3.orig/doc/screen.1	2008-06-01 23:40:31.000000000 +0200
++++ screen-4.0.3/doc/screen.1	2008-06-01 23:40:42.000000000 +0200
+@@ -3185,7 +3185,7 @@
+ Specify the transmission of eight (or seven) bits per byte.
+ .IP "ixon or -ixon"
+ Enables (or disables) software flow-control (CTRL-S/CTRL-Q) for sending data.
+-.IP "ixoff or -ixon"
++.IP "ixoff or -ixoff"
+ Enables (or disables) software flow-control for receiving data.
+ .IP "istrip or -istrip"
+ Clear (or keep) the eight bit in each received byte.
+@@ -4028,7 +4028,7 @@
+ Background Black
+ .TP 27
+ \h'\w'ESC [ Ps = 'u'\fB...\fP
+-...
++\&...
+ .TP 27
+ \h'\w'ESC [ Ps = 'u'\fB49\fP	(A)
+ Background Default

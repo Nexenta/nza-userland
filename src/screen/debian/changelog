@@ -1,3 +1,16 @@
+screen (40-0-0) unstable; urgency=low
+
+  * Updated to use new version scheme
+  * Used source format 3.0 (quilt)
+  * Added some patches from Squeeze, mostly documentation fixes
+  * debian/control:
+    + Removed Build-Depends on quilt
+    + Bring back Build-Depends on libncursesw5-dev
+  * debian/rules:
+    + Removed quilt patch system
+
+ -- Kartik Mistry <kartik.mistry@nexenta.com>  Wed, 17 Aug 2011 18:27:23 +0530
+
 screen (4.0.3-14nexenta6) unstable; urgency=low
 
   * Updated to NCP4 with SFW patches

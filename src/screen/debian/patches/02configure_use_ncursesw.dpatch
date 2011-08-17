@@ -1,0 +1,35 @@
+## 02configure_use_ncursesw.dpatch by  <hesso@pool.math.tu-berlin.de>
+##
+## DP: Add libncursesw support to configure.in.
+## DP: (And rerun autoconf afterwards, because adding autoconf as build-dependency
+## DP: is more of a hassle than running it manually from time to time.)
+
+@DPATCH@
+diff -Naur screen-4.0.3.orig/configure.in screen-4.0.3/configure.in
+--- screen-4.0.3.orig/configure.in	2008-06-01 23:39:57.000000000 +0200
++++ screen-4.0.3/configure.in	2008-06-01 23:39:59.000000000 +0200
+@@ -647,6 +647,12 @@
+ AC_CHECKING(for tgetent)
+ AC_TRY_LINK(,tgetent((char *)0, (char *)0);,,
+ olibs="$LIBS"
++LIBS="-lncursesw $olibs"
++AC_CHECKING(libncursesw)
++AC_TRY_LINK(,tgetent((char *)0, (char *)0);,,
++LIBS="-lncurses $olibs"
++AC_CHECKING(libncurses)
++AC_TRY_LINK(,tgetent((char *)0, (char *)0);,,
+ LIBS="-lcurses $olibs"
+ AC_CHECKING(libcurses)
+ AC_TRY_LINK(,[
+@@ -662,10 +668,7 @@
+ LIBS="-ltermlib $olibs"
+ AC_CHECKING(libtermlib)
+ AC_TRY_LINK(,tgetent((char *)0, (char *)0);,,
+-LIBS="-lncurses $olibs"
+-AC_CHECKING(libncurses)
+-AC_TRY_LINK(,tgetent((char *)0, (char *)0);,,
+-AC_MSG_ERROR(!!! no tgetent - no screen))))))
++AC_MSG_ERROR(!!! no tgetent - no screen)))))))
+ 
+ AC_TRY_RUN([
+ main()

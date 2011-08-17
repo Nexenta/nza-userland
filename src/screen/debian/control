@@ -4,8 +4,9 @@ Priority: optional
 Maintainer: Jan Christoph Nordholz <hesso@pool.math.tu-berlin.de>
 Uploaders: Adam Lazur <zal@debian.org>
 Standards-Version: 3.8.2
-Build-Depends: libncurses5-dev, texinfo, libpam0g-dev, debhelper (>> 7), quilt
+Build-Depends: libncursesw5-dev, texinfo, libpam0g-dev, debhelper (>> 7)
 Homepage: http://savannah.gnu.org/projects/screen
+Upstream-Version: 4.0.3-14
 
 Package: screen
 Architecture: any
