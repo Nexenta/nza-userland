@@ -1,0 +1,425 @@
+Source: sunw-meta
+Section: base
+Priority: optional
+Maintainer: Erast Benson <erast@gnusolaris.org>
+Build-Depends: debhelper(>=4.9.5gnusol5)
+Upstream-Version: 1:5.11.147-6
+
+
+Package: attr
+Section: utils
+Depends: sunwcs, libattr1, libc6
+Provides: acl
+Architecture: any
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to Debian naming convention
+
+Package: libattr1-dev
+Section: libdevel
+Priority: extra
+Depends: libc6-dev, libattr1
+Provides: attr-dev, libacl1-dev
+Replaces: attr-dev
+Conflicts: attr-dev
+Architecture: any
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to Debian naming convention
+
+Package: libattr1
+Depends: system-library
+Section: libs
+Priority: required
+Provides: libacl1
+Architecture: any
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to Debian naming convention
+
+Package: libusb-0.1-4
+Priority: important
+Section: libs
+Provides: libusb++-0.1-4c2
+Architecture: any
+Depends: system-library
+Conflicts: libusb0, libccid (<< 0.9.2-3)
+Replaces: libusb0
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to Debian naming convention
+
+Package: libusb-dev
+Section: libdevel
+Provides: libusb++-dev
+Architecture: any
+Depends: libusb-0.1-4, libc6-dev
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to Debian naming convention
+
+Package: libasound2
+Architecture: all
+Section: libs
+Depends: system-library
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to Debian naming convention
+
+Package: libasound2-dev
+Architecture: all
+Section: libdevel
+Provides: libasound-dev, libasound2-doc 
+Depends: libc6-dev | libc-dev, libasound2
+Conflicts: libasound-dev, alsa-headers
+Replaces: alsa-headers
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to Debian naming convention
+
+Package: lirc
+Architecture: any
+Depends: sunwcs
+Provides: lirc-x, lirc-modules-source
+Pre-Depends: dialog
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to Debian naming convention
+
+Package: liblircclient-dev
+Architecture: any
+Section: libdevel
+Depends: liblircclient0, libc6-dev
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to Debian naming convention
+
+Package: liblircclient0
+Architecture: any
+Section: libs
+Depends: system-library
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to Debian naming convention
+
+Package: selinux-utils
+Architecture: any
+Section: admin
+Provides: sepol-utils
+Depends: sunwcs
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to Debian naming convention
+
+Package: libselinux1
+Architecture: any
+Section: libs
+Provides: libsepol1
+Depends: system-library
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to Debian naming convention
+
+Package: libselinux1-dev
+Architecture: any
+Depends: libselinux1, libsepol1-dev
+Section: libdevel
+Provides: libselinux-dev, libsepol1-dev
+Conflicts: libselinux-dev
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to Debian naming convention
+
+Package: python-selinux
+Architecture: any
+Depends: sunwcs
+Section: devel
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to Debian naming convention
+
+Package: alsa-utils
+Architecture: any
+Provides: audio-mixer
+Depends: sunwcs
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to Debian naming convention
+
+Package: gpm
+Priority: optional
+Section: misc
+Architecture: any
+Depends: debianutils (>= 1.7), ucf (>= 0.28), lsb-base
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to Debian naming convention
+
+Package: libgpmg1
+Priority: standard
+Section: libs
+Architecture: any
+Depends: system-library
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to Debian naming convention
+
+Package: libgpmg1-dev
+Priority: optional
+Section: libdevel
+Architecture: any
+Depends: libgpmg1, libc6-dev | libc-dev
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to Debian naming convention
+
+Package: psmisc
+Architecture: any
+Depends: sunwcs
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to Debian naming convention
+
+Package: libc6
+Architecture: any
+Section: libs
+Depends: system-library
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to Debian naming convention
+
+Package: libc-dev
+Architecture: all
+Depends: system-header
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to GNU/OpenSolaris naming convention
+
+Package: libc6-dev
+Architecture: all
+Depends: libc6, system-header
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to GNU/OpenSolaris naming convention
+
+Package: libpam-dev
+Architecture: all
+Depends: system-header
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to GNU/OpenSolaris naming convention
+
+Package: libpam0g-dev
+Architecture: all
+Depends: system-header
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to GNU/OpenSolaris naming convention
+
+Package: sysklogd
+Architecture: any
+Depends: klogd, adduser, lsb-base
+Provides: syslogd, system-log-daemon
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to Debian naming convention
+
+Package: klogd
+Architecture: any
+Depends: sysklogd | system-log-daemon, adduser, lsb-base
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to Debian naming convention
+
+Package: libraw1394-dev
+Architecture: any
+Section: libdevel
+Depends: system-header-header-firewire, libraw1394-5, libc6-dev
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to Debian naming convention
+
+Package: libraw1394-5
+Architecture: any
+Section: libs
+Depends: debconf, makedev (>= 2.3.1-49), driver-firewire
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to Debian naming convention
+
+Package: libavc1394-dev
+Section: libdevel
+Architecture: any
+Depends: system-header-header-firewire, libavc1394-0 (= ${Source-Version}), libc6-dev
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to Debian naming convention
+
+Package: libavc1394-0
+Section: libs
+Architecture: any
+Depends: driver-firewire
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to Debian naming convention
+
+Package: libdc1394-13-dev
+Provides: libdc1394-dev
+Conflicts: libdc1394-dev, libdc1394-10-dev, libdc1394-11-dev
+Section: libdevel
+Architecture: any
+Depends: libdc1394-13 (= ${Source-Version}), libraw1394-dev, libc6-dev
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to Debian naming convention
+
+Package: libdc1394-13
+Section: libs
+Architecture: any
+Depends: driver-graphics-dcam1394, driver-graphics-dcam1394-devfsadm-dcam1394
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to Debian naming convention
+
+Package: usbutils
+Architecture: any
+Depends: driver-usb, system-header-header-usb
+Suggests: wget (>= 1.8.1-6) | lynx (>= 2.8.4.1b-3)
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to Debian naming convention
+
+Package: udev
+Architecture: any
+Depends: sunwcs
+Conflicts: hotplug, ifrename
+Replaces: hotplug, initramfs-tools (<< 0.040ubuntu1), ifrename
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to Debian naming convention
+
+Package: makedev
+Architecture: all
+Depends: sunwcsd
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to Debian naming convention
+
+Package: ifupdown
+Architecture: any
+Depends: net-tools, lsb-base, sunwcs
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to Debian naming convention
+
+Package: cron
+Architecture: any
+Depends: sunwcs
+Recommends: postfix | mail-transport-agent
+Suggests: anacron (>=2.0-1), logrotate, lockfile-progs, checksecurity, lsb-base
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to Debian naming convention
+
+Package: eject
+Architecture: any
+Depends: sunwcs
+Suggests: cdtool, setcd
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to Debian naming convention
+
+Package: libcap-dev
+Section: devel
+Architecture: any
+Depends: libcap1 (= ${Source-Version}), system-header
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to Debian naming convention
+
+Package: libcap1
+Architecture: any
+Priority: required
+Depends: system-library
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to Debian naming convention
+
+Package: libhal1
+Architecture: any
+Priority: required
+Depends: system-library, service-hal
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to Debian naming convention
+
+Package: libhal-dev
+Architecture: any
+Priority: required
+Depends: system-header
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to Debian naming convention
+
+Package: hal
+Architecture: any
+Priority: required
+Provides: hal-doc, libhal-storage1, hal-device-manager
+Depends: service-hal
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to Debian naming convention
+
+Package: libhal-storage-dev
+Architecture: any
+Priority: required
+Depends: system-header
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to Debian naming convention
+
+Package: openbsd-inetd
+Architecture: any
+Depends: sunwcs
+Provides: inet-superserver, netkit-inetd
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to Debian naming convention
+
+Package: locales
+Architecture: any
+Depends: text-locale
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to Debian naming convention
+
+Package: procps
+Architecture: any
+Depends: sunwcs
+Provides: tzdata
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to Debian naming convention
+
+Package: libnspr4
+Architecture: any
+Depends: system-library, libnspr4-0d, lib64nspr4-0d
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to Debian naming convention
+
+Package: libnss3
+Architecture: any
+Depends: system-library, libnss3-1d, lib64nss3-1d
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to Debian naming convention
+
+Package: xpdf-utils
+Architecture: any
+Depends: poppler-utils
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ old xpdf-utils to new poopler-utils
+
+
