@@ -1,0 +1,16 @@
+		Using CppUnit with autotools
+		----------------------------
+
+CppUnit ships an autoconf macro that is used to detect whether the
+library is available.  The usage is
+
+  AM_PATH_CPPUNIT(MINIMUM-VERSION, [ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+
+Note that the minimum version of CppUnit is mandatory.
+
+In /usr/share/doc/libcppunit-doc/examples, see the files README,
+configure.ac, and Makefile.am for a template to follow.
+
+
+
+ -- Steve M. Robbins <smr@debian.org>, Sun Jan 15 22:19:00 2006

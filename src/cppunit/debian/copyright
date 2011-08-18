@@ -1,0 +1,30 @@
+This package was debianized by Christian Leutloff <leutloff@debian.org> on
+Sat, 21 Apr 2001 16:47:23 +0200.
+
+It was downloaded from the official CppUnit Homepage at:
+http://cppunit.sourceforge.net
+
+Upstream Authors: 
+
+Michael Feathers <mfeathers@objectmentor.com> 
+Jerome Lacoste <lacostej@altern.org>          
+E. Sommerlade <eric@sommerla.de>              
+J.E. Hoffmann <je-h@gmx.net>                  
+Baptiste Lepilleur <gaiacrtn@free.fr>
+Bastiaan Bakker <bastiaan.bakker@lifeline.nl>
+Steve Robbins <smr99@sourceforge.net>
+
+Copyright: LGPL 2.1 (see /usr/share/common-licenses/LGPL-2.1)
+
+
+License:
+
+    Copyright 2000-2008, Michael Feathers et al.
+
+    This package is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License version 2.1,as published by the Free Software Foundation.
+
+On Debian systems, the complete text of the GNU Lesser General
+Public License can be found in `/usr/share/common-licenses/LGPL-2.1'.
+

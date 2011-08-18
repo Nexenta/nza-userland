@@ -1,0 +1,46 @@
+Source: cppunit
+Upstream-Version: 1.12.1
+Homepage: http://cppunit.sourceforge.net/
+Vcs-Browser: http://svn.debian.org/wsvn/collab-maint/deb-maint/cppunit/trunk/?op=log
+Vcs-Svn: svn://svn.debian.org/svn/collab-maint/deb-maint/cppunit/trunk
+Section: devel
+Priority: optional
+Maintainer: Steve M. Robbins <smr@debian.org>
+Build-Depends: debhelper, doxygen
+Standards-Version: 3.9.1
+
+Package: libcppunit-1.12-1
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Unit Testing Library for C++
+ CppUnit is a simple Framework for incorporating test cases in 
+ your C++ code.  It is similar to, and inspired by, xUnit and
+ JUnit.
+
+Package: libcppunit-dev
+Section: devel
+Architecture: any
+Depends: libcppunit-1.12-1 (= ${binary:Version}), ${misc:Depends}
+Suggests: libqttestrunner1c2a (= ${binary:Version}), libcppunit-doc
+Replaces: cppunit (<< 1.10.0-3)
+Description: Unit Testing Library for C++
+ CppUnit is a simple Framework for incorporating test cases in 
+ your C++ code.  It is similar to, and inspired by, xUnit and
+ JUnit.
+ .
+ Package libqttestrunner1 is required for using the Qt-based
+ test runner GUI.
+
+Package: libcppunit-doc
+Section: doc
+Architecture: all
+Depends: ${misc:Depends}
+Conflicts: cppunit (<< 1.10.0-3), libcppunit-dev (<< 1.10.2-6)
+Replaces: cppunit (<< 1.10.0-3), libcppunit-dev (<< 1.10.2-6)
+Description: Unit Testing Library for C++
+ CppUnit is a simple Framework for incorporating test cases in 
+ your C++ code.  It is similar to, and inspired by, xUnit and
+ JUnit.
+ .
+ Package libqttestrunner1 is required for using the Qt-based
+ test runner GUI.

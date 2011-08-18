@@ -1,0 +1,14 @@
+usr/lib/*.{so,a,la}
+usr/lib/amd64/*.{so,a,la}
+
+usr/include/
+
+usr/lib/pkgconfig/
+usr/lib/amd64/pkgconfig/
+
+/usr/bin/cppunit-config
+/usr/bin/amd64/cppunit-config
+
+/usr/share/aclocal
+/usr/share/man/man1/cppunit-config.1*
+

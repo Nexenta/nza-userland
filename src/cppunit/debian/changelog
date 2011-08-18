@@ -1,0 +1,280 @@
+cppunit (40-0-0) unstable; urgency=low
+
+  * Ported to NCP4
+
+ -- Igor Pashev <igor.pashev@nexenta.com>  Thu, 18 Aug 2011 16:12:26 +0400
+
+cppunit (1.12.1-3) unstable; urgency=low
+
+  * compat:
+  * control: Use debhelper 8.  
+  
+  * rules:
+  * control: Remove libqttestrunner1c2a.  Closes: #604345.
+
+  * control: Update Standards-Version, add ${misc:Depends}
+  * copyright: Refer to versioned LGPL.
+  * libcppunit-doc.doc-base: Change to section Programming.
+  * rules: don't ignore errors on clean/distclean.  Replace dh_clean -k by
+    dh_prep.
+
+ -- Steve M. Robbins <smr@debian.org>  Fri, 11 Feb 2011 23:57:07 -0600
+
+cppunit (1.12.1-2) unstable; urgency=low
+
+  * Acknowledge NMU (thanks, Nobuhiro Iwamatsu).  Closes: #531584.
+
+  * Move to collab-maint.
+
+ -- Steve M. Robbins <smr@debian.org>  Fri, 11 Feb 2011 22:21:33 -0600
+
+cppunit (1.12.1-1.1) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Add support Renesas SH(sh4). Closes: #531584.
+    - Add -mieee option to CXXFLAGS in debian/rules.
+
+ -- Nobuhiro Iwamatsu <iwamatsu@debian.org>  Tue, 25 Jan 2011 12:55:46 +0900
+
+cppunit (1.12.1-1) unstable; urgency=low
+
+  * New upstream release.
+    - No longer uses Qt3 compatibility headers.
+    - Builds with g++-4.3.  Closes: #441521.
+  
+  * debian/control: Remove build-dep libqt3-compat-headers.  Closes: #464248.
+  Change from package libcppunit-1.12-0 to libcppunit-1.12-1.
+  
+  * debian/rules: Change from package libcppunit-1.12-0 to
+    libcppunit-1.12-1.
+  
+  * debian/copyright: Add explicit license text.  Closes: #437526.
+  
+  * Fix lintian warnings:
+    - cppunit-config.1: Remove unknown markup ".l".
+    - debian/control: Add Homepage header; remove homepage from long 
+      description.  Change deprecated ${Source-Version} to ${binary:Version}.
+      Bump standards-version to 3.7.3.0 (no changes required).
+    - debian/libcppunit-doc.doc-base: Remove dangerous whitespace.
+    - debian/rules: Remove .cvsignore files.  Remove execute bit from
+      example run.bat file.
+
+ -- Steve M. Robbins <smr@debian.org>  Wed, 20 Feb 2008 22:43:21 -0600
+
+cppunit (1.12.0-3) unstable; urgency=low
+
+  * debian/rules: Build with -O0 on alpha.  This should work around
+  FTBFS on alpha (#410537).
+
+ -- Steve M. Robbins <smr@debian.org>  Wed, 28 Feb 2007 23:54:41 -0600
+
+cppunit (1.12.0-2) unstable; urgency=low
+
+  * src/cppunit/TestAssert.cpp:
+  * examples/cppunittest/TestAssertTest.cpp: Fix CPPUNIT_ASSERT_DOUBLES_EQUAL() to work
+  properly with NaN values (debian/patch04.assert-doubles-equal).  Closes: #396865.
+
+  * debian/rules: 
+  * debian/examples: Add all example code to libcppunit-doc.  Closes: #379968.
+  
+ -- Steve M. Robbins <smr@debian.org>  Fri, 10 Nov 2006 22:50:17 -0600
+
+cppunit (1.12.0-1) unstable; urgency=low
+
+  * New upstream version.  Closes: #376122.
+    - debian/control: new lib package libcppunit-1.12-0
+    - debian/rules: explicitly use qmake-qt3; tweak clean rule; 
+      update runtime package name; add -L and -l options to dh_shlibdeps
+    - debian/cppunit-1.10.2-nostandalone.patch remove; incorporated upstream.
+  
+  * include/cppunit/TestResult.h: Include <string>
+    - patch in debian/patch01.testresult-include-string
+
+  * src/cppunit/Makefile.am: Link libcppunit with -ldl, add test case (this
+    is the fix of #338252)
+    - patch in debian/patch02.cppunit-link-test
+
+  * src/qttestrunner/qttestrunnerlib.pro: Set CONFIG to build a release shared
+    lib; remove "_shared" from shared lib name; link against libcppunit in
+    directory src/cppunit/.libs
+    - patch in debian/patch03.qttestrunner-libname-linkage
+
+ -- Steve M. Robbins <smr@debian.org>  Thu, 20 Jul 2006 23:48:51 -0400
+
+cppunit (1.10.2-8) unstable; urgency=low
+
+  * debian/control: Fix section of -doc package.
+  
+  * examples/money/MoneyTest.cpp:
+  * examples/money/MoneyTest.h: Replace deprecated CPPUNIT_TEST_EXCEPTION 
+  by CPPUNIT_ASSERT_THROW.  Fixes build failure on alpha.
+  
+ -- Steve M. Robbins <smr@debian.org>  Sat, 28 Jan 2006 15:59:30 -0500
+
+cppunit (1.10.2-7) unstable; urgency=low
+
+  * Apply sourceforge patch [997006] to enable non-standalone XML output.
+  Closes: #348727.
+
+ -- Steve M. Robbins <smr@debian.org>  Sat, 28 Jan 2006 02:08:36 -0500
+
+cppunit (1.10.2-6) unstable; urgency=low
+
+  * Apply Roger Leigh's patch to generate a pkconfig file.  Closes:
+    #345925.
+
+  * debian/control:
+  * debian/rules: Split docs out of libcppunit-dev into libcppunit-doc.
+    Closes: #345924.  Currently the installed size is 8M for -doc and 1M for -dev.
+  
+  * Update standards-version to 3.6.2.0
+    - debian/rules: build using CFLAGS="-g -D_REENTRANT -Wl,-z,defs" by default; 
+      honour DEB_BUILD_OPTIONS=noopt to disable optimization
+
+ -- Steve M. Robbins <smr@debian.org>  Fri, 13 Jan 2006 23:43:46 -0500
+
+cppunit (1.10.2-5) unstable; urgency=low
+
+  * src/cppunit/Makefile.am: Link libcppunit with -ldl (thanks, Aurelien
+    Jarno).  Add test case to check linking.  Closes: #338252.
+  
+  * debian/rules: Run "make check" as part of build.
+
+  * examples/hierarchy/ChessTest.h: Qualify access to base-class variable
+  m_game with "this->".
+  
+  * debian/control: Rename library packages to use "c2a" suffix, due to
+  libstdc++ allocator change.  Declare conflicts & replaces with the 
+  previous "c2" packages.  Closes: #339158.
+
+ -- Steve M. Robbins <smr@debian.org>  Tue, 22 Nov 2005 22:12:05 -0500
+
+cppunit (1.10.2-4) unstable; urgency=low
+
+  * GCC 4 transition.  Closes: #322557.
+  
+  * debian/control: Remove obsolete "cppunit" transition package.  
+    Closes: #321906.
+
+ -- Steve M. Robbins <smr@debian.org>  Mon, 25 Jul 2005 22:01:04 -0400
+
+cppunit (1.10.2-3) unstable; urgency=low
+
+  * Rebuild i386 packages on system NOT contaminated by
+  experimental GCC 4.0.  Closes: #303302.
+
+ -- Steve M. Robbins <smr@debian.org>  Wed,  6 Apr 2005 18:29:49 -0400
+
+cppunit (1.10.2-2) unstable; urgency=low
+
+  * Rename library package to reflect the SONAME change.  Package
+  libcppunit-1.10-2 conflicts and replaces libcppunit-1.10-0 (version
+  1.10.2-1).  Closes: #297026.
+
+ -- Steve M. Robbins <smr@debian.org>  Sun,  3 Apr 2005 15:44:09 -0400
+
+cppunit (1.10.2-1) unstable; urgency=low
+
+  * New upstream version.
+  * include/cppunit/ui/qt/Config.h: Add end of file newline.  Closes: #296798.
+
+ -- Steve M. Robbins <smr@debian.org>  Thu, 24 Feb 2005 22:33:02 -0500
+
+cppunit (1.10.0-5) unstable; urgency=high
+
+  * cppunit.m4: Quote macro name.  Closes: #264995.
+
+ -- Steve M. Robbins <smr@debian.org>  Mon, 11 Oct 2004 21:14:07 -0400
+
+cppunit (1.10.0-4) unstable; urgency=low
+
+  * debian/control: Package libcppunit-dev replaces cppunit
+  package prior to version 1.10.0-3.  Closes: #257767.
+
+ -- Steve M. Robbins <smr@debian.org>  Wed,  7 Jul 2004 22:50:47 -0400
+
+cppunit (1.10.0-3) unstable; urgency=low
+  
+  * debian/rules: Build shared libraries and qttestrunner (closes: #226578).
+  
+  * debian/control: Add libqt3-mt-dev and libqt3-compat-headers as
+    build dependencies, in order to build qttestrunner.
+    - New package libcppunit-1.10-0 for the shared library.
+    - New package libqttestrunner1 for the Qt test runner shared library.
+    - Files formerly in package cppunit now in libcppunit-dev.
+    - Package cppunit becomes a dummy package that simply depends on libcppunit-dev
+      for the transition.
+
+  * config/ltmain.sh: Copy up-to-date version from /usr/share/libtool.
+
+ -- Steve M. Robbins <smr@debian.org>  Thu, 24 Jun 2004 18:11:32 -0400
+
+cppunit (1.10.0-2) unstable; urgency=low
+
+  * debian/rules: Don't try to build qttestrunner.
+
+ -- Steve M. Robbins <smr@debian.org>  Thu, 24 Jun 2004 16:34:06 -0400
+
+cppunit (1.10.0-1) unstable; urgency=low
+
+  * New upstream version.
+    - Copy up-to-date version of config.{guess,sub} from autotools-dev.
+    - Run "autoreconf"; this bloats the diffs, I'm afraid.
+  
+  * debian/control: Add "Depends: ${shlibs:Depends}" to get proper
+  dependency information.  Closes: #181445.
+  
+  * debian/examples/Makefile.am: Update list of sources so that it
+  corresponds to those of examples/hierarchy and examples/cppunittest.
+
+ -- Steve M. Robbins <smr@debian.org>  Sun, 20 Jun 2004 23:52:17 -0400
+
+cppunit (1.8.0-3) unstable; urgency=low
+
+  * Update config.guess & config.sub.  Closes: #176498.
+
+ -- Steve M. Robbins <smr@debian.org>  Mon, 13 Jan 2003 22:04:43 -0500
+
+cppunit (1.8.0-2) unstable; urgency=low
+
+  * Transition to GCC 3.2.
+    - Enable use of typeid().  Closes: #163959.
+
+  * Document that AM_PATH_CPPUNIT requires the minimum-version argument.
+    Closes: #155683.
+
+ -- Steve M. Robbins <smr@debian.org>  Sun, 12 Jan 2003 13:48:07 -0500
+
+cppunit (1.8.0-1) unstable; urgency=low
+
+  * New upstream release.  Closes: #130788.
+  * Include configure.ac and Makefile.am to build the examples.
+    Closes: #107288.
+
+ -- Steve M. Robbins <smr@debian.org>  Sat, 13 Apr 2002 11:44:23 -0400
+
+cppunit (1.6.1-1) unstable; urgency=low
+
+  * New upstream release.
+  * New maintainer.
+  * Include updated config.guess and config.sub.  Closes: #104686.
+  * Do not supply shared library.
+  * Remove cppunit-config.1; upstream now installs manpage.
+
+ -- Steve M. Robbins <smr@debian.org>  Sun, 30 Sep 2001 23:52:05 -0400
+
+cppunit (1.5.4-2) unstable; urgency=low
+
+  * added autoconf to build-depends (thanks to Rick Younie
+    <younie@debian.org>)
+
+ -- Christian Leutloff <leutloff@debian.org>  Tue,  8 May 2001 21:43:09 +0200
+
+cppunit (1.5.4-1) unstable; urgency=low
+
+  * Initial Release (closes: #94762).
+  * Added manpage for cppunit-config and added --help to cppunit-config. 
+
+ -- Christian Leutloff <leutloff@debian.org>  Mon, 23 Apr 2001 19:57:19 +0200
+
+

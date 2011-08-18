@@ -1,0 +1,23 @@
+This directory contains some examples of using CppUnit.
+
+The test "hierarchy" is a small example, demonstrating
+CPPUNIT_TEST_SUITE / CPPUNIT_TEST / CPPUNIT_TEST_SUITE_END family of
+macros.  The "testResetShouldFail" test is included only to show the
+output when a failure happens.  Normally one only tests for successes.
+
+The test "cppunittestmain" is a test suite for CppUnit itself.
+As you might expect, it is rather large.
+
+
+You should be able to build these examples using the following
+sequence of commands.
+
+	sh setup.sh
+	./configure
+	make check
+
+The CppUnit Cookbook is a good place to start -- look at
+http://localhost/doc/cppunit/html/index.html.  If someone
+would type in this code, I'll be happy to include it in the
+next release.
+
