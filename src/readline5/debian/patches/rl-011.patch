@@ -1,0 +1,13 @@
+Author: <doko@ubuntu.com>
+Description: readline upstream patch readline52-011.
+--- a/input.c
++++ b/input.c
+@@ -154,7 +154,7 @@
+     {
+       pop_index--;
+       if (pop_index < 0)
+-	pop_index = ibuffer_len - 1;
++	pop_index = ibuffer_len;
+       ibuffer[pop_index] = key;
+       return (1);
+     }

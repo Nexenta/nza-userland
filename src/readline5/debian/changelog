@@ -1,8 +1,15 @@
-readline5 (5.2-7nexenta1) unstable; urgency=low
+readline5 (40-0-0) unstable; urgency=low
 
-  * Updated to NCP4 with SFW parches
+  * Sync from Squeeze source with new version scheme
+  * Update to use 3.0 (quilt) format
+  * debian/control:
+    + Fixed Build-Depends for solaris-i386
+  * debian/rules:
+    + Added LDFLAGS hack
+    + Fixed installation of .so and manpages
+    + Fixed lib64 location for Solaris platforms
 
- -- Igor Kozhukhov <igor.kozhukhov@nexenta.com>  Thu, 19 May 2011 13:11:12 +0300
+ -- Kartik Mistry <kartik.mistry@nexenta.com>  Wed, 17 Aug 2011 21:58:05 +0530
 
 readline5 (5.2-7) unstable; urgency=low
 

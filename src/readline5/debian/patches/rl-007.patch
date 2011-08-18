@@ -1,0 +1,39 @@
+Author: <doko@ubuntu.com>
+Description: readline upstream patch readline52-007.
+--- a/input.c
++++ b/input.c
+@@ -133,8 +133,11 @@
+     return (0);
+ 
+   *key = ibuffer[pop_index++];
+-
++#if 0
+   if (pop_index >= ibuffer_len)
++#else
++  if (pop_index > ibuffer_len)
++#endif
+     pop_index = 0;
+ 
+   return (1);
+@@ -250,7 +253,8 @@
+       while (chars_avail--)
+ 	{
+ 	  k = (*rl_getc_function) (rl_instream);
+-	  rl_stuff_char (k);
++	  if (rl_stuff_char (k) == 0)
++	    break;			/* some problem; no more room */
+ 	  if (k == NEWLINE || k == RETURN)
+ 	    break;
+ 	}
+@@ -373,7 +377,11 @@
+       RL_SETSTATE (RL_STATE_INPUTPENDING);
+     }
+   ibuffer[push_index++] = key;
++#if 0
+   if (push_index >= ibuffer_len)
++#else
++  if (push_index > ibuffer_len)
++#endif
+     push_index = 0;
+ 
+   return 1;

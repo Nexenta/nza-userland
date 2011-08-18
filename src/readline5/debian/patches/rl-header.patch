@@ -1,10 +1,5 @@
-#! /bin/sh /usr/share/dpatch/dpatch-run
-## rl-header.dpatch by  <doko@debian.org>
-##
-## All lines beginning with `## DP:' are a description of the patch.
-## DP: Include stdio.h in readline.h and history.h
-
-@DPATCH@
+Author: <doko@debian.org>
+Description: Include stdio.h in readline.h and history.h
 diff -urNad readline5-5.2~/history.h readline5-5.2/history.h
 --- readline5-5.2~/history.h	2003-07-31 14:38:44.000000000 +0200
 +++ readline5-5.2/history.h	2006-10-28 14:06:20.000000000 +0200

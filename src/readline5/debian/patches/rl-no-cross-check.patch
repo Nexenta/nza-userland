@@ -1,10 +1,5 @@
-#! /bin/sh /usr/share/dpatch/dpatch-run
-## rl-no-cross-check.dpatch by  <doko@salsa.net.local>
-##
-## All lines beginning with `## DP:' are a description of the patch.
-## DP: configure: Don't check for cross compilation
-
-@DPATCH@
+Author: <doko@salsa.net.local>
+Description: configure: Don't check for cross compilation
 diff -urNad readline5-5.2~/configure readline5-5.2/configure
 --- readline5-5.2~/configure	2006-09-28 18:04:36.000000000 +0200
 +++ readline5-5.2/configure	2006-10-28 14:20:05.000000000 +0200

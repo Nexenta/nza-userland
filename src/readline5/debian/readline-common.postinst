@@ -7,7 +7,7 @@ install_from_default() {
 }
 
 if [ "$1" = "configure" ] && [ "$2" = "" ]; then
-  install_from_default /usr/demo/readline/inputrc /etc/inputrc
+  install_from_default /usr/share/readline/inputrc /etc/inputrc
 fi
 
 install-info --quiet --section "Miscellaneous" "Miscellaneous" \

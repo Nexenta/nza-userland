@@ -1,10 +1,5 @@
-#! /bin/sh /usr/share/dpatch/dpatch-run
-## rl-attribute.dpatch by  <doko@debian.org>
-##
-## All lines beginning with `## DP:' are a description of the patch.
-## DP: Do not redefine __attribute__, define macro __rl_attribute__
-
-@DPATCH@
+Author: <doko@debian.org>
+Description: Do not redefine __attribute__, define macro __rl_attribute__
 diff -urNad readline5-5.2~/readline.h readline5-5.2/readline.h
 --- readline5-5.2~/readline.h	2006-08-16 21:16:59.000000000 +0200
 +++ readline5-5.2/readline.h	2006-10-28 14:03:36.000000000 +0200
