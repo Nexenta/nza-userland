@@ -1,0 +1,55 @@
+#!/usr/bin/make -f
+
+CFLAGS = -Wall -g
+INSTALL = install
+INSTALL_FILE    = $(INSTALL) -p    -o root -g root  -m  644
+INSTALL_PROGRAM = $(INSTALL) -p    -o root -g root  -m  755
+INSTALL_SCRIPT  = $(INSTALL) -p    -o root -g root  -m  755
+INSTALL_DIR     = $(INSTALL) -p -d -o root -g root  -m  755
+
+DEB_BUILD_ARCH ?= $(shell dpkg-architecture -qDEB_BUILD_ARCH)
+DEB_BUILD_GNU_CPU ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_CPU)
+DEB_BUILD_GNU_SYSTEM ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_SYSTEM)
+DEB_BUILD_GNU_TYPE ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
+DEB_HOST_GNU_CPU ?= $(shell dpkg-architecture -qDEB_HOST_GNU_CPU)
+DEB_HOST_GNU_SYSTEM ?= $(shell dpkg-architecture -qDEB_HOST_GNU_SYSTEM)
+DEB_HOST_GNU_TYPE ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
+
+clean:
+	$(checkdir)
+	rm -rf debian/libdb*
+
+build:
+	@echo no build necessary
+
+binary-indep:
+	@echo no indep portion
+
+binary-arch: checkroot
+	$(checkdir)
+
+	rm -rf debian/libdb-dev
+	$(INSTALL_DIR) debian/libdb-dev/DEBIAN \
+			debian/libdb-dev/usr/share/doc/libdb-dev
+
+	$(INSTALL_FILE) debian/copyright debian/libdb-dev/usr/share/doc/libdb-dev
+	$(INSTALL_FILE) debian/changelog debian/libdb-dev/usr/share/doc/libdb-dev
+	gzip -9fq debian/libdb-dev/usr/share/doc/libdb-dev/changelog
+
+	cd debian/libdb-dev && find * -type f ! -regex '^DEBIAN/.*' -print0 | xargs -r0 md5sum > DEBIAN/md5sums
+	dpkg-gencontrol -isp -plibdb-dev -Pdebian/libdb-dev
+	chown -R root:root debian/libdb-dev
+	chmod -R ugo=rX,u+w debian/libdb-dev
+	dpkg --build debian/libdb-dev ..
+
+define checkdir
+	test -f debian/rules
+endef
+
+binary: binary-arch
+
+checkroot:
+	$(checkdir)
+	test root = "`whoami`"
+
+.PHONY: binary binary-arch binary-indep clean checkroot

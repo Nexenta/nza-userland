@@ -1,0 +1,18 @@
+Source: db-defaults
+Section: libdevel
+Priority: extra
+Maintainer: Debian Berkeley DB Maintainers <pkg-db-devel@lists.alioth.debian.org>
+Uploaders: Clint Adams <schizo@debian.org>
+Standards-Version: 3.8.3
+Build-Depends: libdb4.8-dev
+Upstream-Version: 4.8
+
+Package: libdb-dev
+Architecture: any
+Section: libdevel
+Priority: extra
+Depends: libdb4.8-dev
+Conflicts: libdb4.2-dev, libdb4.3-dev, libdb4.4-dev, libdb4.5-dev, libdb4.6-dev, libdb4.7-dev
+Description: Berkeley Database Libraries [development]
+ This package depends on the recommended development package containing
+ headers and static libraries for the Berkeley database library.
