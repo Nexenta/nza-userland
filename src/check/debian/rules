@@ -1,0 +1,67 @@
+#!/usr/bin/make -f
+
+
+BUILD = $(CURDIR)/build-tree
+
+CC_32 = gcc -m32
+CC_64 = gcc -m64
+
+CFLAGS_32 =
+CFLAGS_64 =
+
+CONFIGURE_OPTIONS_COMMON =
+
+CONFIGURE_OPTIONS_32 = \
+	--includedir=\$${prefix}/include \
+	--bindir=\$${prefix}/bin/i86 \
+	--libdir=\$${prefix}/lib
+
+CONFIGURE_OPTIONS_64 = \
+	--includedir=\$${prefix}/include/amd64 \
+	--bindir=\$${prefix}/bin/amd64 \
+	--libdir=\$${prefix}/lib/amd64
+
+%:
+	dh $@
+
+override_dh_auto_configure: \
+	configure32-stamp \
+	configure64-stamp
+
+override_dh_auto_build: \
+	build32-stamp \
+	build64-stamp
+
+override_dh_auto_install:
+	$(MAKE) -C $(BUILD)/32     install DESTDIR=$(CURDIR)/debian/check
+	$(MAKE) -C $(BUILD)/64/src install-libLTLIBRARIES DESTDIR=$(CURDIR)/debian/check
+	# only static, as in Debian:
+	find $(CURDIR)/debian/check/usr/lib \( -name '*.so*' -o -name '*.la' \) -delete
+	# remove license (we have debian/copyright)
+	rm $(CURDIR)/debian/check/usr/share/doc/check/COPYING*
+	# $^@%&!
+	rm -f $(CURDIR)/debian/check/usr/share/info/dir*
+	# add pic-enabled static libraries:
+	cp $(BUILD)/32/src/.libs/libcheck.a \
+		$(CURDIR)/debian/check/usr/lib/libcheck_pic.a
+	cp $(BUILD)/64/src/.libs/libcheck.a \
+		$(CURDIR)/debian/check/usr/lib/amd64/libcheck_pic.a
+
+override_dh_auto_clean:
+	rm -rf $(BUILD)
+
+override_dh_compress:
+	dh_compress -X /example/
+
+configure%-stamp:
+	dh_auto_configure -B $(BUILD)/$* -- \
+		$(CONFIGURE_OPTIONS_COMMON) \
+		$(CONFIGURE_OPTIONS_$*) \
+		CC="$(CC_$*)" \
+		CFLAGS="$(CFLAGS) $(CFLAGS_$*)"
+	touch $@
+
+build%-stamp: configure%-stamp
+	$(MAKE) -C $(BUILD)/$*
+	touch $@
+
