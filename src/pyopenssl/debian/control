@@ -4,8 +4,9 @@ Section: python
 Priority: optional
 Maintainer: Debian Python Modules Team <python-modules-team@lists.alioth.debian.org>
 Uploaders: Sandro Tosi <morph@debian.org>
-Build-Depends: debhelper, python-all-dev, python-support, libssl-dev, openssl
+Build-Depends: debhelper, python-all-dev, libssl-dev, openssl
 Standards-Version: 3.9.2
+X-Python-Version: >= 2.6
 Homepage: http://launchpad.net/pyopenssl
 Vcs-Svn: svn://svn.debian.org/python-modules/packages/pyopenssl/trunk/
 Vcs-Browser: http://svn.debian.org/viewsvn/python-modules/packages/pyopenssl/trunk/
@@ -13,7 +14,6 @@ Vcs-Browser: http://svn.debian.org/viewsvn/python-modules/packages/pyopenssl/tru
 Package: python-openssl
 Architecture: any
 Depends: ${python:Depends}, ${shlibs:Depends}, ${misc:Depends}
-Provides: ${python:Provides}
 Description: Python wrapper around the OpenSSL library
  High-level wrapper around a subset of the OpenSSL library, includes
  .
