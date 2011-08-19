@@ -1,1 +1,2 @@
-usr/lib/libpng12.so.0* /lib
+usr/lib/*12.so.*
+usr/lib/amd64/*12.so.*
