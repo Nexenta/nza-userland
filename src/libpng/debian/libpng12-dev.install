@@ -1,4 +1,11 @@
-usr/include
-usr/lib/pkgconfig
-usr/lib/{libpng.a,libpng12.a,libpng.so}
-usr/bin
+/usr/lib/*.{so,a}
+/usr/lib/amd64/*.{so,a}
+
+usr/include/
+
+usr/lib/pkgconfig/
+usr/lib/amd64/pkgconfig/
+
+usr/bin/*-config
+usr/bin/amd64/*-config
+

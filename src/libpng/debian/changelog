@@ -1,25 +1,77 @@
-libpng (1.2.44-1nexenta1) unstable; urgency=low
+libpng (40-0-0) unstable; urgency=low
 
-  * NCP4 port
+  * Ported to NCP4
+  * Added 64 bits version
+  * Dropped libpng3 and udeb
 
- -- Alexander Eremin <a.eremin@nexenta.com>  Mon, 24 Jan 2011 12:12:34 +0300
+ -- Igor Pashev <igor.pashev@nexenta.com>  Fri, 19 Aug 2011 02:22:56 +0400
 
-libpng (1.2.44-1stormos0) unstable; urgency=low
+libpng (1.2.46-3) unstable; urgency=low
 
-  * Package for StormOS.
+  * libpng12-0-udeb: Don't use bzip2 compression
+    Closes: 634865
 
- -- Andrew Stormont (astormont) <andyjstormont@googlemail.com>  Mon, 04 Oct 2010 22:25:50 +0200
+ -- Anibal Monsalve Salazar <anibal@debian.org>  Wed, 27 Jul 2011 12:44:46 +1000
+
+libpng (1.2.46-2) unstable; urgency=low
+
+  [ Steve Langasek ]
+  * Build for multiarch.  Requires converting libpng3 from Arch: all to
+    Arch: any. Closes: 634151
+  * Drop debian/libpng12-0-udeb.dirs, which just adds a pointless empty
+    directory to the udeb.
+
+  [ Anibal Monsalve Salazar ]
+  * Fix doc-base file
+    Closes: 633944, 633957, 634120
+  * Pass "-Zbzip2 -z9" to dpkg-deb
+
+ -- Anibal Monsalve Salazar <anibal@debian.org>  Mon, 18 Jul 2011 22:05:48 +1000
+
+libpng (1.2.46-1) unstable; urgency=high
+
+  * New upstream release (Closes: #633871).
+    - Fix CVE: CVE-2011-2690
+      Buffer overwrite in png_rgb_to_gray
+    - CVE: CVE-2011-2691
+      Crash in png_default_error due to use of NULL Pointer
+    - CVE: CVE-2011-2692
+      Memory corruption when handling empty sCAL chunks
+    - Update patches/01-legacy.patch
+    - Remove patches/02-632786-CVE-2011-2501.patch. Applied to upstream.
+
+ -- Nobuhiro Iwamatsu <iwamatsu@debian.org>  Fri, 15 Jul 2011 11:47:49 +0900
+
+libpng (1.2.44-3) unstable; urgency=high
+
+  * Fix 1-byte uninitialized memory reference in png_format_buffer()
+    Fix CVE-2011-2501
+    Add debian/patches/02-632786-CVE-2011-2501.patch
+    Closes: 632786
+  * Standards version is 3.9.2
+  * Fix xc-package-type-in-debian-control
+  * Fix debian-rules-missing-recommended-target
+
+ -- Anibal Monsalve Salazar <anibal@debian.org>  Wed, 06 Jul 2011 10:04:32 +1000
+
+libpng (1.2.44-2) unstable; urgency=low
+
+  * debian/libpng3.links: fix up the compat symlink to point to /lib
+    Patch by Steve Langasek
+    Closes: #579074, LP: #284325
+
+ -- Anibal Monsalve Salazar <anibal@debian.org>  Sun, 13 Mar 2011 14:40:33 +1100
 
 libpng (1.2.44-1) unstable; urgency=low
 
-  * New upstream release 
+  * New upstream release
     Stop memory leak when reading a malformed sCAL chunk
 
  -- Anibal Monsalve Salazar <anibal@debian.org>  Sat, 26 Jun 2010 13:32:43 +1000
 
 libpng (1.2.43-1) unstable; urgency=high
 
-  * New upstream release 
+  * New upstream release
   * Fix CVE-2010-0205 and Cert VU#576029
     http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2010-0205
     https://www.kb.cert.org/vuls/id/576029
