@@ -1,0 +1,24 @@
+Index: libonig-5.9.1/regexec.c
+===================================================================
+--- libonig-5.9.1.orig/regexec.c	2011-08-19 14:53:09.906061892 +0400
++++ libonig-5.9.1/regexec.c	2011-08-19 14:55:07.686821814 +0400
+@@ -28,6 +28,7 @@
+  */
+ 
+ #include "regint.h"
++#include <alloca.h>
+ 
+ #define USE_MATCH_RANGE_MUST_BE_INSIDE_OF_SPECIFIED_RANGE
+ 
+Index: libonig-5.9.1/regcomp.c
+===================================================================
+--- libonig-5.9.1.orig/regcomp.c	2011-08-19 14:55:26.392409988 +0400
++++ libonig-5.9.1/regcomp.c	2011-08-19 14:55:40.606210069 +0400
+@@ -28,6 +28,7 @@
+  */
+ 
+ #include "regparse.h"
++#include <alloca.h>
+ 
+ OnigCaseFoldType OnigDefaultCaseFoldFlag = ONIGENC_CASE_FOLD_MIN;
+ 

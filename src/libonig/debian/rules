@@ -1,6 +1,5 @@
 #!/usr/bin/make -f
 
-
 BUILD = $(CURDIR)/build-tree
 
 CC_32 = gcc -m32
@@ -39,6 +38,12 @@ override_dh_auto_install: \
 override_dh_auto_clean:
 	rm -rf $(BUILD)
 
+override_dh_compress:
+	dh_compress -X /examples/
+
+override_dh_strip:
+	dh_strip --dbg-package=libonig2-dbg
+
 configure%-stamp:
 	dh_auto_configure -B $(BUILD)/$* -- \
 		$(CONFIGURE_OPTIONS_COMMON) \
@@ -60,3 +65,4 @@ install%-stamp: build%-stamp
 		install \
 		DESTDIR=$(CURDIR)/debian/tmp
 	touch $@
+
