@@ -59,4 +59,4 @@ install%-stamp: build%-stamp
 	$(MAKE) -C $(BUILD)/$* \
 		install \
 		DESTDIR=$(CURDIR)/debian/tmp
-
+	touch $@
