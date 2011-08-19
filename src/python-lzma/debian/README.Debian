@@ -1,0 +1,7 @@
+python-lzma for Debian
+----------------------
+
+Unfortunantly, pyliblzma uses the new Py_buffer interface, which is
+only backported to python2.6.
+
+ -- Richard Darst <rkd@zgib.net>  Sun, 15 Nov 2009 17:01:44 -0500
