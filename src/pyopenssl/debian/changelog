@@ -1,3 +1,11 @@
+pyopenssl (40-0-1) unstable; urgency=low
+
+  * Added python2.7
+  * Removed python2.5
+  * Used dh_python2
+
+ -- Igor Pashev <igor.pashev@nexenta.com>  Tue, 16 Aug 2011 15:40:22 +0400
+
 pyopenssl (40-0-0) unstable; urgency=low
 
   * Ported to NCP4
