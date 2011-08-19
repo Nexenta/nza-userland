@@ -32,9 +32,11 @@ confflags += --build $(DEB_BUILD_GNU_TYPE) --host $(DEB_HOST_GNU_TYPE)
 # only build the C,C++,SWI-Prolog interfaces
 confflags += --enable-interfaces=c,cxx,swi_prolog --disable-ppl_lpsol --disable-ppl_lcdd
 
-# Prevent configure from failing on Nexenta
 ifeq ($(DEB_HOST_ARCH_OS),solaris)
+  # prevent configure from failing on Nexenta
   confflags += CXXFLAGS=-D__GMP_BITS_PER_MP_LIMB=$(DEB_BUILD_ARCH_BITS)
+  # help sun linker find libncurses
+  makeflags += LD_LIBRARY_PATH=/lib:/usr/lib:/usr/gnu/lib
 endif
 
 ifneq (,$(findstring nocheck,$(DEB_BUILD_OPTIONS)))
@@ -69,7 +71,7 @@ configure-stamp:
 build: build-arch
 build-arch: build-arch-stamp
 build-arch-stamp: configure-stamp
-	$(MAKE) $(NJOBS)
+	$(MAKE) $(makeflags) $(NJOBS)
 	touch $@
 
 check:

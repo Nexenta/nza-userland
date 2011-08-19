@@ -1,3 +1,9 @@
+ppl (40-0-1) unstable; urgency=low
+
+  * Fix FTBFS with new gcc-4.4.
+
+ -- Andrew Stormont (astormont) <andyjstormont@googlemail.com>  Wed, 10 Aug 2011 15:12:10 +0100
+
 ppl (40-0-0) unstable; urgency=low
 
   * Package for NCP4.
