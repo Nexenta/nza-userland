@@ -1,0 +1,34 @@
+Source: python-medusa
+Upstream-Version: 0.5.4
+Section: python
+Priority: optional
+Maintainer: Arnaud Fontaine <arnau@debian.org>
+Uploaders: Debian Python Modules Team <python-modules-team@lists.alioth.debian.org>,
+           Torsten Marek <shlomme@debian.org>
+Standards-Version: 3.9.2
+Build-Depends: debhelper, python
+Homepage: http://www.amk.ca/python/code/medusa.html
+X-Python-Version: >= 2.6
+Vcs-Svn: svn://svn.debian.org/python-modules/packages/python-medusa/trunk/
+Vcs-Browser: http://svn.debian.org/viewsvn/python-modules/packages/python-medusa/trunk/
+
+Package: python-medusa
+Architecture: all
+Depends: ${python:Depends}, ${misc:Depends}
+Provides: ${python:Provides}
+Suggests: python-medusa-doc
+Description: Framework for implementing asynchronous servers
+ Medusa is a 'server platform' -- it provides a framework for
+ implementing asynchronous socket-based servers (TCP/IP and on Unix,
+ Unix domain, sockets).
+
+Package: python-medusa-doc
+Section: doc
+Architecture: all
+Depends: ${misc:Depends}
+Description: Framework for implementing asynchronous servers
+ Medusa is a 'server platform' -- it provides a framework for
+ implementing asynchronous socket-based servers (TCP/IP and on Unix,
+ Unix domain, sockets).
+ .
+ This package contains the documentation for Medusa.

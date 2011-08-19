@@ -1,0 +1,126 @@
+python-medusa (40-0-0) unstable; urgency=low
+
+  * Ported to NCP4
+
+ -- Igor Pashev <igor.pashev@nexenta.com>  Wed, 17 Aug 2011 21:21:43 +0400
+
+python-medusa (1:0.5.4-7) unstable; urgency=low
+
+  [ Arnaud Fontaine ]
+  * Switch to dpkg-source 3.0 (quilt) format.
+    + No need to manually remove the debian/ directory anymore.
+    + Drop Build-Depends on patchutils in debian/control.
+    + Drop include of simple-patchsys.mk in debian/rules.
+  * debian/patches:
+    + Add fix_string_exceptions.patch as string exceptions were removed
+      from Python 2.6. Closes: #585302.
+  * debian/copyright:
+    + Update copyright years.
+  * debian/control:
+    + Remove now useless Replaces and Conflicts fields.
+    + No need to Build-Depends on python-dev, python is enough.
+    + Add ${misc:Depends} to Depends for debhelper.
+  * Use dh_python2 rather than dh_pysupport.
+    + Remove debian/pyversions.
+    + debian/control:
+      - Add X-Python-Version field.
+      - Remove python-support from Build-Depends.
+      - Bump python-all version to 2.6.6-3~.
+      - Bump cdbs version to 0.4.90~.
+    + debian/rules:
+      - Remove DEB_PYTHON_SYSTEM.
+  
+  [ Sandro Tosi ]
+  * debian/watch
+    + Added.
+  * debian/control
+    + Switch Vcs-Browser field to viewsvn.
+
+ -- Arnaud Fontaine <arnau@debian.org>  Mon, 18 Apr 2011 14:29:10 +0900
+
+python-medusa (0.5.4+clean-2) unstable; urgency=low
+
+  [ Arnaud Fontaine ]
+  * New email address.
+  * Remove useless debian/control.in.
+  * debian/control:
+    + Update Standards-Version to 3.8.0.
+    + Wrap Uploaders field.
+  * debian/copyright:
+    + Update copyright years.
+  
+  [ Piotr Ożarowski ]
+  * debian/control:
+    + Vcs-Svn, Vcs-Browser and Homepage fields (dpkg support them now).
+
+  [ Sandro Tosi ]
+  * debian/control
+    - Uniforme Vcs-Browser field.
+
+ -- Arnaud Fontaine <arnau@debian.org>  Mon, 30 Jun 2008 11:14:51 +0200
+
+python-medusa (0.5.4+clean-1) unstable; urgency=low
+
+  * Remove debian/ directory in upstream source.
+  * debian/control.in:
+    - Update Standards to 3.7.2. No changes needed.
+  * New Python policy changes. Closes: #373336.
+    + debian/rules:
+      - Add DEB_PYTHON_SYSTEM=pysupport.
+    + debian/control.in
+      - Add XS-Python-Version to source package.
+      - Clean Build-Depends and Depends, cdbs handles that 
+      	automatically now.
+      - XB-Python-Version and Provides for binary package.
+    + debian/postinst && debian/prerm:
+      - Remove "hand made" python-support stuff, cdbs does this.
+
+ -- Arnaud Fontaine <arnaud@andesi.org>  Tue, 20 Jun 2006 11:41:51 +0200
+
+python-medusa (0.5.4-5) unstable; urgency=low
+
+  * Clean debian/rules by creating debian/python-medusa.docs for
+    debian/README.Debian.
+  * Move Build-Depends-Indep to Build-Depends according
+    to the debian-policy.
+
+ -- Arnaud Fontaine <arnaud@andesi.org>  Fri, 21 Apr 2006 10:26:12 +0200
+
+python-medusa (0.5.4-4) unstable; urgency=low
+
+  * Add myself to uploaders temporarily
+  * Drop build-dependency on python-support and add it to python-medusa
+
+ -- Torsten Marek <shlomme@debian.org>  Wed, 19 Apr 2006 20:09:54 +0200
+
+python-medusa (0.5.4-3) unstable; urgency=low
+
+  [Arnaud Fontaine]
+  * New maintainer. Closes: #362532.
+  * Add debian-python team to the Uploaders field (debian/control.in).
+  * Drop python2.x-scheme in favor of python-support.
+  * Add python-medusa-doc and remove python2.1-medusa,
+    python2.2-medusa packages (debian/control.in). Closes: #351143.
+  * Use cdbs in order to build the package.
+  * Change section from 'net' to 'python' (debian/control.in).
+  * Update the Standards-Version field to policy version 3.6.2.2
+   (debian/control.in).
+  * Update debian/copyright.
+  
+  [Torsten Marek]
+  * upload an orig.tar.gz, package used to be native.
+
+ -- Arnaud Fontaine <arnaud@andesi.org>  Wed, 19 Apr 2006 01:17:41 +0200
+
+python-medusa (0.5.4-2) unstable; urgency=low
+
+  * New maintainer.
+  * Copied packing from python-imaging.
+
+ -- Jeff Breidenbach <jab@debian.org>  Fri, 11 Jun 2004 21:00:24 -0700
+
+python-medusa (0.5.4-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- A.M. Kuchling <amk@amk.ca>  Fri, 22 Aug 2003 08:54:11 -0400
