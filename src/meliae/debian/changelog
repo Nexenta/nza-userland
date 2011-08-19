@@ -1,0 +1,74 @@
+meliae (40-0-0) unstable; urgency=low
+
+  * Ported to NCP4
+
+ -- Igor Pashev <igor.pashev@nexenta.com>  Wed, 17 Aug 2011 22:50:39 +0400
+
+meliae (0.4.0-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Jelmer Vernooij <jelmer@debian.org>  Thu, 14 Jul 2011 14:49:46 +0200
+
+meliae (0.3.0+bzr192-1) unstable; urgency=low
+
+  * New upstream snapshot.
+  * Bump standards version to 3.9.2 (no changes).
+  * Add python-meliae-dbg package.
+
+ -- Jelmer Vernooij <jelmer@debian.org>  Sun, 19 Jun 2011 05:52:19 +0200
+
+meliae (0.3.0+bzr190-1) unstable; urgency=low
+
+  * Drop extra dependency on python-central.
+  * Run test suite during package build.
+  * New upstream snapshot.
+   + Fixes compatibility with Python2.7.
+
+ -- Jelmer Vernooij <jelmer@debian.org>  Tue, 22 Mar 2011 12:40:34 +0100
+
+meliae (0.3.0-3) unstable; urgency=low
+
+  * Switch to dh_python2.
+  * Switch to debhelper 7, drop cdbs.
+
+ -- Jelmer Vernooij <jelmer@debian.org>  Mon, 21 Mar 2011 12:21:37 +0100
+
+meliae (0.3.0-2) unstable; urgency=low
+
+  * Depend on cython rather than pyrex. Closes: #591536
+
+ -- Jelmer Vernooij <jelmer@debian.org>  Sat, 07 Aug 2010 16:07:29 +0200
+
+meliae (0.3.0-1) unstable; urgency=low
+
+  * New upstream release.
+  * Bump standards version to 3.9.1.
+
+ -- Jelmer Vernooij <jelmer@debian.org>  Mon, 02 Aug 2010 20:39:33 +0200
+
+meliae (0.2.1-1) unstable; urgency=low
+
+  * New upstream release.
+  * Bump standards version to 3.9.0.
+
+ -- Jelmer Vernooij <jelmer@debian.org>  Tue, 20 Jul 2010 18:26:22 +0200
+
+meliae (0.2.1~rc1-1) experimental; urgency=low
+
+  * New upstream release.
+  * Fix homepage. Closes: #566244
+
+ -- Jelmer Vernooij <jelmer@debian.org>  Thu, 01 Jul 2010 00:22:01 +0200
+
+meliae (0.2.0-2) unstable; urgency=low
+
+  * Recommend simplejson for faster parsing.
+
+ -- Jelmer Vernooij <jelmer@debian.org>  Fri, 29 Jan 2010 15:21:37 +0100
+
+meliae (0.2.0-1) unstable; urgency=low
+
+  * Initial release. (Closes: #561690)
+
+ -- Jelmer Vernooij <jelmer@debian.org>  Sat, 19 Dec 2009 18:23:37 +0100
