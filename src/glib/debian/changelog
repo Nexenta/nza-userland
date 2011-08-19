@@ -1,3 +1,10 @@
+glib2.0 (40-0-1) unstable; urgency=low
+
+  * Fix FTBFS with sun linker.
+  * Add mising static libs.
+
+ -- Andrew Stormont (astormont) <andyjstormont@googlemail.com>  Thu, 28 Jul 2011 16:35:09 +0100
+
 glib2.0 (40-0-0) unstable; urgency=low
 
   * Move to new version scheme.

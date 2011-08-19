@@ -19,17 +19,17 @@ GNOME_MODULE := glib
 # Ensure the build aborts when there are still references to undefined symbols
 LDFLAGS += -Wl,-z,defs
 
-# NB: do NOT use -Wl,--as-needed to build glib; for instance the link to
-# pthread is carefully crafted to allow dlopen()ing pthread-using libs; see
-# http://mid.gmane.org/1257999019.21780.15.camel@marzipan
-LDFLAGS += -Wl,--no-as-needed
+ifeq ($(DEB_HOST_ARCH_OS),solaris)
+	LDFLAGS += -lsocket -lnsl
+else
+	# NB: do NOT use -Wl,--as-needed to build glib; for instance the link to
+	# pthread is carefully crafted to allow dlopen()ing pthread-using libs; see
+	# http://mid.gmane.org/1257999019.21780.15.camel@marzipan
+	LDFLAGS += -Wl,--no-as-needed
 
-# Make the linker work a bit harder so dynamic loading can be done faster
-LDFLAGS += -Wl,-O1
-
-LDFLAGS += -lsocket -lnsl
-
-#CFLAGS += 
+	# Make the linker work a bit harder so dynamic loading can be done faster
+	LDFLAGS += -Wl,-O1
+endif
 
 APIVER := 2.0
 SONAME := 0
