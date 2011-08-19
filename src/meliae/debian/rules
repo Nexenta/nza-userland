@@ -1,0 +1,21 @@
+#!/usr/bin/make -f
+
+PYVERS = $(shell pyversions -r -v)
+
+override_dh_auto_test:
+	$(MAKE) check
+
+override_dh_install:
+	# Install everything excluding the *_d.so debug extensions to python-meliae
+	dh_install -X"*_d.so" "debian/tmp/*" -p python-meliae
+	# Install the debug extensions to python-meliae-dbg
+	dh_install "debian/tmp/usr/lib/python*/*-packages/meliae/*_d.so" -p python-meliae-dbg
+	# Continue with regular dh_install
+	dh_install
+
+override_dh_strip:
+	dh_strip --dbg-package=python-meliae-dbg
+
+%:
+	dh $@ --with python2 --buildsystem=python_distutils
+
