@@ -2,22 +2,14 @@ This package was debianized by Jim Mintha <jim@dodo2.adm.uva.nl> on
 Mon, 16 Aug 1999 21:59:03 +0200.
 
 It was downloaded from ftp://space.mit.edu/pub/davis/slang/v2.0/
-
-Upstream Author: John E Davis <davis@space.mit.edu>
-
 Modifications for Debian Linux Copyright (C) 1995-1996 Chris Fearnley.
 
 Additional modifications for Debian Linux Copyright (C) 1997-1998 by Ray
 Dassen <jdassen@wi.LeidenUniv.nl> and Jim Mintha <jmintha@debian.org>.
+Further modifications for Debian Linux by Alastair McKinstry <mckinstry@debian.org>.
 
-Further modifications for Debian Linux by 
-Alastair McKinstry <mckinstry@debian.org>.
+Copyright (C) 1995-2011  John E. Davis <davis@space.mit.edu> 
 
-Copyright:
-
-S-Lang is not public domain software --- it is copyrighted.  
-However, it may be used for any purpose without royalty or fees
-in accordance with the terms of the copyright.
-
-It may distributed under the GNU General public license.
-See /usr/share/common-licenses/
+Slang is available under the terms of the GNU General Public
+License, version 2. On Debian GNU/Linux systems, the complete text of this
+license can be found in `/usr/share/common-licenses/GPL-2'.
