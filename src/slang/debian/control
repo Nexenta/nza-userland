@@ -1,18 +1,17 @@
 Source: slang2
+Upstream-Version: 2.2.4
 Section: devel
 Priority: optional
 Maintainer: Alastair McKinstry <mckinstry@debian.org>
-Uploaders: Jim Mintha <jmintha@debian.org>
-Build-Depends: debhelper (>= 7), dbs, docbook-to-man, libpcre3-dev, libpng12-dev, zlib1g-dev, libonig-dev, libncurses-dev
-Standards-Version: 3.8.4
+Build-Depends: debhelper, libpcre3-dev, libpng12-dev, zlib1g-dev, libonig-dev, libncurses-dev
+Standards-Version: 3.9.1
 
 Package: libslang2-dev
 Section: libdevel
 Architecture: any
-#Depends: libslang2 (= ${binary:Version}), libc6-dev | libc-dev, libpng-dev, ${misc:Depends}
-Depends: libslang2 (= ${binary:Version}), ${misc:Depends}
-Conflicts: slang1-utf8-dev, slang-dev6, slang0.99.34-dev (<< 0.99.38-2.3)
-Description: The S-Lang programming library, development version
+Depends: libslang2 (= ${binary:Version}), libpng-dev, ${misc:Depends}
+Replaces: libslang2 (<< 40-0-0)
+Description: S-Lang programming library, development version
  S-Lang is a C programmer's library that includes routines for the rapid
  development of sophisticated, user friendly, multi-platform applications.
  .
@@ -38,7 +37,7 @@ Priority: required
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Recommends: libpng12-0
-Description: The S-Lang programming library - runtime version
+Description: S-Lang programming library - runtime version
  S-Lang is a C programmer's library that includes routines for the rapid
  development of sophisticated, user friendly, multi-platform applications.
  .
@@ -46,17 +45,6 @@ Description: The S-Lang programming library - runtime version
  information. It is only necessary for programs that use this library (such
  as jed and slrn). If you plan on doing development with S-Lang, you will
  need the companion -dev package as well.
-
-Package: libslang2-pic
-Priority: optional
-Section: libdevel
-Architecture: any
-Depends: libslang2-dev (= ${binary:Version}), ${misc:Depends}
-Conflicts: slang1-utf8-pic, slang-pic, libslang1-pic
-Description: The S-Lang programming library, shared library subset kit
- This is used to develop subsets of the S-Lang shared libraries for use
- on custom installation floppies and in embedded systems. Unless you're
- making one of those, you won't need this package.
 
 Package: slsh
 Section: interpreters
@@ -75,6 +63,5 @@ Section: libs
 Priority: optional
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Conflicts:  slsh (<< 2.1.4-2), libslang2 (= 2.1.4-2)
 Description: Shared modules for S-Lang language
  This package contains dynamically-loaded modules for S-Lang applications.

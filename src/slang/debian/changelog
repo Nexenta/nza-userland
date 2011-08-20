@@ -1,14 +1,53 @@
-slang2 (2.2.3-1nexenta1) unstable; urgency=low
+slang2 (40-0-0) unstable; urgency=low
 
-  * Updated to NCP4
+  * Ported to NCP4
+  * Dropped libslang2-pic and udeb
+  * Built 32 and 64 bits versions
 
- -- Igor Kozhukhov <igor.kozhukhov@nexenta.com>  Thu, 17 Mar 2011 12:25:32 +0300
+ -- Igor Pashev <igor.pashev@nexenta.com>  Thu, 18 Aug 2011 23:36:59 +0400
 
-slang2 (2.2.2-4nexenta1) unstable; urgency=low
+slang2 (2.2.4-2) unstable; urgency=low
 
-  * Updated to NCP4
+  * Call make static to build library directly in rules, rather than
+    accidentally rely on it being called by 'make test'. Closes: #623933.
 
- -- Igor Kozhukhov <igor.kozhukhov@nexenta.com>  Wed, 16 Mar 2011 22:25:32 +0300
+ -- Alastair McKinstry <mckinstry@debian.org>  Tue, 26 Apr 2011 19:20:39 +0100
+
+slang2 (2.2.4-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Tue, 12 Apr 2011 09:57:10 +0100
+
+slang2 (2.2.3-3) unstable; urgency=low
+
+  * patch  for FTBFS on hurd-i386.
+  * Include missing files for slsh. Closes: #621495.
+  * Remove "The" from Descriptions: in debian/control..
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Fri, 01 Apr 2011 22:55:40 +0100
+
+slang2 (2.2.3-2) unstable; urgency=low
+
+  * Add chrpath to Build-Depends. Closes: #620997. 
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Fri, 01 Apr 2011 19:58:59 +0100
+
+slang2 (2.2.3-1) unstable; urgency=low
+
+  * New upstream release.  
+    Removed obsolete patches: 
+       termcap_emulation.patch
+       nointerlibc.patch
+       slagetput.patch
+  * Standards-Version: 3.9.1
+  * Moved from DBS to debhlper 7 + quilt build style.  
+    Closes: #576047, #571283, #615910.
+  * Patches moved to quilt format, DEPS-3 headers added.
+  * Patch for automatic dependencies for udeb. Closes: #564486.
+  * Fix unclear copyright file. Closes: #615909.
+
+ -- Alastair McKinstry <mckinstry@debian.org>  Fri, 01 Apr 2011 18:58:20 +0100
 
 slang2 (2.2.2-4) unstable; urgency=low
 
