@@ -66,7 +66,7 @@ diff -ur dpkg-1.15.8.5.old/lib/dpkg/parse.c dpkg-1.15.8.5/lib/dpkg/parse.c
    { "Description",      f_charfield,       w_charfield,      PKGIFPOFF(description)   },
    { "Triggers-Pending", f_trigpend,        w_trigpend                                 },
    { "Triggers-Awaited", f_trigaw,          w_trigaw                                   },
-+  { "Zone",           	f_zone,            w_zone                                   },
++  { "Zone",             f_zone,            w_zone                                     },
    /* Note that aliases are added to the nicknames table in parsehelp.c. */
    {  NULL   /* sentinel - tells code that list is ended */                               }
  };
@@ -286,8 +286,8 @@ diff -ur dpkg-1.15.8.5.old/m4/dpkg-libs.m4 dpkg-1.15.8.5/m4/dpkg-libs.m4
 +AC_DEFUN([DPKG_LIB_INSTZONES],
 +  [AC_ARG_VAR([INSTZONES_LIBS], [linker flags for zones support])
 +  AC_CHECK_LIB([instzones], [z_get_zonename],
-+  [INSTZONES_LIBS="${INSTZONES_LIBS:+$INSTZONES_LIBS }-linstzones"],
-+  [AC_MSG_FAILURE([no instzones library found])])
++  [INSTZONES_LIBS="${INSTZONES_LIBS:+$INSTZONES_LIBS }-linstzones -luuid"],
++  [AC_MSG_FAILURE([no instzones library found])], [-luuid])
 +])# DPKG_LIB_INSTZONES
 +
  # DPKG_LIB_SELINUX

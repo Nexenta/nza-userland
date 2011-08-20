@@ -1,3 +1,9 @@
+dpkg (40-0-6) unstable; urgency=low
+
+  * Fix FTBFS with sun linker.
+
+ -- Andrew Stormont (astormont) <andyjstormont@googlemail.com>  Fri, 19 Aug 2011 08:09:38 +0100
+
 dpkg (40-0-5) testing; urgency=low
 
   * Upload to siddy-testing.

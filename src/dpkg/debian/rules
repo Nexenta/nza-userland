@@ -34,6 +34,11 @@ ifeq ($(DEB_HOST_ARCH_OS),linux)
 	confflags += --with-selinux
 endif
 
+ifeq ($(DEB_HOST_ARCH_OS),solaris)
+	confflags += --disable-linker-optimisations
+	# temporary nexenta hack	
+	export LD_LIBRARY_PATH = /lib:/usr/lib:/usr/gnu/lib
+endif
 
 # Create configure script if necessary, automake handles rebuilding it.
 configure:
