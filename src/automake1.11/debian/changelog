@@ -1,3 +1,9 @@
+automake1.11 (40-0-1) unstable; urgency=low
+
+  * Add /usr/gnu to search path
+
+ -- Andrew Stormont (astormont) <andyjstormont@googlemail.com>  Fri, 19 Aug 2011 05:13:10 +0100
+
 automake1.11 (40-0-0) unstable; urgency=low
 
   * Rebuilt from fresh Squeeze source:

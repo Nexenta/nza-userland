@@ -1,0 +1,11 @@
+--- ./aclocal.in.bak	2011-08-19 00:26:03.845875084 +0100
++++ ./aclocal.in	2011-08-19 00:26:48.554721291 +0100
+@@ -58,7 +58,7 @@
+ # --acdir will reset both @automake_includes and @system_includes.
+ my @user_includes = ();
+ my @automake_includes = ("@datadir@/aclocal-$APIVERSION");
+-my @system_includes = ('@datadir@/aclocal');
++my @system_includes = ('@datadir@/aclocal', /usr/gnu/share/aclocal');
+ 
+ # Whether we should copy M4 file in $user_includes[0].
+ my $install = 0;
