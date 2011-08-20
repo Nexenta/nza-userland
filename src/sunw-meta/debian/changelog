@@ -1,3 +1,9 @@
+sunw-meta (40-0-1) unstable; urgency=low
+
+  * Re # 5948 libkrb5-dev is not installable
+
+ -- Alexander Eremin <a.eremin@nexenta.com>  Mon, 22 Aug 2011 15:16:57 +0300
+
 sunw-meta (40-0-0) unstable; urgency=low
 
   * New versioning scheme

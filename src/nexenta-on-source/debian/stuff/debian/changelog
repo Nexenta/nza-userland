@@ -1,0 +1,120 @@
+nexenta-on-source (40-0-0) unstable; urgency=low
+
+  * Added logging for packaging, various improvements
+
+ -- Nexenta Systems <maintainer@nexenta.com>  Thu, 18 Aug 2011 17:15:22 +0300
+
+nexenta-on-source (5.11.148-1) unstable; urgency=low
+
+  * Updated to NCP4
+
+ -- Nexenta Systems <maintainer@nexenta.com>  Mon, 19 Jul 2010 11:36:51 -0700
+
+nexenta-on-source (5.11.134-12) hardy; urgency=low
+
+  * 3.0.4 updates
+
+ -- Nexenta Systems <maintainer@nexenta.com>  Mon, 19 Jul 2010 11:36:51 -0700
+
+nexenta-on-source (5.11.134-11) hardy; urgency=low
+
+  * 3.0.3 updates
+
+ -- Nexenta Systems <maintainer@nexenta.com>  Thu, 10 Jun 2010 16:58:00 -0700
+
+nexenta-on-source (5.11.134-10) hardy; urgency=low
+
+  * bump
+
+ -- Nexenta Systems <support@nexenta.com>  Tue, 18 May 2010 20:32:36 -0700
+
+nexenta-on-source (5.11.134-9) hardy; urgency=low
+
+  * 134d, ZFS bug fixes mostly
+
+ -- Super-User <root@tbm35>  Wed, 05 May 2010 12:05:17 -0700
+
+nexenta-on-source (5.11.134-8) hardy; urgency=low
+
+  * New patches, bug fixes for ZFS and CIFS
+
+ -- Nexenta Systems <support@nexenta.com>  Mon, 15 Mar 2010 13:40:42 -0700
+
+nexenta-on-source (5.11.134-7) hardy; urgency=low
+
+  * Dropping NFS client patches, causing deadlock on PXE install
+  * New patches, bug fixes for mptsas and pmcs
+
+ -- Nexenta Systems <support@nexenta.com>  Mon, 15 Mar 2010 13:40:42 -0700
+
+nexenta-on-source (5.11.134-6) hardy; urgency=low
+
+  * Upgrade to beta2 
+
+ -- Nexenta Systems <support@nexenta.com>  Fri, 12 Mar 2010 07:42:29 -0800
+
+nexenta-on-source (5.11.134-4) hardy; urgency=low
+
+  * New build with a lot of backports added as patches. 
+
+ -- Nexenta Systems <support@nexenta.com>  Wed, 03 Mar 2010 06:50:53 -0800
+
+nexenta-on-source (5.11.134-3) hardy; urgency=low
+
+  * Rebuild with newer patches 
+
+ -- Nexenta Systems <support@nexenta.com>  Wed, 24 Feb 2010 22:09:29 -0800
+
+nexenta-on-source (5.11.134-2) hardy; urgency=low
+
+  * Update to onnv-134 with actual closed and crypto binaries
+
+ -- Nexenta Systems <support@nexenta.com>  Tue, 23 Feb 2010 08:12:45 -0800
+
+nexenta-on-source (5.11.134-1) hardy; urgency=low
+
+  * b134 Initial port
+
+ -- Nexenta Systems <support@nexenta.com>  Wed, 17 Feb 2010 22:02:23 -0800
+
+nexenta-on-source (5.11.133-2) hardy; urgency=low
+
+  * b133 second port with dedicated closed bins
+
+ -- Nexenta Systems <support@nexenta.com>  Tue, 09 Feb 2010 22:30:16 -0800
+
+nexenta-on-source (5.11.133-1) hardy; urgency=low
+
+  * b133 Initial port
+
+ -- Nexenta Systems <support@nexenta.com>  Mon, 01 Feb 2010 20:44:50 -0800
+
+nexenta-on-source (5.11.131-1) hardy; urgency=low
+
+  * b131 first build
+
+ -- Nexenta systems <maintainer@nexenta.com>  Thu, 07 Jan 2010 15:29:24 -0800
+
+nexenta-on-source (5.11.130-1) hardy; urgency=low
+
+  * update to 130
+
+ -- Nexenta systems <maintainer@nexenta.com>  Mon, 21 Dec 2009 22:16:19 -0800
+
+nexenta-on-source (5.11.129-1) hardy; urgency=low
+
+  * Update to 129
+
+ -- Super-User <root@myhost>  Fri, 04 Dec 2009 04:11:58 -0800
+
+nexenta-on-source (5.11.128-1) hardy; urgency=low
+
+  * Update to 128
+
+ -- Nexenta Systems <maintainer@nexenta.com>  Sun, 08 Nov 2009 23:57:09 -0800
+
+nexenta-on-source (5.11.124-1) hardy; urgency=low
+
+  * Initial release
+
+ -- Nexenta Systems <support@nexenta.com>  Tue, 14 Apr 2009 13:39:19 -0700

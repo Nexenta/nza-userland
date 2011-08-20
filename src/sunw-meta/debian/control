@@ -1,7 +1,7 @@
 Source: sunw-meta
 Section: base
 Priority: optional
-Maintainer: Erast Benson <erast@gnusolaris.org>
+Maintainer: Nexenta Systems <maintainer@nexenta.com>
 Build-Depends: debhelper(>=4.9.5gnusol5)
 Upstream-Version: 1:5.11.147-6
 
@@ -10,6 +10,15 @@ Package: attr
 Section: utils
 Depends: sunwcs, libattr1, libc6
 Provides: acl
+Architecture: any
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to Debian naming convention
+
+Package: cpio
+Section: utils
+Depends: sunwcs
+Provides: time
 Architecture: any
 Description: Transitional package
  This dummy package is provided for a smooth transition from the
@@ -389,6 +398,7 @@ Description: Transitional package
 Package: locales
 Architecture: any
 Depends: text-locale
+Provides: locales-all
 Description: Transitional package
  This dummy package is provided for a smooth transition from the
  SUNW PKG to Debian naming convention
@@ -422,4 +432,41 @@ Description: Transitional package
  This dummy package is provided for a smooth transition from the
  old xpdf-utils to new poopler-utils
 
+Package: krb5-config
+Architecture: all
+Depends: service-security-kerberos-5
+Provides: krb5-user, krb5-kdc, krb5-doc, krb5-kdc-ldap, 
+    krb5-admin-server, krb5-pkinit
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to Debian naming convention
 
+Package: krb5-multidev
+Section: libdevel
+Architecture: any
+Provides: libkrb5-dev
+Depends: service-security-kerberos-5
+Priority: optional
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to Debian naming convention
+
+Package: libkrb5-dbg
+Architecture: any
+Depends: service-security-kerberos-5
+Priority: extra
+Section: debug
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to Debian naming convention
+
+Package: libkrb5-3
+Section: libs
+Provides: libkrb53, libkadm5clnt-mit7, libgssapi-krb5-2, 
+    libgssrpc4, libkadm5srv-mit7, libkadm5clnt-mit7, 
+    libk5crypto3, libkdb5-4, libkrb5support0
+Architecture: any
+Depends: service-security-kerberos-5
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to Debian naming convention
