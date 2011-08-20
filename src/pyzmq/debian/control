@@ -1,0 +1,56 @@
+Source: pyzmq
+Upstream-Version: 2.1.7
+Section: python
+Priority: optional
+Maintainer: Debian Python Modules Team <python-modules-team@lists.alioth.debian.org>
+Uploaders: Miguel Landaeta <miguel@miguel.cc>
+Build-Depends: debhelper,
+ python-all-dev, python-all-dbg, python-setuptools, cython-dbg,
+ libzmq-dev
+# original debian deps: libzmq-dev (>= 2.1.7), libzmq-dev (<= 2.1.8)
+# see Upstream-Version ;-)
+Standards-Version: 3.9.2
+X-Python-Version: >= 2.6
+Homepage: http://www.zeromq.org/bindings:python
+Vcs-Svn: svn://svn.debian.org/svn/python-modules/packages/pyzmq/trunk
+Vcs-Browser: http://svn.debian.org/viewsvn/python-modules/packages/pyzmq/trunk/
+
+Package: python-zmq
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}, ${python:Depends}
+Provides: ${python:Provides}
+Description: Python bindings for 0MQ library
+ Python bindings for 0MQ. 0MQ is a small, fast, and free
+ software library that gives you message-passing concurrency
+ for applications in most common languages.
+ .
+ The 0MQ lightweight messaging kernel is a library which
+ extends the standard socket interfaces with features
+ traditionally provided by specialised messaging middleware
+ products. 0MQ sockets provide an abstraction of asynchronous
+ message queues, multiple messaging patterns, message
+ filtering (subscriptions), seamless access to multiple
+ transport protocols and more. 
+ 
+Package: python-zmq-dbg
+Section: debug
+Priority: extra
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends},
+ python-zmq (= ${binary:Version})
+Recommends: python-dbg
+Breaks: ${python:Breaks}
+Description: Python bindings for 0MQ library - debugging files
+ Python bindings for 0MQ. 0MQ is a small, fast, and free
+ software library that gives you message-passing concurrency
+ for applications in most common languages.
+ .
+ The 0MQ lightweight messaging kernel is a library which
+ extends the standard socket interfaces with features
+ traditionally provided by specialised messaging middleware
+ products. 0MQ sockets provide an abstraction of asynchronous
+ message queues, multiple messaging patterns, message
+ filtering (subscriptions), seamless access to multiple
+ transport protocols and more. 
+ .
+ This package contains the extension built for the Python debug interpreter.
