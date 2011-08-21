@@ -11,8 +11,8 @@ Build-Depends:
  debhelper,
  python-all,
  python-setuptools,
- python-support
 Standards-Version: 3.9.2
+X-Python-Version: >= 2.6
 Homepage: http://www.voidspace.org.uk/python/configobj.html
 Vcs-Svn: svn://svn.debian.org/python-modules/packages/configobj/trunk/
 Vcs-Browser: http://svn.debian.org/viewsvn/python-modules/packages/configobj/trunk/

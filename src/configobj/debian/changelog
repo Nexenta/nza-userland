@@ -1,3 +1,11 @@
+configobj (40-0-1) unstable; urgency=low
+
+  * Added python 2.7 support
+  * Removed python 2.5 support
+  * Used dh_python2
+
+ -- Igor Pashev <igor.pashev@nexenta.com>  Sun, 21 Aug 2011 01:47:31 +0400
+
 configobj (40-0-0) unstable; urgency=low
 
   * Ported to NCP4
