@@ -1,6 +1,4 @@
 demos_make.patch
 hostent_haddr.patch
 slsh_libs.patch
-debian-changes-2.2.3-1
 hurd-wcontinued.patch
-debian-changes-2.2.4-2
