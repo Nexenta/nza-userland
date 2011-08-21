@@ -6,5 +6,5 @@ if [ "$1" = "remove" -o "$1" = "abort-install" ]; then
 	dpkg-divert \
 		--package binutils-gold \
 		--remove --rename \
-		--divert /usr/bin/ld.bfd-link /usr/bin/ld
+		--divert /usr/gnu/bin/ld.bfd-link /usr/gnu/bin/ld
 fi

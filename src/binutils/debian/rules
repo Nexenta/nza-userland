@@ -49,7 +49,7 @@ DEB_HOST_GNU_TYPE  := $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
 
 SHELL  = /bin/bash
 
-ifneq (,$(filter $(DEB_HOST_ARCH), amd64 i386 powerpc sparc))
+ifneq (,$(filter $(DEB_HOST_ARCH), amd64 i386 powerpc sparc solaris-i386))
   with_gold = yes
 endif
 
@@ -79,7 +79,12 @@ MULTI_VERSION = $(VERSION)-multiarch
 HPPA64_VERSION= $(VERSION)-hppa64
 SPU_VERSION   = $(VERSION)-spu
 
-DISTRIBUTION := $(shell lsb_release -is)
+ifeq ($(DEB_HOST_ARCH_OS),solaris)
+  DISTRIBUTION := Nexenta
+else
+  DISTRIBUTION := $(shell lsb_release -is)
+endif
+
 NJOBS =
 # Support parallel=<n> in DEB_BUILD_OPTIONS (see #209008)
 SPACE = $(EMPTY) $(EMPTY)
@@ -182,7 +187,7 @@ clean: unpatch
 	-rm -fr $(d_bin) $(d_dev) $(d_mul) $(d_doc) $(d_hppa64) $(d_src) $(d_spu) $(d_gold)
 	-rm -rf debian/patched debian/tmp debian/files* debian/substvars
 	-rm -f debian/*.orig debian/*.rej
-	chmod 644 debian/patches/*.dpatch
+	chmod 755 debian/patches/*.dpatch
 	-rm -f *-stamp
 
 ################################################################################
@@ -554,6 +559,14 @@ endif
 	$(install_file) builddir-single/libiberty/pic/libiberty.a \
 		$(d_dev)/$(PF)/lib/libiberty_pic.a
 
+ifeq ($(DEB_HOST_ARCH_OS),solaris)
+	: # install symlinks for compat with Solaris
+	$(install_dir) $(d_bin)/usr/sfw/bin
+	for bin in addr2line ar as c++filt gprof nm objcopy objdump ranlib readelf size strings strip; do \
+		ln -s /usr/gnu/bin/$$bin $(d_bin)/usr/sfw/bin/g$$bin; \
+	done
+	ln -s /usr/gnu/bin/ld.bfd $(d_bin)/usr/sfw/bin/gld
+endif
 	touch install-stamp
 
 install-hppa64-stamp: checkroot build-hppa64-stamp

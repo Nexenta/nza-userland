@@ -1,3 +1,11 @@
+binutils (40-0-1) unstable; urgency=low
+
+  * Add symlinks in /usr/sfw/bin for compat with Solaris.
+  * Remove dependency on lsb-release.
+  * Enable building of gold linker.
+
+ -- Andrew Stormont (astormont) <andyjstormont@googlemail.com>  Sun, 21 Aug 2011 15:31:34 +0100
+
 binutils (40-0-0) unstable; urgency=low
 
   * Clean re-port for for NCP4.

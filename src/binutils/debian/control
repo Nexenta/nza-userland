@@ -3,9 +3,9 @@ Section: devel
 Priority: optional
 Maintainer: Matthias Klose <doko@debian.org>
 Uploaders: James Troup <james@nocrew.org>, Daniel Jacobowitz <dan@debian.org>
-Upstream-Version: 2.20.1-16
+Upstream-Version: 2.20.1
 Standards-Version: 3.8.4
-Build-Depends: dpkg-dev (>= 1.13.9), autoconf (>= 2.64), bison, flex, gettext, texinfo, dejagnu (>= 1.4.2-1.1), dpatch, file, bzip2, lsb-release, zlib1g-dev
+Build-Depends: dpkg-dev (>= 1.13.9), autoconf (>= 2.64), bison, flex, gettext, texinfo, dejagnu (>= 1.4.2-1.1), dpatch, file, bzip2, lsb-release [!solaris-any], zlib1g-dev
 
 Package: binutils
 Architecture: any
@@ -51,7 +51,7 @@ Description: Binary utilities that support multi-arch targets
  requiring support for reading info from binaries from other architectures.
 
 Package: binutils-gold
-Architecture: amd64 i386 powerpc sparc
+Architecture: amd64 i386 powerpc sparc solaris-i386
 Priority: extra
 Depends: ${shlibs:Depends}, binutils (= ${binary:Version})
 Description: The (experimental) GNU gold linker utility
