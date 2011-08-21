@@ -1,0 +1,74 @@
+--- ./Makefile.bak	2011-08-21 00:24:19.079152029 +0100
++++ ./Makefile	2011-08-21 00:29:11.248699599 +0100
+@@ -6,27 +6,28 @@
+ OBJS=hostname.o
+ 
+ hostname: $(OBJS)
+-	$(CC) $(CFLAGS) -o $@ $(OBJS) -lnsl
++	$(CC) $(CFLAGS) -o $@ $(OBJS) -lnsl -lsocket -lresolv
+ 	ln -fs hostname dnsdomainname
+ 	ln -fs hostname domainname
+ 	ln -fs hostname ypdomainname
+ 	ln -fs hostname nisdomainname
+ 
+ install: hostname
+-	install -d ${BASEDIR}/usr/share/man/man1
+-	install -o root -g root -m 0644 hostname.1 ${BASEDIR}/usr/share/man/man1
+-	ln -fs hostname.1 ${BASEDIR}/usr/share/man/man1/dnsdomainname.1
+-	ln -fs hostname.1 ${BASEDIR}/usr/share/man/man1/domainname.1
+-	ln -fs hostname.1 ${BASEDIR}/usr/share/man/man1/ypdomainname.1
+-	ln -fs hostname.1 ${BASEDIR}/usr/share/man/man1/nisdomainname.1
+-	install -o root -g root -m 0644 hostname.1.fr ${BASEDIR}/usr/share/man/fr/man1/hostname.1
++	install -d ${BASEDIR}/usr/gnu/share/man/man1
++	install -o root -g root -m 0644 hostname.1 ${BASEDIR}/usr/gnu/share/man/man1
++	ln -fs hostname.1 ${BASEDIR}/usr/gnu/share/man/man1/dnsdomainname.1
++	ln -fs hostname.1 ${BASEDIR}/usr/gnu/share/man/man1/domainname.1
++	ln -fs hostname.1 ${BASEDIR}/usr/gnu/share/man/man1/ypdomainname.1
++	ln -fs hostname.1 ${BASEDIR}/usr/gnu/share/man/man1/nisdomainname.1
++	install -d ${BASEDIR}/usr/gnu/share/man/fr/man1
++	install -o root -g root -m 0644 hostname.1.fr ${BASEDIR}/usr/gnu/share/man/fr/man1/hostname.1
+ 
+-	install -d ${BASEDIR}/bin
+-	install -o root -g root -m 0755 hostname ${BASEDIR}/bin
+-	ln -f hostname ${BASEDIR}/bin/dnsdomainname
+-	ln -f hostname ${BASEDIR}/bin/domainname
+-	ln -f hostname ${BASEDIR}/bin/nisdomainname
+-	ln -f hostname ${BASEDIR}/bin/ypdomainname
++	install -d ${BASEDIR}/usr/gnu/bin
++	install -o root -g root -m 0755 hostname ${BASEDIR}/usr/gnu/bin
++	ln -f hostname ${BASEDIR}/usr/gnu/bin/dnsdomainname
++	ln -f hostname ${BASEDIR}/usr/gnu/bin/domainname
++	ln -f hostname ${BASEDIR}/usr/gnu/bin/nisdomainname
++	ln -f hostname ${BASEDIR}/usr/gnu/bin/ypdomainname
+ 
+ clean:
+ 	-rm -f $(OBJS) hostname dnsdomainname domainname nisdomainname ypdomainname
+--- ./hostname.c.bak	2011-08-21 00:24:26.760308004 +0100
++++ ./hostname.c	2011-08-21 00:24:36.047256999 +0100
+@@ -44,6 +44,10 @@
+ #include <ctype.h>
+ #include <err.h>
+ #include <rpcsvc/ypclnt.h>
++#ifdef __sun
++#include <strings.h>
++#include <sys/systeminfo.h>
++#endif
+ 
+ #define VERSION "3.02"
+ 
+@@ -52,6 +56,15 @@
+ char *progname;
+ 
+ /*
++ * getdomainnname return NIS domain name on 
++ * Solaris so use the sysinfo API instead
++ */
++#ifdef __sun
++#define getdomainname(name,len) sysinfo(SI_SRPC_DOMAIN,name,len)
++#define setdomainname(name,len) sysinfo(SI_SET_SRPC_DOMAIN,name,len)
++#endif
++
++/*
+  * Return the name of the nis default domain. This is just a wrapper for
+  * yp_get_default_domain.  If something goes wrong, program exits.
+  */
