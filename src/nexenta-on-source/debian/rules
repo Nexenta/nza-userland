@@ -1,0 +1,47 @@
+#!/usr/bin/make -f
+# debian/rules for nexenta-on-source
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+
+PACKAGE=$(shell dh_listpackages)
+CURDIR=$(shell pwd)
+
+
+build:
+	dh_testdir
+	dh_testroot
+
+install: build
+	dh_testdir
+	dh_testroot
+	install -d debian/nexenta-on-source/usr/src/
+	cp -r debian/stuff debian/nexenta-on-source/usr/src/nexenta-on-source
+	
+clean:
+	dh_testdir
+	dh_testroot
+	dh_clean -d
+	rm -rf debian/tmp
+	rm -f debian/preinst debian/*substvars debian/files
+
+
+binary-indep: build
+
+binary-arch: build install
+	dh_testdir
+	dh_testroot
+	dh_installdirs
+	dh_installdocs
+	dh_installchangelogs
+	dh_install --sourcedir=debian/tmp
+	dh_compress
+	dh_makeshlibs
+	dh_installdeb
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary

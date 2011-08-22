@@ -1,0 +1,540 @@
+diff -r 2b3b7ee313ef usr/src/Makefile
+--- a/usr/src/Makefile	Thu Aug 11 16:47:55 2011 -0700
++++ b/usr/src/Makefile	Sat Aug 13 01:29:22 2011 -0700
+@@ -90,7 +90,7 @@
+ #	cd pkg and do a 'make install'
+ #
+ 
+-all: mapfiles closedbins sgs .WAIT $(SUBDIRS) pkg
++all: mapfiles closedbins sgs .WAIT $(SUBDIRS)
+ 
+ #
+ # The _msg build is a two-step process.  First, the _msg dependency
+@@ -104,12 +104,12 @@
+ # packaging to be pulled from $(SRC) and $(CLOSED) and staged in
+ # $(ROOT)/licenses.
+ #
+-install: install1 install2 _msg stage-licenses
++install: install1 install2 _msg 
+ 	@cd msg; pwd; $(MAKE) _msg
+ 	@rm -rf "$(ROOT)/catalog"
+ 
+-stage-licenses: install2
+-	@cd pkg; pwd; $(MAKE) stage-licenses
++#stage-licenses: install2
++#	@cd pkg; pwd; $(MAKE) stage-licenses
+ 
+ install1: mapfiles closedbins sgs
+ 
+@@ -123,7 +123,7 @@
+ mapfiles: bldtools
+ 	@cd common/mapfiles; pwd; $(MAKE) install
+ 
+-clean clobber: $(SUBDIRS) head pkg
++clean clobber: $(SUBDIRS) head
+ 
+ closedbins: FRC $(ROOTDIRS)
+ 	@CLOSED_ROOT="$$ON_CLOSED_BINS/root_$(MACH)$${RELEASE_BUILD+-nd}"; \
+@@ -149,7 +149,7 @@
+ .PARALLEL: $(PARALLEL_HEADERS) DUMMY
+ .PARALLEL: $(PARALLEL_DIRS) DUMMY
+ 
+-$(SUBDIRS) head pkg: FRC
++$(SUBDIRS) head: FRC
+ 	@cd $@; pwd; $(MAKE) $(TARGET)
+ 
+ # librpcsvc has a dependency on headers installed by
+@@ -216,7 +216,7 @@
+ # don't contain actual source code.
+ #
+ $(CLOSED_BUILD)XRDIRS += ../closed
+-XRPRUNE = pkg prototypes xmod
++XRPRUNE = prototypes xmod
+ XRINCDIRS = uts/common head ucbhead
+ $(CLOSED_BUILD)XRINCDIRS = uts/common ../closed/uts/common head ucbhead
+ 
+@@ -275,7 +275,7 @@
+ 	@cd uts/sun4u; pwd; $(MAKE) EXPORT_SRC
+ 	@cd $(CLOSED)/uts/sun4v/io/ncp;	pwd;	$(MAKE) EXPORT_SRC
+ 	@cd $(CLOSED)/uts/sun4v/io/n2cp; pwd;	$(MAKE) EXPORT_SRC
+-	@cd pkg; pwd;	$(MAKE) EXPORT_SRC
++	#@cd pkg; pwd;	$(MAKE) EXPORT_SRC
+ 	$(RM) -r $(XMOD_DELETE_FILES)
+ 	$(RM) Targetdirs+
+ 	sed -e "/^# EXPORT DELETE START/,/^# EXPORT DELETE END/d" \
+diff -r 2b3b7ee313ef usr/src/cmd/Makefile
+--- a/usr/src/cmd/Makefile	Thu Aug 11 16:47:55 2011 -0700
++++ b/usr/src/cmd/Makefile	Sat Aug 13 01:29:22 2011 -0700
+@@ -48,7 +48,6 @@
+ 	allocate	\
+ 	availdevs	\
+ 	lp		\
+-	perl		\
+ 	man		\
+ 	Adm		\
+ 	abi		\
+diff -r 2b3b7ee313ef usr/src/cmd/dtrace/demo/Makefile
+--- a/usr/src/cmd/dtrace/demo/Makefile	Thu Aug 11 16:47:55 2011 -0700
++++ b/usr/src/cmd/dtrace/demo/Makefile	Sat Aug 13 01:29:22 2011 -0700
+@@ -130,8 +130,7 @@
+ 
+ DEMOFILES = \
+ 	$(DFILES) \
+-	$(HTMLFILES) \
+-	sunlogo.gif
++	$(HTMLFILES)
+ 
+ MKDEMO	= mkdemo
+ CLEANFILES += $(DFILES) $(MKDEMO)
+diff -r 2b3b7ee313ef usr/src/cmd/dtrace/test/tst/common/Makefile
+--- a/usr/src/cmd/dtrace/test/tst/common/Makefile	Thu Aug 11 16:47:55 2011 -0700
++++ b/usr/src/cmd/dtrace/test/tst/common/Makefile	Sat Aug 13 01:29:22 2011 -0700
+@@ -47,7 +47,8 @@
+ 
+ ustack/tst.bigstack.exe := COPTFLAG += -xO1
+ 
+-GCC = $(ONBLD_TOOLS)/bin/$(MACH)/cw -_gcc
++#GCC = $(ONBLD_TOOLS)/bin/$(MACH)/cw -_gcc
++GCC = /usr/bin/gcc
+ 
+ nfs/%.o: $(SNOOPDIR)/%.c
+ 	$(COMPILE.c) -o $@ $< -I$(SNOOPDIR)
+diff -r 2b3b7ee313ef usr/src/cmd/fm/eversholt/common/esclex.c
+--- a/usr/src/cmd/fm/eversholt/common/esclex.c	Thu Aug 11 16:47:55 2011 -0700
++++ b/usr/src/cmd/fm/eversholt/common/esclex.c	Sat Aug 13 01:29:22 2011 -0700
+@@ -73,7 +73,7 @@
+ static FILE *Fp;
+ static int Line;
+ static const char *File;
+-static const char *Cpp = "/usr/bin/cpp";
++static const char *Cpp = "/usr/lib/cpp";
+ #ifdef	ESC
+ static const char *Cppargs;
+ static const char *Cppstdargs = "-undef -Y.";
+diff -r 2b3b7ee313ef usr/src/cmd/lp/cmd/lpsched/print-svc
+--- a/usr/src/cmd/lp/cmd/lpsched/print-svc	Thu Aug 11 16:47:55 2011 -0700
++++ b/usr/src/cmd/lp/cmd/lpsched/print-svc	Sat Aug 13 01:29:22 2011 -0700
+@@ -120,7 +120,7 @@
+ 	FMRI=$2
+ 	IPP_FMRI="svc:/application/print/ipp-listener:default"
+ 	RFC1179_FMRI="svc:/application/print/rfc1179:default"
+-	IPP_CONF=/etc/apache/httpd-standalone-ipp.conf
++	IPP_CONF=/etc/apache2/httpd-standalone-ipp.conf
+ 	ip="any"
+ 
+ 	policy=`get_policy $FMRI`
+diff -r 2b3b7ee313ef usr/src/cmd/mdb/Makefile.kmdb
+--- a/usr/src/cmd/mdb/Makefile.kmdb	Thu Aug 11 16:47:55 2011 -0700
++++ b/usr/src/cmd/mdb/Makefile.kmdb	Sat Aug 13 01:29:22 2011 -0700
+@@ -66,20 +66,12 @@
+ #
+ SUPPORTED_TERMS	= \
+ 	ansi \
+-	at386 \
+-	AT386 \
+-	dtterm \
+-	h19 \
+ 	sun \
+ 	sun-cmd \
+ 	sun-color \
+ 	vt100 \
+ 	vt52 \
+-	wyse30 \
+-	wyse50 \
+-	wyse60 \
+-	xterm \
+-	xterms
++	xterm
+ 
+ LINTFLAGS += -n -errtags=yes
+ 
+diff -r 2b3b7ee313ef usr/src/cmd/mdb/intel/amd64/libpython2.6/Makefile
+--- a/usr/src/cmd/mdb/intel/amd64/libpython2.6/Makefile	Thu Aug 11 16:47:55 2011 -0700
++++ b/usr/src/cmd/mdb/intel/amd64/libpython2.6/Makefile	Sat Aug 13 01:29:22 2011 -0700
+@@ -31,7 +31,7 @@
+ MODSRCS = libpython26.c
+ 
+ include ../../../../Makefile.cmd
+-include ../../../../Makefile.cmd.64
++#include ../../../../Makefile.cmd.64
+ include ../../Makefile.amd64
+ include ../../../Makefile.module
+ 
+diff -r 2b3b7ee313ef usr/src/cmd/perl/skel/Makefile
+--- a/usr/src/cmd/perl/skel/Makefile	Thu Aug 11 16:47:55 2011 -0700
++++ b/usr/src/cmd/perl/skel/Makefile	Sat Aug 13 01:29:22 2011 -0700
+@@ -31,7 +31,7 @@
+ # staging area to postprocess and install the result to $(ROOT)
+ STAGE = $(SRC)/cmd/perl/$(PERL_VERSION)/staging
+ 
+-PERL=/usr/perl5/$(PERL_VERSION)/bin/perl
++PERL=/usr/perl5/bin/perl
+ 
+ PERL_MM_ARGS = INSTALLDIRS=perl CC='$(CC)' LD='$(CC)'
+ 
+diff -r 2b3b7ee313ef usr/src/grub/grub-0.97/lib/device.h
+--- a/usr/src/grub/grub-0.97/lib/device.h	Thu Aug 11 16:47:55 2011 -0700
++++ b/usr/src/grub/grub-0.97/lib/device.h	Sat Aug 13 01:29:22 2011 -0700
+@@ -18,6 +18,8 @@
+  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+  */
+ 
++#define va_start(v,l)	__builtin_va_start((v),l)
++
+ #ifndef DEVICE_MAP_HEADER
+ #define DEVICE_MAP_HEADER	1
+ 
+diff -r 2b3b7ee313ef usr/src/lib/fm/libfmd_snmp/Makefile.com
+--- a/usr/src/lib/fm/libfmd_snmp/Makefile.com	Thu Aug 11 16:47:55 2011 -0700
++++ b/usr/src/lib/fm/libfmd_snmp/Makefile.com	Sat Aug 13 01:29:22 2011 -0700
+@@ -44,6 +44,8 @@
+ 
+ SRCDIR =	../common
+ 
++C99MODE=        $(C99_ENABLE)
++
+ CPPFLAGS += -I../common -I.
+ $(NOT_RELEASE_BUILD)CPPFLAGS += -DDEBUG
+ CFLAGS += $(CCVERBOSE) $(C_BIGPICFLAGS)
+diff -r 2b3b7ee313ef usr/src/lib/libkmf/plugins/kmf_nss/Makefile.com
+--- a/usr/src/lib/libkmf/plugins/kmf_nss/Makefile.com	Thu Aug 11 16:47:55 2011 -0700
++++ b/usr/src/lib/libkmf/plugins/kmf_nss/Makefile.com	Sat Aug 13 01:29:22 2011 -0700
+@@ -32,9 +32,10 @@
+ 
+ include	$(SRC)/lib/Makefile.lib
+ 
+-MPSDIR=		/usr/lib/mps
++MPSDIR=		/usr/lib
+ KMFINC=		-I../../../include -I../../../ber_der/inc
+-NSSINC=		-I/usr/include/mps
++NSSINC=		-I/usr/include/nss
++NSPRINC=	-I/usr/include/nspr
+ BERLIB=		-lkmf -lkmfberder
+ BERLIB64=	$(BERLIB)
+ 
+@@ -45,7 +46,7 @@
+ INCDIR=		../../include
+ 
+ CFLAGS		+=	$(CCVERBOSE) 
+-CPPFLAGS	+=	-D_REENTRANT $(KMFINC) $(NSSINC)  \
++CPPFLAGS	+=	-D_REENTRANT $(KMFINC) $(NSSINC) $(NSPRINC)  \
+ 		-I$(SFWDIR)/include -I$(INCDIR) -I/usr/include/libxml2
+ 
+ PICS=	$(OBJECTS:%=pics/%)
+diff -r 2b3b7ee313ef usr/src/lib/libkmf/plugins/kmf_nss/common/nss_spi.c
+--- a/usr/src/lib/libkmf/plugins/kmf_nss/common/nss_spi.c	Thu Aug 11 16:47:55 2011 -0700
++++ b/usr/src/lib/libkmf/plugins/kmf_nss/common/nss_spi.c	Sat Aug 13 01:29:22 2011 -0700
+@@ -36,20 +36,20 @@
+ #include <ber_der.h>
+ /* NSS related headers */
+ 
+-#include <mps/nss.h>
+-#include <mps/cert.h>
+-#include <mps/certdb.h>
+-#include <mps/secoid.h>
+-#include <mps/secder.h>
+-#include <mps/secerr.h>
+-#include <mps/cryptohi.h>
+-#include <mps/keyhi.h>
+-#include <mps/keythi.h>
+-#include <mps/pk11func.h>
+-#include <mps/pk11pqg.h>
+-#include <mps/pkcs12.h>
+-#include <mps/p12plcy.h>
+-#include <mps/prerror.h>
++#include <nss/nss.h>
++#include <nss/cert.h>
++#include <nss/certdb.h>
++#include <nss/secoid.h>
++#include <nss/secder.h>
++#include <nss/secerr.h>
++#include <nss/cryptohi.h>
++#include <nss/keyhi.h>
++#include <nss/keythi.h>
++#include <nss/pk11func.h>
++#include <nss/pk11pqg.h>
++#include <nss/pkcs12.h>
++#include <nss/p12plcy.h>
++#include <nspr/prerror.h>
+ 
+ #define	NSS_OK		0
+ 
+diff -r 2b3b7ee313ef usr/src/lib/libldap5/Makefile.com
+--- a/usr/src/lib/libldap5/Makefile.com	Thu Aug 11 16:47:55 2011 -0700
++++ b/usr/src/lib/libldap5/Makefile.com	Sat Aug 13 01:29:22 2011 -0700
+@@ -59,8 +59,12 @@
+ include ../../Makefile.lib
+ 
+ NSS_LIBS=	-lnspr4 -lplc4 -lnss3 -lssl3
+-NSS_HDRS=	/usr/include/mps
+-NSS_LDPATH=	/usr/lib/mps
++#NSS_HDRS=	/usr/include/mps
++#NSS_LDPATH=	/usr/lib/mps
++#NSS_LDPATH64=	$(NSS_LDPATH)/64	
++NSS_HDRS=	/usr/include/nss
++NSPR_HDRS=	/usr/include/nspr
++NSS_LDPATH=	/usr/lib
+ NSS_LDPATH64=	$(NSS_LDPATH)/64	
+ 
+ 
+@@ -74,7 +78,8 @@
+ 
+ # Include directories for all files
+ COM_INC=	-I$(SRC)/lib/libldap5/include/ldap \
+-		-I$(NSS_HDRS)
++		-I$(NSS_HDRS) \
++		-I$(NSPR_HDRS)
+ 
+ SRCS=		$(BEROBJS:%.o=../sources/ldap/ber/%.c) \
+ 		$(LDAPOBJS:%.o=../sources/ldap/common/%.c) \
+diff -r 2b3b7ee313ef usr/src/lib/libsldap/Makefile.com
+--- a/usr/src/lib/libsldap/Makefile.com	Thu Aug 11 16:47:55 2011 -0700
++++ b/usr/src/lib/libsldap/Makefile.com	Sat Aug 13 01:29:22 2011 -0700
+@@ -40,6 +40,8 @@
+ 
+ include ../../Makefile.lib
+ 
++NSPR_HDRS=	/usr/include/nspr
++
+ SRCS =		$(SLDAPOBJ:%.o=../common/%.c)
+ LIBS =		$(DYNLIB) $(LINTLIB)
+ $(LINTLIB):= 	SRCS=../common/llib-lsldap
+@@ -50,7 +52,8 @@
+ CFLAGS +=	$(CCVERBOSE)
+ LOCFLAGS +=	-D_REENTRANT -DSUNW_OPTIONS
+ CPPFLAGS +=	-I../common -I$(SRC)/lib/libldap5/include/ldap \
+-		-I/usr/include/mps $(LOCFLAGS)
++		-I$(NSPR_HDRS) $(LOCFLAGS)
++
+ LINTFLAGS +=	-erroff=E_BAD_PTR_CAST_ALIGN
+ LINTFLAGS64 +=	-erroff=E_BAD_PTR_CAST_ALIGN
+ 
+diff -r 2b3b7ee313ef usr/src/lib/lvm/libsvm/Makefile.com
+--- a/usr/src/lib/lvm/libsvm/Makefile.com	Thu Aug 11 16:47:55 2011 -0700
++++ b/usr/src/lib/lvm/libsvm/Makefile.com	Sat Aug 13 01:29:22 2011 -0700
+@@ -46,7 +46,7 @@
+ # XXX There isn't a lint library for libspmicommon.  For now, we work
+ # around this by only using the library when we build (as opposed to lint).
+ #
+-all debug install := LDLIBS += -L/usr/snadm/lib -lspmicommon
++all debug install := LDLIBS += -L/usr/snadm/lib
+ 
+ DYNFLAGS +=	-R/usr/snadm/lib
+ CPPFLAGS +=	-D_FILE_OFFSET_BITS=64
+diff -r 2b3b7ee313ef usr/src/lib/print/mod_ipp/Makefile
+--- a/usr/src/lib/print/mod_ipp/Makefile	Thu Aug 11 16:47:55 2011 -0700
++++ b/usr/src/lib/print/mod_ipp/Makefile	Sat Aug 13 01:29:22 2011 -0700
+@@ -30,11 +30,11 @@
+ include ../../Makefile.lib
+ include ../../Makefile.rootfs
+ 
+-APACHEMODDIR =	$(ROOT)/usr/apache/libexec
+-APACHECONFDIR =	$(ROOT)/etc/apache
++APACHEMODDIR =	$(ROOT)/usr/lib/apache2/modules
++APACHECONFDIR =	$(ROOT)/etc/apache2
+ LISTENERDIR =	$(ROOT)/var/lp/ipp-listener
+ 
+-ROOTDIRS =	$(ROOT)/usr/apache $(APACHEMODDIR) $(APACHECONFDIR) \
++ROOTDIRS =	$(ROOT)/usr $(APACHEMODDIR) $(APACHECONFDIR) \
+ 		$(ROOT)/var/lp $(LISTENERDIR)
+ 
+ $(ROOT)/var/lp:=	DIRMODE = 775
+@@ -48,7 +48,7 @@
+ CFLAGS +=	$(CCVERBOSE)
+ CPPFLAGS +=	-I../libipp-listener/common
+ CPPFLAGS +=	-I../libipp-core/common
+-CPPFLAGS +=	-I/usr/apache/include
++CPPFLAGS +=	-I/usr/include/apache2 -I/usr/include/apr-1.0
+ CPPFLAGS +=	-DEAPI
+ ZDEFS =		$(ZNODEFS)
+ 
+diff -r 2b3b7ee313ef usr/src/lib/print/mod_ipp/ipp-listener.xml
+--- a/usr/src/lib/print/mod_ipp/ipp-listener.xml	Thu Aug 11 16:47:55 2011 -0700
++++ b/usr/src/lib/print/mod_ipp/ipp-listener.xml	Sat Aug 13 01:29:22 2011 -0700
+@@ -44,7 +44,7 @@
+ 	<exec_method
+ 	    type='method'
+ 	    name='start'
+-	    exec='/usr/apache/bin/httpd -f /etc/apache/httpd-standalone-ipp.conf'
++	    exec='/usr/apache/bin/httpd -f /etc/apache2/httpd-standalone-ipp.conf'
+ 	    timeout_seconds='10' />
+ 
+ 	<exec_method
+diff -r 2b3b7ee313ef usr/src/lib/print/mod_ipp/mod_ipp.c
+--- a/usr/src/lib/print/mod_ipp/mod_ipp.c	Thu Aug 11 16:47:55 2011 -0700
++++ b/usr/src/lib/print/mod_ipp/mod_ipp.c	Sat Aug 13 01:29:22 2011 -0700
+@@ -51,7 +51,6 @@
+ #include "papi.h"
+ #ifndef APACHE_RELEASE	/* appears to only exist in Apache 1.X */
+ #define	APACHE2
+-#include "apr_compat.h"
+ #endif
+ 
+ #include <papi.h>
+@@ -220,7 +219,7 @@
+ 	 * try and handle it.
+ 	 */
+ 	if (r->headers_in != NULL) {
+-		char *mime_type = (char *)ap_table_get(r->headers_in,
++		char *mime_type = (char *)apr_table_get(r->headers_in,
+ 							"Content-Type");
+ 
+ 		if ((mime_type == NULL) ||
+@@ -261,7 +260,7 @@
+ 	(void) papiAttributeListAddInteger(&request, PAPI_ATTR_EXCL,
+ 				"uri-port", ap_get_server_port(r));
+ 	if (r->headers_in != NULL) {
+-		char *host = (char *)ap_table_get(r->headers_in, "Host");
++		char *host = (char *)apr_table_get(r->headers_in, "Host");
+ 
+ 		if ((host == NULL) || (host[0] == '\0'))
+ 			host = (char *)ap_get_server_name(r);
+@@ -294,9 +293,11 @@
+ 	 * service to retrieve the sensativity label off of a multi-level
+ 	 * port.
+ 	 */
++#ifndef APACHE2
+ 	(void) papiAttributeListAddInteger(&request, PAPI_ATTR_EXCL,
+ 			"peer-socket", ap_bfileno(r->connection->client, B_RD));
+ 
++#endif
+ 	/* process the request */
+ 	status = ipp_process_request(request, &response, read_data, r);
+ 	if (status != PAPI_OK) {
+@@ -316,7 +317,7 @@
+ 	 * remain in the post request.
+ 	 */
+ 	if ((r->read_chunked != 0) &&
+-	    (ap_table_get(r->headers_in, "Content-Length") == NULL))
++	    (apr_table_get(r->headers_in, "Content-Length") == NULL))
+ 		discard_data(r);
+ 
+ 	/* write an IPP response back to the network */
+@@ -494,7 +495,7 @@
+ 	/* Need to make sure we don't get directory listings by accident */
+ 	ap_hook_handler(ipp_handler, NULL, modules, APR_HOOK_MIDDLE);
+ 	ap_hook_default_port(ipp_port, NULL, NULL, APR_HOOK_MIDDLE);
+-	ap_hook_http_method(ipp_method, NULL, NULL, APR_HOOK_MIDDLE);
++	ap_hook_http_scheme(ipp_method, NULL, NULL, APR_HOOK_MIDDLE);
+ }
+ 
+ module AP_MODULE_DECLARE_DATA ipp_module = {
+diff -r 2b3b7ee313ef usr/src/lib/pylibbe/Makefile.com
+--- a/usr/src/lib/pylibbe/Makefile.com	Thu Aug 11 16:47:55 2011 -0700
++++ b/usr/src/lib/pylibbe/Makefile.com	Sat Aug 13 01:29:22 2011 -0700
+@@ -37,7 +37,7 @@
+ PYFILES=	$(PYSRCS) $(PYSRCS:%.py=%.pyc)
+ ROOTPYBEFILES=  $(PYFILES:%=$(ROOTLIBDIR)/%)
+ 
+-C99MODE=        $(C99_ENABLE)
++C99MODE=	
+ 
+ LIBS =		$(DYNLIB)
+ LDLIBS +=	-lbe -lnvpair -lc
+diff -r 2b3b7ee313ef usr/src/lib/pylibbe/common/libbe_py.c
+--- a/usr/src/lib/pylibbe/common/libbe_py.c	Thu Aug 11 16:47:55 2011 -0700
++++ b/usr/src/lib/pylibbe/common/libbe_py.c	Sat Aug 13 01:29:22 2011 -0700
+@@ -31,6 +31,9 @@
+ #include <libbe.h>
+ #include <libbe_priv.h>
+ 
++#define B_TRUE _B_TRUE
++#define B_FALSE _B_FALSE
++
+ enum {
+ 	BE_PY_SUCCESS = 0,
+ 	BE_PY_ERR_APPEND = 6000,
+diff -r 2b3b7ee313ef usr/src/lib/pysolaris/Makefile.com
+--- a/usr/src/lib/pysolaris/Makefile.com	Thu Aug 11 16:47:55 2011 -0700
++++ b/usr/src/lib/pysolaris/Makefile.com	Sat Aug 13 01:29:22 2011 -0700
+@@ -38,8 +38,8 @@
+ ROOTPYSOLFILES= $(PYFILES:%=$(ROOTLIBDIR)/%)
+ PYTHON=		$(PYTHON_26)
+ 
+-C99MODE=        -xc99=%all
+-C99LMODE=       -Xc99=%all
++C99MODE=
++C99LMODE=
+ 
+ LIBS =		$(DYNLIB)
+ LDLIBS +=	-lc -lsec -lidmap -lpython2.6
+diff -r 2b3b7ee313ef usr/src/lib/pyzfs/Makefile.com
+--- a/usr/src/lib/pyzfs/Makefile.com	Thu Aug 11 16:47:55 2011 -0700
++++ b/usr/src/lib/pyzfs/Makefile.com	Sat Aug 13 01:29:22 2011 -0700
+@@ -41,8 +41,8 @@
+ PYFILES=	$(PYSRCS) $(PYSRCS:%.py=%.pyc)
+ ROOTPYZFSFILES= $(PYFILES:%=$(ROOTLIBDIR)/%)
+ 
+-C99MODE=        -xc99=%all
+-C99LMODE=       -Xc99=%all
++C99MODE=        
++C99LMODE=      
+ 
+ LIBS =		$(DYNLIB)
+ LDLIBS +=	-lc -lnvpair -lpython2.6 -lzfs
+diff -r 2b3b7ee313ef usr/src/lib/pyzfs/common/ioctl.c
+--- a/usr/src/lib/pyzfs/common/ioctl.c	Thu Aug 11 16:47:55 2011 -0700
++++ b/usr/src/lib/pyzfs/common/ioctl.c	Sat Aug 13 01:29:22 2011 -0700
+@@ -33,6 +33,9 @@
+ #include <libzfs.h>
+ #include "zfs_prop.h"
+ 
++#define B_TRUE _B_TRUE
++#define B_FALSE _B_FALSE
++
+ static PyObject *ZFSError;
+ static int zfsdevfd;
+ 
+diff -r 2b3b7ee313ef usr/src/pkg/manifests/print-lp-ipp-ipp-listener.mf
+--- a/usr/src/pkg/manifests/print-lp-ipp-ipp-listener.mf	Thu Aug 11 16:47:55 2011 -0700
++++ b/usr/src/pkg/manifests/print-lp-ipp-ipp-listener.mf	Sat Aug 13 01:29:22 2011 -0700
+@@ -31,23 +31,23 @@
+     value=org.opensolaris.category.2008:System/Printing
+ set name=variant.arch value=$(ARCH)
+ dir path=etc group=sys
+-dir path=etc/apache
++dir path=etc/apache2
+ dir path=lib
+ dir path=lib/svc
+ dir path=lib/svc/manifest group=sys
+ dir path=lib/svc/manifest/application group=sys
+ dir path=lib/svc/manifest/application/print group=sys
+ dir path=usr group=sys
+-dir path=usr/apache
+-dir path=usr/apache/libexec
++dir path=usr/lib/apache2
++dir path=usr/lib/apache2/modules
+ dir path=var group=sys
+ dir path=var/lp group=lp mode=0775 owner=lp
+ dir path=var/lp/ipp-listener
+-file path=etc/apache/httpd-standalone-ipp.conf \
+-    original_name=SUNWippl:etc/apache/httpd-standalone-ipp.conf preserve=true
++file path=etc/apache2/httpd-standalone-ipp.conf \
++    original_name=SUNWippl:etc/apache2/httpd-standalone-ipp.conf preserve=true
+ file path=lib/svc/manifest/application/print/ipp-listener.xml group=sys \
+     mode=0444
+-file path=usr/apache/libexec/mod_ipp.so mode=0555
++file path=usr/lib/apache2/modules/mod_ipp.so mode=0555
+ file path=var/lp/ipp-listener/index.html mode=0444
+ legacy pkg=SUNWipplr \
+     desc="Internet Printing Protocol(IPP) Apache configuration for service module" \
+diff -r 2b3b7ee313ef usr/src/tools/scripts/nightly.sh
+--- a/usr/src/tools/scripts/nightly.sh	Thu Aug 11 16:47:55 2011 -0700
++++ b/usr/src/tools/scripts/nightly.sh	Sat Aug 13 01:29:22 2011 -0700
+@@ -3162,11 +3162,11 @@
+ 		    sort -u` >> $mail_msg_file
+ 	fi
+ 
+-	if [ -n "$abspkg" ]; then
+-		for d in "$abspkg"; do
+-			( cd $d/pkg ; $MAKE -e pmodes ) >> $mail_msg_file
+-		done
+-	fi
++#	if [ -n "$abspkg" ]; then
++#		for d in "$abspkg"; do
++#			( cd $d/pkg ; $MAKE -e pmodes ) >> $mail_msg_file
++#		done
++#	fi
+ fi
+ 
+ if [ "$w_FLAG" = "y" -a "$build_ok" = "y" ]; then

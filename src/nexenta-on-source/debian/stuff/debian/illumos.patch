@@ -1,0 +1,28 @@
+--- a/illumos.sh	Tue May 17 12:36:01 2011 -0400
++++ b/illumos.sh	Wed May 11 11:34:18 2011 +0400
+@@ -42,8 +42,9 @@
+ # - This script is only interpreted by ksh93 and explicitly allows the
+ #   use of ksh93 language extensions.
+ #
+-export NIGHTLY_OPTIONS='-FnCDlmprt'
+-
++#export NIGHTLY_OPTIONS='-Nndri'
++export NIGHTLY_OPTIONS='-Nndrit'
++export CW_NO_SHADOW=1
+ #
+ # -- PLEASE READ THIS --
+ #
+@@ -55,10 +56,11 @@
+ 
+ # This is a variable for the rest of the script - GATE doesn't matter to
+ # nightly itself
+-export GATE='testws'
++export GATE='__GATEREV__'
++
+ 
+ # CODEMGR_WS - where is your workspace at (or what should nightly name it)
+-export CODEMGR_WS="$HOME/ws/$GATE"
++export CODEMGR_WS="__GATEROOT__"
+ 
+ # Maximum number of dmake jobs.  The recommended number is 2 + NCPUS,
+ # where NCPUS is the number of logical CPUs on your build system.
