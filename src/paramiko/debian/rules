@@ -1,0 +1,12 @@
+#!/usr/bin/make -f
+
+%:
+	dh $@ --with python2
+
+override_dh_clean:
+	rm -rf build test.log
+	dh_clean
+
+override_dh_auto_test:
+	./test.py
+
