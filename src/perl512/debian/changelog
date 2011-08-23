@@ -1,3 +1,9 @@
+perl (40-0-1) unstable; urgency=medium
+
+  * perl-base should provide perlapi-5.10.1
+
+ -- Alexander Eremin <a.eremin@nexenta.com>  Tue, 23 Aug 2011 15:11:45 +0300
+
 perl (40-0-0) unstable; urgency=medium
 
   * NCP4 port with DTrace
