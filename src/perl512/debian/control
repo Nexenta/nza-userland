@@ -28,7 +28,7 @@ Breaks: autoconf2.13 (<< 2.13-45),
 Replaces: perl (<< 5.10.1-12), perl-modules (<< 5.10.1-1), libperl5.8 (<< 5.8.0-20),
  libscalar-list-utils-perl,
  libxsloader-perl 
-Provides: perl5-base, ${perlapi:Provides},
+Provides: perl5-base, perlapi-5.10.0, perlapi-5.10.1, ${perlapi:Provides},
  libscalar-list-utils-perl,
  libxsloader-perl
 Suggests: perl
