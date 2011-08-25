@@ -1,0 +1,38 @@
+Source: libpar-packer-perl
+Section: perl
+Upstream-Version: 1.008-1nexenta1
+Priority: optional
+Build-Depends: perl, debhelper (>= 7.0.50),
+ libarchive-zip-perl,
+ libgetopt-argvfile-perl,
+ libinline-perl,
+ libmodule-scandeps-perl (>= 0.98),
+ libpar-perl (>= 1.000),
+ libperl-dev,
+ libtest-pod-perl
+Maintainer: Debian Perl Group <pkg-perl-maintainers@lists.alioth.debian.org>
+Uploaders: Damyan Ivanov <dmn@debian.org>,
+ gregor herrmann <gregoa@debian.org>, Niko Tyni <ntyni@debian.org>,
+ Ryan Niebur <ryan@debian.org>, Jonathan Yu <jawnsy@cpan.org>,
+ Chris Butler <chrisb@debian.org>
+Standards-Version: 3.9.1
+Vcs-Svn: svn://svn.debian.org/pkg-perl/trunk/libpar-packer-perl/
+Vcs-Browser: http://svn.debian.org/viewsvn/pkg-perl/trunk/libpar-packer-perl/
+Homepage: http://par.perl.org/
+
+Package: libpar-packer-perl
+Architecture: any
+Depends: ${misc:Depends}, ${perl:Depends}, ${shlibs:Depends},
+ perl (>= ${perl:current}),
+ libarchive-zip-perl,
+ libgetopt-argvfile-perl,
+ libmodule-scandeps-perl (>= 0.98),
+ libpar-dist-perl,
+ libpar-perl (>= 1.000)
+Recommends: libtk-perl
+Description: utility for creating PAR archives and stand-alone executables
+ PAR (Perl Archiving Toolkit) is a Cross-Platform Packaging and Deployment
+ tool, dubbed as a cross between Java's JAR and Perl2EXE/PerlApp.
+ .
+ This package contains the modules and tools necessary for creating PAR
+ archives and stand-alone executables.

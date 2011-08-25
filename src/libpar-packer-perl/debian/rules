@@ -1,0 +1,39 @@
+#!/usr/bin/make -f
+
+PACKAGE = $(shell dh_listpackages)
+TMP     = $(CURDIR)/debian/$(PACKAGE)
+
+PERLVER   := $(shell perl -e 'printf "%vd\n", $$^V')
+VMAJOR    := $(shell echo $(PERLVER) | cut -f 1 -d .)
+VMINOR    := $(shell echo $(PERLVER) | cut -f 2 -d .)
+VPATCH    := $(shell echo $(PERLVER) | cut -f 3 -d .)
+NEXTPATCH := $(shell expr $(VPATCH) + 1 2>/dev/null)
+
+%:
+	dh $@
+
+override_dh_auto_test:
+	ln -sf par.pl blib/script/par-archive
+	PERL_TEST_POD=1 dh_auto_test
+	rm blib/script/par-archive
+
+override_dh_clean:
+	dh_clean
+	rm -fr _Inline
+	rm -fr contrib/automated_pp_test/pp_switch_tests
+
+override_dh_auto_install:
+	dh_auto_install
+	prename s/\.pl/-archive/ \
+		$(TMP)/usr/bin/par.pl $(TMP)/usr/share/man/man1/par.pl.1p
+	# Move arch-dependent stuff into lib
+	mkdir -p $(TMP)/usr/lib/perl5/PAR/StrippedPARL/
+	mv $(TMP)/usr/share/perl5/PAR/StrippedPARL/Static.pm \
+		$(TMP)/usr/lib/perl5/PAR/StrippedPARL/
+	mv $(TMP)/usr/share/perl5/PAR/StrippedPARL/Dynamic.pm \
+		$(TMP)/usr/lib/perl5/PAR/StrippedPARL/
+
+override_dh_gencontrol:
+	dh_gencontrol -- \
+		-Vperl:current="$(VMAJOR).$(VMINOR).$(VPATCH)" \
+		-Vperl:next="$(VMAJOR).$(VMINOR).$(NEXTPATCH)~"

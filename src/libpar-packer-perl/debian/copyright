@@ -1,0 +1,158 @@
+Format-Specification: http://svn.debian.org/wsvn/dep/web/deps/dep5.mdwn?op=file&rev=135
+Maintainer: Audrey Tang <cpan@audreyt.org>
+Source: http://search.cpan.org/dist/PAR-Packer/
+Name: PAR-Packer
+
+Files: *
+Copyright: 2002-2010, Audrey Tang <cpan@audreyt.org>
+License: Artistic or GPL-1+
+
+Files: contrib/automated_pp_test/automated_pp_test.pl
+Copyright: 2004-2006, Malcolm Nooning
+License: Artistic or GPL-1+
+
+Files: contrib/automated_pp_test/hello_tk.pl,
+ contrib/automated_pp_test/prior_to_test.pm,
+ contrib/automated_pp_test/remove_file_and_try_executable_again.pm,
+ contrib/automated_pp_test/pipe_a_command.pm,
+ contrib/automated_pp_test/test_in_further_subdir.pm
+Copyright: 2004, Malcolm Nooning
+License: Artistic or GPL-1+
+
+Files: contrib/procedural_pp/pp_old
+Copyright: 2002-2004, Audrey Tang <autrijus@autrijus.org>
+License: Artistic or GPL-1+
+
+Files: lib/App/Packer/PAR.pm
+Copyright: 2004-2009, Edward S. Peschko, Audrey Tang and Mattia Barbon.
+License: Artistic or GPL-1+
+
+Files: lib/PAR/Filter.pm, lib/PAR/Filter/Bytecode.pm, lib/PAR/Filter/PodStrip.pm
+Copyright: 2003-2009, Audrey Tang <cpan@audreyt.org>.
+License: Artistic or GPL-1+
+
+Files: lib/PAR/Filter/Bleach.pm, lib/PAR/Filter/PatchContent.pm, lib/PAR/Filter/Obfuscate.pm
+Copyright: 2003-2009, Audrey Tang <cpan@audreyt.org>.
+License: Artistic or GPL-1+
+
+Files: lib/PAR/Filter/PatchContent.pm
+Copyright: 2003-2008, Audrey Tang <cpan@audreyt.org>
+License: Artistic or GPL-1+
+
+Files: lib/PAR/StrippedPARL/Dynamic.pm, lib/PAR/StrippedPARL/Static.pm, lib/PAR/StrippedPARL/Base.pm
+Copyright: 2006-2009, Steffen Mueller <smueller@cpan.org>.
+License: Artistic or GPL-1+
+
+Files: myldr/encode_append.pl
+Copyright: 2006-2009, Steffen Mueller
+License: Artistic or GPL-1+
+
+Files: myldr/Makefile.PL
+Copyright: 2002-2006, Audrey Tang
+ 2002, Mattia Barbon.
+License: Artistic or GPL-1+
+
+Files: myldr/utils.c
+Copyright Copyright (c) 1997 Todd C. Miller <Todd.Miller@courtesan.com>
+License: Artistic or GPL-1+
+
+Files: myldr/file2c.pl
+Copyright: 2002, Mattia Barbon
+ 2002, Audrey Tang.
+License: Artistic or GPL-1+
+
+Files: myldr/env.c
+Copyright: 1987-1993, The Regents of the University of California
+License: BSD
+
+Files: script/par.pl, script/parl.pod
+Copyright: Copyright 2002-2009 by Audrey Tang
+License: Artistic or GPL-1+
+
+Files: script/tkpp
+Copyright: 2003-2006 by Doug Gruber <doug(a)dougthug.com>,
+License: Artistic or GPL-1+
+
+Files: inc/Module/*
+Copyright: 2002-2010, Adam Kennedy <adamk@cpan.org>
+ 2002-2009, Audrey Tang <autrijus@autrijus.org>
+ 2002-2009, Brian Ingerson <ingy@cpan.org>
+License: Artistic or GPL-1+
+
+Files: inc/PerlIO.pm
+Copyright: 1993-2010, Larry Wall and others
+License: Artistic and GPL-1+
+
+Files: inc/Test/More.pm
+Copyright: 2001-2008, Michael G Schwern <schwern@pobox.com>
+License: Artistic or GPL-1+
+
+Files: inc/Test/Builder.pm
+Copyright: 2002-2008, chromatic <chromatic@wgz.org>
+ 2002-2008, Michael G Schwern <schwern@pobox.com>
+License: Artistic or GPL-1+
+
+Files: inc/Test/Builder/IO/Scalar.pm
+Copyright: 1996, Eryq <eryq@zeegee.com>
+ 1999-2001, ZeeGee Software Inc. <http://www.zeegee.com/>
+License: Artistic or GPL-1+
+
+Files: inc/parent.pm
+Copyright: 2007, Max Maischein <corion@cpan.org>
+License: Artistic or GPL-1+
+
+Files: debian/*
+Copyright: 2007-2010, Damyan Ivanov <dmn@debian.org>
+ 2007-2010, gregor herrmann <gregoa@debian.org>
+ 2009-2010, Jonathan Yu <jawnsy@cpan.org>
+ 2010, Chris Butler <chrisb@debian.org>
+ 2009, Ryan Niebur <ryanryan52@gmail.com>
+ 2008, Niko Tyni <ntyni@debian.org>
+ 2008, Roberto C. Sanchez <roberto@debian.org>
+License: Artistic or GPL-1+
+
+License: BSD
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions
+ are met:
+ .
+ 1. Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+ 2. Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in the
+    documentation and/or other materials provided with the distribution.
+ 3. All advertising materials mentioning features or use of this software
+    must display the following acknowledgement:
+	This product includes software developed by the University of
+	California, Berkeley and its contributors.
+ 4. Neither the name of the University nor the names of its contributors
+    may be used to endorse or promote products derived from this software
+    without specific prior written permission.
+ .
+ THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
+ ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
+ FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+ OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+License: Artistic
+ This program is free software; you can redistribute it and/or modify
+ it under the terms of the Artistic License, which comes with Perl.
+ .
+ On Debian systems, the complete text of the Artistic License can be
+ found in `/usr/share/common-licenses/Artistic'.
+
+License: GPL-1+
+ This program is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 1, or (at your option)
+ any later version.
+ .
+ On Debian systems, the complete text of version 1 of the GNU General
+ Public License can be found in `/usr/share/common-licenses/GPL-1'.

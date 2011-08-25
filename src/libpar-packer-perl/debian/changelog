@@ -1,0 +1,266 @@
+libpar-packer-perl (40-0-0) unstable; urgency=low
+
+  * Rebuilt against new perl
+
+ -- Alexander Eremin <a.eremin@nexenta.com>  Thu, 25 Aug 2011 18:10:44 +0300
+
+libpar-packer-perl (1.008-1nexenta1) unstable; urgency=low
+
+  * Ported from Debian to update dependancies for previuos Nexenta package
+
+ -- Igor Pashev <igor.pashev@nexenta.com>  Fri, 27 May 2011 13:07:34 +0400
+
+libpar-packer-perl (1.008-1) unstable; urgency=low
+
+  * New upstream release
+  * Standards-Version 3.9.1 (no changes)
+  * Fix licensing for myldr/env.c (BSD license)
+  * Refresh copyright information
+
+ -- Jonathan Yu <jawnsy@cpan.org>  Sat, 25 Dec 2010 00:52:30 -0500
+
+libpar-packer-perl (1.006-1) unstable; urgency=low
+
+  * New upstream release.
+  * Set Standards-Version to 3.9.0 (no changes).
+  * debian/copyright: remove info about now removed inc/IPC/Run3.pm file.
+  * Refresh 01_manpage-ext.patch.
+
+ -- gregor herrmann <gregoa@debian.org>  Mon, 28 Jun 2010 18:17:14 +0200
+
+libpar-packer-perl (1.005-1) unstable; urgency=low
+
+  * New upstream release.
+  * Refresh patches applying with an offset.
+  * debian/copyright: update formatting; update info about third-party files
+    (added and removed ones).
+  * debian/control: add libio-compress-perl as yet another alternative for
+    Compress::Zlib.
+
+ -- gregor herrmann <gregoa@debian.org>  Tue, 22 Jun 2010 20:17:30 +0200
+
+libpar-packer-perl (1.003-1) unstable; urgency=low
+
+  * New upstream release
+  * Switch to source format 3.0 (quilt), removed quilt framework.
+  * Updated years of upstream copyright.
+  * Added myself to Uploaders and copyright.
+  * Refreshed 01_manpage-ext.patch.
+    Removed Fix-t-30-current_exec.t-failing-when-cwd-contains-re.patch.
+    (applied upstream)
+  * Increased build-deps on libpar-perl and libmodule-scandeps-perl to match
+    required versions listed in Makefile.PL
+
+ -- Chris Butler <chrisb@debian.org>  Tue, 13 Apr 2010 21:40:05 +0100
+
+libpar-packer-perl (1.002-2) unstable; urgency=low
+
+  * apply patch from Niko Tyni fixing tests when build directory contains
+    regular expression metacharacters. Closes: #577121
+  * Standards-Version: 3.8.4 (no changes needed)
+
+ -- Damyan Ivanov <dmn@debian.org>  Sat, 10 Apr 2010 00:01:18 +0300
+
+libpar-packer-perl (1.002-1) unstable; urgency=low
+
+  * New upstream release
+  * Remove fix-undefined-sprintf-usage patch as it no longer
+    applies and looks like it's been fixed upstream
+  * Add a patch to correct POD spelling
+
+ -- Jonathan Yu <jawnsy@cpan.org>  Mon, 04 Jan 2010 16:20:47 -0500
+
+libpar-packer-perl (1.001-1) unstable; urgency=low
+
+  [ Jonathan Yu ]
+  * New upstream release
+  * Update dependencies per upstream
+  * Add myself to Uploaders and Copyright
+  * Add copyright info for Test::Builder::IO::Scalar
+  * Refresh patch
+  * Use override to convince lintian we're installing ASCII-encoded
+    binary data into /usr/lib
+  * Move arch-dependent stuff into lib so as not to violate policy
+
+  [ gregor herrmann ]
+  * Refresh patch fix-with-new-par-name.
+
+ -- Jonathan Yu <jawnsy@cpan.org>  Sat, 28 Nov 2009 22:29:14 -0500
+
+libpar-packer-perl (0.991-3) unstable; urgency=low
+
+  [ Ryan Niebur ]
+  * Update ryan52's email address
+
+  [ gregor herrmann ]
+  * We need the same perl version at runtime as at build time; add some
+    substvar handling to debian/control and debian/rules to enforce an "upper
+    bound". Thanks to Eugene V. Lyubimkin for the bug report and to Niko Tyni
+    for his help in the analysis (closes: #551356).
+
+ -- gregor herrmann <gregoa@debian.org>  Thu, 29 Oct 2009 17:58:20 +0100
+
+libpar-packer-perl (0.991-2) unstable; urgency=low
+
+  * Add perl (>= 5.10) as an alternative dependency to libcompress-zlib-perl
+    as a preparation for the Perl 5.10.1 transition (cf. #542686).
+  * Simplify debian/rules, adjust build dependencies on debhelper and quilt.
+  * Add build dependency on libgetopt-argvfile-perl (>= 1.07).
+  * Set Standards-Version to 3.8.3 (no changes).
+  * Reformat and sync Debends and Build-Depends.
+
+ -- gregor herrmann <gregoa@debian.org>  Fri, 21 Aug 2009 17:19:42 +0200
+
+libpar-packer-perl (0.991-1) unstable; urgency=low
+
+  * New upstream release
+  * update copyright
+  * refresh patches
+  * debhelper 7
+  * machine readable copyright format
+  * add some more copyright information
+
+ -- Ryan Niebur <ryanryan52@gmail.com>  Mon, 27 Apr 2009 20:50:40 -0700
+
+libpar-packer-perl (0.982-3) unstable; urgency=low
+
+  * add myself to uploaders
+  * fix with the rename of par.pl (Closes: #517340)
+  * standards version 3.8.1
+
+ -- Ryan Niebur <ryanryan52@gmail.com>  Fri, 13 Mar 2009 22:03:36 -0700
+
+libpar-packer-perl (0.982-2) unstable; urgency=low
+
+  [ gregor herrmann ]
+  * debian/control: Changed: Switched Vcs-Browser field to ViewSVN
+    (source stanza).
+  * Add description to 01_manpage-ext.patch.
+  * Add "Copyright" the the packaging copyright statement,
+
+  [ Ryan Niebur ]
+  * fix undefined sprintf usage
+  (http://lists.debian.org/debian-devel/2008/12/msg01079.html)
+
+ -- gregor herrmann <gregoa@debian.org>  Mon, 05 Jan 2009 04:55:58 +0100
+
+libpar-packer-perl (0.982-1) unstable; urgency=low
+
+  * Add debian/README.source to document quilt usage, as required by
+    Debian Policy since 3.8.0.
+  * Set Standards-Version to 3.8.0 (no further changes).
+  * debian/control: improve short and long description, thanks to Barry
+    deFreese for the bug report (closes: #493496).
+  * debian/control: change my email address.
+
+  * New upstream release.
+  * debian/copyright: adjust some years of copyright, add information for
+    inc/Module/Install*.
+
+ -- gregor herrmann <gregoa@debian.org>  Thu, 07 Aug 2008 22:23:59 -0300
+
+libpar-packer-perl (0.980-1) unstable; urgency=low
+
+  [ gregor herrmann ]
+  * New upstream release.
+  * Refresh debian/rules, no functional changes.
+  * Refresh patch 01_manpage-ext.patch.
+
+  [ Damyan Ivanov ]
+  * Rename par.pl to par-archive. Closes: #451600
+  * add myseld to Uploaders
+
+ -- Damyan Ivanov <dmn@debian.org>  Mon, 14 Jul 2008 17:14:08 +0300
+
+libpar-packer-perl (0.978-1) unstable; urgency=low
+
+  [ David Paleino ]
+  * debian/control: removed myself from Uploaders
+
+  [ Roberto C. Sanchez ]
+  * New upstream release.
+
+ -- Roberto C. Sanchez <roberto@debian.org>  Sat, 12 Apr 2008 17:02:48 -0400
+
+libpar-packer-perl (0.977-1) unstable; urgency=low
+
+  [ David Paleino ]
+  * New upstream release
+
+  [ gregor herrmann ]
+  * Bump (build-)dependencies: libpar-perl to >= 0.977,
+    libmodule-scandeps-perl to >= 0.81.
+  * Set Standards-Version to 3.7.3 (no changes required).
+  * debian/rules: remove /usr/share/perl5 instead of /usr/lib/perl5.
+  * debian/rules: delete /usr/share/perl5 only if it exists.
+  * Refresh patch 01_manpage-ext.patch.
+
+  [ Damyan Ivanov ]
+  * clean: remove separate distclean target; touch Makefile as it is unpatched
+
+  [ Niko Tyni ]
+  * debian/rules: we really must remove /usr/lib/perl5, not /usr/share/perl5,
+    as the Perl modules are architecture independent.
+  * Switch to my @debian.org address.
+  * Uploading despite the lintian warnings to get the unconditional rmdir bug
+    fixed.
+  * Remove unnecessary -X.svn option from the dh_installdocs call.
+
+ -- Niko Tyni <ntyni@debian.org>  Tue, 19 Feb 2008 10:58:07 +0200
+
+libpar-packer-perl (0.976-6) unstable; urgency=low
+
+  * Add ${shlibs:Depends} to dependency list.
+    Closes: #451599 -- missing shared library dependencies
+    Thanks go again to Niko Tyni!
+
+ -- Damyan Ivanov <dmn@debian.org>  Sat, 17 Nov 2007 14:39:03 +0200
+
+libpar-packer-perl (0.976-5) unstable; urgency=low
+
+  [ Niko Tyni ]
+  * Rename /usr/bin/par to /usr/bin/par.pl to fix a namespace clash
+    with the par package. This is the same name that libpar-perl
+    used earlier for the same script. (Closes: #450915)
+  * Recommend libtk-perl, it's needed for the tkpp script.
+
+  [ Damyan Ivanov ]
+  * debian/rules: Fix inter-target dependencies
+
+ -- Damyan Ivanov <dmn@debian.org>  Fri, 16 Nov 2007 23:42:40 +0200
+
+libpar-packer-perl (0.976-4) unstable; urgency=high
+
+  * Next try to get the name of the module in the Depends: field right:
+    libmodule-scandeps-perl. Thanks to Aaron M. Ucko. Closes: #449487.
+  * Urgency left at high, the bug is still grave.
+  * Add ${perl:Depends}, ${misc:Depends} to Depends:.
+
+ -- gregor herrmann <gregor+debian@comodo.priv.at>  Wed, 14 Nov 2007 20:45:59 +0100
+
+libpar-packer-perl (0.976-3) unstable; urgency=high
+
+  * Ugh. Re-upload due to braindead uploader (yours truly)
+    Use the changelog from updated group's SVN, not what I had a week ago.
+    Urgency still high, as last revision was uploaded with "low".
+
+ -- Damyan Ivanov <dmn@debian.org>  Mon, 12 Nov 2007 14:37:16 +0200
+
+libpar-packer-perl (0.976-2) unstable; urgency=high
+
+  [ David Paleino ]
+  * debian/control: added libinline-perl to B-D to enable more tests.
+
+  [ Damyan Ivanov ]
+  * High urgency because fixes a grave bug
+  * Correct typo in Depends line (ib... -> lib...)
+    Closes: #449487 -- depends on nonexistent "ibmodule-scandeps" package
+
+ -- Damyan Ivanov <dmn@debian.org>  Tue, 06 Nov 2007 13:02:41 +0200
+
+libpar-packer-perl (0.976-1) unstable; urgency=low
+
+  [ Damyan Ivanov ]
+  * Initial Release. Following upstream spin-off of lib-par-perl.
+
+ -- Damyan Ivanov <dmn@debian.org>  Mon, 22 Oct 2007 10:18:52 +0300
