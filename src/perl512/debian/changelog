@@ -1,3 +1,9 @@
+perl (40-0-2) unstable; urgency=medium
+
+  * perl should depend on libperl-dev
+
+ -- Alexander Eremin <a.eremin@nexenta.com>  Thu, 25 Aug 2011 13:25:33 +0300
+
 perl (40-0-1) unstable; urgency=medium
 
   * perl-base should provide perlapi-5.10.1

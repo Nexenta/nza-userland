@@ -251,7 +251,8 @@ Description: Perl library: development files
 Package: perl
 Priority: standard
 Architecture: any
-Depends: perl-base (= ${binary:Version}), perl-modules (>= ${source:Version}), ${shlibs:Depends}
+Depends: perl-base (= ${binary:Version}), perl-modules (>= ${source:Version}),
+    libperl-dev, ${shlibs:Depends}
 Breaks: perl-doc (<< ${Upstream-Version}),
  libdigest-md5-perl (<< 2.39),
  libmime-base64-perl (<< 3.08),

@@ -1,3 +1,9 @@
+sunw-meta (40-0-2) unstable; urgency=low
+
+  * Added liblockfile-dev
+
+ -- Alexander Eremin <a.eremin@nexenta.com>  Thu, 25 Aug 2011 17:23:14 +0300
+
 sunw-meta (40-0-1) unstable; urgency=low
 
   * Re # 5948 libkrb5-dev is not installable

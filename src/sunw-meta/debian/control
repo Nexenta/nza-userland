@@ -470,3 +470,12 @@ Depends: service-security-kerberos-5
 Description: Transitional package
  This dummy package is provided for a smooth transition from the
  SUNW PKG to Debian naming convention
+
+Package: liblockfile-dev
+Section: libdevel
+Priority: optional
+Architecture: any
+Depends: system-header
+Description: Transitional package
+ This dummy package is provided for a smooth transition from the
+ SUNW PKG to Debian naming convention
