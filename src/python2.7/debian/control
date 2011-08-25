@@ -28,7 +28,7 @@ Vcs-Bzr: http://bazaar.launchpad.net/~doko/python/pkg2.7-debian
 Package: python2.7
 Architecture: any
 Priority: optional
-Depends: python2.7-minimal (= ${binary:Version}), mime-support, ${shlibs:Depends}, ${misc:Depends}
+Depends: python2.7-minimal (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
 Provides: python2.7-cjkcodecs, python2.7-ctypes, python2.7-elementtree, python2.7-celementtree, python2.7-wsgiref, python2.7-profiler
 Description: An interactive high-level object-oriented language (version 2.7)
  Version 2.7 of the high-level, interactive object oriented language,

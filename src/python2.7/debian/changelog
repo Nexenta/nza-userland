@@ -1,3 +1,11 @@
+python2.7 (40-0-1) unstable; urgency=low
+
+  * Rebuilt with new kernel to support TCP_KEEPIDLE and TCP_KEEPINTVL
+    socket options. Re #6323
+  * Actually *-examples, *-dbg and idle-* are present
+
+ -- Igor Pashev <igor.pashev@nexenta.com>  Thu, 25 Aug 2011 16:01:50 +0400
+
 python2.7 (40-0-0) unstable; urgency=low
 
   * Ported to NCP4

@@ -12,7 +12,7 @@ BUILD_shared_d  = $(BUILD)/shared/debug
 
 # Where to find GNU ncurses:
 NCURSES_INCS    =  -I/usr/include/ncursesw
-NCURSES_LDFLAGS =  -L/usr/gnu/lib -R/usr/gnu/lib
+NCURSES_LDFLAGS =  -L/usr/gnu/lib
 
 CFLAGS    = $(NCURSES_INCS)
 CPPFLAGS  = $(NCURSES_INCS)
