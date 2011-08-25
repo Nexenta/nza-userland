@@ -2,19 +2,26 @@ Source: openldap
 Section: net
 Priority: optional
 Maintainer: Igor Kozhukhov <igor.kozhukhov@nexenta.com>
-Build-Depends: debhelper (>= 7.0.50~), autotools-dev
+Build-Depends: debhelper (>= 7.0.50~), autotools-dev, libgcrypt-dev,
+ libgnutls-dev (>= 1.7), unixodbc-dev, libncurses5-dev, libperl-dev (>= 5.8.0),
+ libsasl2-dev, service-network-slp | libslp-dev, libltdl-dev | libltdl3-dev (>= 1.4.3),
+ libwrap0-dev, perl, debconf-utils, po-debconf, libtool, automake, autoconf,
+ groff-base, time
+Build-Conflicts: libbind-dev, bind-dev, libicu-dev
 Standards-Version: 3.9.1
 Homepage: http://www.openldap.org/
 Vcs-Svn: svn://svn.debian.org/pkg-openldap/openldap/trunk
 Vcs-Browser: http://svn.debian.org/wsvn/pkg-openldap/openldap/trunk
-Upstream-Version: 2.4.21
+Upstream-Version: 2.4.23
 
 Package: slapd
 Section: net
 Priority: optional
 Architecture: any
 Pre-Depends: debconf (>= 0.5) | debconf-2.0
-Depends: ${shlibs:Depends}, libldap-2.4-2 (= ${binary:Version}), ${misc:Depends}
+Depends: ${shlibs:Depends}, libldap-2.4-2 (= ${binary:Version}), ${misc:Depends},
+ coreutils (>= 4.5.1-1), perl (>> 5.8.0) | libmime-base64-perl, adduser,
+ lsb-base (>= 3.2-13), libdb4.8 (>= 4.8.30)
 Recommends: libsasl2-modules
 Suggests: ldap-utils
 Conflicts: umich-ldapd, ldap-server, libltdl3 (= 1.5.4-1)
@@ -90,7 +97,7 @@ Description: OpenLDAP development libraries
 Package: slapd-dbg
 Section: debug
 Priority: extra
-Architecture: linux-any hurd-any kfreebsd-any
+Architecture: any
 Depends: slapd (= ${binary:Version}), ${misc:Depends}
 Description: Debugging information for the OpenLDAP server (slapd)
  This package provides detached debugging information for the OpenLDAP

@@ -50,7 +50,7 @@ MAKEVARS	:= DESTDIR=$(installdir) STRIP=
 
 # These variables are used only by get-orig-source, which will normally only
 # be run by maintainers.
-VERSION = 2.4.21
+VERSION = 2.4.23
 URL     = http://www.openldap.org/software/download/OpenLDAP/openldap-release/
 
 BDBCONF = \
@@ -208,12 +208,10 @@ build64-stamp: configure64
 
 install: install-stamp
 install-stamp: build32 build64
-	dh_testdir
-	dh_testroot
-	dh_clean -k
-	rm -rf debian/tmp
+	dh_prep
 	dh_installdirs -a
-	mkdir -p debian/tmp
+
+	mkdir -p debian/tmp/lib/svc
 	cp -a debian/inst32/* debian/tmp
 
 	cp -ax debian/inst64/usr/lib/amd64 debian/tmp/usr/lib
@@ -228,23 +226,14 @@ install-stamp: build32 build64
 	install -d debian/tmp/etc/security/prof_attr.d
 	install -m 0444 debian/Solaris/prof_attr debian/tmp/etc/security/prof_attr.d/openldap
 
-	install -d debian/tmp/lib/svc/manifest/network/ldap
-	install -m 0444 debian/Solaris/ldap-olslapd.xml debian/tmp/lib/svc/manifest/network/ldap/ldap-olslapd.xml
-
-	install -d debian/tmp/lib/svc/method
-	install -m 0555 debian/Solaris/ldap-olslapd debian/tmp/lib/svc/method/ldap-olslapd
-
-	install -d debian/tmp/lib/svc/manifest/application/security
-	install -m 0444 debian/Solaris/ldap-olslapd.xml debian/tmp/lib/svc/manifest/application/security/ldap-olslapd.xml
-
 	for i in ldapcompare ldapdelete ldapexop ldapmodify ldapmodrdn \
 		ldappasswd ldapsearch ldapwhoami ldapurl ; do \
 	    mv debian/tmp/usr/bin/$$i debian/tmp/usr/bin/open$$i ; \
 	    mv debian/tmp/usr/bin/amd64/$$i debian/tmp/usr/bin/amd64/open$$i ; \
 	done
+
 	rm -f debian/tmp/usr/bin/ldapadd
 	rm -f debian/tmp/usr/bin/amd64/ldapadd
-#	ln -s openldapmodify debian/tmp/usr/bin/openldapadd
 
 	touch $@
 
@@ -253,26 +242,18 @@ binary-indep:
 binary-arch: install
 	dh_testdir
 	dh_testroot
-#	dh_clean -k
-
 	dh_install -a
-#	rm -rf $(CURDIR)/debian/slapd/usr/lib/ldap/smbk5pwd*
-#	chmod 0755 $(CURDIR)/debian/slapd/usr/share/slapd/ldiftopasswd
 
 	dh_installchangelogs -a
 	dh_installdocs -a
 	dh_installexamples -a
 	dh_installman -a
-#	dh_installinit -Xslapd.prerm -a -- "defaults 19 80"
-#	dh_installdebconf -a
-#	dh_lintian -a
-
-#	dh_strip -plibldap-2.4-2
-	dh_strip --dbg-package=libldap-2.4-2-dbg
-#	dh_strip -pslapd --dbg-package=slapd-dbg
-#	dh_strip -pldap-utils
-#	dh_strip -pslapd-smbk5pwd
-
+	dh_installdebconf -a
+	dh_lintian -a
+	dh_installsvc -pslapd --smf-method debian/Solaris/slapd.sh --smf-manifest debian/Solaris/slapd.xml
+	dh_strip -plibldap-2.4-2 --dbg-package=libldap-2.4-2-dbg
+	dh_strip -pslapd --dbg-package=slapd-dbg
+	dh_strip -pldap-utils
 	dh_link -a
 
 	# hardlink these so not confined by apparmor
@@ -281,27 +262,29 @@ binary-arch: install
 #	done ;
 
 	dh_compress -a
-#	dh_fixperms -a
+	dh_fixperms -a
+
 	# ideally we would do this and not have any libldap-2.4.so.2 links
 	# at all, but that requires adjusting the build scripts first to
 	# link against libldap_r, otherwise dh_shlibdeps fails
 
 	dh_makeshlibs -plibldap-2.4-2 -V 'libldap-2.4-2 (>= 2.4.7)'
 
-#	echo "slapd:Provides=$$(objdump -p debian/slapd/usr/lib/libslapi-*.so.* \
-#		| sed -ne '/SONAME/ { s/[[:space:]]*SONAME[[:space:]]*//; \
-#		                      s/\.so\./-/; p; q }' \
-#	)" >> debian/slapd.substvars
-#	dh_makeshlibs -pslapd -X/usr/lib/ldap/ -V "$$(sed -ne's/slapd:Provides=//p' debian/slapd.substvars)"
+	echo "slapd:Provides=$$(objdump -p debian/slapd/usr/lib/libslapi-*.so.* \
+		| sed -ne '/SONAME/ { s/[[:space:]]*SONAME[[:space:]]*//; \
+		                      s/\.so\./-/; p; q }' \
+	)" >> debian/slapd.substvars
+
+	dh_makeshlibs -pslapd -X/usr/lib/ldap/ -V "$$(sed -ne's/slapd:Provides=//p' debian/slapd.substvars)"
 
 	dh_installdeb -a
 
-#	perl -w debian/dh_installscripts-common -p slapd
+	#perl -w debian/dh_installscripts-common -p slapd
 
 	dh_shlibdeps -a -L libldap-2.4-2 -l $(installdir)/usr/lib
 
 	# Strip duplicate dependency out of substvars.
-#	sed -i -e 's/ libldap-2.4-2,//' debian/*.substvars
+	sed -i -e 's/ libldap-2.4-2,//' debian/*.substvars
 	dh_gencontrol -a
 	dh_md5sums -a
 	dh_builddeb -a
@@ -315,16 +298,10 @@ clean: unpatch
 	rm -rf debian/inst32 debian/inst64
 	rm -rf build32 build64
 	rm -rf .pc
-	
+
 	# Update translation templates for debconf
 	# debconf-updatepo
 
-	# Remove updated config.guess and config.sub for a clean diff.
-#	rm -f build/config.sub build/config.guess
-#	rm -f contrib/ldapc++/config.sub contrib/ldapc++/config.guess
-#	rm -rf $(builddir) $(builddir_notls) $(installdir)
-#	rm -rf build/ltmain.sh autom4te.cache configure aclocal.m4
-	
 	# Clean the contrib directory
 	rm -rf contrib/slapd-modules/smbk5pwd/.libs \
 		contrib/slapd-modules/smbk5pwd/smbk5pwd.lo \

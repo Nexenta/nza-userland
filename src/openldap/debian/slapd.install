@@ -8,4 +8,4 @@ usr/lib/amd64/slapd
 debian/DB_CONFIG.example etc/openldap
 #debian/slapd.conf usr/share/slapd
 debian/slapd.conf etc/openldap
-#debian/slapd.init.ldif usr/share/slapd
+debian/slapd.init.ldif usr/share/slapd

@@ -1,3 +1,20 @@
+openldap (40-0-1) unstable; urgency=low
+
+  * Use Squeeze source: 2.4.23
+  * Also use CVE security and other patches from Squeeze + SFW + structure.
+  * debian/rules, debian/control:
+    + Bring back slapd-dbg package.
+    + Use dh_strip.
+    + Do not use dh_testroot in install target. This fix non-root build.
+  * debian/control:
+    + Bring back slapd-dbg package.
+    + Updated dependencies for slapd package.
+    + Updated Build-Depends.
+  * Added slapd SMF support using dh_installsvc.
+  * Enable maintainer scripts for slapd.
+
+ -- Kartik Mistry <kartik.mistry@nexenta.com>  Wed, 24 Aug 2011 12:38:56 +0530
+
 openldap (40-0-0) unstable; urgency=low
 
   * Rebuilt on NCP4b2 with new version scheme
