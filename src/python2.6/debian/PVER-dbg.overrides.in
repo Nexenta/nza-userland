@@ -1,2 +1,0 @@
-@PVER@-dbg binary: package-name-doesnt-match-sonames
-@PVER@-dbg binary: non-dev-pkg-with-shlib-symlink

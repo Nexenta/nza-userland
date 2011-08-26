@@ -1,8 +1,10 @@
 # DP: Proposed fix for issue 9054.
 
---- a/Modules/pyexpat.c	(revision 81539)
-+++ b/Modules/pyexpat.c	(working copy)
-@@ -415,6 +415,9 @@
+Index: b/Modules/pyexpat.c
+===================================================================
+--- a/Modules/pyexpat.c	2011-08-25 20:59:10.486329038 +0400
++++ b/Modules/pyexpat.c	2011-08-25 20:59:40.523797494 +0400
+@@ -456,6 +456,9 @@
      PyObject *args;
      PyObject *temp;
  

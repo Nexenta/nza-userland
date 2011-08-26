@@ -1,3 +1,11 @@
+python2.6 (40-0-1) unstable; urgency=low
+
+  * New upstream release (2.6.7)
+  * Rebuilt with new kernel to support
+    socket options TCP_KEEPIDLE and TCP_KEEPINTVL
+
+ -- Igor Pashev <igor.pashev@nexenta.com>  Thu, 25 Aug 2011 19:52:45 +0400
+
 python2.6 (40-0-0) unstable; urgency=low
 
   * Rebuilt on NCP4 using Squeeze source and new Upstream-Version scheme

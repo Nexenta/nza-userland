@@ -9,11 +9,11 @@ you, so add them here.
  Modules/posixmodule.c |   37 +++++++++++++++++++++++++++++++++++++
  1 files changed, 37 insertions(+), 0 deletions(-)
 
-diff --git a/Modules/posixmodule.c b/Modules/posixmodule.c
-index ebdbc8d..d79013b 100644
---- a/Modules/posixmodule.c
-+++ b/Modules/posixmodule.c
-@@ -8990,6 +8990,43 @@ all_ins(PyObject *d)
+Index: b/Modules/posixmodule.c
+===================================================================
+--- a/Modules/posixmodule.c	2011-08-25 20:59:36.383002918 +0400
++++ b/Modules/posixmodule.c	2011-08-25 20:59:39.343004931 +0400
+@@ -9078,6 +9078,43 @@
  #endif
  #endif
  
@@ -55,8 +55,5 @@ index ebdbc8d..d79013b 100644
 +#endif /* ST_RELATIME */
 +
  #if defined(PYOS_OS2)
-         if (insertvalues(d)) return -1;
+     if (insertvalues(d)) return -1;
  #endif
--- 
-1.6.6
-

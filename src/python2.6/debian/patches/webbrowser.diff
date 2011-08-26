@@ -1,9 +1,9 @@
 # DP: Recognize other browsers: www-browser, x-www-browser, iceweasel, iceape.
 
-Index: python2.6-2.6.5+20100521/Lib/webbrowser.py
+Index: b/Lib/webbrowser.py
 ===================================================================
---- python2.6-2.6.5+20100521.orig/Lib/webbrowser.py	2010-05-21 15:51:26.500720006 +0200
-+++ python2.6-2.6.5+20100521/Lib/webbrowser.py	2010-05-21 15:51:26.508720045 +0200
+--- a/Lib/webbrowser.py	2011-08-25 20:59:14.419217169 +0400
++++ b/Lib/webbrowser.py	2011-08-25 20:59:28.477770006 +0400
 @@ -453,9 +453,13 @@
      if "KDE_FULL_SESSION" in os.environ and _iscommand("kfmclient"):
          register("kfmclient", Konqueror, Konqueror("kfmclient"))

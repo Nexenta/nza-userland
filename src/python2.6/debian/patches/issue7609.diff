@@ -1,10 +1,10 @@
 # DP: Backport issue #7609, add --with-system-expat configure option.
 
-Index: configure.in
+Index: b/configure.in
 ===================================================================
---- a/configure.in	(Revision 84129)
-+++ b/configure.in	(Arbeitskopie)
-@@ -2046,6 +2046,13 @@
+--- a/configure.in	2011-08-25 20:59:27.148956503 +0400
++++ b/configure.in	2011-08-25 20:59:39.940451806 +0400
+@@ -2052,6 +2052,13 @@
  ],
  [AC_MSG_RESULT(no)])
  
@@ -18,11 +18,11 @@ Index: configure.in
  # Check for use of the system libffi library
  AC_MSG_CHECKING(for --with-system-ffi)
  AC_ARG_WITH(system_ffi,
-Index: setup.py
+Index: b/setup.py
 ===================================================================
---- a/setup.py	(Revision 84129)
-+++ b/setup.py	(Arbeitskopie)
-@@ -1304,19 +1304,26 @@
+--- a/setup.py	2011-08-25 20:59:38.224806543 +0400
++++ b/setup.py	2011-08-25 20:59:39.941611328 +0400
+@@ -1311,19 +1311,26 @@
          #
          # More information on Expat can be found at www.libexpat.org.
          #
@@ -59,7 +59,7 @@ Index: setup.py
                                ))
  
          # Fredrik Lundh's cElementTree module.  Note that this also
-@@ -1326,7 +1333,8 @@
+@@ -1333,7 +1340,8 @@
              define_macros.append(('USE_PYEXPAT_CAPI', None))
              exts.append(Extension('_elementtree',
                                    define_macros = define_macros,

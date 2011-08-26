@@ -1,9 +1,9 @@
 # DP: Use /etc/lsb-release to identify the platform.
 
-Index: python2.6-2.6.5+20100521/Lib/platform.py
+Index: b/Lib/platform.py
 ===================================================================
---- python2.6-2.6.5+20100521.orig/Lib/platform.py	2010-05-21 15:53:08.607710061 +0200
-+++ python2.6-2.6.5+20100521/Lib/platform.py	2010-05-21 15:53:08.615723091 +0200
+--- a/Lib/platform.py	2011-08-25 20:59:13.676876268 +0400
++++ b/Lib/platform.py	2011-08-25 20:59:31.230117663 +0400
 @@ -290,6 +290,10 @@
          if parsed != output:
              print (input, parsed)

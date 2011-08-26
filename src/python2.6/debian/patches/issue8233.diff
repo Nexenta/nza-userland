@@ -1,11 +1,11 @@
 # DP: Issue #8233: When run as a script, py_compile.py optionally takes a single
 # DP: argument `-`. Backport from the trunk.
 
-Index: Lib/py_compile.py
+Index: b/Lib/py_compile.py
 ===================================================================
---- ./Lib/py_compile.py	(Revision 79532)
-+++ ./Lib/py_compile.py	(Revision 79533)
-@@ -135,19 +135,35 @@
+--- a/Lib/py_compile.py	2011-08-25 20:59:11.361832608 +0400
++++ b/Lib/py_compile.py	2011-08-25 20:59:37.673985149 +0400
+@@ -149,19 +149,35 @@
      not specified) are compiled and the resulting bytecode is cached
      in the normal manner.  This function does not search a directory
      structure to locate source files; it only compiles files named

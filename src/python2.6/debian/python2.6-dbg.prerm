@@ -1,0 +1,22 @@
+#! /bin/sh
+
+set -e
+
+case "$1" in
+    remove)
+	rm -f /usr/lib/debug/usr/bin/python2.6-gdb.py[co]
+	rm -f /usr/lib/debug/usr/lib/libpython2.6.so.1.0-gdb.py[co]
+        ;;
+    upgrade)
+        ;;
+    deconfigure)
+        ;;
+    failed-upgrade)
+        ;;
+    *)
+        echo "prerm called with unknown argument \`$1'" >&2
+        exit 1
+    ;;
+esac
+
+

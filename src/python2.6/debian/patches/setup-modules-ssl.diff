@@ -1,9 +1,9 @@
 # DP: Modules/Setup.dist: patch to build _hashlib and _ssl extensions statically
 
-Index: python2.6-2.6.5+20100521/Modules/Setup.dist
+Index: b/Modules/Setup.dist
 ===================================================================
---- python2.6-2.6.5+20100521.orig/Modules/Setup.dist	2010-05-21 16:01:32.760726511 +0200
-+++ python2.6-2.6.5+20100521/Modules/Setup.dist	2010-05-21 16:01:32.764719687 +0200
+--- a/Modules/Setup.dist	2011-08-25 20:59:13.237123889 +0400
++++ b/Modules/Setup.dist	2011-08-25 20:59:32.935755296 +0400
 @@ -211,10 +211,7 @@
  
  # Socket module helper for SSL support; you must comment out the other

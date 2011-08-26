@@ -1,15 +1,14 @@
 Source: rsync
+Upstream-Version: 3.0.8
 Section: net
 Priority: optional
 Maintainer: Paul Slootman <paul@debian.org>
-Build-Depends: libpopt-dev,libacl1-dev
-Standards-Version: 3.7.2
+Build-Depends: libpopt-dev
+Standards-Version: 3.9.2
 
 Package: rsync
 Architecture: any
-#Depends: libgcc1, libiconv, libpopt0 (>= 1.10), system-library, lsb-base
-Depends: ${shlibs:Depends}, lsb-base
-Suggests: openssh-client, openssh-server
+Depends: ${shlibs:Depends}
 Description: fast remote file copy program (like rcp)
  rsync is a program that allows files to be copied to and from remote
  machines in much the same way as rcp.  It has many more options than

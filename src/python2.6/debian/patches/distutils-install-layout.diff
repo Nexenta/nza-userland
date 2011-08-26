@@ -2,10 +2,10 @@
 # DP: - installs into $prefix/dist-packages instead of $prefix/site-packages.
 # DP: - doesn't encode the python version into the egg name.
 
-Index: python2.6-2.6.5+20100521/Doc/install/index.rst
+Index: b/Doc/install/index.rst
 ===================================================================
---- python2.6-2.6.5+20100521.orig/Doc/install/index.rst	2010-05-21 15:36:16.535706920 +0200
-+++ python2.6-2.6.5+20100521/Doc/install/index.rst	2010-05-21 15:36:26.283728522 +0200
+--- a/Doc/install/index.rst	2011-08-25 20:59:16.729212121 +0400
++++ b/Doc/install/index.rst	2011-08-25 20:59:22.452954508 +0400
 @@ -237,6 +237,8 @@
  +-----------------+-----------------------------------------------------+--------------------------------------------------+-------+
  | Platform        | Standard installation location                      | Default value                                    | Notes |
@@ -64,10 +64,10 @@ Index: python2.6-2.6.5+20100521/Doc/install/index.rst
  The most convenient way is to add a path configuration file to a directory
  that's already on Python's path, usually to the :file:`.../site-packages/`
  directory.  Path configuration files have an extension of :file:`.pth`, and each
-Index: python2.6-2.6.5+20100521/Lib/distutils/command/install.py
+Index: b/Lib/distutils/command/install.py
 ===================================================================
---- python2.6-2.6.5+20100521.orig/Lib/distutils/command/install.py	2010-05-21 15:36:16.495712522 +0200
-+++ python2.6-2.6.5+20100521/Lib/distutils/command/install.py	2010-05-21 15:36:26.279711600 +0200
+--- a/Lib/distutils/command/install.py	2011-08-25 20:59:16.773516645 +0400
++++ b/Lib/distutils/command/install.py	2011-08-25 20:59:22.454236306 +0400
 @@ -47,6 +47,20 @@
          'scripts': '$base/bin',
          'data'   : '$base',
@@ -150,10 +150,10 @@ Index: python2.6-2.6.5+20100521/Lib/distutils/command/install.py
  
      # finalize_unix ()
  
-Index: python2.6-2.6.5+20100521/Lib/distutils/command/install_egg_info.py
+Index: b/Lib/distutils/command/install_egg_info.py
 ===================================================================
---- python2.6-2.6.5+20100521.orig/Lib/distutils/command/install_egg_info.py	2010-05-21 15:36:16.475711656 +0200
-+++ python2.6-2.6.5+20100521/Lib/distutils/command/install_egg_info.py	2010-05-21 15:36:26.279711600 +0200
+--- a/Lib/distutils/command/install_egg_info.py	2011-08-25 20:59:16.816159039 +0400
++++ b/Lib/distutils/command/install_egg_info.py	2011-08-25 20:59:22.454997548 +0400
 @@ -14,18 +14,37 @@
      description = "Install package's PKG-INFO metadata as an .egg-info file"
      user_options = [
@@ -197,10 +197,10 @@ Index: python2.6-2.6.5+20100521/Lib/distutils/command/install_egg_info.py
          self.target = os.path.join(self.install_dir, basename)
          self.outputs = [self.target]
  
-Index: python2.6-2.6.5+20100521/Lib/distutils/sysconfig.py
+Index: b/Lib/distutils/sysconfig.py
 ===================================================================
---- python2.6-2.6.5+20100521.orig/Lib/distutils/sysconfig.py	2010-05-21 15:36:16.515710804 +0200
-+++ python2.6-2.6.5+20100521/Lib/distutils/sysconfig.py	2010-05-21 15:36:26.283728522 +0200
+--- a/Lib/distutils/sysconfig.py	2011-08-25 20:59:16.863901060 +0400
++++ b/Lib/distutils/sysconfig.py	2011-08-25 20:59:22.455734740 +0400
 @@ -115,6 +115,7 @@
      If 'prefix' is supplied, use it instead of sys.prefix or
      sys.exec_prefix -- i.e., ignore 'plat_specific'.
@@ -218,10 +218,10 @@ Index: python2.6-2.6.5+20100521/Lib/distutils/sysconfig.py
          else:
              return os.path.join(libpython, "site-packages")
  
-Index: python2.6-2.6.5+20100521/Lib/site.py
+Index: b/Lib/site.py
 ===================================================================
---- python2.6-2.6.5+20100521.orig/Lib/site.py	2010-05-21 15:36:16.455710091 +0200
-+++ python2.6-2.6.5+20100521/Lib/site.py	2010-05-21 15:36:26.279711600 +0200
+--- a/Lib/site.py	2011-08-25 20:59:21.905941239 +0400
++++ b/Lib/site.py	2011-08-25 20:59:22.456223137 +0400
 @@ -255,6 +255,13 @@
  
      if ENABLE_USER_SITE and os.path.isdir(USER_SITE):
