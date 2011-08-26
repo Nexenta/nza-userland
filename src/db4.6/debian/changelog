@@ -1,21 +1,96 @@
-db (4.6.21-6nexenta2) unstable; urgency=low
+db4.6 (40-0-0) unstable; urgency=low
 
-  * Rebuilt for NCP4
+  * Rebuilt from Squeeze with new version scheme.
+  * Source is db4.6 now (Closes: #6312)
+  * debian/control:
+    + Fixed Build-Depends.
+  * debian/rules:
+    + Use Sun Java.
+  * Use #DEBHELPER# in debian/*.postinst scripts.
 
- -- Kartik Mistry <kartik.mistry@nexenta.com>  Wed, 16 Feb 2011 18:57:13 +0530
+ -- Kartik Mistry <kartik.mistry@nexenta.com>  Thu, 25 Aug 2011 19:20:14 +0530
 
-db (4.6.21-6nexenta1) hardy; urgency=low
+db4.6 (4.6.21-16) unstable; urgency=low
 
-  * Upstream merge
+  * Switch to 3.0 (quilt) source format.
+  * Fix -java-gcj package build for gcj-4.4.  closes: #560658.
 
- -- Erast Benson <erast@gnusolaris.org>  Sat, 31 May 2008 17:24:02 -0700
+ -- Clint Adams <schizo@debian.org>  Tue, 29 Dec 2009 15:04:42 -0500
 
-db (4.6.21-6ubuntu1) hardy; urgency=low
+db4.6 (4.6.21-15) unstable; urgency=low
 
-  * Merge from Debian; remaining changes:
-    - Build a libdb4.6-dev package again, let libdb-dev depend on it.
+  * Run ldconfig in library package postinsts.
+    closes: #552997, #553005, #553105.
+  * Bump to Standards-Version 3.8.3.
 
- -- Matthias Klose <doko@ubuntu.com>  Mon, 10 Mar 2008 18:00:42 +0100
+ -- Clint Adams <schizo@debian.org>  Wed, 04 Nov 2009 01:18:46 -0500
+
+db4.6 (4.6.21-14) unstable; urgency=low
+
+  * Apply patch from Steve Langasek to "mangle javac detection to avoid
+    us ending up with /usr/include/linux in the compiler path."  closes:
+    #532555.
+  * Bump Standards-Version to 3.8.1.
+  * Change JAVA_BIN to /usr/lib/jvm/default-java/bin.  closes: #528190.
+
+ -- Clint Adams <schizo@debian.org>  Tue, 09 Jun 2009 22:48:14 -0400
+
+db4.6 (4.6.21-13) unstable; urgency=low
+
+  * 4.6.21.2: [#16178] Fixes the potential for the wrong number of
+    mutexes to be allocated. This issue could cause applications with
+    multiple cache regions to see undefined behavior in rare cases under
+    load.
+  * 4.6.21.3: [#16406] Replication clients should be able to open a
+    sequence.
+
+ -- Clint Adams <schizo@debian.org>  Tue, 30 Dec 2008 21:00:24 -0500
+
+db4.6 (4.6.21-12) unstable; urgency=low
+
+  * Enable java bindings for armel.  closes: #506710.
+
+ -- Clint Adams <schizo@debian.org>  Sun, 23 Nov 2008 17:59:59 -0500
+
+db4.6 (4.6.21-11) unstable; urgency=medium
+
+  * Enable java bindings for GNU/kFreeBSD.  closes: #497808.
+  * Fix sparc mutex alignment problem.  closes: #498461.
+  * Fix arm crypto padding problem, thanks to Ben Hutchings.
+    closes: #498454.
+
+ -- Clint Adams <schizo@debian.org>  Sat, 13 Sep 2008 04:36:53 -0400
+
+db4.6 (4.6.21-10) unstable; urgency=low
+
+  * Drop libdb4.6-dev conflict on libdb-dev.
+
+ -- Clint Adams <schizo@debian.org>  Thu, 12 Jun 2008 21:04:13 -0400
+
+db4.6 (4.6.21-9) unstable; urgency=low
+
+  * Bump to Standards-Version 3.8.0.
+  * Change dev package to libdb4.6-dev.
+
+ -- Clint Adams <schizo@debian.org>  Tue, 10 Jun 2008 18:38:57 -0400
+
+db (4.6.21-8) unstable; urgency=high
+
+  * Change Tcl build dependency to tcl8.5-dev.
+  * Change Java architectures to everything but alpha, arm, hppa, hurd-
+    i386, kfreebsd-i386, kfreebsd-amd64, and m32r.  closes: #477855.
+  * Switch java build dependency from java-gcj-compat-dev to default-
+    jdk-builddep.
+
+ -- Clint Adams <schizo@debian.org>  Thu, 01 May 2008 08:28:24 -0400
+
+db (4.6.21-7) unstable; urgency=medium
+
+  * 4.6.21.1: [#15692] Fixes a race condition between checkpoint and
+    DB->close which can result in the checkpoint thread
+    self-deadlocking.
+
+ -- Clint Adams <schizo@debian.org>  Wed, 26 Mar 2008 22:51:04 -0400
 
 db (4.6.21-6) unstable; urgency=low
 
@@ -27,13 +102,6 @@ db (4.6.21-6) unstable; urgency=low
 
  -- Clint Adams <schizo@debian.org>  Thu, 06 Mar 2008 08:06:34 -0500
 
-db (4.6.21-5ubuntu1) hardy; urgency=low
-
-  * Merge from Debian; remaining changes:
-    - Build a libdb4.6-dev package again, let libdb-dev depend on it.
-
- -- Matthias Klose <doko@ubuntu.com>  Tue, 29 Jan 2008 09:42:46 +0100
-
 db (4.6.21-5) unstable; urgency=low
 
   * Bump Standards-Version to 3.7.3.
@@ -43,17 +111,9 @@ db (4.6.21-5) unstable; urgency=low
 
 db (4.6.21-4) unstable; urgency=low
 
-  * Re-enable Java on hppa. 
+  * Re-enable Java on hppa.
 
  -- Clint Adams <schizo@debian.org>  Mon, 22 Oct 2007 12:36:02 -0400
-
-db (4.6.21-3ubuntu1) hardy; urgency=low
-
-  * Merge with Debian; remaining changes:
-    - Build a libdb4.6-dev package again, let libdb-dev depend on it.
-  * Set Ubuntu maintainer address.
-
- -- Matthias Klose <doko@ubuntu.com>  Sun, 21 Oct 2007 13:04:14 +0200
 
 db (4.6.21-3) unstable; urgency=low
 
@@ -75,28 +135,6 @@ db (4.6.21-1) unstable; urgency=low
 
  -- Clint Adams <schizo@debian.org>  Mon, 08 Oct 2007 22:35:29 -0400
 
-db (4.6.19-1ubuntu3) gutsy; urgency=low
-
-  * Trigger rebuild for hppa
-
- -- LaMont Jones <lamont@ubuntu.com>  Thu, 04 Oct 2007 22:48:18 -0600
-
-db (4.6.19-1ubuntu2) gutsy; urgency=low
-
-  * libdb4.6-dev: Conflict with libdb4.x-dev packages.
-  * Set maintainer address to Ubuntu MOTU developers (demote the package
-    for the gutsy release).
-
- -- Matthias Klose <doko@ubuntu.com>  Tue, 11 Sep 2007 23:53:34 +0200
-
-db (4.6.19-1ubuntu1) gutsy; urgency=low
-
-  * Merge with Debian; remaining changes:
-    - Build a libdb4.6-dev package again, let libdb-dev depend on it.
-  * Set Ubuntu maintainer address.
-
- -- Matthias Klose <doko@ubuntu.com>  Sun, 26 Aug 2007 12:01:42 +0200
-
 db (4.6.19-1) unstable; urgency=medium
 
   * New upstream version.
@@ -105,7 +143,7 @@ db (4.6.19-1) unstable; urgency=medium
 
 db (4.6.18-6) unstable; urgency=low
 
-  * Tolerate testsuite failures on arm, sparc, s390. 
+  * Tolerate testsuite failures on arm, sparc, s390.
 
  -- Clint Adams <schizo@debian.org>  Thu, 16 Aug 2007 20:46:17 -0400
 
@@ -118,7 +156,7 @@ db (4.6.18-5) unstable; urgency=high
 
 db (4.6.18-4) unstable; urgency=low
 
-  * Add libdb4.6-dbg package. 
+  * Add libdb4.6-dbg package.
   * Fail the build if there are any testsuite failures.
 
  -- Clint Adams <schizo@debian.org>  Sun, 12 Aug 2007 21:34:16 -0400
@@ -138,27 +176,9 @@ db (4.6.18-2) unstable; urgency=medium
 
  -- Clint Adams <schizo@debian.org>  Tue, 07 Aug 2007 20:54:27 -0400
 
-db (4.6.18-1ubuntu2) gutsy; urgency=low
-
-  * drop hppa java support for now
-  * enable NPTL across the board for linux
-
- -- LaMont Jones <lamont@ubuntu.com>  Tue, 14 Aug 2007 13:13:58 -0600
-
-db (4.6.18-1ubuntu1) gutsy; urgency=low
-
-  * Merge with Debian; remaining changes:
-    - Build libdb4.6-java-gcj.
-    - Honor nocheck in DEB_BUILD_OPTIONS.
-  * Build a libdb4.6-dev package again, let libdb-dev depend on it.
-  * Set Ubuntu maintainer address.
-
- -- Matthias Klose <doko@ubuntu.com>  Sun, 29 Jul 2007 00:57:26 +0200
-
 db (4.6.18-1) unstable; urgency=low
 
   * Initial packaging of Berkeley DB 4.6, under the source package
     name "db".
 
  -- Clint Adams <schizo@debian.org>  Wed, 25 Jul 2007 20:37:51 +0700
-

@@ -1,13 +1,14 @@
-Source: db
+Source: db4.6
 Section: libs
 Priority: standard
-Maintainer: Ubuntu Core developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Maintainer: Debian Berkeley DB Maintainers <pkg-db-devel@lists.alioth.debian.org>
 Uploaders: Clint Adams <schizo@debian.org>
-Standards-Version: 3.7.3
-Build-Depends: tcl8.4-dev, procps [!hurd-i386 !solaris-i386], java-gcj-compat-dev [!m68k !mips !mipsel !arm !armeb !armel !hurd-i386 !kfreebsd-i386 !kfreebsd-amd64 !m32r !solaris-i386]
+Standards-Version: 3.8.3
+Build-Depends: tcl8.5-dev, procps [!hurd-i386], sun-java6-jdk, default-jdk-builddep [!alpha !arm !hppa !hurd-i386 !m32r !solaris-i386]
 Homepage: http://www.oracle.com/technology/software/products/berkeley-db/index.html
 Vcs-Browser: http://git.debian.org/?p=private/schizo/db.git;a=summary
 Vcs-Git: git://git.debian.org/git/private/schizo/db.git
+Upstream-Version: 4.6.21-16
 
 Package: db4.6-doc
 Architecture: all
@@ -22,18 +23,6 @@ Architecture: any
 Section: libdevel
 Priority: extra
 Depends: libdb4.6 (= ${binary:Version})
-Suggests: db4.6-doc
-Conflicts: libdb1-dev, libdb2-dev, libdb3-dev, libdb4.2-dev, libdb4.3-dev, libdb4.4-dev, libdb4.5-dev
-Replaces: libdb-dev (<= 4.6.18-1)
-Description: Berkeley v4.6 Database Libraries [development]
- This is the development package which contains headers and static
- libraries for the Berkeley v4.6 database library.
-
-Package: libdb-dev
-Architecture: any
-Section: libdevel
-Priority: extra
-Depends: libdb4.6-dev (= ${binary:Version})
 Suggests: db4.6-doc
 Conflicts: libdb1-dev, libdb2-dev, libdb3-dev, libdb4.2-dev, libdb4.3-dev, libdb4.4-dev, libdb4.5-dev
 Description: Berkeley v4.6 Database Libraries [development]
@@ -89,7 +78,7 @@ Provides: libdb++-dev
 Conflicts: libdb2++-dev, libdb++-dev, libdb3++-dev
 Section: libdevel
 Priority: extra
-Depends: libdb4.6++ (= ${binary:Version}), libdb-dev (= ${binary:Version})
+Depends: libdb4.6++ (= ${binary:Version}), libdb4.6-dev (= ${binary:Version})
 Description: Berkeley v4.6 Database Libraries for C++ [development]
  This is the development package which contains headers and static
  libraries for the Berkeley v4.6 database library.  This is only for
@@ -130,7 +119,7 @@ Package: libdb4.6-java-gcj
 Architecture: any
 Section: libs
 Priority: optional
-Depends: libdb4.6-java (>= ${source:Version}), ${misc:Depends}, ${shlibs:Depends}
+Depends: libdb4.6-java (>= ${source:Version}), libgcj-common (>> 1:4.1.1-13), ${shlibs:Depends}
 Description: Berkeley v4.6 Database Libraries for Java (native code)
  This package provides the Java interface for the Berkeley v4.4 database
  library.
