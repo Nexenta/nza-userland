@@ -1,9 +1,9 @@
 # DP: Do not add /usr/lib/pythonXY.zip on sys.path.
 
-Index: python2.6-2.6.5+20100521/Modules/getpath.c
+Index: b/Modules/getpath.c
 ===================================================================
---- python2.6-2.6.5+20100521.orig/Modules/getpath.c	2010-05-21 15:52:49.187710173 +0200
-+++ python2.6-2.6.5+20100521/Modules/getpath.c	2010-05-21 15:52:49.191736733 +0200
+--- a/Modules/getpath.c	2011-08-25 20:59:13.800941755 +0400
++++ b/Modules/getpath.c	2011-08-25 20:59:30.682834661 +0400
 @@ -376,7 +376,9 @@
      char *path = getenv("PATH");
      char *prog = Py_GetProgramName();

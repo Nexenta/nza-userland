@@ -1,0 +1,15 @@
+/usr/bin/python2.6-config
+/usr/include/python2.6/
+/usr/lib/libpython2.6.{so,a}
+#/usr/lib/pkgconfig/python-2.6.pc
+/usr/lib/python2.6/config/Setup
+/usr/lib/python2.6/config/Setup.config
+/usr/lib/python2.6/config/Setup.local
+/usr/lib/python2.6/config/config.c
+/usr/lib/python2.6/config/config.c.in
+/usr/lib/python2.6/config/install-sh
+/usr/lib/python2.6/config/libpython2.6-pic.a
+/usr/lib/python2.6/config/libpython2.6.a
+/usr/lib/python2.6/config/makesetup
+/usr/lib/python2.6/config/python.o
+/usr/lib/python2.6/distutils/command/*.exe

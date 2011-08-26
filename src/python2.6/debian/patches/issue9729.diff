@@ -1,8 +1,10 @@
 # DP: Fix issue #9729, Unconnected SSLSocket.{send,recv} raises TypeError.
 
---- a/Lib/ssl.py
-+++ b/Lib/ssl.py
-@@ -184,14 +184,14 @@
+Index: b/Lib/ssl.py
+===================================================================
+--- a/Lib/ssl.py	2011-08-25 20:59:10.317728595 +0400
++++ b/Lib/ssl.py	2011-08-25 20:59:41.055901696 +0400
+@@ -182,14 +182,14 @@
                  else:
                      return v
          else:
@@ -19,7 +21,7 @@
  
      def sendall(self, data, flags=0):
          if self._sslobj:
-@@ -216,7 +216,7 @@
+@@ -214,7 +214,7 @@
                      self.__class__)
              return self.read(buflen)
          else:
@@ -28,7 +30,7 @@
  
      def recv_into(self, buffer, nbytes=None, flags=0):
          if buffer and (nbytes is None):
-@@ -233,21 +233,21 @@
+@@ -231,21 +231,21 @@
              buffer[:v] = tmp_buffer
              return v
          else:
@@ -53,10 +55,11 @@
  
      def pending(self):
          if self._sslobj:
-
---- a/Lib/test/test_ssl.py
-+++ b/Lib/test/test_ssl.py
-@@ -151,6 +151,19 @@
+Index: b/Lib/test/test_ssl.py
+===================================================================
+--- a/Lib/test/test_ssl.py	2011-08-25 20:59:10.366742733 +0400
++++ b/Lib/test/test_ssl.py	2011-08-25 20:59:41.056807277 +0400
+@@ -109,6 +109,19 @@
          del ss
          self.assertEqual(wr(), None)
  
@@ -76,4 +79,3 @@
  
  class NetworkedTests(unittest.TestCase):
  
-

@@ -1,10 +1,10 @@
 # DP: Build using Berkley DB 4.8. Issue #6949.
 
-Index: python2.6-2.6.5+20100521/Lib/bsddb/test/test_basics.py
+Index: b/Lib/bsddb/test/test_basics.py
 ===================================================================
---- python2.6-2.6.5+20100521.orig/Lib/bsddb/test/test_basics.py	2010-05-21 16:09:30.892718573 +0200
-+++ python2.6-2.6.5+20100521/Lib/bsddb/test/test_basics.py	2010-05-21 16:09:30.912709593 +0200
-@@ -1032,11 +1032,12 @@
+--- a/Lib/bsddb/test/test_basics.py	2011-08-25 20:59:12.203388394 +0400
++++ b/Lib/bsddb/test/test_basics.py	2011-08-25 20:59:35.720005168 +0400
+@@ -1000,11 +1000,12 @@
      #    # See http://bugs.python.org/issue3307
      #    self.assertRaises(db.DBInvalidArgError, db.DB, None, 65535)
  
@@ -22,10 +22,10 @@ Index: python2.6-2.6.5+20100521/Lib/bsddb/test/test_basics.py
  
  
  #----------------------------------------------------------------------
-Index: python2.6-2.6.5+20100521/Lib/bsddb/test/test_distributed_transactions.py
+Index: b/Lib/bsddb/test/test_distributed_transactions.py
 ===================================================================
---- python2.6-2.6.5+20100521.orig/Lib/bsddb/test/test_distributed_transactions.py	2010-05-21 16:09:30.872710652 +0200
-+++ python2.6-2.6.5+20100521/Lib/bsddb/test/test_distributed_transactions.py	2010-05-21 16:09:30.908709992 +0200
+--- a/Lib/bsddb/test/test_distributed_transactions.py	2011-08-25 20:59:12.252733741 +0400
++++ b/Lib/bsddb/test/test_distributed_transactions.py	2011-08-25 20:59:35.720737576 +0400
 @@ -35,7 +35,7 @@
                  db.DB_INIT_TXN | db.DB_INIT_LOG | db.DB_INIT_MPOOL |
                  db.DB_INIT_LOCK, 0666)
@@ -44,10 +44,10 @@ Index: python2.6-2.6.5+20100521/Lib/bsddb/test/test_distributed_transactions.py
              gid = adapt(gid %i)
              self.db.put(i, gid, txn=txn, flags=db.DB_APPEND)
              txns.add(gid)
-Index: python2.6-2.6.5+20100521/Modules/_bsddb.c
+Index: b/Modules/_bsddb.c
 ===================================================================
---- python2.6-2.6.5+20100521.orig/Modules/_bsddb.c	2010-05-21 16:09:30.852710203 +0200
-+++ python2.6-2.6.5+20100521/Modules/_bsddb.c	2010-05-21 16:09:30.908709992 +0200
+--- a/Modules/_bsddb.c	2011-08-25 20:59:12.294679778 +0400
++++ b/Modules/_bsddb.c	2011-08-25 20:59:35.723930625 +0400
 @@ -215,6 +215,10 @@
  #define DB_BUFFER_SMALL         ENOMEM
  #endif
@@ -153,11 +153,11 @@ Index: python2.6-2.6.5+20100521/Modules/_bsddb.c
  
      ADD_INT(d, DB_RECOVER);
      ADD_INT(d, DB_RECOVER_FATAL);
-Index: python2.6-2.6.5+20100521/setup.py
+Index: b/setup.py
 ===================================================================
---- python2.6-2.6.5+20100521.orig/setup.py	2010-05-21 16:09:30.828738368 +0200
-+++ python2.6-2.6.5+20100521/setup.py	2010-05-21 16:09:30.904710042 +0200
-@@ -709,7 +709,7 @@
+--- a/setup.py	2011-08-25 20:59:20.401845742 +0400
++++ b/setup.py	2011-08-25 20:59:35.724833992 +0400
+@@ -786,7 +786,7 @@
          # a release.  Most open source OSes come with one or more
          # versions of BerkeleyDB already installed.
  

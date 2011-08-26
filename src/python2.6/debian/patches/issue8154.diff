@@ -1,10 +1,10 @@
 # DP: Issue #8154, fix segfault with os.execlp('true')
 
-Index: python2.6-2.6.5+20100521/Modules/posixmodule.c
+Index: b/Modules/posixmodule.c
 ===================================================================
---- python2.6-2.6.5+20100521.orig/Modules/posixmodule.c	2010-05-21 16:11:09.200741779 +0200
-+++ python2.6-2.6.5+20100521/Modules/posixmodule.c	2010-05-21 16:17:59.203713876 +0200
-@@ -2979,6 +2979,11 @@
+--- a/Modules/posixmodule.c	2011-08-25 20:59:34.593539534 +0400
++++ b/Modules/posixmodule.c	2011-08-25 20:59:36.383002918 +0400
+@@ -2998,6 +2998,11 @@
          PyMem_Free(path);
          return NULL;
      }

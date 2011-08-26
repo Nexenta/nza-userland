@@ -1,9 +1,9 @@
 # DP: Issue #8140: extend compileall to compile single files. Add -i option.
 
-Index: python2.6-2.6.5+20100521/Lib/compileall.py
+Index: b/Lib/compileall.py
 ===================================================================
---- python2.6-2.6.5+20100521.orig/Lib/compileall.py	2010-05-21 17:41:12.980711947 +0200
-+++ python2.6-2.6.5+20100521/Lib/compileall.py	2010-05-21 17:41:21.403711729 +0200
+--- a/Lib/compileall.py	2011-08-25 20:59:12.462465498 +0400
++++ b/Lib/compileall.py	2011-08-25 20:59:35.178324007 +0400
 @@ -16,7 +16,7 @@
  import sys
  import py_compile

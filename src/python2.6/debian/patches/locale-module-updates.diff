@@ -1,7 +1,9 @@
 # DP: Lib/locale.py: Update locale aliases from the py3k branch
 
---- a/Lib/locale.py
-+++ b/Lib/locale.py
+Index: b/Lib/locale.py
+===================================================================
+--- a/Lib/locale.py	2011-08-25 20:59:16.399436610 +0400
++++ b/Lib/locale.py	2011-08-25 20:59:23.149814102 +0400
 @@ -591,6 +591,7 @@
      'iso8859_13':                   'ISO8859-13',
      'iso8859_14':                   'ISO8859-14',

@@ -1,9 +1,9 @@
 # DP: Fix profiled build; don't use Python/thread.gc*, gcc complains
 
-Index: python2.6-2.6.5+20100521/Makefile.pre.in
+Index: b/Makefile.pre.in
 ===================================================================
---- python2.6-2.6.5+20100521.orig/Makefile.pre.in	2010-05-21 15:52:27.943710105 +0200
-+++ python2.6-2.6.5+20100521/Makefile.pre.in	2010-05-21 15:52:27.947726677 +0200
+--- a/Makefile.pre.in	2011-08-25 20:59:27.145252661 +0400
++++ b/Makefile.pre.in	2011-08-25 20:59:30.124420920 +0400
 @@ -372,9 +372,11 @@
  	$(MAKE) all CFLAGS="$(CFLAGS) -fprofile-generate" LIBS="$(LIBS) -lgcov"
  

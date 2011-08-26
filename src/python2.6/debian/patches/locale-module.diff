@@ -2,11 +2,11 @@
 # DP:     - Don't map 'utf8', 'utf-8' to 'utf', which is not a known encoding
 # DP:       for glibc.
 
-Index: python2.6-2.6.5+20100521/Lib/locale.py
+Index: b/Lib/locale.py
 ===================================================================
---- python2.6-2.6.5+20100521.orig/Lib/locale.py	2010-05-21 15:37:48.143710174 +0200
-+++ python2.6-2.6.5+20100521/Lib/locale.py	2010-05-21 15:37:58.480711378 +0200
-@@ -1420,8 +1420,8 @@
+--- a/Lib/locale.py	2011-08-25 20:59:23.149814102 +0400
++++ b/Lib/locale.py	2011-08-25 20:59:23.699919402 +0400
+@@ -1496,8 +1496,8 @@
      'uk_ua.iso88595':                       'uk_UA.ISO8859-5',
      'uk_ua.koi8u':                          'uk_UA.KOI8-U',
      'uk_ua.microsoftcp1251':                'uk_UA.CP1251',

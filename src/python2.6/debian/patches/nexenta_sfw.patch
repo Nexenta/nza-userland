@@ -1,7 +1,7 @@
-Index: python2.6-2.6.6/Modules/_multiprocessing/multiprocessing.h
+Index: b/Modules/_multiprocessing/multiprocessing.h
 ===================================================================
---- python2.6-2.6.6.orig/Modules/_multiprocessing/multiprocessing.h	2011-06-04 20:43:21.142905690 +0400
-+++ python2.6-2.6.6/Modules/_multiprocessing/multiprocessing.h	2011-06-05 00:59:05.490161337 +0400
+--- a/Modules/_multiprocessing/multiprocessing.h	2011-08-25 20:59:09.245704943 +0400
++++ b/Modules/_multiprocessing/multiprocessing.h	2011-08-25 20:59:44.895722716 +0400
 @@ -3,6 +3,10 @@
  
  #define PY_SSIZE_T_CLEAN
@@ -13,10 +13,10 @@ Index: python2.6-2.6.6/Modules/_multiprocessing/multiprocessing.h
  #include "Python.h"
  #include "structmember.h"
  #include "pythread.h"
-Index: python2.6-2.6.6/setup.py
+Index: b/setup.py
 ===================================================================
---- python2.6-2.6.6.orig/setup.py	2011-06-05 00:59:02.873828795 +0400
-+++ python2.6-2.6.6/setup.py	2011-06-05 00:59:05.539067763 +0400
+--- a/setup.py	2011-08-25 20:59:43.822775986 +0400
++++ b/setup.py	2011-08-25 20:59:44.897501852 +0400
 @@ -359,6 +359,10 @@
          # On Debian /usr/local is always used, so we don't include it twice
          #add_dir_to_list(self.compiler.library_dirs, '/usr/local/lib')
@@ -28,7 +28,7 @@ Index: python2.6-2.6.6/setup.py
  
          # Add paths specified in the environment variables LDFLAGS and
          # CPPFLAGS for header and library files.
-@@ -690,8 +694,19 @@
+@@ -691,8 +695,19 @@
          exts.append( Extension('_csv', ['_csv.c']) )
  
          # socket(2)
@@ -49,7 +49,7 @@ Index: python2.6-2.6.6/setup.py
          # Detect SSL support for the socket module (via _ssl)
          search_for_ssl_incs_in = [
                                '/usr/local/ssl/include',
-@@ -715,6 +730,7 @@
+@@ -716,6 +731,7 @@
              exts.append( Extension('_ssl', ['_ssl.c'],
                                     include_dirs = ssl_incs,
                                     library_dirs = ssl_libs,
@@ -57,7 +57,7 @@ Index: python2.6-2.6.6/setup.py
                                     libraries = ['ssl', 'crypto'],
                                     depends = ['socketmodule.h']), )
          else:
-@@ -1194,6 +1210,14 @@
+@@ -1201,6 +1217,14 @@
  
          # Curses support, requiring the System V version of curses, often
          # provided by the ncurses library.
@@ -72,7 +72,7 @@ Index: python2.6-2.6.6/setup.py
          panel_library = 'panel'
          if curses_library.startswith('ncurses'):
              if curses_library == 'ncursesw':
-@@ -1202,7 +1226,10 @@
+@@ -1209,7 +1233,10 @@
                  panel_library = 'panelw'
              curses_libs = [curses_library]
              exts.append( Extension('_curses', ['_cursesmodule.c'],
@@ -84,7 +84,7 @@ Index: python2.6-2.6.6/setup.py
          elif curses_library == 'curses' and platform != 'darwin':
                  # OSX has an old Berkeley curses, not good enough for
                  # the _curses module.
-@@ -1220,9 +1247,12 @@
+@@ -1227,9 +1254,12 @@
  
          # If the curses module is enabled, check for the panel module
          if (module_enabled(exts, '_curses') and
@@ -99,7 +99,7 @@ Index: python2.6-2.6.6/setup.py
          else:
              missing.append('_curses_panel')
  
-@@ -1446,9 +1476,14 @@
+@@ -1453,9 +1483,14 @@
              if macros.get('HAVE_SEM_OPEN', False):
                  multiprocessing_srcs.append('_multiprocessing/semaphore.c')
  
@@ -114,10 +114,10 @@ Index: python2.6-2.6.6/setup.py
                                      include_dirs=["Modules/_multiprocessing"]))
          else:
              missing.append('_multiprocessing')
-Index: python2.6-2.6.6/Include/pymacconfig.h
+Index: b/Include/pymacconfig.h
 ===================================================================
---- python2.6-2.6.6.orig/Include/pymacconfig.h	2011-06-05 01:01:21.234984985 +0400
-+++ python2.6-2.6.6/Include/pymacconfig.h	2011-06-05 01:03:34.370968248 +0400
+--- a/Include/pymacconfig.h	2011-08-25 20:59:09.332261747 +0400
++++ b/Include/pymacconfig.h	2011-08-25 20:59:44.898014116 +0400
 @@ -8,7 +8,7 @@
        * only compile-time constant in these scenarios.
        */

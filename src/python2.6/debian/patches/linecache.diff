@@ -1,9 +1,9 @@
 # DP: Proper handling of packages in linecache.py
 
-Index: python2.6-2.6.5+20100521/Lib/linecache.py
+Index: b/Lib/linecache.py
 ===================================================================
---- python2.6-2.6.5+20100521.orig/Lib/linecache.py	2010-05-21 15:51:47.151717677 +0200
-+++ python2.6-2.6.5+20100521/Lib/linecache.py	2010-05-21 15:51:47.155720211 +0200
+--- a/Lib/linecache.py	2011-08-25 20:59:14.280260735 +0400
++++ b/Lib/linecache.py	2011-08-25 20:59:29.004792933 +0400
 @@ -108,6 +108,11 @@
          if os.path.isabs(filename):
              return []

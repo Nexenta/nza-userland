@@ -1,7 +1,9 @@
 # DP: Link with the system expat
 
---- a/Modules/Setup.dist
-+++ b/Modules/Setup.dist
+Index: b/Modules/Setup.dist
+===================================================================
+--- a/Modules/Setup.dist	2011-08-25 20:59:32.935755296 +0400
++++ b/Modules/Setup.dist	2011-08-25 20:59:41.627589868 +0400
 @@ -180,7 +180,7 @@
  #itertools itertoolsmodule.c	# Functions creating iterators for efficient looping 
  #strop stropmodule.c		# String manipulations

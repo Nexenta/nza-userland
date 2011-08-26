@@ -1,9 +1,9 @@
 # DP: Fix bashism in makesetup shell script
 
-Index: python2.6-2.6.5+20100521/Modules/makesetup
+Index: b/Modules/makesetup
 ===================================================================
---- python2.6-2.6.5+20100521.orig/Modules/makesetup	2010-05-21 16:02:19.563709916 +0200
-+++ python2.6-2.6.5+20100521/Modules/makesetup	2010-05-21 16:02:19.567710355 +0200
+--- a/Modules/makesetup	2011-08-25 20:59:13.007266614 +0400
++++ b/Modules/makesetup	2011-08-25 20:59:33.485549125 +0400
 @@ -281,7 +281,7 @@
  	-)	;;
  	*)	sedf="@sed.in.$$"

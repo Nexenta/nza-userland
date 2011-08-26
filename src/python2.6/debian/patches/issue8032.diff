@@ -1,9 +1,9 @@
 # DP: Backport patch for issue #8032, gdb7 hooks for debugging (r79548).
 
-Index: python2.6-2.6.5+20100521/Lib/test/test_gdb_sample.py
+Index: b/Lib/test/test_gdb_sample.py
 ===================================================================
 --- /dev/null	1970-01-01 00:00:00.000000000 +0000
-+++ python2.6-2.6.5+20100521/Lib/test/test_gdb_sample.py	2010-05-21 17:43:37.583712118 +0200
++++ b/Lib/test/test_gdb_sample.py	2011-08-25 20:59:36.924172624 +0400
 @@ -0,0 +1,12 @@
 +# Sample script for use by test_gdb.py
 +
@@ -17,10 +17,10 @@ Index: python2.6-2.6.5+20100521/Lib/test/test_gdb_sample.py
 +    print(42)
 +
 +foo(1, 2, 3)
-Index: python2.6-2.6.5+20100521/Makefile.pre.in
+Index: b/Makefile.pre.in
 ===================================================================
---- python2.6-2.6.5+20100521.orig/Makefile.pre.in	2010-05-21 17:43:27.287741756 +0200
-+++ python2.6-2.6.5+20100521/Makefile.pre.in	2010-05-21 17:43:37.591714391 +0200
+--- a/Makefile.pre.in	2011-08-25 20:59:30.124420920 +0400
++++ b/Makefile.pre.in	2011-08-25 20:59:36.925262748 +0400
 @@ -354,7 +354,7 @@
  
  # Default target
@@ -47,18 +47,18 @@ Index: python2.6-2.6.5+20100521/Makefile.pre.in
  # This rule is here for OPENSTEP/Rhapsody/MacOSX. It builds a temporary
  # minimal framework (not including the Lib directory and such) in the current
  # directory.
-@@ -1219,5 +1229,6 @@
+@@ -1220,5 +1230,6 @@
  .PHONY: frameworkinstallmaclib frameworkinstallapps frameworkinstallunixtools
  .PHONY: frameworkaltinstallunixtools recheck autoconf clean clobber distclean 
  .PHONY: smelly funny patchcheck
 +.PHONY: gdbhooks
  
  # IF YOU PUT ANYTHING HERE IT WILL GO AWAY
-Index: python2.6-2.6.5+20100521/Misc/ACKS
+Index: b/Misc/ACKS
 ===================================================================
---- python2.6-2.6.5+20100521.orig/Misc/ACKS	2010-05-21 17:43:27.203723039 +0200
-+++ python2.6-2.6.5+20100521/Misc/ACKS	2010-05-21 17:43:37.567715252 +0200
-@@ -454,6 +454,7 @@
+--- a/Misc/ACKS	2011-08-25 20:59:11.582656832 +0400
++++ b/Misc/ACKS	2011-08-25 20:59:36.925883036 +0400
+@@ -458,6 +458,7 @@
  Nick Maclaren
  Steve Majewski
  Grzegorz Makarewicz
@@ -66,10 +66,10 @@ Index: python2.6-2.6.5+20100521/Misc/ACKS
  Ken Manheimer
  Vladimir Marangozov
  David Marek
-Index: python2.6-2.6.5+20100521/Tools/README
+Index: b/Tools/README
 ===================================================================
---- python2.6-2.6.5+20100521.orig/Tools/README	2010-05-21 17:43:27.235720473 +0200
-+++ python2.6-2.6.5+20100521/Tools/README	2010-05-21 17:43:37.583712118 +0200
+--- a/Tools/README	2011-08-25 20:59:11.626192706 +0400
++++ b/Tools/README	2011-08-25 20:59:36.926460472 +0400
 @@ -20,6 +20,9 @@
  
  freeze		Create a stand-alone executable from a Python program.
@@ -80,10 +80,10 @@ Index: python2.6-2.6.5+20100521/Tools/README
  i18n		Tools for internationalization. pygettext.py 
  		parses Python source code and generates .pot files,
  		and msgfmt.py generates a binary message catalog 
-Index: python2.6-2.6.5+20100521/Tools/gdb/libpython.py
+Index: b/Tools/gdb/libpython.py
 ===================================================================
 --- /dev/null	1970-01-01 00:00:00.000000000 +0000
-+++ python2.6-2.6.5+20100521/Tools/gdb/libpython.py	2010-05-21 17:43:37.571711709 +0200
++++ b/Tools/gdb/libpython.py	2011-08-25 20:59:36.927636891 +0400
 @@ -0,0 +1,1392 @@
 +#!/usr/bin/python
 +'''
@@ -1477,10 +1477,10 @@ Index: python2.6-2.6.5+20100521/Tools/gdb/libpython.py
 +                      pyop_value.get_truncated_repr(MAX_OUTPUT_LEN)))
 +
 +PyLocals()
-Index: python2.6-2.6.5+20100521/Lib/test/test_gdb.py
+Index: b/Lib/test/test_gdb.py
 ===================================================================
 --- /dev/null	1970-01-01 00:00:00.000000000 +0000
-+++ python2.6-2.6.5+20100521/Lib/test/test_gdb.py	2010-05-21 17:43:37.591714391 +0200
++++ b/Lib/test/test_gdb.py	2011-08-25 20:59:36.928506710 +0400
 @@ -0,0 +1,658 @@
 +# Verify that gdb can pretty-print the various PyObject* types
 +#

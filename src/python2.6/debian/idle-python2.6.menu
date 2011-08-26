@@ -1,0 +1,5 @@
+?package(idle-python2.6):needs="X11" section="Applications/Programming"\
+	title="IDLE (Python v2.6)"\
+	icon="/usr/share/pixmaps/python2.6.xpm"\
+	command="/usr/bin/idle-python2.6 -n" \
+	hints="Environments"

@@ -1,9 +1,9 @@
 # DP: adjust locations of directories to Debian policy
 
-Index: python2.6-2.6.5+20100521/Demo/scripts/ftpstats.py
+Index: b/Demo/scripts/ftpstats.py
 ===================================================================
---- python2.6-2.6.5+20100521.orig/Demo/scripts/ftpstats.py	2010-05-21 15:32:26.476709483 +0200
-+++ python2.6-2.6.5+20100521/Demo/scripts/ftpstats.py	2010-05-21 15:32:35.875712007 +0200
+--- a/Demo/scripts/ftpstats.py	2011-08-25 20:59:17.497997043 +0400
++++ b/Demo/scripts/ftpstats.py	2011-08-25 20:59:21.126558654 +0400
 @@ -6,7 +6,8 @@
  # ftpstats [-m maxitems] [-s search] [file]
  # -m maxitems: restrict number of items in "top-N" lists, default 25.
@@ -23,10 +23,10 @@ Index: python2.6-2.6.5+20100521/Demo/scripts/ftpstats.py
      if args: file = args[0]
      if file == '-':
          f = sys.stdin
-Index: python2.6-2.6.5+20100521/Demo/tkinter/guido/ManPage.py
+Index: b/Demo/tkinter/guido/ManPage.py
 ===================================================================
---- python2.6-2.6.5+20100521.orig/Demo/tkinter/guido/ManPage.py	2010-05-21 15:32:26.436711731 +0200
-+++ python2.6-2.6.5+20100521/Demo/tkinter/guido/ManPage.py	2010-05-21 15:32:35.871745929 +0200
+--- a/Demo/tkinter/guido/ManPage.py	2011-08-25 20:59:17.533179082 +0400
++++ b/Demo/tkinter/guido/ManPage.py	2011-08-25 20:59:21.127470721 +0400
 @@ -189,8 +189,9 @@
  def test():
      import os
@@ -39,10 +39,10 @@ Index: python2.6-2.6.5+20100521/Demo/tkinter/guido/ManPage.py
      DEFAULTPAGE = 'Tcl'
      formatted = 0
      if sys.argv[1:] and sys.argv[1] == '-f':
-Index: python2.6-2.6.5+20100521/Demo/tkinter/guido/tkman.py
+Index: b/Demo/tkinter/guido/tkman.py
 ===================================================================
---- python2.6-2.6.5+20100521.orig/Demo/tkinter/guido/tkman.py	2010-05-21 15:32:26.456719791 +0200
-+++ python2.6-2.6.5+20100521/Demo/tkinter/guido/tkman.py	2010-05-21 15:32:35.875712007 +0200
+--- a/Demo/tkinter/guido/tkman.py	2011-08-25 20:59:17.583631211 +0400
++++ b/Demo/tkinter/guido/tkman.py	2011-08-25 20:59:21.128156323 +0400
 @@ -9,8 +9,8 @@
  from Tkinter import *
  from ManPage import ManPage
@@ -54,10 +54,10 @@ Index: python2.6-2.6.5+20100521/Demo/tkinter/guido/tkman.py
  
  foundmanndir = 0
  for dir in MANNDIRLIST:
-Index: python2.6-2.6.5+20100521/Lib/pydoc.py
+Index: b/Lib/pydoc.py
 ===================================================================
---- python2.6-2.6.5+20100521.orig/Lib/pydoc.py	2010-05-21 15:32:26.372710645 +0200
-+++ python2.6-2.6.5+20100521/Lib/pydoc.py	2010-05-21 15:32:35.867712036 +0200
+--- a/Lib/pydoc.py	2011-08-25 20:59:17.626580608 +0400
++++ b/Lib/pydoc.py	2011-08-25 20:59:21.129377903 +0400
 @@ -27,6 +27,10 @@
  
  Module docs for core modules are assumed to be in
@@ -79,10 +79,10 @@ Index: python2.6-2.6.5+20100521/Lib/pydoc.py
          basedir = os.path.join(sys.exec_prefix, "lib",
                                 "python"+sys.version[0:3])
          if (isinstance(object, type(os)) and
-Index: python2.6-2.6.5+20100521/Misc/python.man
+Index: b/Misc/python.man
 ===================================================================
---- python2.6-2.6.5+20100521.orig/Misc/python.man	2010-05-21 15:32:26.495709663 +0200
-+++ python2.6-2.6.5+20100521/Misc/python.man	2010-05-21 15:32:35.879712096 +0200
+--- a/Misc/python.man	2011-08-25 20:59:17.670476063 +0400
++++ b/Misc/python.man	2011-08-25 20:59:21.130034981 +0400
 @@ -323,7 +323,7 @@
  These are subject to difference depending on local installation
  conventions; ${prefix} and ${exec_prefix} are installation-dependent
@@ -92,10 +92,10 @@ Index: python2.6-2.6.5+20100521/Misc/python.man
  .IP \fI${exec_prefix}/bin/python\fP
  Recommended location of the interpreter.
  .PP
-Index: python2.6-2.6.5+20100521/Tools/faqwiz/faqconf.py
+Index: b/Tools/faqwiz/faqconf.py
 ===================================================================
---- python2.6-2.6.5+20100521.orig/Tools/faqwiz/faqconf.py	2010-05-21 15:32:26.392715284 +0200
-+++ python2.6-2.6.5+20100521/Tools/faqwiz/faqconf.py	2010-05-21 15:32:35.867712036 +0200
+--- a/Tools/faqwiz/faqconf.py	2011-08-25 20:59:17.714023923 +0400
++++ b/Tools/faqwiz/faqconf.py	2011-08-25 20:59:21.130873064 +0400
 @@ -21,7 +21,7 @@
  OWNEREMAIL = "nobody@anywhere.org"      # Email for feedback
  HOMEURL = "http://www.python.org"       # Related home page
@@ -105,10 +105,10 @@ Index: python2.6-2.6.5+20100521/Tools/faqwiz/faqconf.py
                                          # (must end in a slash)
  
  # Parameters you can normally leave alone
-Index: python2.6-2.6.5+20100521/Tools/webchecker/webchecker.py
+Index: b/Tools/webchecker/webchecker.py
 ===================================================================
---- python2.6-2.6.5+20100521.orig/Tools/webchecker/webchecker.py	2010-05-21 15:32:26.416707302 +0200
-+++ python2.6-2.6.5+20100521/Tools/webchecker/webchecker.py	2010-05-21 15:32:35.867712036 +0200
+--- a/Tools/webchecker/webchecker.py	2011-08-25 20:59:17.763319607 +0400
++++ b/Tools/webchecker/webchecker.py	2011-08-25 20:59:21.131618845 +0400
 @@ -19,7 +19,8 @@
  a directory listing is returned.  Now, you can point webchecker to the
  document tree in the local file system of your HTTP daemon, and have

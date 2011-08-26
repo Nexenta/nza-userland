@@ -1,9 +1,9 @@
 # DP: Call the linker with -O1 -Bsymbolic-functions
 
-Index: python2.6-2.6.5+20100521/configure.in
+Index: b/configure.in
 ===================================================================
---- python2.6-2.6.5+20100521.orig/configure.in	2010-05-21 15:46:10.696713066 +0200
-+++ python2.6-2.6.5+20100521/configure.in	2010-05-21 15:46:10.704709684 +0200
+--- a/configure.in	2011-08-25 20:59:15.401547044 +0400
++++ b/configure.in	2011-08-25 20:59:26.601429335 +0400
 @@ -1829,7 +1829,7 @@
  			fi
  		fi

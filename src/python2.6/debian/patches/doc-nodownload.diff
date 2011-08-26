@@ -1,9 +1,9 @@
 # DP: Don't try to download documentation tools
 
-Index: python2.6-2.6.5+20100521/Doc/Makefile
+Index: b/Doc/Makefile
 ===================================================================
---- python2.6-2.6.5+20100521.orig/Doc/Makefile	2010-05-21 15:52:06.072720141 +0200
-+++ python2.6-2.6.5+20100521/Doc/Makefile	2010-05-21 15:52:06.076709754 +0200
+--- a/Doc/Makefile	2011-08-25 20:59:14.145550698 +0400
++++ b/Doc/Makefile	2011-08-25 20:59:29.560260173 +0400
 @@ -56,7 +56,7 @@
  
  update: clean checkout

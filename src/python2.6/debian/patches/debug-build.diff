@@ -2,10 +2,10 @@
 # DP: built with the python-dbg interpreter with a different name into
 # DP: the same path (by appending `_d' to the extension name).
 
-Index: python2.6-2.6.5+20100521/Lib/distutils/command/build.py
+Index: b/Lib/distutils/command/build.py
 ===================================================================
---- python2.6-2.6.5+20100521.orig/Lib/distutils/command/build.py	2010-05-21 15:47:17.380709707 +0200
-+++ python2.6-2.6.5+20100521/Lib/distutils/command/build.py	2010-05-21 15:47:38.251711950 +0200
+--- a/Lib/distutils/command/build.py	2011-08-25 20:59:14.915598212 +0400
++++ b/Lib/distutils/command/build.py	2011-08-25 20:59:27.143266921 +0400
 @@ -95,7 +95,8 @@
          # 'lib.<plat>' under the base build directory.  We only use one of
          # them for a given distribution, though --
@@ -16,10 +16,10 @@ Index: python2.6-2.6.5+20100521/Lib/distutils/command/build.py
          if self.build_platlib is None:
              self.build_platlib = os.path.join(self.build_base,
                                                'lib' + plat_specifier)
-Index: python2.6-2.6.5+20100521/Lib/distutils/sysconfig.py
+Index: b/Lib/distutils/sysconfig.py
 ===================================================================
---- python2.6-2.6.5+20100521.orig/Lib/distutils/sysconfig.py	2010-05-21 15:47:17.400709947 +0200
-+++ python2.6-2.6.5+20100521/Lib/distutils/sysconfig.py	2010-05-21 15:47:38.251711950 +0200
+--- a/Lib/distutils/sysconfig.py	2011-08-25 20:59:24.997090926 +0400
++++ b/Lib/distutils/sysconfig.py	2011-08-25 20:59:27.144100665 +0400
 @@ -85,7 +85,8 @@
                  # Include is located in the srcdir
                  inc_dir = os.path.join(srcdir, "Include")
@@ -30,19 +30,19 @@ Index: python2.6-2.6.5+20100521/Lib/distutils/sysconfig.py
      elif os.name == "nt":
          return os.path.join(prefix, "include")
      elif os.name == "mac":
-@@ -233,7 +234,7 @@
-     if python_build:
-         return os.path.join(os.path.dirname(sys.executable), "Makefile")
+@@ -234,7 +235,7 @@
+         return os.path.join(os.path.dirname(os.path.realpath(sys.executable)),
+                             "Makefile")
      lib_dir = get_python_lib(plat_specific=1, standard_lib=1)
 -    return os.path.join(lib_dir, "config", "Makefile")
 +    return os.path.join(lib_dir, "config" + (sys.pydebug and "_d" or ""), "Makefile")
  
  
  def parse_config_h(fp, g=None):
-Index: python2.6-2.6.5+20100521/Makefile.pre.in
+Index: b/Makefile.pre.in
 ===================================================================
---- python2.6-2.6.5+20100521.orig/Makefile.pre.in	2010-05-21 15:47:17.428709806 +0200
-+++ python2.6-2.6.5+20100521/Makefile.pre.in	2010-05-21 15:47:38.263712290 +0200
+--- a/Makefile.pre.in	2011-08-25 20:59:14.997965841 +0400
++++ b/Makefile.pre.in	2011-08-25 20:59:27.145252661 +0400
 @@ -96,8 +96,8 @@
  # Detailed destination directories
  BINLIBDEST=	$(LIBDIR)/python$(VERSION)
@@ -83,10 +83,10 @@ Index: python2.6-2.6.5+20100521/Makefile.pre.in
  libainstall:	all
  	@for i in $(LIBDIR) $(LIBP) $(LIBPL); \
  	do \
-Index: python2.6-2.6.5+20100521/Misc/python-config.in
+Index: b/Misc/python-config.in
 ===================================================================
---- python2.6-2.6.5+20100521.orig/Misc/python-config.in	2010-05-21 15:47:17.468709863 +0200
-+++ python2.6-2.6.5+20100521/Misc/python-config.in	2010-05-21 15:47:38.267711821 +0200
+--- a/Misc/python-config.in	2011-08-25 20:59:15.044124037 +0400
++++ b/Misc/python-config.in	2011-08-25 20:59:27.145777262 +0400
 @@ -44,7 +44,7 @@
  
  elif opt in ('--libs', '--ldflags'):
@@ -96,10 +96,10 @@ Index: python2.6-2.6.5+20100521/Misc/python-config.in
      # add the prefix/lib/pythonX.Y/config dir, but only if there is no
      # shared library in prefix/lib/.
      if opt == '--ldflags' and not getvar('Py_ENABLE_SHARED'):
-Index: python2.6-2.6.5+20100521/Python/dynload_shlib.c
+Index: b/Python/dynload_shlib.c
 ===================================================================
---- python2.6-2.6.5+20100521.orig/Python/dynload_shlib.c	2010-05-21 15:47:17.359710249 +0200
-+++ python2.6-2.6.5+20100521/Python/dynload_shlib.c	2010-05-21 15:48:51.051768804 +0200
+--- a/Python/dynload_shlib.c	2011-08-25 20:59:15.080111632 +0400
++++ b/Python/dynload_shlib.c	2011-08-25 20:59:27.146375258 +0400
 @@ -46,6 +46,10 @@
      {"module.exe", "rb", C_EXTENSION},
      {"MODULE.EXE", "rb", C_EXTENSION},
@@ -111,10 +111,10 @@ Index: python2.6-2.6.5+20100521/Python/dynload_shlib.c
      {".so", "rb", C_EXTENSION},
      {"module.so", "rb", C_EXTENSION},
  #endif
-Index: python2.6-2.6.5+20100521/Python/sysmodule.c
+Index: b/Python/sysmodule.c
 ===================================================================
---- python2.6-2.6.5+20100521.orig/Python/sysmodule.c	2010-05-21 15:47:17.331739651 +0200
-+++ python2.6-2.6.5+20100521/Python/sysmodule.c	2010-05-21 15:47:38.247711581 +0200
+--- a/Python/sysmodule.c	2011-08-25 20:59:15.123123151 +0400
++++ b/Python/sysmodule.c	2011-08-25 20:59:27.147404133 +0400
 @@ -1436,6 +1436,12 @@
      FlagsType.tp_init = NULL;
      FlagsType.tp_new = NULL;
@@ -128,10 +128,10 @@ Index: python2.6-2.6.5+20100521/Python/sysmodule.c
  #undef SET_SYS_FROM_STRING
      if (PyErr_Occurred())
          return NULL;
-Index: python2.6-2.6.5+20100521/configure.in
+Index: b/configure.in
 ===================================================================
---- python2.6-2.6.5+20100521.orig/configure.in	2010-05-21 15:47:17.448709904 +0200
-+++ python2.6-2.6.5+20100521/configure.in	2010-05-21 15:47:38.267711821 +0200
+--- a/configure.in	2011-08-25 20:59:26.601429335 +0400
++++ b/configure.in	2011-08-25 20:59:27.148956503 +0400
 @@ -618,7 +618,7 @@
  AC_MSG_CHECKING(LIBRARY)
  if test -z "$LIBRARY"

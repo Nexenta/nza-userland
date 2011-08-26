@@ -1,9 +1,9 @@
 # DP: hotshot: Check for the availability of the profile and pstats modules.
 
-Index: python2.6-2.6.5+20100521/Lib/hotshot/stats.py
+Index: b/Lib/hotshot/stats.py
 ===================================================================
---- python2.6-2.6.5+20100521.orig/Lib/hotshot/stats.py	2010-05-21 15:50:48.447709766 +0200
-+++ python2.6-2.6.5+20100521/Lib/hotshot/stats.py	2010-05-21 15:50:48.451709716 +0200
+--- a/Lib/hotshot/stats.py	2011-08-25 20:59:14.555853053 +0400
++++ b/Lib/hotshot/stats.py	2011-08-25 20:59:27.905987622 +0400
 @@ -1,7 +1,10 @@
  """Statistics analyzer for HotShot."""
  
