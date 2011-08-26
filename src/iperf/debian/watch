@@ -1,0 +1,2 @@
+version=3
+http://sf.net/iperf/iperf-?_?([\w+\d+\.]+|\d+)(?:\.tar|\.tgz)(?:\.gz|\.bz2|)

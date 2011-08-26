@@ -1,0 +1,14 @@
+#!/bin/bash
+
+echo -n > debian/copyright
+
+cat << END_OF_FILE >> debian/copyright
+This package was debianized by Roberto Lumbreras <rover@debian.org> on
+Thu, 27 Mar 2003 22:50:46 +0100.
+
+It was downloaded from https://sourceforge.net/projects/iperf/
+
+Copyright:
+END_OF_FILE
+
+lynx -dump doc/ui_license.html >> debian/copyright
