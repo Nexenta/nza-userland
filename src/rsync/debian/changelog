@@ -1,45 +1,280 @@
-rsync (3.0.7-nexenta3) unstable; urgency=low
+rsync (40-0-0) unstable; urgency=low
 
-  * Removed init.d scripts
+  * Ported to NCP4
 
- -- Igor Kozhukhov <igor.kozhukhov@nexenta.com>  Tue, 2 Jan 2011 9:50:00 +0300
+ -- Igor Pashev <igor.pashev@nexenta.com>  Tue, 23 Aug 2011 23:51:56 +0400
 
-rsync (3.0.7-nexenta2) hardy; urgency=low
+rsync (3.0.8-1) unstable; urgency=low
 
-  * Change init.d script 
+  * new upstream release.
+  * Bumped Standards-Version to 3.9.1.0 (no change necessary).
 
- -- Alexander Eremin <a.eremin@nexenta.com>  Tue, 1 Feb 2011 12:45:00 +0300
+ -- Paul Slootman <paul@debian.org>  Thu, 14 Apr 2011 15:10:52 +0200
 
-rsync (3.0.7-nexenta1) hardy; urgency=low
+rsync (3.0.7-2) unstable; urgency=low
 
-  * Change postinst to not use svcadm 
+  * Remove symlink for stop script in rc1.d/ as S01killprocs should take care
+    of this. Lintian override also no longer necessary.
+    closes:#563864
+  * init script doesn't exit with fail if /etc/rsyncd.conf doesn't exist.
+    closes:#515769
+  * Bumped Standards-Version to 3.8.4 (no chenge necessary).
 
- -- Anil Gulecha <anil.verve@gmail.com>  Sun, 21 Feb 2010 17:48:00 -0800
+ -- Paul Slootman <paul@debian.org>  Wed, 17 Feb 2010 17:38:22 +0100
 
-rsync (3.0.7-nexenta0) hardy; urgency=low
+rsync (3.0.7-1) unstable; urgency=low
 
-  * Update rsync to 3.0.7 (to get -S sparse file support)
-  * Disable rsync by default when installed	
+  * new upstream release.
+  * Use $DAEMON consistently in the init.d script. Also use RSYNC_PID_FILE and
+    RSYNC_DEFAULTS_FILE while we're at it.
+    closes:#558771
+  * Remove stop links, they serve no useful purpose. Also start it a bit later
+    so that startup seems faster. (However, dependency-based boot sequencing
+    may interfere with this.) Lintian override was necessary for omitting the
+    stop scripts in 0 and 6.
+    closes:#534577
+  * Add support for running rsync under ionice, via an entry in
+    /etc/default/rsync .
+    closes:#553458
+  * The --delete option displays a better message now when used without -d.
+    closes:#544719
 
- -- Anil Gulecha <anil.verve@gmail.com>  Mon, 08 Feb 2010 02:37:27 -0800
+ -- Paul Slootman <paul@debian.org>  Tue, 05 Jan 2010 12:50:44 +0100
 
-rsync (3.0.3-1nexenta1) hardy; urgency=low
+rsync (3.0.6-1) unstable; urgency=low
 
-  * Patch configure.in to correctly identify IPv6 on Solaris
+  * new upstream release.
+  * Manpage now states that MD5 is used for protocol version 30 and higher.
+    closes:#520330
+  * Updated to standards version 3.8.2. Added debian/README.source .
+  * Added lintian override for embedded-zlib, as this is a modified version
+    optimized for the rsync protocol. I.e. the standard zlib version will not
+    work as well.
+  * Added a 'status' option to the init.d script.
+    closes:#492138
+  * Manpage now declares --delete-during to be the default in the summary.
+    closes:#472767,#476368
 
- -- Tim Spriggs <tim@tajinc.org>  Thu, 04 Jun 2009 22:33:49 -0700
+ -- Paul Slootman <paul@debian.org>  Wed, 17 Jun 2009 13:43:12 +0200
 
-rsync (3.0.3-1) elatte; urgency=low
+rsync (3.0.5-1) unstable; urgency=low
 
-  * upstream merge
+  * new upstream release.
+  * From the upstream NEWS file:
+     Fixed a bug when using --sparse on a sparse file that has over 2GB of
+     consecutive sparse data.
+    closes:#512635
 
- -- Erast Benson <erast@gnusolaris.org>  Mon, 19 Mar 2007 22:30:25 -0800
+ -- Paul Slootman <paul@debian.org>  Thu, 22 Jan 2009 15:05:27 +0100
 
-rsync (3.0.0cvs20070220-1) elatte; urgency=low
+rsync (3.0.4-3) unstable; urgency=low
 
-  * upstream merge from CVS
+  * When transferring files from an older rsync daemon without any options,
+    the daemon complained about "unknown option: -". Fixed that with a
+    patch from Matt McCutchen.
+    closes:#493559
+  * Sometimes rsync crashed with a segfault when transferring files with -X
+    (preserve extended attributes). Fixed that with a patch from upstream
+    (Wayne Davison).
+    closes:#498083
 
- -- Super-User <paul@debian.org>  Tue, 27 Feb 2007 10:29:18 -0800
+ -- Paul Slootman <paul@debian.org>  Wed, 24 Sep 2008 11:35:15 +0200
+
+rsync (3.0.4-2) unstable; urgency=low
+
+  * The log format '%P' patch accidentally reverted an ability to transform a
+    relative module path into an absolute one when chroot was not enabled.
+
+ -- Paul Slootman <paul@debian.org>  Fri, 12 Sep 2008 11:00:20 +0200
+
+rsync (3.0.4-1) unstable; urgency=low
+
+  * new upstream release.
+  * Fix log format '%P' when a module is chrooted.
+    closes:#493539
+  * Add a comment to the rsyncd.conf manpage that a hash sign (for comments)
+    can only be used at the beginning of a line.
+    closes:#498332
+
+ -- Paul Slootman <paul@debian.org>  Thu, 11 Sep 2008 11:57:46 +0200
+
+rsync (3.0.3-2) unstable; urgency=low
+
+  * Included some patches from the upcoming 3.0.4 release, which I consider
+    important enough to include now. See debian/patches/README for the
+    details.
+  * Ensure that the build bails out if patching fails.
+  * Added md5sums for this package.
+    closes:#484343
+  * Updated to standards version 3.7.3. No changes necessary.
+
+ -- Paul Slootman <paul@debian.org>  Fri, 25 Jul 2008 10:43:00 +0200
+
+rsync (3.0.3-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Paul Slootman <paul@debian.org>  Wed, 02 Jul 2008 11:07:22 +0200
+
+rsync (3.0.2-2) unstable; urgency=low
+
+  * Fixed a crash if a non-incremental-recursion transfer has a skipped file
+    in a set of hard-links.
+    closes:#477931
+
+ -- Paul Slootman <paul@debian.org>  Mon, 28 Apr 2008 13:06:35 +0200
+
+rsync (3.0.2-1) unstable; urgency=high
+
+  * new upstream release
+  * fixes security problem: potential buffer overflow in the
+    extended attribute support. For more info, see
+    http://rsync.samba.org/security.html
+
+ -- Paul Slootman <paul@debian.org>  Tue, 08 Apr 2008 19:34:22 +0200
+
+rsync (3.0.1-1) unstable; urgency=low
+
+  * new upstream release
+  * call ssh with -6 option if rsync was called with -6 option,
+    and ditto for -4 option.
+    Upstream considers the -4 and -6 options for use only when talking to a
+    daemon, hence this change will remain a Debian-only feature.
+    closes:367319
+
+ -- Paul Slootman <paul@debian.org>  Fri, 04 Apr 2008 12:36:56 +0200
+
+rsync (3.0.1~pre3-1) experimental; urgency=low
+
+  * prerelease version
+
+ -- Paul Slootman <paul@debian.org>  Mon, 31 Mar 2008 15:29:51 +0200
+
+rsync (3.0.0-3) unstable; urgency=low
+
+  * unreleased
+  * call ssh with -6 option if rsync was called with -6 option,
+    and ditto for -4 option.
+    closes:367319
+
+ -- Paul Slootman <paul@debian.org>  Tue, 04 Mar 2008 18:51:47 +0100
+
+rsync (3.0.0-2) unstable; urgency=low
+
+  * patch from upstream to fix crash in single-use daemon mode.
+    see #469172, although this only fixes the secondary part of that report.
+
+ -- Paul Slootman <paul@debian.org>  Tue, 04 Mar 2008 12:34:03 +0100
+
+rsync (3.0.0-1) unstable; urgency=low
+
+  * new upstream release
+  * manpage typo fixed upstream.
+    closes:#414636
+  * fixed LSB header in init.d script.
+    closes:#458442
+  * the progress display will not show negative values, if the file changes
+    (becomes shorter) during the transfer.
+    closes:#415648
+  * manpage now correctly show the short form of copy-dirlinks as -k, not -K
+    closes:#418923
+  * invalid free() pointer doesn't occur anymore.
+    closes:#451558
+  * rsync will now write in log when --exclude-from is stdin.
+    closes:#466950
+  * check for rsyncd.conf in init.d script when starting or restarting.
+    closes:#412448
+  * include scripts from upstream support directory in
+    /usr/share/doc/rsync/scripts/
+    closes:#458200
+  * include example logrotate config file in /usr/share/doc/rsync/examples/
+    closes:#416316
+  * filename conversion is now possible with the --iconv option. Noe exactly
+    what was asked, but close enough IMHO to close:#320223
+
+ -- Paul Slootman <paul@debian.org>  Sun, 02 Mar 2008 13:45:09 +0100
+
+rsync (3.0.0~pre10-1) experimental; urgency=low
+
+  * OK, one more prerelease version
+  * fixed LSB header in init.d script.
+    closes:#458442
+  * manpage typo fixed.
+    closes:#414636
+
+ -- Paul Slootman <paul@debian.org>  Wed, 20 Feb 2008 11:20:47 +0100
+
+rsync (3.0.0~pre9-1) experimental; urgency=low
+
+  * prerelease version 9 of 3.0.0, hopefully the last before official 3.0.0
+  * Updated fsf.org link to GPL-3 text in copyright file.
+
+ -- Paul Slootman <paul@debian.org>  Mon, 11 Feb 2008 11:35:13 +0100
+
+rsync (3.0.0~pre8-2) experimental; urgency=low
+
+  * fix hardlinking 64-bit inodes
+
+ -- Paul Slootman <paul@debian.org>  Mon, 04 Feb 2008 16:25:54 +0100
+
+rsync (3.0.0~pre8-1) experimental; urgency=low
+
+  * prerelease version 8 of 3.0.0
+
+ -- Paul Slootman <paul@debian.org>  Sun, 13 Jan 2008 13:37:17 +0100
+
+rsync (3.0.0~pre7-1) experimental; urgency=low
+
+  * prerelease version 7 of 3.0.0
+  * includes fix for the recent CVE-2007-6199, CVE-2007-6200 vulnerabilities
+  * modified the way supplemental patches from debian/patches/ are applied
+    (accept both .patch and .diff extensions)
+
+ -- Paul Slootman <paul@debian.org>  Thu, 20 Dec 2007 12:53:35 +0100
+
+rsync (3.0.0~pre6-1) experimental; urgency=low
+
+  * prerelease version 6 of 3.0.0
+
+ -- Paul Slootman <paul@debian.org>  Wed, 28 Nov 2007 12:54:15 +0100
+
+rsync (3.0.0~pre5-1) experimental; urgency=low
+
+  * prerelease version 5 of 3.0.0
+
+ -- Paul Slootman <paul@debian.org>  Mon, 12 Nov 2007 12:30:38 +0100
+
+rsync (3.0.0~pre4-1) experimental; urgency=low
+
+  * prerelease version 4 of 3.0.0
+
+ -- Paul Slootman <paul@debian.org>  Thu, 08 Nov 2007 19:32:18 +0100
+
+rsync (3.0.0~pre1-1) experimental; urgency=low
+
+  * prerelease version 1 of 3.0.0
+
+ -- Paul Slootman <paul@debian.org>  Fri, 05 Oct 2007 11:06:31 +0200
+
+rsync (2.6.9-5) unstable; urgency=high
+
+  * fix two off-by-one errors leading to potential buffer overflow which may
+    corrupt the stack (CVE-2007-4091)
+    closes:#438125
+
+ -- Paul Slootman <paul@debian.org>  Wed, 15 Aug 2007 21:24:47 +0200
+
+rsync (2.6.9-4) unstable; urgency=low
+
+  * Check for empty filename (buggy kernel may have that in /sys)
+  * include README.Debian in the package...
+  * init.d script checks whether rsync stays running, or whether it was
+    running during a restart.
+    closes:#412448
+  * fixed typos in manpage
+    closes:414636
+
+ -- Paul Slootman <paul@debian.org>  Thu, 26 Jul 2007 19:03:54 +0200
 
 rsync (2.6.9-3) unstable; urgency=low
 

@@ -1,6 +1,0 @@
-These are the main patches to the rsync source.
-(The changes to the manpages for correct hyphens
-and quotes is a bit big, so not included.)
-
-If you're wondering about the lack of patches, the
-explanation is that upstream has adopted most of them :-)
