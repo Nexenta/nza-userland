@@ -28,6 +28,7 @@ Vcs-Bzr: http://bazaar.launchpad.net/~doko/python/pkg2.6-debian
 Package: python2.6
 Architecture: any
 Priority: optional
+Replaces: python2.6-minimal (= 40-0-1)
 Depends: python2.6-minimal (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
 Provides: python2.6-cjkcodecs, python2.6-ctypes, python2.6-elementtree, python2.6-celementtree, python2.6-wsgiref, python2.6-profiler
 Description: An interactive high-level object-oriented language (version 2.6)

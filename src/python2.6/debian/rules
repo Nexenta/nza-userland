@@ -243,5 +243,4 @@ override_dh_fixperms:
 
 override_dh_auto_clean:
 	rm -rf $(BUILD)
-	rm -f *-stamp
 

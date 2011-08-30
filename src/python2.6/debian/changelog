@@ -1,3 +1,9 @@
+python2.6 (40-0-2) unstable; urgency=low
+
+  * Moved pyconfig.h from python2.6-minimal into python2.6
+
+ -- Igor Pashev <igor.pashev@nexenta.com>  Tue, 30 Aug 2011 05:40:31 +0400
+
 python2.6 (40-0-1) unstable; urgency=low
 
   * New upstream release (2.6.7)
