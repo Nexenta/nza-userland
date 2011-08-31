@@ -26,6 +26,8 @@ set -e
 #loading debconf module
 . /usr/share/debconf/confmodule
 
+PATH=/usr/gnu/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
 #COMMON-FUNCTIONS#
 
 case "$1" in

@@ -2,12 +2,5 @@
 
 set -e
 
-if [ -x "/etc/init.d/clamav-freshclam" ]; then
-  if [ -x /usr/sbin/invoke-rc.d ] ; then
-    invoke-rc.d clamav-freshclam stop
-  else
-    /etc/init.d/clamav-freshclam stop
-  fi
-fi
 #DEBHELPER#
 exit 0

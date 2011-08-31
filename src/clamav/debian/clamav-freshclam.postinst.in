@@ -26,6 +26,8 @@ set -e
 #loading debconf module
 . /usr/share/debconf/confmodule
 
+PATH=/usr/gnu/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
 FRESHCLAMCONFFILE=/etc/clamav/freshclam.conf
 FRESHCLAMLOGFILE=/var/log/clamav/freshclam.log
 DEBCONFILE=/var/lib/clamav/freshclam.conf

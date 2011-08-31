@@ -6,7 +6,7 @@ set -u
 BUILDDIR=/tmp/build-pkg
 
 SRC_BASE_URL="
-http://apt.nexenta.org/wip/base/pool/main
+#http://apt.nexenta.org/wip/base/pool/main
 http://apt.nexenta.org/wip/dists/unstable/main/source
 http://apt.nexenta.org/wip/dists/testing/main/source
 http://apt.nexenta.org/wip/dists/stable/main/source
