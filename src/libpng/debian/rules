@@ -18,7 +18,7 @@ CONFIGURE_OPTIONS_64 = \
 	--libdir=\$${prefix}/lib/amd64
 
 %:
-	dh $@
+	dh $@ --with autoreconf
 
 override_dh_auto_configure: \
 	configure32-stamp \

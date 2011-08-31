@@ -1,3 +1,9 @@
+libpng (40-0-1) unstable; urgency=low
+
+  * Patched to use versioned symbols with Sun ld
+
+ -- Igor Pashev <igor.pashev@nexenta.com>  Tue, 30 Aug 2011 14:14:04 +0400
+
 libpng (40-0-0) unstable; urgency=low
 
   * Ported to NCP4
