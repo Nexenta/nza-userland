@@ -1,0 +1,100 @@
+python-eventlet (40-0-0) unstable; urgency=low
+
+  * Ported to NCP4
+
+ -- Igor Pashev <igor.pashev@nexenta.com>  Mon, 15 Aug 2011 22:21:43 +0400
+
+python-eventlet (0.9.16-1) unstable; urgency=low
+
+  * Team upload.
+  * New upstream release.
+  * Dropped reuseaddr.patch: Included upstream.
+
+ -- Soren Hansen <soren@ubuntu.com>  Wed, 08 Jun 2011 15:13:04 +0200
+
+python-eventlet (0.9.15-1) unstable; urgency=low
+
+  * New upstream release.
+    - Drop all patches, accepted upstream.
+  * Correct DEP3 headers (first line of Description is the subject)
+  * Bump Standards-Version to 3.9.2, no changes needed.
+  * Drop Breaks: ${python:Breaks}, no longer used by dh_python2.
+  * debian/copyright: Update to DEP5 Format r174.
+  * Restore doc/modules/zmq.rst and BD on Sphinx 1.0.
+  * reuseaddr.patch: The logic for deciding whether to use SO_REUSEADDR was
+    inverted.
+  * retry-on-timeout.patch: If an operation times out, try one last time.
+    (LP: #771512)
+
+ -- Stefano Rivera <stefanor@debian.org>  Thu, 02 Jun 2011 16:18:16 +0200
+
+python-eventlet (0.9.14-1) unstable; urgency=low
+
+  * Initial release in Debian. (Closes: #532140)
+    - Maintainer is Debian Python Modules team.
+    - Add myself and Monty to Uploaders.
+    - Add Vcs entries.
+  * Change architecture to all, this is a pure-Python module.
+    - Build-Depend on python-all.
+  * Bump debhelper compat and Build-Depend to 8.
+  * Drop unnecessary article from Description.
+  * Switch to dh_python2.
+    - Drop pycompat, deprecated.
+    - Use X-Python-Version instead of pyversions. Bump python-all Build-Depend
+      to 2.6.5-13~.
+    - Breaks: ${python:Breaks}.
+    - Let dh_python2 determine Python dependencies.
+  * Run test suite during build.
+    - Add Build-Depends on python-httplib2, python-nose, python-openssl and
+      python-zmq.
+    - disable-psycopg-patcher-test.patch: Use the postgres_requirement
+      function from tests.db_pool_test in tests.patcher_psycopg_test, to skip
+      unless Postgres is available.
+  * Build Sphinx documentation.
+    - Drop doc/modules/zmq.rst, it isn't used and requires Sphinx 1.0.
+  * Include README.twisted.
+  * Use python-mock instead of bundled module.
+  * Update copyright to the latest format, and rework to group by licence.
+    Include all BSD variants present.
+  * Drop postinst, not of interest to Debian. Ubuntu can drop it after natty.
+
+ -- Stefano Rivera <stefanor@debian.org>  Sun, 27 Feb 2011 14:20:43 +0200
+
+python-eventlet (0.9.14-0ubuntu2) natty; urgency=low
+
+  * Clean up left over .pyc files.
+
+ -- Soren Hansen <soren@ubuntu.com>  Mon, 14 Feb 2011 15:18:58 +0100
+
+python-eventlet (0.9.14-0ubuntu1) natty; urgency=low
+
+  * New upstream release
+  * wrap-greenpipe.patch:
+    - Stop eventlet's subprocess module from attempting wrap GreenPipe
+      instances in another layer of GreenPipe.
+
+ -- Soren Hansen <soren@ubuntu.com>  Mon, 14 Feb 2011 11:36:08 +0100
+
+python-eventlet (0.9.13-0ubuntu1) natty; urgency=low
+
+  * New upstream release
+
+ -- Bhavani Shankar <bhavi@ubuntu.com>  Sun, 31 Oct 2010 20:28:03 +0530
+
+python-eventlet (0.9.12-0ubuntu2) maverick; urgency=low
+
+  * Add dependency on python-greenlet (LP: #657047)
+
+ -- Soren Hansen <soren@ubuntu.com>  Fri, 08 Oct 2010 21:49:53 +0200
+
+python-eventlet (0.9.12-0ubuntu1) maverick; urgency=low
+
+  * New upstream release. (FFe: LP: #645899)
+
+ -- Soren Hansen <soren@ubuntu.com>  Tue, 28 Sep 2010 21:20:32 +0200
+
+python-eventlet (0.9.10-0ubuntu1) maverick; urgency=low
+
+  * Initial upload to Ubuntu. (FFe: LP: #620368)
+
+ -- Soren Hansen <soren@ubuntu.com>  Mon, 23 Aug 2010 08:54:30 +0200

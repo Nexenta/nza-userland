@@ -1,0 +1,192 @@
+Description: If an operation times out, try one last time.
+ This addresses a problem where a timeout fires even though the
+ connection was actually correctly established.
+Origin: Chris Behrens, https://bitbucket-assetroot.s3.amazonaws.com/which_linden/eventlet/20110601/87/eventlet-socket-timeout.diff
+Bug: https://bitbucket.org/which_linden/eventlet/issue/87/socket-connects-are-incorrectly-reported
+Bug-Ubuntu: https://launchpad.net/bugs/771512
+Reviewed-By: Soren Hansen <soren@ubuntu.com>
+Last-Update: 2011-06-01
+
+--- a/eventlet/greenio.py
++++ b/eventlet/greenio.py
+@@ -174,8 +174,16 @@
+                     return
+                 if time.time() >= end:
+                     raise socket.timeout("timed out")
+-                trampoline(fd, write=True, timeout=end-time.time(),
+-                        timeout_exc=socket.timeout("timed out"))
++                try:
++                    trampoline(fd, write=True, timeout=end-time.time(),
++                            timeout_exc=socket.timeout("timed out"))
++                except socket.timeout, e:
++                    try:
++                        if socket_connect(fd, address):
++                            return
++                        raise e
++                    except:
++                        raise e
+                 socket_checkerr(fd)
+ 
+     def connect_ex(self, address):
+@@ -197,8 +205,16 @@
+                         return 0
+                     if time.time() >= end:
+                         raise socket.timeout(errno.EAGAIN)
+-                    trampoline(fd, write=True, timeout=end-time.time(),
+-                            timeout_exc=socket.timeout(errno.EAGAIN))
++                    try:
++                        trampoline(fd, write=True, timeout=end-time.time(),
++                                timeout_exc=socket.timeout(errno.EAGAIN))
++                    except socket.timeout, e:
++                        try:
++                            if socket_connect(fd, address):
++                                return
++                            raise e
++                        except:
++                            raise e
+                     socket_checkerr(fd)
+                 except socket.error, ex:
+                     return get_errno(ex)
+@@ -218,42 +234,43 @@
+             "makefile instead", DeprecationWarning, stacklevel=2)
+         return self.makefile(*args, **kw)
+ 
+-    def recv(self, buflen, flags=0):
+-        fd = self.fd
++    def _read_io(self, fd, f, *args, **kwargs):
+         if self.act_non_blocking:
+-            return fd.recv(buflen, flags)
++            return f(*args, **kwargs)
+         while True:
+             try:
+-                return fd.recv(buflen, flags)
++                return f(*args, **kwargs)
+             except socket.error, e:
+                 if get_errno(e) in SOCKET_BLOCKING:
+                     pass
+-                elif get_errno(e) in SOCKET_CLOSED:
++                # XXX -- Why does recv() do this?
++                elif f == fd.recv and get_errno(e) in SOCKET_CLOSED:
+                     return ''
+                 else:
+                     raise
+-            trampoline(fd, 
+-                read=True, 
+-                timeout=self.gettimeout(), 
+-                timeout_exc=socket.timeout("timed out"))
++            try:
++                trampoline(fd, 
++                        read=True, 
++                        timeout=self.gettimeout(), 
++                        timeout_exc=socket.timeout("timed out"))
++            except socket.timeout, e:
++                # Try one last time to see if the timeout is 'real'
++                try:
++                    return f(*args, **kwargs)
++                except:
++                    raise e
++
++    def recv(self, buflen, flags=0):
++        return self._read_io(self.fd, self.fd.recv, buflen, flags)
+ 
+     def recvfrom(self, *args):
+-        if not self.act_non_blocking:
+-            trampoline(self.fd, read=True, timeout=self.gettimeout(),
+-                    timeout_exc=socket.timeout("timed out"))
+-        return self.fd.recvfrom(*args)
++        return self._read_io(self.fd, self.fd.recvfrom, *args)
+ 
+     def recvfrom_into(self, *args):
+-        if not self.act_non_blocking:
+-            trampoline(self.fd, read=True, timeout=self.gettimeout(),
+-                    timeout_exc=socket.timeout("timed out"))
+-        return self.fd.recvfrom_into(*args)
++        return self._read_io(self.fd, self.fd.recvfrom_into, *args)
+ 
+     def recv_into(self, *args):
+-        if not self.act_non_blocking:
+-            trampoline(self.fd, read=True, timeout=self.gettimeout(),
+-                    timeout_exc=socket.timeout("timed out"))
+-        return self.fd.recv_into(*args)
++        return self._read_io(self.fd, self.fd.recv_into, *args)
+ 
+     def send(self, data, flags=0):
+         fd = self.fd
+@@ -264,7 +281,7 @@
+         total_sent = 0
+         len_data = len(data)
+ 
+-        while 1:
++        while True:
+             try:
+                 total_sent += fd.send(data[total_sent:], flags)
+             except socket.error, e:
+@@ -274,8 +291,15 @@
+             if total_sent == len_data:
+                 break
+ 
+-            trampoline(self.fd, write=True, timeout=self.gettimeout(),
+-                    timeout_exc=socket.timeout("timed out"))
++            try:
++                trampoline(fd, write=True, timeout=self.gettimeout(),
++                        timeout_exc=socket.timeout("timed out"))
++            except socket.timeout, e:
++                # Try one last time to see if the timeout is 'real'
++                try:
++                    total_sent += fd.send(data[total_sent:], flags)
++                except:
++                    raise e
+ 
+         return total_sent
+ 
+@@ -286,8 +310,26 @@
+             tail += self.send(data[tail:], flags)
+ 
+     def sendto(self, *args):
+-        trampoline(self.fd, write=True)
+-        return self.fd.sendto(*args)
++        fd = self.fd
++        if self.act_non_blocking:
++            return fd.sendto(*args)
++        while True:
++            try:
++                return fd.sendto(*args)
++            except socket.error, e:
++                if get_errno(e) in SOCKET_BLOCKING:
++                    pass
++                else:
++                    raise
++            try:
++                trampoline(fd, write=True, timeout=self.gettimeout(),
++                        timeout_exc=socket.timeout("timed out"))
++            except socket.timeout, e:
++                # Try one last time to see if the timeout is 'real'
++                try:
++                    return fd.sendto(*args)
++                except:
++                    raise e
+ 
+     def setblocking(self, flag):
+         if flag:
+--- a/tests/greenio_test.py
++++ b/tests/greenio_test.py
+@@ -133,7 +133,8 @@
+             self.assertEqual(e.args[0], 'timed out')
+ 
+     def test_recvfrom_into_timeout(self):
+-        buf = buffer(array.array('B'))
++        buf = array.array('B')
++        buf.fromstring('\0')
+ 
+         gs = greenio.GreenSocket(
+             socket.socket(socket.AF_INET, socket.SOCK_DGRAM))
+@@ -148,7 +149,8 @@
+             self.assertEqual(e.args[0], 'timed out')
+ 
+     def test_recv_into_timeout(self):
+-        buf = buffer(array.array('B'))
++        buf = array.array('B')
++        buf.fromstring('\0')
+ 
+         listener = greenio.GreenSocket(socket.socket())
+         listener.bind(('', 0))
