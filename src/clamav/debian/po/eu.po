@@ -1,0 +1,1218 @@
+# translation of clamav-eu.po to Euskara
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Piarres Beobide <pi@beobide.net>, 2008.
+msgid ""
+msgstr ""
+"Project-Id-Version: clamav-eu\n"
+"Report-Msgid-Bugs-To: clamav@packages.debian.org\n"
+"POT-Creation-Date: 2010-11-13 12:30+0100\n"
+"PO-Revision-Date: 2008-09-24 11:03+0200\n"
+"Last-Translator: Piarres Beobide <pi@beobide.net>\n"
+"Language-Team: Euskara <debian-l10n-basque@lists.debian.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+
+#. Type: select
+#. Choices
+#: ../clamav-freshclam.templates:2001
+msgid "daemon"
+msgstr "deabrua"
+
+#. Type: select
+#. Choices
+#: ../clamav-freshclam.templates:2001
+msgid "manual"
+msgstr "eskuz"
+
+#. Type: select
+#. Description
+#: ../clamav-freshclam.templates:2002
+msgid "Virus database update method:"
+msgstr "Birusa datu-base eguneraketa metodoa:"
+
+#. Type: select
+#. Description
+#: ../clamav-freshclam.templates:2002
+msgid "Please choose the method for virus database updates."
+msgstr "Mesedez hautatu birus datu-base eguneraketa metodoa."
+
+#. Type: select
+#. Description
+#: ../clamav-freshclam.templates:2002
+msgid ""
+" daemon:  freshclam is running as a daemon all the time. You should choose\n"
+"          this option if you have a permanent network connection;\n"
+" ifup.d:  freshclam will be running as a daemon as long as your Internet\n"
+"          connection is up. Choose this one if you use a dialup Internet\n"
+"          connection and don't want freshclam to initiate new connections;\n"
+" cron:    freshclam is started from cron. Choose this if you want full "
+"control\n"
+"          of when the database is updated;\n"
+" manual:  no automatic invocation of freshclam. This is not recommended,\n"
+"          as ClamAV's database is constantly updated."
+msgstr ""
+" daemon:  freshclam deabru gisa denbora guztian abiarazirik egongo da. "
+"Aukera\n"
+"          hau hautatu internetera konexio iraunkor bat baduzu;\n"
+" ifup.d:  freshclam deabru bezala abiaraziko da internet konexioa martxan "
+"duzunean.\n"
+"          Aukera hau hautatu modem bidezko konexio bat baduzu eta ez baduzu\n"
+"          freshclam-ek konexioa abiaraztea nahi;\n"
+" cron:    freshclam cron bidez abiaraziko da. Aukera hau hautatu datu-basea "
+"noiz\n"
+"          bertsio-berritzenden kontrolatu nahi baduzu;\n"
+" eskuz:   Ez da freshclam automatikoki abiaraziko. Hau ez da gomendagarria,\n"
+"          ClamAV datu-basea oso sarri eguneratzen da eta."
+
+#. Type: select
+#. Description
+#: ../clamav-freshclam.templates:3001
+msgid "Local database mirror site:"
+msgstr "Datu-base lokal ispilu gunea:"
+
+#. Type: select
+#. Description
+#: ../clamav-freshclam.templates:3001
+msgid "Please select the closest local mirror site."
+msgstr "Mesedez hautatu gertuen duzun ispiluaten gunea."
+
+#. Type: select
+#. Description
+#: ../clamav-freshclam.templates:3001
+msgid ""
+"Freshclam updates its database from a world wide network of mirror sites. "
+"Please select the closest mirror. If you leave the default setting, an "
+"attempt will be made to guess a nearby mirror."
+msgstr ""
+"Freshclam-ek bere datu-base saretan banaturik dauden ispilu guneetatik "
+"eguneratzen du. Mesedez hautatu zutaz gertuen dagoen ispilua. Lehenetsitako "
+"ezarpena uzten baduzu, gertuen duzun ispilua asmatzeko saiakera egingo da."
+
+#. Type: string
+#. Description
+#: ../clamav-freshclam.templates:4001
+msgid "HTTP proxy information (leave blank for none):"
+msgstr "HTTP proxy-a argibideak (hutsi utzi ez erabiltzeko):"
+
+#. Type: string
+#. Description
+#: ../clamav-freshclam.templates:4001
+msgid ""
+"If you need to use an HTTP proxy to access the outside world, enter the "
+"proxy information here. Otherwise, leave this blank."
+msgstr ""
+"Sarea atzitzeko HTTP proxy bat behar izanez gero, idatzi proxy-aren "
+"argibideak hemen. Bestela zurian utzi ezazu."
+
+#. Type: string
+#. Description
+#: ../clamav-freshclam.templates:4001
+msgid "Please use URL syntax (\"http://host[:port]\") here."
+msgstr "Mesedez URL sintaxia (\"http://ostalari[:ataka]\") erabili hemen."
+
+#. Type: string
+#. Description
+#: ../clamav-freshclam.templates:5001
+msgid "Proxy user information (leave blank for none):"
+msgstr "Proxy erabiltzaile argibidea (zurian ez erabiltzeko):"
+
+#. Type: string
+#. Description
+#: ../clamav-freshclam.templates:5001
+msgid ""
+"If you need to supply a username and password to the proxy, enter it here. "
+"Otherwise, leave this blank."
+msgstr ""
+"Proxy-a erabiltzeko erabiltzaile-izen bat zehaztu behar baduzu, idatz ezazu "
+"hemen. Bestela zurian utzi ezazu."
+
+#. Type: string
+#. Description
+#: ../clamav-freshclam.templates:5001
+msgid "When entering user information, use the standard form of \"user:pass\"."
+msgstr ""
+"Erabiltzaile argibideak ezartzerakoan, \"erabiltzaile:pasahitza\" estandarra "
+"erabili."
+
+#. Type: string
+#. Description
+#: ../clamav-freshclam.templates:6001
+msgid "Number of freshclam updates per day:"
+msgstr "Eguneko freshclam eguneraketa kopurua:"
+
+#. Type: string
+#. Description
+#: ../clamav-freshclam.templates:7001
+msgid "Network interface connected to the Internet:"
+msgstr "Internetera konektaturik dagoen sare interfazea:"
+
+#. Type: string
+#. Description
+#: ../clamav-freshclam.templates:7001
+msgid ""
+"Please enter the name of the network interface connected to the Internet. "
+"Example: eth0."
+msgstr ""
+"Mesedez ezarri internetera konektaturik dagoen sare interfazearen izena. "
+"Adibidez: eth0."
+
+#. Type: string
+#. Description
+#: ../clamav-freshclam.templates:7001
+msgid ""
+"If the daemon runs when the network is down, the log file will be filled "
+"with entries like 'ERROR: Connection with database.clamav.net failed.', "
+"making it easy to miss when freshclam really can't update the database."
+msgstr ""
+"Sarea deskonektaturik dagoela deabrua abiarazten bada erregistro fitxategia "
+"'ERROR: Connection with database.clamav.net failed.' moduko erregistroz "
+"beteko da, freshclam-ek bertsio-berritzeko benetako arazoak dituen ikustea "
+"zailtzen."
+
+#. Type: string
+#. Description
+#: ../clamav-freshclam.templates:7001
+msgid ""
+"You can leave this field blank and the daemon will be started from the "
+"initialization scripts instead. You should then make sure the computer is "
+"permanently connected to the Internet to avoid filling the log files."
+msgstr ""
+"Eremu hau zurian uzten baduzu deabrua abio script-ek exekutatuko dute. "
+"Erregistro fitxategiak betetzea saihesteko beti internetera konektaturik "
+"zaudela ziurtatu beharko zenuke."
+
+#. Type: string
+#. Description
+#: ../clamav-freshclam.templates:7001
+msgid ""
+"If the computer has multiple network interfaces connecting to the Internet "
+"use a space-separated list of device names."
+msgstr ""
+
+#. Type: boolean
+#. Description
+#: ../clamav-freshclam.templates:8001
+msgid "Should clamd be notified after updates?"
+msgstr "Bertsio-berritzeen ondoren clamd ohartu egin behar al da?"
+
+#. Type: boolean
+#. Description
+#: ../clamav-freshclam.templates:8001
+msgid ""
+"Please confirm whether clamd should be notified to reload the database after "
+"successful updates."
+msgstr ""
+"Mesedez berretsi datu-basea birkargatzeko clamd ohartu egin behar dela "
+"bertsio-berritzeen ondoren."
+
+#. Type: boolean
+#. Description
+#: ../clamav-freshclam.templates:8001
+msgid ""
+"If you do not choose this option, clamd's database reloads will be notably "
+"delayed (it performs this check every 6 hours by default), posing the risk "
+"that a new virus may slip through even if the database is up to date. Do not "
+"use this if you do not use clamd, as it will produce errors."
+msgstr ""
+"Aukera hau hautatzen ez baduzu birkarga horiek beranduago egingo dira "
+"(egiaztapena 6 orduro egiten da), nahiz datu-basea eguneraturik izan birus "
+"baten erasoaren aukera emanez. Ez erabili aukera hau ez baduzu clamd "
+"erabiltzen, horrela erabiltzeak erroreak sortzen ditu."
+
+#. Type: boolean
+#. Description
+#: ../clamav-base.templates:2001 ../clamav-milter.templates:2001
+msgid "Handle the configuration file automatically?"
+msgstr "Kudeatu konfigurazio fitxategia automatikoki?"
+
+#. Type: boolean
+#. Description
+#: ../clamav-base.templates:2001
+msgid "Some options must be configured for clamav-base."
+msgstr "Zenbait aukera konfiguratu egin behar dira clamav-base-rentzat."
+
+#. Type: boolean
+#. Description
+#: ../clamav-base.templates:2001
+msgid ""
+"The ClamAV suite won't work if it isn't configured. If you do not configure "
+"it automatically, you'll have to configure /etc/clamav/clamd.conf manually "
+"or run 'dpkg-reconfigure clamav-base' later. In any case, manual changes in /"
+"etc/clamav/clamd.conf will be respected."
+msgstr ""
+"Clamav suiteak ez du funtzionatuko konfiguraturik ez badago. Ez baduzu "
+"konfigurazio automatikoa egiten,  /etc/clamav/clamd.conf eskuz konfiguratu "
+"edo beranduago 'dpkg-reconfigure clamav-base' exekutatu beharko duzu. "
+"Edozein kasutan /etc/clamav/clamd.conf fitxategiak izan ditzakeen "
+"pertsonalizazioak errespetatu egingo dira."
+
+#. Type: select
+#. Description
+#: ../clamav-base.templates:3001
+msgid "Socket type:"
+msgstr "Socket mota:"
+
+#. Type: select
+#. Description
+#: ../clamav-base.templates:3001
+msgid "Please choose the type of socket clamd will be listening on."
+msgstr "Mesedez hautatu clamd-ek entzungo duen socket mota."
+
+#. Type: select
+#. Description
+#: ../clamav-base.templates:3001
+msgid ""
+"If you choose TCP, clamd can be accessed remotely. If you choose local UNIX "
+"sockets, clamd can be accessed through a file. Local UNIX sockets are "
+"recommended for security reasons."
+msgstr ""
+"TCP hautatzen baduzu clamd urrunetik atzitu ahal izango da. UNIX socket "
+"lokalak hautatzen badituzu, clamd fitxategi baten bitartez atzitu ahal "
+"izango da. Segurtasun arrazoiak direla eta UNIX socket lokalak erabiltzea "
+"gomendatzen da."
+
+#. Type: string
+#. Description
+#: ../clamav-base.templates:4001
+msgid "Local (UNIX) socket clamd will listen on:"
+msgstr "Clamd entzuten egon behar den socket lokala (UNIX):"
+
+#. Type: boolean
+#. Description
+#: ../clamav-base.templates:5001
+msgid "Gracefully handle left-over UNIX socket files?"
+msgstr "Utzitako UNIX socket fitxategiak deabruak kudeatzea nahi al duzu?"
+
+#. Type: string
+#. Description
+#: ../clamav-base.templates:6001
+msgid "Group owner of clamd local (UNIX) socket:"
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../clamav-base.templates:7001
+msgid "Creation mode for clamd local (UNIX) socket:"
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../clamav-base.templates:8001
+msgid "TCP port clamd will listen on:"
+msgstr "Clamd-ek entzun behar duen TCP ataka:"
+
+#. Type: string
+#. Description
+#: ../clamav-base.templates:9001
+msgid "IP address clamd will listen on:"
+msgstr "Clamd-ek entzun behar duen IP helbidea:"
+
+#. Type: string
+#. Description
+#: ../clamav-base.templates:9001
+msgid ""
+"Enter \"any\" to listen on every IP address configured. If you want to "
+"listen on a single address or host name, enter it here."
+msgstr ""
+"\"any\" idatzi konfiguraturik duzun edoizen IP helbidetan entzuteko. Helbide "
+"edo ostalari izen bakar jakin batez bakarrik entzun nahi baduzu, idatzi "
+"berau hemen."
+
+#. Type: error
+#. Description
+#: ../clamav-base.templates:10001
+msgid "Mandatory numeric value"
+msgstr "Derrigorrezko zenbakizko balioa"
+
+#. Type: error
+#. Description
+#: ../clamav-base.templates:10001
+msgid "This question requires a numeric answer."
+msgstr "Galdera honek zenbakizko erantzun bat behar du."
+
+#. Type: boolean
+#. Description
+#: ../clamav-base.templates:11001
+msgid "Do you want to enable mail scanning?"
+msgstr "Posta eskaneatzea gaitu nahi al duzu?"
+
+#. Type: boolean
+#. Description
+#: ../clamav-base.templates:11001
+#, fuzzy
+#| msgid ""
+#| "This option enables scanning mail contents for viruses. You need this "
+#| "option enabled if you want to use clamav-milter. It is recommended that "
+#| "you use a separate unpacker to extract any MIME parts of email messages "
+#| "if you want to scan email."
+msgid ""
+"This option enables scanning mail contents for viruses. You need this option "
+"enabled if you want to use clamav-milter, or if you want to enable phishing "
+"checks."
+msgstr ""
+"Aukera honek birus bila eposta arakatzea gaitzen du. Aukera hau gaiturik "
+"izan behar duzu clamav-milter erabili nahi baduzu. Gomendagarria da eposta "
+"mezuen edozien MIME zati ateratzeko despaketatzaile ezberdin bat erabiltzea."
+
+#. Type: boolean
+#. Description
+#: ../clamav-base.templates:12001
+msgid "Do you want to enable archive scanning?"
+msgstr "Artxibo eskaneatzea gaitu nahi al duzu?"
+
+#. Type: boolean
+#. Description
+#: ../clamav-base.templates:12001
+msgid ""
+"If archive scanning is enabled, the daemon will extract archives such as "
+"bz2, tar.gz, deb and many more, to check their contents for viruses."
+msgstr ""
+"Artxibo arakatzea gaiturik badago, deabruak bz2, tar.gz, deb eta mota "
+"gehiagotako artxiboetako fitxategiak atera egingo ditu birus bila arakatzeko."
+
+#. Type: boolean
+#. Description
+#: ../clamav-base.templates:12001
+msgid ""
+"For more information about what archives are supported, see /usr/share/doc/"
+"clamav-docs/clamdoc.pdf or the manpage clamscan(5)."
+msgstr ""
+"Onartzen diren artxibo motei buruz argibide gehiagorako, /usr/share/doc/"
+"clamav-docs/clamdoc.pdf edo clamscan(5) manual orria irakurri."
+
+#. Type: string
+#. Description
+#: ../clamav-base.templates:13001
+msgid "Maximum stream length (unit Mb) allowed:"
+msgstr "Onartzen den gehienezko korronte tamaina (unitate Mb):"
+
+#. Type: string
+#. Description
+#: ../clamav-base.templates:13001
+msgid "You can set a limit on the stream length that can be scanned."
+msgstr "Arakatuko den korrontearen gehienezko tamaina ezarri dezakezu."
+
+#. Type: string
+#. Description
+#: ../clamav-base.templates:14001
+msgid "Maximum directory depth that will be allowed:"
+msgstr "Onartzen den gehienezko direktorioa sakontasuna:"
+
+#. Type: string
+#. Description
+#: ../clamav-base.templates:14001
+msgid ""
+"This value must be set if you want to allow the daemon to follow directory "
+"symlinks."
+msgstr ""
+"Balio hau ezarri behar da deabruak direktorio lotura sinbolikoak jarraitzen "
+"nahi baduzu."
+
+#. Type: string
+#. Description
+#: ../clamav-base.templates:14001
+msgid "Entering '0' will disable this limit."
+msgstr "'0' ezarriaz gero muga hau ezgaituko da."
+
+#. Type: boolean
+#. Description
+#: ../clamav-base.templates:15001
+msgid "Do you want the daemon to follow directory symlinks?"
+msgstr "Deabruak direktorio lotura sinbolikoak jarraitzea nahi al duzu?"
+
+#. Type: boolean
+#. Description
+#: ../clamav-base.templates:16001
+msgid "Do you want the daemon to follow regular file symlinks?"
+msgstr "Deabruak fitxategi lotura sinboliko arruntak jarraitzea nahi al duzu?"
+
+#. Type: string
+#. Description
+#: ../clamav-base.templates:17001
+msgid "Timeout for stopping the thread-scanner (seconds):"
+msgstr "Harizko arakatzea gelditzeko denboraz-kanpo muga (segundutan):"
+
+#. Type: string
+#. Description
+#: ../clamav-base.templates:17001
+msgid "Entering '0' will disable the timeout."
+msgstr " '0' ezarriaz denboraz-kanpo muga desgaituko da."
+
+#. Type: string
+#. Description
+#: ../clamav-base.templates:18001
+msgid "Number of threads for the daemon:"
+msgstr "Deabruaren hari kopurua:"
+
+#. Type: string
+#. Description
+#: ../clamav-base.templates:19001
+msgid "Number of pending connections allowed:"
+msgstr "Onartzen diren burutu gabeko konexio kopurua:"
+
+#. Type: boolean
+#. Description
+#: ../clamav-base.templates:20001
+msgid "Do you want to use the system logger?"
+msgstr "Sistemako erregistroa erabili nahi al duzu?"
+
+#. Type: boolean
+#. Description
+#: ../clamav-base.templates:20001
+msgid ""
+"It is possible to log the daemon activity to the system logger. This can be "
+"done independently of whether you want to log activity to a special file."
+msgstr ""
+"Posible da deabru aktibitatea sistema erregistroan erregistratzea. Hau "
+"aktibitatea beste fitxategi batetan gordetzen edo gorde gabe egin daiteke."
+
+#. Type: string
+#. Description
+#: ../clamav-base.templates:21001
+msgid "Log file for clamav-daemon (enter none to disable):"
+msgstr "Clamav-daemon erregistro fitxategia (ez idatzi ezer desgaitzeko):"
+
+#. Type: boolean
+#. Description
+#: ../clamav-base.templates:22001
+msgid "Do you want to log time information with each message?"
+msgstr "Mezu bakoitzarekin ordu informazioa erregistratzea nahi duzu?"
+
+#. Type: string
+#. Description
+#: ../clamav-base.templates:23001
+msgid "Delay in seconds between daemon self checks:"
+msgstr "Deabruaren auto-egiaztapenen arteko tartea segundutan:"
+
+#. Type: string
+#. Description
+#: ../clamav-base.templates:23001
+msgid ""
+"During the SelfCheck the daemon checks if it needs to reload the virus "
+"database. It also tries to repair problems caused by bugs in the daemon, "
+"(that is, in some cases it's able to repair broken data structures)."
+msgstr ""
+"Auto-egiaztapenean deabruak datu-basea birkargatu behar duen egiaztatzen du. "
+"Deabruaren programa-erroreek sortutako arazoak konpontzen ere saiatzen da, "
+"adibidez posible izango da Hondatutako datu estrukturak konpontzea kasu "
+"batzuetan."
+
+#. Type: string
+#. Description
+#: ../clamav-base.templates:24001
+msgid "User to run clamav-daemon as:"
+msgstr "Clamav-deamon exekutatzeko erabiltzailea:"
+
+#. Type: string
+#. Description
+#: ../clamav-base.templates:24001
+msgid ""
+"It is recommended to run the ClamAV programs as a non-privileged user. This "
+"will work with most MTAs with a little tweaking, but if you want to use "
+"clamd for filesystem scans, running as root is probably unavoidable. Please "
+"see README.Debian in the clamav-base package for details."
+msgstr ""
+"Gomendagarria da ClamAV programak pribilegio gabeko erabiltzaile gisa "
+"abiaraztea. Honek behar bezala funtzionatzen du posta garraio sistema (MTA) "
+"gehienekin baina posible da root gisa exekutatu behar izatea fitxategi "
+"sistemak arakatu nahi badituzu. Irakurri clamav-base paketeko README.Debian "
+"fitxategia xehetasun gehiagorako."
+
+#. Type: string
+#. Description
+#: ../clamav-base.templates:25001
+msgid "Groups for clamav-daemon (space-separated):"
+msgstr "Clamav-deamon taldeak (zuriunez bereizirik):"
+
+#. Type: string
+#. Description
+#: ../clamav-base.templates:25001
+msgid "Please enter any extra groups for clamd."
+msgstr "Mesedez idatzi clamd-rentzat talde gehiagarri bat."
+
+#. Type: string
+#. Description
+#: ../clamav-base.templates:25001
+msgid ""
+"By default, clamd runs as a non-privileged user. If you need clamd to be "
+"able to access files owned by another user (e.g., in combination with an "
+"MTA), then you will need to add clamd to the group for that piece of "
+"software. Please see README.Debian in the clamav-base package for details."
+msgstr ""
+"Lehenespen bezala clamd pribilegio gabeko erabiltzaile gisa exekutatzen da. "
+"Beste erabiltzaile baten jabetzapean dauden fitxategiak arakatzea nahi "
+"baduzu (adibidez MTA batekin erabiltzeko) clamd software horren taldera "
+"gehitu beharko duzu.Irakurri clamav-base paketeko README.Debian fitxategia "
+"xehetasun gehiagorako."
+
+#. Type: boolean
+#. Description
+#: ../clamav-base.templates:26001
+#, fuzzy
+#| msgid "Do you want to log time information with each message?"
+msgid "Do you want to load bytecode from the database?"
+msgstr "Mezu bakoitzarekin ordu informazioa erregistratzea nahi duzu?"
+
+#. Type: select
+#. Choices
+#: ../clamav-base.templates:27001
+msgid "TrustSigned"
+msgstr ""
+
+#. Type: select
+#. Choices
+#: ../clamav-base.templates:27001
+msgid "Paranoid"
+msgstr ""
+
+#. Type: select
+#. Description
+#: ../clamav-base.templates:27002
+msgid "Security level to apply to the bytecode:"
+msgstr ""
+
+#. Type: select
+#. Description
+#: ../clamav-base.templates:27002
+msgid ""
+" - TrustSigned : trust bytecode loaded from signed virus database files,\n"
+"                 but insert runtime safety checks for bytecode loaded\n"
+"                 from unsigned sources\n"
+" - Paranoid    : always insert runtime checks"
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../clamav-base.templates:28001
+msgid "Bytecode execution timeout in miliseconds:"
+msgstr ""
+
+#. Type: boolean
+#. Description
+#: ../clamav-milter.templates:2001
+#, fuzzy
+msgid "Some options must be configured for clamav-milter."
+msgstr "Zenbait aukera konfiguratu egin behar dira clamav-base-rentzat."
+
+#. Type: boolean
+#. Description
+#: ../clamav-milter.templates:2001
+#, fuzzy
+msgid ""
+"It won't work if it isn't configured. If you do not configure it "
+"automatically, you'll have to configure /etc/clamav/clamav-milter.conf "
+"manually or run \"dpkg-reconfigure clamav-milter\" later. In any case, "
+"manual changes in /etc/clamav/clamav-milter.conf will be respected."
+msgstr ""
+"Clamav suiteak ez du funtzionatuko konfiguraturik ez badago. Ez baduzu "
+"konfigurazio automatikoa egiten,  /etc/clamav/clamd.conf eskuz konfiguratu "
+"edo beranduago 'dpkg-reconfigure clamav-base' exekutatu beharko duzu. "
+"Edozein kasutan /etc/clamav/clamd.conf fitxategiak izan ditzakeen "
+"pertsonalizazioak errespetatu egingo dira."
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:3001
+msgid "Communication interface with Sendmail:"
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:3001
+msgid ""
+"Please choose the method that should be used by clamav-milter to communicate "
+"with Sendmail. The following formats can be used:\n"
+" - Unix domain socket: [[unix|local]:]/path/to/file\n"
+" - IPv4 socket       : inet:port@[hostname|ip-address]\n"
+" - IPv6 socket       : inet6:port@[hostname|ip-address]"
+msgstr ""
+
+#. Type: boolean
+#. Description
+#: ../clamav-milter.templates:4001
+msgid "Remove stale socket after unclean shutdown?"
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:5001
+#, fuzzy
+msgid "Group owner of clamav-milter local (UNIX) socket:"
+msgstr "Clamav-deamon taldeak (zuriunez bereizirik):"
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:6001
+msgid "Creation mode for clamav-milter local (UNIX) socket:"
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:7001
+#, fuzzy
+msgid "User to run clamav-milter as:"
+msgstr "Clamav-deamon exekutatzeko erabiltzailea:"
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:7001
+#, fuzzy
+#| msgid ""
+#| "It is recommended to run the ClamAV programs as a non-privileged user. "
+#| "This will work with most MTAs with a little tweaking, but if you want to "
+#| "use clamd for filesystem scans, running as root is probably unavoidable. "
+#| "Please see README.Debian in the clamav-base package for details."
+msgid ""
+"It is recommended to run the ClamAV programs as a non-privileged user. This "
+"will work with most MTAs with a little tweaking."
+msgstr ""
+"Gomendagarria da ClamAV programak pribilegio gabeko erabiltzaile gisa "
+"abiaraztea. Honek behar bezala funtzionatzen du posta garraio sistema (MTA) "
+"gehienekin baina posible da root gisa exekutatu behar izatea fitxategi "
+"sistemak arakatu nahi badituzu. Irakurri clamav-base paketeko README.Debian "
+"fitxategia xehetasun gehiagorako."
+
+#. Type: string
+#. Description
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:7001 ../clamav-milter.templates:8001
+msgid "Please see README.Debian in the clamav-base package for details."
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:8001
+#, fuzzy
+msgid "Groups for clamav-milter (space-separated):"
+msgstr "Clamav-deamon taldeak (zuriunez bereizirik):"
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:8001
+#, fuzzy
+msgid ""
+"By default, clamav-milter runs as a non-privileged user. If you need clamav-"
+"milter to be able to access files owned by another user (for instance when "
+"it is used in combination with an MTA), the user running clamav-milter need "
+"to be added to the relevant group(s)."
+msgstr ""
+"Lehenespen bezala clamd pribilegio gabeko erabiltzaile gisa exekutatzen da. "
+"Beste erabiltzaile baten jabetzapean dauden fitxategiak arakatzea nahi "
+"baduzu (adibidez MTA batekin erabiltzeko) clamd software horren taldera "
+"gehitu beharko duzu.Irakurri clamav-base paketeko README.Debian fitxategia "
+"xehetasun gehiagorako."
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:9001
+msgid "Wait timeout for data coming from clamd:"
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:9001
+msgid ""
+"Please enter the delay (in seconds) before clamav-milter times out when it "
+"is waiting for incoming data from clamd."
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:9001
+#, fuzzy
+#| msgid "Entering '0' will disable the timeout."
+msgid "Choosing \"0\" will disable this timeout."
+msgstr " '0' ezarriaz denboraz-kanpo muga desgaituko da."
+
+#. Type: boolean
+#. Description
+#: ../clamav-milter.templates:10001
+msgid "Should clamav-milter stay in foreground (not forking)?"
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:11001
+msgid "Chroot to directory:"
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:11001
+msgid ""
+"Clamav-milter can run in a chroot jail. It will enter it after reading the "
+"configuration file and before dropping root privileges."
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:11001
+msgid "If this field is left empty, no chrooting will occur."
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:12001
+msgid "PID file:"
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:12001
+msgid ""
+"Please specify the process identifier file location for clamav-milter's "
+"listening daemon (main thread)."
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:13001
+msgid "Temporary directory path:"
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:13001
+msgid ""
+"Please specify the directory for clamav-milter's temporary files. If unset, "
+"$TMPDIR and $TEMP will be honored."
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:14001
+msgid "Clamd socket to connect to for scanning:"
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:14001
+msgid ""
+"Please specify the socket to use to connect to the ClamAV daemon for "
+"scanning purposes. Possible choices are:\n"
+" - a local unix socket using an absolute path, in \"unix:path\" format\n"
+"   (for example: unix:/var/run/clamd/clamd.socket);\n"
+" - a local or remote TCP socket in \"tcp:host:port\" format (for example:\n"
+"   tcp:192.168.0.1). The \"host\" value can be either a hostname or an IP\n"
+"   address, and the \"port\" is only required for IPv6 addresses,\n"
+"   defaulting to 3310 otherwise."
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:14001
+msgid ""
+"You may specify multiple choices, separated by spaces. In such case, the "
+"clamd servers will be selected in a round-robin fashion."
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:15001
+msgid "Hosts excluded from scanning:"
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:15001
+msgid ""
+"Please specify, in CIDR notation (host(name)/mask), the hosts for which no "
+"scanning should be performed on incoming mail. Multiple entries should be "
+"separated by spaces. The \"local\" shortcut can be used to specify locally-"
+"originated (non-SMTP) email."
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:15001
+msgid "If this field is left empty, all incoming mail will be scanned."
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:16001
+msgid "Mail addresses whitelist:"
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:16001
+msgid ""
+"Please specify the path to a whitelist file, listing email addresses that "
+"should cause scanning to be bypassed."
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:16001
+msgid ""
+"Each line in this file should be a POSIX regular expression; lines starting "
+"with \"#\", \":\" or \"!\" will be ignored as comments."
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:16001
+msgid ""
+"Lines may start with \"From:\" (with no space after the colon) to make the "
+"whitelisting apply to matching sender addresses; otherwise, or with a \"To:"
+"\" prefix, it affects recipient addresses."
+msgstr ""
+
+#. Type: select
+#. Choices
+#. Type: select
+#. Choices
+#: ../clamav-milter.templates:17001 ../clamav-milter.templates:18001
+msgid "Accept"
+msgstr ""
+
+#. Type: select
+#. Choices
+#. Type: select
+#. Choices
+#: ../clamav-milter.templates:17001 ../clamav-milter.templates:18001
+msgid "Reject"
+msgstr ""
+
+#. Type: select
+#. Choices
+#. Type: select
+#. Choices
+#: ../clamav-milter.templates:17001 ../clamav-milter.templates:18001
+msgid "Defer"
+msgstr ""
+
+#. Type: select
+#. Choices
+#: ../clamav-milter.templates:17001
+msgid "Blackhole"
+msgstr ""
+
+#. Type: select
+#. Choices
+#: ../clamav-milter.templates:17001
+msgid "Quarantine"
+msgstr ""
+
+#. Type: select
+#. Description
+#: ../clamav-milter.templates:17002
+msgid "Action to perform on infected messages:"
+msgstr ""
+
+#. Type: select
+#. Description
+#: ../clamav-milter.templates:17002
+msgid "Please choose the action to perform on \"infected\" messages:"
+msgstr ""
+
+#. Type: select
+#. Description
+#: ../clamav-milter.templates:17002
+msgid ""
+" - Accept    : accept the message for delivery;\n"
+" - Reject    : immediately refuse delivery (with a 5xx error);\n"
+" - Defer     : return a temporary failure message (4xx);\n"
+" - Blackhole : accept the message then drop it;\n"
+" - Quarantine: accept the message then quarantine it. With\n"
+"               Sendmail, the quarantine queue can be examined\n"
+"               with \"mailq -qQ\". With Postfix, such mails are placed\n"
+"               on hold."
+msgstr ""
+
+#. Type: select
+#. Description
+#: ../clamav-milter.templates:18002
+msgid "Action to perform on error conditions:"
+msgstr ""
+
+#. Type: select
+#. Description
+#: ../clamav-milter.templates:18002
+msgid ""
+"Please choose the action to perform on errors such as failure to allocate "
+"data structures, no scanners available, network timeouts, unknown scanner "
+"replies...:"
+msgstr ""
+
+#. Type: select
+#. Description
+#: ../clamav-milter.templates:18002
+msgid ""
+" - Accept: accept the message for delivery;\n"
+" - Reject: immediately refuse delivery (with a 5xx error);\n"
+" - Defer : return a temporary failure message (4xx)."
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:19001
+msgid "Specific rejection reason for infected messages:"
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:19001
+msgid ""
+"Please specify the rejection reason that will be included in reject mails."
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:19001
+msgid "This option is only useful together with \"OnInfected Reject\"."
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:19001
+#, no-c-format
+msgid "The \"%v\" string may be used to include the virus name."
+msgstr ""
+
+#. Type: select
+#. Choices
+#: ../clamav-milter.templates:20001
+msgid "Replace"
+msgstr ""
+
+#. Type: select
+#. Choices
+#: ../clamav-milter.templates:20001
+msgid "Yes"
+msgstr ""
+
+#. Type: select
+#. Choices
+#: ../clamav-milter.templates:20001
+msgid "No"
+msgstr ""
+
+#. Type: select
+#. Choices
+#: ../clamav-milter.templates:20001
+msgid "Add"
+msgstr ""
+
+#. Type: select
+#. Description
+#: ../clamav-milter.templates:20002
+msgid "Add headers to processed messages?"
+msgstr ""
+
+#. Type: select
+#. Description
+#: ../clamav-milter.templates:20002
+msgid ""
+"If you choose this option, \"X-Virus-Scanned\" and \"X-Virus-Status\" "
+"headers will be attached to each processed message, possibly replacing "
+"existing similar headers."
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:21001
+#, fuzzy
+msgid "Log file for clamav-milter:"
+msgstr "Clamav-deamon exekutatzeko erabiltzailea:"
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:21001
+msgid ""
+"Specify the full path to the clamav-milter log file, which must be writable "
+"for the clamav daemon. Enter none to disable."
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:21001
+msgid "Logging via syslog is configured independently of this setting."
+msgstr ""
+
+#. Type: boolean
+#. Description
+#: ../clamav-milter.templates:22001
+msgid "Disable log file locking?"
+msgstr ""
+
+#. Type: boolean
+#. Description
+#: ../clamav-milter.templates:22001
+msgid ""
+"By default the log file is locked for writing.  The lock protects against "
+"running clamav-milter multiple times.  This option disables log file locking."
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:23001
+#, fuzzy
+msgid "Maximum size of the log file (MB):"
+msgstr "Onartzen den gehienezko korronte tamaina (unitate Mb):"
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:23001
+msgid ""
+"Please specify the maximum size for the log file. Using \"0\" will allow "
+"that file to grow indefinitely."
+msgstr ""
+
+#. Type: boolean
+#. Description
+#: ../clamav-milter.templates:24001
+#, fuzzy
+msgid "Log time with each message?"
+msgstr "Mezu bakoitzarekin ordu informazioa erregistratzea nahi duzu?"
+
+#. Type: boolean
+#. Description
+#: ../clamav-milter.templates:25001
+#, fuzzy
+#| msgid "Do you want to use the system logger?"
+msgid "Use system logger?"
+msgstr "Sistemako erregistroa erabili nahi al duzu?"
+
+#. Type: boolean
+#. Description
+#: ../clamav-milter.templates:25001
+msgid ""
+"Please choose whether you want to use the system logger (syslog). This "
+"option can be used along with logging in a dedicated file."
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:26001
+msgid "Type of syslog messages:"
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:26001
+msgid ""
+"Please choose the type of syslog messages as detailed in the system logger's "
+"documentation."
+msgstr ""
+
+#. Type: boolean
+#. Description
+#: ../clamav-milter.templates:27001
+msgid "Enable verbose logging?"
+msgstr ""
+
+#. Type: select
+#. Choices
+#: ../clamav-milter.templates:28001
+msgid "Off"
+msgstr ""
+
+#. Type: select
+#. Choices
+#: ../clamav-milter.templates:28001
+msgid "Basic"
+msgstr ""
+
+#. Type: select
+#. Choices
+#: ../clamav-milter.templates:28001
+msgid "Full"
+msgstr ""
+
+#. Type: select
+#. Description
+#: ../clamav-milter.templates:28002
+msgid "Information to log on infected messages:"
+msgstr ""
+
+#. Type: select
+#. Description
+#: ../clamav-milter.templates:28002
+msgid ""
+"Please choose the level of information that will be logged when infected "
+"messages are found:\n"
+" - Off  : no logging;\n"
+" - Basic: minimal information;\n"
+" - Full : verbose information."
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:29001
+msgid "Size limit for scanned messages (MB):"
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:29001
+msgid ""
+"Please specify the maximum size for scanned messages. Messages bigger than "
+"this limit will not be scanned."
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:29001
+msgid ""
+"You should check that this value is lower than the value of \"StreamMaxLength"
+"\" in the clamd.conf file."
+msgstr ""
+
+#, fuzzy
+#~ msgid "Set to a value of '0' to disable the timeout."
+#~ msgstr " '0' ezarriaz denboraz-kanpo muga desgaituko da."
+
+#, fuzzy
+#~ msgid "Value of 0 disables the limit."
+#~ msgstr "'0' ezarriaz gero muga hau ezgaituko da."
+
+#~ msgid "Do you want to enable RAR archive scanning?"
+#~ msgstr "RAR artxibo arakatzea gaitu nahi al duzu?"
+
+#~ msgid ""
+#~ "This enables the builtin RAR archiver. Use with caution, as the RAR code "
+#~ "may have memory leaks. Clamscan can also use external RAR programs, such "
+#~ "as unrar, although clamd does not."
+#~ msgstr ""
+#~ "Honek barneratutako RAR artxibatzailea gaitzen du. Kontuz erabili RAR "
+#~ "kodeak memoria galerak  bait ditu. Clamscan-ek unrar moduko RAR programak "
+#~ "erabili ditzake baina clamd ez da horiek erabiltzeko gai."
+
+#~ msgid "Limit on the Archive recursion:"
+#~ msgstr "Artxibo errekurtsio muga:"
+
+#~ msgid ""
+#~ "This setting places a limit on recursion within archives, for example, a "
+#~ "tar file that is also gzipped."
+#~ msgstr ""
+#~ "Ezarpen honek artxibo barruko errekurtsio kopurua mugatzen du, adibidez "
+#~ "gzip bidez konprimituriko tar fitxategi bat."
+
+#~ msgid "Limit on Archive compression:"
+#~ msgstr "Artxibo konpresio muga:"
+
+#~ msgid ""
+#~ "This setting places a limit on compression within archives, to guard "
+#~ "against archive bombs (small files that expand to massive ones, a form of "
+#~ "Denial of Service attack). However, this limit may be too low for some "
+#~ "settings."
+#~ msgstr ""
+#~ "Balio honek artxiboetan onartzen den konpresio muga ezartzen du artxibo-"
+#~ "bonba (fitxaegi handietan irekitzen diren fitxategi txikiak, zerbitzu-"
+#~ "ukatze eraso modu bat izan daitezkeenak) erasoak saihesteko. HAla ere, "
+#~ "ezarpena hau baxuegia izan daiteke konfigurazio batzuentzat."
+
+#~ msgid "Limit for the maximum number of files in an archive:"
+#~ msgstr "Artxibo baten fitxategi kopuruaren muga:"
+
+#~ msgid "Largest file size in Mb you will scan inside archives:"
+#~ msgstr ""
+#~ "Arakatuko den artxibo barruko fitxategien gehienezko tamaina Mb-etan:"

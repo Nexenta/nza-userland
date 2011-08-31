@@ -1,0 +1,6 @@
+debian/tmp/usr/bin/freshclam
+debian/clamav-freshclam-ifupdown etc/network/if-up.d/
+debian/clamav-freshclam-ifupdown etc/network/if-down.d/
+debian/clamav-freshclam-ifupdown etc/ppp/ip-up.d/
+debian/clamav-freshclam-ifupdown etc/ppp/ip-down.d/
+debian/script usr/share/bug/clamav-freshclam/

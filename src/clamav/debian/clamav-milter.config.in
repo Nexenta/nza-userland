@@ -1,0 +1,312 @@
+#!/bin/bash
+
+set -e
+
+# Source debconf library
+. /usr/share/debconf/confmodule
+
+# This conf script is capable of backing up
+db_version 2.0
+db_capb backup
+
+#COMMON-FUNCTIONS#
+
+# migrate settings from previous /etc/default/clamav-milter
+if [ -e "/etc/default/clamav-milter" ] ; then
+  . /etc/default/clamav-milter
+  if [ -n "$SOCKET" ] ; then
+    MilterSocket=$SOCKET
+  fi
+  if [ -n "$PIDFILE" ] ; then
+    PidFile=$PIDFILE
+  fi
+fi
+
+CLAMAVMILTERCONF='/etc/clamav/clamav-milter.conf'
+CLAMDCONF='/etc/clamav/clamd.conf'
+
+HAVEMILTERCONF=true
+
+if ! [ -e "$CLAMAVMILTERCONF" ]; then
+  if [ -e "$CLAMDCONF" ]; then
+    slurp_config "$CLAMDCONF"
+  fi
+  HAVEMILTERCONF=false
+else
+  slurp_config "$CLAMAVMILTERCONF"
+fi
+
+# Store conf file values as debconf answers - make sure user changes made 
+# outside of debconf are preserved
+if [ -n "$MilterSocket" ]; then
+  db_set clamav-milter/MilterSocket "$MilterSocket" || true
+fi
+if [ -n "$MilterSocketGroup" ]; then
+  db_set clamav-milter/MilterSocketGroup "$MilterSocketGroup" || true
+fi
+if [ -n "$MilterSocketMode" ]; then
+  db_set clamav-milter/MilterSocketMode "$MilterSocketMode" || true
+fi
+if [ "$FixStaleSocket" = "true" ]; then
+  db_set clamav-milter/FixStaleSocket true || true
+fi
+if [ -n "$User" ]; then
+  db_set clamav-milter/User "$User" || true
+  if ! [ "$User" = 'root' ]; then
+    AddGroups=`groups "$User" | awk -F ':' '{print $2}' | sed -e s/"$User"//`
+  fi
+  if [ -n "$AddGroups" ]; then
+    db_set clamav-milter/AddGroups "$AddGroups" || true
+  fi
+fi
+if [ -n "$ReadTimeout" ]; then
+  db_set clamav-milter/ReadTimeout "$ReadTimeout" || true
+fi
+if [ "$Foreground" = "true" ]; then
+  db_set clamav-milter/Foreground true || true
+fi
+if [ -n "$Chroot" ]; then
+  db_set clamav-milter/Chroot "$Chroot" || true
+fi
+if [ "$HAVEMILTERCONF" = 'true' ] && [ -n "$PidFile" ]; then
+  db_set clamav-milter/PidFile "$PidFile" || true
+fi
+if [ -n "$TemporaryDirectory" ]; then
+  db_set clamav-milter/TemporaryDirectory "$TemporaryDirectory" || true
+fi
+if [ -n "$ClamdSocket" ]; then
+  db_set clamav-milter/ClamdSocket "$ClamdSocket" || true
+else
+  if [ "$HAVEMILTERCONF" = 'false' ]; then
+    if [ -n "$LocalSocket" ]; then
+      db_set clamav-milter/ClamdSocket "unix:${LocalSocket}" || true
+    elif [ -n "$TCPSocket" ]; then
+      if [ -n "$TCPAddr" ] ; then
+        db_set clamav-milter/ClamdSocket "tcp:${TCPAddr}:${TCPSocket}" || true
+      else
+        db_set clamav-milter/ClamdSocket "tcp:127.0.0.1:${TCPSocket}" || true
+      fi
+    fi
+  fi
+fi
+if [ -n "$LocalNet" ]; then
+  db_set clamav-milter/LocalNet "$LocalNet" || true
+fi
+if [ -n "$Whitelist" ]; then
+  db_set clamav-milter/Whitelist "$Whitelist" || true
+fi
+if [ -n "$OnInfected" ]; then
+  db_set clamav-milter/OnInfected "$OnInfected" || true
+fi
+if [ -n "$OnFail" ]; then
+  db_set clamav-milter/OnFail "$OnFail" || true
+fi
+if [ -n "$RejectMsg" ]; then
+  db_set clamav-milter/RejectMsg "$RejectMsg" || true
+fi
+if [ "$AddHeader" = "true" ]; then
+  db_set clamav-milter/AddHeader true || true
+fi
+if [ "$HAVEMILTERCONF" = 'true' ] && [ -n "$LogFile" ]; then
+  db_set clamav-milter/LogFile "$LogFile" || true
+fi
+if [ "$LogFileUnlock" = "true" ]; then
+  db_set clamav-milter/LogFileUnlock true || true
+fi
+if [ -n "$LogFileMaxSize" ]; then
+  LogFileMaxSize="`echo $LogFileMaxSize | sed -e s/M//`"
+  db_set clamav-milter/LogFileMaxSize "$LogFileMaxSize" || true
+fi
+if [ "$LogTime" = "true" ]; then
+  db_set clamav-milter/LogTime true || true
+fi
+if [ "$LogSyslog" = "true" ]; then
+  db_set clamav-milter/LogSyslog true || true
+fi
+if [ -n "$LogFacility" ]; then
+  db_set clamav-milter/LogFacility "$LogFacility" || true
+fi
+if [ "$LogVerbose" = "true" ]; then
+  db_set clamav-milter/LogVerbose true || true
+fi
+if [ -n "$LogInfected" ]; then
+  db_set clamav-milter/LogInfected "$LogInfected" || true
+fi
+if [ -n "$MaxFileSize" ]; then
+  MaxFileSize="`echo $MaxFileSize | sed -e s/M//g`"
+else
+  MaxFileSize=25
+fi
+db_set clamav-milter/MaxFileSize "$MaxFileSize" || true
+
+# States
+
+StateDebconf()
+{
+  db_input medium clamav-milter/debconf || true
+  if ! db_go; then
+    STATE="End"
+  else
+    db_get clamav-milter/debconf || true
+    if [ "$RET" = "false" ]; then
+      STATE="End"
+    else
+      STATE="User"
+    fi
+  fi
+}
+
+StateUser()
+{
+  db_input medium clamav-milter/User || true
+  if db_go; then
+    db_metaget clamav-milter/User value
+    if [ "$RET" = "" ]; then
+      db_set clamav-milter/User "clamav" || true
+    fi
+    STATE="AddGroups"
+  else
+    STATE="Debconf"
+  fi
+}
+
+StateMilterSocketGroup()
+{
+  db_input low clamav-milter/MilterSocketGroup || true
+  if db_go; then
+    db_metaget clamav-milter/MilterSocketGroup value
+    if [ "$RET" = "" ]; then
+      db_set clamav-milter/MilterSocketGroup "clamav" || true
+    fi
+    STATE="MilterSocketMode"
+  else
+    STATE="MilterSocket"
+  fi
+}
+
+StateLogFile()
+{
+  db_input low clamav-milter/LogFile || true
+  if db_go; then
+    db_metaget clamav-milter/LogFile value
+    if [ "$RET" = "" ]; then
+      db_set clamav-milter/LogFile "/var/log/clamav/clamav-milter.log" || true
+      STATE="LogFileUnlock"
+    elif [ "$RET" = 'none' ]; then
+      db_set clamav-milter/LogFile "" || true
+      STATE="LogSyslog"
+    else
+      STATE="LogFileUnlock"
+    fi
+  else
+    STATE="AddHeader"
+  fi
+}
+
+# To many options to configure at configure
+if [ "$1" = "reconfigure" ]; then
+  STATE="Init"
+elif [ -n "$2" ]; then
+  if [ -z "$User" ]; then
+    STATE="User"
+  fi
+else
+  STATE="End"
+fi
+
+[ -z "$STATE" ] && STATE='End'
+
+# This is the statemachine that controls execution. All the 'real' work is 
+# performed by subfunctions above. 
+
+while [ "$STATE" != "End" ]; do
+  case "$STATE" in
+    "Init")
+    StateDebconf
+    ;;
+    "User")
+    StateUser
+    ;;
+    "AddGroups")
+    StateGeneric medium clamav-milter/AddGroups MilterSocket User
+    ;;
+    "MilterSocket")
+    StateGeneric low clamav-milter/MilterSocket MilterSocketGroup AddGroups
+    ;;
+    "MilterSocketGroup")
+    StateMilterSocketGroup
+    ;;
+    "MilterSocketMode")
+    StateGenericDigit low clamav-milter/MilterSocketMode FixStaleSocket MilterSocketGroup
+    ;;
+    "FixStaleSocket")
+    StateGeneric low clamav-milter/FixStaleSocket ReadTimeout MilterSocketMode
+    ;;
+    "ReadTimeout")
+    StateGenericDigit low clamav-milter/ReadTimeout Foreground FixStaleSocket
+    ;;
+    "Foreground")
+    StateGeneric low clamav-milter/Foreground Chroot ReadTimeout
+    ;;
+    "Chroot")
+    StateGeneric low clamav-milter/Chroot PidFile Foreground
+    ;;
+    "PidFile")
+    StateGeneric low clamav-milter/PidFile TemporaryDirectory Chroot
+    ;;
+    "TemporaryDirectory")
+    StateGeneric low clamav-milter/TemporaryDirectory ClamdSocket PidFile
+    ;;
+    "ClamdSocket")
+    StateGeneric low clamav-milter/ClamdSocket LocalNet TemporaryDirectory
+    ;;
+    "LocalNet")
+    StateGeneric low clamav-milter/LocalNet Whitelist ClamdSocket
+    ;;
+    "Whitelist")
+    StateGeneric low clamav-milter/Whitelist OnInfected LocalNet
+    ;;
+    "OnInfected")
+    StateGeneric low clamav-milter/OnInfected OnFail Whitelist
+    ;;
+    "OnFail")
+    StateGeneric low clamav-milter/OnFail RejectMsg OnInfected
+    ;;
+    "RejectMsg")
+    StateGeneric low clamav-milter/RejectMsg AddHeader OnFail
+    ;;
+    "AddHeader")
+    StateGeneric low clamav-milter/AddHeader LogFile RejectMsg
+    ;;
+    "LogFile")
+    StateLogFile
+    ;;
+    "LogFileUnlock")
+    StateGeneric low clamav-milter/LogFileUnlock LogFileMaxSize LogFile
+    ;;
+    "LogFileMaxSize")
+    StateGenericDigit low clamav-milter/LogFileMaxSize LogTime LogFileUnlock
+    ;;
+    "LogTime")
+    StateGeneric low clamav-milter/LogTime LogSyslog LogFileMaxSize
+    ;;
+    "LogSyslog")
+    StateGeneric low clamav-milter/LogSyslog LogFacility LogTime
+    ;;
+    "LogFacility")
+    StateGeneric low clamav-milter/LogFacility LogVerbose LogSyslog
+    ;;
+    "LogVerbose")
+    StateGeneric low clamav-milter/LogVerbose LogInfected LogFacility
+    ;;
+    "LogInfected")
+    StateGeneric low clamav-milter/LogInfected MaxFileSize LogVerbose
+    ;;
+    "MaxFileSize")
+    StateGenericDigit low clamav-milter/MaxFileSize End LogInfected
+    ;;
+  esac
+done
+db_stop || true
+exit 0
+

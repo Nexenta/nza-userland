@@ -1,0 +1,6 @@
+usr/bin/
+var/lib/clamav
+etc/clamav
+etc/clamav/onupdateexecute.d
+etc/clamav/onerrorexecute.d
+usr/share/bug/clamav-freshclam

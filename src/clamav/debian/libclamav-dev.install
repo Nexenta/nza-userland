@@ -1,0 +1,5 @@
+debian/tmp/usr/lib/libclamav.so
+debian/tmp/usr/lib/libclamav.la
+debian/tmp/usr/include/*
+debian/tmp/usr/lib/pkgconfig/libclamav.pc usr/lib/pkgconfig/
+debian/tmp/usr/bin/clamav-config 

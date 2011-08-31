@@ -1,0 +1,14 @@
+diff -ur a/logrotate.h b/logrotate.h
+--- a/logrotate.h	2008-05-09 11:28:59.000000000 +0400
++++ b/logrotate.h	2011-08-30 20:40:48.867638267 +0400
+@@ -26,6 +26,10 @@
+ #define NO_FORCE_ROTATE 0
+ #define FORCE_ROTATE    1
+ 
++#ifdef __sun
++#include <limits.h>
++#endif
++
+ struct logInfo {
+     char *pattern;
+     char **files;

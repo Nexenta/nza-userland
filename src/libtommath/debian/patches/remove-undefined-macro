@@ -1,0 +1,15 @@
+Description: remove \undefined macro
+Author: Daniel Schepler <dschepler@gmail.com>
+Author: Jari Aalto <jari.aalto@cante.net>
+Bug-Debian: http://bugs.debian.org/562349
+
+--- libtommath-0.39.orig/bn.tex
++++ libtommath-0.39/bn.tex
+@@ -29,7 +29,6 @@
+ \def\And{{\rm\ and\ }}
+ \def\iff{\hspace{1em}\Longleftrightarrow\hspace{1em}}
+ \def\implies{\Rightarrow}
+-\def\undefined{{\rm ``undefined"}}
+ \def\Proof{\vspace{1ex}\noindent {\bf Proof:}\hspace{1em}}
+ \let\oldphi\phi
+ \def\phi{\varphi}

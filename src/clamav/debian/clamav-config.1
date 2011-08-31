@@ -1,0 +1,68 @@
+.\" clamav-config - script to get information about libaudiofile
+.\" Copyright (c) 2004 Stephen Gran <sgran@debian.org>
+.\"               
+.\" This manual page is free software; you can redistribute it and/or modify
+.\" it under the terms of the GNU General Public License as published by
+.\" the Free Software Foundation; either version 2 of the License, or
+.\" (at your option) any later version.
+.\" 
+.\" This program is distributed in the hope that it will be useful,
+.\" but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\" GNU General Public License for more details.
+.\" 
+.\" You should have received a copy of the GNU General Public License
+.\" along with this program; if not, write to the Free Software
+.\" Foundation, Inc.,59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+.\"
+.\" This manual page is written especially for Debian Linux.
+.\"
+.TH CLAMAV-CONFIG 1 "June 2004" "Debian Project" "Debian GNU/Linux"
+.SH NAME
+clamav-config \- script to get information about libclamav6
+.SH SYNOPSIS
+.B clamav\-config 
+.BI [\-\-prefix[= DIR ]]
+.B [\-\-version]
+.B [\-\-cflags]
+.B [\-\-libs]
+.SH DESCRIPTION
+.B clamav\-config
+is a tool that is used to configure to determine the compiler and
+linker flags that should be used to compile and link programs that use
+.BR libclamav6 .
+.SH OPTIONS
+.TP
+.B \-\-version
+Print the currently installed version of 
+.B libclamav6
+on the standard output.
+.TP
+.B \-\-libs
+Print the linker flags that are necessary to link a program with
+.BR libclamav6 .
+.TP
+.B \-\-cflags
+Print the compiler flags that are necessary to compile a program with 
+.BR libclamav6 .
+.TP
+.BI  \-\-prefix= PREFIX
+If specified, use 
+.I PREFIX
+instead of the installation prefix that 
+.B libclamav6
+was built with when computing the output for the 
+.B \-\-cflags
+and
+.B \-\-libs
+options. 
+This option must be specified before any
+.B \-\-libs
+or 
+.B \-\-cflags
+options.
+.SH AUTHOR
+.B clamav\-config was written by Daniel Veillard.
+.PP
+This manual page was created by Stephen Gran <sgran@debian.org>
+for the Debian GNU/Linux system (but may be used by others).

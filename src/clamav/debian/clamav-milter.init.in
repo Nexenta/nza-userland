@@ -1,0 +1,230 @@
+#!/bin/bash
+### BEGIN INIT INFO
+# Provides:          clamav-milter
+# Required-Start:    $remote_fs $syslog
+# Should-Start:      clamav-daemon
+# Required-Stop:     $remote_fs $syslog
+# Should-Stop:       
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: ClamAV virus milter
+# Description:       Clam AntiVirus milter interface
+### END INIT INFO
+
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+DAEMON=/usr/sbin/clamav-milter
+DESC="Sendmail milter plugin for ClamAV"
+NAME=clamav-milter
+CLAMAVCONF=/etc/clamav/clamav-milter.conf
+SUPERVISOR=/usr/bin/daemon
+SUPERVISORPIDFILE="/var/run/clamav/daemon-clamav-milter.pid"
+SUPERVISORARGS="-F $SUPERVISORPIDFILE --name=$NAME --respawn"
+CLAMAVDAEMONUPGRADE="/var/run/clamav-daemon-being-upgraded"
+
+[ -x "$DAEMON" ] || exit 0
+
+#COMMON-FUNCTIONS#
+
+. /lib/lsb/init-functions
+
+[ -r /etc/default/clamav-milter ] && . /etc/default/clamav-milter
+
+if [ ! -f "$CLAMAVCONF" ]; then
+  log_failure_msg "There is no configuration file for clamav-milter."
+  log_failure_msg "Please either dpkg-reconfigure $DESC, or copy the example from"
+  log_failure_msg "/usr/share/doc/clamav-milter/examples/ to $CLAMAVCONF and run"
+  log_failure_msg "'/etc/init.d/clamav-milter start'"
+  exit 0
+fi
+
+slurp_config "$CLAMAVCONF"
+[ -n "$User" ] || User=clamav
+
+if [ -n "$Example" ]; then
+  log_failure_msg "$DESC is not configured."
+  log_failure_msg "Please edit $CLAMAVCONF and run '/etc/init.d/clamav-milter start'"
+  exit 0
+fi
+
+if [ -z "$PidFile" ]; then
+  PIDFILE=/var/run/clamav/clamav-milter.pid
+else
+  PIDFILE="$PidFile"
+fi
+
+if [ -z "$MilterSocket" ]; then
+  SOCKET=local:/var/run/clamav/clamav-milter.ctl
+else
+  SOCKET="$MilterSocket"
+fi
+
+wait_for_socket()
+{
+  local socket; socket="$1"
+  local retries; retries=${2:-15}
+  local sleeptime; sleeptime=${3:-1}
+  while [ $retries -gt 0 ]; do
+    retries=$(($retries - 1))
+    [ -S "$socket" ] && break
+    sleep $sleeptime
+  done
+  test $retries -ne 0
+}
+
+change_socket_group()
+{
+  local socket; socket="$1"
+  local group; group="$2"
+  local retries; retries=${3:-15}
+  local sleeptime; sleeptime=${4:-1}
+
+  [ -n "$group" ] || return 0
+
+  if wait_for_socket "$socket" $retries $sleeptime; then
+    chmod g+w "$SOCKET_PATH"
+    chgrp "$SOCKET_RWGROUP" "$SOCKET_PATH"
+  else
+    log_warning_msg "Tried to change socket group, but socket did not appear."
+  fi
+}
+
+case "$SOCKET" in
+  /*)
+  SOCKET_PATH="$SOCKET"
+  SOCKET_TYPE="local"
+  ;;
+  *)
+  SOCKET_PATH="${SOCKET#*:}"
+  SOCKET_TYPE="${SOCKET%%:*}"
+  ;;
+esac
+SOCKET_TYPE="${SOCKET_TYPE:-local}"
+SOCKET="${SOCKET_TYPE}:${SOCKET_PATH}"
+
+if is_true "$Foreground"; then
+  if [ ! -x "$SUPERVISOR" ] ; then
+     log_failure_msg "Foreground specified, but $SUPERVISOR not found"
+     exit 0
+  else
+     RUN_SUPERVISED=1
+     SUPERVISOR_EXEC="$DAEMON $OPTIONS"
+  fi
+fi
+
+if [ -z "$RUN_SUPERVISED" ] ; then
+  if [ -f "$PIDFILE" ]; then
+    PID=`pidofproc -p $PIDFILE $DAEMON`
+    RUNNING=$?
+  else
+    PID=`pidofproc $DAEMON`
+    RUNNING=$?
+  fi
+else
+  [ -e "$SUPERVISORPIDFILE" ] && PID=`sed 's/[^0-9]//g' $SUPERVISORPIDFILE`
+fi
+
+[ "$PID" = '1' ] && unset PID
+[ -n "$User" ] || User=clamav
+[ -n "$DataBaseDirectory" ] || DataBaseDirectory=/var/run/clamav
+
+make_dir "$DataBaseDirectory"
+if [ "${SOCKET_TYPE}" = "local" ]; then
+  make_dir $(dirname "$SOCKET_PATH")
+  chown $User $(dirname "$SOCKET_PATH")
+fi
+
+make_dir $(dirname "$PIDFILE")
+chown $User $(dirname "$PIDFILE")
+
+case "$1" in
+  start)
+  OPTIND=1
+  if [ -n "$PID" ]; then
+    PID=`echo $PID | sed 's/[^0-9]//g'`
+    if kill -0 $PID; then
+      log_failure_msg "$DAEMON already running"
+      exit 1
+    fi
+  fi
+  if [ -e "$CLAMAVDAEMONUPGRADE" ] && [ "$RESTART_AFTER_CLAMD" = 'yes' ]; then
+    touch $CLAMAVDAEMONUPGRADE.milter-restart
+    log_warning_msg "clamd may be required to run $DAEMON, clamav-milter will be restarted by clamav-daemon"
+    exit 0
+  fi
+  if [ -z "$RUN_SUPERVISED" ] ; then
+    log_daemon_msg "Starting $DESC" "$NAME"
+    start-stop-daemon --start -o -c $User --exec $DAEMON
+    ret=$?
+  else
+    log_daemon_msg "Starting $DESC" "$NAME (supervised)"
+    $SUPERVISOR $SUPERVISORARGS -X "$SUPERVISOR_EXEC"
+    ret=$?
+  fi
+
+  # try 15*1 seconds to change the socket group
+  change_socket_group "$SOCKET_PATH" "$SOCKET_RWGROUP" 15 1
+
+  log_end_msg $ret
+  ;;
+  stop)
+  OPTIND=1
+  log_daemon_msg "Stopping $DESC" "$NAME"
+  if [ -n "$PID" ]; then
+    PID=`echo $PID | sed 's/[^0-9]//g'`
+    kill -15 -"$PID" 2>/dev/null || true
+    ret=$?
+    sleep 2
+    if kill -0 "$PID" 2>/dev/null; then 
+      ret=$?
+      log_progress_msg "Waiting . "
+      cnt=0
+      while kill -0 "$PID" 2>/dev/null; do
+        ret=$?
+        cnt=`expr "$cnt" + 1`
+        if [ "$cnt" -gt 15 ]; then
+          kill -9 -"$PID"
+          ret=$?
+          break
+        fi
+        sleep 2
+        log_progress_msg ". "
+      done
+    fi
+  else
+    if [ -z "$RUN_SUPERVISED" ] ; then
+      killproc -p $PIDFILE $DAEMON
+      ret=$?
+    else
+      killproc -p $SUPERVISORPIDFILE
+      ret=$?
+    fi
+  fi
+  if [ -n "$ret" ]; then
+    log_end_msg $ret
+  else
+    log_end_msg $?
+  fi
+  [ -e "$SOCKET_PATH" ] && rm -f $SOCKET_PATH
+  [ -e "$PIDFILE" ] && rm -f $PIDFILE
+  ;;
+  force-reload | restart)
+  $0 stop
+  sleep 2
+  $0 start
+  ;;
+  status)
+  status_of_proc "$DAEMON" "$NAME"
+  ret=$?
+  if [ $ret = 0 ] && [ ! -S $SOCKET_PATH ] ; then
+    log_failure_msg "$NAME is running but socket is missing"
+    exit 4
+  fi
+  exit $ret
+  ;;
+  *)
+  log_failure_msg "Usage: $0 {start|stop|restart|force-reload|status}" >&2
+  exit 1
+  ;;
+esac
+
+exit 0

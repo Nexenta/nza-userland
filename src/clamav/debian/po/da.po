@@ -1,0 +1,1223 @@
+# Danish translation clamav.
+# Copyright (C) 2010 clamav & nedenstående oversættere.
+# This file is distributed under the same license as the clamav package.
+# Claus Hindsgaul <claus_h@image.dk>, 2004, 2005.
+# Joe Hansen (joedalton2@yahoo.dk), 2010.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: clamav\n"
+"Report-Msgid-Bugs-To: clamav@packages.debian.org\n"
+"POT-Creation-Date: 2010-11-13 12:30+0100\n"
+"PO-Revision-Date: 2010-12-01 12:42+0000\n"
+"Last-Translator: Joe Hansen <joedalton2@yahoo.dk>\n"
+"Language-Team: Danish <debian-l10n-danish@lists.debian.org>\n"
+"Language: da\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
+
+#. Type: select
+#. Choices
+#: ../clamav-freshclam.templates:2001
+msgid "daemon"
+msgstr "dæmon"
+
+#. Type: select
+#. Choices
+#: ../clamav-freshclam.templates:2001
+msgid "manual"
+msgstr "manuelt"
+
+#. Type: select
+#. Description
+#: ../clamav-freshclam.templates:2002
+msgid "Virus database update method:"
+msgstr "Opdateringsmetode for virusdatabase:"
+
+#. Type: select
+#. Description
+#: ../clamav-freshclam.templates:2002
+msgid "Please choose the method for virus database updates."
+msgstr "Vælg på hvilken måde virusdatabasen skal opdateres."
+
+#. Type: select
+#. Description
+#: ../clamav-freshclam.templates:2002
+msgid ""
+" daemon:  freshclam is running as a daemon all the time. You should choose\n"
+"          this option if you have a permanent network connection;\n"
+" ifup.d:  freshclam will be running as a daemon as long as your Internet\n"
+"          connection is up. Choose this one if you use a dialup Internet\n"
+"          connection and don't want freshclam to initiate new connections;\n"
+" cron:    freshclam is started from cron. Choose this if you want full "
+"control\n"
+"          of when the database is updated;\n"
+" manual:  no automatic invocation of freshclam. This is not recommended,\n"
+"          as ClamAV's database is constantly updated."
+msgstr ""
+" dæmon:   freshclam kører hele tiden som dæmon. Du bør vælge dette, hvis\n"
+"          du har en permanent netforbindelse.\n"
+" ifup.d:  freshclam vil køre som dæmon i al den tid, din internet-\n"
+"          forbindelse er oppe. Vælg dette, hvis du bruger en \n"
+"          opkaldsforbindelse, og ikke vil have at freshclam skal starte \n"
+"          forbindelser på egen hånd.\n"
+" cron:    freshclam startes fra cron. Vælg dette hvis du ønsker fuld\n"
+"          kontrol over hvornår databasen opdateres.\n"
+" manuelt: Ingen automatisk kørsel af freshclam. Dette anbefales ikke,\n"
+"          da ClamAV's database konstant opdateres."
+
+#. Type: select
+#. Description
+#: ../clamav-freshclam.templates:3001
+msgid "Local database mirror site:"
+msgstr "Lokalt databasespejl:"
+
+#. Type: select
+#. Description
+#: ../clamav-freshclam.templates:3001
+msgid "Please select the closest local mirror site."
+msgstr "Vælg det nærmeste lokale spejl."
+
+#. Type: select
+#. Description
+#: ../clamav-freshclam.templates:3001
+msgid ""
+"Freshclam updates its database from a world wide network of mirror sites. "
+"Please select the closest mirror. If you leave the default setting, an "
+"attempt will be made to guess a nearby mirror."
+msgstr ""
+"Freshclam opdaterer sin database fra et verdensomspændende net af "
+"databasespejle. Vælg det spejl, der er tættest på dig. Hvis du beholder "
+"standardindstillingen, vil det blive forsøgt at finde et nærliggende spejl."
+
+#. Type: string
+#. Description
+#: ../clamav-freshclam.templates:4001
+msgid "HTTP proxy information (leave blank for none):"
+msgstr "HTTP-proxyoplysninger (lad feltet stå tomt hvis ingen):"
+
+#. Type: string
+#. Description
+#: ../clamav-freshclam.templates:4001
+msgid ""
+"If you need to use an HTTP proxy to access the outside world, enter the "
+"proxy information here. Otherwise, leave this blank."
+msgstr ""
+"Hvis du skal bruge en HTTP-proxy til at nå verden udenfor, så angiv proxy-"
+"oplysningerne her. Eller skal du ikke skrive noget."
+
+#. Type: string
+#. Description
+#: ../clamav-freshclam.templates:4001
+msgid "Please use URL syntax (\"http://host[:port]\") here."
+msgstr "Brug URL-syntaksen (»http://vært[:port]«) her."
+
+#. Type: string
+#. Description
+#: ../clamav-freshclam.templates:5001
+msgid "Proxy user information (leave blank for none):"
+msgstr "Proxy-brugeroplysninger (lad feltet stå tomt hvis ingen):"
+
+#. Type: string
+#. Description
+#: ../clamav-freshclam.templates:5001
+msgid ""
+"If you need to supply a username and password to the proxy, enter it here. "
+"Otherwise, leave this blank."
+msgstr ""
+"Hvis proxyen kræver brugernavn og adgangskode, så angiv dem her. Ellers lad "
+"feltet stå tomt."
+
+#. Type: string
+#. Description
+#: ../clamav-freshclam.templates:5001
+msgid "When entering user information, use the standard form of \"user:pass\"."
+msgstr ""
+"Brug standardformen »bruger:adgangskode« når du angiver brugeroplysninger."
+
+#. Type: string
+#. Description
+#: ../clamav-freshclam.templates:6001
+msgid "Number of freshclam updates per day:"
+msgstr "Antal daglige freshclam-opdateringer:"
+
+#. Type: string
+#. Description
+#: ../clamav-freshclam.templates:7001
+msgid "Network interface connected to the Internet:"
+msgstr "Netværksgrænseflade, der er forbundet til internettet:"
+
+#. Type: string
+#. Description
+#: ../clamav-freshclam.templates:7001
+msgid ""
+"Please enter the name of the network interface connected to the Internet. "
+"Example: eth0."
+msgstr ""
+"Indtast venligst navnet på den netværksgrænseflade, der er forbundet til "
+"internettet. For eksempel: eth0."
+
+#. Type: string
+#. Description
+#: ../clamav-freshclam.templates:7001
+msgid ""
+"If the daemon runs when the network is down, the log file will be filled "
+"with entries like 'ERROR: Connection with database.clamav.net failed.', "
+"making it easy to miss when freshclam really can't update the database."
+msgstr ""
+"Hvis dæmonen kører, mens netforbindelsen er nede, vil logfilen blive fyldt "
+"med en masse beskeder såsom »ERROR: Connection with database.clamav.net "
+"failed.«, så det kan være svært at se, hvornår freshclam i virkeligheden "
+"ikke kan komme til at opdatere databasen."
+
+#. Type: string
+#. Description
+#: ../clamav-freshclam.templates:7001
+msgid ""
+"You can leave this field blank and the daemon will be started from the "
+"initialization scripts instead. You should then make sure the computer is "
+"permanently connected to the Internet to avoid filling the log files."
+msgstr ""
+"Du kan efterlade dette felt tomt, og dæmonen vil så blive startet fra "
+"initialiseringsskripterne i steden for. Du skal sikre dig, at computeren er "
+"permanent forbundet til internettet for at undgå at logfilerne bliver fyldt "
+"op."
+
+#. Type: string
+#. Description
+#: ../clamav-freshclam.templates:7001
+msgid ""
+"If the computer has multiple network interfaces connecting to the Internet "
+"use a space-separated list of device names."
+msgstr ""
+"Hvis computeren har flere netværksgrænseflader, der forbinder til "
+"internettet så brug en mellemrumsadskilt liste af enhedsnavne."
+
+#. Type: boolean
+#. Description
+#: ../clamav-freshclam.templates:8001
+msgid "Should clamd be notified after updates?"
+msgstr "Skal clamd informeres efter opdateringer?"
+
+#. Type: boolean
+#. Description
+#: ../clamav-freshclam.templates:8001
+msgid ""
+"Please confirm whether clamd should be notified to reload the database after "
+"successful updates."
+msgstr ""
+"Bekræft hvorvidt clamd skal påmindes om at genindlæse databasen efter "
+"succesfulde opdateringer."
+
+#. Type: boolean
+#. Description
+#: ../clamav-freshclam.templates:8001
+msgid ""
+"If you do not choose this option, clamd's database reloads will be notably "
+"delayed (it performs this check every 6 hours by default), posing the risk "
+"that a new virus may slip through even if the database is up to date. Do not "
+"use this if you do not use clamd, as it will produce errors."
+msgstr ""
+"Hvis du ikke vælger denne indstilling, vil clamd's indlæsning af databaser "
+"blive forsinket betydeligt (den tjekker som udgangspunkt hver sjette time), "
+"således at du risikerer, at en ny virus slipper igennem, selvom din database "
+"er fuldt opdateret. Brug ikke denne indstilling, hvis du ikke bruger clamd, "
+"da den vil resultere i fejl."
+
+#. Type: boolean
+#. Description
+#: ../clamav-base.templates:2001 ../clamav-milter.templates:2001
+msgid "Handle the configuration file automatically?"
+msgstr "Vil du håndtere konfigurationsfilen automatisk?"
+
+#. Type: boolean
+#. Description
+#: ../clamav-base.templates:2001
+msgid "Some options must be configured for clamav-base."
+msgstr "Nogle indstillinger skal konfigureres for clamav-base."
+
+#. Type: boolean
+#. Description
+#: ../clamav-base.templates:2001
+msgid ""
+"The ClamAV suite won't work if it isn't configured. If you do not configure "
+"it automatically, you'll have to configure /etc/clamav/clamd.conf manually "
+"or run 'dpkg-reconfigure clamav-base' later. In any case, manual changes in /"
+"etc/clamav/clamd.conf will be respected."
+msgstr ""
+"ClamAV-programmerne vil ikke fungere, hvis de ikke er sat op. Hvis du ikke "
+"konfigurerer automatisk, skal du selv sætte /etc/clamav/clamd.conf op eller "
+"køre »dpkg-reconfigure clamav-base« senere. Uanset hvad vil manuelle "
+"ændringer i /etc/clamav/clamd.conf blive respekteret."
+
+#. Type: select
+#. Description
+#: ../clamav-base.templates:3001
+msgid "Socket type:"
+msgstr "Sokkeltype:"
+
+#. Type: select
+#. Description
+#: ../clamav-base.templates:3001
+msgid "Please choose the type of socket clamd will be listening on."
+msgstr "Vælg den sokkeltype, clamd skal lytte på."
+
+#. Type: select
+#. Description
+#: ../clamav-base.templates:3001
+msgid ""
+"If you choose TCP, clamd can be accessed remotely. If you choose local UNIX "
+"sockets, clamd can be accessed through a file. Local UNIX sockets are "
+"recommended for security reasons."
+msgstr ""
+"Hvis du vælger TCP, kan dæmonen nås udefra. Hvis du vælger lokale UNIX-"
+"sokler, kan clamd nås via en fil. Lokale UNIX-sokler anbefales af "
+"sikkerhedsmæssige årsager."
+
+#. Type: string
+#. Description
+#: ../clamav-base.templates:4001
+msgid "Local (UNIX) socket clamd will listen on:"
+msgstr "Lokal (Unix) sokkel, clamd vil lytte på:"
+
+#. Type: boolean
+#. Description
+#: ../clamav-base.templates:5001
+msgid "Gracefully handle left-over UNIX socket files?"
+msgstr "Lempelig håndtering af overskydende Unix-sokkelfiler?"
+
+#. Type: string
+#. Description
+#: ../clamav-base.templates:6001
+msgid "Group owner of clamd local (UNIX) socket:"
+msgstr "Gruppeejer af lokal clamd-sokkel (UNIX):"
+
+#. Type: string
+#. Description
+#: ../clamav-base.templates:7001
+msgid "Creation mode for clamd local (UNIX) socket:"
+msgstr "Oprettelsestilstand for lokal clamd-sokkel (UNIX):"
+
+#. Type: string
+#. Description
+#: ../clamav-base.templates:8001
+msgid "TCP port clamd will listen on:"
+msgstr "TCP-port som clamd vil lytte på:"
+
+#. Type: string
+#. Description
+#: ../clamav-base.templates:9001
+msgid "IP address clamd will listen on:"
+msgstr "IP-adresse som clamd vil lytte på:"
+
+#. Type: string
+#. Description
+#: ../clamav-base.templates:9001
+msgid ""
+"Enter \"any\" to listen on every IP address configured. If you want to "
+"listen on a single address or host name, enter it here."
+msgstr ""
+"Skriv »any« for at lytte på alle de IP-adresser, der er sat op. Hvis du i "
+"stedet ønsker at lytte på en enkelt adresse eller ét værtsnavn så skriv den "
+"her."
+
+#. Type: error
+#. Description
+#: ../clamav-base.templates:10001
+msgid "Mandatory numeric value"
+msgstr "Krævet numerisk værdi"
+
+#. Type: error
+#. Description
+#: ../clamav-base.templates:10001
+msgid "This question requires a numeric answer."
+msgstr "Dette spørgsmål kræver et numerisk svar."
+
+#. Type: boolean
+#. Description
+#: ../clamav-base.templates:11001
+msgid "Do you want to enable mail scanning?"
+msgstr "Ønsker du at aktivere postskanning?"
+
+#. Type: boolean
+#. Description
+#: ../clamav-base.templates:11001
+msgid ""
+"This option enables scanning mail contents for viruses. You need this option "
+"enabled if you want to use clamav-milter, or if you want to enable phishing "
+"checks."
+msgstr ""
+"Denne indstilling aktiverer skanning af postindhold for virus. Du har brug "
+"for at denne indstilling er aktiveret, hvis du ønsker at bruge clamav-"
+"milter, eller hvis du ønsker at aktivere phishingtjek."
+
+#. Type: boolean
+#. Description
+#: ../clamav-base.templates:12001
+msgid "Do you want to enable archive scanning?"
+msgstr "Vil du aktivere skanning af arkiver?"
+
+#. Type: boolean
+#. Description
+#: ../clamav-base.templates:12001
+msgid ""
+"If archive scanning is enabled, the daemon will extract archives such as "
+"bz2, tar.gz, deb and many more, to check their contents for viruses."
+msgstr ""
+"Hvis arkivskanning er aktiveret, vil dæmonen pakke arkiver såsom bz2, tar."
+"gz, deb med flere ud for at tjekke deres indhold for virusser."
+
+#. Type: boolean
+#. Description
+#: ../clamav-base.templates:12001
+msgid ""
+"For more information about what archives are supported, see /usr/share/doc/"
+"clamav-docs/clamdoc.pdf or the manpage clamscan(5)."
+msgstr ""
+"Flere oplysninger om hvilke arkiver, der understøttes, finder du i /usr/"
+"share/doc/clamav-docs/clamdoc.pdf eller manualsiden clamscan(5)."
+
+#. Type: string
+#. Description
+#: ../clamav-base.templates:13001
+msgid "Maximum stream length (unit Mb) allowed:"
+msgstr "Maksimalt tilladt længde af datastrøm (i Mb):"
+
+#. Type: string
+#. Description
+#: ../clamav-base.templates:13001
+msgid "You can set a limit on the stream length that can be scanned."
+msgstr ""
+"Du kan sætte en begrænsning på størrelsen af de strømme, der kan skannes."
+
+#. Type: string
+#. Description
+#: ../clamav-base.templates:14001
+msgid "Maximum directory depth that will be allowed:"
+msgstr "Maksimal mappedybde, der skal tillades:"
+
+#. Type: string
+#. Description
+#: ../clamav-base.templates:14001
+msgid ""
+"This value must be set if you want to allow the daemon to follow directory "
+"symlinks."
+msgstr ""
+"Denne værdi skal være angivet, hvis du ønsker at tillade dæmonen at følge "
+"symbolske mappehenvisninger."
+
+#. Type: string
+#. Description
+#: ../clamav-base.templates:14001
+msgid "Entering '0' will disable this limit."
+msgstr "Indtastning af »0« vil deaktivere denne begrænsning."
+
+#. Type: boolean
+#. Description
+#: ../clamav-base.templates:15001
+msgid "Do you want the daemon to follow directory symlinks?"
+msgstr "Ønsker du at dæmonen skal følge symbolske mappehenvisninger?"
+
+#. Type: boolean
+#. Description
+#: ../clamav-base.templates:16001
+msgid "Do you want the daemon to follow regular file symlinks?"
+msgstr "Ønsker du at dæmonen skal følge almindelige symbolske filhenvisninger?"
+
+#. Type: string
+#. Description
+#: ../clamav-base.templates:17001
+msgid "Timeout for stopping the thread-scanner (seconds):"
+msgstr "Tidsudløb før trådskanneren stoppes (sekunder):"
+
+#. Type: string
+#. Description
+#: ../clamav-base.templates:17001
+msgid "Entering '0' will disable the timeout."
+msgstr "Indtastning af »0« vil deaktivere tidsudløbet."
+
+#. Type: string
+#. Description
+#: ../clamav-base.templates:18001
+msgid "Number of threads for the daemon:"
+msgstr "Antal tråde til dæmonen:"
+
+#. Type: string
+#. Description
+#: ../clamav-base.templates:19001
+msgid "Number of pending connections allowed:"
+msgstr "Antal tilladte ventende forbindelser:"
+
+#. Type: boolean
+#. Description
+#: ../clamav-base.templates:20001
+msgid "Do you want to use the system logger?"
+msgstr "Ønsker du at bruge system-loggeren?"
+
+#. Type: boolean
+#. Description
+#: ../clamav-base.templates:20001
+msgid ""
+"It is possible to log the daemon activity to the system logger. This can be "
+"done independently of whether you want to log activity to a special file."
+msgstr ""
+"Det er muligt at logge dæmonaktiviteten til systemloggeren. Dette kan gøres "
+"uafhængigt af, om du ønsker at logge aktivitet til en speciel fil."
+
+#. Type: string
+#. Description
+#: ../clamav-base.templates:21001
+msgid "Log file for clamav-daemon (enter none to disable):"
+msgstr "Logfil for clamav-dæmonen (lad feltet stå tomt for at deaktivere):"
+
+#. Type: boolean
+#. Description
+#: ../clamav-base.templates:22001
+msgid "Do you want to log time information with each message?"
+msgstr "Vil du inkludere tidspunktet ved hver besked?"
+
+#. Type: string
+#. Description
+#: ../clamav-base.templates:23001
+msgid "Delay in seconds between daemon self checks:"
+msgstr "Tid i sekunder mellem dæmonens selvtjek:"
+
+#. Type: string
+#. Description
+#: ../clamav-base.templates:23001
+msgid ""
+"During the SelfCheck the daemon checks if it needs to reload the virus "
+"database. It also tries to repair problems caused by bugs in the daemon, "
+"(that is, in some cases it's able to repair broken data structures)."
+msgstr ""
+"Under selvtjek, tjekker dæmonen om den har brug for at genindlæse "
+"virusdatabasen. Den forsøger også at reparere problemer, der skyldes "
+"programfejl i dæmonen, (f.eks. er den i nogle tilfælde i stand til at "
+"reparere ødelagte datastrukturer)."
+
+#. Type: string
+#. Description
+#: ../clamav-base.templates:24001
+msgid "User to run clamav-daemon as:"
+msgstr "Bruger som clamav-dæmonen skal køre som:"
+
+#. Type: string
+#. Description
+#: ../clamav-base.templates:24001
+msgid ""
+"It is recommended to run the ClamAV programs as a non-privileged user. This "
+"will work with most MTAs with a little tweaking, but if you want to use "
+"clamd for filesystem scans, running as root is probably unavoidable. Please "
+"see README.Debian in the clamav-base package for details."
+msgstr ""
+"Det anbefales at køre ClamAV-programmerne som en bruger der ikke er "
+"privilegeret. Det vil fungere med de fleste postdistributionsprogrammer "
+"(MTA) med en smule justering, men hvis du vil benytte clamd til at udføre "
+"skanninger af filsystemer, kan det nok ikke undgås at køre den som root. Se "
+"README.Debian i pakken clamav-base for detaljer."
+
+#. Type: string
+#. Description
+#: ../clamav-base.templates:25001
+msgid "Groups for clamav-daemon (space-separated):"
+msgstr "Grupper til clamav-daemon (adskilt af mellemrum):"
+
+#. Type: string
+#. Description
+#: ../clamav-base.templates:25001
+msgid "Please enter any extra groups for clamd."
+msgstr "Angiv eventuelle ekstra grupper til clamd."
+
+#. Type: string
+#. Description
+#: ../clamav-base.templates:25001
+msgid ""
+"By default, clamd runs as a non-privileged user. If you need clamd to be "
+"able to access files owned by another user (e.g., in combination with an "
+"MTA), then you will need to add clamd to the group for that piece of "
+"software. Please see README.Debian in the clamav-base package for details."
+msgstr ""
+"Clamd kører som udgangspunkt som en bruger der ikke er privilegeret bruger. "
+"Hvis du har brug for, at clamd skal kunne tilgå filer, der ejes af en anden "
+"bruger (f.eks. i kombination med et postleveringsprogram), skal du tilføje "
+"clamd til dette programs gruppe. Se README.Debian i pakken clamav-base for "
+"detaljer."
+
+#. Type: boolean
+#. Description
+#: ../clamav-base.templates:26001
+msgid "Do you want to load bytecode from the database?"
+msgstr "Vil du indlæse bytecode fra databasen?"
+
+#. Type: select
+#. Choices
+#: ../clamav-base.templates:27001
+msgid "TrustSigned"
+msgstr "TillidsUnderskrevet"
+
+#. Type: select
+#. Choices
+#: ../clamav-base.templates:27001
+msgid "Paranoid"
+msgstr "Paranoid"
+
+#. Type: select
+#. Description
+#: ../clamav-base.templates:27002
+msgid "Security level to apply to the bytecode:"
+msgstr "Sikkerhedsniveau for bytecode:"
+
+#. Type: select
+#. Description
+#: ../clamav-base.templates:27002
+msgid ""
+" - TrustSigned : trust bytecode loaded from signed virus database files,\n"
+"                 but insert runtime safety checks for bytecode loaded\n"
+"                 from unsigned sources\n"
+" - Paranoid    : always insert runtime checks"
+msgstr ""
+" - TillidsUnderskrevet : stol på bytecode indlæst fra signeret\n"
+"                         virusdatabasefiler, men indsæt\n"
+"                         kørselstidssikkerhedstjek for bytecode indlæst\n"
+"                         fra kilder uden underskrift\n"
+" - Paranoid            : indsæt altid kørselstidstjek"
+
+#. Type: string
+#. Description
+#: ../clamav-base.templates:28001
+msgid "Bytecode execution timeout in miliseconds:"
+msgstr "Tidsudløb for bytecodeudførsel i millisekunder:"
+
+#. Type: boolean
+#. Description
+#: ../clamav-milter.templates:2001
+msgid "Some options must be configured for clamav-milter."
+msgstr "Nogle indstillinger skal konfigureres for clamav-milter."
+
+#. Type: boolean
+#. Description
+#: ../clamav-milter.templates:2001
+msgid ""
+"It won't work if it isn't configured. If you do not configure it "
+"automatically, you'll have to configure /etc/clamav/clamav-milter.conf "
+"manually or run \"dpkg-reconfigure clamav-milter\" later. In any case, "
+"manual changes in /etc/clamav/clamav-milter.conf will be respected."
+msgstr ""
+"ClamAV-programmet vil ikke fungere, hvis de ikke er sat op. Hvis du ikke "
+"konfigurerer automatisk, må du selv sætte /etc/clamav/clamav-milter.conf op "
+"eller køre »dpkg-reconfigure clamav-milter« senere. Uanset hvad vil manuelle "
+"ændringer i /etc/clamav/clamav-milter.conf blive respekteret."
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:3001
+msgid "Communication interface with Sendmail:"
+msgstr "Kommunikationsgrænseflade med Sendmail:"
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:3001
+msgid ""
+"Please choose the method that should be used by clamav-milter to communicate "
+"with Sendmail. The following formats can be used:\n"
+" - Unix domain socket: [[unix|local]:]/path/to/file\n"
+" - IPv4 socket       : inet:port@[hostname|ip-address]\n"
+" - IPv6 socket       : inet6:port@[hostname|ip-address]"
+msgstr ""
+"Vælg venligst den metode som skal bruges af clamav-milter til at kommunikere "
+"med Sendmail. De følgende formater kan bruges:\n"
+" - Unix-domænesokkel : [[unix|lokal]:]/sti/til/fil\n"
+" - IPv4-sokkel       : inet:port@[værtsnavn|ip-adresse]\n"
+" - IPv6-sokkel       : inet6:port@[værtsnavn|ip-adresse]"
+
+#. Type: boolean
+#. Description
+#: ../clamav-milter.templates:4001
+msgid "Remove stale socket after unclean shutdown?"
+msgstr "Fjern forældet sokkel efter afbrudt nedlukning?"
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:5001
+msgid "Group owner of clamav-milter local (UNIX) socket:"
+msgstr "Gruppeejer af clamav-milters lokale (UNIX) sokkel:"
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:6001
+msgid "Creation mode for clamav-milter local (UNIX) socket:"
+msgstr "Oprettelsestilstand for clamav-milters lokale (UNIX) sokkel:"
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:7001
+msgid "User to run clamav-milter as:"
+msgstr "Bruger at køre clamav-milter som:"
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:7001
+msgid ""
+"It is recommended to run the ClamAV programs as a non-privileged user. This "
+"will work with most MTAs with a little tweaking."
+msgstr ""
+"Det anbefales at køre ClamAV-programmerne som en bruger, der ikke er "
+"priviligeret. Det vil fungere med de fleste postdistributionsprogrammer "
+"(MTA) med en smule justering."
+
+#. Type: string
+#. Description
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:7001 ../clamav-milter.templates:8001
+msgid "Please see README.Debian in the clamav-base package for details."
+msgstr "Se venligst README.Debian i pakken clamav-base for detaljer."
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:8001
+msgid "Groups for clamav-milter (space-separated):"
+msgstr "Grupper til clamav-milter (adskilt af mellemrum):"
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:8001
+msgid ""
+"By default, clamav-milter runs as a non-privileged user. If you need clamav-"
+"milter to be able to access files owned by another user (for instance when "
+"it is used in combination with an MTA), the user running clamav-milter need "
+"to be added to the relevant group(s)."
+msgstr ""
+"Clamv-milter kører som udgangspunkt som en bruger, der ikke er priviligeret. "
+"Hvis du har brug for, at clamav-milter skal kunne tilgå filer, der ejes af "
+"en anden bruger (f.eks. i kombination med et postleveringsprogram), skal du "
+"tilføje brugeren, der kører clamav-milter, til de relevante grupper."
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:9001
+msgid "Wait timeout for data coming from clamd:"
+msgstr "Tidsudløb for data der kommer fra clamd:"
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:9001
+msgid ""
+"Please enter the delay (in seconds) before clamav-milter times out when it "
+"is waiting for incoming data from clamd."
+msgstr ""
+"Indtast venligst forsinkelsen (i sekunder) før clamav-milter får tidsudløb, "
+"når programmet venter på indgående data fra clamd."
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:9001
+msgid "Choosing \"0\" will disable this timeout."
+msgstr "Valg af »0« vil deaktivere dette tidsudløb."
+
+#. Type: boolean
+#. Description
+#: ../clamav-milter.templates:10001
+msgid "Should clamav-milter stay in foreground (not forking)?"
+msgstr "Skal clamav-milter forblive i forgrunden (ikke forgrene sig)?"
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:11001
+msgid "Chroot to directory:"
+msgstr "Chroot til mappe:"
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:11001
+msgid ""
+"Clamav-milter can run in a chroot jail. It will enter it after reading the "
+"configuration file and before dropping root privileges."
+msgstr ""
+"Clamav-milter kan køre i et chrootfængsel. Den vil indgå i dette efter, at "
+"programmet har læst konfigurationsfilen og før den smider "
+"administratorprivilegierne."
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:11001
+msgid "If this field is left empty, no chrooting will occur."
+msgstr "Hvis dette felt er efterladt tomt, vil ingen chrooting opstå."
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:12001
+msgid "PID file:"
+msgstr "PID-fil:"
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:12001
+msgid ""
+"Please specify the process identifier file location for clamav-milter's "
+"listening daemon (main thread)."
+msgstr ""
+"Angiv venligst procesidentifikationen for filplacering for clamav-milters "
+"lyttende dæmon (hovedtråd)."
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:13001
+msgid "Temporary directory path:"
+msgstr "Midlertidig mappesti:"
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:13001
+msgid ""
+"Please specify the directory for clamav-milter's temporary files. If unset, "
+"$TMPDIR and $TEMP will be honored."
+msgstr ""
+"Angiv mappen for clamav-milters midlertidige filer. Hvis den ikke angives, "
+"vil $TMPDIR og $TEMP blive anvendt."
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:14001
+msgid "Clamd socket to connect to for scanning:"
+msgstr "Clamd-sokkel at forbinde til for skanning:"
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:14001
+msgid ""
+"Please specify the socket to use to connect to the ClamAV daemon for "
+"scanning purposes. Possible choices are:\n"
+" - a local unix socket using an absolute path, in \"unix:path\" format\n"
+"   (for example: unix:/var/run/clamd/clamd.socket);\n"
+" - a local or remote TCP socket in \"tcp:host:port\" format (for example:\n"
+"   tcp:192.168.0.1). The \"host\" value can be either a hostname or an IP\n"
+"   address, and the \"port\" is only required for IPv6 addresses,\n"
+"   defaulting to 3310 otherwise."
+msgstr ""
+"Angiv venligst soklen der skal bruges til at forbinde til ClamAV-dæmonen for "
+"skanningsformål. Mulige valg er:\n"
+" - en lokal unixsokkel der bruger en absolut sti, i formatet »unix:sti«\n"
+"   (for eksempel: unix:/var/run/clamd/clamd.socket);\n"
+" - en lokal eller ekstern TCP-sokkel i formatet »tcp:vært:port« (for "
+"eksempel:\n"
+"   cp:192.168.0.1). »Værtværdien« kan enten være et værtsnavn eller en\n"
+"   IP-adresse, og »porten« er kun krævet for IPv6-adresser,\n"
+"   ellers er standarden 3310."
+
+# The term round-robin describes correspondence to a single address authored 
+# or signed by numerous individuals (as found in a petition). 
+# In computing, "round-robin" describes a method of choosing a resource for 
+# a task from a list of available ones, usually for the purposes of load 
+# balancing. fra Wikipedia
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:14001
+msgid ""
+"You may specify multiple choices, separated by spaces. In such case, the "
+"clamd servers will be selected in a round-robin fashion."
+msgstr ""
+"Du må angive flere valg, adskilt af mellemrum. I sådanne tilfælde, vil clamd-"
+"serverne blive valgt efter metoden round-robin."
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:15001
+msgid "Hosts excluded from scanning:"
+msgstr "Værter udelukket fra skanning:"
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:15001
+msgid ""
+"Please specify, in CIDR notation (host(name)/mask), the hosts for which no "
+"scanning should be performed on incoming mail. Multiple entries should be "
+"separated by spaces. The \"local\" shortcut can be used to specify locally-"
+"originated (non-SMTP) email."
+msgstr ""
+"Angiv venligst, i CIDR-notation (vært(navn)/maske), værterne hvor ingen "
+"skanning skal udføres på indgående post. Flere punkter skal adskilles af "
+"mellemrum. Den »lokale« genvej kan brues til at specificere lokalt oprindet "
+"(ikke-SMTP) e-post."
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:15001
+msgid "If this field is left empty, all incoming mail will be scanned."
+msgstr "Hvis dette felt efterlades tomt, vil al indgående post blive skannet."
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:16001
+msgid "Mail addresses whitelist:"
+msgstr "Hvidliste for postadresser:"
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:16001
+msgid ""
+"Please specify the path to a whitelist file, listing email addresses that "
+"should cause scanning to be bypassed."
+msgstr ""
+"Angiv venligst stien til en hvidlistefil, lyttende e-post-adresser som bør "
+"medføre at skanning udelades."
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:16001
+msgid ""
+"Each line in this file should be a POSIX regular expression; lines starting "
+"with \"#\", \":\" or \"!\" will be ignored as comments."
+msgstr ""
+"Hver linje i denne fil skal være et POSIX-regulært udtryk; linjer startende "
+"med »#«, »:« eller »!« vil blive ignoreret som værende kommentarer."
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:16001
+msgid ""
+"Lines may start with \"From:\" (with no space after the colon) to make the "
+"whitelisting apply to matching sender addresses; otherwise, or with a \"To:"
+"\" prefix, it affects recipient addresses."
+msgstr ""
+"Linjer skal starte med »Fra:« (uden mellemrum efter kolonnet) for at "
+"hvidlistningen gælder for matchende afsenderadresser; ellers, eller med "
+"præfikset »Til:«, påvirker den modtageradresser."
+
+#. Type: select
+#. Choices
+#. Type: select
+#. Choices
+#: ../clamav-milter.templates:17001 ../clamav-milter.templates:18001
+msgid "Accept"
+msgstr "Accepter"
+
+#. Type: select
+#. Choices
+#. Type: select
+#. Choices
+#: ../clamav-milter.templates:17001 ../clamav-milter.templates:18001
+msgid "Reject"
+msgstr "Afvis"
+
+# måske udskyd
+#. Type: select
+#. Choices
+#. Type: select
+#. Choices
+#: ../clamav-milter.templates:17001 ../clamav-milter.templates:18001
+msgid "Defer"
+msgstr "Udsæt"
+
+#. Type: select
+#. Choices
+#: ../clamav-milter.templates:17001
+msgid "Blackhole"
+msgstr "Sort hul"
+
+#. Type: select
+#. Choices
+#: ../clamav-milter.templates:17001
+msgid "Quarantine"
+msgstr "Karantæne"
+
+#. Type: select
+#. Description
+#: ../clamav-milter.templates:17002
+msgid "Action to perform on infected messages:"
+msgstr "Handling at udføre på inficerede beskeder:"
+
+#. Type: select
+#. Description
+#: ../clamav-milter.templates:17002
+msgid "Please choose the action to perform on \"infected\" messages:"
+msgstr "Vælg venligst handlingen der skal udføres på »inficerede« beskeder:"
+
+#. Type: select
+#. Description
+#: ../clamav-milter.templates:17002
+msgid ""
+" - Accept    : accept the message for delivery;\n"
+" - Reject    : immediately refuse delivery (with a 5xx error);\n"
+" - Defer     : return a temporary failure message (4xx);\n"
+" - Blackhole : accept the message then drop it;\n"
+" - Quarantine: accept the message then quarantine it. With\n"
+"               Sendmail, the quarantine queue can be examined\n"
+"               with \"mailq -qQ\". With Postfix, such mails are placed\n"
+"               on hold."
+msgstr ""
+" - Accepter  : Accepter beskeden som leveres;\n"
+" - Afvis     : Afvis øjeblikkelg levering (med en 5xx-fejl);\n"
+" - Udsæt     : Returner en midlertidig fejlbesked (4xx);\n"
+" - Sort hul  : Accepter beskeden og drop den så;\n"
+" - Karantæne : Accepter beskeden og sæt den så i karantæne. Med\n"
+"               Sendmail kan karantænekøen undersøges med\n"
+"               »mailq -qQ«. Med Postfix placeres den slags e-post\n"
+"               i venteposition."
+
+#. Type: select
+#. Description
+#: ../clamav-milter.templates:18002
+msgid "Action to perform on error conditions:"
+msgstr "Handling der skal udføres ved fejl:"
+
+#. Type: select
+#. Description
+#: ../clamav-milter.templates:18002
+msgid ""
+"Please choose the action to perform on errors such as failure to allocate "
+"data structures, no scanners available, network timeouts, unknown scanner "
+"replies...:"
+msgstr ""
+"Vælg venligst handlingen der skal udføres ved fejl såsom fejl ved tildeling "
+"af datastrukturer, ingen skannere tilgængelige, netværkstidsudløb, ukendte "
+"skannersvar...:"
+
+#. Type: select
+#. Description
+#: ../clamav-milter.templates:18002
+msgid ""
+" - Accept: accept the message for delivery;\n"
+" - Reject: immediately refuse delivery (with a 5xx error);\n"
+" - Defer : return a temporary failure message (4xx)."
+msgstr ""
+" - Accepter : Accepter beskeden som leveres;\n"
+" - Afvis    : Afvis øjeblikkeligt levering (med en 5xx-fejl);\n"
+" - Udsæt    : Returner en midlertidig fejlbesked (4xx)."
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:19001
+msgid "Specific rejection reason for infected messages:"
+msgstr "Specifik afvisningsårsag for inficerede beskeder:"
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:19001
+msgid ""
+"Please specify the rejection reason that will be included in reject mails."
+msgstr ""
+"Angiv vneligst afvisningsårsagen som vil blive inkluderet i "
+"afvisningsbeskederne."
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:19001
+msgid "This option is only useful together with \"OnInfected Reject\"."
+msgstr "Denne indstilling er kun brugbar sammen med »OnInfected Reject«."
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:19001
+#, no-c-format
+msgid "The \"%v\" string may be used to include the virus name."
+msgstr "Strengen »%v« kan bruges til at inkludere virusnavnet."
+
+#. Type: select
+#. Choices
+#: ../clamav-milter.templates:20001
+msgid "Replace"
+msgstr "Erstat"
+
+#. Type: select
+#. Choices
+#: ../clamav-milter.templates:20001
+msgid "Yes"
+msgstr "Ja"
+
+#. Type: select
+#. Choices
+#: ../clamav-milter.templates:20001
+msgid "No"
+msgstr "Nej"
+
+#. Type: select
+#. Choices
+#: ../clamav-milter.templates:20001
+msgid "Add"
+msgstr "Tilføj"
+
+#. Type: select
+#. Description
+#: ../clamav-milter.templates:20002
+msgid "Add headers to processed messages?"
+msgstr "Tilføj teksthoveder til behandlede beskeder?"
+
+#. Type: select
+#. Description
+#: ../clamav-milter.templates:20002
+msgid ""
+"If you choose this option, \"X-Virus-Scanned\" and \"X-Virus-Status\" "
+"headers will be attached to each processed message, possibly replacing "
+"existing similar headers."
+msgstr ""
+"Hvis du vælger denne indstilling vil teksthovederne »X-Virus-Scanned« og »X-"
+"Virus-Status« blive tilføjet til hver behandlet besked, og dermed højst "
+"sandsynlig erstatte lignende eksisterende teksthoveder."
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:21001
+msgid "Log file for clamav-milter:"
+msgstr "Logfil for clamav-milter:"
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:21001
+msgid ""
+"Specify the full path to the clamav-milter log file, which must be writable "
+"for the clamav daemon. Enter none to disable."
+msgstr ""
+"Angiv den fulde sti til clamav-milters logfil, som skal være skrivbar for "
+"clamav-dæmonen. Indtast ingen for at deaktivere."
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:21001
+msgid "Logging via syslog is configured independently of this setting."
+msgstr "Logning via syslog er konfigureret uafhængigt af denne indstilling."
+
+#. Type: boolean
+#. Description
+#: ../clamav-milter.templates:22001
+msgid "Disable log file locking?"
+msgstr "Deaktiver logfillåsning?"
+
+#. Type: boolean
+#. Description
+#: ../clamav-milter.templates:22001
+msgid ""
+"By default the log file is locked for writing.  The lock protects against "
+"running clamav-milter multiple times.  This option disables log file locking."
+msgstr ""
+"Som standard er logfilen lås for skrivning. Låsningen beskytter mod, at "
+"clamav-milter kan køre flere gange. Denne indstilling deaktiverer "
+"logfillåsning."
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:23001
+msgid "Maximum size of the log file (MB):"
+msgstr "Maksimal størrelse på lofilen (MB):"
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:23001
+msgid ""
+"Please specify the maximum size for the log file. Using \"0\" will allow "
+"that file to grow indefinitely."
+msgstr ""
+"Angiv venligst den maksimale størrelse for logfilen. Brug af »0« vil tillade "
+"at filen vokser uendeligt."
+
+#. Type: boolean
+#. Description
+#: ../clamav-milter.templates:24001
+msgid "Log time with each message?"
+msgstr "Logtidspunkt med hver besked?"
+
+#. Type: boolean
+#. Description
+#: ../clamav-milter.templates:25001
+msgid "Use system logger?"
+msgstr "Brug systemlogger?"
+
+#. Type: boolean
+#. Description
+#: ../clamav-milter.templates:25001
+msgid ""
+"Please choose whether you want to use the system logger (syslog). This "
+"option can be used along with logging in a dedicated file."
+msgstr ""
+"Vælg venligst om du ønsker at bruge systemloggeren (syslog). Denne "
+"indstilling kan bruges sammen med logning i en dedikeret fil."
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:26001
+msgid "Type of syslog messages:"
+msgstr "Type af syslogbeskeder:"
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:26001
+msgid ""
+"Please choose the type of syslog messages as detailed in the system logger's "
+"documentation."
+msgstr ""
+"Vælg venligst typen af syslogbeskeder som beskrevet i systemloggerens "
+"dokumentation."
+
+#. Type: boolean
+#. Description
+#: ../clamav-milter.templates:27001
+msgid "Enable verbose logging?"
+msgstr "Aktiver uddybende logning?"
+
+#. Type: select
+#. Choices
+#: ../clamav-milter.templates:28001
+msgid "Off"
+msgstr "Slukket"
+
+#. Type: select
+#. Choices
+#: ../clamav-milter.templates:28001
+msgid "Basic"
+msgstr "Basis"
+
+#. Type: select
+#. Choices
+#: ../clamav-milter.templates:28001
+msgid "Full"
+msgstr "Fuld"
+
+#. Type: select
+#. Description
+#: ../clamav-milter.templates:28002
+msgid "Information to log on infected messages:"
+msgstr "Information der skal logges vedrørende inficerede beskeder:"
+
+#. Type: select
+#. Description
+#: ../clamav-milter.templates:28002
+msgid ""
+"Please choose the level of information that will be logged when infected "
+"messages are found:\n"
+" - Off  : no logging;\n"
+" - Basic: minimal information;\n"
+" - Full : verbose information."
+msgstr ""
+"Vælg venligst informationsniveauet som vil blive logget når der findes "
+"inficerede beskeder:\n"
+" - Slukket: Ingen logning;\n"
+" - Basis:   Minimal information;\n"
+" - Fuld:    Uddybende information."
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:29001
+msgid "Size limit for scanned messages (MB):"
+msgstr "Størrelsesbegrænsning for skannede beskeder (MB):"
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:29001
+msgid ""
+"Please specify the maximum size for scanned messages. Messages bigger than "
+"this limit will not be scanned."
+msgstr ""
+"Angiv venligst den maksimale størrelse for skannede beskeder. Beskeder "
+"større end denne begrænsning vil ikke blive skannet."
+
+#. Type: string
+#. Description
+#: ../clamav-milter.templates:29001
+msgid ""
+"You should check that this value is lower than the value of \"StreamMaxLength"
+"\" in the clamd.conf file."
+msgstr ""
+"Du bør tjekke at denne værdi er mindre end værdien af »StreamMaxLength« i "
+"clamd.conf-filen."

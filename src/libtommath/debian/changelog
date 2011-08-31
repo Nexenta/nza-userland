@@ -1,0 +1,73 @@
+libtommath (40-0-0) unstable; urgency=low
+
+  * Nexenta port
+
+ -- Alexander Eremin <a.eremin@nexenta.com>  Mon, 29 Aug 2011 12:14:34 +0300
+
+libtommath (0.39-4) unstable; urgency=low
+
+  * Ack NMU, thanks!
+  * Upstream has disappeared :(
+    + debian/control: remove Homepage header
+    + debian/watch: removed
+  * debian/control: bump Std-Ver, no changes
+
+ -- Joe Nahmias <jello@debian.org>  Mon, 05 Jul 2010 21:49:15 -0400
+
+libtommath (0.39-3.2) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Revert "remove duplicate texlive-latex-recommended and ghostscript" from
+    previous NMU. (Closes: #583820)
+
+ -- Christine Spang <christine@debian.org>  Sat, 26 Jun 2010 13:36:59 -0400
+
+libtommath (0.39-3.1) unstable; urgency=low
+
+  [ Jari Aalto ]
+  * Non-maintainer upload.
+    - Move to packaging format "3.0 (quilt)".
+  * debian/compat
+    - Update to 7.
+  * Non-maintainer upload.
+  * debian/control
+    - (Build-Depends): Update to debhelper 7.1. Remove duplicate
+      texlive-latex-recommended and ghostscript.
+    - (Build-Depends-Indep): Remove duplicate libtiff-tools.
+    - (Depends): Add ${misc:Depends}.
+    - (Standards-Version): Update to 3.8.4.
+    - (libtommath0::Section): Remove; inherited from above.
+  * debian/copyright
+    - Update layout.
+    - Point to GPL-2.
+  * debian/rules
+    - (install): Update dh_clean to dh_prep.
+  * debian/source/format
+     - New file
+  * bx.tex
+    - Remove unused macro \undefined (FTBFS: Closes: #562349).
+      Patch thanks to Daniel Schepler <dschepler@gmail.com>. 
+
+ -- Jari Aalto <jari.aalto@cante.net>  Wed, 05 May 2010 19:10:42 +0300
+
+libtommath (0.39-3) unstable; urgency=low
+
+  * debian/control: work around auto-builders' brokenness by adding all the
+    build-dep-indeps to Build-Depends, really closes: #474413.
+
+ -- Joe Nahmias <jello@debian.org>  Wed, 21 May 2008 00:19:55 -0400
+
+libtommath (0.39-2) unstable; urgency=low
+
+  * debian/rules: install target should only depend on build-arch which caused
+    FTBFS on the buildds, closes: #474413.
+  * debian/rules: make build-indep and build-arch .PHONY targets
+  * debian/watch: add call to uupdate on new upstream version
+
+ -- Joe Nahmias <jello@debian.org>  Mon, 28 Apr 2008 02:11:12 -0400
+
+libtommath (0.39-1) unstable; urgency=low
+
+  * Initial release, closes: #472281.
+
+ -- Joe Nahmias <jello@debian.org>  Mon, 24 Mar 2008 21:54:22 -0400

@@ -1,0 +1,25 @@
+This package was debianized by:
+
+    Joe Nahmias <jello@debian.org>
+    on Sat, 22 Mar 2008 23:45:00 -0400.
+
+It was downloaded from:
+
+    <http://math.libtomcrypt.com/download.html>
+
+Upstream Author:
+
+    Tom St Denis <tomstdenis@gmail.com>
+
+Copyright:
+
+    Copyright (C) 2006 Tom St Denis
+
+License:
+
+    LibTomMath is hereby released into the Public Domain.
+
+    -- Tom St Denis
+
+The Debian packaging is Copyright (C) 2008, Joe Nahmias <jello@debian.org> and
+is licensed under the GPL, see "/usr/share/common-licenses/GPL-2".

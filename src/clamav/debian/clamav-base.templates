@@ -1,0 +1,193 @@
+# These templates have been reviewed by the debian-l10n-english
+# team
+#
+# If modifications/additions/rewording are needed, please ask
+# debian-l10n-english@lists.debian.org for advice.
+#
+# Even minor modifications require translation updates and such
+# changes should be coordinated with translators and reviewers.
+
+Template: clamav-base/debconf
+Type: boolean
+Default: true
+_Description: Handle the configuration file automatically?
+ Some options must be configured for clamav-base.
+ .
+ The ClamAV suite won't work if it isn't configured. If you do not
+ configure it automatically, you'll have to configure
+ /etc/clamav/clamd.conf manually or run 'dpkg-reconfigure clamav-base'
+ later. In any case, manual changes in /etc/clamav/clamd.conf will
+ be respected.
+
+Template: clamav-base/TcpOrLocal
+Type: select
+Choices: TCP, UNIX
+Default: UNIX
+_Description: Socket type:
+ Please choose the type of socket clamd will be listening on.
+ .
+ If you choose TCP, clamd can be accessed remotely. If you choose local
+ UNIX sockets, clamd can be accessed through a file. Local UNIX sockets
+ are recommended for security reasons.
+
+Template: clamav-base/LocalSocket
+Type: string
+Default: /var/run/clamav/clamd.ctl
+_Description: Local (UNIX) socket clamd will listen on:
+
+Template: clamav-base/FixStaleSocket
+Type: boolean
+Default: true
+_Description: Gracefully handle left-over UNIX socket files?
+
+Template: clamav-base/LocalSocketGroup
+Type: string
+Default: clamav
+_Description: Group owner of clamd local (UNIX) socket:
+
+Template: clamav-base/LocalSocketMode
+Type: string
+Default: 666
+_Description: Creation mode for clamd local (UNIX) socket:
+
+Template: clamav-base/TCPSocket
+Type: string
+Default: 3310
+_Description: TCP port clamd will listen on:
+
+Template: clamav-base/TCPAddr
+Type: string
+Default: any
+_Description: IP address clamd will listen on:
+ Enter "any" to listen on every IP address configured. If you want
+ to listen on a single address or host name, enter it here.
+
+Template: clamav-base/numinfo
+Type: error
+_Description: Mandatory numeric value
+ This question requires a numeric answer.
+
+Template: clamav-base/ScanMail
+Type: boolean
+Default: true
+_Description: Do you want to enable mail scanning?
+ This option enables scanning mail contents for viruses.
+ You need this option enabled if you want to use clamav-milter, or if
+ you want to enable phishing checks.
+
+Template: clamav-base/ScanArchive
+Type: boolean
+Default: true
+_Description: Do you want to enable archive scanning?
+ If archive scanning is enabled, the daemon will extract archives such as
+ bz2, tar.gz, deb and many more, to check their contents for viruses.
+ .
+ For more information about what archives are supported, see
+ /usr/share/doc/clamav-docs/clamdoc.pdf or the manpage clamscan(5).
+
+Template: clamav-base/StreamMaxLength
+Type: string
+Default: 25
+_Description: Maximum stream length (unit Mb) allowed:
+ You can set a limit on the stream length that can be scanned.
+
+Template: clamav-base/MaxDirectoryRecursion
+Type: string
+Default: 0
+_Description: Maximum directory depth that will be allowed:
+ This value must be set if you want to allow the daemon to follow
+ directory symlinks.
+ .
+ Entering '0' will disable this limit.
+
+Template: clamav-base/FollowDirectorySymlinks
+Type: boolean
+Default: false
+_Description: Do you want the daemon to follow directory symlinks?
+
+Template: clamav-base/FollowFileSymlinks
+Type: boolean
+Default: false
+_Description: Do you want the daemon to follow regular file symlinks?
+
+Template: clamav-base/ReadTimeout
+Type: string
+Default: 180
+_Description: Timeout for stopping the thread-scanner (seconds):
+ Entering '0' will disable the timeout.
+
+Template: clamav-base/MaxThreads
+Type: string
+Default: 12
+_Description: Number of threads for the daemon:
+
+Template: clamav-base/MaxConnectionQueueLength
+Type: string
+Default: 15
+_Description: Number of pending connections allowed:
+
+Template: clamav-base/LogSyslog
+Type: boolean
+Default: false
+_Description: Do you want to use the system logger?
+ It is possible to log the daemon activity to the system logger. This can be
+ done independently of whether you want to log activity to a special file.
+
+Template: clamav-base/LogFile
+Type: string
+Default: /var/log/clamav/clamav.log
+_Description: Log file for clamav-daemon (enter none to disable):
+
+Template: clamav-base/LogTime
+Type: boolean
+Default: true
+_Description: Do you want to log time information with each message?
+
+Template: clamav-base/SelfCheck
+Type: string
+Default: 3600
+_Description: Delay in seconds between daemon self checks:
+ During the SelfCheck the daemon checks if it needs to reload the virus
+ database. It also tries to repair problems caused by bugs in the daemon,
+ (that is, in some cases it's able to repair broken data structures).
+
+Template: clamav-base/User
+Type: string
+Default: clamav
+_Description: User to run clamav-daemon as:
+ It is recommended to run the ClamAV programs as a non-privileged user.
+ This will work with most MTAs with a little tweaking, but if you want to
+ use clamd for filesystem scans, running as root is probably unavoidable.
+ Please see README.Debian in the clamav-base package for details.
+
+Template: clamav-base/AddGroups
+Type: string
+_Description: Groups for clamav-daemon (space-separated):
+ Please enter any extra groups for clamd.
+ .
+ By default, clamd runs as a non-privileged user. If you need clamd to
+ be able to access files owned by another user (e.g., in combination with
+ an MTA), then you will need to add clamd to the group for that piece of
+ software. Please see README.Debian in the clamav-base package for details.
+
+Template: clamav-base/Bytecode
+Type: boolean
+Default: true
+_Description: Do you want to load bytecode from the database?
+
+Template: clamav-base/BytecodeSecurity
+Type: select
+__Choices: TrustSigned, Paranoid
+Default: TrustSigned
+_Description: Security level to apply to the bytecode:
+ .
+  - TrustSigned : trust bytecode loaded from signed virus database files,
+                  but insert runtime safety checks for bytecode loaded
+                  from unsigned sources
+  - Paranoid    : always insert runtime checks
+
+Template: clamav-base/BytecodeTimeout
+Type: string
+Default: 60000
+_Description: Bytecode execution timeout in miliseconds:
+

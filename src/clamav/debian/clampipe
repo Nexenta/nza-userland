@@ -1,0 +1,30 @@
+#!/usr/bin/perl
+# Filters mail through clamav. Intented to be used as a maildrop xfilter,
+# So it takes care to exit 0 on success, and nonzero on error. Adds a
+# X-Virii-Status header.
+# Contributed by Joey Hess <joeyh@debian.org> to be used with procmail
+use strict;
+use warnings;
+
+$/=undef;
+my $msg=<>;
+
+open (CLAM, "| clamscan --quiet -")
+	|| die "cannot run clamscan: $!";
+# The --mbox support is flakey and requires a From header as in a real
+# mbox.
+print CLAM "From foo\n";
+print CLAM $msg;
+close CLAM;
+# Returns status of 1 for virii.
+my $status= ($? >> 8 == 1) ? "yes" : "no";
+#print STDERR "status: ".($? >> 8)." $!\n";
+
+open (FORMAIL, "|formail -i 'X-Virii-Status: $status'")
+	|| die "cannot run formail: $!!";
+print FORMAIL $msg
+	|| die "cannot write to formail: $!";
+close FORMAIL
+	|| die "formail failed: $!";
+
+exit 0;

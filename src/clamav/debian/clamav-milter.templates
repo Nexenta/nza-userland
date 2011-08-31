@@ -1,0 +1,255 @@
+# These templates have been reviewed by the debian-l10n-english
+# team
+#
+# If modifications/additions/rewording are needed, please ask
+# debian-l10n-english@lists.debian.org for advice.
+#
+# Even minor modifications require translation updates and such
+# changes should be coordinated with translators and reviewers.
+
+Template: clamav-milter/debconf
+Type: boolean
+Default: true
+_Description: Handle the configuration file automatically?
+ Some options must be configured for clamav-milter.
+ .
+ It won't work if it isn't configured. If you do not
+ configure it automatically, you'll have to configure
+ /etc/clamav/clamav-milter.conf manually or run "dpkg-reconfigure clamav-milter"
+ later. In any case, manual changes in /etc/clamav/clamav-milter.conf will
+ be respected.
+
+Template: clamav-milter/MilterSocket
+Type: string
+Default: /var/run/clamav/clamav-milter.ctl
+_Description: Communication interface with Sendmail:
+ Please choose the method that should be used by clamav-milter to
+ communicate with Sendmail. The following formats can be used:
+  - Unix domain socket: [[unix|local]:]/path/to/file
+  - IPv4 socket       : inet:port@[hostname|ip-address]
+  - IPv6 socket       : inet6:port@[hostname|ip-address]
+
+Template: clamav-milter/FixStaleSocket
+Type: boolean
+Default: true
+_Description: Remove stale socket after unclean shutdown?
+
+Template: clamav-milter/MilterSocketGroup
+Type: string
+Default: clamav
+_Description: Group owner of clamav-milter local (UNIX) socket:
+
+Template: clamav-milter/MilterSocketMode
+Type: string
+Default: 666
+_Description: Creation mode for clamav-milter local (UNIX) socket:
+
+Template: clamav-milter/User
+Type: string
+Default: clamav
+_Description: User to run clamav-milter as:
+ It is recommended to run the ClamAV programs as a non-privileged user.
+ This will work with most MTAs with a little tweaking.
+ .
+ Please see README.Debian in the clamav-base package for details.
+
+Template: clamav-milter/AddGroups
+Type: string
+_Description: Groups for clamav-milter (space-separated):
+ By default, clamav-milter runs as a non-privileged user. If you need
+ clamav-milter to be able to access files owned by another user (for
+ instance when it is used in combination with an MTA), the user
+ running clamav-milter need to be added to the relevant group(s).
+ .
+ Please see README.Debian in the clamav-base package for
+ details.
+
+Template: clamav-milter/ReadTimeout
+Type: string
+Default: 120
+_Description: Wait timeout for data coming from clamd:
+ Please enter the delay (in seconds) before clamav-milter times out when it is
+ waiting for incoming data from clamd.
+ .
+ Choosing "0" will disable this timeout.
+
+Template: clamav-milter/Foreground
+Type: boolean
+Default: false
+_Description: Should clamav-milter stay in foreground (not forking)?
+
+Template: clamav-milter/Chroot
+Type: string
+_Description: Chroot to directory:
+ Clamav-milter can run in a chroot jail. It will enter it after reading
+ the configuration file and before dropping root privileges.
+ .
+ If this field is left empty, no chrooting will occur.
+
+Template: clamav-milter/PidFile
+Type: string
+Default: /var/run/clamav/clamav-milter.pid
+_Description: PID file:
+ Please specify the process identifier file location for clamav-milter's
+ listening daemon (main thread).
+
+Template: clamav-milter/TemporaryDirectory
+Type: string
+Default: /tmp
+_Description: Temporary directory path:
+ Please specify the directory for clamav-milter's temporary files.
+ If unset, $TMPDIR and $TEMP will be honored.
+
+Template: clamav-milter/ClamdSocket
+Type: string
+Default: unix:/var/run/clamav/clamd.ctl
+_Description: Clamd socket to connect to for scanning:
+ Please specify the socket to use to connect to the ClamAV daemon for
+ scanning purposes. Possible choices are:
+  - a local unix socket using an absolute path, in "unix:path" format
+    (for example: unix:/var/run/clamd/clamd.socket);
+  - a local or remote TCP socket in "tcp:host:port" format (for example:
+    tcp:192.168.0.1). The "host" value can be either a hostname or an IP
+    address, and the "port" is only required for IPv6 addresses,
+    defaulting to 3310 otherwise.
+ .
+ You may specify multiple choices, separated by spaces. In such case, the
+ clamd servers will be selected in a round-robin fashion.
+
+Template: clamav-milter/LocalNet
+Type: string
+_Description: Hosts excluded from scanning:
+ Please specify, in CIDR notation (host(name)/mask), the hosts for
+ which no scanning should be performed on incoming mail. Multiple entries
+ should be separated by spaces. The "local" shortcut can be used to
+ specify locally-originated (non-SMTP) email.
+ .
+ If this field is left empty, all incoming mail will be scanned.
+
+Template: clamav-milter/Whitelist
+Type: string
+_Description: Mail addresses whitelist:
+ Please specify the path to a whitelist file, listing email addresses
+ that should cause scanning to be bypassed.
+ .
+ Each line in this file should be a POSIX regular expression; lines
+ starting with "#", ":" or "!" will be ignored as comments.
+ .
+ Lines may start with "From:" (with no space after the colon) to make
+ the whitelisting apply to matching sender addresses; otherwise, or
+ with a "To:" prefix, it affects recipient addresses.
+
+Template: clamav-milter/OnInfected
+Type: select
+__Choices: Accept, Reject, Defer, Blackhole, Quarantine
+Default: Quarantine
+_Description: Action to perform on infected messages:
+ Please choose the action to perform on "infected" messages:
+ .
+  - Accept    : accept the message for delivery;
+  - Reject    : immediately refuse delivery (with a 5xx error);
+  - Defer     : return a temporary failure message (4xx);
+  - Blackhole : accept the message then drop it;
+  - Quarantine: accept the message then quarantine it. With
+                Sendmail, the quarantine queue can be examined
+                with "mailq -qQ". With Postfix, such mails are placed
+                on hold.
+
+Template: clamav-milter/OnFail
+Type: select
+__Choices: Accept, Reject, Defer
+Default: Defer
+_Description: Action to perform on error conditions:
+ Please choose the action to perform on errors such as failure to
+ allocate data structures, no scanners available,
+ network timeouts, unknown scanner replies...:
+ .
+  - Accept: accept the message for delivery;
+  - Reject: immediately refuse delivery (with a 5xx error);
+  - Defer : return a temporary failure message (4xx).
+
+Template: clamav-milter/RejectMsg
+Type: string
+_Description: Specific rejection reason for infected messages:
+ Please specify the rejection reason that will be included in reject mails.
+ .
+ This option is only useful together with "OnInfected Reject".
+ .
+ The "%v" string may be used to include the virus name.
+
+Template: clamav-milter/AddHeader
+Type: select
+__Choices: Replace, Yes, No, Add
+Default: Replace
+_Description: Add headers to processed messages?
+ If you choose this option, "X-Virus-Scanned" and "X-Virus-Status" headers
+ will be attached to each processed message, possibly replacing existing
+ similar headers. 
+
+Template: clamav-milter/LogFile
+Type: string
+Default: /var/log/clamav/clamav-milter.log
+_Description: Log file for clamav-milter:
+ Specify the full path to the clamav-milter log file, which must be
+ writable for the clamav daemon. Enter none to disable.
+ .
+ Logging via syslog is configured independently of this setting.
+
+Template: clamav-milter/LogFileUnlock
+Type: boolean
+Default: false
+_Description: Disable log file locking?
+ By default the log file is locked for writing.  The lock protects against
+ running clamav-milter multiple times.  This option disables log file locking.
+
+Template: clamav-milter/LogFileMaxSize
+Type: string
+Default: 1M
+_Description: Maximum size of the log file (MB):
+ Please specify the maximum size for the log file. Using "0" will
+ allow that file to grow indefinitely.
+
+Template: clamav-milter/LogTime
+Type: boolean
+Default: true
+_Description: Log time with each message?
+
+Template: clamav-milter/LogSyslog
+Type: boolean
+Default: false
+_Description: Use system logger?
+ Please choose whether you want to use the system logger (syslog). This
+ option can be used along with logging in a dedicated file.
+
+Template: clamav-milter/LogFacility
+Type: string
+Default: LOG_LOCAL6
+_Description: Type of syslog messages:
+ Please choose the type of syslog messages as detailed in the system
+ logger's documentation.
+
+Template: clamav-milter/LogVerbose
+Type: boolean
+Default: false
+_Description: Enable verbose logging?
+
+Template: clamav-milter/LogInfected
+Type: select
+__Choices: Off, Basic, Full
+Default: Off
+_Description: Information to log on infected messages:
+ Please choose the level of information that will be logged when infected
+ messages are found:
+  - Off  : no logging;
+  - Basic: minimal information;
+  - Full : verbose information.
+
+Template: clamav-milter/MaxFileSize
+Type: string
+Default: 25M
+_Description: Size limit for scanned messages (MB):
+ Please specify the maximum size for scanned messages. Messages bigger than
+ this limit will not be scanned.
+ .
+ You should check that this value is lower than the value of "StreamMaxLength"
+ in the clamd.conf file.

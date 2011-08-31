@@ -1,0 +1,252 @@
+--- a/libclamav/c++/llvm/include/llvm/Support/CallSite.h	2011-01-10 20:48:28.000000000 +0300
++++ b/libclamav/c++/llvm/include/llvm/Support/CallSite.h	2011-08-30 14:28:07.512086493 +0400
+@@ -31,6 +31,7 @@
+ #include "llvm/BasicBlock.h"
+ #include "llvm/CallingConv.h"
+ #include "llvm/Instructions.h"
++#include "llvm/System/Solaris.h"
+ 
+ namespace llvm {
+ 
+--- a/libclamav/c++/llvm/lib/CodeGen/ELFCodeEmitter.h	2011-08-30 14:34:33.397985768 +0400
++++ b/libclamav/c++/llvm/lib/CodeGen/ELFCodeEmitter.h	2011-08-30 14:31:33.000000000 +0400
+@@ -11,6 +11,7 @@
+ #define ELFCODEEMITTER_H
+ 
+ #include "llvm/CodeGen/ObjectCodeEmitter.h"
++#include "llvm/System/Solaris.h"
+ #include <vector>
+ 
+ namespace llvm {
+--- a/libclamav/c++/llvm/lib/CodeGen/LiveVariables.cpp	2011-01-10 20:48:28.000000000 +0300
++++ b/libclamav/c++/llvm/lib/CodeGen/LiveVariables.cpp	2011-08-30 14:52:36.435557827 +0400
+@@ -38,6 +38,7 @@
+ #include "llvm/ADT/SmallPtrSet.h"
+ #include "llvm/ADT/SmallSet.h"
+ #include "llvm/ADT/STLExtras.h"
++#include "llvm/System/Solaris.h"
+ #include <algorithm>
+ using namespace llvm;
+ 
+--- a/libclamav/c++/llvm/lib/CodeGen/MachineRegisterInfo.cpp	2011-01-10 20:48:28.000000000 +0300
++++ b/libclamav/c++/llvm/lib/CodeGen/MachineRegisterInfo.cpp	2011-08-30 14:55:46.600799400 +0400
+@@ -15,6 +15,7 @@
+ #include "llvm/CodeGen/MachineInstrBuilder.h"
+ #include "llvm/Target/TargetInstrInfo.h"
+ #include "llvm/Support/CommandLine.h"
++#include "llvm/System/Solaris.h"
+ using namespace llvm;
+ 
+ MachineRegisterInfo::MachineRegisterInfo(const TargetRegisterInfo &TRI) {
+--- a/libclamav/c++/llvm/lib/ExecutionEngine/ExecutionEngine.cpp	2011-01-10 20:48:28.000000000 +0300
++++ b/libclamav/c++/llvm/lib/ExecutionEngine/ExecutionEngine.cpp	2011-08-30 14:59:47.580350328 +0400
+@@ -27,6 +27,7 @@
+ #include "llvm/Support/raw_ostream.h"
+ #include "llvm/System/DynamicLibrary.h"
+ #include "llvm/System/Host.h"
++#include "llvm/System/Solaris.h"
+ #include "llvm/Target/TargetData.h"
+ #include <cmath>
+ #include <cstring>
+--- a/libclamav/c++/llvm/include/llvm/CodeGen/MachineRelocation.h	2011-01-10 20:48:28.000000000 +0300
++++ b/libclamav/c++/llvm/include/llvm/CodeGen/MachineRelocation.h	2011-08-30 15:04:32.234499562 +0400
+@@ -15,6 +15,7 @@
+ #define LLVM_CODEGEN_MACHINERELOCATION_H
+ 
+ #include "llvm/System/DataTypes.h"
++#include "llvm/System/Solaris.h"
+ #include <cassert>
+ 
+ namespace llvm {
+--- a/libclamav/c++/llvm/include/llvm/Target/TargetRegistry.h	2011-01-10 20:48:28.000000000 +0300
++++ b/libclamav/c++/llvm/include/llvm/Target/TargetRegistry.h	2011-08-30 15:10:02.908012340 +0400
+@@ -20,6 +20,7 @@
+ #define LLVM_TARGET_TARGETREGISTRY_H
+ 
+ #include "llvm/ADT/Triple.h"
++#include "llvm/System/Solaris.h"
+ #include <string>
+ #include <cassert>
+ 
+--- a/libclamav/c++/llvm/include/llvm/MC/MCAssembler.h	2011-01-10 20:48:28.000000000 +0300
++++ b/libclamav/c++/llvm/include/llvm/MC/MCAssembler.h	2011-08-30 15:23:53.162176583 +0400
+@@ -18,6 +18,7 @@
+ #include "llvm/MC/MCFixup.h"
+ #include "llvm/MC/MCInst.h"
+ #include "llvm/System/DataTypes.h"
++#include "llvm/System/Solaris.h"
+ #include <vector> // FIXME: Shouldn't be needed.
+ 
+ namespace llvm {
+--- a/libclamav/c++/llvm/lib/VMCore/AsmWriter.cpp	2011-01-10 20:48:28.000000000 +0300
++++ b/libclamav/c++/llvm/lib/VMCore/AsmWriter.cpp	2011-08-30 15:31:44.499174626 +0400
+@@ -37,6 +37,7 @@
+ #include "llvm/Support/ErrorHandling.h"
+ #include "llvm/Support/MathExtras.h"
+ #include "llvm/Support/FormattedStream.h"
++#include "llvm/System/Solaris.h"
+ #include <algorithm>
+ #include <cctype>
+ #include <map>
+--- a/libclamav/c++/llvm/lib/VMCore/ConstantFold.cpp	2011-01-10 20:48:28.000000000 +0300
++++ b/libclamav/c++/llvm/lib/VMCore/ConstantFold.cpp	2011-08-30 15:36:25.389184142 +0400
+@@ -30,6 +30,7 @@
+ #include "llvm/Support/GetElementPtrTypeIterator.h"
+ #include "llvm/Support/ManagedStatic.h"
+ #include "llvm/Support/MathExtras.h"
++#include "llvm/System/Solaris.h"
+ #include <limits>
+ using namespace llvm;
+ 
+--- a/libclamav/c++/llvm/lib/VMCore/ConstantsContext.h	2011-01-10 20:48:28.000000000 +0300
++++ b/libclamav/c++/llvm/lib/VMCore/ConstantsContext.h	2011-08-30 15:43:13.360380405 +0400
+@@ -21,6 +21,7 @@
+ #include "llvm/Support/Debug.h"
+ #include "llvm/Support/ErrorHandling.h"
+ #include "llvm/Support/raw_ostream.h"
++#include "llvm/System/Solaris.h"
+ #include <map>
+ 
+ namespace llvm {
+--- a/libclamav/c++/llvm/lib/VMCore/PrintModulePass.cpp	2011-01-10 20:48:28.000000000 +0300
++++ b/libclamav/c++/llvm/lib/VMCore/PrintModulePass.cpp	2011-08-30 15:47:56.650760254 +0400
+@@ -18,6 +18,7 @@
+ #include "llvm/Pass.h"
+ #include "llvm/Support/Debug.h"
+ #include "llvm/Support/raw_ostream.h"
++#include "llvm/System/Solaris.h"
+ using namespace llvm;
+ 
+ namespace {
+--- a/libclamav/c++/llvm/lib/Analysis/ConstantFolding.cpp	2011-01-10 20:48:28.000000000 +0300
++++ b/libclamav/c++/llvm/lib/Analysis/ConstantFolding.cpp	2011-08-30 15:53:28.370953403 +0400
+@@ -30,6 +30,7 @@
+ #include "llvm/Support/ErrorHandling.h"
+ #include "llvm/Support/GetElementPtrTypeIterator.h"
+ #include "llvm/Support/MathExtras.h"
++#include "llvm/System/Solaris.h"
+ #include <cerrno>
+ #include <cmath>
+ using namespace llvm;
+--- a/libclamav/c++/llvm/lib/Analysis/ScalarEvolution.cpp	2011-01-10 20:48:28.000000000 +0300
++++ b/libclamav/c++/llvm/lib/Analysis/ScalarEvolution.cpp	2011-08-30 16:00:35.336762042 +0400
+@@ -84,6 +84,7 @@
+ #include "llvm/ADT/Statistic.h"
+ #include "llvm/ADT/STLExtras.h"
+ #include "llvm/ADT/SmallPtrSet.h"
++#include "llvm/System/Solaris.h"
+ #include <algorithm>
+ using namespace llvm;
+ 
+--- a/libclamav/c++/llvm/lib/CodeGen/PreAllocSplitting.cpp	2011-01-10 20:48:28.000000000 +0300
++++ b/libclamav/c++/llvm/lib/CodeGen/PreAllocSplitting.cpp	2011-08-30 16:07:03.740549313 +0400
+@@ -37,6 +37,7 @@
+ #include "llvm/ADT/DepthFirstIterator.h"
+ #include "llvm/ADT/SmallPtrSet.h"
+ #include "llvm/ADT/Statistic.h"
++#include "llvm/System/Solaris.h"
+ using namespace llvm;
+ 
+ static cl::opt<int> PreSplitLimit("pre-split-limit", cl::init(-1), cl::Hidden);
+--- a/libclamav/c++/llvm/lib/CodeGen/RegAllocFast.cpp	2011-01-10 20:48:28.000000000 +0300
++++ b/libclamav/c++/llvm/lib/CodeGen/RegAllocFast.cpp	2011-08-30 16:18:04.278693395 +0400
+@@ -33,6 +33,7 @@
+ #include "llvm/ADT/SmallVector.h"
+ #include "llvm/ADT/Statistic.h"
+ #include "llvm/ADT/STLExtras.h"
++#include "llvm/System/Solaris.h"
+ #include <algorithm>
+ using namespace llvm;
+ 
+--- a/libclamav/c++/llvm/lib/CodeGen/RegAllocLinearScan.cpp	2011-01-10 20:48:28.000000000 +0300
++++ b/libclamav/c++/llvm/lib/CodeGen/RegAllocLinearScan.cpp	2011-08-30 16:38:52.111320658 +0400
+@@ -37,6 +37,7 @@
+ #include "llvm/Support/Debug.h"
+ #include "llvm/Support/ErrorHandling.h"
+ #include "llvm/Support/raw_ostream.h"
++#include "llvm/System/Solaris.h"
+ #include <algorithm>
+ #include <set>
+ #include <queue>
+--- a/libclamav/c++/llvm/lib/CodeGen/SelectionDAG/InstrEmitter.cpp	2011-01-10 20:48:28.000000000 +0300
++++ b/libclamav/c++/llvm/lib/CodeGen/SelectionDAG/InstrEmitter.cpp	2011-08-30 16:46:00.349435802 +0400
+@@ -28,6 +28,7 @@
+ #include "llvm/Support/Debug.h"
+ #include "llvm/Support/ErrorHandling.h"
+ #include "llvm/Support/MathExtras.h"
++#include "llvm/System/Solaris.h"
+ using namespace llvm;
+ 
+ /// CountResults - The results of target nodes have register or immediate
+--- a/libclamav/c++/llvm/lib/CodeGen/SelectionDAG/SelectionDAG.cpp	2011-01-10 20:48:28.000000000 +0300
++++ b/libclamav/c++/llvm/lib/CodeGen/SelectionDAG/SelectionDAG.cpp	2011-08-30 16:53:32.591603468 +0400
+@@ -50,6 +50,7 @@
+ #include "llvm/ADT/SmallSet.h"
+ #include "llvm/ADT/SmallVector.h"
+ #include "llvm/ADT/StringExtras.h"
++#include "llvm/System/Solaris.h"
+ #include <algorithm>
+ #include <cmath>
+ using namespace llvm;
+--- a/libclamav/c++/llvm/lib/CodeGen/StackSlotColoring.cpp	2011-01-10 20:48:28.000000000 +0300
++++ b/libclamav/c++/llvm/lib/CodeGen/StackSlotColoring.cpp	2011-08-30 17:02:52.813143203 +0400
+@@ -32,6 +32,7 @@
+ #include "llvm/ADT/SmallSet.h"
+ #include "llvm/ADT/SmallVector.h"
+ #include "llvm/ADT/Statistic.h"
++#include "llvm/System/Solaris.h"
+ #include <vector>
+ using namespace llvm;
+ 
+--- a/libclamav/c++/llvm/lib/CodeGen/VirtRegMap.cpp	2011-01-10 20:48:28.000000000 +0300
++++ b/libclamav/c++/llvm/lib/CodeGen/VirtRegMap.cpp	2011-08-30 17:14:11.670541307 +0400
+@@ -37,6 +37,7 @@
+ #include "llvm/ADT/Statistic.h"
+ #include "llvm/ADT/STLExtras.h"
+ #include "llvm/ADT/SmallSet.h"
++#include "llvm/System/Solaris.h"
+ #include <algorithm>
+ using namespace llvm;
+ 
+--- a/libclamav/c++/llvm/lib/CodeGen/VirtRegRewriter.cpp	2011-01-10 20:48:28.000000000 +0300
++++ b/libclamav/c++/llvm/lib/CodeGen/VirtRegRewriter.cpp	2011-08-30 17:22:58.832035921 +0400
+@@ -23,6 +23,9 @@
+ #include "llvm/Target/TargetLowering.h"
+ #include "llvm/ADT/DepthFirstIterator.h"
+ #include "llvm/ADT/Statistic.h"
++#ifdef __sun
++#include "llvm/System/Solaris.h"
++#endif
+ #include <algorithm>
+ using namespace llvm;
+ 
+--- a/libclamav/c++/llvm/lib/System/Host.cpp	2011-01-10 20:48:28.000000000 +0300
++++ b/libclamav/c++/llvm/lib/System/Host.cpp	2011-08-30 17:39:15.868084711 +0400
+@@ -12,6 +12,7 @@
+ //===----------------------------------------------------------------------===//
+ 
+ #include "llvm/System/Host.h"
++#include "llvm/System/Solaris.h"
+ #include "llvm/Config/config.h"
+ #include <string.h>
+ 
+--- a/libclamav/c++/llvm/lib/Target/X86/X86.h	2011-08-30 17:51:10.577375733 +0400
++++ b/libclamav/c++/llvm/lib/Target/X86/X86.h	2011-08-30 17:50:51.000000000 +0400
+@@ -16,6 +16,7 @@
+ #define TARGET_X86_H
+ 
+ #include "llvm/Target/TargetMachine.h"
++#include "llvm/System/Solaris.h"
+ 
+ namespace llvm {
+ 
+--- a/libclamav/c++/llvm/lib/Target/X86/X86Subtarget.h	2011-01-10 20:48:28.000000000 +0300
++++ b/libclamav/c++/llvm/lib/Target/X86/X86Subtarget.h	2011-08-30 18:02:45.912627867 +0400
+@@ -17,6 +17,7 @@
+ #include "llvm/ADT/Triple.h"
+ #include "llvm/Target/TargetSubtarget.h"
+ #include "llvm/CallingConv.h"
++#include "llvm/System/Solaris.h"
+ #include <string>
+ 
+ namespace llvm {

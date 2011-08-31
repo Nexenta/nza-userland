@@ -1,0 +1,8 @@
+etc/
+etc/clamav/
+usr/share/bug/clamav-base
+var/
+var/lib/
+var/lib/clamav/
+var/log/
+var/log/clamav/

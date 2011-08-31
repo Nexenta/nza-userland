@@ -1,0 +1,5 @@
+etc/logrotate.d
+etc/clamav
+etc/clamav/virusevent.d
+usr/sbin/
+usr/share/bug/clamav-daemon
