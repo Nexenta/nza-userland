@@ -1,0 +1,38 @@
+#!/usr/bin/make -f
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+# This has to be exported to make some magic below work.
+export DH_OPTIONS
+
+
+%:
+	dh $@
+
+build:
+	dh build --before configure
+	./configure --prefix=/usr \
+		--includedir=/usr/include \
+		--sysconfdir=/etc/c-icap \
+		--localstatedir=/var \
+		--libexecdir=/usr/lib/c_icap
+	dh build --after configure
+
+override_dh_fixperms:
+	dh_fixperms
+	chmod 0644 debian/c-icap/etc/c-icap/*
+
+override_dh_install:
+	chrpath -d debian/tmp/usr/bin/c-icap
+	chrpath -d debian/tmp/usr/bin/c-icap-client
+	chrpath -d debian/tmp/usr/bin/c-icap-mkbdb
+	dh_install
+	dh_installsvc -p c-icap --smf-manifest debian/c-icap.xml --smf-method debian/svc-c-icap.method 
+	rm $(CURDIR)/debian/c-icap/usr/lib/c_icap/*.la
+
+	
+.PHONY: override_dh_strip
+override_dh_strip:
+	dh_strip --dbg-package=libicapapi0-dbg
+
