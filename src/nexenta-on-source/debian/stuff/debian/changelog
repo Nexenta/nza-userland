@@ -1,3 +1,9 @@
+nexenta-on-source (40-0-1) unstable; urgency=low
+
+  * Add workaround for issue where glib inlines confuse the compiler.
+
+ -- Nexenta Systems <maintainer@nexenta.com>  Wed, 31 Aug 2011 17:23:58 +0100
+
 nexenta-on-source (40-0-0) unstable; urgency=low
 
   * Added logging for packaging, various improvements

@@ -126,12 +126,11 @@ diff -r 2b3b7ee313ef usr/src/cmd/lp/cmd/lpsched/print-svc
 diff -r 2b3b7ee313ef usr/src/cmd/mdb/Makefile.kmdb
 --- a/usr/src/cmd/mdb/Makefile.kmdb	Thu Aug 11 16:47:55 2011 -0700
 +++ b/usr/src/cmd/mdb/Makefile.kmdb	Sat Aug 13 01:29:22 2011 -0700
-@@ -66,20 +66,12 @@
+@@ -66,19 +66,12 @@
  #
  SUPPORTED_TERMS	= \
  	ansi \
 -	at386 \
--	AT386 \
 -	dtterm \
 -	h19 \
  	sun \
@@ -538,3 +537,31 @@ diff -r 2b3b7ee313ef usr/src/tools/scripts/nightly.sh
  fi
  
  if [ "$w_FLAG" = "y" -a "$build_ok" = "y" ]; then
+diff -r 2b3b7ee313ef usr/src/common/mapfiles/gen/Makefile
+--- a/usr/src/common/mapfiles/gen/Makefile	Tue Aug 30 15:16:15 2011 -0700
++++ b/usr/src/common/mapfiles/gen/Makefile	Wed Aug 31 12:26:53 2011 +0100
+@@ -75,9 +75,7 @@
+ $(MACH)_cc_map.noexeglobs :=	LINK =	$(LINK.c)
+ $(MACH64)_cc_map.noexeglobs :=	LINK =	$(LINK64.c)
+ 
+-$(MACH)_gcc_map.noexeglobs :=	CC =	$(ONBLD_TOOLS)/bin/$(MACH)/cw -_gcc
+ $(MACH)_gcc_map.noexeglobs :=	LINK =	$(LINK.c)
+-$(MACH64)_gcc_map.noexeglobs :=	CC =	$(ONBLD_TOOLS)/bin/$(MACH)/cw -_gcc
+ $(MACH64)_gcc_map.noexeglobs :=	LINK =	$(LINK64.c)
+  
+ # This generic target creates two dynamic executables from an empty "main"
+diff -r 2b3b7ee313ef usr/src/cmd/latencytop/Makefile.com
+--- a/usr/src/cmd/latencytop/Makefile.com	Tue Aug 30 15:16:15 2011 -0700
++++ b/usr/src/cmd/latencytop/Makefile.com	Wed Aug 31 12:26:53 2011 +0100
+@@ -29,8 +29,8 @@
+ 
+ include ../../Makefile.cmd
+ 
+-CFLAGS += $(CCVERBOSE)
+-CFLAGS64 += $(CCVERBOSE)
++CFLAGS += $(CCVERBOSE) -DG_IMPLEMENT_INLINES
++CFLAGS64 += $(CCVERBOSE) -DG_IMPLEMENT_INLINES
+ 
+ CPPFLAGS += -DEMBED_CONFIGS -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include
+ C99MODE = $(C99_ENABLE)
+

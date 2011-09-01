@@ -117,7 +117,7 @@ build-stamp:
 # If patch-stamp is not there, do nothing.
 clobber_on:
 	if test -f patch-stamp -a -d $(GATEROOT) ;then \
-		cd $(GATEROOT) && env - ksh93 ./bldenv ./illumos.sh 'cd usr/src ; dmake clobber' ;\
+		cd $(GATEROOT) && env - ksh93 ./bldenv.sh ./illumos.sh 'cd usr/src ; dmake clobber' ;\
 	fi
 
 rm_log_proto:
