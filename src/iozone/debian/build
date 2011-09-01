@@ -1,0 +1,12 @@
+#!/bin/bash
+
+arch=$(dpkg --print-installation-architecture)
+
+if [ "$arch" = powerpc ]; then
+  (cd src/current; make linux-powerpc)
+elif [ "$arch" = sparc ]; then  
+  (cd src/current; make linux-sparc)
+else
+  (cd src/current; make Solaris)
+fi
+
