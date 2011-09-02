@@ -1,0 +1,13 @@
+--- apt-0.8.10.3+squeeze1.orig/apt-pkg/makefile
++++ apt-0.8.10.3+squeeze1/apt-pkg/makefile
+@@ -14,7 +14,8 @@
+ LIBRARY=apt-pkg
+ MAJOR=$(LIBAPTPKG_MAJOR)
+ MINOR=$(LIBAPTPKG_RELEASE)
+-SLIBS=$(PTHREADLIB) $(INTLLIBS) -lutil -ldl -lz
++LIBSTDCPP=$(shell g++ -print-file-name=libstdc++.a)
++SLIBS=$(PTHREADLIB) $(INTLLIBS) -ldl -lz ${LIBSTDCPP}
+ APT_DOMAIN:=libapt-pkg$(LIBAPTPKG_MAJOR)
+ 
+ # Source code for the contributed non-core things
+

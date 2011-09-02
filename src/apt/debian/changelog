@@ -1,3 +1,9 @@
+apt (40-0-3) unstable; urgency=low
+
+  * Rebuilt with last libdb-dev
+
+ -- Alexander Eremin <a.eremin@nexenta.com>  Thu, 01 Sep 2011 18:23:11 +0300
+
 apt (40-0-2) unstable; urgency=low
 
   * Added zone upgrade support

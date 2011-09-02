@@ -1,0 +1,15 @@
+--- apt-0.8.10.3+squeeze1.orig/doc/apt-verbatim.ent
++++ apt-0.8.10.3+squeeze1/doc/apt-verbatim.ent
+@@ -33,6 +33,12 @@
+   </citerefentry>"
+ >
+ 
++<!ENTITY apt-clone "<citerefentry>
++    <refentrytitle><command>apt-clone</command></refentrytitle>
++    <manvolnum>8</manvolnum>
++  </citerefentry>"
++>
++
+ <!ENTITY apt-cache "<citerefentry>
+     <refentrytitle><command>apt-cache</command></refentrytitle>
+     <manvolnum>8</manvolnum>

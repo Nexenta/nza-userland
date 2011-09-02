@@ -1,0 +1,14 @@
+--- apt-0.8.10.3+squeeze1.orig/apt-pkg/deb/cfmakeraw.h
++++ apt-0.8.10.3+squeeze1/apt-pkg/deb/cfmakeraw.h
+@@ -0,0 +1,11 @@
++
++void cfmakeraw(struct termios *t) {
++  if (t != NULL) {
++    t->c_iflag &= ~(IMAXBEL|IGNBRK|BRKINT|PARMRK|ISTRIP|INLCR|IGNCR|ICRNL|IXON);
++    t->c_oflag &= ~OPOST;
++    t->c_lflag &= ~(ECHO|ECHONL|ICANON|ISIG|IEXTEN);
++    t->c_cflag &= ~(CSIZE|PARENB);
++    t->c_cflag |= CS8;
++  }
++}
++

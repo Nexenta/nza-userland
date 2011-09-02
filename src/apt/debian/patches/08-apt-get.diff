@@ -1,0 +1,59 @@
+--- apt-0.8.10.3+squeeze1.orig/cmdline/apt-get.cc
++++ apt-0.8.10.3+squeeze1/cmdline/apt-get.cc
+@@ -25,8 +25,8 @@
+    ##################################################################### */
+ 									/*}}}*/
+ // Include Files							/*{{{*/
+-#define _LARGEFILE_SOURCE
+-#define _LARGEFILE64_SOURCE
++//#define _LARGEFILE_SOURCE
++//#define _LARGEFILE64_SOURCE
+ 
+ #include <apt-pkg/aptconfiguration.h>
+ #include <apt-pkg/error.h>
+@@ -68,7 +68,11 @@
+ #include <sys/wait.h>
+ #include <sstream>
+ 
++#ifdef __sun
++#define statfs statvfs64
++#else
+ #define statfs statfs64
++#endif
+ #define statvfs statvfs64
+ 									/*}}}*/
+ 
+@@ -76,6 +80,8 @@
+ 
+ using namespace std;
+ 
++bool ZoneUpgrade = false;
++
+ ostream c0out(0);
+ ostream c1out(0);
+ ostream c2out(0);
+@@ -1702,7 +1708,9 @@
+       ShowBroken(c1out,Cache,false);
+       return _error->Error(_("Internal error, AllUpgrade broke stuff"));
+    }
+-   
++
++   ZoneUpgrade = true;
++
+    return InstallPackages(Cache,true);
+ }
+ 									/*}}}*/
+@@ -2986,6 +2994,13 @@
+    // Match the operation
+    CmdL.DispatchArg(Cmds);
+ 
++#ifdef __sun
++
++   if (ZoneUpgrade)
++      RunScripts("APT::Zone::Upgrade");
++
++#endif
++
+    // Print any errors or warnings found during parsing
+    bool const Errors = _error->PendingError();
+    if (_config->FindI("quiet",0) > 0)
