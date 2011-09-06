@@ -1,3 +1,11 @@
+libterm-readkey-perl (40-0-0) unstable; urgency=low
+
+  * Rebuilt for Perl transition
+  * Used new version scheme
+  * Updated to 3.0 (quilt) source format
+
+ -- Kartik Mistry <kartik.mistry@nexenta.com>  Tue, 06 Sep 2011 18:19:54 +0530
+
 libterm-readkey-perl (2.30-4nexenta2) unstable; urgency=low
 
   * Rebuilt on NCP4

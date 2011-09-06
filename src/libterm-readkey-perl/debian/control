@@ -1,7 +1,7 @@
 Source: libterm-readkey-perl
 Section: perl
 Priority: optional
-Build-Depends: debhelper (>= 5), perl (>= 5.8.0-3), quilt (>= 0.40)
+Build-Depends: debhelper (>= 5), perl (>= 5.8.0-3)
 Maintainer: Debian Perl Group <pkg-perl-maintainers@lists.alioth.debian.org>
 Uploaders: Gunnar Wolf <gwolf@debian.org>, Niko Tyni <ntyni@iki.fi>,
  Damyan Ivanov <dmn@debian.org>
@@ -9,6 +9,7 @@ Standards-Version: 3.7.3
 Homepage: http://search.cpan.org/dist/TermReadKey/
 Vcs-Svn: svn://svn.debian.org/pkg-perl/trunk/libterm-readkey-perl/
 Vcs-Browser: http://svn.debian.org/wsvn/pkg-perl/trunk/libterm-readkey-perl/
+Upstream-Version: 2.30-4
 
 Package: libterm-readkey-perl
 Architecture: any
