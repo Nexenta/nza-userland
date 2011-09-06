@@ -1,3 +1,11 @@
+apt (40-0-4) unstable; urgency=low
+
+  * Made apt consider NCP4 versions (40-x-x) are newer
+    than any Debian version
+  * Really use 3.0 (quilt) format
+
+ -- Igor Pashev <igor.pashev@nexenta.com>  Mon, 05 Sep 2011 18:09:22 +0400
+
 apt (40-0-3) unstable; urgency=low
 
   * Rebuilt with last libdb-dev

@@ -14,7 +14,6 @@
 # create ../upload-<VER>, with all the files needed to be uploaded placed
 # in it.
 
-include /usr/share/quilt/quilt.make
 
 export DEB_HOST_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
 export DEB_BUILD_GNU_TYPE ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
@@ -92,7 +91,7 @@ LIBAPTINST_PROVIDE=libapt-inst$(LIBAPTINST_MAJOR)
 debian/shlibs.local: apt-pkg/makefile
 	# We have 3 shlibs.local files: One for 'apt', one for 'apt-utils' and
 	# one for the rest of the packages. This ensures that each package gets
-	# the right overrides…
+	# the right overrides
 	rm -rf $@ $@.apt $@.apt-utils
 	echo "libapt-pkg $(LIBAPTPKG_MAJOR)" > $@.apt
 
@@ -111,7 +110,7 @@ build-doc: build/build-doc-stamp
 build/environment.mak: build/configure-stamp
 	@true
 
-configure: patch configure.in
+configure: configure.in
 build/configure-stamp: configure
 	dh_testdir
 	-mkdir build
@@ -129,7 +128,7 @@ build/build-doc-stamp: build/configure-stamp
 	$(MAKE) doc
 	touch $@
 
-clean:	unpatch
+clean:
 	
 	dh_testdir
 
