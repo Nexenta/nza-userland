@@ -1,3 +1,9 @@
+dpkg (40-0-9) unstable; urgency=low
+
+  * Backport support for Build-Features.
+
+ -- Andrew Stormont (astormont) <andyjstormont@googlemail.com>  Wed, 07 Sep 2011 20:42:03 +0100
+
 dpkg (40-0-8) unstable; urgency=low
 
   * correctly handle a hardlink pointing to a conffile
