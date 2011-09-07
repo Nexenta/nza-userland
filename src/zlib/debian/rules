@@ -1,215 +1,97 @@
 #!/usr/bin/make -f
-# -*- makefile -*-
-# Sample debian/rules that uses debhelper.
-# This file was originally written by Joey Hess and Craig Small.
-# As a special exception, when this file is copied by dh-make into a
-# dh-make output file, you may use that output file without restriction.
-# This special exception was added by Craig Small in version 0.37 of dh-make.
 
-# Uncomment this to turn on verbose mode.
-#export DH_VERBOSE=1
 
-# These are used for cross-compiling and for saving the configure script
-# from having to guess our platform (since we know it already)
-DEB_BUILD_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
-DEB_HOST_GNU_TYPE   ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
-DEB_HOST_ARCH       ?= $(shell dpkg-architecture -qDEB_HOST_ARCH)
-DEB_HOST_ARCH_OS    ?= $(shell dpkg-architecture -qDEB_HOST_ARCH_OS)
+BUILD = build-tree
 
-CFLAGS = -Wall -g -D_REENTRANT
+CC_32 = gcc -m32
+CC_64 = gcc -m64
 
-# binutils doesn't supply the prefixed version normally like GCC does so
-# we can't just unconditionally use DEB_HOST_GNU_TYPE-ar
-ifeq ($(DEB_HOST_GNU_TYPE),$(DEB_BUILD_GNU_TYPE))
-	AR=ar
-else
-	AR=$(DEB_HOST_GNU_TYPE)-ar
-endif
+CFLAGS_32 =
+CFLAGS_64 =
 
-ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
-	CFLAGS += -O0
-else
-	CFLAGS += -O3
-endif
+# Use GNU linker since
+# zlib.map is ambiguous due to SUNW_*
+# symbols, and GNU linker is more tolerant.
+# Changing symbol version can be dangerous
+# because a lot of software already linked to zlib
+# It was a mistake to introduce SUNW_* symbols
+# *and* to keep ZLIB_* symbols. But now we have it all.
+# Other way is to write a new mapfile taking versions
+# from existing libz.
+export LD_ALTEXEC = /usr/gnu/bin/ld
+LDFLAGS_32 = -Wl,-melf_i386
+LDFLAGS_64 = -Wl,-melf_x86_64
 
-64-ARCHS=s390 sparc i386 powerpc mips mipsel solaris-i386
-ifneq (,$(findstring $(DEB_HOST_ARCH), $(64-ARCHS)))
-EXTRA_INSTALL=install64
-EXTRA_BUILD=build64-stamp
-# MIPS doesn't use -m64
-ifneq (,$(findstring $(DEB_HOST_ARCH), mips mipsel))
-m64=-mabi=64
-else
-m64=-m64
-endif
-endif
+CONFIGURE_OPTIONS_COMMON = \
+	--prefix=/usr
 
-32-ARCHS=amd64 ppc64 kfreebsd-amd64
-ifneq (,$(findstring $(DEB_HOST_ARCH), $(32-ARCHS)))
-EXTRA_INSTALL=install32
-EXTRA_BUILD=build32-stamp
-m32=-m32
-endif
+CONFIGURE_OPTIONS_32 =
+	--libdir=\$${prefix}/lib
 
-N32-ARCHS=mips mipsel
-ifneq (,$(findstring $(DEB_HOST_ARCH), $(N32-ARCHS)))
-EXTRA_INSTALL+=installn32
-EXTRA_BUILD+=buildn32-stamp
-mn32=-mabi=n32
-endif
+CONFIGURE_OPTIONS_64 = \
+	--libdir=\$${prefix}/lib/amd64
 
-UNALIGNED_ARCHS=i386 amd64 kfreebsd-i386 kfreebsd-amd64 hurd-i386 lpia
-ifneq (,$(findstring $(DEB_HOST_ARCH), $(UNALIGNED_ARCHS)))
-CFLAGS+=-DUNALIGNED_OK
-endif
+%:
+	dh $@
 
-COPYLIST=*.h *.c *.in zlib.map configure zlib.3
+override_dh_auto_configure: \
+	configure32-stamp \
+	configure64-stamp
 
-ifeq ($(DEB_HOST_ARCH_OS),solaris)
-	CC=gcc
-else
-	CC="$(DEB_HOST_GNU_TYPE)-gcc"
-endif
+override_dh_auto_build: \
+	build32-stamp \
+	build64-stamp
 
-configure-stamp: configure
-	dh_testdir
+override_dh_auto_test: \
+	test32-stamp \
+	test64-stamp
 
-	if [ ! -f Makefile.stash ]; then cp Makefile Makefile.stash ; fi
-	if [ ! -f zlibdefs.h.stash ]; then cp zlibdefs.h zlibdefs.h.stash ; fi
+override_dh_auto_install: \
+	install32-stamp \
+	install64-stamp
 
-	AR=$(AR) CC="$(CC)" CFLAGS="$(CFLAGS)" uname=GNU ./configure --shared --prefix=/usr --includedir=\$${prefix}/usr/include --libdir=\$${prefix}/lib
+override_dh_auto_clean:
+	rm -rf $(BUILD)
 
+override_dh_strip:
+	dh_strip --dbg-package=zlib1g-dbg
+
+configure%-stamp:
+	# zlib  can't be built outside source tree,
+	# copy all stuff
+	mkdir -p $(BUILD)/$*
+	tar cf - --exclude debian --exclude $(BUILD) . | \
+		tar xf - -C $(BUILD)/$*
+# shared=2 is a very dirty hack. See configure.
+	cd $(BUILD)/$* && \
+		env \
+		CC="$(CC_$*)" \
+		CFLAGS="$(CFLAGS) $(CFLAGS_$*) $(LDFLAGS_$*)" \
+		SFLAGS="$(LDFLAGS) $(LDFLAGS_$*)" \
+		uname=GNU \
+		shared=2 \
+	 	./configure \
+		$(CONFIGURE_OPTIONS_COMMON) \
+		$(CONFIGURE_OPTIONS_$*)
+				
 	touch $@
 
-configure64-stamp: configure
-	dh_testdir
-
-	mkdir -p debian/64
-	cp $(COPYLIST) debian/64
-	cd debian/64 && AR=$(AR) CC="$(CC) $(m64)" \
-	    CFLAGS="$(CFLAGS)" \
-	    uname=GNU ./configure --shared --prefix=/usr --includedir=\$${prefix}/usr/include --libdir=\$${prefix}/lib/amd64
+build%-stamp: configure%-stamp
+	$(MAKE) -C $(BUILD)/$*
+	$(MAKE) -C $(BUILD)/$*/contrib/minizip CC="$(CC_$*)" OPT="$(CFLAGS_$*) $(LDFLAGS_$*)"
 	touch $@
 
-configure32-stamp: configure
-	dh_testdir
-
-	mkdir -p debian/32
-	cp $(COPYLIST) debian/32
-	cd debian/32 && AR=$(AR) CC="$(CC) $(m32)" \
-	    CFLAGS="$(CFLAGS)" \
-	    uname=GNU ./configure --shared --prefix=/usr --libdir=\$${prefix}/lib
+test%-stamp: build%-stamp
+	$(MAKE) -C $(BUILD)/$* test
 	touch $@
 
-configuren32-stamp: configure
-	dh_testdir
-
-	mkdir -p debian/n32
-	cp $(COPYLIST) debian/n32
-	cd debian/n32 && AR=$(AR) CC="$(CC) $(mn32)" \
-	    CFLAGS="$(CFLAGS)" \
-	    uname=GNU ./configure --shared --prefix=/usr --libdir=\$${prefix}/usr/lib32
+install%-stamp: build%-stamp
+	$(MAKE) -C $(BUILD)/$* \
+		install \
+		DESTDIR=$(CURDIR)/debian/tmp
+	# install only 32 bits version. Adding 64 bits is trivial
+	mkdir -p $(CURDIR)/debian/tmp/usr/bin
+	cp $(BUILD)/32/contrib/minizip/minizip $(CURDIR)/debian/tmp/usr/bin/
+	cp $(BUILD)/32/contrib/minizip/miniunz $(CURDIR)/debian/tmp/usr/bin/miniunzip
 	touch $@
 
-build: build-stamp $(EXTRA_BUILD)
-build-stamp: configure-stamp
-	dh_testdir
-
-	$(MAKE)
-	$(MAKE) CC=$(CC) OPT="$(CFLAGS)" -C contrib/minizip
-	-$(MAKE) test
-
-	touch $@
-
-build64-stamp: configure64-stamp
-	dh_testdir
-	make -C debian/64
-	touch $@
-
-build32-stamp: configure32-stamp
-	dh_testdir
-	make -C debian/32
-	touch $@
-
-buildn32-stamp: configuren32-stamp
-	dh_testdir
-	make -C debian/n32
-	touch $@
-
-clean:
-	dh_testdir
-	dh_testroot
-
-	$(MAKE) -C contrib/minizip clean
-	$(MAKE) distclean
-
-	rm -f build-stamp configure-stamp foo.gz 
-	rm -rf debian/64 build64-stamp configure64-stamp
-	rm -rf debian/32 build32-stamp configure32-stamp
-	rm -rf debian/n32 buildn32-stamp configuren32-stamp
-	-mv Makefile.stash Makefile
-	-mv zlibdefs.h.stash zlibdefs.h
-
-	dh_clean 
-
-install: build
-	dh_testdir
-	dh_testroot
-	dh_clean -k 
-	dh_installdirs
-
-	$(MAKE) prefix=$(CURDIR)/debian/tmp install
-	mv $(CURDIR)/debian/tmp/share $(CURDIR)/debian/tmp/usr
-	mkdir -p $(CURDIR)/debian/tmp/usr/lib
-	mv $(CURDIR)/debian/tmp/lib/pkgconfig $(CURDIR)/debian/tmp/usr/lib
-
-install64: install build64-stamp
-	$(MAKE) -C debian/64 prefix=$(CURDIR)/debian/tmp install
-	mkdir -p $(CURDIR)/debian/tmp/usr/lib/amd64
-	mv $(CURDIR)/debian/tmp/lib/amd64/pkgconfig $(CURDIR)/debian/tmp/usr/lib/amd64
-
-install32: install build32-stamp
-	$(MAKE) -C debian/32 prefix=$(CURDIR)/debian/tmp install
-
-installn32: install buildn32-stamp
-	$(MAKE) -C debian/n32 prefix=$(CURDIR)/debian/tmp install
-
-# Build architecture-independent files here.
-binary-indep: build install
-# We have nothing to do by default.
-
-# Build architecture-dependent files here.
-binary-arch: build install $(EXTRA_INSTALL)
-	dh_testdir
-	dh_testroot
-	dh_installchangelogs -s ChangeLog
-	dh_installdocs -s
-	dh_installexamples -s
-	mkdir -p debian/tmp/usr/bin
-	cp contrib/minizip/minizip debian/tmp/usr/bin
-	cp contrib/minizip/miniunz debian/tmp/usr/bin/miniunzip
-	dh_install -s --sourcedir=debian/tmp
-	dh_installman -s
-	dh_lintian -s
-	dh_link -s
-	dh_strip -s --dbg-package=zlib1g-dbg
-	dh_compress -s
-#	dh_fixperms -s
-	dh_makeshlibs -pzlib1g -V"zlib1g (>= 1:1.2.3.3.dfsg-1)"	--add-udeb=zlib1g-udeb
-ifneq (,$(findstring $(DEB_HOST_ARCH), $(64-ARCHS)))
-	dh_makeshlibs -plib64z1 -V"lib64z1 (>= 1:1.2.3.3.dfsg-1)"
-endif
-ifneq (,$(findstring $(DEB_HOST_ARCH), $(32-ARCHS)))
-	dh_makeshlibs -plib32z1 -V"lib32z1 (>= 1:1.2.3.3.dfsg-1)"
-endif
-ifneq (,$(findstring $(DEB_HOST_ARCH), $(N32-ARCHS)))
-	dh_makeshlibs -plibn32z1 -V"libn32z1 (>= 1:1.2.3.3.dfsg-1)"
-endif
-	dh_installdeb -s
-	LD_LIBRARY_PATH=/lib/amd64:$$LD_LIBRARY_PATH dh_shlibdeps -s
-	dh_gencontrol -s
-	dh_md5sums -s
-	dh_builddeb -s
-
-binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary install install64 install32

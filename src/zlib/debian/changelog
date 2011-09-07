@@ -1,3 +1,11 @@
+zlib (40-0-0) unstable; urgency=low
+
+  * New version scheme
+  * Moved libs to /usr/lib (from /lib)
+  * Built with GNU ld to keep mixture of ZLIB_* and SUNW_* symbols
+
+ -- Igor Pashev <igor.pashev@nexenta.com>  Fri, 02 Sep 2011 19:44:32 +0400
+
 zlib (1:1.2.3.4.dfsg-4nexenta3) unstable; urgency=low
 
   * Updated to NCP4

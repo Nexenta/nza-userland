@@ -1,3 +1,2 @@
-lib/amd64/libz.a
-#lib/amd64/libz.so
+usr/lib/amd64/*.{a,so}
 usr/lib/amd64/pkgconfig/zlib.pc

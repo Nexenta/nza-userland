@@ -2,6 +2,5 @@ install-shlib
 minizip-build
 revert-eof-reporting
 revert-transparent-feof-test
-debian-changes-1:1.2.3.4.dfsg-3
-debian-changes-1:1.2.3.4.dfsg-3stormos0
 sunw-symbols.diff
+ld-flags.patch
