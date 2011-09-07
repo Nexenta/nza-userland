@@ -1,3 +1,9 @@
+gettext (40-0-1) unstable; urgency=low
+
+  * Add missing /usr/share/gettext/archive.git.tar.gz
+
+ -- Andrew Stormont (astormont) <andyjstormont@googlemail.com>  Wed, 07 Sep 2011 08:56:52 +0100
+
 gettext (40-0-0) unstable; urgency=low
 
   * Rebuilt for new version scheme

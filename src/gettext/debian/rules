@@ -251,7 +251,6 @@ gettext: build install
 
 	rm -f debian/$@/usr/share/locale/locale.alias
 	rm -f debian/$@/usr/share/man/man1/autopoint.1
-	rm -f debian/$@/usr/share/gettext/archive.git.tar.gz
 	gzip -9 debian/$@/usr/share/info/*
 	gzip -r9 debian/$@/usr/share/man
 
