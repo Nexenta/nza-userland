@@ -2,3 +2,4 @@ cast--1-size_t.diff
 logdir.diff
 progress-cursor-pos.diff
 ssh-6-option.diff
+solaris-xattr.patch

@@ -1,3 +1,9 @@
+rsync (40-0-1) unstable; urgency=low
+
+  * Patched for xattr on Solaris
+
+ -- Igor Pashev <igor.pashev@nexenta.com>  Wed, 07 Sep 2011 19:00:59 +0400
+
 rsync (40-0-0) unstable; urgency=low
 
   * Ported to NCP4
