@@ -22,6 +22,7 @@ INSTALL_BUILD_DEPS='yes'
 DEB_BUILD_OPTIONS=''
 DPKG_BP_OPTIONS='-sa'
 UPLOAD_CMD=''
+HACKING='no'
 
 QUILT_PATCHES=${QUILT_PATCHES:-debian/patches}
 USE_QUILT='yes'
@@ -51,13 +52,17 @@ Options:
 
     -L                    Same as \`-P local'
     -I                    Install all built packages (*.deb)
+
+    -E                    Prepare package for hacking,
+                          making symlink to \`debian' dir
+
     -h                    This help message
 
 USAGE
 }
 
 
-while getopts IU:P:LB:tdfo:h? opt; do
+while getopts IU:P:LEB:tdfo:h? opt; do
     case $opt in
         o)
             if [ ! -f "$OPTARG" ]; then
@@ -78,6 +83,7 @@ while getopts IU:P:LB:tdfo:h? opt; do
         P) UPLOAD_CMD="dput -f $OPTARG" ;;
         L) UPLOAD_CMD='dput -f local' ;;
         f) FORCE='yes' ;;
+        E) HACKING='yes' ;;
         I) INSTALL='yes' ;;
         h|\?)
             usage
@@ -176,6 +182,9 @@ if [ -z "$LOCAL_TARBALL" ]; then
     else
         rm -f ${TARBALL_TMPL}.*
         for base_url in $SRC_BASE_URL ; do
+            if echo "$base_url" | grep -q -E '^ *#'; then
+                continue
+            fi
             for c in gz bz2 xz lzma; do
                 SOURCE_TARBALL="${TARBALL_TMPL}.$c"
                 case "$base_url" in
@@ -243,7 +252,12 @@ tar xf $SOURCE_TARBALL -C "$PKGNAME" --strip-components=1
 
 echo "Updating directory \`debian/'"
 [ -e "$PKGNAME/debian" ] && rm -rf "$PKGNAME/debian"
-cp -r "$PKGDIR/debian" "$PKGNAME/debian"
+if [ "$HACKING" = 'yes' ]; then
+    echo "  (made symlink)"
+    ln -sf "$PKGDIR/debian" "$PKGNAME/debian"
+else
+    cp -r "$PKGDIR/debian" "$PKGNAME/debian"
+fi
 
 
 if [ "$USE_QUILT" = 'yes' ]; then
@@ -265,19 +279,23 @@ if [ "$INSTALL_BUILD_DEPS" = yes ]; then
     fi
 fi
 
-echo "Building package"
-cd "$PKGNAME"
-DEB_BUILD_OPTIONS="$DEB_BUILD_OPTIONS" dpkg-buildpackage $DPKG_BP_OPTIONS
-cd -
+if [ "$HACKING" = 'yes' ]; then
+    echo "cd \"${PKGBUILDDIR}/$PKGNAME\""
+else
+    echo "Building package"
+    cd "$PKGNAME"
+    DEB_BUILD_OPTIONS="$DEB_BUILD_OPTIONS" dpkg-buildpackage $DPKG_BP_OPTIONS
+    cd -
 
-if [ -n "$UPLOAD_CMD" ]; then
-    $UPLOAD_CMD "$PKGBUILDDIR"/*.changes
+    if [ -n "$UPLOAD_CMD" ]; then
+        $UPLOAD_CMD "$PKGBUILDDIR"/*.changes
+    fi
+
+    if [ "$INSTALL" = 'yes' ]; then
+        dpkg -i "$PKGBUILDDIR"/*.deb
+    fi
+
+    echo "New package(s):"
+    ls -1 "$PKGBUILDDIR"/*.deb
 fi
-
-if [ "$INSTALL" = 'yes' ]; then
-    dpkg -i "$PKGBUILDDIR"/*.deb
-fi
-
-echo "New package(s):"
-ls -1 "$PKGBUILDDIR"/*.deb
 
