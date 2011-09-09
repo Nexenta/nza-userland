@@ -5,3 +5,4 @@
 05-zones-support.diff
 06-upstream-source.diff
 07-set-i686-default.diff
+ncp4-version.patch
