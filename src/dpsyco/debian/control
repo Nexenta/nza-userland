@@ -5,6 +5,7 @@ Maintainer: Ola Lundqvist <opal@debian.org>
 Build-Depends-Indep: perl-doc
 Build-Depends: debhelper (>> 4.0.0)
 Standards-Version: 3.7.2
+Upstream-Version: 1.0.36
 
 Package: dpsyco
 Architecture: all
@@ -101,8 +102,9 @@ Description: Automate administration of sudo privileges
  YOU HAVE BEEN WARNED!
 
 Package: dpsyco-ssh
-Architecture: all
-Depends: dpsyco-lib (>= 1.0.9), ssh (>> 3.4p1)
+Architecture: any
+Depends: dpsyco-lib (>= 1.0.9), ssh (>> 3.4p1) [!solaris-i386],
+ network-ssh [solaris-i386], service-network-ssh [solaris-i386]
 Suggests: xfree86-common, xbase-clients
 Description: Automate administration of access via ssh
  This package contains a tool to automatically give some users
@@ -123,8 +125,9 @@ Description: Automate administration of access to mysql
  This package is not fully functional though.
 
 Package: dpsyco-samba
-Architecture: all
-Depends: dpsyco-lib (>= 1.0.9), samba-common
+Architecture: any
+Depends: dpsyco-lib (>= 1.0.9), samba-common [!solaris-i386],
+ system-file-system-smb [!solaris-i386]
 Recommends: samba
 Suggests: smbclient
 Description: Automate administration of access to samba

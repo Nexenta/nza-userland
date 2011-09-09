@@ -1,8 +1,13 @@
-dpsyco (1.0.37) unstable; urgency=low
+dpsyco (40-0-0) unstable; urgency=low
 
-  * Port for Nexenta 4 
+  * Sync from Squeeze
+  * Converted native->non-native Debian package
+  * New version scheme, 3.0 (quilt) source format
+  * debian/control:
+    + Fixed ssh dependency (Closes: #4994)
+    + Fixed samba-common dependency (Closes: #5012)
 
- -- Peter Zaikin <peter.zaikin@nexenta.com>  Wed, 16 Feb 2011 10:56:49 +0200
+ -- Kartik Mistry <kartik.mistry@nexenta.com>  Fri, 09 Sep 2011 16:31:22 +0530
 
 dpsyco (1.0.36) unstable; urgency=low
 

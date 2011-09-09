@@ -6,7 +6,7 @@
 #export DH_VERBOSE=1
 
 # This is the debhelper compatability version to use.
-export DH_COMPAT=4
+export DH_COMPAT=5
 
 export DEST=$(CURDIR)/debian/dpsyco
 export DESTBASE=$(CURDIR)/debian/dpsyco-base
@@ -129,29 +129,16 @@ binary-arch:
 binary-indep: build install
 	dh_testdir -i
 	dh_testroot -i
-#	dh_installdebconf -i
 	dh_installdocs -i
 	dh_installexamples -i
 	dh_installmenu -i
-#	dh_installlogrotate -i
-#	dh_installemacsen -i
-#	dh_installpam -i
-#	dh_installmime -i
-#	dh_installinit -i
-#	dh_installcron -i
-#	dh_installman -i
-#	dh_installinfo -i
-#	dh_undocumented -i
 	dh_installchangelogs -i
 	dh_link -i
 	dh_strip -i
 	dh_compress -i
 	dh_fixperms -i
-#	dh_makeshlibs -i
 	dh_installdeb -i
-#	dh_perl -i
-#	dh_shlibdeps -i
-	dh_gencontrol -i
+	dh_gencontrol
 	dh_md5sums
 	dh_builddeb
 
