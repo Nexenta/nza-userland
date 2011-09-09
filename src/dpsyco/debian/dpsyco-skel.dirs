@@ -1,0 +1,5 @@
+etc/dpsyco/cmd
+usr/share/dpsyco/skel
+usr/share/dpsyco/userskel
+usr/sbin
+var/lib/dpsyco-skel

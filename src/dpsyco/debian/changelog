@@ -1,0 +1,342 @@
+dpsyco (1.0.37) unstable; urgency=low
+
+  * Port for Nexenta 4 
+
+ -- Peter Zaikin <peter.zaikin@nexenta.com>  Wed, 16 Feb 2011 10:56:49 +0200
+
+dpsyco (1.0.36) unstable; urgency=low
+
+  * Corrected problem in dpsch-installcfengine. Closes: #494197. Thanks
+    to Eric Gerlach <egerlach@feds.uwaterloo.ca> for the patch.
+  * Documented copyright more thoughout for contributors.
+
+ -- Ola Lundqvist <opal@debian.org>  Fri,  8 Aug 2008 18:18:32 +0200
+
+dpsyco (1.0.35) unstable; urgency=low
+
+  * Applied patch from Mert Dirik <mertdirik@gmail.com> to correct the
+    bashisms in the package, closes: #464642.
+  * Now force purge of /etc/dpsyco/sudoers on purge of package,
+    closes: #454392, #330786.
+
+ -- Ola Lundqvist <opal@debian.org>  Mon,  7 Apr 2008 22:03:48 +0200
+
+dpsyco (1.0.34) unstable; urgency=low
+
+  * Correction of a typo and check for // in the beginning of a path,
+    instead of just for /, closes: #415550.
+
+ -- Ola Lundqvist <opal@debian.org>  Wed, 21 Mar 2007 10:31:29 +0100
+
+dpsyco (1.0.33) unstable; urgency=medium
+
+  * Applied patch from Tomas Fasth <tomfa@debian.org> that disables a
+    warning about sync user, closes: #413026.
+
+ -- Ola Lundqvist <opal@debian.org>  Fri,  2 Mar 2007 05:23:35 +0100
+
+dpsyco (1.0.32) unstable; urgency=low
+
+  * Changed dependency on cfengine to cfengine2, closes: #383407.
+
+ -- Ola Lundqvist <opal@debian.org>  Tue, 26 Sep 2006 07:48:48 +0200
+
+dpsyco (1.0.31) unstable; urgency=low
+
+  * Applied simple patch from Free Ekanayaka <freee@debian.org> to
+    correct an issue with blankspace in files, closes: #368836.
+  * Updated FSF address of a number of files.
+  * Added an empty binary-arch target in debian/rules file.
+
+ -- Ola Lundqvist <opal@debian.org>  Wed, 19 Jul 2006 20:04:43 +0200
+
+dpsyco (1.0.30) unstable; urgency=low
+
+  * Corrected wrong character issue in manpage.
+  * Corrected so that debhelper is now build depends instead of build
+    depends indep.
+  * Updated to debhelper 4 compatibility.
+  * Updated to standards version 3.7.2.
+  * Updated to new FSF address.
+
+ -- Ola Lundqvist <opal@debian.org>  Thu,  6 Jul 2006 00:41:38 +0200
+
+dpsyco (1.0.29) unstable; urgency=low
+
+  * Fixed so that dpsyco work better with nis, closes: #273587.
+
+ -- Ola Lundqvist <opal@debian.org>  Sun, 17 Apr 2005 20:22:53 +0200
+
+dpsyco (1.0.28) unstable; urgency=low
+
+  * Fixed a minor bug in dpsyco-lib.postrm.
+
+ -- Ola Lundqvist <opal@debian.org>  Sun, 12 Dec 2004 17:03:50 +0100
+
+dpsyco (1.0.27) unstable; urgency=low
+
+  * Changed code so there is no longer any dependency on sudo for ssh
+    access generation.
+
+ -- Ola Lundqvist <opal@debian.org>  Wed, 15 Sep 2004 09:50:23 +0200
+
+dpsyco (1.0.26) unstable; urgency=high
+
+  * Fixed some email references, that point to depricated email address.
+
+ -- Ola Lundqvist <opal@debian.org>  Mon, 30 Aug 2004 11:45:08 +0200
+
+dpsyco (1.0.25) unstable; urgency=medium
+
+  * Updated spelling on some different files. Thanks to Guy Atkinson
+    <ga2.nospam@phonecoop.coop> for the patches.
+  * Fixed visibility issue when dpsyco add or delete users. Thanks (again) to
+    Guy Atkinson for the patches.
+  * FAQ update. Thanks (again) to Guy Atkinson for the patch.
+  * Added correct GPL statements so it correctly released.
+    Also added a COPYING files as I should have done from the beginning.
+  
+ -- Ola Lundqvist <opal@debian.org>  Sun, 29 Aug 2004 17:50:00 +0200
+
+dpsyco (1.0.24) unstable; urgency=low
+
+  * Removed dpsyco-doc package that is empty, closes: #196195.
+  * Converted changelog to UTF-8.
+  * Removed emacs variable in the bottom of this changelog.
+  * Updated standards version to 3.6.1.
+
+ -- Ola Lundqvist <opal@debian.org>  Thu, 12 Aug 2004 08:45:53 +0200
+
+dpsyco (1.0.23) unstable; urgency=low
+
+  * Fixed problem with dpsyco-patch command. It do not apply patches for
+    files that exist in skel when skel has ben run.
+  * Updated standards version from 3.5.8 to 3.5.10.
+
+ -- Ola Lundqvist <opal@debian.org>  Wed, 17 Sep 2003 14:29:03 +0200
+
+dpsyco (1.0.22) unstable; urgency=low
+
+  * Added a check for multiple account information in update-dpsyco-
+    users.
+
+ -- Ola Lundqvist <opal@debian.org>  Fri, 29 Aug 2003 08:28:16 +0200
+
+dpsyco (1.0.21) unstable; urgency=low
+
+  * Added lintian override, closes: #204959.
+  * Applied patch from Otavio Salvador <otavio@debian.org>, that makes
+    patches be upgradeable (without the need of skel).
+  * Fixed dpsch-installpatch, closes: #204268.
+  * Fixed dpsch-auto-cronapt manpage, closes: #204255.
+
+ -- Ola Lundqvist <opal@debian.org>  Tue, 12 Aug 2003 07:28:26 +0200
+
+dpsyco (1.0.20) unstable; urgency=low
+
+  * dpsch-genpkg uses getent passwd instead of grepping directly in
+    /etc/passwd.
+
+ -- Ola Lundqvist <opal@debian.org>  Mon, 12 May 2003 21:31:26 +0200
+
+dpsyco (1.0.19) unstable; urgency=low
+
+  * Fixed patch issues, so now you can patch files in skel too,
+    closes: #190575.
+  * Output changed (minor) from dpsyco-skel.
+
+ -- Ola Lundqvist <opal@debian.org>  Wed,  7 May 2003 09:54:09 +0200
+
+dpsyco (1.0.18) unstable; urgency=low
+
+  * No longer modifies apt.conf on installation.
+
+ -- Ola Lundqvist <opal@debian.org>  Tue, 22 Apr 2003 08:22:38 +0200
+
+dpsyco (1.0.17) unstable; urgency=low
+
+  * Fixed one more read -e bashism.
+
+ -- Ola Lundqvist <opal@debian.org>  Fri,  4 Apr 2003 07:55:26 +0200
+
+dpsyco (1.0.16) unstable; urgency=low
+
+  * Removed option -e to read that is a bashism.
+
+ -- Ola Lundqvist <opal@debian.org>  Thu,  3 Apr 2003 08:24:17 +0200
+
+dpsyco (1.0.15) unstable; urgency=low
+
+  * Heavily modified and improved dpsyco-skel version, closes: #144952.
+  * Versioned dependency on ssh, closes: #179577.
+  * Removed debian/*.conffiles because they create duplicated
+    configuration files on build.
+
+ -- Ola Lundqvist <opal@debian.org>  Wed,  5 Feb 2003 19:36:10 +0100
+
+dpsyco (1.0.14) unstable; urgency=low
+
+  * Skel handling improved becuase it now makes backup of all modified
+    files and not just once. This is an alternative solution to
+    144952, so it closes: #144952.
+  * Updated to standards version 3.5.8 (from 3.5.2).
+  * Made sure that all man pages are properly generated
+  * Removed full stop from all descriptions.
+
+ -- Ola Lundqvist <opal@debian.org>  Thu, 26 Dec 2002 00:14:44 +0100
+
+dpsyco (1.0.13) unstable; urgency=low
+
+  * Added dependency on adduser for dpsyco-lib, closes: #169826.
+
+ -- Ola Lundqvist <opal@debian.org>  Wed, 20 Nov 2002 10:00:24 +0100
+
+dpsyco (1.0.12) unstable; urgency=low
+
+  * Applied patch from Tomas Fasth for dpsh-auto-cronapt. Now builds
+    with other umask.
+  * Fixed so that dsa keys are generated in addition to rsa1 keys.
+  * Added logcheck lines to make updates a bit less verbose in logcheck,
+    closes: #146141.
+  * Fixed dpsh-gendepends so it generates dependencies on dpsyco-ssh
+    correctly.
+
+ -- Ola Lundqvist <opal@debian.org>  Fri,  5 Jul 2002 14:37:33 +0200
+
+dpsyco (1.0.11) unstable testing; urgency=low
+
+  * Fixed a minor bug in dpsch-installcronapt.
+  * Fixing with cronapt so it will be prefixed by a number.
+  * Updated gendepend versions.
+
+ -- Ola Lundqvist <opal@debian.org>  Mon, 15 Apr 2002 16:35:35 +0200
+
+dpsyco (1.0.10) unstable; urgency=low
+
+  * Added documentation from Machael Boman
+    <michael.boman@securecirt.com>, closes: #128120.
+  * Fixed purge problem, moved deconfiguring to prerm from postinst,
+    closes: #141732.
+
+ -- Ola Lundqvist <opal@debian.org>  Mon,  8 Apr 2002 20:41:30 +0200
+
+dpsyco (1.0.9) unstable; urgency=low
+
+  * Created some scripts to automate dependency information and allow
+    for cron-apt update.
+  * Fixed error on update, closes: #134894.
+
+ -- Ola Lundqvist <opal@debian.org>  Mon, 11 Mar 2002 23:23:07 +0100
+
+dpsyco (1.0.8) unstable; urgency=low
+
+  * Fixed spelling errors in dpsyco, closes: #124567.
+  * Fixed spelling errors in dpsyco-base, closes: #124568.
+  * Fixed spelling errors in dpsyco-cfengine, closes: #124569.
+  * Fixed spelling errors in dpsyco-devel, closes: #124570.
+  * Fixed spelling errors in dpsyco-mysql, closes: #124571.
+  * Fixed spelling errors in dpsyco-patch, closes: #124572.
+  * Fixed spelling errors in dpsyco-sudo, closes: #124576.
+  * Fixed spelling errors in dpsyco-samba, closes: #124573.
+  * Fixed spelling errors in dpsyco-skel, closes: #124574.
+  * Moved two chmod lines to the correct package, closes: #125652.
+ -- Ola Lundqvist <opal@debian.org>  Thu, 20 Dec 2001 15:56:29 +0100
+
+dpsyco (1.0.7) unstable; urgency=low
+
+  * Made dpsyco-ssh ssh2 aware, using a simple symlink.
+  * Fixed sudo dependency in dpsyco-ssh, closes: #122369.
+  * Fixed problem with the sudo file. Now it backs up the sudo
+    file, closes: #121194, #121197.
+  * Fixed a ssh generation problem, closes: #112896.
+  * Fixed a uninstallation problem, closes: #121196.
+  * Added a test-nfs option.
+
+ -- Ola Lundqvist <opal@debian.org>  Fri, 07 Dec 2001 15:05:59 +0100
+
+dpsyco (1.0.6) unstable; urgency=low
+
+  * Fixed bug in dpsyco-sudo, closes: #119291.
+  * Think the cat bug should habe been fixed by now, closes: #114456.
+  * Made the build dep arch independent.
+
+ -- Ola Lundqvist <opal@debian.org>  Mon, 13 Nov 2001 23:21:51 +0100
+
+dpsyco (1.0.5) unstable; urgency=low
+
+  * Fixed conflict problem.
+  * Fixed postinst error.
+  * Removes the /etc/dpsyco/adduser.conf only on purge.
+
+ -- Ola Lundqvist <opal@debian.org>  Wed, 10 Oct 2001 21:40:49 +0200
+
+dpsyco (1.0.4) unstable; urgency=low
+
+  * Fixed prerm bug when removing.
+  * Implemented the UID/GID change possibility mentioned in the README file.
+  * Moved the postinst scripts to dpsyco-lib instead because the
+    adduser.conf is needed by everything.
+  * Wrote some manual pages.
+  * Fixed bug in dpsyco-delhome so that it is not doing the same time
+    as dpsyco-restorehome.
+  * Updated the control file so that packages only depend on dpsyco-lib
+    and not on dpsyco-base. This makes things more flexible.
+
+ -- Ola Lundqvist <opal@debian.org>  Tue,  9 Oct 2001 15:26:04 +0200
+
+dpsyco (1.0.3) unstable; urgency=low
+
+  * Fixed installation problem, closes: #114183.
+
+ -- Ola Lundqvist <opal@debian.org>  Tue,  2 Oct 2001 12:01:00 +0200
+
+dpsyco (1.0.2) unstable; urgency=low
+
+  * Added suggestion of jablicator and dpkg-repack.
+  * Removed -depth from the find line in dpsch-cvsclean so that it works
+    in potato too.
+  * Fixed group problem.
+  * Fixed el recommendation, now suggests.
+  * Fixed weblink www.opal not debian.opal.
+  * Fixed so that the sudo script will be runned on update,
+    closes: #113561.
+  * Fixed cfengine run problem.
+  * Updates the samba UID automaticly from passwd.
+  * Fixed bug in samba update. Users was not removed correctly.
+  * Now removes the user profile in the same way as the user home directory
+    is removed.
+  * Moved defaults.conf to the lib package so that packages only need
+    to depend on dpsyco-lib to work properly.
+  * Sudo run problem fixed.
+
+ -- Ola Lundqvist <opal@debian.org>  Thu, 27 Sep 2001 16:37:48 +0200
+
+dpsyco (1.0.1) unstable; urgency=low
+
+  * Updated the description, closes: #112106.
+  * Fixed the example rules file so that it uses installuserskel and
+    installuserpatch too, missed that before.
+  * Fixed missing dependency on dpsyco-base for dpsyco-devel.
+  * Fixed permission problems with dpsyco-devel.
+  * Fixed permission problems, minor security fix.
+
+ -- Ola Lundqvist <opal@debian.org>  Thu, 13 Sep 2001 15:01:45 +0200
+
+dpsyco (1.0.0) unstable; urgency=low
+
+  * Broke down the base package to several sub-packages and renamed the
+    project to dpsyco which is an acronym for Debian Packages of
+    System Configurations.
+  * Changed the license to GPL.
+  * Added some administration scripts for mysql administration.
+  * Written all the manual pages. They will be updated later.
+  * Extracted the patch code from the skel code.
+  * Did a lot of testing, and corrected some of the scripts.
+  * Implemented a improved version of the skel handling. It will now
+    remove itself in a clean way.
+  * Did the same for the patch code.
+  * Initial official debian release, closes: #110877.
+  * Wrote the helper scripts that installs the information to the
+    configuration packages.
+
+ -- Ola Lundqvist <opal@debian.org>  Sat,  1 Sep 2001 17:11:02 +0200

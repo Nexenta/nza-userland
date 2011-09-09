@@ -1,0 +1,4 @@
+etc/dpsyco/cmd
+etc/apt/apt.conf.d/
+usr/share/dpsyco/users
+usr/share/dpsyco/groups
