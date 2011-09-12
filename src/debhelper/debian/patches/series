@@ -3,5 +3,3 @@ makefile-nexenta.patch
 makeshlibs-scripts.patch
 nexenta-additions.patch
 run-nexenta.patches
-dh_compress_nexenta.patch
-dh_installdeb_nexenta.patch
