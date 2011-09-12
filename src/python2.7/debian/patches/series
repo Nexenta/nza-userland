@@ -32,3 +32,4 @@ profile-pstats.diff
 bsddb-libpath.diff
 disable-sem-check.diff
 site-builddir.diff
+python27-dtrace.diff

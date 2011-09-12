@@ -1,3 +1,9 @@
+python2.7 (40-0-2) unstable; urgency=low
+
+  * Added DTrace support
+
+ -- Alexander Eremin <a.eremin@nexenta.com>  Fri, 09 Sep 2011 14:21:42 +0300
+
 python2.7 (40-0-1) unstable; urgency=low
 
   * Rebuilt with new kernel to support TCP_KEEPIDLE and TCP_KEEPINTVL
