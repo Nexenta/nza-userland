@@ -6,3 +6,4 @@
 06-upstream-source.diff
 07-set-i686-default.diff
 ncp4-version.patch
+hardlinked-conffiles.patch

@@ -1,0 +1,13 @@
+Index: dpkg/src/archives.c
+===================================================================
+--- dpkg.orig/src/archives.c	2011-08-21 16:00:24.387383676 +0400
++++ dpkg/src/archives.c	2011-08-21 16:02:14.529146063 +0400
+@@ -748,7 +748,7 @@
+     varbufaddstr(&hardlinkfn,instdir); varbufaddc(&hardlinkfn,'/');
+     varbufaddstr(&hardlinkfn, ti->linkname);
+     linknode = findnamenode(ti->linkname, 0);
+-    if (linknode->flags & fnnf_deferred_rename)
++    if (linknode->flags & (fnnf_deferred_rename|fnnf_new_conff))
+       varbufaddstr(&hardlinkfn, DPKGNEWEXT);
+     varbufaddc(&hardlinkfn, '\0');
+     if (link(hardlinkfn.buf,fnamenewvb.buf))

@@ -1,3 +1,9 @@
+dpkg (40-0-8) unstable; urgency=low
+
+  * correctly handle a hardlink pointing to a conffile
+
+ -- Igor Pashev <igor.pashev@nexenta.com>  Fri, 09 Sep 2011 10:03:55 +0400
+
 dpkg (40-0-7) unstable; urgency=low
 
   * Patched to assume 40-x-x is newer any Debian version
