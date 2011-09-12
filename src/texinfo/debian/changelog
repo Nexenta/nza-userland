@@ -1,3 +1,11 @@
+texinfo (40-0-0) hardy; urgency=low
+
+  * New version scheme
+  * Patched for missing 'local' keyword in texi2dvi
+  * Used 3.0 (quilt) format
+
+ -- Igor Pashev <igor.pashev@nexenta.com>  Fri, 09 Sep 2011 11:13:38 +0400
+
 texinfo (4.13a.dfsg.1-6nexenta2) hardy; urgency=low
 
   * Used bash in maintainer scripts for texinfo

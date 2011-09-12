@@ -7,10 +7,10 @@ fix crash in info under nl locale
  po/tr.po |    2 +-
  2 files changed, 2 insertions(+), 2 deletions(-)
 
-Index: texinfo-4.13a.dfsg.1/po/ro.po
+Index: b/po/ro.po
 ===================================================================
---- texinfo-4.13a.dfsg.1.orig/po/ro.po	2008-09-18 20:38:32.000000000 +0200
-+++ texinfo-4.13a.dfsg.1/po/ro.po	2009-03-09 15:17:06.000000000 +0100
+--- a/po/ro.po	2011-09-09 11:12:32.998503146 +0400
++++ b/po/ro.po	2011-09-09 11:12:40.230223561 +0400
 @@ -1681,7 +1681,7 @@
  
  #: info/session.c:5149
@@ -20,10 +20,10 @@ Index: texinfo-4.13a.dfsg.1/po/ro.po
  
  #: info/tilde.c:336
  #, c-format
-Index: texinfo-4.13a.dfsg.1/po/tr.po
+Index: b/po/tr.po
 ===================================================================
---- texinfo-4.13a.dfsg.1.orig/po/tr.po	2008-09-18 20:38:33.000000000 +0200
-+++ texinfo-4.13a.dfsg.1/po/tr.po	2009-03-09 15:17:06.000000000 +0100
+--- a/po/tr.po	2011-09-09 11:12:33.046678886 +0400
++++ b/po/tr.po	2011-09-09 11:12:40.231634510 +0400
 @@ -1683,7 +1683,7 @@
  
  #: info/session.c:5149

@@ -6,10 +6,10 @@ Sergey Poznyakoff
  info/nodes.c |   13 +++++++++++--
  1 file changed, 11 insertions(+), 2 deletions(-)
 
-Index: texinfo-4.13a.dfsg.1/info/nodes.c
+Index: b/info/nodes.c
 ===================================================================
---- texinfo-4.13a.dfsg.1.orig/info/nodes.c	2010-10-08 10:00:22.000000000 +0900
-+++ texinfo-4.13a.dfsg.1/info/nodes.c	2010-10-08 10:13:25.000000000 +0900
+--- a/info/nodes.c	2011-09-09 11:12:32.540023896 +0400
++++ b/info/nodes.c	2011-09-09 11:12:42.090465052 +0400
 @@ -960,6 +960,9 @@
          /* If we were able to find this file and load it, then return
             the node within it. */

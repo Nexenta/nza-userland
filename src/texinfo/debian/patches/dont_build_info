@@ -6,10 +6,10 @@ dont build the info documentation, it has been removed
  doc/Makefile.in |   12 ++++++++----
  1 file changed, 8 insertions(+), 4 deletions(-)
 
-Index: texinfo-4.13a.dfsg.1/doc/Makefile.in
+Index: b/doc/Makefile.in
 ===================================================================
---- texinfo-4.13a.dfsg.1.orig/doc/Makefile.in	2008-09-18 20:46:24.000000000 +0200
-+++ texinfo-4.13a.dfsg.1/doc/Makefile.in	2009-03-09 15:17:15.000000000 +0100
+--- a/doc/Makefile.in	2011-09-09 11:12:32.887686476 +0400
++++ b/doc/Makefile.in	2011-09-09 11:12:40.858298044 +0400
 @@ -121,14 +121,16 @@
  CONFIG_CLEAN_FILES =
  SOURCES =

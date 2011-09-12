@@ -1,0 +1,20 @@
+Index: texinfo/util/texi2dvi
+===================================================================
+--- texinfo.orig/util/texi2dvi	2011-09-09 11:26:27.185430599 +0400
++++ texinfo/util/texi2dvi	2011-09-09 11:55:50.125736235 +0400
+@@ -134,14 +134,7 @@
+ # but rather
+ #
+ # local foo="$bar"
+-(
+-  foo=bar
+-  test_local () {
+-    local foo=foo
+-  }
+-  test_local
+-  test $foo = bar
+-) || local () {
++local () {
+   case $1 in
+     *=*) eval "$1";;
+   esac

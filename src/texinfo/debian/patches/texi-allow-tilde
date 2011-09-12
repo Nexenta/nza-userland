@@ -19,10 +19,10 @@ directory portion, at least.  Besides being cleaner in general.
  util/texi2dvi |   26 +++++++++++++++++++++-----
  1 file changed, 21 insertions(+), 5 deletions(-)
 
-Index: texinfo-4.13a.dfsg.1/util/texi2dvi
+Index: b/util/texi2dvi
 ===================================================================
---- texinfo-4.13a.dfsg.1.orig/util/texi2dvi	2009-03-18 14:40:08.000000000 +0100
-+++ texinfo-4.13a.dfsg.1/util/texi2dvi	2009-03-18 14:40:18.000000000 +0100
+--- a/util/texi2dvi	2011-09-09 11:12:39.525038784 +0400
++++ b/util/texi2dvi	2011-09-09 11:12:41.524077917 +0400
 @@ -56,6 +56,7 @@
  # Instead, assign them an empty value.
  action=compile
