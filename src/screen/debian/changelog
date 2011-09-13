@@ -1,3 +1,11 @@
+screen (40-0-1) unstable; urgency=low
+
+  * Really remove /usr/share/lib/terminfo
+    (actually don't create at all;
+     to solve conflict with sunwcs)
+
+ -- Igor Pashev <igor.pashev@nexenta.com>  Sun, 11 Sep 2011 14:35:36 +0400
+
 screen (40-0-0) unstable; urgency=low
 
   * Updated to use new version scheme

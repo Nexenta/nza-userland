@@ -59,7 +59,6 @@ install-stamp: build-stamp
 	dh_installdirs
 	# can't call the normal install target b/c it installs the info files
 	# and other crud
-	mkdir -p $(ROOT)/usr/share/lib/terminfo
 #	$(MAKE) prefix=$(ROOT)/usr SCREENENCODINGS='$$(prefix)/share/screen/utf8encodings' installdirs install_bin
 	$(MAKE) DESTDIR=$(ROOT) SCREENENCODINGS='$$(prefix)/share/screen/utf8encodings' install
 	# install the debian screenrc to etc
@@ -67,14 +66,10 @@ install-stamp: build-stamp
 	# hack around the fact that the install target makes screen a symlink to screen-$$(VERSION)
 	rm -f $(ROOT)/usr/bin/screen
 	mv -f $(ROOT)/usr/bin/screen* $(ROOT)/usr/bin/screen
-	# remove it because have in sunwcs package
-	rm -f $(ROOT)/usr/share/lib/terminfo/s/screen
+
 	# make it setgid 
 	chown root:bin $(ROOT)/usr/bin/screen
 	chmod 2755 $(ROOT)/usr/bin/screen
-	# lintian overrides for the setgid bin etc
-	install -m 755 -d $(ROOT)/usr/share/lintian/overrides
-	install -m 644 debian/screen.lintian.overrides $(ROOT)/usr/share/lintian/overrides/screen
 	# remove unneeded info file
 	rm $(ROOT)/usr/share/info/dir
 	

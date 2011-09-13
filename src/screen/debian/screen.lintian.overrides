@@ -1,1 +1,0 @@
-screen: setgid-binary usr/bin/screen 2755 root/utmp
