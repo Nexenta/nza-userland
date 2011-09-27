@@ -29,7 +29,7 @@ set name=description value="Archive-Zip PERL module"
 set name=pkg.description value="Archive-Zip PERL module"
 set name=pkg.summary value="Archive-Zip PERL module"
 
-license xml-simple.license license='Artistic'
+license archive-zip.license license='Artistic'
 
 dir path=usr/perl5
 dir path=usr/perl5/5.10.0
