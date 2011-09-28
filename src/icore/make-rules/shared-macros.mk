@@ -30,7 +30,7 @@ ARCHIVE_MIRROR = http://dlc.openindiana.org/oi-build/source-archives
 export DOWNLOAD_SEARCH_PATH +=	$(ARCHIVE_MIRROR)
 
 # The workspace starts at the mercurial root
-export WS_TOP ?=		$(shell hg root)/src/nstor
+export WS_TOP ?=		$(shell hg root)/src/icore
 
 # we want our pkg piplines to fail if there is an error
 # (like if pkgdepend fails in the middle of a pipe), but
@@ -46,7 +46,7 @@ publish:	SHELLOPTS=pipefail
 
 SHELL=	/bin/bash
 
-CONSOLIDATION =	nstor
+CONSOLIDATION =	icore
 PUBLISHER ?=	$(CONSOLIDATION)
 
 ROOT =			/
