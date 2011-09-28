@@ -1,0 +1,140 @@
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+# Copyright (c) 2011, Oracle and/or its affiliates. All rights reserved.
+#
+
+set name=pkg.fmri value=pkg:/library/perl-5/search-xapian@$(PKGVERS)
+set name=info.classification value=org.opensolaris.category.2008:Development/Perl
+set name=variant.arch value=$(ARCH)
+set name=variant.opensolaris.zone value=global value=nonglobal
+set name=description value="Search-Xapian PERL module"
+set name=pkg.description value="Search-Xapian PERL module"
+set name=pkg.summary value="Search-Xapian PERL module"
+dir path=usr
+dir path=usr/perl5
+dir path=usr/perl5/5.10.0
+dir path=usr/perl5/5.10.0/lib
+dir path=usr/perl5/5.10.0/lib/i86pc-solaris-64int
+dir path=usr/perl5/5.10.0/man
+dir path=usr/perl5/5.10.0/man/man3
+dir path=usr/perl5/vendor_perl
+dir path=usr/perl5/vendor_perl/5.10.0
+dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int
+dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Search
+dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Search/Xapian
+dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Search/Xapian/MSet
+dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto
+dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/Search
+dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/Search/Xapian
+file path=usr/perl5/5.10.0/lib/i86pc-solaris-64int/perllocal.pod
+file path=usr/perl5/5.10.0/man/man3/Search::Xapian.3
+file path=usr/perl5/5.10.0/man/man3/Search::Xapian::AssertionError.3
+file path=usr/perl5/5.10.0/man/man3/Search::Xapian::BM25Weight.3
+file path=usr/perl5/5.10.0/man/man3/Search::Xapian::BoolWeight.3
+file path=usr/perl5/5.10.0/man/man3/Search::Xapian::Database.3
+file path=usr/perl5/5.10.0/man/man3/Search::Xapian::DatabaseCorruptError.3
+file path=usr/perl5/5.10.0/man/man3/Search::Xapian::DatabaseCreateError.3
+file path=usr/perl5/5.10.0/man/man3/Search::Xapian::DatabaseError.3
+file path=usr/perl5/5.10.0/man/man3/Search::Xapian::DatabaseLockError.3
+file path=usr/perl5/5.10.0/man/man3/Search::Xapian::DatabaseModifiedError.3
+file path=usr/perl5/5.10.0/man/man3/Search::Xapian::DatabaseOpeningError.3
+file path=usr/perl5/5.10.0/man/man3/Search::Xapian::DatabaseVersionError.3
+file path=usr/perl5/5.10.0/man/man3/Search::Xapian::DocNotFoundError.3
+file path=usr/perl5/5.10.0/man/man3/Search::Xapian::Document.3
+file path=usr/perl5/5.10.0/man/man3/Search::Xapian::Enquire.3
+file path=usr/perl5/5.10.0/man/man3/Search::Xapian::Error.3
+file path=usr/perl5/5.10.0/man/man3/Search::Xapian::FeatureUnavailableError.3
+file path=usr/perl5/5.10.0/man/man3/Search::Xapian::InternalError.3
+file path=usr/perl5/5.10.0/man/man3/Search::Xapian::InvalidArgumentError.3
+file path=usr/perl5/5.10.0/man/man3/Search::Xapian::InvalidOperationError.3
+file path=usr/perl5/5.10.0/man/man3/Search::Xapian::LogicError.3
+file path=usr/perl5/5.10.0/man/man3/Search::Xapian::MultiValueSorter.3
+file path=usr/perl5/5.10.0/man/man3/Search::Xapian::NetworkError.3
+file path=usr/perl5/5.10.0/man/man3/Search::Xapian::NetworkTimeoutError.3
+file path=usr/perl5/5.10.0/man/man3/Search::Xapian::PositionIterator.3
+file path=usr/perl5/5.10.0/man/man3/Search::Xapian::PostingIterator.3
+file path=usr/perl5/5.10.0/man/man3/Search::Xapian::QueryParser.3
+file path=usr/perl5/5.10.0/man/man3/Search::Xapian::QueryParserError.3
+file path=usr/perl5/5.10.0/man/man3/Search::Xapian::RangeError.3
+file path=usr/perl5/5.10.0/man/man3/Search::Xapian::RuntimeError.3
+file path=usr/perl5/5.10.0/man/man3/Search::Xapian::SerialisationError.3
+file path=usr/perl5/5.10.0/man/man3/Search::Xapian::Stem.3
+file path=usr/perl5/5.10.0/man/man3/Search::Xapian::TermGenerator.3
+file path=usr/perl5/5.10.0/man/man3/Search::Xapian::TermIterator.3
+file path=usr/perl5/5.10.0/man/man3/Search::Xapian::TradWeight.3
+file path=usr/perl5/5.10.0/man/man3/Search::Xapian::UnimplementedError.3
+file path=usr/perl5/5.10.0/man/man3/Search::Xapian::ValueIterator.3
+file path=usr/perl5/5.10.0/man/man3/Search::Xapian::Weight.3
+file path=usr/perl5/5.10.0/man/man3/Search::Xapian::WritableDatabase.3
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Search/Xapian.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Search/Xapian/AssertionError.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Search/Xapian/BM25Weight.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Search/Xapian/BoolWeight.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Search/Xapian/Database.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Search/Xapian/DatabaseCorruptError.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Search/Xapian/DatabaseCreateError.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Search/Xapian/DatabaseError.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Search/Xapian/DatabaseLockError.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Search/Xapian/DatabaseModifiedError.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Search/Xapian/DatabaseOpeningError.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Search/Xapian/DatabaseVersionError.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Search/Xapian/DocNotFoundError.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Search/Xapian/Document.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Search/Xapian/ESet.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Search/Xapian/ESetIterator.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Search/Xapian/Enquire.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Search/Xapian/Error.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Search/Xapian/FeatureUnavailableError.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Search/Xapian/InternalError.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Search/Xapian/InvalidArgumentError.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Search/Xapian/InvalidOperationError.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Search/Xapian/LogicError.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Search/Xapian/MSet.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Search/Xapian/MSet/Tied.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Search/Xapian/MSetIterator.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Search/Xapian/MultiValueSorter.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Search/Xapian/NetworkError.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Search/Xapian/NetworkTimeoutError.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Search/Xapian/PerlStopper.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Search/Xapian/PositionIterator.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Search/Xapian/PostingIterator.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Search/Xapian/Query.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Search/Xapian/QueryParser.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Search/Xapian/QueryParserError.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Search/Xapian/RSet.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Search/Xapian/RangeError.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Search/Xapian/RuntimeError.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Search/Xapian/SerialisationError.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Search/Xapian/SimpleStopper.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Search/Xapian/Stem.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Search/Xapian/Stopper.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Search/Xapian/TermGenerator.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Search/Xapian/TermIterator.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Search/Xapian/TradWeight.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Search/Xapian/UnimplementedError.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Search/Xapian/ValueIterator.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Search/Xapian/Weight.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Search/Xapian/WritableDatabase.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/Search/Xapian/.packlist
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/Search/Xapian/Xapian.bs
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/Search/Xapian/Xapian.so mode=0555
+depend fmri=runtime-perl-510@$(PKGVERS) type=require
+depend fmri=library-xapian@$(PKGVERS) type=require
