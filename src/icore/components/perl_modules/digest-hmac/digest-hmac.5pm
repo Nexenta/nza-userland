@@ -1,0 +1,53 @@
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+# Copyright (c) 2011, Oracle and/or its affiliates. All rights reserved.
+#
+set name=pkg.fmri value=pkg:/library/perl-5/digest-hmac@$(PKGVERS)
+set name=info.classification value=org.opensolaris.category.2008:Development/Perl
+set name=variant.arch value=$(ARCH)
+set name=variant.opensolaris.zone value=global value=nonglobal
+set name=description value="Digest-HMAC PERL module"
+set name=pkg.description value="Digest-HMAC PERL module"
+set name=pkg.summary value="Digest-HMAC PERL module"
+
+dir path=usr
+dir path=usr/perl5
+dir path=usr/perl5/5.10.0
+dir path=usr/perl5/5.10.0/lib
+dir path=usr/perl5/5.10.0/lib/i86pc-solaris-64int
+dir path=usr/perl5/5.10.0/man
+dir path=usr/perl5/5.10.0/man/man3
+dir path=usr/perl5/vendor_perl
+dir path=usr/perl5/vendor_perl/5.10.0
+dir path=usr/perl5/vendor_perl/5.10.0/Digest
+dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int
+dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto
+dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/Digest
+dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/Digest/HMAC
+file path=usr/perl5/5.10.0/lib/i86pc-solaris-64int/perllocal.pod
+file path=usr/perl5/5.10.0/man/man3/Digest::HMAC.3
+file path=usr/perl5/5.10.0/man/man3/Digest::HMAC_MD5.3
+file path=usr/perl5/5.10.0/man/man3/Digest::HMAC_SHA1.3
+file path=usr/perl5/vendor_perl/5.10.0/Digest/HMAC.pm
+file path=usr/perl5/vendor_perl/5.10.0/Digest/HMAC_MD5.pm
+file path=usr/perl5/vendor_perl/5.10.0/Digest/HMAC_SHA1.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/Digest/HMAC/.packlist
+depend fmri=runtime-perl-510-extra@$(PKGVERS) type=require
