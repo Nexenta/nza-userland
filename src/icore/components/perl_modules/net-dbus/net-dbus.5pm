@@ -117,3 +117,5 @@ file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/Net/DBus/.packli
 file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/Net/DBus/DBus.bs
 file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/Net/DBus/DBus.so mode=0555
 depend fmri=runtime-perl-510@$(PKGVERS) type=require
+depend fmri=system-library-dbus@$(PKGVERS) type=require
+
