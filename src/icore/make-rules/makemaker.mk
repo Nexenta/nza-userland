@@ -42,6 +42,9 @@ BUILD_32 =	$(PERL_VERSIONS:%=$(PERLBD_ARCH)-%/.built)
 INSTALL_32 =	$(BUILD_32:%/.built=%/.installed)
 TEST_32 =	$(BUILD_32:%/.built=%/.tested)
 
+STUDIOFLAGS_GCC_PERL_FIX=	(cd $(@D); grep -v '^CCCDLFLAGS =' Makefile > Makefile.tmp; \
+	grep -v '^OPTIMIZE =' Makefile.tmp > Makefile)
+
 
 COMPONENT_CONFIGURE_ENV +=	$(COMMON_PERL_ENV)
 COMPONENT_CONFIGURE_ENV +=	PERL="$(PERL)"
@@ -51,6 +54,7 @@ $(PERLBD_ARCH)-%/.configured:	$(SOURCE_DIR)/.prep
 	$(COMPONENT_PRE_CONFIGURE_ACTION)
 	(cd $(@D) ; $(COMPONENT_CONFIGURE_ENV) $(PERL) $(PERL_FLAGS) \
 				Makefile.PL $(CONFIGURE_OPTIONS))
+	$(STUDIOFLAGS_GCC_PERL_FIX)
 	$(COMPONENT_POST_CONFIGURE_ACTION)
 	$(TOUCH) $@
 
