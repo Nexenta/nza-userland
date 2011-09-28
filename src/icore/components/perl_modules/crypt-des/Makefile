@@ -23,13 +23,13 @@
 
 include ../../../make-rules/shared-macros.mk
 
-COMPONENT_NAME=		B-C
-COMPONENT_VERSION=	1.29
+COMPONENT_NAME=		Crypt-DES
+COMPONENT_VERSION=	2.05
 COMPONENT_SRC=		$(COMPONENT_NAME)-$(COMPONENT_VERSION)
 COMPONENT_ARCHIVE=	$(COMPONENT_SRC).tar.gz
-COMPONENT_ARCHIVE_HASH=	sha1:aed0604f7ec478a5d4cf68792956252f6920493b
-COMPONENT_ARCHIVE_URL=	http://www.cpan.org/authors/id/R/RU/RURBAN/$(COMPONENT_ARCHIVE)
-COMPONENT_PROJECT_URL=	http://search.cpan.org/~rurban/
+COMPONENT_ARCHIVE_HASH=	sha1:4fce77a1f776ede8e7251af1af42f505f0e31515
+COMPONENT_ARCHIVE_URL=	http://www.cpan.org/authors/id/D/DP/DPARIS/$(COMPONENT_ARCHIVE)
+COMPONENT_PROJECT_URL=	http://search.cpan.org/~dparis/
 
 include $(WS_TOP)/make-rules/prep.mk
 include $(WS_TOP)/make-rules/ips.mk
