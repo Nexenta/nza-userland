@@ -20,14 +20,14 @@
 #
 # Copyright (c) 2011, Oracle and/or its affiliates. All rights reserved.
 #
-
-set name=pkg.fmri value=pkg:/library/perl-5/carp-assert@$(PKGVERS)
+set name=pkg.fmri value=pkg:/library/perl-5/digets-hmac@$(PKGVERS)
 set name=info.classification value=org.opensolaris.category.2008:Development/Perl
 set name=variant.arch value=$(ARCH)
 set name=variant.opensolaris.zone value=global value=nonglobal
-set name=description value="Carp-Assert PERL module"
-set name=pkg.description value="Carp-Assert PERL module"
-set name=pkg.summary value="Carp-Assert PERL module"
+set name=description value="Digest-HMAC PERL module"
+set name=pkg.description value="Digest-HMAC PERL module"
+set name=pkg.summary value="Digest-HMAC PERL module"
+
 dir path=usr
 dir path=usr/perl5
 dir path=usr/perl5/5.10.0
@@ -37,13 +37,15 @@ dir path=usr/perl5/5.10.0/man
 dir path=usr/perl5/5.10.0/man/man3
 dir path=usr/perl5/vendor_perl
 dir path=usr/perl5/vendor_perl/5.10.0
-dir path=usr/perl5/vendor_perl/5.10.0/Carp
 dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int
+dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Digest
 dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto
-dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/Carp
-dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/Carp/Assert
+dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/Digest
+dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/Digest/SHA1
 file path=usr/perl5/5.10.0/lib/i86pc-solaris-64int/perllocal.pod
-file path=usr/perl5/5.10.0/man/man3/Carp::Assert.3
-file path=usr/perl5/vendor_perl/5.10.0/Carp/Assert.pm
-file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/Carp/Assert/.packlist
-depend fmri=runtime-perl-510@$(PKGVERS) type=require
+file path=usr/perl5/5.10.0/man/man3/Digest::SHA1.3
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Digest/SHA1.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/Digest/SHA1/.packlist
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/Digest/SHA1/SHA1.bs
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/Digest/SHA1/SHA1.so mode=0555
+depend fmri=runtime-perl-510-extra@$(PKGVERS) type=require

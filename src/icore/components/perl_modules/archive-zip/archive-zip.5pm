@@ -31,31 +31,40 @@ set name=pkg.summary value="Archive-Zip PERL module"
 
 license archive-zip.license license='Artistic'
 
+dir path=usr
 dir path=usr/perl5
 dir path=usr/perl5/5.10.0
 dir path=usr/perl5/5.10.0/bin
+dir path=usr/perl5/5.10.0/lib
+dir path=usr/perl5/5.10.0/lib/i86pc-solaris-64int
 dir path=usr/perl5/5.10.0/man
 dir path=usr/perl5/5.10.0/man/man3
-dir path=usr/perl5/site_perl
-dir path=usr/perl5/site_perl/5.10.0
-dir path=usr/perl5/site_perl/5.10.0/Archive
-dir path=usr/perl5/site_perl/5.10.0/Archive/Zip
+dir path=usr/perl5/vendor_perl
+dir path=usr/perl5/vendor_perl/5.10.0
+dir path=usr/perl5/vendor_perl/5.10.0/Archive
+dir path=usr/perl5/vendor_perl/5.10.0/Archive/Zip
+dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int
+dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto
+dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/Archive
+dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/Archive/Zip
 file path=usr/perl5/5.10.0/bin/crc32 mode=0555
+file path=usr/perl5/5.10.0/lib/i86pc-solaris-64int/perllocal.pod
 file path=usr/perl5/5.10.0/man/man3/Archive::Zip.3
 file path=usr/perl5/5.10.0/man/man3/Archive::Zip::FAQ.3
 file path=usr/perl5/5.10.0/man/man3/Archive::Zip::MemberRead.3
 file path=usr/perl5/5.10.0/man/man3/Archive::Zip::Tree.3
-file path=usr/perl5/site_perl/5.10.0/Archive/Zip.pm
-file path=usr/perl5/site_perl/5.10.0/Archive/Zip/Archive.pm
-file path=usr/perl5/site_perl/5.10.0/Archive/Zip/BufferedFileHandle.pm
-file path=usr/perl5/site_perl/5.10.0/Archive/Zip/DirectoryMember.pm
-file path=usr/perl5/site_perl/5.10.0/Archive/Zip/FAQ.pod
-file path=usr/perl5/site_perl/5.10.0/Archive/Zip/FileMember.pm
-file path=usr/perl5/site_perl/5.10.0/Archive/Zip/Member.pm
-file path=usr/perl5/site_perl/5.10.0/Archive/Zip/MemberRead.pm
-file path=usr/perl5/site_perl/5.10.0/Archive/Zip/MockFileHandle.pm
-file path=usr/perl5/site_perl/5.10.0/Archive/Zip/NewFileMember.pm
-file path=usr/perl5/site_perl/5.10.0/Archive/Zip/StringMember.pm
-file path=usr/perl5/site_perl/5.10.0/Archive/Zip/Tree.pm
-file path=usr/perl5/site_perl/5.10.0/Archive/Zip/ZipFileMember.pm
+file path=usr/perl5/vendor_perl/5.10.0/Archive/Zip.pm
+file path=usr/perl5/vendor_perl/5.10.0/Archive/Zip/Archive.pm
+file path=usr/perl5/vendor_perl/5.10.0/Archive/Zip/BufferedFileHandle.pm
+file path=usr/perl5/vendor_perl/5.10.0/Archive/Zip/DirectoryMember.pm
+file path=usr/perl5/vendor_perl/5.10.0/Archive/Zip/FAQ.pod
+file path=usr/perl5/vendor_perl/5.10.0/Archive/Zip/FileMember.pm
+file path=usr/perl5/vendor_perl/5.10.0/Archive/Zip/Member.pm
+file path=usr/perl5/vendor_perl/5.10.0/Archive/Zip/MemberRead.pm
+file path=usr/perl5/vendor_perl/5.10.0/Archive/Zip/MockFileHandle.pm
+file path=usr/perl5/vendor_perl/5.10.0/Archive/Zip/NewFileMember.pm
+file path=usr/perl5/vendor_perl/5.10.0/Archive/Zip/StringMember.pm
+file path=usr/perl5/vendor_perl/5.10.0/Archive/Zip/Tree.pm
+file path=usr/perl5/vendor_perl/5.10.0/Archive/Zip/ZipFileMember.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/Archive/Zip/.packlist
 depend fmri=runtime-perl-510@$(PKGVERS) type=require

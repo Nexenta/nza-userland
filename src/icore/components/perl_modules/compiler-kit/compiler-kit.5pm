@@ -27,9 +27,12 @@ set name=variant.opensolaris.zone value=global value=nonglobal
 set name=description value="Compiler-Kit PERL module"
 set name=pkg.description value="Compiler-Kit PERL module"
 set name=pkg.summary value="Compiler-Kit PERL module"
+dir path=usr
 dir path=usr/perl5
 dir path=usr/perl5/5.10.0
 dir path=usr/perl5/5.10.0/bin
+dir path=usr/perl5/5.10.0/lib
+dir path=usr/perl5/5.10.0/lib/i86pc-solaris-64int
 dir path=usr/perl5/5.10.0/man
 dir path=usr/perl5/5.10.0/man/man1
 dir path=usr/perl5/5.10.0/man/man3
@@ -42,42 +45,27 @@ dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto
 dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/B
 dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/B/C
 dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/ByteLoader
-file path=usr/perl5/5.10.0/bin/assemble
-file path=usr/perl5/5.10.0/bin/cc_harness
-file path=usr/perl5/5.10.0/bin/disassemble
-file path=usr/perl5/5.10.0/bin/perlcc
+file path=usr/perl5/5.10.0/bin/assemble mode=0555
+file path=usr/perl5/5.10.0/bin/cc_harness mode=0555
+file path=usr/perl5/5.10.0/bin/disassemble mode=0555
+file path=usr/perl5/5.10.0/bin/perlcc mode=0555
+file path=usr/perl5/5.10.0/lib/i86pc-solaris-64int/perllocal.pod
 file path=usr/perl5/5.10.0/man/man1/assemble.1
-file path=usr/perl5/5.10.0/man/man1/assemble.1p
 file path=usr/perl5/5.10.0/man/man1/disassemble.1
-file path=usr/perl5/5.10.0/man/man1/disassemble.1p
 file path=usr/perl5/5.10.0/man/man1/perlcc.1
-file path=usr/perl5/5.10.0/man/man1/perlcc.1p
 file path=usr/perl5/5.10.0/man/man3/B::Asmdata.3
-file path=usr/perl5/5.10.0/man/man3/B::Asmdata.3pm
 file path=usr/perl5/5.10.0/man/man3/B::Assembler.3
-file path=usr/perl5/5.10.0/man/man3/B::Assembler.3pm
 file path=usr/perl5/5.10.0/man/man3/B::Bblock.3
-file path=usr/perl5/5.10.0/man/man3/B::Bblock.3pm
 file path=usr/perl5/5.10.0/man/man3/B::Bytecode.3
-file path=usr/perl5/5.10.0/man/man3/B::Bytecode.3pm
 file path=usr/perl5/5.10.0/man/man3/B::C.3
-file path=usr/perl5/5.10.0/man/man3/B::C.3pm
 file path=usr/perl5/5.10.0/man/man3/B::CC.3
-file path=usr/perl5/5.10.0/man/man3/B::CC.3pm
 file path=usr/perl5/5.10.0/man/man3/B::Disassembler.3
-file path=usr/perl5/5.10.0/man/man3/B::Disassembler.3pm
 file path=usr/perl5/5.10.0/man/man3/B::Stackobj.3
-file path=usr/perl5/5.10.0/man/man3/B::Stackobj.3pm
 file path=usr/perl5/5.10.0/man/man3/B::Stash.3
-file path=usr/perl5/5.10.0/man/man3/B::Stash.3pm
 file path=usr/perl5/5.10.0/man/man3/B::perlcompile.3
-file path=usr/perl5/5.10.0/man/man3/B::perlcompile.3pm
 file path=usr/perl5/5.10.0/man/man3/B::perloptree.3
-file path=usr/perl5/5.10.0/man/man3/B::perloptree.3pm
 file path=usr/perl5/5.10.0/man/man3/BcVersions.3
-file path=usr/perl5/5.10.0/man/man3/BcVersions.3pm
 file path=usr/perl5/5.10.0/man/man3/ByteLoader.3
-file path=usr/perl5/5.10.0/man/man3/ByteLoader.3pm
 file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/B/Asmdata.pm
 file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/B/Assembler.pm
 file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/B/Bblock.pm
@@ -92,6 +80,7 @@ file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/B/perlcompile.pod
 file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/B/perloptree.pod
 file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/BcVersions.pod
 file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/ByteLoader.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/B/C/.packlist
 file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/B/C/C.bs
 file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/B/C/C.so mode=0555
 file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/ByteLoader/ByteLoader.bs

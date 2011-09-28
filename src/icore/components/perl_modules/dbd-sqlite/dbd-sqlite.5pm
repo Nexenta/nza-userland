@@ -27,23 +27,28 @@ set name=variant.opensolaris.zone value=global value=nonglobal
 set name=description value="DBD-SQLite PERL module"
 set name=pkg.description value="DBD-SQLite PERL module"
 set name=pkg.summary value="DBD-SQLite PERL module"
+dir path=usr
 dir path=usr/perl5
 dir path=usr/perl5/5.10.0
+dir path=usr/perl5/5.10.0/lib
+dir path=usr/perl5/5.10.0/lib/i86pc-solaris-64int
 dir path=usr/perl5/5.10.0/man
 dir path=usr/perl5/5.10.0/man/man3
-dir path=usr/perl5/site_perl
-dir path=usr/perl5/site_perl/5.10.0
-dir path=usr/perl5/site_perl/5.10.0/i86pc-solaris-64int
-dir path=usr/perl5/site_perl/5.10.0/i86pc-solaris-64int/DBD
-dir path=usr/perl5/site_perl/5.10.0/i86pc-solaris-64int/DBD/SQLite
-dir path=usr/perl5/site_perl/5.10.0/i86pc-solaris-64int/auto
-dir path=usr/perl5/site_perl/5.10.0/i86pc-solaris-64int/auto/DBD
-dir path=usr/perl5/site_perl/5.10.0/i86pc-solaris-64int/auto/DBD/SQLite
+dir path=usr/perl5/vendor_perl
+dir path=usr/perl5/vendor_perl/5.10.0
+dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int
+dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/DBD
+dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/DBD/SQLite
+dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto
+dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/DBD
+dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/DBD/SQLite
+file path=usr/perl5/5.10.0/lib/i86pc-solaris-64int/perllocal.pod
 file path=usr/perl5/5.10.0/man/man3/DBD::SQLite.3
 file path=usr/perl5/5.10.0/man/man3/DBD::SQLite::Cookbook.3
-file path=usr/perl5/site_perl/5.10.0/i86pc-solaris-64int/DBD/SQLite.pm
-file path=usr/perl5/site_perl/5.10.0/i86pc-solaris-64int/DBD/SQLite/Cookbook.pod
-file path=usr/perl5/site_perl/5.10.0/i86pc-solaris-64int/auto/DBD/SQLite/SQLite.bs
-file path=usr/perl5/site_perl/5.10.0/i86pc-solaris-64int/auto/DBD/SQLite/SQLite.so mode=0555
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/DBD/SQLite.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/DBD/SQLite/Cookbook.pod
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/DBD/SQLite/.packlist
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/DBD/SQLite/SQLite.bs
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/DBD/SQLite/SQLite.so mode=0555
 depend fmri=runtime-perl-510@$(PKGVERS) type=require
 depend fmri=database-sqlite-3@$(PKGVERS) type=require
