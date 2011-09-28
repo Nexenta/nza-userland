@@ -1,0 +1,125 @@
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+# Copyright (c) 2011, Oracle and/or its affiliates. All rights reserved.
+#
+
+set name=pkg.fmri value=pkg:/library/perl-5/xml-libxml@$(PKGVERS)
+set name=info.classification value=org.opensolaris.category.2008:Development/Perl
+set name=variant.arch value=$(ARCH)
+set name=variant.opensolaris.zone value=global value=nonglobal
+set name=description value="XML-LibXML PERL modules"
+set name=pkg.description value="XML-LibXML PERL modules"
+set name=pkg.summary value="XML-LibXML PERL modules"
+dir path=usr
+dir path=usr/perl5
+dir path=usr/perl5/5.10.0
+dir path=usr/perl5/5.10.0/lib
+dir path=usr/perl5/5.10.0/lib/i86pc-solaris-64int
+dir path=usr/perl5/5.10.0/man
+dir path=usr/perl5/5.10.0/man/man3
+dir path=usr/perl5/vendor_perl
+dir path=usr/perl5/vendor_perl/5.10.0
+dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int
+dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/XML
+dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/XML/LibXML
+dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/XML/LibXML/SAX
+dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto
+dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/XML
+dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/XML/LibXML
+file path=usr/perl5/5.10.0/lib/i86pc-solaris-64int/perllocal.pod
+file path=usr/perl5/5.10.0/man/man3/XML::LibXML.3
+file path=usr/perl5/5.10.0/man/man3/XML::LibXML::Attr.3
+file path=usr/perl5/5.10.0/man/man3/XML::LibXML::Boolean.3
+file path=usr/perl5/5.10.0/man/man3/XML::LibXML::CDATASection.3
+file path=usr/perl5/5.10.0/man/man3/XML::LibXML::Comment.3
+file path=usr/perl5/5.10.0/man/man3/XML::LibXML::Common.3
+file path=usr/perl5/5.10.0/man/man3/XML::LibXML::DOM.3
+file path=usr/perl5/5.10.0/man/man3/XML::LibXML::Document.3
+file path=usr/perl5/5.10.0/man/man3/XML::LibXML::DocumentFragment.3
+file path=usr/perl5/5.10.0/man/man3/XML::LibXML::Dtd.3
+file path=usr/perl5/5.10.0/man/man3/XML::LibXML::Element.3
+file path=usr/perl5/5.10.0/man/man3/XML::LibXML::ErrNo.3
+file path=usr/perl5/5.10.0/man/man3/XML::LibXML::Error.3
+file path=usr/perl5/5.10.0/man/man3/XML::LibXML::InputCallback.3
+file path=usr/perl5/5.10.0/man/man3/XML::LibXML::Literal.3
+file path=usr/perl5/5.10.0/man/man3/XML::LibXML::Namespace.3
+file path=usr/perl5/5.10.0/man/man3/XML::LibXML::Node.3
+file path=usr/perl5/5.10.0/man/man3/XML::LibXML::NodeList.3
+file path=usr/perl5/5.10.0/man/man3/XML::LibXML::Number.3
+file path=usr/perl5/5.10.0/man/man3/XML::LibXML::PI.3
+file path=usr/perl5/5.10.0/man/man3/XML::LibXML::Parser.3
+file path=usr/perl5/5.10.0/man/man3/XML::LibXML::Pattern.3
+file path=usr/perl5/5.10.0/man/man3/XML::LibXML::Reader.3
+file path=usr/perl5/5.10.0/man/man3/XML::LibXML::RegExp.3
+file path=usr/perl5/5.10.0/man/man3/XML::LibXML::RelaxNG.3
+file path=usr/perl5/5.10.0/man/man3/XML::LibXML::SAX.3
+file path=usr/perl5/5.10.0/man/man3/XML::LibXML::SAX::Builder.3
+file path=usr/perl5/5.10.0/man/man3/XML::LibXML::SAX::Generator.3
+file path=usr/perl5/5.10.0/man/man3/XML::LibXML::Schema.3
+file path=usr/perl5/5.10.0/man/man3/XML::LibXML::Text.3
+file path=usr/perl5/5.10.0/man/man3/XML::LibXML::XPathContext.3
+file path=usr/perl5/5.10.0/man/man3/XML::LibXML::XPathExpression.3
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/XML/LibXML.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/XML/LibXML.pod
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/XML/LibXML/Attr.pod
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/XML/LibXML/Boolean.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/XML/LibXML/CDATASection.pod
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/XML/LibXML/Comment.pod
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/XML/LibXML/Common.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/XML/LibXML/Common.pod
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/XML/LibXML/DOM.pod
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/XML/LibXML/Document.pod
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/XML/LibXML/DocumentFragment.pod
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/XML/LibXML/Dtd.pod
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/XML/LibXML/Element.pod
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/XML/LibXML/ErrNo.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/XML/LibXML/ErrNo.pod
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/XML/LibXML/Error.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/XML/LibXML/Error.pod
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/XML/LibXML/InputCallback.pod
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/XML/LibXML/Literal.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/XML/LibXML/Namespace.pod
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/XML/LibXML/Node.pod
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/XML/LibXML/NodeList.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/XML/LibXML/Number.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/XML/LibXML/PI.pod
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/XML/LibXML/Parser.pod
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/XML/LibXML/Pattern.pod
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/XML/LibXML/Reader.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/XML/LibXML/Reader.pod
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/XML/LibXML/RegExp.pod
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/XML/LibXML/RelaxNG.pod
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/XML/LibXML/SAX.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/XML/LibXML/SAX.pod
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/XML/LibXML/SAX/Builder.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/XML/LibXML/SAX/Builder.pod
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/XML/LibXML/SAX/Generator.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/XML/LibXML/SAX/Parser.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/XML/LibXML/Schema.pod
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/XML/LibXML/Text.pod
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/XML/LibXML/XPathContext.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/XML/LibXML/XPathContext.pod
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/XML/LibXML/XPathExpression.pod
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/XML/LibXML/.packlist
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/XML/LibXML/LibXML.bs
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/XML/LibXML/LibXML.so mode=0555
+depend fmri=runtime-perl-510@$(PKGVERS) type=require
+depend fmri=library-libxml2@$(PKGVERS) type=require
