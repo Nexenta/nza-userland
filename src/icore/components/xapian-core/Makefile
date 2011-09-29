@@ -20,31 +20,34 @@
 #
 # Copyright (c) 2011, Oracle and/or its affiliates. All rights reserved.
 #
+include ../../make-rules/shared-macros.mk
 
-include ../../../make-rules/shared-macros.mk
-
-COMPONENT_NAME=		DBD-SQLite
-COMPONENT_VERSION=	1.29
+COMPONENT_NAME=		xapian-core
+COMPONENT_VERSION=	1.2.3
 COMPONENT_SRC=		$(COMPONENT_NAME)-$(COMPONENT_VERSION)
 COMPONENT_ARCHIVE=	$(COMPONENT_SRC).tar.gz
-COMPONENT_ARCHIVE_HASH=	sha1:915ab4f6abcdbcf4089e1e290e92ed773092db40
-COMPONENT_ARCHIVE_URL=	http://www.cpan.org/authors/id/A/AD/ADAMK/$(COMPONENT_ARCHIVE)
-COMPONENT_PROJECT_URL=	http://search.cpan.org/~adamk/
+COMPONENT_ARCHIVE_HASH=	sha1:abc0c5d22e6f77c757976719a590580c068ae894
+COMPONENT_ARCHIVE_URL=	http://oligarchy.co.uk/xapian/$(COMPONENT_VERSION)/$(COMPONENT_ARCHIVE)
 
-include $(WS_TOP)/make-rules/prep.mk
-include $(WS_TOP)/make-rules/ips.mk
-include $(WS_TOP)/make-rules/makemaker.mk
+include ../../make-rules/prep.mk
+include ../../make-rules/configure.mk
+include ../../make-rules/ips.mk
 
 COMPILER = gcc
-CONFIGURE_OPTIONS<----->+=CC=cc
+CONFIGURE_OPTIONS	+=CC=cc
+CONFIGURE_OPTIONS	+=CXX=
 
+CONFIGURE_PREFIX	=/usr
+CONFIGURE_OPTIONS	+=--disable-static
+CONFIGURE_OPTIONS	+=--enable-shared
+
+# common targets
 build:		$(BUILD_32)
 
 install:	$(INSTALL_32)
 
-COMPONENT_TEST_TARGETS = test
 test:		$(TEST_32)
 
-BUILD_PKG_DEPENDENCIES =        $(BUILD_TOOLS)
+BUILD_PKG_DEPENDENCIES =	$(BUILD_TOOLS)
 
-include $(WS_TOP)/make-rules/depend.mk
+include ../../make-rules/depend.mk

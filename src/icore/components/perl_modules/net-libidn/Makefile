@@ -37,6 +37,9 @@ include $(WS_TOP)/make-rules/makemaker.mk
 
 CONFIGURE_OPTIONS += --with-libidn-inc=/usr/include/idn
 
+COMPILER = gcc
+CONFIGURE_OPTIONS<----->+=CC=cc
+
 build:		$(BUILD_32)
 
 install:	$(INSTALL_32)

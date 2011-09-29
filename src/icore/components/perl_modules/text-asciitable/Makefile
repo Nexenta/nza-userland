@@ -37,6 +37,9 @@ include $(WS_TOP)/make-rules/makemaker.mk
 
 COMPONENT_INSTALL_TARGETS=	install
 
+COMPILER = gcc
+CONFIGURE_OPTIONS<----->+=CC=cc
+
 build:		$(BUILD_32)
 
 install:	$(INSTALL_32)

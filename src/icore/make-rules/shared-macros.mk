@@ -223,8 +223,7 @@ CXX.gcc.32 =	$(GCC_ROOT)/bin/g++
 CC.gcc.64 =	$(GCC_ROOT)/bin/gcc
 CXX.gcc.64 =	$(GCC_ROOT)/bin/g++
 
-#CC =		$(CC.$(COMPILER).$(BITS))
-CC =		/usr/gnu/bin/cc
+CC =		$(CC.$(COMPILER).$(BITS))
 
 CXX =		$(CXX.$(COMPILER).$(BITS))
 

@@ -42,7 +42,7 @@ BUILD_32 =	$(PERL_VERSIONS:%=$(PERLBD_ARCH)-%/.built)
 INSTALL_32 =	$(BUILD_32:%/.built=%/.installed)
 TEST_32 =	$(BUILD_32:%/.built=%/.tested)
 
-STUDIOFLAGS_GCC_PERL_FIX=	(cd $(@D); grep -v '^CCCDLFLAGS =' Makefile > Makefile.tmp; \
+STUDIOFLAGS_GCC_PERL_FIX=	(cd $(@D); /usr/gnu/bin/sed 's/^CCCDLFLAGS = -KPIC/^CCCDLFLAGS = -fPIC/' Makefile > Makefile.tmp; \
 	grep -v '^OPTIMIZE =' Makefile.tmp > Makefile)
 
 
