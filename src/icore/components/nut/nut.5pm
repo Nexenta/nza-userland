@@ -1,0 +1,174 @@
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+# Copyright (c) 2011, Oracle and/or its affiliates. All rights reserved.
+#
+
+set name=pkg.fmri value=pkg:/network/nut@$(PKGVERS)
+set name=info.classification value=org.opensolaris.category.2008:Applications/Internet
+set name=variant.arch value=$(ARCH)
+set name=variant.opensolaris.zone value=global value=nonglobal
+set name=description value="Network UPS Tools"
+set name=pkg.description value="Network UPS Tools"
+set name=pkg.summary value="Network UPS Tools"
+dir path=usr
+dir path=usr/bin
+dir path=usr/cgi-bin
+dir path=usr/etc
+dir path=usr/html
+dir path=usr/include
+dir path=usr/lib
+dir path=usr/lib/pkgconfig
+dir path=usr/sbin
+dir path=usr/share
+dir path=usr/share/man
+dir path=usr/share/man/man1
+dir path=usr/share/man/man3
+dir path=usr/share/man/man5
+dir path=usr/share/man/man8
+file path=usr/bin/apcsmart mode=0555
+file path=usr/bin/apcsmart-old mode=0555
+file path=usr/bin/bcmxcp mode=0555
+file path=usr/bin/bcmxcp_usb mode=0555
+file path=usr/bin/belkin mode=0555
+file path=usr/bin/belkinunv mode=0555
+file path=usr/bin/bestfcom mode=0555
+file path=usr/bin/bestfortress mode=0555
+file path=usr/bin/bestuferrups mode=0555
+file path=usr/bin/bestups mode=0555
+file path=usr/bin/blazer_ser mode=0555
+file path=usr/bin/blazer_usb mode=0555
+file path=usr/bin/clone mode=0555
+file path=usr/bin/clone-outlet mode=0555
+file path=usr/bin/dummy-ups mode=0555
+file path=usr/bin/etapro mode=0555
+file path=usr/bin/everups mode=0555
+file path=usr/bin/gamatronic mode=0555
+file path=usr/bin/genericups mode=0555
+file path=usr/bin/isbmex mode=0555
+file path=usr/bin/ivtscd mode=0555
+file path=usr/bin/liebert mode=0555
+file path=usr/bin/liebert-esp2 mode=0555
+file path=usr/bin/masterguard mode=0555
+file path=usr/bin/metasys mode=0555
+file path=usr/bin/mge-shut mode=0555
+file path=usr/bin/mge-utalk mode=0555
+file path=usr/bin/microdowell mode=0555
+file path=usr/bin/newmge-shut mode=0555
+file path=usr/bin/nut-scanner mode=0555
+file path=usr/bin/oneac mode=0555
+file path=usr/bin/optiups mode=0555
+file path=usr/bin/powercom mode=0555
+file path=usr/bin/powerpanel mode=0555
+file path=usr/bin/rhino mode=0555
+file path=usr/bin/richcomm_usb mode=0555
+file path=usr/bin/safenet mode=0555
+file path=usr/bin/skel mode=0555
+file path=usr/bin/solis mode=0555
+file path=usr/bin/tripplite mode=0555
+file path=usr/bin/tripplite_usb mode=0555
+file path=usr/bin/tripplitesu mode=0555
+file path=usr/bin/upsc mode=0555
+file path=usr/bin/upscmd mode=0555
+file path=usr/bin/upscode2 mode=0555
+file path=usr/bin/upsdrvctl mode=0555
+file path=usr/bin/upslog mode=0555
+file path=usr/bin/upsrw mode=0555
+file path=usr/bin/upssched-cmd mode=0555
+file path=usr/bin/usbhid-ups mode=0555
+file path=usr/bin/victronups mode=0555
+file path=usr/etc/nut.conf.sample
+file path=usr/etc/ups.conf.sample
+file path=usr/etc/upsd.conf.sample
+file path=usr/etc/upsd.users.sample
+file path=usr/etc/upsmon.conf.sample
+file path=usr/etc/upssched.conf.sample
+file path=usr/lib/libnutscan.a
+file path=usr/lib/libnutscan.la
+file path=usr/lib/libnutscan.so.1.0.0 mode=0555
+file path=usr/lib/libupsclient.a
+file path=usr/lib/libupsclient.la
+file path=usr/lib/libupsclient.so.1.0.0 mode=0555
+file path=usr/sbin/upsd mode=0555
+file path=usr/sbin/upsmon mode=0555
+file path=usr/sbin/upssched mode=0555
+file path=usr/share/cmdvartab mode=0555
+file path=usr/share/driver.list
+file path=usr/share/man/man5/nut.conf.5
+file path=usr/share/man/man5/ups.conf.5
+file path=usr/share/man/man5/upsd.conf.5
+file path=usr/share/man/man5/upsd.users.5
+file path=usr/share/man/man5/upsmon.conf.5
+file path=usr/share/man/man5/upssched.conf.5
+file path=usr/share/man/man8/apcsmart-old.8
+file path=usr/share/man/man8/apcsmart.8
+file path=usr/share/man/man8/bcmxcp.8
+file path=usr/share/man/man8/bcmxcp_usb.8
+file path=usr/share/man/man8/belkin.8
+file path=usr/share/man/man8/belkinunv.8
+file path=usr/share/man/man8/bestfcom.8
+file path=usr/share/man/man8/bestfortress.8
+file path=usr/share/man/man8/bestuferrups.8
+file path=usr/share/man/man8/bestups.8
+file path=usr/share/man/man8/blazer.8
+file path=usr/share/man/man8/clone.8
+file path=usr/share/man/man8/dummy-ups.8
+file path=usr/share/man/man8/etapro.8
+file path=usr/share/man/man8/everups.8
+file path=usr/share/man/man8/gamatronic.8
+file path=usr/share/man/man8/genericups.8
+file path=usr/share/man/man8/isbmex.8
+file path=usr/share/man/man8/ivtscd.8
+file path=usr/share/man/man8/liebert-esp2.8
+file path=usr/share/man/man8/liebert.8
+file path=usr/share/man/man8/masterguard.8
+file path=usr/share/man/man8/metasys.8
+file path=usr/share/man/man8/mge-shut.8
+file path=usr/share/man/man8/mge-utalk.8
+file path=usr/share/man/man8/microdowell.8
+file path=usr/share/man/man8/nut-scanner.8
+file path=usr/share/man/man8/nutupsdrv.8
+file path=usr/share/man/man8/oneac.8
+file path=usr/share/man/man8/optiups.8
+file path=usr/share/man/man8/powercom.8
+file path=usr/share/man/man8/powerpanel.8
+file path=usr/share/man/man8/rhino.8
+file path=usr/share/man/man8/richcomm_usb.8
+file path=usr/share/man/man8/safenet.8
+file path=usr/share/man/man8/solis.8
+file path=usr/share/man/man8/tripplite.8
+file path=usr/share/man/man8/tripplite_usb.8
+file path=usr/share/man/man8/tripplitesu.8
+file path=usr/share/man/man8/upsc.8
+file path=usr/share/man/man8/upscmd.8
+file path=usr/share/man/man8/upscode2.8
+file path=usr/share/man/man8/upsd.8
+file path=usr/share/man/man8/upsdrvctl.8
+file path=usr/share/man/man8/upslog.8
+file path=usr/share/man/man8/upsmon.8
+file path=usr/share/man/man8/upsrw.8
+file path=usr/share/man/man8/upssched.8
+file path=usr/share/man/man8/usbhid-ups.8
+file path=usr/share/man/man8/victronups.8
+link path=usr/lib/libnutscan.so target=libnutscan.so.1.0.0
+link path=usr/lib/libnutscan.so.1 target=libnutscan.so.1.0.0
+link path=usr/lib/libupsclient.so target=libupsclient.so.1.0.0
+link path=usr/lib/libupsclient.so.1 target=libupsclient.so.1.0.0
+depend fmri=system-library@$(PKGVERS) type=require
