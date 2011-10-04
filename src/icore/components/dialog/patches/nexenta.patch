@@ -1,0 +1,126 @@
+--- dialog-1.1-20100428.orig/dialog.c	2010-01-18 12:21:14.000000000 +0300
++++ dialog-1.1-20100428/dialog.c	2011-10-04 18:19:02.000000000 +0400
+@@ -93,8 +93,10 @@
+     ,o_no_collapse
+     ,o_no_cr_wrap
+     ,o_no_kill
++    ,o_no_escape
+     ,o_no_label
+     ,o_no_lines
++    ,o_no_signals
+     ,o_no_shadow
+     ,o_nocancel
+     ,o_noitem
+@@ -230,6 +232,8 @@
+     { "msgbox",		o_msgbox,		2, "<text> <height> <width>" },
+     { "no-cancel",	o_nocancel,		1, "" },
+     { "no-close",	o_no_close,		1, NULL },
++    { "no-signals",	o_no_signals,		1, "" },
++    { "no-escape",	o_no_escape,		1, "" },
+     { "no-collapse",	o_no_collapse,		1, "" },
+     { "no-cr-wrap",	o_no_cr_wrap,		1, NULL },
+     { "no-kill",	o_no_kill,		1, "" },
+@@ -1232,9 +1236,15 @@
+ 	case o_no_kill:
+ 	    dialog_vars.cant_kill = TRUE;
+ 	    break;
++	case o_no_escape:
++	    dialog_vars.no_escape = TRUE;
++	    break;
+ 	case o_nocancel:
+ 	    dialog_vars.nocancel = TRUE;
+ 	    break;
++	case o_no_signals:
++	    dialog_vars.no_signals = TRUE;
++	    break;
+ 	case o_nook:
+ 	    dialog_vars.nook = TRUE;
+ 	    break;
+@@ -1638,7 +1648,14 @@
+ 		    have - 1);
+ 	    Usage(temp);
+ 	}
+-
++	
++	 if (dialog_vars.no_signals) {
++		signal(SIGHUP,SIG_IGN);
++		signal(SIGINT,SIG_IGN);
++		signal(SIGTERM,SIG_IGN);
++		signal(SIGPIPE,SIG_IGN);
++	}
++	
+ 	/*
+ 	 * Trim whitespace from non-title option values, e.g., the ones that
+ 	 * will be used as captions or prompts.   Do that only for the widget
+@@ -1704,6 +1721,7 @@
+     dlg_killall_bg(&retval);
+     if (dialog_state.screen_initialized) {
+ 	(void) refresh();
++	 if (!(getenv("KEEP_COLORS") && !strcmp(getenv("KEEP_COLORS"), "1")))
+ 	end_dialog();
+     }
+     dlg_exit(retval);
+--- dialog-1.1-20100428.orig/dialog.h	2010-04-29 01:11:49.000000000 +0400
++++ dialog-1.1-20100428/dialog.h	2011-10-04 18:16:48.000000000 +0400
+@@ -412,6 +412,8 @@
+     bool insecure;		/* option "--insecure" */
+     bool item_help;		/* option "--item-help" */
+     bool keep_window;		/* option "--keep-window" */
++    bool no_signals;		/* option "--no-signals" */
++    bool no_escape;		/* option "--no-escape" */
+     bool nocancel;		/* option "--no-cancel" */
+     bool nocollapse;		/* option "--no-collapse" */
+     bool print_siz;		/* option "--print-size" */
+--- dialog-1.1-20100428.orig/dlg_keys.c	2009-02-22 19:19:51.000000000 +0300
++++ dialog-1.1-20100428/dlg_keys.c	2011-10-04 18:09:57.000000000 +0400
+@@ -270,8 +270,10 @@
+ 	    }
+ 	    break;
+ 	case DLGK_ESC:
++	    if (!dialog_vars.no_escape) {
+ 	    *resultp = DLG_EXIT_ESC;
+ 	    done = TRUE;
++	    }
+ 	    break;
+ 	default:
+ 	    break;
+@@ -279,8 +281,10 @@
+     } else
+ #endif
+     if (dialog_key == ESC) {
+-	*resultp = DLG_EXIT_ESC;
+-	done = TRUE;
++	if (!dialog_vars.no_escape) {
++	    *resultp = DLG_EXIT_ESC;
++	    done = TRUE;
++	}
+     } else if (dialog_key == ERR) {
+ 	*resultp = DLG_EXIT_ERROR;
+ 	done = TRUE;
+--- dialog-1.1-20100428.orig/tailbox.c	2010-04-29 00:52:20.000000000 +0400
++++ dialog-1.1-20100428/tailbox.c	2011-10-04 18:10:50.000000000 +0400
+@@ -236,9 +236,11 @@
+ 	    }
+ 	    break;
+ 	case ESC:
++	    if (!dialog_vars.no_escape) {
+ 	    done = TRUE;
+ 	    *result = DLG_EXIT_ESC;
+ 	    break;
++	}    
+ 	default:
+ 	    beep();
+ 	    break;
+--- dialog-1.1-20100428.orig/textbox.c	2010-04-29 01:03:44.000000000 +0400
++++ dialog-1.1-20100428/textbox.c	2011-10-04 18:07:45.000000000 +0400
+@@ -517,7 +517,10 @@
+ 		    continue;
+ 		}
+ 	    } else if (key == ESC) {
++		if (!dialog_vars.no_escape) {
+ 		result = DLG_EXIT_ESC;
++		break;
++		}
+ 		continue;
+ 	    } else if (key == ERR) {
+ 		napms(50);
