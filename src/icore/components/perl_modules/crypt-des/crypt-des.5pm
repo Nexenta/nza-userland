@@ -42,7 +42,6 @@ dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Crypt
 dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto
 dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/Crypt
 dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/Crypt/DES
-file path=usr/perl5/5.10.0/lib/i86pc-solaris-64int/perllocal.pod
 file path=usr/perl5/5.10.0/man/man3/Crypt::DES.3
 file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Crypt/DES.pm
 file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/Crypt/DES/.packlist

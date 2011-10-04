@@ -54,7 +54,6 @@ file path=usr/perl5/5.10.0/bin/parl mode=0555
 file path=usr/perl5/5.10.0/bin/parldyn mode=0555
 file path=usr/perl5/5.10.0/bin/pp mode=0555
 file path=usr/perl5/5.10.0/bin/tkpp mode=0555
-file path=usr/perl5/5.10.0/lib/i86pc-solaris-64int/perllocal.pod
 file path=usr/perl5/5.10.0/man/man1/par.pl.1
 file path=usr/perl5/5.10.0/man/man1/parl.1
 file path=usr/perl5/5.10.0/man/man1/pp.1

@@ -49,7 +49,6 @@ file path=usr/perl5/5.10.0/bin/assemble mode=0555
 file path=usr/perl5/5.10.0/bin/cc_harness mode=0555
 file path=usr/perl5/5.10.0/bin/disassemble mode=0555
 file path=usr/perl5/5.10.0/bin/perlcc mode=0555
-file path=usr/perl5/5.10.0/lib/i86pc-solaris-64int/perllocal.pod
 file path=usr/perl5/5.10.0/man/man1/assemble.1
 file path=usr/perl5/5.10.0/man/man1/disassemble.1
 file path=usr/perl5/5.10.0/man/man1/perlcc.1

@@ -42,7 +42,6 @@ dir path=usr/perl5/vendor_perl/5.10.0/PAR
 dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int
 dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto
 dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/PAR
-file path=usr/perl5/5.10.0/lib/i86pc-solaris-64int/perllocal.pod
 file path=usr/perl5/5.10.0/man/man3/PAR.3
 file path=usr/perl5/5.10.0/man/man3/PAR::Environment.3
 file path=usr/perl5/5.10.0/man/man3/PAR::FAQ.3

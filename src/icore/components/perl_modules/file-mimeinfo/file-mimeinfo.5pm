@@ -47,7 +47,6 @@ dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/File
 dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/File/MimeInfo
 file path=usr/perl5/5.10.0/bin/mimeopen mode=0555
 file path=usr/perl5/5.10.0/bin/mimetype mode=0555
-file path=usr/perl5/5.10.0/lib/i86pc-solaris-64int/perllocal.pod
 file path=usr/perl5/5.10.0/man/man1/mimeopen.1
 file path=usr/perl5/5.10.0/man/man1/mimetype.1
 file path=usr/perl5/5.10.0/man/man3/File::MimeInfo.3

@@ -42,7 +42,6 @@ dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/DBD/SQLite
 dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto
 dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/DBD
 dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/DBD/SQLite
-file path=usr/perl5/5.10.0/lib/i86pc-solaris-64int/perllocal.pod
 file path=usr/perl5/5.10.0/man/man3/DBD::SQLite.3
 file path=usr/perl5/5.10.0/man/man3/DBD::SQLite::Cookbook.3
 file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/DBD/SQLite.pm

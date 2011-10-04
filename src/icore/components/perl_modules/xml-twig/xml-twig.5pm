@@ -50,7 +50,6 @@ file path=usr/perl5/5.10.0/bin/xml_merge mode=0555
 file path=usr/perl5/5.10.0/bin/xml_pp mode=0555
 file path=usr/perl5/5.10.0/bin/xml_spellcheck mode=0555
 file path=usr/perl5/5.10.0/bin/xml_split mode=0555
-file path=usr/perl5/5.10.0/lib/i86pc-solaris-64int/perllocal.pod
 file path=usr/perl5/5.10.0/man/man1/xml_grep.1
 file path=usr/perl5/5.10.0/man/man1/xml_merge.1
 file path=usr/perl5/5.10.0/man/man1/xml_pp.1

@@ -47,7 +47,6 @@ dir path=usr/perl5/vendor_perl/5.10.0/auto/Mail/Util
 dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int
 dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto
 dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/Mail
-file path=usr/perl5/5.10.0/lib/i86pc-solaris-64int/perllocal.pod
 file path=usr/perl5/5.10.0/man/man3/Mail::Address.3
 file path=usr/perl5/5.10.0/man/man3/Mail::Cap.3
 file path=usr/perl5/5.10.0/man/man3/Mail::Field.3

@@ -45,7 +45,6 @@ dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int
 dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto
 dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/XML
 dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/XML/SAX
-file path=usr/perl5/5.10.0/lib/i86pc-solaris-64int/perllocal.pod
 file path=usr/perl5/5.10.0/man/man3/XML::SAX.3
 file path=usr/perl5/5.10.0/man/man3/XML::SAX::DocumentLocator.3
 file path=usr/perl5/5.10.0/man/man3/XML::SAX::Intro.3

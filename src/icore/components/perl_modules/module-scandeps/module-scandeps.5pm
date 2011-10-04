@@ -46,7 +46,6 @@ dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto
 dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/Module
 dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/Module/ScanDeps
 file path=usr/perl5/5.10.0/bin/scandeps.pl mode=0555
-file path=usr/perl5/5.10.0/lib/i86pc-solaris-64int/perllocal.pod
 file path=usr/perl5/5.10.0/man/man1/scandeps.pl.1
 file path=usr/perl5/5.10.0/man/man3/Module::ScanDeps.3
 file path=usr/perl5/vendor_perl/5.10.0/Module/ScanDeps.pm

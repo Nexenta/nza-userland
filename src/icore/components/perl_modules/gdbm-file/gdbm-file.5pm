@@ -38,7 +38,6 @@ dir path=usr/perl5/vendor_perl/5.10.0
 dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int
 dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto
 dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/GDBM_File
-file path=usr/perl5/5.10.0/lib/i86pc-solaris-64int/perllocal.pod
 file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/GDBM_File.pm
 file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/GDBM_File/.packlist
 file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/GDBM_File/GDBM_File.bs

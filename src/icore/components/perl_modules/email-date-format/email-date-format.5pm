@@ -45,7 +45,6 @@ dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto
 dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/Email
 dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/Email/Date
 dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/Email/Date/Format
-file path=usr/perl5/5.10.0/lib/i86pc-solaris-64int/perllocal.pod
 file path=usr/perl5/5.10.0/man/man3/Email::Date::Format.3
 file path=usr/perl5/vendor_perl/5.10.0/Email/Date/Format.pm
 file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/Email/Date/Format/.packlist
