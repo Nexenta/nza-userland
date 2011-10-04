@@ -1,0 +1,65 @@
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+# Copyright (c) 2011, Oracle and/or its affiliates. All rights reserved.
+#
+
+set name=pkg.fmri value=pkg:/library/perl-5/file-mimeinfo@$(PKGVERS)
+set name=info.classification value=org.opensolaris.category.2008:Development/Perl
+set name=variant.arch value=$(ARCH)
+set name=variant.opensolaris.zone value=global value=nonglobal
+set name=description value="File-MimeInfo PERL module"
+set name=pkg.description value="File-MimeInfo PERL module"
+set name=pkg.summary value="File-MimeInfo PERL module"
+dir path=usr
+dir path=usr/perl5
+dir path=usr/perl5/5.10.0
+dir path=usr/perl5/5.10.0/bin
+dir path=usr/perl5/5.10.0/lib
+dir path=usr/perl5/5.10.0/lib/i86pc-solaris-64int
+dir path=usr/perl5/5.10.0/man
+dir path=usr/perl5/5.10.0/man/man1
+dir path=usr/perl5/5.10.0/man/man3
+dir path=usr/perl5/vendor_perl
+dir path=usr/perl5/vendor_perl/5.10.0
+dir path=usr/perl5/vendor_perl/5.10.0/File
+dir path=usr/perl5/vendor_perl/5.10.0/File/MimeInfo
+dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int
+dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto
+dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/File
+dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/File/MimeInfo
+file path=usr/perl5/5.10.0/bin/mimeopen mode=0555
+file path=usr/perl5/5.10.0/bin/mimetype mode=0555
+file path=usr/perl5/5.10.0/lib/i86pc-solaris-64int/perllocal.pod
+file path=usr/perl5/5.10.0/man/man1/mimeopen.1
+file path=usr/perl5/5.10.0/man/man1/mimetype.1
+file path=usr/perl5/5.10.0/man/man3/File::MimeInfo.3
+file path=usr/perl5/5.10.0/man/man3/File::MimeInfo::Applications.3
+file path=usr/perl5/5.10.0/man/man3/File::MimeInfo::Cookbook.3
+file path=usr/perl5/5.10.0/man/man3/File::MimeInfo::Magic.3
+file path=usr/perl5/5.10.0/man/man3/File::MimeInfo::Rox.3
+file path=usr/perl5/vendor_perl/5.10.0/File/MimeInfo.pm
+file path=usr/perl5/vendor_perl/5.10.0/File/MimeInfo/Applications.pm
+file path=usr/perl5/vendor_perl/5.10.0/File/MimeInfo/Cookbook.pod
+file path=usr/perl5/vendor_perl/5.10.0/File/MimeInfo/Magic.pm
+file path=usr/perl5/vendor_perl/5.10.0/File/MimeInfo/Rox.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/File/MimeInfo/.packlist
+depend fmri=runtime-perl-510@$(PKGVERS) type=require
+depend fmri=library-perl-5-file-basedir@$(PKGVERS) type=require
