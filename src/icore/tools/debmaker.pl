@@ -91,6 +91,17 @@ sub shell_exec {
     }
 }
 
+sub write_file {
+    my ($filename, $content) = @_;
+    blab "Writing file `$filename'";
+    if (open FD, '>', $filename) {
+        print FD $content;
+        close FD;
+    } else {
+        fatal "Can't write to file `$filename': $!"
+    }
+}
+
 sub get_output {
     my ($cmd) = @_;
     if (open OUT, "$cmd |") {
@@ -180,6 +191,7 @@ sub parse_keys {
     # 'name' => pkg.summary
     # 'value' => "advanced text-mode WWW browser"
     # http://stackoverflow.com/questions/168171/regular-expression-for-parsing-name-value-pairs
+    # TODO: add support for dublicates: dir=dir1 dir=dir2
     my %pairs = ($line =~ m/((?:\\.|[^= ]+)*)=("(?:\\.|[^"\\]+)*"|(?:\\.|[^ "\\]+)*)/g);
     foreach my $k (keys %pairs) {
         $pairs{$k} =~ s/^"(.+)"$/$1/;
@@ -261,7 +273,7 @@ sub get_debpkg_names {
 #                elinks
     my ($fmri) = @_;
     my @names = ();
-    if ($fmri =~ m,^pkg:/([^@]+)@.+$,) {
+    if ($fmri =~ m,^(?:pkg:/)?([^@]+)(?:@.+)?$,) {
         my $pkg = $1;
         my @parts = split /\//, $pkg;
         while (@parts) {
@@ -270,7 +282,7 @@ sub get_debpkg_names {
         }
         return @names;
     } else {
-        fatal "Can't parse FMRI: `$fmri'";
+        fatal "Can't parse FMRI to get dpkg name: `$fmri'";
     }
 }
 
@@ -280,10 +292,10 @@ sub get_ips_version {
     my ($fmri) = @_;
     if ($fmri =~ m,^pkg:/[^@]+@(.+)$,) {
         my $ips = $1;
-        $ips =~ s/,/-/g;
+        $ips =~ s/[,:]/-/g;
         return $ips;
     } else {
-        fatal "Can't parse FMRI: `$fmri'";
+        fatal "Can't parse FMRI to get IPS version: `$fmri'";
     }
 }
 
@@ -460,6 +472,7 @@ foreach my $manifest_file (@ARGV) {
         # what are the owner, permissions?
         # multiple licenses?
     }
+    my $installed_size = get_dir_size($pkgdir);
 
     my @depends = ();
     my @predepends = ();
@@ -486,49 +499,36 @@ foreach my $manifest_file (@ARGV) {
     uniq \@conflicts;
 
 
-    blab "Writing DEBIAN/control ...";
-    my $installed_size = get_dir_size($pkgdir);
+    my $control = '';
+    $control .= "Package: $debname\n";
+    $control .= "Version: $debversion\n";
+    $control .= 'Section: ' . get_pkg_section($debname) . "\n";
+    $control .= "Maintainer: $MAINTAINER\n";
+    $control .= "Architecture: $ARCH\n";
+
+    $control .= "Description: $$manifest_data{'pkg.summary'}\n";
+    $control .= wrap(' ', ' ', $$manifest_data{'pkg.description'}) . "\n"
+        if exists $$manifest_data{'pkg.description'};
+
+    $control .= "Provides: $provides_str\n";
+    $control .= 'Depends: ' . join(', ', @depends) . "\n" if @depends;
+    $control .= 'Pre-Depends: ' . join(', ', @predepends) . "\n" if @predepends;
+    $control .= 'Recommends: ' . join(', ', @recommends) . "\n" if @recommends;
+    $control .= 'Conflicts: ' . join(', ', @conflicts) . "\n" if @conflicts;
+    $control .= "Installed-Size: $installed_size\n";
+
+    $control .= "Origin: $$manifest_data{'info.upstream_url'}\n"
+        if exists $$manifest_data{'info.upstream_url'};
+    $control .= "X-Source-URL: $$manifest_data{'info.source_url'}\n"
+        if exists $$manifest_data{'info.source_url'};
+    $control .= "X-FMRI: $$manifest_data{'pkg.fmri'}\n";
+
     my_mkdir "$pkgdir/DEBIAN";
-    if (open CONTROL, '>', "$pkgdir/DEBIAN/control") {
-        print CONTROL "Package: $debname\n";
-        print CONTROL "Version: $debversion\n";
-        print CONTROL 'Section: ', get_pkg_section($debname), "\n";
-        print CONTROL "Maintainer: $MAINTAINER\n";
-        print CONTROL "Architecture: $ARCH\n";
 
-        print CONTROL "Description: $$manifest_data{'pkg.summary'}\n";
-        print CONTROL wrap(' ', ' ', $$manifest_data{'pkg.description'}), "\n"
-            if exists $$manifest_data{'pkg.description'};
-
-        print CONTROL "Provides: $provides_str\n";
-        print CONTROL 'Depends: ', join(', ', @depends), "\n" if @depends;
-        print CONTROL 'Pre-Depends: ', join(', ', @predepends), "\n" if @predepends;
-        print CONTROL 'Recommends: ', join(', ', @recommends), "\n" if @recommends;
-        print CONTROL 'Conflicts: ', join(', ', @conflicts), "\n" if @conflicts;
-        print CONTROL "Installed-Size: $installed_size\n";
-
-        print CONTROL "Origin: $$manifest_data{'info.upstream_url'}\n"
-            if exists $$manifest_data{'info.upstream_url'};
-        print CONTROL "X-Source-URL: $$manifest_data{'info.source_url'}\n"
-            if exists $$manifest_data{'info.source_url'};
-        print CONTROL "X-FMRI: $$manifest_data{'pkg.fmri'}\n";
-
-        close CONTROL;
-    } else {
-        fatal "Can't write to `$pkgdir/DEBIAN/control': $!"
-    }
+    write_file "$pkgdir/DEBIAN/control", $control;
 
     if (@conffiles) {
-        blab "Writing DEBIAN/conffiles ...";
-        if (open CONFFILES, '>', "$pkgdir/DEBIAN/conffiles") {
-            foreach my $f (@conffiles) {
-                print CONFFILES "$f\n";
-                blab "conffile: $f";
-            }
-            close CONFFILES;
-        } else {
-            fatal "Can't write to `$pkgdir/DEBIAN/conffiles': $!"
-        }
+       write_file "$pkgdir/DEBIAN/conffiles", (join "\n", @conffiles);
     }
 
     my $pkg_deb = "${pkgdir}_${debversion}_${ARCH}.deb";

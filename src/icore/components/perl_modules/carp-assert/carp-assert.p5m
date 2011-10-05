@@ -20,11 +20,9 @@
 #
 # Copyright (c) 2011, Oracle and/or its affiliates. All rights reserved.
 #
-
-set name=pkg.fmri value=pkg:/library/perl-5/carp-assert@$(PKGVERS)
-set name=info.classification value=org.opensolaris.category.2008:Development/Perl
-set name=variant.arch value=$(ARCH)
-set name=variant.opensolaris.zone value=global value=nonglobal
+<transform file path=usr.*/man/.+ -> default mangler.man.stability volatile>
+set name=pkg.fmri value=pkg:/library/perl-5/carp-assert@$(IPS_COMPONENT_VERSION),$(BUILD_VERSION)
+set name=info.classification value="org.opensolaris.category.2008:Development/Perl"
 set name=description value="Carp-Assert PERL module"
 set name=pkg.description value="Carp-Assert PERL module"
 set name=pkg.summary value="Carp-Assert PERL module"
@@ -45,4 +43,5 @@ dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/Carp/Assert
 file path=usr/perl5/5.10.0/man/man3/Carp::Assert.3
 file path=usr/perl5/vendor_perl/5.10.0/Carp/Assert.pm
 file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/Carp/Assert/.packlist
-depend fmri=runtime-perl-510@$(PKGVERS) type=require
+license carp-assert.license license="GPLv2, Artistic"
+depend fmri=runtime-perl-510 type=require

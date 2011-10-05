@@ -20,10 +20,10 @@
 #
 # Copyright (c) 2011, Oracle and/or its affiliates. All rights reserved.
 #
-set name=pkg.fmri value=pkg:/library/perl-5/compiler-kit@$(PKGVERS)
-set name=info.classification value=org.opensolaris.category.2008:Development/Perl
-set name=variant.arch value=$(ARCH)
-set name=variant.opensolaris.zone value=global value=nonglobal
+
+<transform file path=usr.*/man/.+ -> default mangler.man.stability uncommitted>
+set name=pkg.fmri value=pkg:/library/perl-5/compiler-kit@$(IPS_COMPONENT_VERSION),$(BUILD_VERSION)
+set name=info.classification value="org.opensolaris.category.2008:Development/Perl"
 set name=description value="Compiler-Kit PERL module"
 set name=pkg.description value="Compiler-Kit PERL module"
 set name=pkg.summary value="Compiler-Kit PERL module"
@@ -84,5 +84,6 @@ file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/B/C/C.bs
 file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/B/C/C.so mode=0555
 file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/ByteLoader/ByteLoader.bs
 file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/ByteLoader/ByteLoader.so mode=0555
-depend fmri=runtime-perl-510@$(PKGVERS) type=require
-depend fmri=gcc-4.4-base@$(PKGVERS) type=require
+license compiler-kit.license license="GPLv2, Artistic"
+depend fmri=runtime-perl-510 type=require
+depend fmri=gcc-4.4-base type=require
