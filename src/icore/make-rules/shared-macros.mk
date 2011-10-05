@@ -209,7 +209,7 @@ BUILD_TOOLS =	/opt
 SPRO_ROOT =	$(BUILD_TOOLS)/SUNWspro
 SPRO_VROOT =	$(SPRO_ROOT)/sunstudio12.1
 
-GCC_ROOT =	/usr/sfw
+GCC_ROOT =	/usr
 
 CC.studio.32 =	$(SPRO_VROOT)/bin/cc
 CXX.studio.32 =	$(SPRO_VROOT)/bin/CC
@@ -451,7 +451,7 @@ CFLAGS.studio +=	$(studio_OPT) $(studio_XBITS) $(studio_XREGS) \
 #
 
 # GCC Compiler optimization flag
-gcc_OPT =	-O3
+gcc_OPT =	-O2
 
 # GCC PIC code generation.  Use CC_PIC instead to select PIC code generation.
 gcc_PIC =	-fPIC -DPIC
