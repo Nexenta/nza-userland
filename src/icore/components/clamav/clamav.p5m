@@ -86,7 +86,7 @@ dir path=lib/svc/manifest
 dir path=lib/svc/manifest/network
 dir path=lib/svc/method
 file clamav-daemon.xml path=lib/svc/manifest/network
-file clamav path=lib/svc/method/clamav mode=700
+file clamav path=lib/svc/method/clamav mode=0700
 
 group groupname=clamav
 user username=clamav
