@@ -9,6 +9,7 @@ use File::Copy;
 use Text::Wrap;
 use File::Basename;
 use Cwd;
+use POSIX qw(strftime);
 
 sub blab {
     print 'debmaker: ', @_, "\n";
@@ -127,6 +128,10 @@ sub get_output {
         fatal "Can't execute `$cmd': $!"
     }
 }
+sub get_output_line {
+    return (@{get_output @_})[0];
+}
+
 sub trim {
     # works with refs:
     $$_ =~ s/^\s*(.*)\s*$/$1/ foreach @_;
@@ -153,6 +158,8 @@ my $BOOTSTRAP = 0;
 my $MAINTAINER = 'Nexenta Systems <maintainer@nexenta.com>';
 my $VERSION = '0.0.0';
 my $ARCH = 'solaris-i386';
+my $SOURCE = 'xxx'; # only for *.changes
+my $DISTRIB = 'unstable'; # only for *.changes
 
 # Mapping file => IPS FMRI, filled on bootstrap:
 my %PATHS = ();
@@ -163,6 +170,8 @@ GetOptions (
     'V=s' => \$VERSION,
     'A=s' => \$ARCH,
     'M=s' => \$MAINTAINER,
+    'S=s' => \$SOURCE,
+    'N=s' => \$DISTRIB,
     'bootstrap!' => \$BOOTSTRAP,
     'help|h' => sub {usage()},
 ) or usage();
@@ -183,6 +192,12 @@ Options:
                        may be 'ips' to use the same as for IPS system.
 
     -A <architecture>  package architecture, default is `$ARCH'
+
+    -S <source name>   package source name to make reprepro happy
+                       with *.changes files, default is `$SOURCE'
+
+    -N <dist name>     distribution  name to make reprepro happy
+                       with *.changes files, default is `$DISTRIB'
 
     -M <maintainer>    Package maintainer - mandatory for debs,
                        default is `$MAINTAINER'
@@ -393,14 +408,30 @@ if ($BOOTSTRAP) {
 }
 
 
-# FIXME:
-# we can catch all facet.doc=true
-# and create separated *-doc package ;-)
+my %changes = ();
+$changes{'Date'} = strftime '%a, %d %b %Y %T %z', localtime; # Sat, 11 Jun 2011 17:08:17 +0200
+$changes{'Architecture'} = $ARCH;
+$changes{'Format'} = '1.8';
+$changes{'Maintainer'} = $MAINTAINER;
+$changes{'Source'} = lc $SOURCE;
+$changes{'Version'} = $VERSION;
+$changes{'Distribution'} = $DISTRIB;
+$changes{'Changes'} = 'Everything has changed';
+$changes{'Description'} = '';
+$changes{'Checksums-Sha1'} = '';
+$changes{'Checksums-Sha256'} = '';
+$changes{'Files'} = '';
+$changes{'Binary'} = '';
+
+
 foreach my $manifest_file (@ARGV) {
     blab "****** Manifest: `$manifest_file'";
     my $manifest_data = read_manifest $manifest_file;
     my @provides = get_debpkg_names $$manifest_data{'pkg.fmri'};
     my $debname = shift @provides; # main name (web-browser-elinks)
+    my $debsection = get_pkg_section $debname;
+    my $debpriority = exists $$manifest_data{'pkg.priority'} ?  $$manifest_data{'pkg.priority'} : 'optional';
+
     foreach my $l (@{$$manifest_data{'legacy'}}) {
         push @provides, $$l{'pkg'};
     }
@@ -507,11 +538,14 @@ foreach my $manifest_file (@ARGV) {
     my $control = '';
     $control .= "Package: $debname\n";
     $control .= "Version: $debversion\n";
-    $control .= 'Section: ' . get_pkg_section($debname) . "\n";
+    $control .= "Section: $debsection\n";
+    $control .= "Priority: $debpriority\n";
     $control .= "Maintainer: $MAINTAINER\n";
     $control .= "Architecture: $ARCH\n";
 
     $control .= "Description: $$manifest_data{'pkg.summary'}\n";
+    $changes{'Description'} .= "\n $debname - $$manifest_data{'pkg.summary'}";
+
     $control .= wrap(' ', ' ', $$manifest_data{'pkg.description'}) . "\n"
         if exists $$manifest_data{'pkg.description'};
 
@@ -581,5 +615,19 @@ foreach my $manifest_file (@ARGV) {
     my $pkg_deb = "${pkgdir}_${debversion}_${ARCH}.deb";
     # FIXME: we need GNU tar
     shell_exec(qq|PATH=/usr/gnu/bin:/usr/bin dpkg-deb -b "$pkgdir" "$pkg_deb"|);
+
+    my $sha1   = get_output_line "sha1sum $pkg_deb | cut -d' ' -f1";
+    my $sha256 = get_output_line "sha256sum $pkg_deb | cut -d' ' -f1";
+    my $md5sum = get_output_line "md5sum $pkg_deb | cut -d' ' -f1";
+    my $size   = (stat $pkg_deb)[7];
+    my $pkg_deb_base = basename $pkg_deb;
+
+    $changes{'Checksums-Sha1'} .= "\n $sha1 $size $pkg_deb_base";
+    $changes{'Checksums-Sha256'} .= "\n $sha256 $size $pkg_deb_base";
+    $changes{'Files'} .= "\n $md5sum $size $debsection $debpriority $pkg_deb_base";
+    $changes{'Binary'} .= " $debname";
 }
+
+my $changes_cnt = join "\n", map {"$_: $changes{$_}"} sort keys %changes;
+write_file "$DEBS_DIR/$changes{'Source'}.changes", $changes_cnt;
 

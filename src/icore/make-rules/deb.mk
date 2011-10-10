@@ -2,7 +2,7 @@
 # shared-macros.mk and ips.mk must be included before
 
 DEBMAKER = $(WS_TOOLS)/debmaker.pl
-DEBVERSION ?= ips
+DEBVERSION ?= $(BUILD_NUM).0
 
 # Where to find binaries
 # (like debian/tmp):
@@ -17,6 +17,11 @@ DEBS_DIR = $(PROTO_DIR)/debs
 deb: build install $(DEPENDED)
 	rm -rf $(DEBS_DIR)
 	$(MKDIR) $(DEBS_DIR)
-	$(DEBMAKER) -V $(DEBVERSION) -D $(DEBS_DIR) $(PROTO_DIRS) $(DEPENDED)
+	$(DEBMAKER) \
+		-S $(COMPONENT_NAME) \
+		-N $(CONSOLIDATION) \
+		-V $(DEBVERSION) \
+		-D $(DEBS_DIR) \
+		$(PROTO_DIRS) $(DEPENDED)
 
 
