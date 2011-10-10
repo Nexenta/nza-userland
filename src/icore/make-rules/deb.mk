@@ -12,12 +12,11 @@ PROTO_DIRS = $(PKG_PROTO_DIRS:%=-d %)
 # and debs (like debian/pkg-name)
 DEBS_DIR = $(PROTO_DIR)/debs
 
-$(DEBS_DIR):
-	$(MKDIR) $@
-
 # Actually we need $(RESOLVED),
 # but pkgdepend resolve does not work:
-deb: build install $(DEPENDED) $(DEBS_DIR)
+deb: build install $(DEPENDED)
+	rm -rf $(DEBS_DIR)
+	$(MKDIR) $(DEBS_DIR)
 	$(DEBMAKER) -V $(DEBVERSION) -D $(DEBS_DIR) $(PROTO_DIRS) $(DEPENDED)
 
 

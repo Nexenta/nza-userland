@@ -1,7 +1,7 @@
 #!/usr/bin/env perl
 
 use strict;
-use warnings;
+use warnings FATAL => 'all';
 use integer;
 use Data::Dumper;
 use Getopt::Long qw(:config no_ignore_case);
@@ -33,7 +33,7 @@ sub my_symlink {
 sub my_hardlink {
     my ($src, $dst) = @_;
 
-    # For harlink target file must be accessible:
+    # For harlink creating target file must be accessible:
     my $pwd = getcwd;
     my $dir = dirname $dst;
     my_chdir $dir;
@@ -71,7 +71,7 @@ sub my_mkdir {
 sub uniq {
     my ($array_ref) = @_;
     my %hash = map { $_, 1 } @$array_ref;
-    @$array_ref =  keys %hash;
+    @$array_ref = keys %hash;
 }
 
 sub shell_exec {
@@ -90,7 +90,14 @@ sub shell_exec {
         }
     }
 }
-
+sub get_command_line {
+    my ($map_ref, $hash_ref) = @_;
+    my $res = '';
+    foreach my $k (keys %$map_ref) {
+        $res .= " $$map_ref{$k} '$$hash_ref{$k}'" if exists $$hash_ref{$k};
+    }
+    return $res;
+}
 sub write_file {
     my ($filename, $content) = @_;
     blab "Writing file `$filename'";
@@ -100,6 +107,12 @@ sub write_file {
     } else {
         fatal "Can't write to file `$filename': $!"
     }
+}
+sub write_script {
+    my ($filename, $content) = @_;
+    $content = "#!/bin/sh\nset -e\n$content";
+    write_file $filename, $content;
+    my_chmod '0555', $filename;
 }
 
 sub get_output {
@@ -176,6 +189,7 @@ Options:
    
     --bootstrap        Search for dependencies within listed manifests,
                        not within installed system (for bootstraping)
+                       ** not implemented yet **
 
     -h, --help         Show help info
 
@@ -210,6 +224,7 @@ sub read_manifest {
     $data{'legacy'} = [];
     $data{'group'} = [];
     $data{'user'} = [];
+    $data{'license'} = [];
 
     if (open IN, '<', $filename) {
         while (<IN>) {
@@ -290,7 +305,7 @@ sub get_ips_version {
 #    pkg:/web/browser/elinks@0.11.7,5.11-1.1
 # => 0.11.5-5.11-1.1
     my ($fmri) = @_;
-    if ($fmri =~ m,^pkg:/[^@]+@(.+)$,) {
+    if ($fmri =~ m,^(?:pkg:/)?[^@]+@(.+)$,) {
         my $ips = $1;
         $ips =~ s/[,:]/-/g;
         return $ips;
@@ -318,33 +333,23 @@ sub get_dir_size {
     return $$out[0];
 }
 
-sub find_pkg_with_path {
-    my ($file) = @_;
-    my $pkg = '';
-    $file =~ s,^/+,,g;
-    my $dpkg = get_output("dpkg-query --search -- $file | cut -d: -f1");
-
-    $pkg = $$dpkg[0];
-    fatal "Can't find `$file' in any of the packages" if not $pkg;
-    return $pkg;
+sub find_pkgs_with_paths {
+    my @paths = @_;
+    s,^/+,,g foreach @paths;
+    my $dpkg = get_output('dpkg-query --search -- ' . join(' ',  @paths) . ' | cut -d: -f1');
+    return $dpkg;
 }
 
 sub guess_required_deps {
     my ($path) = @_;
     my $elfs = get_output("find $path -type f -exec file {} \\; | grep ELF | cut -d: -f1");
-    my $libs = get_output('ldd ' . join(' ', @$elfs) . ' | grep "=>"');
-    uniq $libs;
     my @deps = ();
-    foreach my $lib (@$libs) {
-        my ($soname, $file) = split /=>/, $lib;
-        trim \$soname, \$file;
-        $file =~ s,/64/,/amd64/,g if $ARCH =~ /i386/; # FIXME: packages have amd64
-        if ($file !~ /not found/) {
-            my $pkg = find_pkg_with_path $file;
-            push @deps, $pkg;
-        } else {
-            warning "File not found for soname `$soname'";
-        }
+    if (@$elfs) {
+    #   my $libs = get_output('ldd ' . join(' ', @$elfs) . ' | grep "=>"');
+        my $libs = get_output('elfdump -d ' . join(' ', @$elfs) . ' | grep NEEDED | awk \'{print $4}\'');
+        uniq $libs;
+        my $pkgs = find_pkgs_with_paths @$libs;
+        push @deps, @$pkgs;
     }
     return \@deps;
 }
@@ -482,7 +487,7 @@ foreach my $manifest_file (@ARGV) {
     foreach my $dep (@{$$manifest_data{'depend'}}) {
         if ($$dep{'fmri'} ne '__TBD') {
             my $dep_pkg = (get_debpkg_names($$dep{'fmri'}))[0];
-            blab "Dependency: $dep_pkg";
+            blab "Dependency: $dep_pkg ($$dep{'type'})";
             push @depends,    $dep_pkg if $$dep{'type'} eq 'require';
             push @predepends, $dep_pkg if $$dep{'type'} eq 'origin';
             # push @recommends, $dep_pkg if $$dep{'type'} eq 'optional';
@@ -530,6 +535,48 @@ foreach my $manifest_file (@ARGV) {
     if (@conffiles) {
        write_file "$pkgdir/DEBIAN/conffiles", (join "\n", @conffiles);
     }
+
+
+    my $preinst = '';
+    my $postinst = '';
+    my $prerm = '';
+    my $postrm = '';
+    if (my @groups = @{$$manifest_data{'group'}}) {
+        foreach my $g (@groups) {
+            my $cmd = "if ! getent group $$g{'groupname'} >/dev/null; then\n";
+            $cmd .= "echo Adding group $$g{'groupname'}\n";
+            $cmd .= 'groupadd';
+            $cmd .= get_command_line {
+                'gid' => '-g'
+                }, $g;
+            $cmd .= " $$g{'groupname'} || true\n";
+            $cmd .= "fi\n";
+            $preinst .= $cmd;
+        }
+    }
+    if (my @users = @{$$manifest_data{'user'}}) {
+        foreach my $u (@users) {
+            my $cmd = "if ! getent passwd $$u{'username'} >/dev/null; then\n";
+            $cmd .= "echo Adding user $$u{'username'}\n";
+            $cmd .= 'useradd';
+            $cmd .= get_command_line {
+                'uid' => '-u',
+                'group' => '-g',
+                'gcos-field' => '-c',
+                'home-dir' => '-d',
+                'uid' => '-u',
+                'login-shell' => '-s',
+                'group-list' => '-G',
+                'inactive' => '-f',
+                'expire' => '-e',
+                }, $u;
+            $cmd .= " $$u{'username'} || true\n";
+            $cmd .= "fi\n";
+            $preinst .= $cmd;
+        }
+    }
+
+    write_script "$pkgdir/DEBIAN/preinst", $preinst if $preinst;
 
     my $pkg_deb = "${pkgdir}_${debversion}_${ARCH}.deb";
     # FIXME: we need GNU tar
