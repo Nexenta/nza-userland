@@ -1,0 +1,15 @@
+debian/tmp/usr/sbin/*
+debian/tmp/usr/bin/ipf-mod.pl
+debian/tmp/usr/share/man/man5/snmpd.conf.5snmp
+debian/tmp/usr/share/man/man5/snmptrapd.conf.5snmp
+debian/tmp/usr/share/man/man5/snmpd.examples.5snmp
+debian/tmp/usr/share/man/man5/snmpd.internal.5snmp
+debian/tmp/usr/share/man/man8/snmpd.8
+debian/tmp/usr/share/man/man8/snmptrapd.8
+debian/tmp/etc/net-snmp/snmp/snmpconf-data/snmpd-data
+debian/tmp/etc/net-snmp/snmp/snmpconf-data/snmptrapd-data
+debian/tmp/etc/net-snmp/snmp/snmp_perl_trapd.pl
+#debian/svc-net-snmp lib/svc/method/
+#debian/net-snmp.xml var/svc/manifest/application/management/
+debian/snmpd.conf.example etc/net-snmp/snmp/
+debian/snmpd.conf etc/net-snmp/snmp/

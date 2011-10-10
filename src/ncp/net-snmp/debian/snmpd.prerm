@@ -1,0 +1,12 @@
+#!/bin/sh
+
+case "$1" in
+    remove|deconfigure)
+	;;
+    *)
+        echo "prerm called with unknown argument \`$1'" >&2
+        exit 0
+	;;
+esac
+
+exit 0
