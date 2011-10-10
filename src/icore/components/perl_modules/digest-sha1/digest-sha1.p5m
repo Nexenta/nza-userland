@@ -20,10 +20,9 @@
 #
 # Copyright (c) 2011, Oracle and/or its affiliates. All rights reserved.
 #
-set name=pkg.fmri value=pkg:/library/perl-5/digest-sha1@$(PKGVERS)
+<transform file path=usr.*/man/.+ -> default mangler.man.stability volatile>
+set name=pkg.fmri value=pkg:/library/perl-5/digest-sha1@$(IPS_COMPONENT_VERSION),$(BUILD_VERSION)
 set name=info.classification value=org.opensolaris.category.2008:Development/Perl
-set name=variant.arch value=$(ARCH)
-set name=variant.opensolaris.zone value=global value=nonglobal
 set name=description value="Digest-SHA1 PERL module"
 set name=pkg.description value="Digest-SHA1 PERL module"
 set name=pkg.summary value="Digest-SHA1 PERL module"
@@ -47,4 +46,4 @@ file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Digest/SHA1.pm
 file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/Digest/SHA1/.packlist
 file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/Digest/SHA1/SHA1.bs
 file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/Digest/SHA1/SHA1.so mode=0555
-depend fmri=runtime-perl-510-extra@$(PKGVERS) type=require
+depend fmri=runtime-perl-510-extra type=require

@@ -20,11 +20,9 @@
 #
 # Copyright (c) 2011, Oracle and/or its affiliates. All rights reserved.
 #
-
-set name=pkg.fmri value=pkg:/library/perl-5/time-modules@$(PKGVERS)
+<transform file path=usr.*/man/.+ -> default mangler.man.stability uncommitted>
+set name=pkg.fmri value=pkg:/library/perl-5/time-modules@$(IPS_COMPONENT_VERSION),$(BUILD_VERSION)
 set name=info.classification value=org.opensolaris.category.2008:Development/Perl
-set name=variant.arch value=$(ARCH)
-set name=variant.opensolaris.zone value=global value=nonglobal
 set name=description value="Time PERL modules"
 set name=pkg.description value="Time PERL modules"
 set name=pkg.summary value="Time PERL modules"
@@ -52,4 +50,4 @@ file path=usr/perl5/vendor_perl/5.10.0/Time/JulianDay.pm
 file path=usr/perl5/vendor_perl/5.10.0/Time/ParseDate.pm
 file path=usr/perl5/vendor_perl/5.10.0/Time/Timezone.pm
 file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/Time-modules/.packlist
-depend fmri=runtime-perl-510@$(PKGVERS) type=require
+depend fmri=runtime-perl-510 type=require

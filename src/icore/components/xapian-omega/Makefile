@@ -23,11 +23,11 @@
 include ../../make-rules/shared-macros.mk
 
 COMPONENT_NAME=		xapian-omega
-COMPONENT_VERSION=	1.2.3
-COMPONENT_SRC=		$(COMPONENT_NAME)-$(COMPONENT_VERSION)
+COMPONENT_VERSION=	1
+COMPONENT_SRC=		$(COMPONENT_NAME)-$(COMPONENT_VERSION).2.7
 COMPONENT_ARCHIVE=	$(COMPONENT_SRC).tar.gz
-COMPONENT_ARCHIVE_HASH=	sha1:ac0fb63c47734c5fae0c89784ef443fbdbe849d2
-COMPONENT_ARCHIVE_URL=	http://oligarchy.co.uk/xapian/$(COMPONENT_VERSION)/$(COMPONENT_ARCHIVE)
+COMPONENT_ARCHIVE_HASH=	sha1:fab068b0803ad4d8d6b05e231e3b703bc4e8f706
+COMPONENT_ARCHIVE_URL=	http://oligarchy.co.uk/xapian/1.2.7/$(COMPONENT_ARCHIVE)
 
 include ../../make-rules/prep.mk
 include ../../make-rules/configure.mk

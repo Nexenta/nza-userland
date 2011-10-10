@@ -20,11 +20,9 @@
 #
 # Copyright (c) 2011, Oracle and/or its affiliates. All rights reserved.
 #
-
-set name=pkg.fmri value=pkg:/library/perl-5/xml-libxml@$(PKGVERS)
+<transform file path=usr.*/man/.+ -> default mangler.man.stability volatile>
+set name=pkg.fmri value=pkg:/library/perl-5/xml-libxml@$(IPS_COMPONENT_VERSION),$(BUILD_VERSION)
 set name=info.classification value=org.opensolaris.category.2008:Development/Perl
-set name=variant.arch value=$(ARCH)
-set name=variant.opensolaris.zone value=global value=nonglobal
 set name=description value="XML-LibXML PERL modules"
 set name=pkg.description value="XML-LibXML PERL modules"
 set name=pkg.summary value="XML-LibXML PERL modules"
@@ -120,5 +118,5 @@ file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/XML/LibXML/XPathExpre
 file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/XML/LibXML/.packlist
 file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/XML/LibXML/LibXML.bs
 file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/XML/LibXML/LibXML.so mode=0555
-depend fmri=runtime-perl-510@$(PKGVERS) type=require
-depend fmri=library-libxml2@$(PKGVERS) type=require
+depend fmri=runtime-perl-510 type=require
+depend fmri=library-libxml2 type=require
