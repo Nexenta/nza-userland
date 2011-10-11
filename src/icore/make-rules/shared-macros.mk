@@ -89,7 +89,7 @@ PKG_REPO =	file:$(WS_REPO)
 COMPONENT_DIR =	$(shell pwd)
 SOURCE_DIR =	$(COMPONENT_DIR)/$(COMPONENT_SRC)
 BUILD_DIR =	$(COMPONENT_DIR)/build
-PROTO_DIR =	$(WS_TOP)/proto/$(MACH)
+PROTO_DIR =	$(BUILD_DIR)/proto/$(MACH)
 
 ETCDIR =	/etc
 USRDIR =	/usr
