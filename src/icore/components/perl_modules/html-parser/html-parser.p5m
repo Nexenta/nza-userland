@@ -1,0 +1,60 @@
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+# Copyright (c) 2011, Nexenta Systems, Inc. and/or its affiliates. All rights reserved.
+#
+
+<transform file path=usr.*/man/.+ -> default mangler.man.stability uncommitted>
+set name=pkg.fmri value=pkg:/library/perl-5/html-parser@$(IPS_COMPONENT_VERSION),$(BUILD_VERSION)
+set name=info.classification value="org.opensolaris.category.2008:Development/Perl"
+set name=pkg.summary value="HTML parser class"
+set name=pkg.description value="The HTML-Parser distribution is is a collection of modules that parse and extract information from HTML documents"
+
+dir path=usr
+dir path=usr/perl5
+dir path=usr/perl5/vendor_perl
+dir path=usr/perl5/vendor_perl/5.10.0
+dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int
+dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/HTML
+dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto
+dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/HTML
+dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/HTML/Parser
+dir path=usr/perl5/5.10.0
+dir path=usr/perl5/5.10.0/man
+dir path=usr/perl5/5.10.0/man/man3
+dir path=usr/perl5/5.10.0/lib
+dir path=usr/perl5/5.10.0/lib/i86pc-solaris-64int
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/HTML/Parser.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/HTML/TokeParser.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/HTML/Filter.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/HTML/PullParser.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/HTML/HeadParser.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/HTML/Entities.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/HTML/LinkExtor.pm
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/HTML/Parser/Parser.bs
+file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/HTML/Parser/Parser.so
+file path=usr/perl5/5.10.0/man/man3/HTML::Entities.3
+file path=usr/perl5/5.10.0/man/man3/HTML::Filter.3
+file path=usr/perl5/5.10.0/man/man3/HTML::HeadParser.3
+file path=usr/perl5/5.10.0/man/man3/HTML::TokeParser.3
+file path=usr/perl5/5.10.0/man/man3/HTML::PullParser.3
+file path=usr/perl5/5.10.0/man/man3/HTML::LinkExtor.3
+file path=usr/perl5/5.10.0/man/man3/HTML::Parser.3
+depend fmri=library/perl-5/html-tagset type=require
