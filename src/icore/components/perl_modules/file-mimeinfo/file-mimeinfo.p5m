@@ -54,3 +54,4 @@ file path=usr/perl5/site_perl/5.10.0/File/MimeInfo/Magic.pm
 file path=usr/perl5/site_perl/5.10.0/File/MimeInfo/Rox.pm
 depend fmri=runtime-perl-510 type=require
 depend fmri=library-perl-5-file-basedir type=require
+depend fmri=library-perl-5-file-desktopentry type=require
