@@ -537,6 +537,7 @@ foreach my $manifest_file (@ARGV) {
 
     my $control = '';
     $control .= "Package: $debname\n";
+    $control .= "Source: $changes{Source}\n";
     $control .= "Version: $debversion\n";
     $control .= "Section: $debsection\n";
     $control .= "Priority: $debpriority\n";
