@@ -128,7 +128,7 @@ check_pkg_list()
 		library-python-2-python-extra-26 \
 		library-python-2-ply-26 \
 		library-python-2-pycurl-26 \
-		library-python-2-m2crypto-2 \
+		library-python-2-m2crypto \
 		library-pcre \
 		runtime-perl-512 \
 		system-library-math-header-math \
