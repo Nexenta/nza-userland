@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # check the os version
 check_os_ver()
@@ -82,13 +82,19 @@ check_pkg_ver()
 	echo "pkg version: $ver ... $resp"
 }
 
+DEF='\e[0m'
+BLUE='\e[1;32m'
+YELLOW='\e[1;33m'
+GREEN='\e[0;32m'
+RED='\e[1;31m'
+
 # check that a given package is installed
 _check_pkg()
 {
 	if dpkg -l $1 > /dev/null 2> /dev/null ; then
-		echo "package $1 ... installed"
+		echo "package $1 ... $GREEN installed $DEF"
 	else
-		echo "package $1 ... not installed"
+		echo "package $1 ... $RED not installed $DEF"
 	fi
 }
 
@@ -119,6 +125,10 @@ check_pkg_list()
 		file-gnu-findutils \
 		library-libtool-libltdl \
 		library-libxslt \
+		library-python-2-python-extra-26 \
+		library-python-2-ply-26 \
+		library-python-2-pycurl-26 \
+		library-python-2-m2crypto-2 \
 		library-pcre \
 		runtime-perl-512 \
 		system-library-math-header-math \
