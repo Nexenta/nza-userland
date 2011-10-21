@@ -20,19 +20,19 @@
 #
 # Copyright (c) 2011, Nexenta Systems, Inc. and/or its affiliates. All rights reserved.
 #
-include ../../make-rules/shared-macros.mk
+include ../../../make-rules/shared-macros.mk
 
 COMPONENT_NAME=		VMware-vSphere-SDK-for-Perl
-COMPONENT_VERSION=	4.0.0
+COMPONENT_VERSION=	4
 COMPONENT_SRC=		vmware-vsphere-cli-distrib
-COMPONENT_ARCHIVE=	$(COMPONENT_NAME)-$(COMPONENT_VERSION)-161974.x86_64.tar.gz
+COMPONENT_ARCHIVE=	$(COMPONENT_NAME)-$(COMPONENT_VERSION).0.0-161974.x86_64.tar.gz
 COMPONENT_ARCHIVE_HASH=	sha1:bdaeab89793ed3dcaff736a3956f2c1924043456
-COMPONENT_PROJECT_URL= http://www.vmware.com/support/developer/viperltoolkit/
-COMPONENT_ARCHIVE_URL= http://example.com
+COMPONENT_ARCHIVE_URL= src/$(COMPONENT_ARCHIVE)
+COMPONENT_PROJECT_URL= 
 
-include $(WS_TOP)/make-rules/prep.mk
-include $(WS_TOP)/make-rules/ips.mk
-include $(WS_TOP)/make-rules/makemaker.mk
+include ../../../make-rules/prep.mk
+include ../../../make-rules/ips.mk
+include ../../../make-rules/makemaker.mk
 
 # man pages go in the common area
 COMPONENT_INSTALL_ENV += INSTALLVENDORMAN3DIR=$(USRSHAREMAN3DIR)
@@ -48,4 +48,4 @@ test:		$(TEST_32)
 
 BUILD_PKG_DEPENDENCIES =	$(BUILD_TOOLS)
 
-include $(WS_TOP)/make-rules/depend.mk
+include ../../../make-rules/depend.mk

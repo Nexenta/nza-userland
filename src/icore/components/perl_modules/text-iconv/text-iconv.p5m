@@ -27,24 +27,24 @@ set name=pkg.summary value="text-iconv"
 
 dir path=usr
 dir path=usr/perl5
-dir path=usr/perl5/5.10.0
-dir path=usr/perl5/5.10.0/man
-dir path=usr/perl5/5.10.0/man/man3
-dir path=usr/perl5/5.10.0/lib
-dir path=usr/perl5/5.10.0/lib/i86pc-solaris-64int
+dir path=usr/perl5/5.12
+dir path=usr/perl5/5.12/man
+dir path=usr/perl5/5.12/man/man3
+dir path=usr/perl5/5.12/lib
+dir path=usr/perl5/5.12/lib/i86pc-solaris-64int
 dir path=usr/perl5/vendor_perl
-dir path=usr/perl5/vendor_perl/5.10.0
-dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int
-dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Text
-dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto
-dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/Text
-dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/Text/Iconv
-file path=usr/perl5/5.10.0/man/man3/Text::Iconv.3
-file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Text/Iconv.pm
-file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/Text/Iconv/Iconv.bs
-file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/Text/Iconv/autosplit.ix
-file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/Text/Iconv/Iconv.so
+dir path=usr/perl5/vendor_perl/5.12
+dir path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int
+dir path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/Text
+dir path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto
+dir path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/Text
+dir path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/Text/Iconv
+file path=usr/perl5/5.12/man/man3/Text::Iconv.3
+file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/Text/Iconv.pm
+file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/Text/Iconv/Iconv.bs
+file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/Text/Iconv/autosplit.ix
+file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/Text/Iconv/Iconv.so
 
-depend fmri=runtime-perl-510 type=require
+depend fmri=runtime-perl-512 type=require
 #depend fmri=library/perl-5/ type=require
 

@@ -28,12 +28,12 @@ set name=pkg.description value="File-DesktopEntry PERL module"
 set name=pkg.summary value="File-DesktopEntry PERL module"
 dir path=usr
 dir path=usr/perl5
-dir path=usr/perl5/5.10.0
-dir path=usr/perl5/5.10.0/man
-dir path=usr/perl5/5.10.0/man/man3
+dir path=usr/perl5/5.12
+dir path=usr/perl5/5.12/man
+dir path=usr/perl5/5.12/man/man3
 dir path=usr/perl5/site_perl
-dir path=usr/perl5/site_perl/5.10.0
-dir path=usr/perl5/site_perl/5.10.0/File
-file path=usr/perl5/5.10.0/man/man3/File::DesktopEntry.3
-file path=usr/perl5/site_perl/5.10.0/File/DesktopEntry.pm
-depend fmri=runtime-perl-510 type=require
+dir path=usr/perl5/site_perl/5.12
+dir path=usr/perl5/site_perl/5.12/File
+file path=usr/perl5/5.12/man/man3/File::DesktopEntry.3
+file path=usr/perl5/site_perl/5.12/File/DesktopEntry.pm
+depend fmri=runtime-perl-512 type=require

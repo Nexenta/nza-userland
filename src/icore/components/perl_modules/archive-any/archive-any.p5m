@@ -27,29 +27,29 @@ set name=pkg.summary value="Archive-Any Perl Module"
 
 dir path=usr
 dir path=usr/perl5
-dir path=usr/perl5/5.10.0
-dir path=usr/perl5/5.10.0/lib
-dir path=usr/perl5/5.10.0/lib/i86pc-solaris-64int
-dir path=usr/perl5/5.10.0/man
-dir path=usr/perl5/5.10.0/man/man3
+dir path=usr/perl5/5.12
+dir path=usr/perl5/5.12/lib
+dir path=usr/perl5/5.12/lib/i86pc-solaris-64int
+dir path=usr/perl5/5.12/man
+dir path=usr/perl5/5.12/man/man3
 dir path=usr/perl5/vendor_perl
-dir path=usr/perl5/vendor_perl/5.10.0
-dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int
-dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto
-dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/Archive
-dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/Archive/Any
-dir path=usr/perl5/vendor_perl/5.10.0/Archive
-dir path=usr/perl5/vendor_perl/5.10.0/Archive/Any
-dir path=usr/perl5/vendor_perl/5.10.0/Archive/Any/Plugin
-file path=usr/perl5/5.10.0/man/man3/Archive::Any::Plugin::Zip.3
-file path=usr/perl5/5.10.0/man/man3/Archive::Any::Plugin.3
-file path=usr/perl5/5.10.0/man/man3/Archive::Any::Plugin::Tar.3
-file path=usr/perl5/5.10.0/man/man3/Archive::Any.3
-file path=usr/perl5/vendor_perl/5.10.0/Archive/Any.pm
-file path=usr/perl5/vendor_perl/5.10.0/Archive/Any/Plugin.pm
-file path=usr/perl5/vendor_perl/5.10.0/Archive/Any/Plugin/Zip.pm
-file path=usr/perl5/vendor_perl/5.10.0/Archive/Any/Plugin/Tar.pm
+dir path=usr/perl5/vendor_perl/5.12
+dir path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int
+dir path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto
+dir path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/Archive
+dir path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/Archive/Any
+dir path=usr/perl5/vendor_perl/5.12/Archive
+dir path=usr/perl5/vendor_perl/5.12/Archive/Any
+dir path=usr/perl5/vendor_perl/5.12/Archive/Any/Plugin
+file path=usr/perl5/5.12/man/man3/Archive::Any::Plugin::Zip.3
+file path=usr/perl5/5.12/man/man3/Archive::Any::Plugin.3
+file path=usr/perl5/5.12/man/man3/Archive::Any::Plugin::Tar.3
+file path=usr/perl5/5.12/man/man3/Archive::Any.3
+file path=usr/perl5/vendor_perl/5.12/Archive/Any.pm
+file path=usr/perl5/vendor_perl/5.12/Archive/Any/Plugin.pm
+file path=usr/perl5/vendor_perl/5.12/Archive/Any/Plugin/Zip.pm
+file path=usr/perl5/vendor_perl/5.12/Archive/Any/Plugin/Tar.pm
 
-depend fmri=runtime-perl-510 type=require
+depend fmri=runtime-perl-512 type=require
 #depend fmri=library/perl-5/ type=require
 

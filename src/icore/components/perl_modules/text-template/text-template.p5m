@@ -27,24 +27,24 @@ set name=pkg.summary value="Text-Template Perl Module"
 
 dir path=usr
 dir path=usr/perl5
-dir path=usr/perl5/5.10.0
-dir path=usr/perl5/5.10.0/man
-dir path=usr/perl5/5.10.0/man/man3
-dir path=usr/perl5/5.10.0/lib
-dir path=usr/perl5/5.10.0/lib/i86pc-solaris-64int
+dir path=usr/perl5/5.12
+dir path=usr/perl5/5.12/man
+dir path=usr/perl5/5.12/man/man3
+dir path=usr/perl5/5.12/lib
+dir path=usr/perl5/5.12/lib/i86pc-solaris-64int
 dir path=usr/perl5/vendor_perl
-dir path=usr/perl5/vendor_perl/5.10.0
-dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int
-dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto
-dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/Text
-dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/Text/Template
-dir path=usr/perl5/vendor_perl/5.10.0/Text
-dir path=usr/perl5/vendor_perl/5.10.0/Text/Template
-file path=usr/perl5/5.10.0/man/man3/Text::Template.3
-file path=usr/perl5/5.10.0/man/man3/Text::Template::Preprocess.3
-file path=usr/perl5/vendor_perl/5.10.0/Text/Template.pm
-file path=usr/perl5/vendor_perl/5.10.0/Text/Template/Preprocess.pm
+dir path=usr/perl5/vendor_perl/5.12
+dir path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int
+dir path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto
+dir path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/Text
+dir path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/Text/Template
+dir path=usr/perl5/vendor_perl/5.12/Text
+dir path=usr/perl5/vendor_perl/5.12/Text/Template
+file path=usr/perl5/5.12/man/man3/Text::Template.3
+file path=usr/perl5/5.12/man/man3/Text::Template::Preprocess.3
+file path=usr/perl5/vendor_perl/5.12/Text/Template.pm
+file path=usr/perl5/vendor_perl/5.12/Text/Template/Preprocess.pm
 
-depend fmri=runtime-perl-510 type=require
+depend fmri=runtime-perl-512 type=require
 #depend fmri=library/perl-5/ type=require
 
