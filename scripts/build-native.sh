@@ -2,7 +2,7 @@
 
 set -e
 
-# universal build script
+#  universal build script
 
 PKGNAME=`grep ^Source debian/control | sed 's/^Source:\s//'`
 PKGVERS=`grep ^Upstream-Version debian/control | sed 's/^Upstream-Version:\s//'`
