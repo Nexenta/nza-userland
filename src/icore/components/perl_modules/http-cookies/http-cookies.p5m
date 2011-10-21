@@ -1,0 +1,27 @@
+<transform file path=usr.*/man/.+ -> default mangler.man.stability uncommitted>
+set name=pkg.fmri value=pkg:/library/perl-5/http-cookies@$(IPS_COMPONENT_VERSION),$(BUILD_VERSION)
+set name=info.classification value="org.opensolaris.category.2008:Development/Perl"
+set name=pkg.summary value="HTTP cookie jars (Perl module)"
+dir path=usr
+dir path=usr/perl5
+dir path=usr/perl5/5.12
+dir path=usr/perl5/5.12/man
+dir path=usr/perl5/5.12/man/man3
+dir path=usr/perl5/5.12/lib
+dir path=usr/perl5/5.12/lib/i86pc-solaris-64int
+dir path=usr/perl5/vendor_perl
+dir path=usr/perl5/vendor_perl/5.12
+dir path=usr/perl5/vendor_perl/5.12/HTTP
+dir path=usr/perl5/vendor_perl/5.12/HTTP/Cookies
+dir path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int
+dir path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto
+dir path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/HTTP
+dir path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/HTTP/Cookies
+file path=usr/perl5/5.12/man/man3/HTTP::Cookies.3
+file path=usr/perl5/5.12/man/man3/HTTP::Cookies::Netscape.3
+file path=usr/perl5/5.12/man/man3/HTTP::Cookies::Microsoft.3
+file path=usr/perl5/vendor_perl/5.12/HTTP/Cookies/Netscape.pm
+file path=usr/perl5/vendor_perl/5.12/HTTP/Cookies/Microsoft.pm
+file path=usr/perl5/vendor_perl/5.12/HTTP/Cookies.pm
+depend fmri=pkg:/library/perl-5/http-date type=require
+depend fmri=pkg:/library/perl-5/http-message type=require
