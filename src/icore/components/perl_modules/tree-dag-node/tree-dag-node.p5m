@@ -27,11 +27,11 @@ set name=pkg.summary value="Tree-DAG-Node Perl Module"
 dir path=usr
 dir path=usr/perl5/
 dir path=usr/perl5/vendor_perl/
-dir path=usr/perl5/vendor_perl/5.10.0/
-dir path=usr/perl5/vendor_perl/5.10.0/Tree
-dir path=usr/perl5/5.10.0
-dir path=usr/perl5/5.10.0/man
-dir path=usr/perl5/5.10.0/man/man3
-file path=usr/perl5/5.10.0/man/man3/Tree::DAG_Node.3
-file path=usr/perl5/vendor_perl/5.10.0/Tree/DAG_Node.pm
-depend fmri=runtime-perl-510 type=require
+dir path=usr/perl5/vendor_perl/5.12/
+dir path=usr/perl5/vendor_perl/5.12/Tree
+dir path=usr/perl5/5.12
+dir path=usr/perl5/5.12/man
+dir path=usr/perl5/5.12/man/man3
+file path=usr/perl5/5.12/man/man3/Tree::DAG_Node.3
+file path=usr/perl5/vendor_perl/5.12/Tree/DAG_Node.pm
+depend fmri=runtime-perl-512 type=require

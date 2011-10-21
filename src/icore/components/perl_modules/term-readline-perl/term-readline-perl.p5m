@@ -28,15 +28,15 @@ set name=pkg.summary value="Term-Readline"
 dir path=usr
 dir path=usr/perl5/
 dir path=usr/perl5/vendor_perl/
-dir path=usr/perl5/vendor_perl/5.10.0/
-dir path=usr/perl5/vendor_perl/5.10.0/Term
-dir path=usr/perl5/vendor_perl/5.10.0/Term/ReadLine/
-dir path=usr/perl5/5.10.0
-dir path=usr/perl5/5.10.0/man
-dir path=usr/perl5/5.10.0/man/man3
-#file pathusr/perl5/5.10.0/man/man3/Tree::DAG_Node.3
-file path=usr/perl5/vendor_perl/5.10.0/Term/ReadLine/Perl.pm
-file path=usr/perl5/vendor_perl/5.10.0/Term/ReadLine/readline.pm
-depend fmri=runtime-perl-510 type=require
+dir path=usr/perl5/vendor_perl/5.12/
+dir path=usr/perl5/vendor_perl/5.12/Term
+dir path=usr/perl5/vendor_perl/5.12/Term/ReadLine/
+dir path=usr/perl5/5.12
+dir path=usr/perl5/5.12/man
+dir path=usr/perl5/5.12/man/man3
+#file pathusr/perl5/5.12/man/man3/Tree::DAG_Node.3
+file path=usr/perl5/vendor_perl/5.12/Term/ReadLine/Perl.pm
+file path=usr/perl5/vendor_perl/5.12/Term/ReadLine/readline.pm
+depend fmri=runtime-perl-512 type=require
 #depend fmri=library/perl-5/ type=require
 
