@@ -27,21 +27,21 @@ set name=pkg.summary value="a perl5 class library for parsing the output from Ja
 
 dir path=usr
 dir path=usr/perl5
-dir path=usr/perl5/5.10.0
-dir path=usr/perl5/5.10.0/bin
-dir path=usr/perl5/5.10.0/lib
-dir path=usr/perl5/5.10.0/man
-dir path=usr/perl5/5.10.0/man/man3
+dir path=usr/perl5/5.12
+dir path=usr/perl5/5.12/bin
+dir path=usr/perl5/5.12/lib
+dir path=usr/perl5/5.12/man
+dir path=usr/perl5/5.12/man/man3
 dir path=usr/perl5/vendor_perl
-dir path=usr/perl5/vendor_perl/5.10.0
-dir path=usr/perl5/vendor_perl/5.10.0/SGMLS
-dir path=usr/perl5/vendor_perl/5.10.0/sgmlspl-specs
-file path=usr/perl5/5.10.0/bin/sgmlspl.pl
-file path=usr/perl5/5.10.0/man/man3/SGMLS.3
-file path=usr/perl5/5.10.0/man/man3/SGMLS::Output.3
-file path=usr/perl5/5.10.0/man/man3/SGMLS::Refs.3
-file path=usr/perl5/vendor_perl/5.10.0/SGMLS.pm
-file path=usr/perl5/vendor_perl/5.10.0/SGMLS/Output.pm
-file path=usr/perl5/vendor_perl/5.10.0/SGMLS/Refs.pm
-file path=usr/perl5/vendor_perl/5.10.0/sgmlspl-specs/skel.pl
-
+dir path=usr/perl5/vendor_perl/5.12
+dir path=usr/perl5/vendor_perl/5.12/SGMLS
+dir path=usr/perl5/vendor_perl/5.12/sgmlspl-specs
+file path=usr/perl5/5.12/bin/sgmlspl.pl
+file path=usr/perl5/5.12/man/man3/SGMLS.3
+file path=usr/perl5/5.12/man/man3/SGMLS::Output.3
+file path=usr/perl5/5.12/man/man3/SGMLS::Refs.3
+file path=usr/perl5/vendor_perl/5.12/SGMLS.pm
+file path=usr/perl5/vendor_perl/5.12/SGMLS/Output.pm
+file path=usr/perl5/vendor_perl/5.12/SGMLS/Refs.pm
+file path=usr/perl5/vendor_perl/5.12/sgmlspl-specs/skel.pl
+depend fmri=runtime-perl-512 type=require

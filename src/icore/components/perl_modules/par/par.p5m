@@ -30,31 +30,31 @@ set name=pkg.description value="PAR PERL module"
 set name=pkg.summary value="PAR PERL module"
 dir path=usr
 dir path=usr/perl5
-dir path=usr/perl5/5.10.0
-dir path=usr/perl5/5.10.0/lib
-dir path=usr/perl5/5.10.0/lib/i86pc-solaris-64int
-dir path=usr/perl5/5.10.0/man
-dir path=usr/perl5/5.10.0/man/man3
+dir path=usr/perl5/5.12
+dir path=usr/perl5/5.12/lib
+dir path=usr/perl5/5.12/lib/i86pc-solaris-64int
+dir path=usr/perl5/5.12/man
+dir path=usr/perl5/5.12/man/man3
 dir path=usr/perl5/vendor_perl
-dir path=usr/perl5/vendor_perl/5.10.0
-dir path=usr/perl5/vendor_perl/5.10.0/PAR
-dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int
-dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto
-dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/PAR
-file path=usr/perl5/5.10.0/man/man3/PAR.3
-file path=usr/perl5/5.10.0/man/man3/PAR::Environment.3
-file path=usr/perl5/5.10.0/man/man3/PAR::FAQ.3
-file path=usr/perl5/5.10.0/man/man3/PAR::Heavy.3
-file path=usr/perl5/5.10.0/man/man3/PAR::SetupProgname.3
-file path=usr/perl5/5.10.0/man/man3/PAR::SetupTemp.3
-file path=usr/perl5/5.10.0/man/man3/PAR::Tutorial.3
-file path=usr/perl5/vendor_perl/5.10.0/PAR.pm
-file path=usr/perl5/vendor_perl/5.10.0/PAR/Environment.pod
-file path=usr/perl5/vendor_perl/5.10.0/PAR/FAQ.pod
-file path=usr/perl5/vendor_perl/5.10.0/PAR/Heavy.pm
-file path=usr/perl5/vendor_perl/5.10.0/PAR/SetupProgname.pm
-file path=usr/perl5/vendor_perl/5.10.0/PAR/SetupTemp.pm
-file path=usr/perl5/vendor_perl/5.10.0/PAR/Tutorial.pod
-file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/PAR/.packlist
-depend fmri=runtime-perl-510 type=require
+dir path=usr/perl5/vendor_perl/5.12
+dir path=usr/perl5/vendor_perl/5.12/PAR
+dir path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int
+dir path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto
+dir path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/PAR
+file path=usr/perl5/5.12/man/man3/PAR.3
+file path=usr/perl5/5.12/man/man3/PAR::Environment.3
+file path=usr/perl5/5.12/man/man3/PAR::FAQ.3
+file path=usr/perl5/5.12/man/man3/PAR::Heavy.3
+file path=usr/perl5/5.12/man/man3/PAR::SetupProgname.3
+file path=usr/perl5/5.12/man/man3/PAR::SetupTemp.3
+file path=usr/perl5/5.12/man/man3/PAR::Tutorial.3
+file path=usr/perl5/vendor_perl/5.12/PAR.pm
+file path=usr/perl5/vendor_perl/5.12/PAR/Environment.pod
+file path=usr/perl5/vendor_perl/5.12/PAR/FAQ.pod
+file path=usr/perl5/vendor_perl/5.12/PAR/Heavy.pm
+file path=usr/perl5/vendor_perl/5.12/PAR/SetupProgname.pm
+file path=usr/perl5/vendor_perl/5.12/PAR/SetupTemp.pm
+file path=usr/perl5/vendor_perl/5.12/PAR/Tutorial.pod
+file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/PAR/.packlist
+depend fmri=runtime-perl-512 type=require
 

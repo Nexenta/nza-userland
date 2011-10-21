@@ -29,22 +29,22 @@ set name=pkg.description value="Net-LibIDN PERL module"
 set name=pkg.summary value="Net-LibIDN PERL module"
 dir path=usr
 dir path=usr/perl5
-dir path=usr/perl5/5.10.0
-dir path=usr/perl5/5.10.0/lib
-dir path=usr/perl5/5.10.0/lib/i86pc-solaris-64int
-dir path=usr/perl5/5.10.0/man
-dir path=usr/perl5/5.10.0/man/man3
+dir path=usr/perl5/5.12
+dir path=usr/perl5/5.12/lib
+dir path=usr/perl5/5.12/lib/i86pc-solaris-64int
+dir path=usr/perl5/5.12/man
+dir path=usr/perl5/5.12/man/man3
 dir path=usr/perl5/vendor_perl
-dir path=usr/perl5/vendor_perl/5.10.0
-dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int
-dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Net
-dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto
-dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/Net
-dir path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/Net/LibIDN
-file path=usr/perl5/5.10.0/man/man3/Net::LibIDN.3
-file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/Net/LibIDN.pm
-file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/Net/LibIDN/.packlist
-file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/Net/LibIDN/LibIDN.bs
-file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/Net/LibIDN/LibIDN.so mode=0555
-file path=usr/perl5/vendor_perl/5.10.0/i86pc-solaris-64int/auto/Net/LibIDN/autosplit.ix
-depend fmri=runtime-perl-510 type=require
+dir path=usr/perl5/vendor_perl/5.12
+dir path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int
+dir path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/Net
+dir path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto
+dir path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/Net
+dir path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/Net/LibIDN
+file path=usr/perl5/5.12/man/man3/Net::LibIDN.3
+file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/Net/LibIDN.pm
+file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/Net/LibIDN/.packlist
+file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/Net/LibIDN/LibIDN.bs
+file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/Net/LibIDN/LibIDN.so mode=0555
+file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/Net/LibIDN/autosplit.ix
+depend fmri=runtime-perl-512 type=require
