@@ -42,7 +42,14 @@ COMPONENT_INSTALL_TARGETS=	install
 
 build:		$(BUILD_32)
 
-install:	$(INSTALL_32)
+#install:	$(INSTALL_32)
+install:	
+	$(COMPONENT_PRE_INSTALL_ACTION)
+	(cd $(BUILD_DIR)/i86-5.12; $(ENV) $(COMPONENT_INSTALL_ENV) \
+	/usr/perl5/5.12/bin/perl Build --destdir=$(PROTO_DIR) install )
+	$(COMPONENT_POST_INSTALL_ACTION)
+
+
 
 COMPONENT_TEST_TARGETS = test
 test:		$(TEST_32)

@@ -36,7 +36,7 @@ include $(WS_TOP)/make-rules/ips.mk
 include $(WS_TOP)/make-rules/makemaker.mk
 
 COMPILER = gcc
-CONFIGURE_OPTIONS<----->+=CC=cc
+#CONFIGURE_OPTIONS<----->+=CC=cc
 
 build:		$(BUILD_32)
 
