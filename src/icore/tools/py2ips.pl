@@ -88,13 +88,12 @@ sub trim {
 
 
 
-
 my $pyversion = get_output_line 'python --version 2>&1';
 if ($pyversion =~ /Python +(\d)\.(\d)\..+/) {
     $pyversion = "$1$2";
     blab "Python: $pyversion"
 } else {
-    fatal "Can't parse Python version"
+    fatal "Can't parse Python version: $pyversion"
 }
 
 foreach my $pkg (@ARGV) {
@@ -114,7 +113,7 @@ foreach my $pkg (@ARGV) {
         fatal "Can't parse archive name: $archive"
     }
 
-    $pkg_name =~ s/_/-/g;
+    $pkg_name =~ s/_/-/g; # _ is not allowed in dpkg names
     my $pkg_name_lc = lc $pkg_name;
     blab "Package name: $pkg_name";
 
@@ -139,21 +138,29 @@ foreach my $pkg (@ARGV) {
 
 
     my_chdir '../__srcdir__';
-    shell_exec qq!python setup.py install --root=../__destdir__ --prefix=/usr !;
+    shell_exec 'python setup.py install --root=../__destdir__ --prefix=/usr';
 
-    # FIXME: versions (kid >= 0.9.6)
-    my @pkg_deps = ();
+    my %pkg_deps = ();
     if ( -f "$pkg_name.egg-info/requires.txt") {
-        @pkg_deps =
-         map { s/^([-\w]+).*/$1/; lc $_ }
-         grep { /^\w/ }
-         @{get_output "cat $pkg_name.egg-info/requires.txt"}
+        my $type = 'require'; # All deps before the first section ([...])
+                               # are mandatory; others are optional
+        foreach (@{get_output "cat $pkg_name.egg-info/requires.txt"}) {
+            $type = 'optional' if /^\[.+\]/;
+            next unless /^\w/;
+            s/^([-.\w]+).*/$1/;
+            my $pkg = lc;
+            $pkg = 'distribute' if $pkg eq 'setuptools';
+            if (! exists $pkg_deps{$pkg}) {
+                $pkg_deps{$pkg} = $type;
+            } else {
+                warning "Dependency on `$pkg' already set to $pkg_deps{$pkg}"
+                    if $pkg_deps{$pkg} ne $type
+            }
+        }
     }
-    uniq \@pkg_deps;
-    blab "Dependencies: ", (join ', ', @pkg_deps);
 
     my $pkg_summary = '';
-    for my $dir ( ("$pkg_name.egg-info", '.') ) {
+    for my $dir ( ("lib/$pkg_name.egg-info", "$pkg_name.egg-info", '.') ) {
         if ( -f "$dir/PKG-INFO") {
            $pkg_summary = get_output_line "grep Summary: $dir/PKG-INFO | sed 's/Summary: *//'";
            last;
@@ -171,8 +178,8 @@ MANIFEST
     $ips_manifest .= "\n";
 
     $ips_manifest .= "depend fmri=pkg:/runtime/python-$pyversion type=require\n";
-    $ips_manifest .= "depend fmri=pkg:/library/python-2/${_}-$pyversion type=require\n"
-        foreach @pkg_deps;
+    $ips_manifest .= "depend fmri=pkg:/library/python-2/${_}-$pyversion type=$pkg_deps{$_}\n"
+        foreach keys %pkg_deps;
 
     $ips_manifest .= "\n";
 
