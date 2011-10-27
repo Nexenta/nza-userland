@@ -1,0 +1,52 @@
+<transform file path=usr.*/man/.+ -> default mangler.man.stability uncommitted>
+set name=pkg.fmri value=pkg:/library/python-2/elixir-26@$(IPS_COMPONENT_VERSION),$(BUILD_VERSION)
+set name=info.classification value="org.opensolaris.category.2008:Development/Python"
+set name=pkg.summary value="Declarative Mapper for SQLAlchemy"
+
+depend fmri=pkg:/runtime/python-26 type=require
+depend fmri=pkg:/library/python-2/sqlalchemy-26 type=require
+
+dir path=usr
+dir path=usr/lib
+dir path=usr/lib/python2.6
+dir path=usr/lib/python2.6/vendor-packages
+dir path=usr/lib/python2.6/vendor-packages/elixir
+dir path=usr/lib/python2.6/vendor-packages/elixir/ext
+dir path=usr/lib/python2.6/vendor-packages/Elixir-0.7.1-py2.6.egg-info
+file path=usr/lib/python2.6/vendor-packages/elixir/fields.py
+file path=usr/lib/python2.6/vendor-packages/elixir/__init__.pyc
+file path=usr/lib/python2.6/vendor-packages/elixir/py23compat.pyc
+file path=usr/lib/python2.6/vendor-packages/elixir/relationships.py
+file path=usr/lib/python2.6/vendor-packages/elixir/__init__.py
+file path=usr/lib/python2.6/vendor-packages/elixir/relationships.pyc
+file path=usr/lib/python2.6/vendor-packages/elixir/events.py
+file path=usr/lib/python2.6/vendor-packages/elixir/statements.py
+file path=usr/lib/python2.6/vendor-packages/elixir/options.pyc
+file path=usr/lib/python2.6/vendor-packages/elixir/py23compat.py
+file path=usr/lib/python2.6/vendor-packages/elixir/collection.py
+file path=usr/lib/python2.6/vendor-packages/elixir/collection.pyc
+file path=usr/lib/python2.6/vendor-packages/elixir/properties.py
+file path=usr/lib/python2.6/vendor-packages/elixir/entity.pyc
+file path=usr/lib/python2.6/vendor-packages/elixir/fields.pyc
+file path=usr/lib/python2.6/vendor-packages/elixir/options.py
+file path=usr/lib/python2.6/vendor-packages/elixir/entity.py
+file path=usr/lib/python2.6/vendor-packages/elixir/properties.pyc
+file path=usr/lib/python2.6/vendor-packages/elixir/ext/__init__.py
+file path=usr/lib/python2.6/vendor-packages/elixir/ext/perform_ddl.py
+file path=usr/lib/python2.6/vendor-packages/elixir/ext/versioned.py
+file path=usr/lib/python2.6/vendor-packages/elixir/ext/associable.py
+file path=usr/lib/python2.6/vendor-packages/elixir/ext/list.py
+file path=usr/lib/python2.6/vendor-packages/elixir/ext/list.pyc
+file path=usr/lib/python2.6/vendor-packages/elixir/ext/perform_ddl.pyc
+file path=usr/lib/python2.6/vendor-packages/elixir/ext/encrypted.py
+file path=usr/lib/python2.6/vendor-packages/elixir/ext/versioned.pyc
+file path=usr/lib/python2.6/vendor-packages/elixir/ext/associable.pyc
+file path=usr/lib/python2.6/vendor-packages/elixir/ext/encrypted.pyc
+file path=usr/lib/python2.6/vendor-packages/elixir/ext/__init__.pyc
+file path=usr/lib/python2.6/vendor-packages/elixir/events.pyc
+file path=usr/lib/python2.6/vendor-packages/elixir/statements.pyc
+file path=usr/lib/python2.6/vendor-packages/Elixir-0.7.1-py2.6.egg-info/requires.txt
+file path=usr/lib/python2.6/vendor-packages/Elixir-0.7.1-py2.6.egg-info/top_level.txt
+file path=usr/lib/python2.6/vendor-packages/Elixir-0.7.1-py2.6.egg-info/PKG-INFO
+file path=usr/lib/python2.6/vendor-packages/Elixir-0.7.1-py2.6.egg-info/SOURCES.txt
+file path=usr/lib/python2.6/vendor-packages/Elixir-0.7.1-py2.6.egg-info/dependency_links.txt
