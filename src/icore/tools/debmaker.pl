@@ -69,10 +69,12 @@ sub my_mkdir {
             or fatal "Can't create dir `$path': $!";
     }
 }
+
 sub uniq {
-    my ($array_ref) = @_;
-    my %hash = map { $_, 1 } @$array_ref;
-    @$array_ref = keys %hash;
+    foreach (@_) {
+        my %hash = map { $_, 1 } @$_;
+        @$_ = keys %hash;
+    }
 }
 
 sub shell_exec {
@@ -290,9 +292,6 @@ sub read_manifest {
             } else {
                 warning "Unknown action: `$_'";
             }
-            # TODO:
-            # user - to create users (in postinstall?)
-            # restart_fmri - restart SMF
         }
         close IN;
         return \%data;
@@ -462,6 +461,26 @@ foreach my $manifest_file (@ARGV) {
     # mkdir will fail if dir exists
     my_mkdir $pkgdir;
 
+# pkg(5):
+#     disable_fmri
+#     refresh_fmri
+#     restart_fmri
+#     suspend_fmri  Each of these actuators take the value of an FMRI of
+#         a service instance to operate upon during the package
+#         installation or removal.  disable_fmri causes the
+#         mentioned FMRI to be disabled prior to action removal, per
+#         the disable subcommand to svcadm(1M).  refresh_fmri and
+#         restart_fmri cause the given FMRI to be refreshed or
+#         restarted after action installation or update, per the
+#         respective subcommands of svcadm(1M).  Finally,
+#         suspend_fmri causes the given FMRI to be disabled
+#         temporarily prior to the action install phase, and then
+#         enabled after the completion of that phase.
+    my @disable_fmri = ();
+    my @refresh_fmri = ();
+    my @restart_fmri = ();
+    my @suspend_fmri = ();
+
     # Believe that dirs are listed in proper order:
     # usr, usr/bin, etc
     if (my @dirs = @{$$manifest_data{'dir'}}) {
@@ -471,6 +490,11 @@ foreach my $manifest_file (@ARGV) {
             my_mkdir $dir_name, $$dir{'mode'};
             my_chown $$dir{'owner'}, $$dir{'group'}, $dir_name;
             push @replaces, get_debpkg_name $$dir{original_name} if exists $$dir{original_name};
+
+            push @disable_fmri, $$dir{disable_fmri} if exists $$dir{disable_fmri};
+            push @refresh_fmri, $$dir{refresh_fmri} if exists $$dir{refresh_fmri};
+            push @restart_fmri, $$dir{restart_fmri} if exists $$dir{restart_fmri};
+            push @suspend_fmri, $$dir{suspend_fmri} if exists $$dir{suspend_fmri};
         }
     }
 
@@ -497,6 +521,11 @@ foreach my $manifest_file (@ARGV) {
 
             push @conffiles, $$file{'path'} if exists $$file{'preserve'};
             push @replaces, get_debpkg_name $$file{original_name} if exists $$file{original_name};
+
+            push @disable_fmri, $$file{disable_fmri} if exists $$file{disable_fmri};
+            push @refresh_fmri, $$file{refresh_fmri} if exists $$file{refresh_fmri};
+            push @restart_fmri, $$file{restart_fmri} if exists $$file{restart_fmri};
+            push @suspend_fmri, $$file{suspend_fmri} if exists $$file{suspend_fmri};
         }
     }
 
@@ -518,7 +547,7 @@ foreach my $manifest_file (@ARGV) {
         # what are the owner, permissions?
         # multiple licenses?
     }
-    my $installed_size = get_dir_size($pkgdir);
+    my $installed_size = get_dir_size $pkgdir;
 
     my @depends = ();
     my @predepends = ();
@@ -528,7 +557,7 @@ foreach my $manifest_file (@ARGV) {
     blab "Getting dependencies ...";
     foreach my $dep (@{$$manifest_data{'depend'}}) {
         if ($$dep{'fmri'} ne '__TBD') {
-            my $dep_pkg = (get_debpkg_names($$dep{'fmri'}))[0];
+            my $dep_pkg = get_debpkg_name $$dep{'fmri'};
             blab "Dependency: $dep_pkg ($$dep{'type'})";
             push @depends,    $dep_pkg if $$dep{'type'} eq 'require';
             push @predepends, $dep_pkg if $$dep{'type'} eq 'origin';
@@ -538,13 +567,7 @@ foreach my $manifest_file (@ARGV) {
     }
     push @depends, @{guess_required_deps($pkgdir)};
 
-    uniq \@depends;
-    uniq \@replaces;
-    uniq \@provides;
-    uniq \@predepends;
-    uniq \@recommends;
-    uniq \@suggests;
-    uniq \@conflicts;
+    uniq \@depends, \@replaces, \@provides, \@predepends, \@recommends, \@suggests, \@conflicts;
     # When a program and a library are in the same package:
     @depends = grep {$_ ne $debname} @depends;
 
@@ -584,11 +607,9 @@ foreach my $manifest_file (@ARGV) {
     my_mkdir "$pkgdir/DEBIAN";
 
     write_file "$pkgdir/DEBIAN/control", $control;
+    write_file "$pkgdir/DEBIAN/conffiles", (join "\n", @conffiles) if @conffiles;
 
-    if (@conffiles) {
-       write_file "$pkgdir/DEBIAN/conffiles", (join "\n", @conffiles);
-    }
-
+    # http://wiki.debian.org/MaintainerScripts
     my $preinst = '';
     my $postinst = '';
     my $prerm = '';
@@ -611,6 +632,7 @@ foreach my $manifest_file (@ARGV) {
             my $cmd = "if ! getent passwd $$u{'username'} >/dev/null; then\n";
             $cmd .= "echo Adding user $$u{'username'}\n";
             $cmd .= 'useradd';
+            # map action attributes to options for 'useradd':
             $cmd .= get_command_line {
                 'uid' => '-u',
                 'group' => '-g',
@@ -628,7 +650,47 @@ foreach my $manifest_file (@ARGV) {
         }
     }
 
-    write_script "$pkgdir/DEBIAN/preinst", $preinst if $preinst;
+
+    if (@disable_fmri) {
+        $prerm .= 'if [ "$1" = "remove" ]; then' . "\n";
+        $prerm .= ' svcadm disable ' . join(' ', @disable_fmri) . " || true\n";
+        $prerm .= "fi\n";
+    }
+    if (@refresh_fmri || @restart_fmri || @suspend_fmri) {
+        my $check_smf = <<'CHECK_SMF';
+SMF_INCLUDE=/lib/svc/share/smf_include.sh
+HAVE_SMF=no
+if [ -f "$SMF_INCLUDE" ]; then
+ source "$SMF_INCLUDE"
+ if smf_present; then
+  HAVE_SMF=yes
+ fi
+fi
+CHECK_SMF
+
+        $postinst .= $check_smf;
+        $postinst .= 'if [ "$HAVE_SMF" = yes ]; then' . "\n";
+        $postinst .= ' if [ "$1" = configure ]; then' . "\n";
+        $postinst .= '  svcadm -v refresh ' . join(' ', @refresh_fmri) . " || true\n" if @refresh_fmri;
+        $postinst .= '  svcadm -v restart ' . join(' ', @restart_fmri) . " || true\n" if @restart_fmri;
+        if (@suspend_fmri) {
+            $preinst .= $check_smf;
+            $preinst .= 'if [ "$HAVE_SMF" = yes ]; then' . "\n";
+            $preinst .= ' if [ "$1" = install ] || [ "$1" = upgrade ]; then' . "\n";
+            $preinst .= '  svcadm -v disable -t '  . join(' ', @suspend_fmri) . " || true\n";
+            $preinst .= " fi\n";
+            $preinst .= "fi\n";
+
+            $postinst .= '  svcadm -v enable '  . join(' ', @suspend_fmri) . " || true\n";
+        }
+        $postinst .= " fi\n";
+        $postinst .= "fi\n";
+    }
+
+    write_script "$pkgdir/DEBIAN/preinst",  $preinst  if $preinst;
+    write_script "$pkgdir/DEBIAN/prerm",    $prerm    if $prerm;
+    write_script "$pkgdir/DEBIAN/postinst", $postinst if $postinst;
+    write_script "$pkgdir/DEBIAN/postrm",   $postrm   if $postrm;
 
     my $pkg_deb = "${pkgdir}_${debversion}_${ARCH}.deb";
     # FIXME: we need GNU tar
