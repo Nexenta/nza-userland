@@ -209,7 +209,7 @@ BUILD_TOOLS =	/opt
 SPRO_ROOT =	$(BUILD_TOOLS)/SUNWspro
 SPRO_VROOT =	$(SPRO_ROOT)/sunstudio12.1
 
-GCC_ROOT =	/usr/gnu
+GCC_ROOT =	/usr/gcc/4.4
 
 CC.studio.32 =	$(SPRO_VROOT)/bin/cc
 CXX.studio.32 =	$(SPRO_VROOT)/bin/CC
