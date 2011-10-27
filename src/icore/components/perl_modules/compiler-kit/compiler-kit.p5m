@@ -86,4 +86,4 @@ file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/ByteLoader/ByteLoa
 file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/ByteLoader/ByteLoader.so mode=0555
 license compiler-kit.license license="GPLv2, Artistic"
 depend fmri=runtime-perl-512 type=require
-depend fmri=gcc-4.4-base type=require
+depend fmri=system-library-gcc-44-runtime type=require
