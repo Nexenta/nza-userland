@@ -176,6 +176,11 @@ GetOptions (
     'help|h' => sub {usage()},
 ) or usage();
 
+# underscore is not allowed in dpkg names,
+# but some sources have it (e. g. Tree-DAG_Node):
+$SOURCE =~ s/_/-/g;
+
+
 sub usage {
     print <<USAGE;
 Usage: $0 [options] -D <output dir> -d <proto dir> [-d <proto dir> ... ] manifests
