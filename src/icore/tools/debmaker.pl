@@ -607,7 +607,7 @@ foreach my $manifest_file (@ARGV) {
     my_mkdir "$pkgdir/DEBIAN";
 
     write_file "$pkgdir/DEBIAN/control", $control;
-    write_file "$pkgdir/DEBIAN/conffiles", (join "\n", @conffiles) if @conffiles;
+    write_file "$pkgdir/DEBIAN/conffiles", (join "\n", @conffiles) . "\n" if @conffiles;
 
     # http://wiki.debian.org/MaintainerScripts
     my $preinst = '';
