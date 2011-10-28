@@ -112,7 +112,7 @@ sub get_output {
     }
 }
 sub get_output_line {
-    return (@{get_output @_})[0];
+    return (@{get_output @_})[0] || '';
 }
 
 sub trim {
@@ -162,8 +162,8 @@ sub do_package
     my $cpan_file   = $module->cpan_file();
     my $cpan_dir    = 'http://search.cpan.org/CPAN/authors/id/' . (dirname $cpan_file);
     my $mod_id      = $module->id();
-    my $cpan_file_basename  = basename $cpan_file;
-    $cpan_file_basename =~ /^(.+)-([^-]+)\.tar\.(.+)$/ ||  fatal "Can't parse $cpan_file_basename";
+    my $cpan_file_basename = basename $cpan_file;
+    $cpan_file_basename =~ /^(.+)-([^-]+)\.tar\.(.+)$/ || fatal "Can't parse $cpan_file_basename";
     my ($cpan_name, $pkg_version, $tar_comp) = ($1, $2, $3);
     my $pkg_name = lc $cpan_name;
     $pkg_name =~ s/_/-/g;
@@ -220,14 +220,25 @@ sub do_package
     fatal "Build failed" unless -d $tmp_dest_dir;
 
 
-    my $pkg_summary = get_output_line "cd $pack_dir && [ -f META.yml ] && grep abstract: META.yml | sed 's,abstract: *,,'";
+    my $pkg_summary = get_output_line "cd $pack_dir && [ -f META.yml ] && grep abstract: META.yml | sed 's,abstract: *,,'"
+        || 'perl module';
+
+    $pkg_summary =~ s/[[:punct:]]+$//;
+    $pkg_summary =~ s/^[[:punct:]]+//;
+
     my $ips_manifest = COPYRIGHT;
     $ips_manifest .= <<MANIFEST;
 <transform file path=usr.*/man/.+ -> default mangler.man.stability uncommitted>
+
 set name=pkg.fmri value=pkg:/library/perl-5/$pkg_name@\$(IPS_COMPONENT_VERSION),\$(BUILD_VERSION)
 set name=info.classification value="org.opensolaris.category.2008:Development/Perl"
+set name=info.source_url value=\$(COMPONENT_ARCHIVE_URL)
 set name=pkg.summary value="$pkg_summary"
+
 MANIFEST
+
+    $ips_manifest .= "depend fmri=pkg:/library/perl-5/$_ type=require\n" foreach @pkg_deps;
+    $ips_manifest .= "\n";
 
     $ips_manifest .= join "\n", (grep !/(\.packlist|perllocal.pod)$/,
         @{get_output
@@ -238,12 +249,11 @@ MANIFEST
             "});
 
     $ips_manifest .= "\n";
-    $ips_manifest .= "depend fmri=pkg:/library/perl-5/$_ type=require\n"
-        foreach @pkg_deps;
 
     shell_exec "rm -rf $tmp_dest_dir";
 
     my $sha1sum = get_output_line "sha1sum $CPAN::Config->{'keep_source_where'}/authors/id/$cpan_file | cut -d ' ' -f 1";
+
     my $makefile = COPYRIGHT;
     $makefile .= <<MAKEFILE;
 include ../../../make-rules/shared-macros.mk
