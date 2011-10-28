@@ -4,6 +4,10 @@ set name=info.classification value="org.opensolaris.category.2008:Development/Py
 set name=pkg.summary value="Generic functions and business rules support systems"
 
 depend fmri=pkg:/runtime/python-26 type=require
+depend fmri=pkg:/library/python-2/bytecodeassembler-26 type=require
+depend fmri=pkg:/library/python-2/addons-26 type=require
+depend fmri=pkg:/library/python-2/decoratortools-26 type=require
+depend fmri=pkg:/library/python-2/extremes-26 type=require
 
 dir path=usr
 dir path=usr/lib
@@ -13,27 +17,27 @@ dir path=usr/lib/python2.6/vendor-packages/PEAK_Rules-0.5a1.dev_r2707-py2.6.egg-
 dir path=usr/lib/python2.6/vendor-packages/peak
 dir path=usr/lib/python2.6/vendor-packages/peak/rules
 file path=usr/lib/python2.6/vendor-packages/PEAK_Rules-0.5a1.dev_r2707-py2.6-nspkg.pth
-file path=usr/lib/python2.6/vendor-packages/PEAK_Rules-0.5a1.dev_r2707-py2.6.egg-info/PKG-INFO
 file path=usr/lib/python2.6/vendor-packages/PEAK_Rules-0.5a1.dev_r2707-py2.6.egg-info/dependency_links.txt
-file path=usr/lib/python2.6/vendor-packages/PEAK_Rules-0.5a1.dev_r2707-py2.6.egg-info/namespace_packages.txt
 file path=usr/lib/python2.6/vendor-packages/PEAK_Rules-0.5a1.dev_r2707-py2.6.egg-info/top_level.txt
+file path=usr/lib/python2.6/vendor-packages/PEAK_Rules-0.5a1.dev_r2707-py2.6.egg-info/PKG-INFO
 file path=usr/lib/python2.6/vendor-packages/PEAK_Rules-0.5a1.dev_r2707-py2.6.egg-info/SOURCES.txt
+file path=usr/lib/python2.6/vendor-packages/PEAK_Rules-0.5a1.dev_r2707-py2.6.egg-info/namespace_packages.txt
 file path=usr/lib/python2.6/vendor-packages/PEAK_Rules-0.5a1.dev_r2707-py2.6.egg-info/requires.txt
-file path=usr/lib/python2.6/vendor-packages/peak/rules/codegen.py
 file path=usr/lib/python2.6/vendor-packages/peak/rules/indexing.pyc
+file path=usr/lib/python2.6/vendor-packages/peak/rules/syntax.pyc
+file path=usr/lib/python2.6/vendor-packages/peak/rules/ast_builder.pyc
+file path=usr/lib/python2.6/vendor-packages/peak/rules/__init__.pyc
+file path=usr/lib/python2.6/vendor-packages/peak/rules/syntax.py
+file path=usr/lib/python2.6/vendor-packages/peak/rules/core.pyc
 file path=usr/lib/python2.6/vendor-packages/peak/rules/indexing.py
 file path=usr/lib/python2.6/vendor-packages/peak/rules/__init__.py
-file path=usr/lib/python2.6/vendor-packages/peak/rules/core.py
-file path=usr/lib/python2.6/vendor-packages/peak/rules/core.pyc
-file path=usr/lib/python2.6/vendor-packages/peak/rules/__init__.pyc
-file path=usr/lib/python2.6/vendor-packages/peak/rules/criteria.py
-file path=usr/lib/python2.6/vendor-packages/peak/rules/syntax.py
-file path=usr/lib/python2.6/vendor-packages/peak/rules/predicates.pyc
 file path=usr/lib/python2.6/vendor-packages/peak/rules/codegen.pyc
-file path=usr/lib/python2.6/vendor-packages/peak/rules/criteria.pyc
-file path=usr/lib/python2.6/vendor-packages/peak/rules/syntax.pyc
-file path=usr/lib/python2.6/vendor-packages/peak/rules/predicates.py
-file path=usr/lib/python2.6/vendor-packages/peak/rules/ast_builder.py
-file path=usr/lib/python2.6/vendor-packages/peak/rules/ast_builder.pyc
+file path=usr/lib/python2.6/vendor-packages/peak/rules/core.py
+file path=usr/lib/python2.6/vendor-packages/peak/rules/predicates.pyc
+file path=usr/lib/python2.6/vendor-packages/peak/rules/criteria.py
 file path=usr/lib/python2.6/vendor-packages/peak/rules/dispatch.pyc
+file path=usr/lib/python2.6/vendor-packages/peak/rules/predicates.py
+file path=usr/lib/python2.6/vendor-packages/peak/rules/codegen.py
 file path=usr/lib/python2.6/vendor-packages/peak/rules/dispatch.py
+file path=usr/lib/python2.6/vendor-packages/peak/rules/ast_builder.py
+file path=usr/lib/python2.6/vendor-packages/peak/rules/criteria.pyc
