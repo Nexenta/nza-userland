@@ -5,6 +5,32 @@
 # Based on ideas of cpan2tgz by Jason Woodward <woodwardj@jaos.org>
 # http://software.jaos.org/
 
+use constant COPYRIGHT => << '__COPYRIGHT__';
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license
+# at http://www.opensource.org/licenses/CDDL-1.0
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each file.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+#
+# Copyright (C) 2011, Nexenta Systems, Inc. and/or its affiliates. All rights reserved.
+#
+
+__COPYRIGHT__
+
 use strict;
 use warnings FATAL => 'all';
 use integer;
@@ -195,11 +221,12 @@ sub do_package
 
 
     my $pkg_summary = get_output_line "cd $pack_dir && [ -f META.yml ] && grep abstract: META.yml | sed 's,abstract: *,,'";
-    my $ips_manifest = <<MANIFEST;
+    my $ips_manifest = COPYRIGHT;
+    $ips_manifest .= <<MANIFEST;
 <transform file path=usr.*/man/.+ -> default mangler.man.stability uncommitted>
 set name=pkg.fmri value=pkg:/library/perl-5/$pkg_name@\$(IPS_COMPONENT_VERSION),\$(BUILD_VERSION)
 set name=info.classification value="org.opensolaris.category.2008:Development/Perl"
-set name=pkg.summary value="$pkg_summary (Perl module)"
+set name=pkg.summary value="$pkg_summary"
 MANIFEST
 
     $ips_manifest .= join "\n", (grep !/(\.packlist|perllocal.pod)$/,
@@ -217,7 +244,8 @@ MANIFEST
     shell_exec "rm -rf $tmp_dest_dir";
 
     my $sha1sum = get_output_line "sha1sum $CPAN::Config->{'keep_source_where'}/authors/id/$cpan_file | cut -d ' ' -f 1";
-    my $makefile = <<MAKEFILE;
+    my $makefile = COPYRIGHT;
+    $makefile .= <<MAKEFILE;
 include ../../../make-rules/shared-macros.mk
 COMPONENT_NAME     =  $cpan_name
 COMPONENT_VERSION  =  $pkg_version

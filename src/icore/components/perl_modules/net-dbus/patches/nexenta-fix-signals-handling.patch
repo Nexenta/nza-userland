@@ -1,0 +1,140 @@
+--- a/lib/Net/DBus.pm
++++ b/lib/Net/DBus.pm
+@@ -241,17 +241,34 @@
+ }
+ 
+ sub _new {
+-    my $class = shift;
+-    my $self = {};
++    my $klas = shift;
++    my $self = bless({}, $klas);
+ 
+-    $self->{connection} = shift;
+-    $self->{reply_timeout} = 60;
+-    $self->{signals} = [];
+-    $self->{services} = {};
++    $self->connect(shift, @_);
++
++    return $self;
++}
++
++=item $bus->connect;
++
++=cut
++
++sub connect {
++    my ($self, $connection, %params) = @_;
++    my $initial = defined $connection;
++
++    if (not $initial) {
++        $connection = Net::DBus::Binding::Bus->new(address => $self->get_connection()->{address});
++    }
++    $self->{connection} = $connection;
+ 
+-    my %params = @_;
++    my $signals = $initial ? [] : $self->{signals};
++    $self->{signals} = [];
+ 
+-    bless $self, $class;
++    if ($initial) {
++        $self->{reply_timeout} = 60;
++        $self->{services} = {};
++    }
+ 
+     unless ($params{nomainloop}) {
+ 	if (exists $INC{'Net/DBus/Reactor.pm'}) {
+@@ -263,9 +280,27 @@
+ 
+     $self->get_connection->add_filter(sub { return $self->_signal_func(@_); });
+ 
+-    $self->{bus} = Net::DBus::RemoteService->new($self, "org.freedesktop.DBus", "org.freedesktop.DBus");
++    $self->{bus} = $self->{services}->{"org.freedesktop.DBus"} = Net::DBus::RemoteService->new($self, "org.freedesktop.DBus", "org.freedesktop.DBus");
+ 
+-    return $self;
++    if (scalar(@$signals)) {
++        foreach (@$signals) {
++	    $self->_add_signal_receiver($_->[0], $_->[2], $_->[3], $_->[4], $_->[5]);
++	}
++    } else {
++        $self->get_bus_object()->connect_to_signal('NameOwnerChanged', sub {
++	    my ($svc, $old, $new) = @_;
++	    if (exists $self->{services}->{$svc}) {
++	        $self->{services}->{$svc}->{owner_name} = $new;
++	    }
++	});
++    }
++
++    # after successfull reconnection we should update
++    # owner names for all cached services or registered
++    # signals will not work
++    while (my ($key, $val) = each %{$self->{services}}) {
++        $val->{owner_name} = $self->get_service_owner($key);
++    }
+ }
+ 
+ =item my $connection = $bus->get_connection;
+@@ -299,6 +334,10 @@
+ 	return $self->{bus};
+     }
+ 
++    if (exists $self->{services}->{$name}) {
++	return $self->{services}->{$name};
++    }
++
+     my $owner = $name;
+     if ($owner !~ /^:/) {
+ 	$owner = $self->get_service_owner($name);
+@@ -308,10 +347,8 @@
+ 	}
+     }
+ 
+-    unless (exists $self->{services}->{$owner}) {
+-	$self->{services}->{$owner} = Net::DBus::RemoteService->new($self, $owner, $name);
+-    }
+-    return $self->{services}->{$owner};
++    $self->{services}->{$name} = Net::DBus::RemoteService->new($self, $owner, $name);
++    return $self->{services}->{$name};
+ }
+ 
+ =item my $service = $bus->export_service($name);
+@@ -456,13 +493,7 @@
+ 	$rule .= ",interface='$interface'";
+     }
+     if ($service) {
+-	if ($service !~ /^:/) {
+-	    # Resolve service name to a client id
+-	    $service = $self->get_service_owner($service);
+-	}
+-	if ($service) {
+-	    $rule .= ",sender='$service'";
+-	}
++	$rule .= ",sender='$service'";
+     }
+     if ($path) {
+ 	$rule .= ",path='$path'";
+@@ -498,9 +529,11 @@
+ 	$bits{interface} ne $interface) {
+ 	return 0;
+     }
+-    if (exists $bits{sender} &&
+-	$bits{sender} ne $sender) {
+-	return 0;
++    if (exists $bits{sender}) {
++	$bits{sender} = $bits{sender} =~ /^:/ ? $bits{sender} : $self->{services}->{$bits{sender}}->get_owner_name();
++	if ($bits{sender} ne $sender) {
++            return 0;
++	}
+     }
+     if (exists $bits{path} &&
+ 	$bits{path} ne $path) {
+--- a/lib/Net/DBus/RemoteObject.pm
++++ b/lib/Net/DBus/RemoteObject.pm
+@@ -256,7 +256,7 @@
+ 	},
+ 			     $name,
+ 			     $interface,
+-			     $self->{service}->get_owner_name(),
++			     $self->{service}->get_service_name(),
+ 			     $self->{object_path});
+ }
+ 
