@@ -105,7 +105,7 @@ foreach my $pkg (@ARGV) {
     blab "Working on $pkg";
 
     my ($pkg_name, $pkg_version, $arch);
-    if ($archive =~ /^(.+)-([^-]+)\.(tar\..+|zip)$/) {
+    if ($archive =~ /^(.+)-(\d.+?)\.(tar\..+|zip)$/) {
         $pkg_name = $1;
         $pkg_version = $2;
         $arch = $3;
@@ -141,10 +141,15 @@ foreach my $pkg (@ARGV) {
     shell_exec 'python setup.py install --root=../__destdir__ --prefix=/usr';
 
     my %pkg_deps = ();
-    if ( -f "$pkg_name.egg-info/requires.txt") {
+    my $egg_info = <*.egg-info>;
+    my $requires_txt = '';
+    if ($egg_info) {
+        $requires_txt = "$egg_info/requires.txt" if -f "$egg_info/requires.txt"
+    }
+    if ($requires_txt) {
         my $type = 'require'; # All deps before the first section ([...])
                                # are mandatory; others are optional
-        foreach (@{get_output "cat $pkg_name.egg-info/requires.txt"}) {
+        foreach (@{get_output "cat $requires_txt"}) {
             $type = 'optional' if /^\[.+\]/;
             next unless /^\w/;
             s/^([-.\w]+).*/$1/;
