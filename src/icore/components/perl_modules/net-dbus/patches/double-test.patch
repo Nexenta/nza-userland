@@ -1,0 +1,14 @@
+--- a/t/15-message.t
++++ b/t/15-message.t
+@@ -64,7 +64,10 @@
+ 
+ ok($iter->get_string() eq "Hello world", "string");
+ ok($iter->next(), "next");
+-ok($iter->get_double() == 1.424141, "double");
++# Don't test precise equality, because floating point arithmetic
++# is not an exact science. (see RT #37707)
++my $d = $iter->get_double();
++ok($d > 1.424100 && $d < 1.424200, "double");
+ 
+ ok($iter->next(), "next");
+ is_deeply($iter->get_array(&Net::DBus::Binding::Message::TYPE_STRING), ["one", "two", "three"], "array");

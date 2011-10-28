@@ -1,0 +1,95 @@
+--- a/lib/Net/DBus/RemoteObject.pm
++++ b/lib/Net/DBus/RemoteObject.pm
+@@ -164,6 +164,7 @@
+
+     unless ($self->{introspected}) {
+ 	my $con = $self->{service}->get_bus()->get_connection();
++	my $timeout = $self->{service}->get_bus()->get_reply_timeout();
+
+ 	my $call = $con->make_method_call_message($self->{service}->get_service_name(),
+ 						  $self->{object_path},
+@@ -171,7 +172,7 @@
+ 						  "Introspect");
+
+ 	my $xml = eval {
+-	    my $reply = $con->send_with_reply_and_block($call, 60 * 1000);
++	    my $reply = $con->send_with_reply_and_block($call, (60 + $timeout) * 1000);
+
+ 	    my $iter = $reply->iterator;
+ 	    return $iter->get(&Net::DBus::Binding::Message::TYPE_STRING);
+@@ -346,7 +347,10 @@
+     my $interface = shift;
+     my $introspect = shift;
+
++    local $SIG{'INT'} = 'IGNORE';
++
+     my $con = $self->{service}->get_bus()->get_connection();
++    my $timeout = $self->{service}->get_bus()->get_reply_timeout();
+
+     my $ins = $introspect ? $self->_introspector : undef;
+     if ($ins &&
+@@ -369,7 +373,7 @@
+
+     if ($mode == dbus_call_sync) {
+ 	my $reply = $con->
+-	    send_with_reply_and_block($call, 60 * 1000);
++	    send_with_reply_and_block($call, $timeout * 1000);
+
+ 	my @reply;
+ 	if ($ins) {
+@@ -383,7 +387,7 @@
+ 	my $pending_call = $self->{service}->
+ 	    get_bus()->
+ 	    get_connection()->
+-	    send_with_reply($call, 60 * 1000);
++	    send_with_reply($call, $timeout * 1000);
+ 	my $reply = Net::DBus::ASyncReply->_new(pending_call => $pending_call,
+ 						($ins ? (introspector => $ins,
+ 							 method_name => $name)
+@@ -394,7 +398,7 @@
+ 	$self->{service}->
+ 	    get_bus()->
+ 	    get_connection()->
+-	    send($call, 60 * 1000);
++	    send($call, $timeout * 1000);
+     } else {
+ 	die "unsupported annotation '$mode'";
+     }
+--- libnet-dbus-perl-0.33.5.orig/lib/Net/DBus.pm
++++ libnet-dbus-perl-0.33.5/lib/Net/DBus.pm
+@@ -245,6 +245,7 @@
+     my $self = {};
+
+     $self->{connection} = shift;
++    $self->{reply_timeout} = 60;
+     $self->{signals} = [];
+     $self->{services} = {};
+
+@@ -383,6 +384,27 @@
+     return $owner;
+ }
+
++=item my $timeout = $bus->get_reply_timeout;
++
++Retrieves current settings for reply_timeout
++
++=cut
++
++sub get_reply_timeout {
++    my $self = shift;
++    return $self->{reply_timeout};
++}
++
++=item my $timeout = $bus->set_reply_timeout;
++
++Sets per-connection reply_timeout
++
++=cut
++
++sub set_reply_timeout {
++    my ($self, $timeout) = @_;
++    $self->{reply_timeout} = $timeout;
++}
+
+ sub _add_signal_receiver {
+     my $self = shift;
