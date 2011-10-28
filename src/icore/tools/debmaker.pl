@@ -352,8 +352,7 @@ sub get_dir_size {
     my ($path) = @_;
     # We get size just after files are copied
     # and need sync() to get proper sizes:
-    my $out = get_output("sync && du -sk $path | cut -f 1");
-    return $$out[0];
+    return get_output_line "sync && du -sk $path | cut -f 1";
 }
 
 sub find_pkgs_with_paths {
@@ -368,9 +367,9 @@ sub guess_required_deps {
     my $elfs = get_output("find $path -type f -exec file {} \\; | grep ELF | cut -d: -f1");
     my @deps = ();
     if (@$elfs) {
-    #   my $libs = get_output('ldd ' . join(' ', @$elfs) . ' | grep "=>"');
-        my $libs = get_output('elfdump -d ' . join(' ', @$elfs) . ' | grep NEEDED | awk \'{print $4}\'');
+        my $libs = get_output('elfdump -d ' . join(' ', @$elfs) . ' | grep \'\(NEEDED\|SUNW_FILTER\)\' | awk \'{print $4}\'');
         uniq $libs;
+        blab 'Required libs: ' . join(', ', @$libs);
         my $pkgs = find_pkgs_with_paths @$libs;
         push @deps, @$pkgs;
     }
