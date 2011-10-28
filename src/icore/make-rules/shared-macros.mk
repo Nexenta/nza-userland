@@ -53,10 +53,11 @@ ROOT =			/
 
 PRIV_CMD =		sudo
 
-OS_VERSION =		$(shell uname -r)
-SOLARIS_VERSION =	$(OS_VERSION:5.%=2.%)
-BUILD_NUM =		1.1
-BUILD_VERSION =		$(OS_VERSION)-$(BUILD_NUM)
+OS_VERSION      = $(shell uname -r)
+SOLARIS_VERSION = $(OS_VERSION:5.%=2.%)
+VCS_REV_NUM     = $(shell hg log .  2>/dev/null | grep changeset: | wc -l)
+BUILD_NUM       = 1.1.$(VCS_REV_NUM)
+BUILD_VERSION   = $(OS_VERSION)-$(BUILD_NUM)
 
 
 COMPILER =		gcc

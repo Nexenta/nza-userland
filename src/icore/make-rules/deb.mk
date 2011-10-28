@@ -2,7 +2,7 @@
 # shared-macros.mk and ips.mk must be included before
 
 DEBMAKER = $(WS_TOOLS)/debmaker.pl
-DEBVERSION ?= $(BUILD_NUM).0
+DEBVERSION ?= 40-0-$(VCS_REV_NUM)
 
 # Where to find binaries
 # (like debian/tmp):
@@ -12,8 +12,7 @@ PROTO_DIRS = $(PKG_PROTO_DIRS:%=-d %)
 # and debs (like debian/pkg-name)
 DEBS_DIR = $(PROTO_DIR)/debs
 
-# but pkgdepend resolve does not work:
-deb: build install $(MANGLED)
+deb: build install $(MANGLED) $(DEBMAKER)
 	rm -rf $(DEBS_DIR)
 	$(MKDIR) $(DEBS_DIR)
 	$(DEBMAKER) \
