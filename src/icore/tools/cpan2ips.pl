@@ -213,7 +213,7 @@ sub do_package
     my $tmp_dest_dir = "/tmp/cpan2ips-$pkg_name";
     my $pack_dir = $pack->dir();
     if ( -f "$pack_dir/Build" ) {
-        shell_exec "cd $pack_dir && ./Build install_vendor destdir=$tmp_dest_dir";
+        shell_exec "cd $pack_dir && ./Build install destdir=$tmp_dest_dir";
     } else {
         shell_exec "cd $pack_dir && make install_vendor DESTDIR=$tmp_dest_dir";
     }
