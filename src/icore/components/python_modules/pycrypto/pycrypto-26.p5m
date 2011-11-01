@@ -1,0 +1,258 @@
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license
+# at http://www.opensource.org/licenses/CDDL-1.0
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each file.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+#
+# Copyright (C) 2011, Nexenta Systems, Inc. and/or its affiliates. All rights reserved.
+#
+
+<transform file path=usr.*/man/.+ -> default mangler.man.stability uncommitted>
+set name=pkg.fmri value=pkg:/library/python-2/pycrypto-26@$(IPS_COMPONENT_VERSION),$(BUILD_VERSION)
+set name=info.classification value="org.opensolaris.category.2008:Development/Python"
+set name=pkg.summary value="cryptographic modules for Python"
+
+depend fmri=pkg:/runtime/python-26 type=require
+
+dir path=usr
+dir path=usr/lib
+dir path=usr/lib/python2.6
+dir path=usr/lib/python2.6/vendor-packages
+dir path=usr/lib/python2.6/vendor-packages/Crypto
+dir path=usr/lib/python2.6/vendor-packages/Crypto/PublicKey
+dir path=usr/lib/python2.6/vendor-packages/Crypto/Protocol
+dir path=usr/lib/python2.6/vendor-packages/Crypto/Cipher
+dir path=usr/lib/python2.6/vendor-packages/Crypto/Random
+dir path=usr/lib/python2.6/vendor-packages/Crypto/Random/OSRNG
+dir path=usr/lib/python2.6/vendor-packages/Crypto/Random/Fortuna
+dir path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest
+dir path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Util
+dir path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Hash
+dir path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Protocol
+dir path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Random
+dir path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Random/OSRNG
+dir path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Random/Fortuna
+dir path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/PublicKey
+dir path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Cipher
+dir path=usr/lib/python2.6/vendor-packages/Crypto/Hash
+dir path=usr/lib/python2.6/vendor-packages/Crypto/Util
+file path=usr/lib/python2.6/vendor-packages/Crypto/PublicKey/_DSA.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/PublicKey/ElGamal.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/PublicKey/__init__.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/PublicKey/RSA.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/PublicKey/pubkey.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/PublicKey/_slowmath.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/PublicKey/qNEW.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/PublicKey/_slowmath.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/PublicKey/DSA.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/PublicKey/DSA.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/PublicKey/_RSA.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/PublicKey/ElGamal.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/PublicKey/_RSA.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/PublicKey/pubkey.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/PublicKey/_fastmath.so
+file path=usr/lib/python2.6/vendor-packages/Crypto/PublicKey/_DSA.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/PublicKey/__init__.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/PublicKey/qNEW.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/PublicKey/RSA.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/__init__.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/pct_warnings.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/Protocol/AllOrNothing.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/Protocol/AllOrNothing.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/Protocol/__init__.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/Protocol/__init__.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/Protocol/Chaffing.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/Protocol/Chaffing.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/Cipher/DES3.so
+file path=usr/lib/python2.6/vendor-packages/Crypto/Cipher/DES.so
+file path=usr/lib/python2.6/vendor-packages/Crypto/Cipher/AES.so
+file path=usr/lib/python2.6/vendor-packages/Crypto/Cipher/XOR.so
+file path=usr/lib/python2.6/vendor-packages/Crypto/Cipher/CAST.so
+file path=usr/lib/python2.6/vendor-packages/Crypto/Cipher/__init__.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/Cipher/Blowfish.so
+file path=usr/lib/python2.6/vendor-packages/Crypto/Cipher/ARC4.so
+file path=usr/lib/python2.6/vendor-packages/Crypto/Cipher/ARC2.so
+file path=usr/lib/python2.6/vendor-packages/Crypto/Cipher/__init__.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/Random/OSRNG/rng_base.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/Random/OSRNG/posix.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/Random/OSRNG/rng_base.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/Random/OSRNG/fallback.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/Random/OSRNG/__init__.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/Random/OSRNG/nt.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/Random/OSRNG/__init__.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/Random/OSRNG/fallback.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/Random/OSRNG/posix.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/Random/OSRNG/nt.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/Random/Fortuna/SHAd256.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/Random/Fortuna/SHAd256.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/Random/Fortuna/FortunaAccumulator.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/Random/Fortuna/__init__.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/Random/Fortuna/__init__.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/Random/Fortuna/FortunaAccumulator.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/Random/Fortuna/FortunaGenerator.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/Random/Fortuna/FortunaGenerator.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/Random/_UserFriendlyRNG.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/Random/_UserFriendlyRNG.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/Random/random.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/Random/__init__.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/Random/random.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/Random/__init__.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/pct_warnings.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/__init__.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/__init__.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/__init__.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/st_common.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Util/test_winrandom.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Util/test_asn1.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Util/test_Counter.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Util/test_number.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Util/__init__.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Util/test_asn1.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Util/__init__.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Util/test_number.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Util/test_winrandom.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Util/test_Counter.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Hash/test_SHA224.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Hash/test_SHA512.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Hash/__init__.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Hash/test_SHA256.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Hash/test_SHA512.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Hash/test_SHA224.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Hash/test_SHA256.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Hash/test_HMAC.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Hash/common.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Hash/test_HMAC.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Hash/test_SHA384.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Hash/test_MD2.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Hash/test_SHA.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Hash/test_SHA384.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Hash/test_MD4.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Hash/__init__.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Hash/test_RIPEMD.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Hash/test_MD5.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Hash/common.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Hash/test_SHA.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Hash/test_RIPEMD.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Hash/test_MD4.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Hash/test_MD2.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Hash/test_MD5.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/st_common.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Protocol/test_AllOrNothing.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Protocol/test_chaffing.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Protocol/__init__.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Protocol/test_rfc1751.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Protocol/test_chaffing.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Protocol/test_rfc1751.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Protocol/__init__.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Protocol/test_AllOrNothing.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Random/__init__.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Random/test_random.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Random/test_rpoolcompat.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Random/__init__.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Random/test_rpoolcompat.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Random/test_random.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Random/OSRNG/test_nt.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Random/OSRNG/test_fallback.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Random/OSRNG/test_winrandom.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Random/OSRNG/test_generic.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Random/OSRNG/test_winrandom.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Random/OSRNG/test_posix.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Random/OSRNG/test_generic.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Random/OSRNG/test_posix.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Random/OSRNG/test_nt.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Random/OSRNG/__init__.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Random/OSRNG/test_fallback.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Random/OSRNG/__init__.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Random/Fortuna/__init__.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Random/Fortuna/test_SHAd256.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Random/Fortuna/__init__.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Random/Fortuna/test_SHAd256.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Random/Fortuna/test_FortunaGenerator.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Random/Fortuna/test_FortunaGenerator.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Random/Fortuna/test_FortunaAccumulator.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Random/Fortuna/test_FortunaAccumulator.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/PublicKey/test_RSA.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/PublicKey/test_RSA.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/PublicKey/test_importKey.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/PublicKey/test_DSA.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/PublicKey/test_importKey.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/PublicKey/test_DSA.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/PublicKey/__init__.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/PublicKey/__init__.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Cipher/test_ARC2.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Cipher/test_ARC4.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Cipher/test_Blowfish.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Cipher/test_XOR.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Cipher/__init__.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Cipher/test_XOR.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Cipher/test_CAST.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Cipher/test_ARC2.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Cipher/common.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Cipher/test_DES.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Cipher/__init__.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Cipher/test_CAST.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Cipher/test_ARC4.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Cipher/test_DES3.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Cipher/test_AES.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Cipher/test_Blowfish.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Cipher/test_DES3.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Cipher/test_DES.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Cipher/test_AES.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/SelfTest/Cipher/common.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/Hash/SHA384.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/Hash/MD2.so
+file path=usr/lib/python2.6/vendor-packages/Crypto/Hash/RIPEMD.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/Hash/MD5.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/Hash/MD4.so
+file path=usr/lib/python2.6/vendor-packages/Crypto/Hash/SHA384.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/Hash/SHA.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/Hash/RIPEMD.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/Hash/MD5.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/Hash/SHA.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/Hash/HMAC.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/Hash/__init__.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/Hash/SHA224.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/Hash/SHA224.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/Hash/SHA512.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/Hash/SHA512.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/Hash/HMAC.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/Hash/SHA256.so
+file path=usr/lib/python2.6/vendor-packages/Crypto/Hash/__init__.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/Hash/RIPEMD160.so
+file path=usr/lib/python2.6/vendor-packages/Crypto/Util/randpool.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/Util/py3compat.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/Util/__init__.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/Util/number.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/Util/_number_new.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/Util/strxor.so
+file path=usr/lib/python2.6/vendor-packages/Crypto/Util/py3compat.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/Util/winrandom.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/Util/asn1.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/Util/__init__.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/Util/asn1.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/Util/RFC1751.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/Util/_counter.so
+file path=usr/lib/python2.6/vendor-packages/Crypto/Util/winrandom.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/Util/_number_new.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/Util/py21compat.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/Util/Counter.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/Util/RFC1751.py
+file path=usr/lib/python2.6/vendor-packages/Crypto/Util/randpool.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/Util/Counter.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/Util/number.pyc
+file path=usr/lib/python2.6/vendor-packages/Crypto/Util/py21compat.pyc
+file path=usr/lib/python2.6/vendor-packages/pycrypto-2.4-py2.6.egg-info
