@@ -567,6 +567,7 @@ foreach my $manifest_file (@ARGV) {
     push @depends, @{guess_required_deps($pkgdir)};
 
     uniq \@depends, \@replaces, \@provides, \@predepends, \@recommends, \@suggests, \@conflicts;
+    uniq \@restart_fmri, \@refresh_fmri, \@suspend_fmri, \@disable_fmri;
     # When a program and a library are in the same package:
     @depends = grep {$_ ne $debname} @depends;
 
