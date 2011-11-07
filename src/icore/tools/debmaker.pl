@@ -162,6 +162,7 @@ my $VERSION = '0.0.0';
 my $ARCH = 'solaris-i386';
 my $SOURCE = 'xxx'; # only for *.changes
 my $DISTRIB = 'unstable'; # only for *.changes
+my $CATEGORY = 'nza-userland';
 
 # Mapping file => IPS FMRI, filled on bootstrap:
 my %PATHS = ();
@@ -580,6 +581,7 @@ foreach my $manifest_file (@ARGV) {
     $control .= "Priority: $debpriority\n";
     $control .= "Maintainer: $MAINTAINER\n";
     $control .= "Architecture: $ARCH\n";
+    $control .= "Category: $CATEGORY\n";
 
 
     $control .= "Description: $$manifest_data{'pkg.summary'}\n";
