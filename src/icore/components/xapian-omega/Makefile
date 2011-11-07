@@ -33,8 +33,6 @@ include ../../make-rules/prep.mk
 include ../../make-rules/configure.mk
 include ../../make-rules/ips.mk
 
-COMPILER = gcc
-CONFIGURE_OPTIONS	+=CC=cc
 CONFIGURE_OPTIONS	+=CXX=
 
 CONFIGURE_PREFIX	=/usr

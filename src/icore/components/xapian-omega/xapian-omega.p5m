@@ -28,7 +28,7 @@ set name=pkg.description value="Xapian Omega CGI"
 set name=pkg.summary value="Xapian Omega CGI"
 dir path=usr
 dir path=usr/bin
-dir path=usr/etc
+dir path=etc
 dir path=usr/lib
 dir path=usr/lib/xapian-omega
 dir path=usr/lib/xapian-omega/bin
@@ -43,7 +43,7 @@ file path=usr/bin/htdig2omega mode=0555
 file path=usr/bin/mbox2omega mode=0555
 file path=usr/bin/omindex mode=0555
 file path=usr/bin/scriptindex mode=0555
-file path=usr/etc/omega.conf
+file path=etc/omega.conf
 file path=usr/lib/xapian-omega/bin/omega mode=0555
 file path=usr/share/doc/xapian-omega/cgiparams.html
 file path=usr/share/doc/xapian-omega/omegascript.html
