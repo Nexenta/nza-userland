@@ -38,7 +38,6 @@ nabat-upload:
 		echo uploading to $(NABAT_USER)@$(NABAT_HOST):$(NABAT_DESTDIR)/$(NABAT_DIST)-$(NABAT_REPO)/ ; \
 		scp $(DEBS_DIR)/*.{deb,changes} \
 			$(NABAT_USER)@$(NABAT_HOST):$(NABAT_DESTDIR)/$(NABAT_DIST)-$(NABAT_REPO)/ ; \
-		touch $@ ; \
 	else \
 		echo "make deb first" ; \
 	fi

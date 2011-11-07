@@ -34,15 +34,22 @@ set name=info.upstream_url value=$(COMPONENT_PROJECT_URL)
 set name=opensolaris.arc_url value=http://arc.opensolaris.org/caselog/PSARC/2006/642
 set name=org.opensolaris.consolidation value=$(CONSOLIDATION)
 
+dir path=etc
 dir path=usr
 dir path=usr/bin
 dir path=usr/share
 dir path=usr/share/man
 dir path=usr/share/man/man1
 dir path=usr/share/man/man5
+dir path=lib
+dir path=lib/svc
+dir path=lib/svc/manifest
+dir path=lib/svc/manifest/network
 file path=usr/bin/rsync
 file rsync.1 path=usr/share/man/man1/rsync.1
 file rsyncd.conf.5 path=usr/share/man/man5/rsyncd.conf.5
+file smf/rsync.xml path=lib/svc/manifest/network/rsync.xml
+file rsyncd.conf path=etc/rsyncd.conf
 
 legacy pkg=SUNWrsync \
     desc="rsync - A utility that provides fast incremental file transfer and copy." \

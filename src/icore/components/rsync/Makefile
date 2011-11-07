@@ -39,9 +39,15 @@ include ../../make-rules/prep.mk
 include ../../make-rules/configure.mk
 include ../../make-rules/ips.mk
 
+
+# Need to patch configure.ac:
+COMPONENT_PRE_CONFIGURE_ACTION = ($(CLONEY) $(SOURCE_DIR) $(@D))
+COMPONENT_POST_CONFIGURE_ACTION = (cd $(@D) && $(GMAKE) reconfigure)
+
 CONFIGURE_OPTIONS  +=		CFLAGS="$(CFLAGS)"
 CONFIGURE_OPTIONS  +=		--prefix=/usr
 CONFIGURE_OPTIONS  +=		--with-included-popt
+CONFIGURE_OPTIONS  +=		--enable-xattr-support
 
 # common targets
 build:		$(BUILD_32)

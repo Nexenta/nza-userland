@@ -1,0 +1,229 @@
+--- rsync-3.0.8/./config.h.in	2011-03-26 14:37:52.000000000 -0700
++++ rsync-3.0.8-new/./config.h.in	2011-08-26 15:16:21.000000000 -0700
+@@ -352,6 +352,9 @@
+ /* true if you have solaris ACLs */
+ #undef HAVE_SOLARIS_ACLS
+ 
++/* True if you have Solaris xattrs */
++#undef HAVE_SOLARIS_XATTRS
++
+ /* Define to 1 if you have the <stdint.h> header file. */
+ #undef HAVE_STDINT_H
+ 
+--- rsync-3.0.8/./configure.sh	2011-03-26 14:37:51.000000000 -0700
++++ rsync-3.0.8-new/./configure.sh	2011-08-26 15:40:55.000000000 -0700
+@@ -2524,7 +2524,6 @@
+ case $host_os in *\ *) host_os=`echo "$host_os" | sed 's/ /-/g'`;; esac
+ 
+ 
+-
+ # We must decide this before testing the compiler.
+ 
+ # Please allow this to default to yes, so that your users have more
+@@ -8378,6 +8377,15 @@
+ $as_echo "no" >&6; }
+ else
+     case "$host_os" in
++    solaris*)
++	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: Using Solaris xattrs" >&5
++$as_echo "Using Solaris xattrs" >&6; }
++
++$as_echo "#define HAVE_SOLARIS_XATTRS 1" >>confdefs.h
++
++	$as_echo "#define SUPPORT_XATTRS 1" >>confdefs.h
++
++	;;
+     *linux*)
+ 	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: Using Linux xattrs" >&5
+ $as_echo "Using Linux xattrs" >&6; }
+--- rsync-3.0.8/./configure.ac	2011-03-26 14:34:18.000000000 -0700
++++ rsync-3.0.8-new/./configure.ac	2011-08-26 15:14:36.000000000 -0700
+@@ -962,6 +962,11 @@
+     AC_MSG_RESULT(no)
+ else
+     case "$host_os" in
++    solaris*)
++	AC_MSG_RESULT(Using Solaris xattrs)
++	AC_DEFINE(HAVE_SOLARIS_XATTRS, 1, [True if you have Solaris xattrs])
++	AC_DEFINE(SUPPORT_XATTRS, 1)
++	;;
+     *linux*)
+ 	AC_MSG_RESULT(Using Linux xattrs)
+ 	AC_DEFINE(HAVE_LINUX_XATTRS, 1, [True if you have Linux xattrs])
+--- rsync-3.0.8/./lib/sysxattrs.c	2008-03-01 12:01:41.000000000 -0800
++++ rsync-3.0.8-new/./lib/sysxattrs.c	2011-09-08 02:35:20.385761801 -0700
+@@ -126,6 +126,174 @@
+ 	return len;
+ }
+ 
++#elif HAVE_SOLARIS_XATTRS
++
++/* Solaris doesn't allow extended attributes on symlinks. We stat for
++ * symlinks and put their attributes on the directory containing the symlink.
++ */
++static void solaris_name_fixup (const char **, const char **);
++
++ssize_t sys_lgetxattr(const char *path, const char *name, void *value, size_t size)
++{
++	ssize_t rval;
++	int fd;
++
++	solaris_name_fixup (&path, &name);
++
++	fd = open (path, O_RDONLY|O_NOFOLLOW);
++	if (fd < 0)
++	{
++		if (errno == ELOOP)
++			errno = ENOATTR;
++		return -1;
++	}
++	rval = sys_fgetxattr (fd, name, value, size);
++	close (fd);
++	return rval;
++}
++
++ssize_t sys_fgetxattr(int filedes, const char *name, void *value, size_t size)
++{
++	int fd;
++	ssize_t rval;
++	struct stat sb;
++
++	fd = openat (filedes, name, O_RDONLY|O_XATTR, 0);
++	if (fd < 0)
++	{
++		if (errno == ENOENT)
++			errno = ENOATTR;
++		return -1;
++	}
++	fstat (fd, &sb);
++
++	if (sb.st_size > SSIZE_MAX)
++	{
++		errno = ERANGE;
++		rval = -1;
++	}
++	else if (size == 0)
++	{
++		rval = sb.st_size;
++	}
++	else if (sb.st_size > size)
++	{
++		errno = ERANGE;
++		rval = -1;
++	}
++	else
++	{
++		rval = read (fd, value, sb.st_size);
++	}
++
++	close (fd);
++	return rval;
++}
++
++int sys_lsetxattr(const char *path, const char *name, const void *value, size_t size)
++{
++	int fd;
++	ssize_t rval;
++	struct stat sb;
++
++	solaris_name_fixup (&path, &name);
++
++	if (lstat (path, &sb) < 0)
++		return -1;
++
++	if ((sb.st_mode & S_IFMT) == S_IFLNK)
++		return 0;
++
++    if (!strcmp(name, ".") || !strcmp(name, "..") ||
++         !strcmp(name, "SUNWattr_rw") || !strcmp(name, "SUNWattr_ro"))
++        return 0;
++
++	fd = attropen (path, name, O_CREAT|O_WRONLY|O_NOFOLLOW, 0700);
++	if (fd < 0)
++	{
++		return -1;
++	}
++	rval = write (fd, value, size);
++	close (fd);
++
++	return rval > 0 ? 0 : -1;
++}
++
++int sys_lremovexattr(const char *path, const char *name)
++{
++	int attrdirfd, rval;
++
++	solaris_name_fixup (&path, &name);
++
++    if (!strcmp(name, ".") || !strcmp(name, "..") ||
++         !strcmp(name, "SUNWattr_rw") || !strcmp(name, "SUNWattr_ro"))
++        return 0;
++
++	attrdirfd = attropen (path, ".", O_RDWR);
++	rval = unlinkat (attrdirfd, name, 0);
++	close (attrdirfd);
++	return rval;
++}
++
++ssize_t sys_llistxattr(const char *path, char *list, size_t size)
++{
++	int attrdirfd;
++	size_t srclen;
++	ssize_t rval = 0;
++	DIR *dirp;
++	struct dirent *dp;
++
++	attrdirfd = attropen (path, ".", O_RDONLY);
++	dirp = fdopendir (attrdirfd);
++	while ((dp = readdir (dirp)))
++	{
++        if (!strcmp(dp->d_name, ".") || !strcmp(dp->d_name, "..") ||
++         !strcmp(dp->d_name, "SUNWattr_rw") ||
++         !strcmp(dp->d_name, "SUNWattr_ro"))
++            continue;
++		srclen = strlcpy (list, dp->d_name, size);
++		if (srclen >= size)
++		{
++			rval = -1;
++			errno = ERANGE;
++			break;
++		}
++		list += srclen + 1;
++		size -= srclen + 1;
++		rval += srclen + 1;
++	}
++	closedir (dirp);
++	close (attrdirfd);
++	return rval;
++}
++
++static void
++solaris_name_fixup (const char **path, const char **name)
++{
++	const char *s;
++	static char newpath[PATH_MAX + 1];
++	static char newattr[NAME_MAX + 1];
++	struct stat sb;
++
++	if (lstat (*path, &sb) < 0 ||
++	    (sb.st_mode & S_IFMT) != S_IFLNK)
++		return;
++
++	if ((s = strrchr (*path, '/')))
++	{
++		snprintf (newpath, PATH_MAX + 1, "%*.*s", s-*path+1, s-*path+1, *path);
++		snprintf (newattr, NAME_MAX + 1, "%s.%s", *name, s+1);
++	}
++	else
++	{
++		strcpy (newpath, ".");
++		snprintf (newattr, NAME_MAX + 1, "%s.%s", *name, *path);
++	}
++
++	*path = newpath;
++	*name = newattr;
++}
++
+ #else
+ 
+ #error You need to create xattr compatibility functions.
