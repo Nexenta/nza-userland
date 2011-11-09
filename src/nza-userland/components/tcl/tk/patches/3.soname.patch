@@ -1,0 +1,28 @@
+Index: tk8.5.9/unix/configure
+===================================================================
+--- tk8.5.9.orig/unix/configure
++++ tk8.5.9/unix/configure
+@@ -6859,7 +6859,8 @@ fi
+ 	    # symbols when dynamically loaded into tclsh.
+ 
+ 	    SHLIB_LD_LIBS='${LIBS}'
+-	    SHLIB_SUFFIX=".so"
++	    SHLIB_SUFFIX=".so.0"
++	    TCL_SHLIB_LD_EXTRAS="-Wl,-soname,\${TCL_LIB_FILE}"
+ 	    DL_OBJS="tclLoadDl.o"
+ 	    DL_LIBS="-ldl"
+ 	    if test "$GCC" = yes; then
+Index: tk8.5.9/unix/tcl.m4
+===================================================================
+--- tk8.5.9.orig/unix/tcl.m4
++++ tk8.5.9/unix/tcl.m4
+@@ -1984,7 +1984,8 @@ dnl AC_CHECK_TOOL(AR, ar)
+ 	    # symbols when dynamically loaded into tclsh.
+ 
+ 	    SHLIB_LD_LIBS='${LIBS}'
+-	    SHLIB_SUFFIX=".so"
++	    SHLIB_SUFFIX=".so.0"
++	    TCL_SHLIB_LD_EXTRAS="-Wl,-soname,\${TCL_LIB_FILE}"
+ 	    DL_OBJS="tclLoadDl.o"
+ 	    DL_LIBS="-ldl"
+ 	    AS_IF([test "$GCC" = yes], [
