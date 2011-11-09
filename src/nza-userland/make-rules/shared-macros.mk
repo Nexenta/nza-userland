@@ -25,7 +25,11 @@ PATH=/usr/bin:/usr/gnu/bin
 
 # The location of a mirror of community source archives that we build in this
 # gate.
-ARCHIVE_MIRROR = http://dlc.openindiana.org/oi-build/source-archives
+ARCHIVE_MIRROR  = http://dlc.openindiana.org/oi-build/source-archives
+
+# Private Nexenta's sources
+# to use it just set COMPONENT_ARCHIVE_URL to a tarball name (not url)
+ARCHIVE_MIRROR += sftp://nexsrc:&Ka$$amutra&@nex-stor.nexenta.com/export/home/nexsrc
 
 export DOWNLOAD_SEARCH_PATH +=	$(ARCHIVE_MIRROR)
 

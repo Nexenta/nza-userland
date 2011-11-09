@@ -33,10 +33,12 @@ import sys
 import shutil
 from urllib import splittype, urlopen
 import hashlib
+from urlparse import urlparse
+import paramiko
 
-def printIOError(e, txt):
-	""" Function to decode and print IOError type exception """
-	print "I/O Error: " + txt + ": "
+
+def printError(e, txt):
+	print txt + ": ",
 	try:
 		(code, message) = e
 		print str(message) + " (" + str(code) + ")"
@@ -67,7 +69,7 @@ def validate_container(filename, hash):
 	try:
 		file = open(filename, 'r')
 	except IOError as e:
-		printIOError(e, "Can't open file " + filename)
+		printError(e, "Can't open file " + filename)
 		return False
 	return validate(file, hash)
 
@@ -88,7 +90,7 @@ def validate_payload(filename, hash):
 		else:
 			return False
 	except IOError as e:
-		printIOError(e, "Can't open archive " + filename)
+		printError(e, "Can't open archive " + filename)
 		return False
 	return validate(file, hash)
 
@@ -99,7 +101,7 @@ def download(url, filename = None):
 	try:
 		src = urlopen(url)
 	except IOError as e:
-		printIOError(e, "Can't open url " + url)
+		printError(e, "Can't open url " + url)
 		return None
 
 	# 3xx, 4xx and 5xx (f|ht)tp codes designate unsuccessfull action
@@ -113,7 +115,7 @@ def download(url, filename = None):
 	try:
 		dst = open(filename, 'wb');
 	except IOError as e:
-		printIOError(e, "Can't open file " + filename + " for writing")
+		printError(e, "Can't open file " + filename + " for writing")
 		src.close()
 		return None
 
@@ -127,6 +129,36 @@ def download(url, filename = None):
 	dst.close()
 
 	# return the name of the file that we downloaded the data to.
+	return filename
+
+def download_sftp(url, filename = None):
+	# url = 'sftp://username:password@hostname/path/filename'
+	parsed = urlparse(url)
+
+	if filename == None:
+		filename = basename(parsed.path)
+
+	ssh = paramiko.SSHClient()
+	ssh.set_missing_host_key_policy(
+			paramiko.AutoAddPolicy())
+
+	try:
+		ssh.connect(parsed.hostname,
+			username = parsed.username,
+			password = parsed.password)
+	except Exception as e:
+		printError(e, 'Cannot connect to %s' % parsed.hostname)
+		return None
+
+	try:
+		sftp = ssh.open_sftp()
+		sftp.get(parsed.path, filename)
+	except Exception as e:
+		printError(e, 'Cannot fetch file %s' % parsed.path)
+		filename = None
+
+	sftp.close()
+	ssh.close()
 	return filename
 
 def download_paths(search, filename, url):
@@ -217,12 +249,18 @@ def main():
 			if name == None:
 				print "failed"
 				continue
+		elif scheme in [ 'sftp' ]:
+			print "\n    downloading via SSH...",
+			name = download_sftp(url, file_arg)
+			if name == None:
+				print "failed"
+				continue
 
 		print "\n    validating...",
 		if hash_arg == None:
 			print "skipping (no hash)"
 			sys.exit(0)
-			
+
 		realhash = validate_container(name, hash_arg)
 		if realhash == hash_arg:
 			print "ok"
