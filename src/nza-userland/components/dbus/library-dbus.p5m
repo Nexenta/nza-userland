@@ -1,0 +1,86 @@
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+# Copyright (c) 2011 Nexenta Systems, Inc.  All rights reserved.
+#
+
+<transform file path=usr.*/man/.+ -> default mangler.man.stability volatile>
+
+set name=pkg.fmri value=pkg:/system/library/dbus@$(IPS_COMPONENT_VERSION),$(BUILD_VERSION)
+set name=info.classification value=org.opensolaris.category.2008:System/Services
+set name=description value="Simple IPC library based on messages"
+set name=pkg.description value="Simple IPC library based on messages"
+set name=pkg.summary value="Simple IPC library based on messages"
+
+dir path=lib
+dir path=lib/svc
+dir path=lib/svc/method
+dir path=etc
+dir path=etc/dbus-1
+dir path=etc/dbus-1/session.d
+dir path=etc/dbus-1/system.d
+dir path=etc/security
+dir path=etc/security/auth_attr.d
+dir path=etc/security/prof_attr.d
+dir path=usr
+dir path=usr/bin
+dir path=usr/lib
+dir path=usr/lib/dbus-1
+dir path=usr/share
+dir path=usr/share/doc
+dir path=usr/share/doc/system-library-dbus
+dir path=usr/share/man
+dir path=usr/share/man/man1
+dir path=usr/share/dbus-1
+dir path=usr/share/dbus-1/services
+dir path=usr/share/dbus-1/system-services
+dir path=var
+dir path=var/lib
+dir path=var/lib/dbus
+dir path=var/run
+dir path=var/run/dbus
+dir path=var/svc
+dir path=var/svc/manifest
+dir path=var/svc/manifest/system
+file path=etc/dbus-1/system.conf
+file path=etc/dbus-1/session.conf
+file path=usr/bin/dbus-send
+file path=usr/bin/dbus-launch
+file path=usr/bin/dbus-uuidgen
+file path=usr/bin/dbus-monitor
+file path=usr/bin/dbus-cleanup-sockets
+file path=usr/lib/dbus-daemon mode=0555
+file path=usr/lib/dbus-daemon-launch-helper mode=0555
+file path=usr/share/man/man1/dbus-launch.1
+file path=usr/share/man/man1/dbus-monitor.1
+file path=usr/share/man/man1/dbus-daemon.1
+file path=usr/share/man/man1/dbus-uuidgen.1
+file path=usr/share/man/man1/dbus-send.1
+file path=usr/share/man/man1/dbus-cleanup-sockets.1
+file security/auth_attr.d/system%2Flibrary%2Fdbus path=etc/security/auth_attr.d/system%2Flibrary%2Fdbus
+file security/prof_attr.d/system%2Flibrary%2Fdbus path=etc/security/prof_attr.d/system%2Flibrary%2Fdbus
+file svc/dbus.xml path=var/svc/manifest/system/dbus.xml
+file svc/svc-dbus path=lib/svc/method/svc-dbus mode=0700
+link path=usr/bin/dbus-daemon target=../lib/dbus-daemon
+
+license dbus.license license=LGPLv2.1
+
+depend fmri=system/library/libdbus type=require
+depend fmri=library/expat type=require
