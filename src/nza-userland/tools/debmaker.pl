@@ -34,13 +34,15 @@ sub my_symlink {
 sub my_hardlink {
     my ($src, $dst) = @_;
 
-    # For harlink creating target file must be accessible:
+    # For hardlink creation target file must be accessible:
     my $pwd = getcwd;
     my $dir = dirname $dst;
     my_chdir $dir;
-    link $src, $dst
-        or fatal "Can't create hardlink `$src' -> `$dst': $!";
+    my $success = link $src, $dst;
     my_chdir $pwd;
+    # be more tolerant, cause it may be hardlink to isaexec
+    warning "Can't create hardlink `$src' -> `$dst': $!" unless $success;
+    return $success;
 }
 sub my_copy {
     my ($src, $dst) = @_;
@@ -113,7 +115,7 @@ sub write_file {
 }
 sub write_script {
     my ($filename, $content) = @_;
-    $content = "#!/bin/sh\nset -e\n$content";
+    $content = "#!/sbin/sh\nset -e\n$content";
     write_file $filename, $content;
     my_chmod '0555', $filename;
 }
@@ -457,6 +459,11 @@ foreach my $manifest_file (@ARGV) {
         $debversion = $VERSION;
     }
 
+    my $preinst  = '';
+    my $postinst = '';
+    my $prerm    = '';
+    my $postrm   = '';
+
     # Make sure to work with empty tree:
     # mkdir will fail if dir exists
     my_mkdir $pkgdir;
@@ -508,10 +515,12 @@ foreach my $manifest_file (@ARGV) {
             my $src_dir = undef;
             foreach my $d (@PROTO_DIRS) {
                 # http://stackoverflow.com/questions/2238576/what-is-the-default-scope-of-foreach-loop-in-perl
-                $src_dir = $d;
-                last if -f "$src_dir/$src";
+                if ( -f "$d/$src") {
+                    $src_dir = $d;
+                    last
+                }
             }
-            fatal "file `$src' not found in ", join(', ', @PROTO_DIRS)
+            fatal "file `$src' not found in given dirs: ", join(', ', @PROTO_DIRS)
                 unless $src_dir;
 
             $src = "$src_dir/$src";
@@ -531,8 +540,28 @@ foreach my $manifest_file (@ARGV) {
 
     if (my @hardlinks = @{$$manifest_data{'hardlink'}}) {
         blab "Creating hardlinks ...";
+        my @hl_script = ();
         foreach my $link (@hardlinks) {
-            my_hardlink $$link{'target'}, "$pkgdir/$$link{'path'}";
+            if (!my_hardlink $$link{'target'}, "$pkgdir/$$link{'path'}") {
+                warning "Adding code to create hardlink in pre-install phase";
+                push @hl_script, $link;
+            }
+        }
+        if (@hl_script) {
+            $preinst .= 'if [ "$1" = install ] || [ "$1" = upgrade ]; then' . "\n";
+            $postrm  .= 'if [ "$1" = remove ]; then' . "\n";
+            foreach my $l (@hl_script) {
+                my $d = dirname $$l{path};   $d = "/$d" unless $d =~ /^\//;
+                my $b = basename $$l{path};
+                my $p = $$l{'path'};           $p = "/$p" unless $p =~ /^\//;
+                my $t = $$l{'target'};
+                $preinst .= " if ! [ -f $p ]; then\n";
+                $preinst .= "  (cd $d && ln $t $b) || true\n";
+                $preinst .= " fi\n";
+                $postrm  .= " rm $p\n";
+            }
+            $preinst .= "fi\n";
+            $postrm  .= "fi\n";
         }
     }
     if (my @symlinks = @{$$manifest_data{'link'}}) {
@@ -612,10 +641,6 @@ foreach my $manifest_file (@ARGV) {
     write_file "$pkgdir/DEBIAN/conffiles", (join "\n", @conffiles) . "\n" if @conffiles;
 
     # http://wiki.debian.org/MaintainerScripts
-    my $preinst = '';
-    my $postinst = '';
-    my $prerm = '';
-    my $postrm = '';
     if (my @groups = @{$$manifest_data{'group'}}) {
         foreach my $g (@groups) {
             my $cmd = "if ! getent group $$g{'groupname'} >/dev/null; then\n";
