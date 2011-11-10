@@ -1,0 +1,20 @@
+diff -Nur -x '*.orig' -x '*~' dbus-1.1.20/dbus/dbus-sysdeps-unix.c dbus-1.1.20.new/dbus/dbus-sysdeps-unix.c
+--- dbus-1.1.20/dbus/dbus-sysdeps-unix.c	2010-07-09 13:11:06.057622294 -0400
++++ dbus-1.1.20.new/dbus/dbus-sysdeps-unix.c	2010-07-09 13:11:52.585899433 -0400
+@@ -781,7 +781,6 @@
+     }
+   hints.ai_protocol = IPPROTO_TCP;
+   hints.ai_socktype = SOCK_STREAM;
+-  hints.ai_flags = AI_ADDRCONFIG;
+
+   if ((res = getaddrinfo(host, port, &hints, &ai)) != 0)
+     {
+@@ -884,7 +883,7 @@
+
+   hints.ai_protocol = IPPROTO_TCP;
+   hints.ai_socktype = SOCK_STREAM;
+-  hints.ai_flags = AI_ADDRCONFIG | AI_PASSIVE;
++  hints.ai_flags    = AI_PASSIVE;
+
+  redo_lookup_with_port:
+   if ((res = getaddrinfo(host, port, &hints, &ai)) != 0 || !ai)

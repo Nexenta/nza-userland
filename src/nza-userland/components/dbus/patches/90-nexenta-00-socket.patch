@@ -1,0 +1,1337 @@
+--- a/dbus/asm/asm-generic/types.h	1970-01-01 03:00:00.000000000 +0300
++++ b/dbus/asm/asm-generic/types.h	2010-12-09 20:06:31.000000000 +0300
+@@ -0,0 +1,19 @@
++#ifndef _ASM_GENERIC_TYPES_H
++#define _ASM_GENERIC_TYPES_H
++/*
++ * int-ll64 is used practically everywhere now,
++ * so use it as a reasonable default.
++ */
++#include "asm-generic/int-ll64.h"
++
++#ifndef __ASSEMBLY__
++
++typedef unsigned short umode_t;
++
++#endif /* __ASSEMBLY__ */
++
++/*
++ * These aren't exported outside the kernel to avoid name space clashes
++ */
++
++#endif /* _ASM_GENERIC_TYPES_H */
+--- a/dbus/asm/bitsperlong.h	1970-01-01 03:00:00.000000000 +0300
++++ b/dbus/asm/bitsperlong.h	2010-12-09 20:02:49.000000000 +0300
+@@ -0,0 +1,13 @@
++#ifndef __ASM_X86_BITSPERLONG_H
++#define __ASM_X86_BITSPERLONG_H
++
++#ifdef __x86_64__
++# define __BITS_PER_LONG 64
++#else
++# define __BITS_PER_LONG 32
++#endif
++
++#include "asm-generic/bitsperlong.h"
++
++#endif /* __ASM_X86_BITSPERLONG_H */
++
+--- a/dbus/asm/posix_types.h	1970-01-01 03:00:00.000000000 +0300
++++ b/dbus/asm/posix_types.h	2010-12-09 20:05:04.000000000 +0300
+@@ -0,0 +1,5 @@
++# ifdef __i386__
++#  include "posix_types_32.h"
++# else
++#  include "posix_types_64.h"
++# endif
+--- a/dbus/asm/posix_types_32.h	1970-01-01 03:00:00.000000000 +0300
++++ b/dbus/asm/posix_types_32.h	2010-12-09 20:05:04.000000000 +0300
+@@ -0,0 +1,46 @@
++#ifndef _ASM_X86_POSIX_TYPES_32_H
++#define _ASM_X86_POSIX_TYPES_32_H
++
++/*
++ * This file is generally used by user-level software, so you need to
++ * be a little careful about namespace pollution etc.  Also, we cannot
++ * assume GCC is being used.
++ */
++
++typedef unsigned long	__kernel_ino_t;
++typedef unsigned short	__kernel_mode_t;
++typedef unsigned short	__kernel_nlink_t;
++typedef long		__kernel_off_t;
++typedef int		__kernel_pid_t;
++typedef unsigned short	__kernel_ipc_pid_t;
++typedef unsigned short	__kernel_uid_t;
++typedef unsigned short	__kernel_gid_t;
++typedef unsigned int	__kernel_size_t;
++typedef int		__kernel_ssize_t;
++typedef int		__kernel_ptrdiff_t;
++typedef long		__kernel_time_t;
++typedef long		__kernel_suseconds_t;
++typedef long		__kernel_clock_t;
++typedef int		__kernel_timer_t;
++typedef int		__kernel_clockid_t;
++typedef int		__kernel_daddr_t;
++typedef char *		__kernel_caddr_t;
++typedef unsigned short	__kernel_uid16_t;
++typedef unsigned short	__kernel_gid16_t;
++typedef unsigned int	__kernel_uid32_t;
++typedef unsigned int	__kernel_gid32_t;
++
++typedef unsigned short	__kernel_old_uid_t;
++typedef unsigned short	__kernel_old_gid_t;
++typedef unsigned short	__kernel_old_dev_t;
++
++#ifdef __GNUC__
++typedef long long	__kernel_loff_t;
++#endif
++
++typedef struct {
++	int	val[2];
++} __kernel_fsid_t;
++
++
++#endif /* _ASM_X86_POSIX_TYPES_32_H */
+--- a/dbus/asm/posix_types_64.h	1970-01-01 03:00:00.000000000 +0300
++++ b/dbus/asm/posix_types_64.h	2010-12-09 20:05:04.000000000 +0300
+@@ -0,0 +1,47 @@
++#ifndef _ASM_X86_POSIX_TYPES_64_H
++#define _ASM_X86_POSIX_TYPES_64_H
++
++/*
++ * This file is generally used by user-level software, so you need to
++ * be a little careful about namespace pollution etc.  Also, we cannot
++ * assume GCC is being used.
++ */
++
++typedef unsigned long	__kernel_ino_t;
++typedef unsigned int	__kernel_mode_t;
++typedef unsigned long	__kernel_nlink_t;
++typedef long		__kernel_off_t;
++typedef int		__kernel_pid_t;
++typedef int		__kernel_ipc_pid_t;
++typedef unsigned int	__kernel_uid_t;
++typedef unsigned int	__kernel_gid_t;
++typedef unsigned long	__kernel_size_t;
++typedef long		__kernel_ssize_t;
++typedef long		__kernel_ptrdiff_t;
++typedef long		__kernel_time_t;
++typedef long		__kernel_suseconds_t;
++typedef long		__kernel_clock_t;
++typedef int		__kernel_timer_t;
++typedef int		__kernel_clockid_t;
++typedef int		__kernel_daddr_t;
++typedef char *		__kernel_caddr_t;
++typedef unsigned short	__kernel_uid16_t;
++typedef unsigned short	__kernel_gid16_t;
++
++#ifdef __GNUC__
++typedef long long	__kernel_loff_t;
++#endif
++
++typedef struct {
++	int	val[2];
++} __kernel_fsid_t;
++
++typedef unsigned short __kernel_old_uid_t;
++typedef unsigned short __kernel_old_gid_t;
++typedef __kernel_uid_t __kernel_uid32_t;
++typedef __kernel_gid_t __kernel_gid32_t;
++
++typedef unsigned long	__kernel_old_dev_t;
++
++
++#endif /* _ASM_X86_POSIX_TYPES_64_H */
+--- a/dbus/asm/types.h	1970-01-01 03:00:00.000000000 +0300
++++ b/dbus/asm/types.h	2010-12-09 20:06:40.000000000 +0300
+@@ -0,0 +1,9 @@
++#ifndef _ASM_X86_TYPES_H
++#define _ASM_X86_TYPES_H
++
++#define dma_addr_t	dma_addr_t
++
++#include "asm-generic/types.h"
++
++
++#endif /* _ASM_X86_TYPES_H */
+--- a/dbus/asm-generic/bitsperlong.h	1970-01-01 03:00:00.000000000 +0300
++++ b/dbus/asm-generic/bitsperlong.h	2010-12-09 20:03:47.000000000 +0300
+@@ -0,0 +1,15 @@
++#ifndef __ASM_GENERIC_BITS_PER_LONG
++#define __ASM_GENERIC_BITS_PER_LONG
++
++/*
++ * There seems to be no way of detecting this automatically from user
++ * space, so 64 bit architectures should override this in their
++ * bitsperlong.h. In particular, an architecture that supports
++ * both 32 and 64 bit user space must not rely on CONFIG_64BIT
++ * to decide it, but rather check a compiler provided macro.
++ */
++#ifndef __BITS_PER_LONG
++#define __BITS_PER_LONG 32
++#endif
++
++#endif /* __ASM_GENERIC_BITS_PER_LONG */
+--- a/dbus/asm-generic/int-ll64.h	1970-01-01 03:00:00.000000000 +0300
++++ b/dbus/asm-generic/int-ll64.h	2010-12-09 20:07:26.000000000 +0300
+@@ -0,0 +1,39 @@
++/*
++ * asm-generic/int-ll64.h
++ *
++ * Integer declarations for architectures which use "long long"
++ * for 64-bit types.
++ */
++
++#ifndef _ASM_GENERIC_INT_LL64_H
++#define _ASM_GENERIC_INT_LL64_H
++
++#include "../asm/bitsperlong.h"
++
++#ifndef __ASSEMBLY__
++/*
++ * __xx is ok: it doesn't pollute the POSIX namespace. Use these in the
++ * header files exported to user space
++ */
++
++typedef __signed__ char __s8;
++typedef unsigned char __u8;
++
++typedef __signed__ short __s16;
++typedef unsigned short __u16;
++
++typedef __signed__ int __s32;
++typedef unsigned int __u32;
++
++#ifdef __GNUC__
++__extension__ typedef __signed__ long long __s64;
++__extension__ typedef unsigned long long __u64;
++#else
++typedef __signed__ long long __s64;
++typedef unsigned long long __u64;
++#endif
++
++#endif /* __ASSEMBLY__ */
++
++
++#endif /* _ASM_GENERIC_INT_LL64_H */
+--- a/dbus/asm-generic/types.h	1970-01-01 03:00:00.000000000 +0300
++++ b/dbus/asm-generic/types.h	2010-12-09 20:07:53.000000000 +0300
+@@ -0,0 +1,19 @@
++#ifndef _ASM_GENERIC_TYPES_H
++#define _ASM_GENERIC_TYPES_H
++/*
++ * int-ll64 is used practically everywhere now,
++ * so use it as a reasonable default.
++ */
++#include "int-ll64.h"
++
++#ifndef __ASSEMBLY__
++
++typedef unsigned short umode_t;
++
++#endif /* __ASSEMBLY__ */
++
++/*
++ * These aren't exported outside the kernel to avoid name space clashes
++ */
++
++#endif /* _ASM_GENERIC_TYPES_H */
+--- a/dbus/dbus-sysdeps-util-unix.c	2011-09-21 15:16:16.000000000 +0400
++++ b/dbus/dbus-sysdeps-util-unix.c	2011-11-10 12:26:39.000000000 +0300
+@@ -425,11 +425,11 @@
+ void
+ _dbus_init_system_log (void)
+ {
+-#ifdef HAVE_DECL_LOG_PERROR
++/*#ifdef HAVE_DECL_LOG_PERROR
+   openlog ("dbus", LOG_PID | LOG_PERROR, LOG_DAEMON);
+-#else
++#else */
+   openlog ("dbus", LOG_PID, LOG_DAEMON);
+-#endif
++//#endif
+ }
+ 
+ /**
+--- a/dbus/in.h	1970-01-01 03:00:00.000000000 +0300
++++ b/dbus/in.h	2010-12-09 20:35:56.000000000 +0300
+@@ -0,0 +1,567 @@
++/* Copyright (C) 1991-2001, 2003, 2004, 2006, 2007, 2008
++   Free Software Foundation, Inc.
++   This file is part of the GNU C Library.
++
++   The GNU C Library is free software; you can redistribute it and/or
++   modify it under the terms of the GNU Lesser General Public
++   License as published by the Free Software Foundation; either
++   version 2.1 of the License, or (at your option) any later version.
++
++   The GNU C Library is distributed in the hope that it will be useful,
++   but WITHOUT ANY WARRANTY; without even the implied warranty of
++   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++   Lesser General Public License for more details.
++
++   You should have received a copy of the GNU Lesser General Public
++   License along with the GNU C Library; if not, write to the Free
++   Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
++   02111-1307 USA.  */
++
++#ifndef	_NETINET_IN_H
++#define	_NETINET_IN_H	1
++
++#include <features.h>
++#include <stdint.h>
++#include <sys/socket.h>
++#include <bits/types.h>
++
++
++__BEGIN_DECLS
++
++/* Standard well-defined IP protocols.  */
++enum
++  {
++    IPPROTO_IP = 0,	   /* Dummy protocol for TCP.  */
++#define IPPROTO_IP		IPPROTO_IP
++    IPPROTO_HOPOPTS = 0,   /* IPv6 Hop-by-Hop options.  */
++#define IPPROTO_HOPOPTS		IPPROTO_HOPOPTS
++    IPPROTO_ICMP = 1,	   /* Internet Control Message Protocol.  */
++#define IPPROTO_ICMP		IPPROTO_ICMP
++    IPPROTO_IGMP = 2,	   /* Internet Group Management Protocol. */
++#define IPPROTO_IGMP		IPPROTO_IGMP
++    IPPROTO_IPIP = 4,	   /* IPIP tunnels (older KA9Q tunnels use 94).  */
++#define IPPROTO_IPIP		IPPROTO_IPIP
++    IPPROTO_TCP = 6,	   /* Transmission Control Protocol.  */
++#define IPPROTO_TCP		IPPROTO_TCP
++    IPPROTO_EGP = 8,	   /* Exterior Gateway Protocol.  */
++#define IPPROTO_EGP		IPPROTO_EGP
++    IPPROTO_PUP = 12,	   /* PUP protocol.  */
++#define IPPROTO_PUP		IPPROTO_PUP
++    IPPROTO_UDP = 17,	   /* User Datagram Protocol.  */
++#define IPPROTO_UDP		IPPROTO_UDP
++    IPPROTO_IDP = 22,	   /* XNS IDP protocol.  */
++#define IPPROTO_IDP		IPPROTO_IDP
++    IPPROTO_TP = 29,	   /* SO Transport Protocol Class 4.  */
++#define IPPROTO_TP		IPPROTO_TP
++    IPPROTO_DCCP = 33,	   /* Datagram Congestion Control Protocol.  */
++#define IPPROTO_DCCP		IPPROTO_DCCP
++    IPPROTO_IPV6 = 41,     /* IPv6 header.  */
++#define IPPROTO_IPV6		IPPROTO_IPV6
++    IPPROTO_ROUTING = 43,  /* IPv6 routing header.  */
++#define IPPROTO_ROUTING		IPPROTO_ROUTING
++    IPPROTO_FRAGMENT = 44, /* IPv6 fragmentation header.  */
++#define IPPROTO_FRAGMENT	IPPROTO_FRAGMENT
++    IPPROTO_RSVP = 46,	   /* Reservation Protocol.  */
++#define IPPROTO_RSVP		IPPROTO_RSVP
++    IPPROTO_GRE = 47,	   /* General Routing Encapsulation.  */
++#define IPPROTO_GRE		IPPROTO_GRE
++    IPPROTO_ESP = 50,      /* encapsulating security payload.  */
++#define IPPROTO_ESP		IPPROTO_ESP
++    IPPROTO_AH = 51,       /* authentication header.  */
++#define IPPROTO_AH		IPPROTO_AH
++    IPPROTO_ICMPV6 = 58,   /* ICMPv6.  */
++#define IPPROTO_ICMPV6		IPPROTO_ICMPV6
++    IPPROTO_NONE = 59,     /* IPv6 no next header.  */
++#define IPPROTO_NONE		IPPROTO_NONE
++    IPPROTO_DSTOPTS = 60,  /* IPv6 destination options.  */
++#define IPPROTO_DSTOPTS		IPPROTO_DSTOPTS
++    IPPROTO_MTP = 92,	   /* Multicast Transport Protocol.  */
++#define IPPROTO_MTP		IPPROTO_MTP
++    IPPROTO_ENCAP = 98,	   /* Encapsulation Header.  */
++#define IPPROTO_ENCAP		IPPROTO_ENCAP
++    IPPROTO_PIM = 103,	   /* Protocol Independent Multicast.  */
++#define IPPROTO_PIM		IPPROTO_PIM
++    IPPROTO_COMP = 108,	   /* Compression Header Protocol.  */
++#define IPPROTO_COMP		IPPROTO_COMP
++    IPPROTO_SCTP = 132,	   /* Stream Control Transmission Protocol.  */
++#define IPPROTO_SCTP		IPPROTO_SCTP
++    IPPROTO_UDPLITE = 136, /* UDP-Lite protocol.  */
++#define IPPROTO_UDPLITE		IPPROTO_UDPLITE
++    IPPROTO_RAW = 255,	   /* Raw IP packets.  */
++#define IPPROTO_RAW		IPPROTO_RAW
++    IPPROTO_MAX
++  };
++
++
++/* Type to represent a port.  */
++typedef uint16_t in_port_t;
++
++/* Standard well-known ports.  */
++enum
++  {
++    IPPORT_ECHO = 7,		/* Echo service.  */
++    IPPORT_DISCARD = 9,		/* Discard transmissions service.  */
++    IPPORT_SYSTAT = 11,		/* System status service.  */
++    IPPORT_DAYTIME = 13,	/* Time of day service.  */
++    IPPORT_NETSTAT = 15,	/* Network status service.  */
++    IPPORT_FTP = 21,		/* File Transfer Protocol.  */
++    IPPORT_TELNET = 23,		/* Telnet protocol.  */
++    IPPORT_SMTP = 25,		/* Simple Mail Transfer Protocol.  */
++    IPPORT_TIMESERVER = 37,	/* Timeserver service.  */
++    IPPORT_NAMESERVER = 42,	/* Domain Name Service.  */
++    IPPORT_WHOIS = 43,		/* Internet Whois service.  */
++    IPPORT_MTP = 57,
++
++    IPPORT_TFTP = 69,		/* Trivial File Transfer Protocol.  */
++    IPPORT_RJE = 77,
++    IPPORT_FINGER = 79,		/* Finger service.  */
++    IPPORT_TTYLINK = 87,
++    IPPORT_SUPDUP = 95,		/* SUPDUP protocol.  */
++
++
++    IPPORT_EXECSERVER = 512,	/* execd service.  */
++    IPPORT_LOGINSERVER = 513,	/* rlogind service.  */
++    IPPORT_CMDSERVER = 514,
++    IPPORT_EFSSERVER = 520,
++
++    /* UDP ports.  */
++    IPPORT_BIFFUDP = 512,
++    IPPORT_WHOSERVER = 513,
++    IPPORT_ROUTESERVER = 520,
++
++    /* Ports less than this value are reserved for privileged processes.  */
++    IPPORT_RESERVED = 1024,
++
++    /* Ports greater this value are reserved for (non-privileged) servers.  */
++    IPPORT_USERRESERVED = 5000
++  };
++
++
++/* Internet address.  */
++typedef uint32_t in_addr_t;
++struct in_addr
++  {
++    in_addr_t s_addr;
++  };
++
++
++/* Definitions of the bits in an Internet address integer.
++
++   On subnets, host and network parts are found according to
++   the subnet mask, not these masks.  */
++
++#define	IN_CLASSA(a)		((((in_addr_t)(a)) & 0x80000000) == 0)
++#define	IN_CLASSA_NET		0xff000000
++#define	IN_CLASSA_NSHIFT	24
++#define	IN_CLASSA_HOST		(0xffffffff & ~IN_CLASSA_NET)
++#define	IN_CLASSA_MAX		128
++
++#define	IN_CLASSB(a)		((((in_addr_t)(a)) & 0xc0000000) == 0x80000000)
++#define	IN_CLASSB_NET		0xffff0000
++#define	IN_CLASSB_NSHIFT	16
++#define	IN_CLASSB_HOST		(0xffffffff & ~IN_CLASSB_NET)
++#define	IN_CLASSB_MAX		65536
++
++#define	IN_CLASSC(a)		((((in_addr_t)(a)) & 0xe0000000) == 0xc0000000)
++#define	IN_CLASSC_NET		0xffffff00
++#define	IN_CLASSC_NSHIFT	8
++#define	IN_CLASSC_HOST		(0xffffffff & ~IN_CLASSC_NET)
++
++#define	IN_CLASSD(a)		((((in_addr_t)(a)) & 0xf0000000) == 0xe0000000)
++#define	IN_MULTICAST(a)		IN_CLASSD(a)
++
++#define	IN_EXPERIMENTAL(a)	((((in_addr_t)(a)) & 0xe0000000) == 0xe0000000)
++#define	IN_BADCLASS(a)		((((in_addr_t)(a)) & 0xf0000000) == 0xf0000000)
++
++/* Address to accept any incoming messages.  */
++#define	INADDR_ANY		((in_addr_t) 0x00000000)
++/* Address to send to all hosts.  */
++#define	INADDR_BROADCAST	((in_addr_t) 0xffffffff)
++/* Address indicating an error return.  */
++#define	INADDR_NONE		((in_addr_t) 0xffffffff)
++
++/* Network number for local host loopback.  */
++#define	IN_LOOPBACKNET		127
++/* Address to loopback in software to local host.  */
++#ifndef INADDR_LOOPBACK
++# define INADDR_LOOPBACK	((in_addr_t) 0x7f000001) /* Inet 127.0.0.1.  */
++#endif
++
++/* Defines for Multicast INADDR.  */
++#define INADDR_UNSPEC_GROUP	((in_addr_t) 0xe0000000) /* 224.0.0.0 */
++#define INADDR_ALLHOSTS_GROUP	((in_addr_t) 0xe0000001) /* 224.0.0.1 */
++#define INADDR_ALLRTRS_GROUP    ((in_addr_t) 0xe0000002) /* 224.0.0.2 */
++#define INADDR_MAX_LOCAL_GROUP  ((in_addr_t) 0xe00000ff) /* 224.0.0.255 */
++
++
++/* IPv6 address */
++struct in6_addr
++  {
++    union
++      {
++	uint8_t	__u6_addr8[16];
++#if defined __USE_MISC || defined __USE_GNU
++	uint16_t __u6_addr16[8];
++	uint32_t __u6_addr32[4];
++#endif
++      } __in6_u;
++#define s6_addr			__in6_u.__u6_addr8
++#if defined __USE_MISC || defined __USE_GNU
++# define s6_addr16		__in6_u.__u6_addr16
++# define s6_addr32		__in6_u.__u6_addr32
++#endif
++  };
++
++extern const struct in6_addr in6addr_any;        /* :: */
++extern const struct in6_addr in6addr_loopback;   /* ::1 */
++#define IN6ADDR_ANY_INIT { { { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 } } }
++#define IN6ADDR_LOOPBACK_INIT { { { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1 } } }
++
++#define INET_ADDRSTRLEN 16
++#define INET6_ADDRSTRLEN 46
++
++
++/* Structure describing an Internet socket address.  */
++struct sockaddr_in
++  {
++    __SOCKADDR_COMMON (sin_);
++    in_port_t sin_port;			/* Port number.  */
++    struct in_addr sin_addr;		/* Internet address.  */
++
++    /* Pad to size of `struct sockaddr'.  */
++    unsigned char sin_zero[sizeof (struct sockaddr) -
++			   __SOCKADDR_COMMON_SIZE -
++			   sizeof (in_port_t) -
++			   sizeof (struct in_addr)];
++  };
++
++/* Ditto, for IPv6.  */
++struct sockaddr_in6
++  {
++    __SOCKADDR_COMMON (sin6_);
++    in_port_t sin6_port;	/* Transport layer port # */
++    uint32_t sin6_flowinfo;	/* IPv6 flow information */
++    struct in6_addr sin6_addr;	/* IPv6 address */
++    uint32_t sin6_scope_id;	/* IPv6 scope-id */
++  };
++
++
++#if defined __USE_MISC || defined __USE_GNU
++/* IPv4 multicast request.  */
++struct ip_mreq
++  {
++    /* IP multicast address of group.  */
++    struct in_addr imr_multiaddr;
++
++    /* Local IP address of interface.  */
++    struct in_addr imr_interface;
++  };
++
++struct ip_mreq_source
++  {
++    /* IP multicast address of group.  */
++    struct in_addr imr_multiaddr;
++
++    /* IP address of source.  */
++    struct in_addr imr_interface;
++
++    /* IP address of interface.  */
++    struct in_addr imr_sourceaddr;
++  };
++#endif
++
++
++/* Likewise, for IPv6.  */
++struct ipv6_mreq
++  {
++    /* IPv6 multicast address of group */
++    struct in6_addr ipv6mr_multiaddr;
++
++    /* local interface */
++    unsigned int ipv6mr_interface;
++  };
++
++
++#if defined __USE_MISC || defined __USE_GNU
++/* Multicast group request.  */
++struct group_req
++  {
++    /* Interface index.  */
++    uint32_t gr_interface;
++
++    /* Group address.  */
++    struct sockaddr_storage gr_group;
++  };
++
++struct group_source_req
++  {
++    /* Interface index.  */
++    uint32_t gsr_interface;
++
++    /* Group address.  */
++    struct sockaddr_storage gsr_group;
++
++    /* Source address.  */
++    struct sockaddr_storage gsr_source;
++  };
++
++
++/* Full-state filter operations.  */
++struct ip_msfilter
++  {
++    /* IP multicast address of group.  */
++    struct in_addr imsf_multiaddr;
++
++    /* Local IP address of interface.  */
++    struct in_addr imsf_interface;
++
++    /* Filter mode.  */
++    uint32_t imsf_fmode;
++
++    /* Number of source addresses.  */
++    uint32_t imsf_numsrc;
++    /* Source addresses.  */
++    struct in_addr imsf_slist[1];
++  };
++
++#define IP_MSFILTER_SIZE(numsrc) (sizeof (struct ip_msfilter) \
++				  - sizeof (struct in_addr)		      \
++				  + (numsrc) * sizeof (struct in_addr))
++
++struct group_filter
++  {
++    /* Interface index.  */
++    uint32_t gf_interface;
++
++    /* Group address.  */
++    struct sockaddr_storage gf_group;
++
++    /* Filter mode.  */
++    uint32_t gf_fmode;
++
++    /* Number of source addresses.  */
++    uint32_t gf_numsrc;
++    /* Source addresses.  */
++    struct sockaddr_storage gf_slist[1];
++};
++
++#define GROUP_FILTER_SIZE(numsrc) (sizeof (struct group_filter) \
++				   - sizeof (struct sockaddr_storage)	      \
++				   + ((numsrc)				      \
++				      * sizeof (struct sockaddr_storage)))
++#endif
++
++
++/* Get system-specific definitions.  */
++#include <bits/in.h>
++
++/* Functions to convert between host and network byte order.
++
++   Please note that these functions normally take `unsigned long int' or
++   `unsigned short int' values as arguments and also return them.  But
++   this was a short-sighted decision since on different systems the types
++   may have different representations but the values are always the same.  */
++
++extern uint32_t ntohl (uint32_t __netlong) __THROW __attribute__ ((__const__));
++extern uint16_t ntohs (uint16_t __netshort)
++     __THROW __attribute__ ((__const__));
++extern uint32_t htonl (uint32_t __hostlong)
++     __THROW __attribute__ ((__const__));
++extern uint16_t htons (uint16_t __hostshort)
++     __THROW __attribute__ ((__const__));
++
++#include <endian.h>
++
++/* Get machine dependent optimized versions of byte swapping functions.  */
++#include <bits/byteswap.h>
++
++#ifdef __OPTIMIZE__
++/* We can optimize calls to the conversion functions.  Either nothing has
++   to be done or we are using directly the byte-swapping functions which
++   often can be inlined.  */
++# if __BYTE_ORDER == __BIG_ENDIAN
++/* The host byte order is the same as network byte order,
++   so these functions are all just identity.  */
++# define ntohl(x)	(x)
++# define ntohs(x)	(x)
++# define htonl(x)	(x)
++# define htons(x)	(x)
++# else
++#  if __BYTE_ORDER == __LITTLE_ENDIAN
++#   define ntohl(x)	__bswap_32 (x)
++#   define ntohs(x)	__bswap_16 (x)
++#   define htonl(x)	__bswap_32 (x)
++#   define htons(x)	__bswap_16 (x)
++#  endif
++# endif
++#endif
++
++#define IN6_IS_ADDR_UNSPECIFIED(a) \
++	(((__const uint32_t *) (a))[0] == 0				      \
++	 && ((__const uint32_t *) (a))[1] == 0				      \
++	 && ((__const uint32_t *) (a))[2] == 0				      \
++	 && ((__const uint32_t *) (a))[3] == 0)
++
++#define IN6_IS_ADDR_LOOPBACK(a) \
++	(((__const uint32_t *) (a))[0] == 0				      \
++	 && ((__const uint32_t *) (a))[1] == 0				      \
++	 && ((__const uint32_t *) (a))[2] == 0				      \
++	 && ((__const uint32_t *) (a))[3] == htonl (1))
++
++#define IN6_IS_ADDR_MULTICAST(a) (((__const uint8_t *) (a))[0] == 0xff)
++
++#define IN6_IS_ADDR_LINKLOCAL(a) \
++	((((__const uint32_t *) (a))[0] & htonl (0xffc00000))		      \
++	 == htonl (0xfe800000))
++
++#define IN6_IS_ADDR_SITELOCAL(a) \
++	((((__const uint32_t *) (a))[0] & htonl (0xffc00000))		      \
++	 == htonl (0xfec00000))
++
++#define IN6_IS_ADDR_V4MAPPED(a) \
++	((((__const uint32_t *) (a))[0] == 0)				      \
++	 && (((__const uint32_t *) (a))[1] == 0)			      \
++	 && (((__const uint32_t *) (a))[2] == htonl (0xffff)))
++
++#define IN6_IS_ADDR_V4COMPAT(a) \
++	((((__const uint32_t *) (a))[0] == 0)				      \
++	 && (((__const uint32_t *) (a))[1] == 0)			      \
++	 && (((__const uint32_t *) (a))[2] == 0)			      \
++	 && (ntohl (((__const uint32_t *) (a))[3]) > 1))
++
++#define IN6_ARE_ADDR_EQUAL(a,b) \
++	((((__const uint32_t *) (a))[0] == ((__const uint32_t *) (b))[0])     \
++	 && (((__const uint32_t *) (a))[1] == ((__const uint32_t *) (b))[1])  \
++	 && (((__const uint32_t *) (a))[2] == ((__const uint32_t *) (b))[2])  \
++	 && (((__const uint32_t *) (a))[3] == ((__const uint32_t *) (b))[3]))
++
++#if defined __USE_MISC || defined __USE_GNU
++/* Bind socket to a privileged IP port.  */
++extern int bindresvport (int __sockfd, struct sockaddr_in *__sock_in) __THROW;
++
++/* The IPv6 version of this function.  */
++extern int bindresvport6 (int __sockfd, struct sockaddr_in6 *__sock_in)
++     __THROW;
++#endif
++
++
++#define IN6_IS_ADDR_MC_NODELOCAL(a) \
++	(IN6_IS_ADDR_MULTICAST(a)					      \
++	 && ((((__const uint8_t *) (a))[1] & 0xf) == 0x1))
++
++#define IN6_IS_ADDR_MC_LINKLOCAL(a) \
++	(IN6_IS_ADDR_MULTICAST(a)					      \
++	 && ((((__const uint8_t *) (a))[1] & 0xf) == 0x2))
++
++#define IN6_IS_ADDR_MC_SITELOCAL(a) \
++	(IN6_IS_ADDR_MULTICAST(a)					      \
++	 && ((((__const uint8_t *) (a))[1] & 0xf) == 0x5))
++
++#define IN6_IS_ADDR_MC_ORGLOCAL(a) \
++	(IN6_IS_ADDR_MULTICAST(a)					      \
++	 && ((((__const uint8_t *) (a))[1] & 0xf) == 0x8))
++
++#define IN6_IS_ADDR_MC_GLOBAL(a) \
++	(IN6_IS_ADDR_MULTICAST(a)					      \
++	 && ((((__const uint8_t *) (a))[1] & 0xf) == 0xe))
++
++
++#ifdef __USE_GNU
++/* IPv6 packet information.  */
++struct in6_pktinfo
++  {
++    struct in6_addr ipi6_addr;	/* src/dst IPv6 address */
++    unsigned int ipi6_ifindex;	/* send/recv interface index */
++  };
++
++/* IPv6 MTU information.  */
++struct ip6_mtuinfo
++  {
++    struct sockaddr_in6 ip6m_addr; /* dst address including zone ID */
++    uint32_t ip6m_mtu;		   /* path MTU in host byte order */
++  };
++
++
++/* Obsolete hop-by-hop and Destination Options Processing (RFC 2292).  */
++extern int inet6_option_space (int __nbytes)
++     __THROW __attribute_deprecated__;
++extern int inet6_option_init (void *__bp, struct cmsghdr **__cmsgp,
++			      int __type) __THROW __attribute_deprecated__;
++extern int inet6_option_append (struct cmsghdr *__cmsg,
++				__const uint8_t *__typep, int __multx,
++				int __plusy) __THROW __attribute_deprecated__;
++extern uint8_t *inet6_option_alloc (struct cmsghdr *__cmsg, int __datalen,
++				    int __multx, int __plusy)
++     __THROW __attribute_deprecated__;
++extern int inet6_option_next (__const struct cmsghdr *__cmsg,
++			      uint8_t **__tptrp)
++     __THROW __attribute_deprecated__;
++extern int inet6_option_find (__const struct cmsghdr *__cmsg,
++			      uint8_t **__tptrp, int __type)
++     __THROW __attribute_deprecated__;
++
++
++/* Hop-by-Hop and Destination Options Processing (RFC 3542).  */
++extern int inet6_opt_init (void *__extbuf, socklen_t __extlen) __THROW;
++extern int inet6_opt_append (void *__extbuf, socklen_t __extlen, int __offset,
++			     uint8_t __type, socklen_t __len, uint8_t __align,
++			     void **__databufp) __THROW;
++extern int inet6_opt_finish (void *__extbuf, socklen_t __extlen, int __offset)
++     __THROW;
++extern int inet6_opt_set_val (void *__databuf, int __offset, void *__val,
++			      socklen_t __vallen) __THROW;
++extern int inet6_opt_next (void *__extbuf, socklen_t __extlen, int __offset,
++			   uint8_t *__typep, socklen_t *__lenp,
++			   void **__databufp) __THROW;
++extern int inet6_opt_find (void *__extbuf, socklen_t __extlen, int __offset,
++			   uint8_t __type, socklen_t *__lenp,
++			   void **__databufp) __THROW;
++extern int inet6_opt_get_val (void *__databuf, int __offset, void *__val,
++			      socklen_t __vallen) __THROW;
++
++
++/* Routing Header Option (RFC 3542).  */
++extern socklen_t inet6_rth_space (int __type, int __segments) __THROW;
++extern void *inet6_rth_init (void *__bp, socklen_t __bp_len, int __type,
++			     int __segments) __THROW;
++extern int inet6_rth_add (void *__bp, __const struct in6_addr *__addr) __THROW;
++extern int inet6_rth_reverse (__const void *__in, void *__out) __THROW;
++extern int inet6_rth_segments (__const void *__bp) __THROW;
++extern struct in6_addr *inet6_rth_getaddr (__const void *__bp, int __index)
++     __THROW;
++
++
++/* Multicast source filter support.  */
++
++/* Get IPv4 source filter.  */
++extern int getipv4sourcefilter (int __s, struct in_addr __interface_addr,
++				struct in_addr __group, uint32_t *__fmode,
++				uint32_t *__numsrc, struct in_addr *__slist)
++     __THROW;
++
++/* Set IPv4 source filter.  */
++extern int setipv4sourcefilter (int __s, struct in_addr __interface_addr,
++				struct in_addr __group, uint32_t __fmode,
++				uint32_t __numsrc,
++				__const struct in_addr *__slist)
++     __THROW;
++
++
++/* Get source filter.  */
++extern int getsourcefilter (int __s, uint32_t __interface_addr,
++			    __const struct sockaddr *__group,
++			    socklen_t __grouplen, uint32_t *__fmode,
++			    uint32_t *__numsrc,
++			    struct sockaddr_storage *__slist) __THROW;
++
++/* Set source filter.  */
++extern int setsourcefilter (int __s, uint32_t __interface_addr,
++			    __const struct sockaddr *__group,
++			    socklen_t __grouplen, uint32_t __fmode,
++			    uint32_t __numsrc,
++			    __const struct sockaddr_storage *__slist) __THROW;
++#endif	/* use GNU */
++
++__END_DECLS
++
++#endif	/* netinet/in.h */
+--- a/dbus/in6.h	1970-01-01 03:00:00.000000000 +0300
++++ b/dbus/in6.h	2010-12-09 20:38:31.000000000 +0300
+@@ -0,0 +1,274 @@
++/*
++ *	Types and definitions for AF_INET6 
++ *	Linux INET6 implementation 
++ *
++ *	Authors:
++ *	Pedro Roque		<roque@di.fc.ul.pt>	
++ *
++ *	Sources:
++ *	IPv6 Program Interfaces for BSD Systems
++ *      <draft-ietf-ipngwg-bsd-api-05.txt>
++ *
++ *	Advanced Sockets API for IPv6
++ *	<draft-stevens-advanced-api-00.txt>
++ *
++ *	This program is free software; you can redistribute it and/or
++ *      modify it under the terms of the GNU General Public License
++ *      as published by the Free Software Foundation; either version
++ *      2 of the License, or (at your option) any later version.
++ */
++
++#ifndef _LINUX_IN6_H
++#define _LINUX_IN6_H
++
++#include "linux/types.h"
++
++/*
++ *	IPv6 address structure
++ */
++
++struct in6_addr
++{
++	union 
++	{
++		__u8		u6_addr8[16];
++		__be16		u6_addr16[8];
++		__be32		u6_addr32[4];
++	} in6_u;
++#define s6_addr			in6_u.u6_addr8
++#define s6_addr16		in6_u.u6_addr16
++#define s6_addr32		in6_u.u6_addr32
++};
++
++/* IPv6 Wildcard Address (::) and Loopback Address (::1) defined in RFC2553
++ * NOTE: Be aware the IN6ADDR_* constants and in6addr_* externals are defined
++ * in network byte order, not in host byte order as are the IPv4 equivalents
++ */
++
++struct sockaddr_in6 {
++	unsigned short int	sin6_family;    /* AF_INET6 */
++	__be16			sin6_port;      /* Transport layer port # */
++	__be32			sin6_flowinfo;  /* IPv6 flow information */
++	struct in6_addr		sin6_addr;      /* IPv6 address */
++	__u32			sin6_scope_id;  /* scope id (new in RFC2553) */
++};
++
++struct ipv6_mreq {
++	/* IPv6 multicast address of group */
++	struct in6_addr ipv6mr_multiaddr;
++
++	/* local IPv6 address of interface */
++	int		ipv6mr_ifindex;
++};
++
++#define ipv6mr_acaddr	ipv6mr_multiaddr
++
++struct in6_flowlabel_req
++{
++	struct in6_addr	flr_dst;
++	__be32	flr_label;
++	__u8	flr_action;
++	__u8	flr_share;
++	__u16	flr_flags;
++	__u16 	flr_expires;
++	__u16	flr_linger;
++	__u32	__flr_pad;
++	/* Options in format of IPV6_PKTOPTIONS */
++};
++
++#define IPV6_FL_A_GET	0
++#define IPV6_FL_A_PUT	1
++#define IPV6_FL_A_RENEW	2
++
++#define IPV6_FL_F_CREATE	1
++#define IPV6_FL_F_EXCL		2
++
++#define IPV6_FL_S_NONE		0
++#define IPV6_FL_S_EXCL		1
++#define IPV6_FL_S_PROCESS	2
++#define IPV6_FL_S_USER		3
++#define IPV6_FL_S_ANY		255
++
++
++/*
++ *	Bitmask constant declarations to help applications select out the 
++ *	flow label and priority fields.
++ *
++ *	Note that this are in host byte order while the flowinfo field of
++ *	sockaddr_in6 is in network byte order.
++ */
++
++#define IPV6_FLOWINFO_FLOWLABEL		0x000fffff
++#define IPV6_FLOWINFO_PRIORITY		0x0ff00000
++
++/* These defintions are obsolete */
++#define IPV6_PRIORITY_UNCHARACTERIZED	0x0000
++#define IPV6_PRIORITY_FILLER		0x0100
++#define IPV6_PRIORITY_UNATTENDED	0x0200
++#define IPV6_PRIORITY_RESERVED1		0x0300
++#define IPV6_PRIORITY_BULK		0x0400
++#define IPV6_PRIORITY_RESERVED2		0x0500
++#define IPV6_PRIORITY_INTERACTIVE	0x0600
++#define IPV6_PRIORITY_CONTROL		0x0700
++#define IPV6_PRIORITY_8			0x0800
++#define IPV6_PRIORITY_9			0x0900
++#define IPV6_PRIORITY_10		0x0a00
++#define IPV6_PRIORITY_11		0x0b00
++#define IPV6_PRIORITY_12		0x0c00
++#define IPV6_PRIORITY_13		0x0d00
++#define IPV6_PRIORITY_14		0x0e00
++#define IPV6_PRIORITY_15		0x0f00
++
++/*
++ *	IPV6 extension headers
++ */
++#define IPPROTO_HOPOPTS		0	/* IPv6 hop-by-hop options	*/
++#define IPPROTO_ROUTING		43	/* IPv6 routing header		*/
++#define IPPROTO_FRAGMENT	44	/* IPv6 fragmentation header	*/
++#define IPPROTO_ICMPV6		58	/* ICMPv6			*/
++#define IPPROTO_NONE		59	/* IPv6 no next header		*/
++#define IPPROTO_DSTOPTS		60	/* IPv6 destination options	*/
++#define IPPROTO_MH		135	/* IPv6 mobility header		*/
++
++/*
++ *	IPv6 TLV options.
++ */
++#define IPV6_TLV_PAD0		0
++#define IPV6_TLV_PADN		1
++#define IPV6_TLV_ROUTERALERT	5
++#define IPV6_TLV_JUMBO		194
++#define IPV6_TLV_HAO		201	/* home address option */
++
++/*
++ *	IPV6 socket options
++ */
++
++#define IPV6_ADDRFORM		1
++#define IPV6_2292PKTINFO	2
++#define IPV6_2292HOPOPTS	3
++#define IPV6_2292DSTOPTS	4
++#define IPV6_2292RTHDR		5
++#define IPV6_2292PKTOPTIONS	6
++#define IPV6_CHECKSUM		7
++#define IPV6_2292HOPLIMIT	8
++#define IPV6_NEXTHOP		9
++#define IPV6_AUTHHDR		10	/* obsolete */
++#define IPV6_FLOWINFO		11
++
++#define IPV6_UNICAST_HOPS	16
++#define IPV6_MULTICAST_IF	17
++#define IPV6_MULTICAST_HOPS	18
++#define IPV6_MULTICAST_LOOP	19
++#define IPV6_ADD_MEMBERSHIP	20
++#define IPV6_DROP_MEMBERSHIP	21
++#define IPV6_ROUTER_ALERT	22
++#define IPV6_MTU_DISCOVER	23
++#define IPV6_MTU		24
++#define IPV6_RECVERR		25
++#define IPV6_V6ONLY		26
++#define IPV6_JOIN_ANYCAST	27
++#define IPV6_LEAVE_ANYCAST	28
++
++/* IPV6_MTU_DISCOVER values */
++#define IPV6_PMTUDISC_DONT		0
++#define IPV6_PMTUDISC_WANT		1
++#define IPV6_PMTUDISC_DO		2
++#define IPV6_PMTUDISC_PROBE		3
++
++/* Flowlabel */
++#define IPV6_FLOWLABEL_MGR	32
++#define IPV6_FLOWINFO_SEND	33
++
++#define IPV6_IPSEC_POLICY	34
++#define IPV6_XFRM_POLICY	35
++
++/*
++ * Multicast:
++ * Following socket options are shared between IPv4 and IPv6.
++ *
++ * MCAST_JOIN_GROUP		42
++ * MCAST_BLOCK_SOURCE		43
++ * MCAST_UNBLOCK_SOURCE		44
++ * MCAST_LEAVE_GROUP		45
++ * MCAST_JOIN_SOURCE_GROUP	46
++ * MCAST_LEAVE_SOURCE_GROUP	47
++ * MCAST_MSFILTER		48
++ */
++
++/*
++ * Advanced API (RFC3542) (1)
++ *
++ * Note: IPV6_RECVRTHDRDSTOPTS does not exist. see net/ipv6/datagram.c.
++ */
++
++#define IPV6_RECVPKTINFO	49
++#define IPV6_PKTINFO		50
++#define IPV6_RECVHOPLIMIT	51
++#define IPV6_HOPLIMIT		52
++#define IPV6_RECVHOPOPTS	53
++#define IPV6_HOPOPTS		54
++#define IPV6_RTHDRDSTOPTS	55
++#define IPV6_RECVRTHDR		56
++#define IPV6_RTHDR		57
++#define IPV6_RECVDSTOPTS	58
++#define IPV6_DSTOPTS		59
++#if 0	/* not yet */
++#define IPV6_RECVPATHMTU	60
++#define IPV6_PATHMTU		61
++#define IPV6_DONTFRAG		62
++#define IPV6_USE_MIN_MTU	63
++#endif
++
++/*
++ * Netfilter (1)
++ *
++ * Following socket options are used in ip6_tables;
++ * see include/linux/netfilter_ipv6/ip6_tables.h.
++ *
++ * IP6T_SO_SET_REPLACE / IP6T_SO_GET_INFO		64
++ * IP6T_SO_SET_ADD_COUNTERS / IP6T_SO_GET_ENTRIES	65
++ */
++
++/*
++ * Advanced API (RFC3542) (2)
++ */
++#define IPV6_RECVTCLASS		66
++#define IPV6_TCLASS		67
++
++/*
++ * Netfilter (2)
++ *
++ * Following socket options are used in ip6_tables;
++ * see include/linux/netfilter_ipv6/ip6_tables.h.
++ *
++ * IP6T_SO_GET_REVISION_MATCH	68
++ * IP6T_SO_GET_REVISION_TARGET	69
++ */
++
++/* RFC5014: Source address selection */
++#define IPV6_ADDR_PREFERENCES	72
++
++#define IPV6_PREFER_SRC_TMP		0x0001
++#define IPV6_PREFER_SRC_PUBLIC		0x0002
++#define IPV6_PREFER_SRC_PUBTMP_DEFAULT	0x0100
++#define IPV6_PREFER_SRC_COA		0x0004
++#define IPV6_PREFER_SRC_HOME		0x0400
++#define IPV6_PREFER_SRC_CGA		0x0008
++#define IPV6_PREFER_SRC_NONCGA		0x0800
++
++/*
++ * Multicast Routing:
++ * see include/linux/mroute6.h.
++ *
++ * MRT6_INIT			200
++ * MRT6_DONE			201
++ * MRT6_ADD_MIF			202
++ * MRT6_DEL_MIF			203
++ * MRT6_ADD_MFC			204
++ * MRT6_DEL_MFC			205
++ * MRT6_VERSION			206
++ * MRT6_ASSERT			207
++ * MRT6_PIM			208
++ * (reserved)			209
++ */
++#endif
+--- a/dbus/linux/stddef.h	1970-01-01 03:00:00.000000000 +0300
++++ b/dbus/linux/stddef.h	2010-12-08 21:32:23.000000000 +0300
+@@ -0,0 +1,14 @@
++#ifndef _LINUX_STDDEF_H
++#define _LINUX_STDDEF_H
++
++
++
++#undef NULL
++#if defined(__cplusplus)
++#define NULL 0
++#else
++#define NULL ((void *)0)
++#endif
++
++
++#endif
+--- a/dbus/linux/types.h	1970-01-01 03:00:00.000000000 +0300
++++ b/dbus/linux/types.h	2010-12-09 20:39:24.000000000 +0300
+@@ -0,0 +1,38 @@
++#ifndef _LINUX_TYPES_H
++#define _LINUX_TYPES_H
++
++#include <asm/types.h>
++
++#ifndef __ASSEMBLY__
++
++#include <linux/posix_types.h>
++
++
++/*
++ * Below are truly Linux-specific types that should never collide with
++ * any application/library that wants linux/types.h.
++ */
++
++#ifdef __CHECKER__
++#define __bitwise__ __attribute__((bitwise))
++#else
++#define __bitwise__
++#endif
++#ifdef __CHECK_ENDIAN__
++#define __bitwise __bitwise__
++#else
++#define __bitwise
++#endif
++
++typedef __u16 __bitwise __le16;
++typedef __u16 __bitwise __be16;
++typedef __u32 __bitwise __le32;
++typedef __u32 __bitwise __be32;
++typedef __u64 __bitwise __le64;
++typedef __u64 __bitwise __be64;
++
++typedef __u16 __bitwise __sum16;
++typedef __u32 __bitwise __wsum;
++
++#endif /*  __ASSEMBLY__ */
++#endif /* _LINUX_TYPES_H */
+--- a/dbus/netfilter.h	1970-01-01 03:00:00.000000000 +0300
++++ b/dbus/netfilter.h	2010-12-09 20:37:53.000000000 +0300
+@@ -0,0 +1,61 @@
++#ifndef __LINUX_NETFILTER_H
++#define __LINUX_NETFILTER_H
++
++#include "types.h"
++#include "in.h"
++#include "in6.h"
++
++
++/* Responses from hook functions. */
++#define NF_DROP 0
++#define NF_ACCEPT 1
++#define NF_STOLEN 2
++#define NF_QUEUE 3
++#define NF_REPEAT 4
++#define NF_STOP 5
++#define NF_MAX_VERDICT NF_STOP
++
++/* we overload the higher bits for encoding auxiliary data such as the queue
++ * number. Not nice, but better than additional function arguments. */
++#define NF_VERDICT_MASK 0x0000ffff
++#define NF_VERDICT_BITS 16
++
++#define NF_VERDICT_QMASK 0xffff0000
++#define NF_VERDICT_QBITS 16
++
++#define NF_QUEUE_NR(x) ((((x) << NF_VERDICT_BITS) & NF_VERDICT_QMASK) | NF_QUEUE)
++
++/* only for userspace compatibility */
++/* Generic cache responses from hook functions.
++   <= 0x2000 is used for protocol-flags. */
++#define NFC_UNKNOWN 0x4000
++#define NFC_ALTERED 0x8000
++
++enum nf_inet_hooks {
++	NF_INET_PRE_ROUTING,
++	NF_INET_LOCAL_IN,
++	NF_INET_FORWARD,
++	NF_INET_LOCAL_OUT,
++	NF_INET_POST_ROUTING,
++	NF_INET_NUMHOOKS
++};
++
++enum {
++	NFPROTO_UNSPEC =  0,
++	NFPROTO_IPV4   =  2,
++	NFPROTO_ARP    =  3,
++	NFPROTO_BRIDGE =  7,
++	NFPROTO_IPV6   = 10,
++	NFPROTO_DECNET = 12,
++	NFPROTO_NUMPROTO,
++};
++
++union nf_inet_addr {
++	__u32		all[4];
++	__be32		ip;
++	__be32		ip6[4];
++	struct in_addr	in;
++	struct in6_addr	in6;
++};
++
++#endif /*__LINUX_NETFILTER_H*/
+--- a/dbus/posix_types.h	1970-01-01 03:00:00.000000000 +0300
++++ b/dbus/posix_types.h	2010-12-08 21:33:17.000000000 +0300
+@@ -0,0 +1,49 @@
++#ifndef _LINUX_POSIX_TYPES_H
++#define _LINUX_POSIX_TYPES_H
++
++#include "linux/stddef.h"
++
++/*
++ * This allows for 1024 file descriptors: if NR_OPEN is ever grown
++ * beyond that you'll have to change this too. But 1024 fd's seem to be
++ * enough even for such "real" unices like OSF/1, so hopefully this is
++ * one limit that doesn't have to be changed [again].
++ *
++ * Note that POSIX wants the FD_CLEAR(fd,fdsetp) defines to be in
++ * <sys/time.h> (and thus <linux/time.h>) - but this is a more logical
++ * place for them. Solved by having dummy defines in <sys/time.h>.
++ */
++
++/*
++ * Those macros may have been defined in <gnu/types.h>. But we always
++ * use the ones here. 
++ */
++#undef __NFDBITS
++#define __NFDBITS	(8 * sizeof(unsigned long))
++
++#undef __FD_SETSIZE
++#define __FD_SETSIZE	1024
++
++#undef __FDSET_LONGS
++#define __FDSET_LONGS	(__FD_SETSIZE/__NFDBITS)
++
++#undef __FDELT
++#define	__FDELT(d)	((d) / __NFDBITS)
++
++#undef __FDMASK
++#define	__FDMASK(d)	(1UL << ((d) % __NFDBITS))
++
++typedef struct {
++	unsigned long fds_bits [__FDSET_LONGS];
++} __kernel_fd_set;
++
++/* Type of a signal handler.  */
++typedef void (*__kernel_sighandler_t)(int);
++
++/* Type of a SYSV IPC key.  */
++typedef int __kernel_key_t;
++typedef int __kernel_mqd_t;
++
++#include "asm/posix_types.h"
++
++#endif /* _LINUX_POSIX_TYPES_H */
+--- a/dbus/sd-daemon.c	2011-09-14 19:58:18.000000000 +0400
++++ b/dbus/sd-daemon.c	2011-11-10 12:27:27.355384593 +0300
+@@ -42,6 +42,7 @@
+ #include <stdio.h>
+ 
+ #include "sd-daemon.h"
++#include "netfilter.h"
+ 
+ int sd_listen_fds(int unset_environment) {
+ 
+@@ -205,7 +206,7 @@
+         struct sockaddr_in in4;
+         struct sockaddr_in6 in6;
+         struct sockaddr_un un;
+-        struct sockaddr_storage storage;
++//        struct sockaddr_storage storage;
+ };
+ 
+ int sd_is_socket(int fd, int family, int type, int listening) {
+--- a/dbus/types.h	1970-01-01 03:00:00.000000000 +0300
++++ b/dbus/types.h	2010-12-08 21:27:47.000000000 +0300
+@@ -0,0 +1,38 @@
++#ifndef _LINUX_TYPES_H
++#define _LINUX_TYPES_H
++
++#include "asm/types.h"
++
++#ifndef __ASSEMBLY__
++
++#include "posix_types.h"
++
++
++/*
++ * Below are truly Linux-specific types that should never collide with
++ * any application/library that wants linux/types.h.
++ */
++
++#ifdef __CHECKER__
++#define __bitwise__ __attribute__((bitwise))
++#else
++#define __bitwise__
++#endif
++#ifdef __CHECK_ENDIAN__
++#define __bitwise __bitwise__
++#else
++#define __bitwise
++#endif
++
++typedef __u16 __bitwise __le16;
++typedef __u16 __bitwise __be16;
++typedef __u32 __bitwise __le32;
++typedef __u32 __bitwise __be32;
++typedef __u64 __bitwise __le64;
++typedef __u64 __bitwise __be64;
++
++typedef __u16 __bitwise __sum16;
++typedef __u32 __bitwise __wsum;
++
++#endif /*  __ASSEMBLY__ */
++#endif /* _LINUX_TYPES_H */
