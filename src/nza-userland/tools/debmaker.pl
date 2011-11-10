@@ -365,10 +365,10 @@ sub find_pkgs_with_paths {
 
 sub guess_required_deps {
     my ($path) = @_;
-    my $elfs = get_output("find $path -type f -exec file {} \\; | grep ELF | cut -d: -f1");
+    my $elfs = get_output("find $path -type f -exec file {} \\; | ggrep ELF | cut -d: -f1");
     my @deps = ();
     if (@$elfs) {
-        my $libs = get_output('elfdump -d ' . join(' ', @$elfs) . ' | grep \'\(NEEDED\|SUNW_FILTER\)\' | awk \'{print $4}\'');
+        my $libs = get_output('elfdump -d ' . join(' ', @$elfs) . ' | ggrep \'\(NEEDED\|SUNW_FILTER\)\' | awk \'{print $4}\'');
         uniq $libs;
         blab 'Required libs: ' . join(', ', @$libs);
         my $pkgs = find_pkgs_with_paths @$libs;
