@@ -21,7 +21,7 @@
 # Copyright (c) 2010, 2011, Oracle and/or its affiliates. All rights reserved.
 #
 
-PATH=/usr/bin:/usr/gnu/bin
+PATH=/usr/gnu/bin:/usr/bin
 
 # The location of a mirror of community source archives that we build in this
 # gate.
