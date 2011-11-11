@@ -41,8 +41,6 @@ SCRIPTS = timed-run timed-read ftp-rfc autopasswd lpunlock weather \
           passmass rftp kibitz rlogin-cwd xpstat tkpasswd dislocate xkibitz \
           tknewsbiff unbuffer mkpasswd cryptdir decryptdir autoexpect multixterm
 
-COMPILER = gcc
-
 COMPONENT_PRE_CONFIGURE_ACTION = \
 	($(CLONEY) $(SOURCE_DIR) $(@D))
 

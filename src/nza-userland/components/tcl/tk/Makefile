@@ -37,8 +37,6 @@ include ../../../make-rules/configure.mk
 include ../../../make-rules/ips.mk
 include ../../../make-rules/deb.mk
 
-COMPILER = gcc
-
 COMPONENT_PREP_ACTION = \
 	(cd $(@D)/unix ; autoreconf -f)
 
