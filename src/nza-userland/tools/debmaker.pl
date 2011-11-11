@@ -1,15 +1,21 @@
 #!/usr/bin/env perl
 
+use 5.010;
 use strict;
 use warnings FATAL => 'all';
 use integer;
-use Data::Dumper;
-use Getopt::Long qw(:config no_ignore_case);
-use File::Copy;
-use Text::Wrap;
-use File::Basename;
 use Cwd;
+use File::Basename;
+use File::Copy;
+
+use File::Path ($^V lt v5.10.1) ? 'mkpath' : 'make_path';
+if ($^V lt v5.10.1) {
+    sub make_path {mkpath @_};
+}
+
+use Getopt::Long qw(:config no_ignore_case);
 use POSIX qw(strftime);
+use Text::Wrap;
 
 sub blab {
     print 'debmaker: ', @_, "\n";
@@ -28,11 +34,16 @@ sub my_chdir {
 }
 sub my_symlink {
     my ($src, $dst) = @_;
+    my_mkdir(dirname $dst);
     symlink $src, $dst
         or fatal "Can't create symlink `$src' -> `$dst': $!"
 }
 sub my_hardlink {
     my ($src, $dst) = @_;
+
+    # even if we can't create hardlink in package, we should have a directory
+    # to be able to create hardlink in preinstall phase:
+    my_mkdir(dirname $dst);
 
     # For hardlink creation target file must be accessible:
     my $pwd = getcwd;
@@ -46,6 +57,7 @@ sub my_hardlink {
 }
 sub my_copy {
     my ($src, $dst) = @_;
+    my_mkdir(dirname $dst);
     copy $src, $dst
         or fatal "Can't copy `$src' to `$dst': $!";
 }
@@ -63,12 +75,22 @@ sub my_chmod {
 }
 sub my_mkdir {
     my ($path, $mode) = @_;
+    my $err;
     if (defined $mode) {
-        mkdir $path, oct($mode)
-            or fatal "Can't create dir `$path' with mode `$mode': $!";
-    } else{
-        mkdir $path
-            or fatal "Can't create dir `$path': $!";
+        make_path($path, {mode => oct($mode), error => \$err})
+    } else {
+        make_path($path, {error => \$err})
+    }
+    if (@$err) {
+        foreach my $diag (@$err) {
+            my ($dir, $message) = %$diag;
+            if ($dir) {
+                warning "Failed to create dir `$dir': $message"
+            } else {
+                warning "$message"
+            }
+        }
+        fatal "Failed to create directory `$path'"
     }
 }
 
@@ -553,12 +575,12 @@ foreach my $manifest_file (@ARGV) {
             foreach my $l (@hl_script) {
                 my $d = dirname $$l{path};   $d = "/$d" unless $d =~ /^\//;
                 my $b = basename $$l{path};
-                my $p = $$l{'path'};           $p = "/$p" unless $p =~ /^\//;
+                my $p = $$l{'path'};         $p = "/$p" unless $p =~ /^\//;
                 my $t = $$l{'target'};
                 $preinst .= " if ! [ -f $p ]; then\n";
                 $preinst .= "  (cd $d && ln $t $b) || true\n";
                 $preinst .= " fi\n";
-                $postrm  .= " rm $p\n";
+                $postrm  .= " rm $p || true\n";
             }
             $preinst .= "fi\n";
             $postrm  .= "fi\n";
