@@ -35,7 +35,6 @@ COMPONENT_ARCHIVE_URL=	http://sourceforge.net/projects/expect/files/Expect/$(COM
 include ../../../make-rules/prep.mk
 include ../../../make-rules/configure.mk
 include ../../../make-rules/ips.mk
-include ../../../make-rules/deb.mk
 
 SCRIPTS = timed-run timed-read ftp-rfc autopasswd lpunlock weather \
           passmass rftp kibitz rlogin-cwd xpstat tkpasswd dislocate xkibitz \
