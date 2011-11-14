@@ -8,10 +8,7 @@ use Cwd;
 use File::Basename;
 use File::Copy;
 
-use File::Path ($^V lt v5.10.1) ? 'mkpath' : 'make_path';
-if ($^V lt v5.10.1) {
-    sub make_path {mkpath @_};
-}
+use File::Path 'mkpath';
 
 use Getopt::Long qw(:config no_ignore_case);
 use POSIX qw(strftime);
@@ -77,9 +74,9 @@ sub my_mkdir {
     my ($path, $mode) = @_;
     my $err;
     if (defined $mode) {
-        make_path($path, {mode => oct($mode), error => \$err})
+        mkpath($path, {mode => oct($mode), error => \$err})
     } else {
-        make_path($path, {error => \$err})
+        mkpath($path, {error => \$err})
     }
     if (@$err) {
         foreach my $diag (@$err) {
@@ -383,17 +380,16 @@ sub get_dir_size {
 sub find_pkgs_with_paths {
     my @paths = @_;
     s,^/+,,g foreach @paths;
-    my $dpkg = get_output('dpkg-query --search -- ' . join(' ',  @paths) . ' | cut -d: -f1');
+    my $dpkg = get_output "dpkg-query --search -- @paths | cut -d: -f1";
     return $dpkg;
 }
 
 sub guess_required_deps {
     my ($path) = @_;
-    my $elfs = get_output("find $path -type f -exec file {} \\; | ggrep ELF | cut -d: -f1");
+    my $elfs = get_output "gfind $path -type f -exec file {} \\; | ggrep ELF | cut -d: -f1";
     my @deps = ();
     if (@$elfs) {
-        my $libs = get_output('elfdump -d ' . join(' ', @$elfs) . ' | ggrep \'\(NEEDED\|SUNW_FILTER\)\' | awk \'{print $4}\'');
-        uniq $libs;
+        my $libs = get_output "elfdump -d @$elfs | ggrep -E '(NEEDED|SUNW_FILTER)' | awk '{print \$4}' | sort -u";
         blab 'Required libs: ' . join(', ', @$libs);
         my $pkgs = find_pkgs_with_paths @$libs;
         push @deps, @$pkgs;
@@ -401,6 +397,18 @@ sub guess_required_deps {
     return \@deps;
 }
 
+sub get_shlib {
+    my ($dir, $pkg) = @_;
+    my $res = '';
+    $pkg = basename $dir unless $pkg;
+
+    my $libs = get_output "gfind $dir -type f -name '*.so.*'";
+    if (@$libs) {
+        my $sonames = get_output "elfdump -d @$libs | ggrep SONAME | awk '{print \$4}' | sort -u";
+        $res = join "\n", map { /^(.+)\.so\.(.+)$/; "$1 $2 $pkg" } @$sonames;
+    }
+    return $res;
+}
 
 if (!$DEBS_DIR) {
     fatal "Output dir is not set. Use -D option."
@@ -659,9 +667,6 @@ foreach my $manifest_file (@ARGV) {
 
     my_mkdir "$pkgdir/DEBIAN";
 
-    write_file "$pkgdir/DEBIAN/control", $control;
-    write_file "$pkgdir/DEBIAN/conffiles", (join "\n", @conffiles) . "\n" if @conffiles;
-
     # http://wiki.debian.org/MaintainerScripts
     if (my @groups = @{$$manifest_data{'group'}}) {
         foreach my $g (@groups) {
@@ -702,7 +707,7 @@ foreach my $manifest_file (@ARGV) {
 
     if (@disable_fmri) {
         $prerm .= 'if [ "$1" = "remove" ]; then' . "\n";
-        $prerm .= ' svcadm disable ' . join(' ', @disable_fmri) . " || true\n";
+        $prerm .= " svcadm disable @disable_fmri || true\n";
         $prerm .= "fi\n";
     }
     if (@refresh_fmri || @restart_fmri || @suspend_fmri) {
@@ -720,30 +725,36 @@ CHECK_SMF
         $postinst .= $check_smf;
         $postinst .= 'if [ "$HAVE_SMF" = yes ]; then' . "\n";
         $postinst .= ' if [ "$1" = configure ]; then' . "\n";
-        $postinst .= '  svcadm -v refresh ' . join(' ', @refresh_fmri) . " || true\n" if @refresh_fmri;
-        $postinst .= '  svcadm -v restart ' . join(' ', @restart_fmri) . " || true\n" if @restart_fmri;
+        $postinst .= "  svcadm -v refresh @refresh_fmri || true\n" if @refresh_fmri;
+        $postinst .= "  svcadm -v restart @restart_fmri || true\n" if @restart_fmri;
         if (@suspend_fmri) {
             $preinst .= $check_smf;
             $preinst .= 'if [ "$HAVE_SMF" = yes ]; then' . "\n";
             $preinst .= ' if [ "$1" = install ] || [ "$1" = upgrade ]; then' . "\n";
-            $preinst .= '  svcadm -v disable -t '  . join(' ', @suspend_fmri) . " || true\n";
+            $preinst .= "  svcadm -v disable -t @suspend_fmri || true\n";
             $preinst .= " fi\n";
             $preinst .= "fi\n";
 
-            $postinst .= '  svcadm -v enable '  . join(' ', @suspend_fmri) . " || true\n";
+            $postinst .= "  svcadm -v enable @suspend_fmri || true\n";
         }
         $postinst .= " fi\n";
         $postinst .= "fi\n";
     }
+
+    my $shlibs = get_shlib $pkgdir;
 
     write_script "$pkgdir/DEBIAN/preinst",  $preinst  if $preinst;
     write_script "$pkgdir/DEBIAN/prerm",    $prerm    if $prerm;
     write_script "$pkgdir/DEBIAN/postinst", $postinst if $postinst;
     write_script "$pkgdir/DEBIAN/postrm",   $postrm   if $postrm;
 
+    write_file "$pkgdir/DEBIAN/control", $control;
+    write_file "$pkgdir/DEBIAN/conffiles", (join "\n", @conffiles) . "\n" if @conffiles;
+    write_file "$pkgdir/DEBIAN/shlibs",   $shlibs   if $shlibs;
+
     my $pkg_deb = "${pkgdir}_${debversion}_${ARCH}.deb";
     # FIXME: we need GNU tar
-    shell_exec(qq|PATH=/usr/gnu/bin:/usr/bin dpkg-deb -b "$pkgdir" "$pkg_deb"|);
+    shell_exec qq|PATH=/usr/gnu/bin:/usr/bin dpkg-deb -b "$pkgdir" "$pkg_deb"|;
 
     my $sha1   = get_output_line "sha1sum $pkg_deb | cut -d' ' -f1";
     my $sha256 = get_output_line "sha256sum $pkg_deb | cut -d' ' -f1";
