@@ -1,0 +1,189 @@
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+# Copyright (c) 2011, Oracle and/or its affiliates. All rights reserved.
+#
+<transform file path=usr.*/man/.+ -> default mangler.man.stability uncommitted>
+set name=pkg.fmri \
+    value=pkg:/network/ntop@$(IPS_COMPONENT_VERSION),$(BUILD_VERSION)
+set name=pkg.summary value="Ntop"
+set name=info.classification \
+    value=org.opensolaris.category.2008:System/Internet
+set name=info.source-url value=$(COMPONENT_ARCHIVE_URL)
+set name=info.upstream-url value=http://www.ntop.org
+set name=org.opensolaris.arc-caseid \
+    value=PSARC/2008/288
+set name=org.opensolaris.consolidation value=$(CONSOLIDATION)
+#
+dir path=usr
+dir path=etc
+dir path=etc/ntop
+dir path=usr/bin
+dir path=usr/lib
+dir path=usr/lib/ntop
+dir path=usr/lib/plugins
+dir path=usr/lib/ntop/plugins
+dir path=usr/share
+dir path=usr/share/man
+dir path=usr/share/ntop/
+dir path=usr/share/ntop/html
+dir path=usr/share/man/man8
+#
+file path=usr/bin/ntop
+file path=usr/lib/ntop/plugins/icmpPlugin.so
+file path=usr/lib/ntop/plugins/xmldumpPlugin.so
+file path=usr/lib/ntop/plugins/snmpPlugin.so
+file path=usr/lib/ntop/plugins/sflowPlugin.so
+file path=usr/lib/ntop/plugins/rrdPlugin.so
+file path=usr/lib/ntop/plugins/pdaPlugin.so
+file path=usr/lib/ntop/plugins/netflowPlugin.so
+file path=usr/lib/ntop/plugins/lastSeenPlugin.so
+file path=etc/ntop/ntop-cert.pem
+file path=etc/ntop/oui.txt
+file path=etc/ntop/p2c.opt.table
+file path=etc/ntop/etter.finger.os
+file path=etc/ntop/specialMAC.txt
+file path=etc/ntop/AS-list.txt
+file path=etc/ntop/protocol.list
+file path=/usr/lib/libicmpPlugin-3.2.so
+file path=/usr/lib/liblastSeenPlugin-3.2.so
+file path=/usr/lib/libmyrrd-3.2.so
+file path=/usr/lib/libnetflowPlugin-3.2.so
+file path=/usr/lib/libntop-3.2.so
+file path=/usr/lib/libntopreport-3.2.so
+file path=/usr/lib/libpdaPlugin-3.2.so
+file path=/usr/lib/librrdPlugin-3.2.so
+file path=/usr/lib/libsflowPlugin-3.2.so
+file path=/usr/lib/libsnmpPlugin-3.2.so
+file path=/usr/lib/libxmldumpPlugin-3.2.so
+file path=/usr/lib/libxmldumpPlugin.a
+file path=/usr/lib/libicmpPlugin.a
+file path=/usr/lib/liblastSeenPlugin.a
+file path=/usr/lib/libmyrrd.a
+file path=/usr/lib/libnetflowPlugin.a
+file path=/usr/lib/libntop.a
+file path=/usr/lib/libntopreport.a
+file path=/usr/lib/libpdaPlugin.a
+file path=/usr/lib/librrdPlugin.a
+file path=/usr/lib/libsflowPlugin.a
+file path=/usr/lib/libsnmpPlugin.a
+link path=/usr/lib/libntop.so target=libntop-3.2.so
+link path=/usr/lib/libmyrrd.so target=libmyrrd-3.2.so
+link path=/usr/lib/libxmldumpPlugin.so target=libxmldumpPlugin-3.2.so
+link path=/usr/lib/libicmpPlugin.so target=libicmpPlugin-3.2.so
+link path=/usr/lib/liblastSeenPlugin.so target=liblastSeenPlugin-3.2.so
+link path=/usr/lib/libnetflowPlugin.so target=libnetflowPlugin-3.2.so
+link path=/usr/lib/libntopreport.so target=libntopreport-3.2.so
+link path=/usr/lib/libpdaPlugin.so target=libpdaPlugin-3.2.so
+link path=/usr/lib/librrdPlugin.so target=librrdPlugin-3.2.so
+link path=/usr/lib/lowPlugin.so target=libsflowPlugin-3.2.so
+link path=/usr/lib/libsnmpPlugin.so target=libsnmpPlugin-3.2.so
+
+file path=usr/share/man/man8/ntop.8
+file path=usr/share/ntop/html/JSCookMenu.js
+file path=usr/share/ntop/html/Risk_high.gif
+file path=usr/share/ntop/html/Risk_low.gif
+file path=usr/share/ntop/html/Risk_medium.gif
+file path=usr/share/ntop/html/Risk_unknown.gif
+file path=usr/share/ntop/html/antenna.gif
+file path=usr/share/ntop/html/arrow.gif
+file path=usr/share/ntop/html/arrow_down.gif
+file path=usr/share/ntop/html/arrow_up.gif
+file path=usr/share/ntop/html/back.gif
+file path=usr/share/ntop/html/bar.gif
+file path=usr/share/ntop/html/bg_line.gif
+file path=usr/share/ntop/html/black.gif
+file path=usr/share/ntop/html/blank.gif
+file path=usr/share/ntop/html/bottom_corner.gif
+file path=usr/share/ntop/html/bridge.gif
+file path=usr/share/ntop/html/brocade.gif
+file path=usr/share/ntop/html/bug.png
+file path=usr/share/ntop/html/bulb.gif
+file path=usr/share/ntop/html/card.gif
+file path=usr/share/ntop/html/child.gif
+file path=usr/share/ntop/html/clear.gif
+file path=usr/share/ntop/html/clock.gif
+file path=usr/share/ntop/html/collapsed.gif
+file path=usr/share/ntop/html/copyright.png
+file path=usr/share/ntop/html/corner.gif
+file path=usr/share/ntop/html/deleteURL.gif
+file path=usr/share/ntop/html/deleteUser.gif
+file path=usr/share/ntop/html/disk.gif
+file path=usr/share/ntop/html/dns.gif
+file path=usr/share/ntop/html/download.gif
+file path=usr/share/ntop/html/dump.html
+file path=usr/share/ntop/html/emulex.gif
+file path=usr/share/ntop/html/error.gif
+file path=usr/share/ntop/html/expanded.gif
+file path=usr/share/ntop/html/faq.html
+file path=usr/share/ntop/html/favicon.ico
+file path=usr/share/ntop/html/fback.gif
+file path=usr/share/ntop/html/fforward.gif
+file path=usr/share/ntop/html/forward.gif
+file path=usr/share/ntop/html/functions.js
+file path=usr/share/ntop/html/gauge.jpg
+file path=usr/share/ntop/html/gaugeR.jpg
+file path=usr/share/ntop/html/gaugeS.jpg
+file path=usr/share/ntop/html/graph.gif
+file path=usr/share/ntop/html/gray_bg.gif
+file path=usr/share/ntop/html/help.html
+file path=usr/share/ntop/html/help.png
+file path=usr/share/ntop/html/hostSortNote.html
+file path=usr/share/ntop/html/info.gif
+file path=usr/share/ntop/html/initiator.gif
+file path=usr/share/ntop/html/lock.png
+file path=usr/share/ntop/html/mail.gif
+file path=usr/share/ntop/html/major.gif
+file path=usr/share/ntop/html/marchio_unipi_pant541_144.gif
+file path=usr/share/ntop/html/menubar.png
+file path=usr/share/ntop/html/menubar_j.png
+file path=usr/share/ntop/html/menuline.png
+file path=usr/share/ntop/html/minor.gif
+file path=usr/share/ntop/html/modifyUser.gif
+file path=usr/share/ntop/html/multihomed.gif
+file path=usr/share/ntop/html/multivlaned.gif
+file path=usr/share/ntop/html/nboxLogo.gif
+file path=usr/share/ntop/html/ntop.gif
+file path=usr/share/ntop/html/ntop.html
+file path=usr/share/ntop/html/ntop_logo.gif
+file path=usr/share/ntop/html/ntopdump.dtd
+file path=usr/share/ntop/html/ntophelp.html
+file path=usr/share/ntop/html/p2p.gif
+file path=usr/share/ntop/html/phone.gif
+file path=usr/share/ntop/html/pie-error.png
+file path=usr/share/ntop/html/printer.gif
+file path=usr/share/ntop/html/privacyNotice.html
+file path=usr/share/ntop/html/question.gif
+file path=usr/share/ntop/html/router.gif
+file path=usr/share/ntop/html/seagate.gif
+file path=usr/share/ntop/html/spacer.gif
+file path=usr/share/ntop/html/style.css
+file path=usr/share/ntop/html/switch.gif
+file path=usr/share/ntop/html/theme.css
+file path=usr/share/ntop/html/theme.js
+file path=usr/share/ntop/html/upload.gif
+file path=usr/share/ntop/html/url.gif
+file path=usr/share/ntop/html/user.gif
+file path=usr/share/ntop/html/users.gif
+file path=usr/share/ntop/html/vgauge.jpg
+file path=usr/share/ntop/html/warning.gif
+file path=usr/share/ntop/html/web.gif
+file path=usr/share/ntop/html/wheel.gif
+file path=usr/share/ntop/html/white_bg.gif
