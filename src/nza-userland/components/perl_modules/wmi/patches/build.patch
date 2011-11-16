@@ -1,0 +1,11 @@
+diff -r 0199369d48a7 wmi/Samba/source/configure
+--- a/wmi/Samba/source/configure	Thu Apr 29 14:03:28 2010 -0700
++++ b/wmi/Samba/source/configure	Tue Oct 11 09:33:31 2011 -0700
+@@ -23387,7 +23387,6 @@
+ for ac_func in 				\
+ 	atexit					\
+ 	cgetent					\
+-	getprogname				\
+ 	inet_ntop				\
+ 	inet_aton				\
+ 	inet_pton				\

@@ -22,24 +22,28 @@
 #
 
 include ../../../make-rules/shared-macros.mk
-COMPONENT_NAME     =  WebOb
-COMPONENT_VERSION  =  1.1.1
+COMPONENT_NAME     =  wmi
+COMPONENT_VERSION  =  1.2
 COMPONENT_SRC      =  $(COMPONENT_NAME)-$(COMPONENT_VERSION)
-COMPONENT_ARCHIVE  =  $(COMPONENT_SRC).zip
-COMPONENT_ARCHIVE_HASH = sha1:00ba643ebc0f66a20b22b6d9fb873852b6e155aa
-COMPONENT_ARCHIVE_URL  = http://pypi.python.org/packages/source/W/WebOb/$(COMPONENT_ARCHIVE)
+COMPONENT_ARCHIVE  =  $(COMPONENT_SRC).tar.bz2
+COMPONENT_ARCHIVE_HASH = sha1:26ca3539e045c8cc776180550ddc53a3f1d9d435
+COMPONENT_ARCHIVE_URL  = $(COMPONENT_ARCHIVE)
 
 include $(WS_TOP)/make-rules/prep.mk
 include $(WS_TOP)/make-rules/ips.mk
-include $(WS_TOP)/make-rules/setup.py.mk
+include $(WS_TOP)/make-rules/makemaker.mk
+
+COMPONENT_PRE_BUILD_ACTION = \
+	cd $(@D)/wmi/Samba/source && \
+	./configure ac_cv_prog_gnu_ld="no" && \
+	mkdir -p bin/static && \
+	$(GMAKE) proto && \
+	$(GMAKE) bin/wmic
 
 build:      $(BUILD_32)
 install:    $(INSTALL_32)
 
-COMPONENT_TEST_TARGETS = test
-test:       $(TEST_32)
 
-BUILD_PKG_DEPENDENCIES = $(BUILD_TOOLS)
 
 include $(WS_TOP)/make-rules/depend.mk
 
