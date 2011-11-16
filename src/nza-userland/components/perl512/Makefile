@@ -40,6 +40,8 @@ include ../../make-rules/prep.mk
 include ../../make-rules/justmake.mk
 include ../../make-rules/ips.mk
 
+COMPILER = gcc
+
 #
 # Override these compiler settings because they are causing problems
 # in the ON build of the contrib components.
@@ -55,7 +57,6 @@ studio_C99MODE=
 studio_ALIGN=
 studio_MT=
 
-COMPILER = gcc
 #
 # The extra Configure parameters (cf_email, cf_by, myhostname) and
 # the gawk and sed that follow are attempting to sanatize the
@@ -66,7 +67,8 @@ COMPILER = gcc
 #
 
 COMPONENT_PRE_BUILD_ACTION= \
-	(cd $(@D); $(ENV) -i \
+	(cd $(@D); \
+	$(ENV) -i \
 		MAKE=$(GMAKE) \
 		$(CONFIG_SHELL) ./Configure \
 			    -Dprefix=/usr/perl5/$(PERL_VERSION) \
@@ -74,14 +76,16 @@ COMPONENT_PRE_BUILD_ACTION= \
 			    -Dsitelib=/usr/perl5/site_perl/$(PERL_VERSION) \
 			    -Dvendorprefix=/usr/perl5/$(PERL_VERSION) \
 			    -Dvendorlib=/usr/perl5/vendor_perl/$(PERL_VERSION) \
-			    -Dlibperl=libperl.so \
+			    -Dlibperl=libperl.so.$(COMPONENT_VERSION) \
 			    -Duseshrplib \
 			    -Dusedtrace \
 			    -Duse64bitint \
-			    -Dcc="/usr/gcc/4.4/bin/gcc" \
-			    -Dcf_by="perl-bugs" \
+			    -Duselargefiles \
+			    -Dcc="$(CC) -B/usr/ccs/bin/" \
+			    -Accflags="-fno-stack-protector" \
+			    -Aldflags="-L/usr/lib" \
 			    -Dmyhostname="localhost" \
-			    -O \
+			    -Doptimize="-O2" \
 			    -de ) ; \
 	(cd $(@D); \
 	    cp config.sh config.sh_orig ; \
@@ -90,7 +94,6 @@ COMPONENT_PRE_BUILD_ACTION= \
 	    		!/^myuname=/ {print}' config.sh_orig \
 		| \
 		sed -e 's/[^ ]*SUNWspro[^ ]*//g' > config.sh )
-
 
 COMPONENT_INSTALL_ENV	+=	DESTDIR="$(PROTO_DIR)"
 #
@@ -104,7 +107,10 @@ PKG_MACROS		+=	PERL_VERSION=$(PERL_VERSION)
 # use cc.  Trying to avoid the full path so it doesn't end up in
 # perl's config.
 #
-#COMPONENT_BUILD_ENV	+=	PATH=$(dir $(CC.studio.32)):$(PATH)
+LD_OPTIONS=
+COMPONENT_BUILD_ENV	=	PATH=$(dir $(CC)):$(PATH)
+COMPONENT_BUILD_ENV	+=	LD_OPTIONS=$(LD_OPTIONS)
+COMPONENT_INSTALL_ENV	=	LD_OPTIONS=$(LD_OPTIONS)
 
 build:		$(BUILD_32)
 

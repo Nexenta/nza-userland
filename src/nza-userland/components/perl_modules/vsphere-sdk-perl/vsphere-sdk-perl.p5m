@@ -985,6 +985,7 @@ depend fmri=pkg:/library/perl-5/class-methodmaker type=require
 depend fmri=pkg:/library/perl-5/net-ssleay type=require
 depend fmri=pkg:/library/perl-5/io-socket-ssl type=require
 depend fmri=pkg:/library/perl-5/uri type=require
+depend fmri=pkg:/library/perl-5/libwww-https-perl type=require
 
 
 

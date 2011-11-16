@@ -40,9 +40,9 @@ dir path=usr/perl5/vendor_perl/5.12
 dir path=usr/perl5/vendor_perl/5.12/LibXen
 file path=usr/perl5/vendor_perl/5.12/LibXen/Xen.pm
 file path=usr/perl5/vendor_perl/5.12/LibXen/XmlRpc.pm
-file path=usr/perl5/5.12/lib/i86pc-solaris-64int/perllocal.pod
 file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/LibXen/.packlist
 depend fmri=runtime-perl-512 type=require
 depend fmri=library-perl-5-xml-libxml type=require
 depend fmri=library-perl-5-libwww-perl type=require
 depend fmri=library-perl-5-http-message type=require
+depend fmri=library/perl-5/libwww-https-perl type=require
