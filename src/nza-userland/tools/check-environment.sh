@@ -112,6 +112,9 @@ check_pkg_list()
 		developer-build-libtool \
 		developer-build-make \
 		developer-gcc-3 \
+		developer-gcc-44 \
+		system-library-gcc-3-runtime \
+		system-library-gcc-44-runtime \
 		developer-gnome-gettext \
 		developer-java-jdk \
 		developer-java-junit \
@@ -129,6 +132,7 @@ check_pkg_list()
 		library-python-2-ply-26 \
 		library-python-2-pycurl-26 \
 		library-python-2-m2crypto \
+		library-python-2-paramiko-26 \
 		library-pcre \
 		runtime-perl-512 \
 		system-library-math-header-math \

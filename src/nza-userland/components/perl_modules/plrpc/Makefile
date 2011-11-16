@@ -18,23 +18,20 @@
 # CDDL HEADER END
 #
 #
-# Copyright (C) 2011, Nexenta Systems, Inc. All rights reserved.
+# Copyright (C) 2011, Nexenta Systems, Inc. and/or its affiliates. All rights reserved.
 #
 
-include ../../make-rules/shared-macros.mk
-
-COMPONENT_NAME     =  bzr
-COMPONENT_BRANCH   =  2.4
-COMPONENT_VERSION  =  $(COMPONENT_BRANCH).2
-COMPONENT_SRC      =  $(COMPONENT_NAME)-$(COMPONENT_VERSION)
+include ../../../make-rules/shared-macros.mk
+COMPONENT_NAME     =  PlRPC
+COMPONENT_VERSION  =  0
+COMPONENT_SRC      =  $(COMPONENT_NAME)-$(COMPONENT_VERSION).2020
 COMPONENT_ARCHIVE  =  $(COMPONENT_SRC).tar.gz
-COMPONENT_ARCHIVE_HASH = sha1:3663b862dc8fb9729f9aae2427cbab2af9c901ad
-COMPONENT_ARCHIVE_URL  = http://launchpad.net/bzr/$(COMPONENT_BRANCH)/$(COMPONENT_VERSION)/+download/$(COMPONENT_ARCHIVE)
-COMPONENT_PROJECT_URL  = http://bazaar.canonical.com
+COMPONENT_ARCHIVE_HASH = sha1:2a1dd4f650764f6cfc654e528a579293422073c0
+COMPONENT_ARCHIVE_URL  = http://search.cpan.org/CPAN/authors/id/M/MN/MNOONING/PlRPC/$(COMPONENT_ARCHIVE)
 
 include $(WS_TOP)/make-rules/prep.mk
 include $(WS_TOP)/make-rules/ips.mk
-include $(WS_TOP)/make-rules/setup.py.mk
+include $(WS_TOP)/make-rules/makemaker.mk
 
 build:      $(BUILD_32)
 install:    $(INSTALL_32)

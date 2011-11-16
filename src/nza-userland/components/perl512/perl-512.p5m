@@ -498,7 +498,7 @@ file \
 file \
     path=usr/perl5/$(PERL_VERSION)/lib/$(PERL_ARCH)-solaris-64int/CORE/keywords.h
 file \
-    path=usr/perl5/$(PERL_VERSION)/lib/$(PERL_ARCH)-solaris-64int/CORE/libperl.so
+    path=usr/perl5/$(PERL_VERSION)/lib/$(PERL_ARCH)-solaris-64int/CORE/libperl.so.5.12.3
 file \
     path=usr/perl5/$(PERL_VERSION)/lib/$(PERL_ARCH)-solaris-64int/CORE/malloc_ctl.h
 file path=usr/perl5/$(PERL_VERSION)/lib/$(PERL_ARCH)-solaris-64int/CORE/mg.h
@@ -3682,6 +3682,8 @@ hardlink path=usr/perl5/$(PERL_VERSION)/man/man1/perlbug.1 target=perlthanks.1
 hardlink path=usr/perl5/$(PERL_VERSION)/man/man1/pstruct.1 target=c2ph.1
 hardlink path=usr/perl5/$(PERL_VERSION)/man/man1/s2p.1 target=psed.1
 link path=usr/bin/perl target=../perl5/5.12/bin/perl
+link path=usr/perl5/$(PERL_VERSION)/lib/$(PERL_ARCH)-solaris-64int/CORE/libperl.so target=libperl.so.5.12
+link path=usr/perl5/$(PERL_VERSION)/lib/$(PERL_ARCH)-solaris-64int/CORE/libperl.so.5.12 target=libperl.so.5.12.3
 #link path=usr/perl5/bin target=./5.12/bin
 #link path=usr/perl5/man target=./5.12/man
 #link path=usr/perl5/pod target=./5.12/lib/pod

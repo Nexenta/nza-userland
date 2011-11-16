@@ -24,33 +24,29 @@
 #
 include ../../make-rules/shared-macros.mk
 
-COMPONENT_NAME=		xapian-core
-COMPONENT_VERSION=	1
-FULL_VERSION=		1.2.7	
-COMPONENT_SRC=		$(COMPONENT_NAME)-$(COMPONENT_VERSION).2.7
+COMPONENT_NAME=		vdbench
+COMPONENT_VERSION=	31
+FULL_VERSION=		31-1-2
+COMPONENT_SRC=		$(COMPONENT_NAME)-$(COMPONENT_VERSION)-1-2
 COMPONENT_ARCHIVE=	$(COMPONENT_SRC).tar.gz
-COMPONENT_ARCHIVE_HASH=	sha1:c6c5c5b14d5d64481858ac2b181429a9b8bdc9a1
-COMPONENT_ARCHIVE_URL=	http://oligarchy.co.uk/xapian/1.2.7/$(COMPONENT_ARCHIVE)
+#COMPONENT_ARCHIVE_HASH=	sha1:c6c5c5b14d5d64481858ac2b181429a9b8bdc9a1
+COMPONENT_ARCHIVE_URL=	src/$(COMPONENT_ARCHIVE)
+
+# set relocate_to option while unpacking the tar ball
+UNPACK_ARGS= -r $(COMPONENT_SRC)
 
 include ../../make-rules/prep.mk
-include ../../make-rules/configure.mk
 include ../../make-rules/ips.mk
 
-COMPILER = gcc
-CONFIGURE_OPTIONS	+=CC=cc
-CONFIGURE_OPTIONS	+=CXX=
+# untar the tar ball and apply the patches
+build:		$(SOURCE_DIR)/.prep
 
-CONFIGURE_PREFIX	=/usr
-CONFIGURE_OPTIONS	+=--disable-static
-CONFIGURE_OPTIONS	+=--enable-shared
+install: build
+	$(MKDIR) $(PROTO_DIR)
 
-# common targets
-build:		$(BUILD_32)
+test:	$(NO_TESTS)
 
-install:	$(INSTALL_32)
-
-test:		$(TEST_32)
-
-BUILD_PKG_DEPENDENCIES =	$(BUILD_TOOLS)
+clean::
+	$(RM) -r $(BUILD_DIR)
 
 include ../../make-rules/depend.mk
