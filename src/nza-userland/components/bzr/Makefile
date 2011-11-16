@@ -18,7 +18,7 @@
 # CDDL HEADER END
 #
 #
-# Copyright (C) 2011, Nexenta Systems, Inc. and/or its affiliates. All rights reserved.
+# Copyright (C) 2011, Nexenta Systems, Inc. All rights reserved.
 #
 
 include ../../make-rules/shared-macros.mk
