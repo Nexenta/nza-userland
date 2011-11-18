@@ -20,39 +20,36 @@
 #
 # Copyright (c) 2011, Oracle and/or its affiliates. All rights reserved.
 #
-# Copyright (c) 2011 Nexenta Systems, Inc.  All rights reserved.
-
 include ../../make-rules/shared-macros.mk
 
-COMPONENT_NAME=		clamav
-COMPONENT_VERSION=	0.97.2
+COMPONENT_NAME=		dbench
+COMPONENT_VERSION=	4.0
 COMPONENT_SRC=		$(COMPONENT_NAME)-$(COMPONENT_VERSION)
-COMPONENT_PROJECT_URL=	http://downloads.sourceforge.net/clamav
 COMPONENT_ARCHIVE=	$(COMPONENT_SRC).tar.gz
-COMPONENT_ARCHIVE_HASH=	sha1:27d47c6ad22edc87c030f6d483fab1e13320cbf7
-COMPONENT_ARCHIVE_URL=	http://downloads.sourceforge.net/clamav/$(COMPONENT_ARCHIVE)
+COMPONENT_ARCHIVE_HASH=	sha1:34492fa9d9686052e9b85bd3deedc2bbf6cef626
+COMPONENT_ARCHIVE_URL=	http://samba.org/ftp/tridge/dbench/$(COMPONENT_ARCHIVE)
 
 include ../../make-rules/prep.mk
 include ../../make-rules/configure.mk
 include ../../make-rules/ips.mk
 
-CONFIGURE_OPTIONS +=		--prefix=/usr
-CONFIGURE_OPTIONS +=		--disable-clamuko
-CONFIGURE_OPTIONS +=		--disable-unrar
-CONFIGURE_OPTIONS +=		--disable-milter
-CONFIGURE_OPTIONS +=		--with-dbdir=/var/lib/clamav
-CONFIGURE_OPTIONS +=		--sysconfdir=/etc/clamav
-CONFIGURE_OPTIONS +=		--with-system-tommath
-CONFIGURE_OPTIONS +=		--enable-dns-fix
+COMPILER = gcc
 
+COMPONENT_PREP_ACTION = ( cd $(@D) ; $(CONFIG_SHELL) autogen.sh )
 
-build:		$(BUILD32)
+COMPONENT_INSTALL_ENV   +=      DESTDIR="$(PROTO_DIR)"
 
-test:		$(TEST_32)
+COMPONENT_PRE_INSTALL_ACTION = \
+	(cd $(COMPONENT_SRC) ; \
+	mv dbench.1 $(BUILD_DIR_32);)
+
+# common targets
+build:		$(BUILD_32)
 
 install:	$(INSTALL_32)
 
-BUILD_PKG_DEPENDENCIES = $(BUILD_TOOLS)
+test:		$(TEST_32)
+
+BUILD_PKG_DEPENDENCIES =	$(BUILD_TOOLS)
 
 include ../../make-rules/depend.mk
-

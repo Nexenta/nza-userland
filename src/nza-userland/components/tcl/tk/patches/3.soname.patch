@@ -8,7 +8,7 @@ Index: tk8.5.9/unix/configure
  	    SHLIB_LD_LIBS='${LIBS}'
 -	    SHLIB_SUFFIX=".so"
 +	    SHLIB_SUFFIX=".so.0"
-+	    TCL_SHLIB_LD_EXTRAS="-Wl,-soname,\${TCL_LIB_FILE}"
++	    TK_SHLIB_LD_EXTRAS="-Wl,-soname,\${TK_LIB_FILE}"
  	    DL_OBJS="tclLoadDl.o"
  	    DL_LIBS="-ldl"
  	    if test "$GCC" = yes; then
@@ -22,7 +22,7 @@ Index: tk8.5.9/unix/tcl.m4
  	    SHLIB_LD_LIBS='${LIBS}'
 -	    SHLIB_SUFFIX=".so"
 +	    SHLIB_SUFFIX=".so.0"
-+	    TCL_SHLIB_LD_EXTRAS="-Wl,-soname,\${TCL_LIB_FILE}"
++	    TK_SHLIB_LD_EXTRAS="-Wl,-soname,\${TK_LIB_FILE}"
  	    DL_OBJS="tclLoadDl.o"
  	    DL_LIBS="-ldl"
  	    AS_IF([test "$GCC" = yes], [
