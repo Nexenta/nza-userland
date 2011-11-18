@@ -23,7 +23,7 @@
 
 # Don't bother specifying each .pyc file.  Allow individual actions to
 # override this by setting pkg.tmp.autopyc to false.
-<transform file path=.*\.py$ -> default pkg.tmp.autopyc true>
+<transform file path=.*/.*-packages/.*\.py$ -> default pkg.tmp.autopyc true>
 <transform file pkg.tmp.autopyc=true -> emit file path=%(path)c>
 <transform file pkg.tmp.autopyc=.* -> delete pkg.tmp.autopyc .*>
 <transform hardlink path=.*\.py$ -> emit hardlink path=%(path)c target=%(target)c>
