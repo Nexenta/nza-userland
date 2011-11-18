@@ -493,9 +493,47 @@ foreach my $manifest_file (@ARGV) {
     my $postinst = '';
     my $prerm    = '';
     my $postrm   = '';
+    my $postinst_configure = '';
 
-    # Make sure to work with empty tree:
-    # mkdir will fail if dir exists
+    my @groups = @{$$manifest_data{'group'}};
+    my @users  = @{$$manifest_data{'user'}};
+
+    if (@groups) {
+        foreach my $g (@groups) {
+            my $cmd = "if ! getent group $$g{'groupname'} >/dev/null; then\n";
+            $cmd .= qq| echo 'Adding group "$$g{'groupname'}"'\n|;
+            $cmd .= ' groupadd';
+            $cmd .= get_command_line {
+                'gid' => '-g'
+                }, $g;
+            $cmd .= " $$g{'groupname'} || true\n";
+            $cmd .= "fi\n";
+            $postinst_configure .= $cmd;
+        }
+    }
+    if (@users) {
+        foreach my $u (@users) {
+            my $cmd = "if ! getent passwd $$u{'username'} >/dev/null; then\n";
+            $cmd .= qq| echo 'Adding user "$$u{'username'}"'\n|;
+            $cmd .= ' useradd';
+            # map action attributes to options for 'useradd':
+            $cmd .= get_command_line {
+                'uid' => '-u',
+                'group' => '-g',
+                'gcos-field' => '-c',
+                'home-dir' => '-d',
+                'uid' => '-u',
+                'login-shell' => '-s',
+                'group-list' => '-G',
+                'inactive' => '-f',
+                'expire' => '-e',
+                }, $u;
+            $cmd .= " $$u{'username'} || true\n";
+            $cmd .= "fi\n";
+            $postinst_configure .= $cmd;
+        }
+    }
+
     my_mkdir $pkgdir;
 
 # pkg(5):
@@ -518,14 +556,20 @@ foreach my $manifest_file (@ARGV) {
     my @restart_fmri = ();
     my @suspend_fmri = ();
 
-    # Believe that dirs are listed in proper order:
-    # usr, usr/bin, etc
     if (my @dirs = @{$$manifest_data{'dir'}}) {
         blab "Making dirs ...";
         foreach my $dir (@dirs) {
             my $dir_name = "$pkgdir/$$dir{'path'}";
             my_mkdir $dir_name, $$dir{'mode'};
-            my_chown $$dir{'owner'}, $$dir{'group'}, $dir_name;
+            if (grep($$dir{'owner'} eq $$_{'username'}, @users) ||
+                grep($$dir{'group'} eq $$_{'groupname'}, @groups))
+            {
+                my $cmd = "chown $$dir{'owner'}:$$dir{'group'} '/$$dir{'path'}'";
+                warning "will chown in postinstall: $cmd";
+                $postinst_configure .= $cmd . " || true\n";
+            } else {
+                my_chown $$dir{'owner'}, $$dir{'group'}, $dir_name;
+            }
             push @replaces, get_debpkg_name $$dir{original_name} if exists $$dir{original_name};
 
             push @disable_fmri, $$dir{disable_fmri} if exists $$dir{disable_fmri};
@@ -540,7 +584,7 @@ foreach my $manifest_file (@ARGV) {
         blab "Copying files ...";
         foreach my $file (@files) {
             my $dst = "$pkgdir/$$file{'path'}";
-            my $src = exists $$file{'src'} ? $$file{'src'} : $$file{'path'};
+            my $src =  $$file{'src'} // $$file{'path'};
             # find $src in @PROTO_DIRS:
             my $src_dir = undef;
             foreach my $d (@PROTO_DIRS) {
@@ -555,8 +599,16 @@ foreach my $manifest_file (@ARGV) {
 
             $src = "$src_dir/$src";
             my_copy $src, $dst;
-            my_chown $$file{'owner'}, $$file{'group'}, $dst;
             my_chmod $$file{'mode'}, $dst;
+            if (grep($$file{'owner'} eq $$_{'username'}, @users) ||
+                grep($$file{'group'} eq $$_{'groupname'}, @groups))
+            {
+                my $cmd = "chown $$file{'owner'}:$$file{'group'} '/$$file{'path'}'";
+                warning "will chown in postinstall: $cmd";
+                $postinst_configure .= $cmd . " || true\n";
+            } else {
+                my_chown $$file{'owner'}, $$file{'group'}, $dst;
+            }
 
             push @conffiles, $$file{'path'} if exists $$file{'preserve'};
             push @replaces, get_debpkg_name $$file{original_name} if exists $$file{original_name};
@@ -667,42 +719,6 @@ foreach my $manifest_file (@ARGV) {
 
     my_mkdir "$pkgdir/DEBIAN";
 
-    # http://wiki.debian.org/MaintainerScripts
-    if (my @groups = @{$$manifest_data{'group'}}) {
-        foreach my $g (@groups) {
-            my $cmd = "if ! getent group $$g{'groupname'} >/dev/null; then\n";
-            $cmd .= "echo Adding group $$g{'groupname'}\n";
-            $cmd .= 'groupadd';
-            $cmd .= get_command_line {
-                'gid' => '-g'
-                }, $g;
-            $cmd .= " $$g{'groupname'} || true\n";
-            $cmd .= "fi\n";
-            $preinst .= $cmd;
-        }
-    }
-    if (my @users = @{$$manifest_data{'user'}}) {
-        foreach my $u (@users) {
-            my $cmd = "if ! getent passwd $$u{'username'} >/dev/null; then\n";
-            $cmd .= "echo Adding user $$u{'username'}\n";
-            $cmd .= 'useradd';
-            # map action attributes to options for 'useradd':
-            $cmd .= get_command_line {
-                'uid' => '-u',
-                'group' => '-g',
-                'gcos-field' => '-c',
-                'home-dir' => '-d',
-                'uid' => '-u',
-                'login-shell' => '-s',
-                'group-list' => '-G',
-                'inactive' => '-f',
-                'expire' => '-e',
-                }, $u;
-            $cmd .= " $$u{'username'} || true\n";
-            $cmd .= "fi\n";
-            $preinst .= $cmd;
-        }
-    }
 
 
     if (@disable_fmri) {
@@ -722,11 +738,10 @@ if [ -f "$SMF_INCLUDE" ]; then
 fi
 CHECK_SMF
 
-        $postinst .= $check_smf;
-        $postinst .= 'if [ "$HAVE_SMF" = yes ]; then' . "\n";
-        $postinst .= ' if [ "$1" = configure ]; then' . "\n";
-        $postinst .= "  svcadm -v refresh @refresh_fmri || true\n" if @refresh_fmri;
-        $postinst .= "  svcadm -v restart @restart_fmri || true\n" if @restart_fmri;
+        $postinst_configure .= $check_smf;
+        $postinst_configure .= 'if [ "$HAVE_SMF" = yes ]; then' . "\n";
+        $postinst_configure .= "  svcadm -v refresh @refresh_fmri || true\n" if @refresh_fmri;
+        $postinst_configure .= "  svcadm -v restart @restart_fmri || true\n" if @restart_fmri;
         if (@suspend_fmri) {
             $preinst .= $check_smf;
             $preinst .= 'if [ "$HAVE_SMF" = yes ]; then' . "\n";
@@ -735,13 +750,18 @@ CHECK_SMF
             $preinst .= " fi\n";
             $preinst .= "fi\n";
 
-            $postinst .= "  svcadm -v enable @suspend_fmri || true\n";
+            $postinst_configure .= "  svcadm -v enable @suspend_fmri || true\n";
         }
-        $postinst .= " fi\n";
-        $postinst .= "fi\n";
+        $postinst_configure .= "fi\n";
     }
 
     my $shlibs = get_shlib $pkgdir;
+
+    if ($postinst_configure) {
+        $postinst .= 'if [ "$1" = configure ]; then' . "\n\n";
+        $postinst .= $postinst_configure;
+        $postinst .= "\nfi # configure\n"
+    }
 
     write_script "$pkgdir/DEBIAN/preinst",  $preinst  if $preinst;
     write_script "$pkgdir/DEBIAN/prerm",    $prerm    if $prerm;
@@ -754,11 +774,11 @@ CHECK_SMF
 
     my $pkg_deb = "${pkgdir}_${debversion}_${ARCH}.deb";
     # FIXME: we need GNU tar
-    shell_exec qq|PATH=/usr/gnu/bin:/usr/bin dpkg-deb -b "$pkgdir" "$pkg_deb"|;
+    shell_exec "PATH=/usr/gnu/bin:/usr/bin dpkg-deb -b '$pkgdir' '$pkg_deb'";
 
-    my $sha1   = get_output_line "sha1sum $pkg_deb | cut -d' ' -f1";
+    my $md5sum = get_output_line "md5sum    $pkg_deb | cut -d' ' -f1";
+    my $sha1   = get_output_line "sha1sum   $pkg_deb | cut -d' ' -f1";
     my $sha256 = get_output_line "sha256sum $pkg_deb | cut -d' ' -f1";
-    my $md5sum = get_output_line "md5sum $pkg_deb | cut -d' ' -f1";
     my $size   = (stat $pkg_deb)[7];
     my $pkg_deb_base = basename $pkg_deb;
 
