@@ -47,4 +47,4 @@ file path=usr/perl5/5.12/man/man1/pwhich.1
 file path=usr/perl5/5.12/man/man3/File::Which.3
 file path=usr/perl5/vendor_perl/5.12/File/Which.pm
 file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/File/Which/.packlist
-depend fmri=runtime-perl-512 type=require
+depend fmri=runtime/perl-512 type=require

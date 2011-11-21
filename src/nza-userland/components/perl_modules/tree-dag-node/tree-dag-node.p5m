@@ -34,4 +34,4 @@ dir path=usr/perl5/5.12/man
 dir path=usr/perl5/5.12/man/man3
 file path=usr/perl5/5.12/man/man3/Tree::DAG_Node.3
 file path=usr/perl5/vendor_perl/5.12/Tree/DAG_Node.pm
-depend fmri=runtime-perl-512 type=require
+depend fmri=runtime/perl-512 type=require

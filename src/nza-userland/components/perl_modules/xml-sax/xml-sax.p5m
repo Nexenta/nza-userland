@@ -70,6 +70,6 @@ file path=usr/perl5/vendor_perl/5.12/XML/SAX/PurePerl/Reader/UnicodeExt.pm
 file path=usr/perl5/vendor_perl/5.12/XML/SAX/PurePerl/UnicodeExt.pm
 file path=usr/perl5/vendor_perl/5.12/XML/SAX/PurePerl/XMLDecl.pm
 file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/XML/SAX/.packlist
-depend fmri=runtime-perl-512 type=require
-depend fmri=library-perl-5-xml-sax-base type=require
-depend fmri=library-perl-5-xml-parser type=require
+depend fmri=runtime/perl-512 type=require
+depend fmri=library/perl-5/xml-sax-base type=require
+depend fmri=library/perl-5/xml-parser type=require

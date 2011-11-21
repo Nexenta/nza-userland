@@ -48,5 +48,5 @@ file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/DBD/SQLite/Cookbook.pod
 file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/DBD/SQLite/.packlist
 file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/DBD/SQLite/SQLite.bs
 file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/DBD/SQLite/SQLite.so mode=0555
-depend fmri=runtime-perl-512 type=require
-depend fmri=database-sqlite-3 type=require
+depend fmri=runtime/perl-512 type=require
+depend fmri=database/sqlite-3 type=require

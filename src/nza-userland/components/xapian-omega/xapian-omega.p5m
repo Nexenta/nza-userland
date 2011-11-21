@@ -55,4 +55,4 @@ file path=usr/share/man/man1/omindex.1
 file path=usr/share/man/man1/scriptindex.1
 file path=usr/share/omega/htdig2omega.script
 file path=usr/share/omega/mbox2omega.script
-depend fmri=library-xapian type=require
+depend fmri=library/xapian type=require

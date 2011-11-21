@@ -47,5 +47,5 @@ file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/Sun/DTraceLib.pm
 file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/Sun/DTraceLib/.packlist
 file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/Sun/DTraceLib/DTraceLib.bs
 file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/Sun/DTraceLib/DTraceLib.so mode=0555
-depend fmri=runtime-perl-512 type=require
-depend fmri=developer-dtrace type=require
+depend fmri=runtime/perl-512 type=require
+depend fmri=developer/dtrace type=require

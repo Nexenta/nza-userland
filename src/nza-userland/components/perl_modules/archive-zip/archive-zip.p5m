@@ -65,4 +65,4 @@ file path=usr/perl5/vendor_perl/5.12/Archive/Zip/StringMember.pm
 file path=usr/perl5/vendor_perl/5.12/Archive/Zip/Tree.pm
 file path=usr/perl5/vendor_perl/5.12/Archive/Zip/ZipFileMember.pm
 file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/Archive/Zip/.packlist
-depend fmri=runtime-perl-512 type=require
+depend fmri=runtime/perl-512 type=require

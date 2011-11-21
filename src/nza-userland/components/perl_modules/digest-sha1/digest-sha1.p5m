@@ -46,4 +46,4 @@ file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/Digest/SHA1.pm
 file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/Digest/SHA1/.packlist
 file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/Digest/SHA1/SHA1.bs
 file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/Digest/SHA1/SHA1.so mode=0555
-depend fmri=runtime-perl-512 type=require
+depend fmri=runtime/perl-512 type=require

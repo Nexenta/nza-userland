@@ -48,4 +48,4 @@ file path=usr/perl5/vendor_perl/5.12/MIME/Type.pod
 file path=usr/perl5/vendor_perl/5.12/MIME/Types.pm
 file path=usr/perl5/vendor_perl/5.12/MIME/Types.pod
 file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/MIME/Types/.packlist
-depend fmri=runtime-perl-512 type=require
+depend fmri=runtime/perl-512 type=require

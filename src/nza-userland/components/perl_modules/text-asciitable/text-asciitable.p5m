@@ -46,4 +46,4 @@ file path=usr/perl5/5.12/man/man3/Text::ASCIITable::Wrap.3
 file path=usr/perl5/site_perl/5.12/Text/ASCIITable.pm
 file path=usr/perl5/site_perl/5.12/Text/ASCIITable/Wrap.pm
 file path=usr/perl5/site_perl/5.12/i86pc-solaris-64int/auto/Text/ASCIITable/.packlist
-depend fmri=runtime-perl-512 type=require
+depend fmri=runtime/perl-512 type=require

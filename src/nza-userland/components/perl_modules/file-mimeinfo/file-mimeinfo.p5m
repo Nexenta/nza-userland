@@ -60,5 +60,5 @@ file path=usr/perl5/vendor_perl/5.12/File/MimeInfo/Cookbook.pod
 file path=usr/perl5/vendor_perl/5.12/File/MimeInfo/Magic.pm
 file path=usr/perl5/vendor_perl/5.12/File/MimeInfo/Rox.pm
 file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/File/MimeInfo/.packlist
-depend fmri=runtime-perl-512 type=require
-depend fmri=library-perl-5-file-basedir type=require
+depend fmri=runtime/perl-512 type=require
+depend fmri=library/perl-5/file-basedir type=require

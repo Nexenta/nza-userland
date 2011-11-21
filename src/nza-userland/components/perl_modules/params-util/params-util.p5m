@@ -40,4 +40,4 @@ dir path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/
 dir path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/Params
 file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/Params/Util.pm
 file path=usr/perl5/5.12/man/man3/Params::Util.3
-depend fmri=runtime-perl-512 type=require
+depend fmri=runtime/perl-512 type=require

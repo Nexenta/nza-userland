@@ -5,46 +5,41 @@
 # Common Development and Distribution License (the "License").
 # You may not use this file except in compliance with the License.
 #
-# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
-# or http://www.opensolaris.org/os/licensing.
+# You can obtain a copy of the license
+# at http://www.opensource.org/licenses/CDDL-1.0
 # See the License for the specific language governing permissions
 # and limitations under the License.
 #
-# When distributing Covered Code, include this CDDL HEADER in each
-# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# When distributing Covered Code, include this CDDL HEADER in each file.
 # If applicable, add the following below this CDDL HEADER, with the
 # fields enclosed by brackets "[]" replaced with your own identifying
 # information: Portions Copyright [yyyy] [name of copyright owner]
 #
 # CDDL HEADER END
 #
-# Copyright (c) 2011, Oracle and/or its affiliates. All rights reserved.
+#
+# Copyright (C) 2011, Nexenta Systems, Inc. and/or its affiliates. All rights reserved.
 #
 
 include ../../../make-rules/shared-macros.mk
-
-COMPONENT_NAME=		GDBM-File
-COMPONENT_VERSION=	5
-COMPONENT_SRC=		$(COMPONENT_NAME)-$(COMPONENT_VERSION).10
-COMPONENT_ARCHIVE=	$(COMPONENT_SRC).tar.gz
-COMPONENT_ARCHIVE_HASH=	sha1:59235726481428c230f51f9b5a625f0f1716f404
-COMPONENT_ARCHIVE_URL=	src/$(COMPONENT_ARCHIVE)
-COMPONENT_PROJECT_URL=
+COMPONENT_NAME     =  Text-Glob
+COMPONENT_VERSION  =  0
+COMPONENT_SRC      =  $(COMPONENT_NAME)-$(COMPONENT_VERSION).09
+COMPONENT_ARCHIVE  =  $(COMPONENT_SRC).tar.gz
+COMPONENT_ARCHIVE_HASH = sha1:11145c455c6c75f4710c16c604880f9cea40dfd6
+COMPONENT_ARCHIVE_URL  = http://search.cpan.org/CPAN/authors/id/R/RC/RCLAMP/$(COMPONENT_ARCHIVE)
 
 include $(WS_TOP)/make-rules/prep.mk
 include $(WS_TOP)/make-rules/ips.mk
 include $(WS_TOP)/make-rules/makemaker.mk
 
-COMPILER = gcc
-CONFIGURE_OPTIONS<----->+=CC=cc
-
-build:		$(BUILD_32)
-
-install:	$(INSTALL_32)
+build:      $(BUILD_32)
+install:    $(INSTALL_32)
 
 COMPONENT_TEST_TARGETS = test
-test:		$(TEST_32)
+test:       $(TEST_32)
 
-BUILD_PKG_DEPENDENCIES =        $(BUILD_TOOLS)
+BUILD_PKG_DEPENDENCIES = $(BUILD_TOOLS)
 
 include $(WS_TOP)/make-rules/depend.mk
+

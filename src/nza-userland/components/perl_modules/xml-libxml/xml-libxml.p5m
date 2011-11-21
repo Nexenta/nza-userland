@@ -118,5 +118,5 @@ file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/XML/LibXML/XPathExpress
 file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/XML/LibXML/.packlist
 file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/XML/LibXML/LibXML.bs
 file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/XML/LibXML/LibXML.so mode=0555
-depend fmri=runtime-perl-512 type=require
-depend fmri=library-perl-5-xml-parser type=require
+depend fmri=runtime/perl-512 type=require
+depend fmri=library/perl-5/xml-parser type=require

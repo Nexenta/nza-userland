@@ -135,5 +135,5 @@ file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/Search/Xapian/WritableD
 file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/Search/Xapian/.packlist
 file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/Search/Xapian/Xapian.bs
 file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/Search/Xapian/Xapian.so mode=0555
-depend fmri=runtime-perl-512 type=require
-depend fmri=library-xapian type=require
+depend fmri=runtime/perl-512 type=require
+depend fmri=library/xapian type=require

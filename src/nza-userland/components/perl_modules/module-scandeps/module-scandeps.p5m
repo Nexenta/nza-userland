@@ -50,4 +50,4 @@ file path=usr/perl5/vendor_perl/5.12/Module/ScanDeps.pm
 file path=usr/perl5/vendor_perl/5.12/Module/ScanDeps/Cache.pm
 file path=usr/perl5/vendor_perl/5.12/Module/ScanDeps/DataFeed.pm
 file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/Module/ScanDeps/.packlist
-depend fmri=runtime-perl-512 type=require
+depend fmri=runtime/perl-512 type=require

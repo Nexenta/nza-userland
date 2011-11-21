@@ -36,5 +36,6 @@ dir path=usr/share/man
 dir path=usr/share/man/man1
 file path=usr/bin/dialog
 file path=usr/share/man/man1/dialog.1
+depend fmri=library/ncurses type=require
 
 license dialog.license license=LGPLv2.1

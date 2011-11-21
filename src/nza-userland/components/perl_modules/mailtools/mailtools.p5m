@@ -86,4 +86,4 @@ file path=usr/perl5/vendor_perl/5.12/auto/Mail/Util/mailaddress.al
 file path=usr/perl5/vendor_perl/5.12/auto/Mail/Util/maildomain.al
 file path=usr/perl5/vendor_perl/5.12/auto/Mail/Util/read_mbox.al
 file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/Mail/.packlist
-depend fmri=runtime-perl-512 type=require
+depend fmri=runtime/perl-512 type=require

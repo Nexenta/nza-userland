@@ -49,5 +49,5 @@ file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/XML/SAX/Base/.pack
 file path=usr/perl5/vendor_perl/5.12/XML/SAX/Base.pm
 file path=usr/perl5/vendor_perl/5.12/XML/SAX/BuildSAXBase.pl
 file path=usr/perl5/vendor_perl/5.12/XML/SAX/Exception.pm
-depend fmri=runtime-perl-512 type=require
-depend fmri=library-perl-5-xml-parser type=require
+depend fmri=runtime/perl-512 type=require
+depend fmri=library/perl-5/xml-parser type=require

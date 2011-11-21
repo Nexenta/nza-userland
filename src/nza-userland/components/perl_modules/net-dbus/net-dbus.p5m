@@ -112,6 +112,6 @@ file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/Net/DBus/Tutorial/Using
 file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/Net/DBus/.packlist
 file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/Net/DBus/DBus.bs
 file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/Net/DBus/DBus.so mode=0555
-depend fmri=runtime-perl-512 type=require
-depend fmri=system-library-dbus type=require
-depend fmri=library-perl-5-xml-twig type=require
+depend fmri=runtime/perl-512 type=require
+depend fmri=system/library/dbus type=require
+depend fmri=library/perl-5/xml-twig type=require

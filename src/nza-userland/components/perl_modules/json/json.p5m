@@ -53,4 +53,4 @@ file path=usr/perl5/vendor_perl/5.12/JSON/PP5005.pm
 file path=usr/perl5/vendor_perl/5.12/JSON/PP56.pm
 file path=usr/perl5/vendor_perl/5.12/JSON/PP58.pm
 file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/JSON/.packlist
-depend fmri=runtime-perl-512 type=require
+depend fmri=runtime/perl-512 type=require

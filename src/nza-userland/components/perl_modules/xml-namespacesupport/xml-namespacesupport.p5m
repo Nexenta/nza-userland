@@ -43,5 +43,5 @@ dir path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/XML/NamespaceSuppor
 file path=usr/perl5/5.12/man/man3/XML::NamespaceSupport.3
 file path=usr/perl5/vendor_perl/5.12/XML/NamespaceSupport.pm
 file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/XML/NamespaceSupport/.packlist
-depend fmri=runtime-perl-512 type=require
-depend fmri=library-perl-5-xml-parser type=require
+depend fmri=runtime/perl-512 type=require
+depend fmri=library/perl-5/xml-parser type=require

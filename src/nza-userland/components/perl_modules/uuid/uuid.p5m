@@ -42,6 +42,5 @@ file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/UUID/UUID.so
 file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/UUID.pm
 file path=usr/perl5/5.12/man/man3/UUID.3
 
-depend fmri=runtime-perl-512 type=require
-#depend fmri=library/perl-5/ type=require
+depend fmri=runtime/perl-512 type=require
 

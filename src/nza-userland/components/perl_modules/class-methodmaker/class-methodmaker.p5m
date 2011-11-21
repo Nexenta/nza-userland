@@ -938,4 +938,4 @@ file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/Class/MethodMaker/
 file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/Class/MethodMaker/scalar/scal01f8.al
 file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/Class/MethodMaker/scalar/scal01f9.al
 license class-methodmaker.license license="GPLv2, Artistic"
-depend fmri=runtime-perl-512 type=require
+depend fmri=runtime/perl-512 type=require

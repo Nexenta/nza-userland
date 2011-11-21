@@ -469,4 +469,4 @@ file path=usr/share/man/man1/xapian-replicate.1
 file path=usr/share/man/man1/xapian-tcpsrv.1
 link path=usr/lib/libxapian.so target=libxapian.so.22.4.1
 link path=usr/lib/libxapian.so.22 target=libxapian.so.22.4.1
-depend fmri=system-library type=require
+depend fmri=system/library type=require

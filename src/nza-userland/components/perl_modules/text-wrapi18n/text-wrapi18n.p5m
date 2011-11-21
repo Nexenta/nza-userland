@@ -42,6 +42,5 @@ dir path=usr/perl5/vendor_perl/5.12/Text
 file path=usr/perl5/5.12/man/man3/Text::WrapI18N.3
 file path=usr/perl5/vendor_perl/5.12/Text/WrapI18N.pm
 
-depend fmri=runtime-perl-512 type=require
-#depend fmri=library/perl-5/ type=require
+depend fmri=runtime/perl-512 type=require
 

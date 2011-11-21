@@ -135,6 +135,7 @@ check_pkg_list()
 		library-python-2-paramiko-26 \
 		library-pcre \
 		runtime-perl-512 \
+		package-pkg \
 		system-library-math-header-math \
 		text-gawk \
 		text-gnu-diffutils \

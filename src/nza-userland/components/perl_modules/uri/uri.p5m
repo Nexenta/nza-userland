@@ -104,6 +104,5 @@ file path=usr/perl5/5.12/man/man3/URI::file.3
 file path=usr/perl5/5.12/man/man3/URI::URL.3
 file path=usr/perl5/5.12/man/man3/URI::Split.3
 
-depend fmri=runtime-perl-512 type=require
-#depend fmri=library/perl-5/ type=require
+depend fmri=runtime/perl-512 type=require
 

@@ -148,5 +148,5 @@ file path=usr/share/doc/rrdtool-1.4.3/html/rrdupdate.html
 file path=usr/share/doc/rrdtool-1.4.3/html/rrdxport.html
 
 
-depend fmri=library-desktop-pango type=require
-depend fmri=library-desktop-cairo type=require
+depend fmri=library/desktop/pango type=require
+depend fmri=library/desktop/cairo type=require

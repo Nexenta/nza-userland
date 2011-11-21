@@ -47,4 +47,4 @@ file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/Crypt/DES/.packlis
 file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/Crypt/DES/DES.bs
 file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/Crypt/DES/DES.so mode=0555
 license crypt-des.license license="GPLv2, Artistic"
-depend fmri=runtime-perl-512 type=require
+depend fmri=runtime/perl-512 type=require

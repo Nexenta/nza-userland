@@ -47,4 +47,4 @@ file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/Net/LibIDN/.packli
 file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/Net/LibIDN/LibIDN.bs
 file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/Net/LibIDN/LibIDN.so mode=0555
 file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/Net/LibIDN/autosplit.ix
-depend fmri=runtime-perl-512 type=require
+depend fmri=runtime/perl-512 type=require

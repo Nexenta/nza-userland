@@ -47,4 +47,4 @@ dir path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/Email/Date/Format
 file path=usr/perl5/5.12/man/man3/Email::Date::Format.3
 file path=usr/perl5/vendor_perl/5.12/Email/Date/Format.pm
 file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/Email/Date/Format/.packlist
-depend fmri=runtime-perl-512 type=require
+depend fmri=runtime/perl-512 type=require

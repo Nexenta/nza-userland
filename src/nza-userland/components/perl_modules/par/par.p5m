@@ -56,5 +56,5 @@ file path=usr/perl5/vendor_perl/5.12/PAR/SetupProgname.pm
 file path=usr/perl5/vendor_perl/5.12/PAR/SetupTemp.pm
 file path=usr/perl5/vendor_perl/5.12/PAR/Tutorial.pod
 file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/PAR/.packlist
-depend fmri=runtime-perl-512 type=require
+depend fmri=runtime/perl-512 type=require
 
