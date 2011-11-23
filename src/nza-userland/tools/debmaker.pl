@@ -7,9 +7,8 @@ use integer;
 use Cwd;
 use File::Basename;
 use File::Copy;
-
 use File::Path 'mkpath';
-
+use Data::Dumper;
 use Getopt::Long qw(:config no_ignore_case);
 use POSIX qw(strftime);
 use Text::Wrap;
@@ -114,11 +113,26 @@ sub shell_exec {
         }
     }
 }
+
+sub as_array {
+    my ($ref) = @_;
+    return (ref $ref) ? @{$ref} : ($ref);
+}
+
+sub my_join ($$) {
+    my ($glue, $ref) = @_;
+    return join ($glue, as_array $ref);
+}
+
 sub get_command_line {
     my ($map_ref, $hash_ref) = @_;
     my $res = '';
     foreach my $k (keys %$map_ref) {
-        $res .= " $$map_ref{$k} '$$hash_ref{$k}'" if exists $$hash_ref{$k};
+        if (exists $$hash_ref{$k}) {
+            foreach (as_array $$hash_ref{$k}) {
+                $res .= " $$map_ref{$k} '$_'";
+            }
+        }
     }
     return $res;
 }
@@ -182,8 +196,7 @@ my $MAINTAINER = 'Nexenta Systems <maintainer@nexenta.com>';
 my $VERSION = '0.0.0';
 my $ARCH = 'solaris-i386';
 my $SOURCE = 'xxx'; # only for *.changes
-my $DISTRIB = 'unstable'; # only for *.changes
-my $CATEGORY = 'nza-userland';
+my $DISTRIB = 'nza-userland';
 
 # Mapping file => IPS FMRI, filled on bootstrap:
 my %PATHS = ();
@@ -249,10 +262,20 @@ sub parse_keys {
     # 'name' => pkg.summary
     # 'value' => "advanced text-mode WWW browser"
     # http://stackoverflow.com/questions/168171/regular-expression-for-parsing-name-value-pairs
-    # TODO: add support for dublicates: dir=dir1 dir=dir2
-    my %pairs = ($line =~ m/((?:\\.|[^= ]+)*)=("(?:\\.|[^"\\]+)*"|(?:\\.|[^ "\\]+)*)/g);
-    foreach my $k (keys %pairs) {
-        $pairs{$k} =~ s/^"(.+)"$/$1/;
+    my %pairs = ();
+    while ($line =~ s/((?:\\.|[^= ]+)*)=("(?:\\.|[^"\\]+)*"|(?:\\.|[^ "\\]+)*)//) {
+        my ($k, $v) = ($1, $2);
+        $v =~ s/^"(.+)"$/$1/;
+        $v =~ s/^'(.+)'$/$1/;
+
+        if (not exists $pairs{$k}) {
+            # most keys are unique, keep its values as scalars
+            $pairs{$k} = $v;
+        } else {
+            # upgrade to array ref if it was a scalar:
+            $pairs{$k} = [$pairs{$k}] unless ref $pairs{$k};
+            push @{$pairs{$k}}, $v;
+        }
     }
     return \%pairs;
 }
@@ -269,6 +292,7 @@ sub read_manifest {
     $data{'group'} = [];
     $data{'user'} = [];
     $data{'license'} = [];
+    $data{'driver'} = [];
 
     if (open IN, '<', $filename) {
         while (<IN>) {
@@ -276,37 +300,20 @@ sub read_manifest {
             if (/^set +/) {
                 my $pairs = parse_keys $_;
                 $data{$$pairs{'name'}} = $$pairs{'value'};
-            } elsif (/^dir +/) {
-                my $pairs = parse_keys $_;
-                push @{$data{'dir'}}, $pairs;
             } elsif (/^file +(\S+) +/) {
                 my $maybe_src = $1;
                 my $pairs = parse_keys $_;
                 $$pairs{'src'} = $maybe_src if $maybe_src ne 'NOHASH';
                 push @{$data{'file'}}, $pairs;
-            } elsif (/^link +/) {
-                my $pairs = parse_keys $_;
-                push @{$data{'link'}}, $pairs;
-            } elsif (/^hardlink +/) {
-                my $pairs = parse_keys $_;
-                push @{$data{'hardlink'}}, $pairs;
-            } elsif (/^depend +/) {
-                my $pairs = parse_keys $_;
-                push @{$data{'depend'}}, $pairs;
-            } elsif (/^legacy +/) {
-                my $pairs = parse_keys $_;
-                push @{$data{'legacy'}}, $pairs;
-            } elsif (/^group +/) {
-                my $pairs = parse_keys $_;
-                push @{$data{'group'}}, $pairs;
-            } elsif (/^user +/) {
-                my $pairs = parse_keys $_;
-                push @{$data{'user'}}, $pairs;
             } elsif (/^license +(\S+) +/) {
                 my $maybe_src = $1;
                 my $pairs = parse_keys $_;
                 $$pairs{'src'} = $maybe_src if $maybe_src !~ /=/;
                 push @{$data{'license'}}, $pairs;
+            } elsif (/^(user|group|legacy|depend|hardlink|link|dir|driver) +/) {
+                my $action = $1;
+                my $pairs = parse_keys $_;
+                push @{$data{$action}}, $pairs;
             } elsif (/^\s*$/) {
                 # Skip empty lines
             } elsif (/^\s*#/) {
@@ -456,7 +463,10 @@ $changes{'Maintainer'} = $MAINTAINER;
 $changes{'Source'} = lc $SOURCE;
 $changes{'Version'} = $VERSION;
 $changes{'Distribution'} = $DISTRIB;
+
+#TODO: last Hg commit?:
 $changes{'Changes'} = 'Everything has changed';
+
 $changes{'Description'} = '';
 $changes{'Checksums-Sha1'} = '';
 $changes{'Checksums-Sha256'} = '';
@@ -572,10 +582,10 @@ foreach my $manifest_file (@ARGV) {
             }
             push @replaces, get_debpkg_name $$dir{original_name} if exists $$dir{original_name};
 
-            push @disable_fmri, $$dir{disable_fmri} if exists $$dir{disable_fmri};
-            push @refresh_fmri, $$dir{refresh_fmri} if exists $$dir{refresh_fmri};
-            push @restart_fmri, $$dir{restart_fmri} if exists $$dir{restart_fmri};
-            push @suspend_fmri, $$dir{suspend_fmri} if exists $$dir{suspend_fmri};
+            push @disable_fmri, as_array $$dir{disable_fmri} if exists $$dir{disable_fmri};
+            push @refresh_fmri, as_array $$dir{refresh_fmri} if exists $$dir{refresh_fmri};
+            push @restart_fmri, as_array $$dir{restart_fmri} if exists $$dir{restart_fmri};
+            push @suspend_fmri, as_array $$dir{suspend_fmri} if exists $$dir{suspend_fmri};
         }
     }
 
@@ -613,10 +623,10 @@ foreach my $manifest_file (@ARGV) {
             push @conffiles, $$file{'path'} if exists $$file{'preserve'};
             push @replaces, get_debpkg_name $$file{original_name} if exists $$file{original_name};
 
-            push @disable_fmri, $$file{disable_fmri} if exists $$file{disable_fmri};
-            push @refresh_fmri, $$file{refresh_fmri} if exists $$file{refresh_fmri};
-            push @restart_fmri, $$file{restart_fmri} if exists $$file{restart_fmri};
-            push @suspend_fmri, $$file{suspend_fmri} if exists $$file{suspend_fmri};
+            push @disable_fmri, as_array $$file{disable_fmri} if exists $$file{disable_fmri};
+            push @refresh_fmri, as_array $$file{refresh_fmri} if exists $$file{refresh_fmri};
+            push @restart_fmri, as_array $$file{restart_fmri} if exists $$file{restart_fmri};
+            push @suspend_fmri, as_array $$file{suspend_fmri} if exists $$file{suspend_fmri};
         }
     }
 
@@ -652,6 +662,24 @@ foreach my $manifest_file (@ARGV) {
             my_symlink $$link{'target'}, "$pkgdir/$$link{'path'}";
         }
     }
+
+    # http://src.opensolaris.org/source/xref/pkg/gate/src/modules/actions/driver.py
+    if (my @drivers = @{$$manifest_data{'driver'}}) {
+        blab "Adding code to register drivers ...";
+        foreach my $d (@drivers) {
+            my $cmd = 'add_drv -v';
+            $cmd .= "-i '" . my_join(' ', $$d{'alias'}) . "'" if exists $$d{'alias'};
+            $cmd .= "-c '" . my_join(' ', $$d{'class'}) . "'" if exists $$d{'class'};
+            $cmd .= "-m '" . my_join(',', $$d{'perms'}) . "'" if exists $$d{'perms'};
+            $cmd .= "-P '" . my_join(',', $$d{'privs'}) . "'" if exists $$d{'privs'};
+            $cmd .= "-p '" . my_join(' ', $$d{'policy'}) . "'" if exists $$d{'policy'};
+            $postinst_configure .= $cmd . " $$d{'name'} || true\n";
+            fatal "devlink is not implemented" if exists $$d{'devlink'};
+            $postinst_configure .= "update_drv -v -a -m '$$d{'clone_perms'}' clone || true\n"
+                if  exists $$d{'clone_perms'};
+        }
+    }
+
 
     if (my @license = @{$$manifest_data{'license'}}) {
         # FIXME: install in usr/share/doc/<pkg>/copyright
@@ -692,7 +720,7 @@ foreach my $manifest_file (@ARGV) {
     $control .= "Priority: $debpriority\n";
     $control .= "Maintainer: $MAINTAINER\n";
     $control .= "Architecture: $ARCH\n";
-    $control .= "Category: $CATEGORY\n";
+    $control .= "Category: $DISTRIB\n";
 
 
     $control .= "Description: $$manifest_data{'pkg.summary'}\n";
@@ -786,6 +814,8 @@ CHECK_SMF
     $changes{'Checksums-Sha256'} .= "\n $sha256 $size $pkg_deb_base";
     $changes{'Files'} .= "\n $md5sum $size $debsection $debpriority $pkg_deb_base";
     $changes{'Binary'} .= " $debname";
+
+    #print Dumper($manifest_data);
 }
 
 my $changes_cnt = join "\n", map {"$_: $changes{$_}"} sort keys %changes;
