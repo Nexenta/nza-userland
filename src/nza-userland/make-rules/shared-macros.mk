@@ -281,6 +281,7 @@ PKG_MACROS +=   PERL_VERSION=$(PERL_VERSION)
 
 CCSMAKE =	/usr/ccs/bin/make
 GMAKE =		/usr/gnu/bin/make
+CMAKE =		/usr/bin/cmake
 GPATCH =	/usr/gnu/bin/patch
 PATCH_LEVEL =	1
 GPATCH_BACKUP =	--backup --version-control=numbered
