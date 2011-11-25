@@ -1,0 +1,50 @@
+<?xml version="1.0"?> 
+<!DOCTYPE service_bundle SYSTEM "/usr/share/lib/xml/dtd/service_bundle.dtd.1"> 
+
+<service_bundle type='manifest' name='nginx'> 
+
+<service name='network/httpd' type='service' version='1'> 
+
+    <single_instance /> 
+    <instance name="nginx" enabled="false">
+        <dependency name='loopback' grouping='require_all' restart_on='error' type='service'> 
+                <service_fmri value='svc:/network/loopback:default'/> 
+        </dependency> 
+
+        <dependency name='physical' grouping='optional_all' restart_on='error' type='service'> 
+                <service_fmri value='svc:/network/physical:default'/> 
+        </dependency> 
+
+        <dependency name='multiuser-server' grouping='require_all' restart_on='error' type='service'> 
+                <service_fmri value='svc:/milestone/multi-user-server:default'/> 
+        </dependency> 
+
+        <exec_method type='method' name='start' exec='/usr/sbin/nginx -c %{config_file}' timeout_seconds='60' /> 
+        <exec_method type='method' name='stop' exec=':kill -QUIT' timeout_seconds='60' /> 
+        <exec_method type='method' name='refresh' exec=':kill -HUP' timeout_seconds='60' /> 
+
+        <property_group name='application' type='application'> 
+                <propval name='config_file' type='astring' 
+                    value='/etc/nginx/nginx.conf'/> 
+        </property_group> 
+
+        <property_group name='startd' type='framework'> 
+                <propval name='ignore_error' type='astring' 
+                         value='core,signal' /> 
+        </property_group> 
+    </instance>
+
+        <template> 
+                <common_name> 
+                        <loctext xml:lang='C'> 
+                                Nginx HTTP server 
+                        </loctext> 
+                </common_name> 
+                <documentation> 
+                        <manpage title='nginx' section='1M' /> 
+                        <doc_link name='nginx.org' 
+                                uri='http://www.nginx.org/' /> 
+                </documentation> 
+        </template> 
+</service> 
+</service_bundle>
