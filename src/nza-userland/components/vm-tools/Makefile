@@ -35,21 +35,50 @@ include ../../make-rules/prep.mk
 include ../../make-rules/configure.mk
 include ../../make-rules/ips.mk
 
+
 COMPONENT_INSTALL_ARGS += DESTDIR=$(PROTO_DIR)
-CONFIGURE_OPTIONS       +=--prefix=/usr
-CONFIGURE_OPTIONS       +=--without-x
-CONFIGURE_OPTIONS       +=--without-dnet
-CONFIGURE_OPTIONS       +=--without-icu
-CONFIGURE_OPTIONS       +=--without-gtkmm
-CONFIGURE_OPTIONS       +=--without-kernel-modules
+CONFIGURE_OPTIONS +=--prefix=/usr
+CONFIGURE_OPTIONS +=--without-x
+CONFIGURE_OPTIONS +=--without-dnet
+CONFIGURE_OPTIONS +=--without-icu
+CONFIGURE_OPTIONS +=--without-gtkmm
+CONFIGURE_OPTIONS +=--enable-static=no
+
+CONFIGURE_OPTIONS +=--bindir=$(CONFIGURE_PREFIX)/bin/$(MACH32)
+CONFIGURE_OPTIONS +=--sbindir=$(CONFIGURE_PREFIX)/sbin/$(MACH32)
+
+CONFIGURE_OPTIONS.2 +=CFLAGS="$(CFLAGS) -m64"
+CONFIGURE_OPTIONS.2 +=--prefix=/usr
+CONFIGURE_OPTIONS.2 +=--without-x
+CONFIGURE_OPTIONS.2 +=--without-dnet
+CONFIGURE_OPTIONS.2 +=--without-icu
+CONFIGURE_OPTIONS.2 +=--without-gtkmm
+CONFIGURE_OPTIONS.2 +=--enable-static=no
+
+CONFIGURE_OPTIONS.2 +=--bindir=$(CONFIGURE_PREFIX)/bin/$(MACH64)
+CONFIGURE_OPTIONS.2 +=--sbindir=$(CONFIGURE_PREFIX)/sbin/$(MACH64)
+CONFIGURE_OPTIONS.2 +=--libdir=$(CONFIGURE_PREFIX)/lib/$(MACH64)
+CONFIGURE_OPTIONS.2 +=--libexecdir=$(CONFIGURE_PREFIX)/lib/$(MACH64)
+
 
 # common targets
-build:		$(BUILD_32)
+build:		$(BUILD_32) 
+		$(MKDIR) -p $(PROTO_DIR)/kernel/drv/amd64
 
 install:	$(INSTALL_32)
+		(cd $(SOURCE_DIR); $(ENV) sed 's/userSpaceBitness="32"/userSpaceBitness="64"/' \
+		configure > configure.1; \
+		mv configure.1 configure; chmod 755 configure; \
+		$(CONFIGURE_SCRIPT) $(CONFIGURE_OPTIONS.2))
+		$(COMPONENT_POST_CONFIGURE_ACTION)
+		(cd $(SOURCE_DIR); $(ENV) $(COMPONENT_BUILD_ENV) \
+		$(GMAKE))
+		(cd $(SOURCE_DIR); $(ENV) $(COMPONENT_INSTALL_ENV) $(GMAKE) \
+		$(COMPONENT_INSTALL_ARGS) $(COMPONENT_INSTALL_TARGETS))
 
 test:		$(NO_TESTS)
 
 BUILD_PKG_DEPENDENCIES =	$(BUILD_TOOLS)
 
 include ../../make-rules/depend.mk
+
