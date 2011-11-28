@@ -1,5 +1,7 @@
 #!/bin/bash
 
+PATH=/usr/gnu/bin:/usr/bin:/usr/sbin:/sbin
+
 # check the os version
 check_os_ver()
 {
@@ -88,14 +90,20 @@ YELLOW='\e[1;33m'
 GREEN='\e[0;32m'
 RED='\e[1;31m'
 
+index=0
+
 # check that a given package is installed
 _check_pkg()
 {
-	if dpkg -l $1 > /dev/null 2> /dev/null ; then
+	if dpkg -l | grep $1 > /dev/null 2> /dev/null ; then
 		echo "package $1 ... $GREEN installed $DEF"
 	else
 		echo "package $1 ... $RED not installed $DEF"
+		let index++
+		missed[index]=$1
 	fi
+
+
 }
 
 # we need all these packages for oi-build
@@ -145,9 +153,34 @@ check_pkg_list()
 		text-gnu-sed \
 		text-groff \
 		text-texinfo \
+		file-mc \
 	; do
 		_check_pkg $p
 	done
+	if [[ ! "${#missed[@]}" -eq "0" ]]; then
+	echo
+	echo "Warning! These packages are missing:"
+	echo ${missed[@]}
+	echo "Do you want to install them? [Yes|No]"
+	while read answer
+	do
+	case "$answer" in
+	    Yes|yes|Y|y)
+		apt-get install ${missed[@]}
+		break
+		;;
+	    No|no|N|n)
+		echo "Don't forget to install missing packages!"
+		break
+		;;
+	    *)
+		echo "Choices are Yes, No"
+		continue
+	    ;;
+	    esac
+	done
+	fi
+
 }
 
 check_os_ver
