@@ -83,18 +83,18 @@ file path=etc/ntop/etter.finger.os.gz
 file path=etc/ntop/specialMAC.txt.gz
 file path=etc/ntop/oui.txt.gz
 file path=usr/lib/libntopreport.la
-#file path=usr/lib/librrdPlugin-4.1.0.so
+file path=usr/lib/librrdPlugin-4.1.0.so
 file path=usr/lib/libntop-4.1.0.so
-#file path=usr/lib/ntop/plugins/netflowPlugin.so
-#file path=usr/lib/ntop/plugins/icmpPlugin.so
-#file path=usr/lib/ntop/plugins/cpacketPlugin.so
-#file path=usr/lib/ntop/plugins/rrdPlugin.so
-#file path=usr/lib/ntop/plugins/sflowPlugin.so
+file path=usr/lib/ntop/plugins/netflowPlugin.so
+file path=usr/lib/ntop/plugins/icmpPlugin.so
+file path=usr/lib/ntop/plugins/cpacketPlugin.so
+file path=usr/lib/ntop/plugins/rrdPlugin.so
+file path=usr/lib/ntop/plugins/sflowPlugin.so
 file path=usr/lib/libntopreport-4.1.0.so
-#file path=usr/lib/libnetflowPlugin-4.1.0.so
+file path=usr/lib/libnetflowPlugin-4.1.0.so
 file path=usr/lib/libntop.la
-#file path=usr/lib/libicmpPlugin-4.1.0.so
-#file path=usr/lib/libcpacketPlugin-4.1.0.so
+file path=usr/lib/libicmpPlugin-4.1.0.so
+file path=usr/lib/libcpacketPlugin-4.1.0.so
 file path=usr/share/ntop/html/minor.gif
 file path=usr/share/ntop/html/calendar-setup.js
 file path=usr/share/ntop/html/forward.png
@@ -488,7 +488,7 @@ file path=usr/share/ntop/html/jscalendar/lang/calendar-en.js
 file path=usr/share/ntop/html/jscalendar/calendar-setup.js
 file path=usr/share/ntop/html/theme.js
 file path=usr/share/ntop/html/rrdAlarmConfig.js
-#file path=usr/share/ntop/python/GeoPacketVisualizer.py
+file path=usr/share/ntop/python/GeoPacketVisualizer.py
 file path=usr/share/ntop/python/docs/Makefile
 file path=usr/share/man/man8/ntop.8
 file path=usr/sbin/ntop
@@ -497,6 +497,6 @@ link path=usr/lib/libcpacketPlugin.so target=libcpacketPlugin-4.1.0.so
 link path=usr/lib/libntopreport.so target=libntopreport-4.1.0.so
 link path=usr/lib/librrdPlugin.so target=librrdPlugin-4.1.0.so
 link path=usr/lib/libntop.so target=libntop-4.1.0.so
-#link path=usr/lib/libnetflowPlugin.so target=libnetflowPlugin-4.1.0.so
-#link path=usr/lib/libicmpPlugin.so target=libicmpPlugin-4.1.0.so
+link path=usr/lib/libnetflowPlugin.so target=libnetflowPlugin-4.1.0.so
+link path=usr/lib/libicmpPlugin.so target=libicmpPlugin-4.1.0.so
 
