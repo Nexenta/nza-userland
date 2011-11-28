@@ -21,20 +21,26 @@
 # Copyright (c) 2011, Oracle and/or its affiliates. All rights reserved.
 #
 include ../../make-rules/shared-macros.mk
+CXX=/usr/bin/g++
 COMPONENT_NAME=		ntop
-COMPONENT_VERSION=	3.2
-COMPONENT_SRC=		$(COMPONENT_NAME)-$(COMPONENT_VERSION)
+COMPONENT_VERSION=	4.1
+COMPONENT_SRC=		$(COMPONENT_NAME)-$(COMPONENT_VERSION).0
 COMPONENT_PROJECT_URL=	
-COMPONENT_ARCHIVE=	$(COMPONENT_SRC).tgz
-COMPONENT_ARCHIVE_HASH=	sha1:ab17e871890bc490746fe03f171523073b54e1e8
-COMPONENT_ARCHIVE_URL=	src/$(COMPONENT_ARCHIVE)
+COMPONENT_ARCHIVE=	$(COMPONENT_SRC).tar.gz
+COMPONENT_ARCHIVE_HASH=	sha1:11cd397e5524fa72652d840ce1b92631f8bf39a2
+COMPONENT_ARCHIVE_URL= http://citylan.dl.sourceforge.net/project/ntop/ntop/Stable/$(COMPONENT_ARCHIVE)
 
 include ../../make-rules/prep.mk
 include ../../make-rules/configure.mk
 include ../../make-rules/ips.mk
 
-CONFIGURE_OPTIONS +=		--enable-tcpwrap
 CONFIGURE_OPTIONS +=		--sysconfdir=/etc
+CONFIGURE_OPTIONS +=		--localstatedir=/var/lib
+CONFIGURE_OPTIONS +=		--bindir=/usr/sbin
+CONFIGURE_OPTIONS +=		--enable-tcpwrap
+CONFIGURE_OPTIONS +=		--disable-plugins
+CONFIGURE_OPTIONS +=		--with-gd-lib=/usr/lib
+CONFIGURE_OPTIONS +=		--with-gd-include=/usr/include
 CONFIGURE_OPTIONS +=		--with-zlib-lib=/usr/lib
 CONFIGURE_OPTIONS +=		--with-zlib-include=/usr/include
 CONFIGURE_OPTIONS +=		--with-libpng-lib=/usr/lib
