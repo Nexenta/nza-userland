@@ -153,7 +153,6 @@ check_pkg_list()
 		text-gnu-sed \
 		text-groff \
 		text-texinfo \
-		file-mc \
 	; do
 		_check_pkg $p
 	done
