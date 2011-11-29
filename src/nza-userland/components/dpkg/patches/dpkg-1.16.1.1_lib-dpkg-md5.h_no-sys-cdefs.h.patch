@@ -1,0 +1,11 @@
+diff -dubr dpkg-1.16.1.1/lib/dpkg/md5.h dpkg-1.16.1.1.patched/lib/dpkg/md5.h
+--- dpkg-1.16.1.1/lib/dpkg/md5.h	2011-10-02 11:13:35.000000000 +0400
++++ dpkg-1.16.1.1.patched/lib/dpkg/md5.h	2011-11-28 16:26:15.124424193 +0300
+@@ -25,7 +25,6 @@
+ 	u_int8_t buffer[MD5_BLOCK_LENGTH];	/* input buffer */
+ } MD5_CTX;
+ 
+-#include <sys/cdefs.h>
+ 
+ void	 MD5Init(MD5_CTX *);
+ void	 MD5Update(MD5_CTX *, const u_int8_t *, size_t);
