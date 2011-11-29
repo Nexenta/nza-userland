@@ -1,0 +1,62 @@
+diff -ur libssh-0.5.2/include/libssh/server.h libssh-0.5.2.patched/include/libssh/server.h
+--- libssh-0.5.2/include/libssh/server.h	2011-09-16 23:57:36.000000000 +0400
++++ libssh-0.5.2.patched/include/libssh/server.h	2011-11-29 13:45:53.721834297 +0300
+@@ -225,6 +225,22 @@
+ LIBSSH_API int ssh_bind_accept(ssh_bind ssh_bind_o, ssh_session session);
+ 
+ /**
++ * @brief Accept an incoming ssh connection and initialize the session.
++ *
++ * @param  ssh_bind_o     The ssh server bind to accept a connection,
++                          return the client address.
++ * @param  session        A preallocated ssh session
++ * @param  claddr         The sockaddr structure which is returned with
++                          the address of the connected client.
++ * @param  addrlen        The size of the returned address of client.
++ * @see ssh_bind_accept
++ * @see ssh_new
++ * @return SSH_OK when a connection is established
++ */
++LIBSSH_API int ssh_bind_accept2(ssh_bind ssh_bind_o, ssh_session session,
++    struct sockaddr *claddr, socklen_t *addrlen);
++
++/**
+  * @brief Handles the key exchange and set up encryption
+  *
+  * @param  session			A connected ssh session
+diff -ur libssh-0.5.2/src/bind.c libssh-0.5.2.patched/src/bind.c
+--- libssh-0.5.2/src/bind.c	2011-09-16 23:57:36.000000000 +0400
++++ libssh-0.5.2.patched/src/bind.c	2011-11-29 13:47:39.036840748 +0300
+@@ -286,7 +286,8 @@
+ }
+ 
+ 
+-int ssh_bind_accept(ssh_bind sshbind, ssh_session session) {
++int ssh_bind_accept2(ssh_bind sshbind, ssh_session session,
++        struct sockaddr *claddr, socklen_t *addrlen) {
+   ssh_private_key dsa = NULL;
+   ssh_private_key rsa = NULL;
+   socket_t fd = SSH_INVALID_SOCKET;
+@@ -322,7 +323,11 @@
+     }
+   }
+ 
+-  fd = accept(sshbind->bindfd, NULL, NULL);
++  if (claddr && addrlen) {
++    fd = accept(sshbind->bindfd, claddr, addrlen);
++  } else {
++    fd = accept(sshbind->bindfd, NULL, NULL);
++  }
+   if (fd == SSH_INVALID_SOCKET) {
+     ssh_set_error(sshbind, SSH_FATAL,
+         "Accepting a new connection: %s",
+@@ -378,6 +383,9 @@
+ return SSH_OK;
+ }
+ 
++int ssh_bind_accept(ssh_bind sshbind, ssh_session session) {
++    return (ssh_bind_accept2(sshbind, session, NULL, NULL));
++}
+ 
+ /**
+  * @}
