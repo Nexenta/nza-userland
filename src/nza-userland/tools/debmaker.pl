@@ -659,7 +659,21 @@ foreach my $manifest_file (@ARGV) {
     if (my @symlinks = @{$$manifest_data{'link'}}) {
         blab "Creating symlinks ...";
         foreach my $link (@symlinks) {
-            my_symlink $$link{'target'}, "$pkgdir/$$link{'path'}";
+            if (exists $$link{'mediator'}) {
+                blab "$$link{'path'} has a mediator, update-aternatives will be used";
+                my $l = $$link{'path'}; $l = "/$l" unless $l =~ /^\//;
+                my $n = basename $l;
+                # FIXME : should be absolute: 
+                my $p = $$link{'target'}; $p = "/$p" unless $p =~ /^\//;
+                # FIXME : mediator-{version,implementation,priority}
+                # cannot be mapped to update-alternatives
+                $postinst_configure .=
+                    "update-alternatives --install $l $n $p 10 || true\n"; # FIXME : random priority ;-)
+                # FIXME : too many FIXMEs
+                $prerm .= 'if [ "$1" = remove ]; then update-alternatives --remove ' . "$n $p || true; fi\n";
+            } else {
+                my_symlink $$link{'target'}, "$pkgdir/$$link{'path'}";
+            }
         }
     }
 
