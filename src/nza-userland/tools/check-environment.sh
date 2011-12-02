@@ -165,7 +165,7 @@ check_pkg_list()
 	do
 	case "$answer" in
 	    Yes|yes|Y|y)
-		apt-get install ${missed[@]}
+		apt-get -y install ${missed[@]}
 		break
 		;;
 	    No|no|N|n)
