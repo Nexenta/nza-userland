@@ -25,24 +25,36 @@ include ../../make-rules/shared-macros.mk
 PATH = /usr/gnu/bin:/usr/bin
 
 COMPONENT_NAME=		pinentry
-COMPONENT_VERSION=	0.7.6
+COMPONENT_VERSION=	0.7.5
 COMPONENT_SRC=		$(COMPONENT_NAME)-$(COMPONENT_VERSION)
 COMPONENT_PROJECT_URL=	http://www.gnupg.org/related_software/pinentry/
 COMPONENT_ARCHIVE=	$(COMPONENT_SRC).tar.gz
-COMPONENT_ARCHIVE_HASH=	sha1:0c525ce81e5589bc9a4f2eb72705bed2b3e9a8b9
+COMPONENT_ARCHIVE_HASH=	sha1:6699a1ff94c649e8905199d480c6412cc43bad3d
 COMPONENT_ARCHIVE_URL=	ftp://ftp.gnupg.org/gcrypt/pinentry/$(COMPONENT_ARCHIVE)
 
 include ../../make-rules/prep.mk
 include ../../make-rules/configure.mk
 include ../../make-rules/ips.mk
-#DEB_VERSION = 40-0-0
-#include ../../make-rules/deb.mk
 
 PATCH_LEVEL = 0
 
-#COMPILER = gcc
+# Enable C99 mode + -Xc for its additional warnings.
+#studio_C99MODE = -Xc $(studio_C99_ENABLE)
+
+# -xinline=%auto -- we like inlining where appropriate
+#CFLAGS += -xinline=%auto
+
+# -xbuiltin=%none -- builtins have been known to be buggy
+#CFLAGS += -xbuiltin=%none
+
+# void function cannot return value, unless it's GNU C
+#CFLAGS += -features=extinl,extensions
 
 CFLAGS += $(CPP_LARGEFILES)
+#CFLAGS += $(XPG6MODE)
+#CFLAGS += $(CPP_POSIX)
+#CFLAGS += $(CPP_C99_EXTENDED_MATH)
+#CFLAGS += $(studio_PIC)
 
 # prevent libtool from removing these
 LDFLAGS += -lsocket -lnsl -lpkcs11
@@ -71,7 +83,7 @@ install: $(INSTALL_32)
 	$(MV) $(PROTOUSRBINDIR)/pinentry-curses $(PROTOUSRLIBDIR)/ ; fi
 	if test -f $(PROTOUSRBINDIR)/pinentry-gtk-2 ; then \
 	$(MV) $(PROTOUSRBINDIR)/pinentry-gtk-2 $(PROTOUSRLIBDIR)/ ; fi
-#	cd $(PROTOUSRLIBDIR) && ln -sf pinentry-gtk-2 pinentry
+	cd $(PROTOUSRLIBDIR) && ln -sf pinentry-gtk-2 pinentry
 
 test: $(NO_TESTS)
 
