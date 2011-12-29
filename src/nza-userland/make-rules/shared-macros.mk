@@ -230,11 +230,11 @@ CXX.studio.32 =	$(SPRO_VROOT)/bin/CC
 CC.studio.64 =	$(SPRO_VROOT)/bin/cc
 CXX.studio.64 =	$(SPRO_VROOT)/bin/CC
 
-CC.gcc.32 =	$(GCC_ROOT)/bin/gcc
-CXX.gcc.32 =	$(GCC_ROOT)/bin/g++
+CC.gcc.32 =	$(GCC_ROOT)/bin/gcc -m32
+CXX.gcc.32 =	$(GCC_ROOT)/bin/g++ -m32
 
-CC.gcc.64 =	$(GCC_ROOT)/bin/gcc
-CXX.gcc.64 =	$(GCC_ROOT)/bin/g++
+CC.gcc.64 =	$(GCC_ROOT)/bin/gcc -m64
+CXX.gcc.64 =	$(GCC_ROOT)/bin/g++ -m64
 
 CC =		$(CC.$(COMPILER).$(BITS))
 
