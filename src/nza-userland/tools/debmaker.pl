@@ -482,6 +482,9 @@ foreach my $manifest_file (@ARGV) {
     my $debsection = get_pkg_section $debname;
     my $debpriority = exists $$manifest_data{'pkg.priority'} ?  $$manifest_data{'pkg.priority'} : 'optional';
     my @replaces = ();
+    my @zones = ();
+    @zones = as_array $$manifest_data{'variant.opensolaris.zone'}
+        if exists $$manifest_data{'variant.opensolaris.zone'};
 
     foreach my $l (@{$$manifest_data{'legacy'}}) {
         push @provides, get_debpkg_name $$l{'pkg'};
@@ -735,6 +738,8 @@ foreach my $manifest_file (@ARGV) {
     $control .= "Maintainer: $MAINTAINER\n";
     $control .= "Architecture: $ARCH\n";
     $control .= "Category: $DISTRIB\n";
+    # Specify zone only is @zones has one zone: global or nonglobal:
+    $control .= "Zone: $zones[0]\n" if scalar(@zones) == 1;
 
 
     $control .= "Description: $$manifest_data{'pkg.summary'}\n";
