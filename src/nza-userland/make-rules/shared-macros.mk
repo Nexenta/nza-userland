@@ -23,15 +23,23 @@
 
 PATH=/usr/gnu/bin:/usr/bin
 
-# The location of a mirror of community source archives that we build in this
-# gate.
-ARCHIVE_MIRROR  = http://dlc.openindiana.org/oi-build/source-archives
 
-# Private Nexenta's sources
-# to use it just set COMPONENT_ARCHIVE_URL to a tarball name (not url)
-ARCHIVE_MIRROR += sftp://nexsrc:&Ka$$amutra&@nex-stor.nexenta.com/export/home/nexsrc
+NEXENTA_ARCHIVE_HOST = nex-stor.nexenta.com
+NEXENTA_ARCHIVE_USER = nexsrc
+NEXENTA_ARCHIVE_PASS = &Ka$$amutra&
+NEXENTA_ARCHIVE_PATH = /export/home/nexsrc
+archive-private:
+	sshpass -p '$(NEXENTA_ARCHIVE_PASS)' scp $(COMPONENT_ARCHIVE) '$(NEXENTA_ARCHIVE_USER)@$(NEXENTA_ARCHIVE_HOST):$(NEXENTA_ARCHIVE_PATH)/'
 
-export DOWNLOAD_SEARCH_PATH +=	$(ARCHIVE_MIRROR)
+archive:
+	sshpass -p '$(NEXENTA_ARCHIVE_PASS)' scp $(COMPONENT_ARCHIVE) '$(NEXENTA_ARCHIVE_USER)@$(NEXENTA_ARCHIVE_HOST):/volumes/data/distfiles/'
+
+# Try private archives first not to disclose what we need:
+export DOWNLOAD_SEARCH_PATH += \
+	http://nex-stor.nexenta.com/distfiles/ \
+	sftp://$(NEXENTA_ARCHIVE_USER):$(NEXENTA_ARCHIVE_PASS)@$(NEXENTA_ARCHIVE_HOST)$(NEXENTA_ARCHIVE_PATH) \
+	http://gentoo.arcticnetwork.ca/distfiles/
+
 
 # The workspace starts at the mercurial root
 export WS_TOP ?=		$(shell hg root)/src/nza-userland
