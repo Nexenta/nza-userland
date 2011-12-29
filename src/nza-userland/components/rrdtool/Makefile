@@ -21,21 +21,26 @@
 #
 #
 include ../../make-rules/shared-macros.mk
-COMPONENT_NAME=		rrdtool
-COMPONENT_VERSION=	1.4.3
-COMPONENT_SRC=		$(COMPONENT_NAME)-$(COMPONENT_VERSION)
-COMPONENT_PROJECT_URL=	
-COMPONENT_ARCHIVE=	$(COMPONENT_SRC).tar.gz
-COMPONENT_ARCHIVE_HASH=	sha1:1e65de0192c149a30ee0d277e758a31ff7d6d6f0
-COMPONENT_ARCHIVE_URL=	src/$(COMPONENT_ARCHIVE)
+COMPONENT_NAME         = rrdtool
+COMPONENT_VERSION      = 1.4.3
+COMPONENT_SRC          = $(COMPONENT_NAME)-$(COMPONENT_VERSION)
+COMPONENT_PROJECT_URL  = http://oss.oetiker.ch/rrdtool/
+COMPONENT_ARCHIVE      = $(COMPONENT_SRC).tar.gz
+COMPONENT_ARCHIVE_HASH = sha1:1e65de0192c149a30ee0d277e758a31ff7d6d6f0
+COMPONENT_ARCHIVE_URL  = http://oss.oetiker.ch/rrdtool/pub/$(COMPONENT_ARCHIVE)
 
 include ../../make-rules/prep.mk
 include ../../make-rules/configure.mk
 include ../../make-rules/ips.mk
 
-CONFIGURE_OPTIONS +=		--disable-lua
-CONFIGURE_OPTIONS +=		--disable-tcl
+CONFIGURE_OPTIONS += --disable-lua
+CONFIGURE_OPTIONS += --disable-tcl
+CONFIGURE_OPTIONS += --disable-ruby
+CONFIGURE_OPTIONS += --enable-perl-site-install
+CONFIGURE_OPTIONS += --with-perl-options='INSTALLDIRS=vendor'
 
+COMPONENT_PRE_CONFIGURE_ACTION = \
+	$(CLONEY) $(SOURCE_DIR) $(@D)
 
 build: $(BUILD_32_and_64)
 
