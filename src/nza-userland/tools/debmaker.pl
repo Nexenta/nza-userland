@@ -623,7 +623,9 @@ foreach my $manifest_file (@ARGV) {
                 my_chown $$file{'owner'}, $$file{'group'}, $dst;
             }
 
-            push @conffiles, $$file{'path'} if exists $$file{'preserve'};
+            if ((exists $$file{'preserve'}) and ($$file{'preserve'} ne 'false')) {
+                push @conffiles, $$file{'path'}
+            }
             push @replaces, get_debpkg_name $$file{original_name} if exists $$file{original_name};
 
             push @disable_fmri, as_array $$file{disable_fmri} if exists $$file{disable_fmri};
