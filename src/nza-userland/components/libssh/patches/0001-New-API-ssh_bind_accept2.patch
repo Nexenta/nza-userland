@@ -1,0 +1,85 @@
+From 38e1721662443c65d5abea20a541f761f3501fa6 Mon Sep 17 00:00:00 2001
+From: Vineeth Pillai <vineethrp@gmail.com>
+Date: Mon, 28 Nov 2011 11:21:41 -0800
+Subject: [PATCH 1/2] New API ssh_bind_accept2
+
+ssh_bind_accpet2 is similar to ssh_bind_accept, but takes two more argurements:
+ struct sockaddr *claddr, which is returned by the function with address of the client
+ socklen_t *addrlen, which is returned by the function with the length of the address.
+
+This API can be used by ssh servers who needs more information about the connected clients.
+
+Signed-off-by: Super-User <root@sm54.(none)>
+---
+ include/libssh/server.h |   16 ++++++++++++++++
+ src/bind.c              |   13 +++++++++++--
+ 2 files changed, 27 insertions(+), 2 deletions(-)
+
+diff --git a/include/libssh/server.h b/include/libssh/server.h
+index f3e0bb5..61850e4 100644
+--- a/include/libssh/server.h
++++ b/include/libssh/server.h
+@@ -225,6 +225,22 @@ LIBSSH_API void ssh_bind_fd_toaccept(ssh_bind ssh_bind_o);
+ LIBSSH_API int ssh_bind_accept(ssh_bind ssh_bind_o, ssh_session session);
+ 
+ /**
++ * @brief Accept an incoming ssh connection and initialize the session and
++ *          return the client address.
++ *
++ * @param  ssh_bind_o     The ssh server bind to accept a connection.
++ * @param  session			A preallocated ssh session
++ * @param  claddr           The sockaddr structure which is returned with
++                                the address of the connected client.
++ * @param  addrlen          The size of the returned address of client.
++ * @see ssh_new
++ * @see ssh_bind_accept
++ * @return SSH_OK when a connection is established
++ */
++LIBSSH_API int ssh_bind_accept2(ssh_bind ssh_bind_o, ssh_session session,
++    struct sockaddr *claddr, socklen_t *addrlen);
++
++/**
+  * @brief Accept an incoming ssh connection on the given file descriptor
+  *        and initialize the session.
+  *
+diff --git a/src/bind.c b/src/bind.c
+index 5097801..3542f5e 100644
+--- a/src/bind.c
++++ b/src/bind.c
+@@ -402,7 +402,8 @@ int ssh_bind_accept_fd(ssh_bind sshbind, ssh_session session, socket_t fd){
+     return SSH_OK;
+ }
+ 
+-int ssh_bind_accept(ssh_bind sshbind, ssh_session session) {
++int ssh_bind_accept2(ssh_bind sshbind, ssh_session session,
++    struct sockaddr *claddr, socklen_t *addrlen) {
+   socket_t fd = SSH_INVALID_SOCKET;
+   int rc;
+   if (sshbind->bindfd == SSH_INVALID_SOCKET) {
+@@ -416,7 +417,12 @@ int ssh_bind_accept(ssh_bind sshbind, ssh_session session) {
+       return SSH_ERROR;
+   }
+ 
+-  fd = accept(sshbind->bindfd, NULL, NULL);
++  if (claddr && addrlen) {
++    fd = accept(sshbind->bindfd, claddr, addrlen);
++  } else {
++    fd = accept(sshbind->bindfd, NULL, NULL);
++  }
++
+   if (fd == SSH_INVALID_SOCKET) {
+     ssh_set_error(sshbind, SSH_FATAL,
+         "Accepting a new connection: %s",
+@@ -437,6 +443,9 @@ int ssh_bind_accept(ssh_bind sshbind, ssh_session session) {
+   return rc;
+ }
+ 
++int ssh_bind_accept(ssh_bind sshbind, ssh_session session){
++  return (ssh_bind_accept2(sshbind, session, NULL, NULL));
++}
+ 
+ /**
+  * @}
+-- 
+1.7.8.2
+
