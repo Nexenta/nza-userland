@@ -480,7 +480,7 @@ foreach my $manifest_file (@ARGV) {
     my @provides = get_debpkg_names $$manifest_data{'pkg.fmri'};
     my $debname = shift @provides; # main name (web-browser-elinks)
     my $debsection = get_pkg_section $debname;
-    my $debpriority = exists $$manifest_data{'pkg.priority'} ?  $$manifest_data{'pkg.priority'} : 'optional';
+    my $debpriority = $$manifest_data{'pkg.priority'} // 'optional';
     my @replaces = ();
     my @zones = ();
     @zones = as_array $$manifest_data{'variant.opensolaris.zone'}
