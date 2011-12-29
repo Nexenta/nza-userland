@@ -1,0 +1,45 @@
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+# Copyright (c) 2011, Nexenta Systems, Inc. All rights reserved.
+#
+
+<transform file path=usr.*/man/.+ -> default mangler.man.stability volatile>
+set name=pkg.fmri value=pkg:/web/server/pound@$(IPS_COMPONENT_VERSION),$(BUILD_VERSION)
+set name=pkg.summary         value="reverse proxy, load balancer and HTTPS front-end for web servers"
+set name=pkg.description     value="The Pound program is a reverse proxy, load balancer and HTTPS front-end for Web server(s). Pound was developed to enable distributing the load among several Web-servers and to allow for a convenient SSL wrapper for those Web servers that do not offer it natively. Pound is distributed under the GPL - no warranty, it's free to use, copy and give away."
+set name=info.source_url     value=$(COMPONENT_ARCHIVE_URL)
+set name=info.upstream_url   value=$(COMPONENT_PROJECT_URL)
+set name=org.opensolaris.consolidation value=$(CONSOLIDATION)
+
+
+dir path=etc
+dir path=etc/pound
+dir path=usr
+dir path=usr/sbin
+dir path=usr/share
+dir path=usr/share/man
+dir path=usr/share/man/man8
+file path=usr/sbin/pound
+file path=usr/sbin/poundctl
+file path=usr/share/man/man8/pound.8
+file path=usr/share/man/man8/poundctl.8
+file pound.cfg path=etc/pound/pound.cfg.example preserve=false
+file pound.xml path=lib/svc/manifest/network/pound.xml
