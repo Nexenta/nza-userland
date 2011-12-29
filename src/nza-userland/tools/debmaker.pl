@@ -726,7 +726,7 @@ foreach my $manifest_file (@ARGV) {
     uniq \@depends, \@replaces, \@provides, \@predepends, \@recommends, \@suggests, \@conflicts;
     uniq \@restart_fmri, \@refresh_fmri, \@suspend_fmri, \@disable_fmri;
     # When a program and a library are in the same package:
-    @depends = grep {$_ ne $debname} @depends;
+    @depends = grep {($_ ne $debname) && !($_ ~~ @provides)} @depends;
 
 
     my $control = '';
