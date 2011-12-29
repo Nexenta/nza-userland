@@ -275,11 +275,6 @@ def main():
 			print "    actual:   %s" % realhash
 			print "    payload:  %s" % payloadhash
 
-		try:
-			os.remove(name)
-		except OSError:
-			pass
-
 	sys.exit(1)
 
 if __name__ == "__main__":
