@@ -766,15 +766,7 @@ foreach my $manifest_file (@ARGV) {
 
     my_mkdir "$pkgdir/DEBIAN";
 
-
-
-    if (@disable_fmri) {
-        $prerm .= 'if [ "$1" = "remove" ]; then' . "\n";
-        $prerm .= " svcadm disable @disable_fmri || true\n";
-        $prerm .= "fi\n";
-    }
-    if (@refresh_fmri || @restart_fmri || @suspend_fmri) {
-        my $check_smf = <<'CHECK_SMF';
+    my $check_smf = <<'CHECK_SMF';
 SMF_INCLUDE=/lib/svc/share/smf_include.sh
 HAVE_SMF=no
 if [ -f "$SMF_INCLUDE" ]; then
@@ -785,24 +777,37 @@ if [ -f "$SMF_INCLUDE" ]; then
 fi
 CHECK_SMF
 
+    if (@suspend_fmri) {
+        $preinst .= $check_smf;
+        $preinst .= 'if [ "$HAVE_SMF" = yes ]; then' . "\n";
+        $preinst .= ' if [ "$1" = install ] || [ "$1" = upgrade ]; then' . "\n";
+        $preinst .= "  svcadm -v disable -t @suspend_fmri || true\n";
+        $preinst .= " fi\n";
+        $preinst .= "fi\n";
+
+        $postinst_configure .= "  svcadm -v enable @suspend_fmri || true\n";
+    }
+
+    if (@disable_fmri) {
+        $prerm .= 'if [ "$1" = "remove" ]; then' . "\n";
+        $prerm .= " svcadm disable @disable_fmri || true\n";
+        $prerm .= "fi\n";
+    }
+    if (@refresh_fmri || @restart_fmri) {
         $postinst_configure .= $check_smf;
         $postinst_configure .= 'if [ "$HAVE_SMF" = yes ]; then' . "\n";
         $postinst_configure .= "  svcadm -v refresh @refresh_fmri || true\n" if @refresh_fmri;
         $postinst_configure .= "  svcadm -v restart @restart_fmri || true\n" if @restart_fmri;
-        if (@suspend_fmri) {
-            $preinst .= $check_smf;
-            $preinst .= 'if [ "$HAVE_SMF" = yes ]; then' . "\n";
-            $preinst .= ' if [ "$1" = install ] || [ "$1" = upgrade ]; then' . "\n";
-            $preinst .= "  svcadm -v disable -t @suspend_fmri || true\n";
-            $preinst .= " fi\n";
-            $preinst .= "fi\n";
-
-            $postinst_configure .= "  svcadm -v enable @suspend_fmri || true\n";
-        }
         $postinst_configure .= "fi\n";
+
+        # on upgrade services will be touched in postinst,
+        # so, catch only removing:
+        $postrm .= 'if [ "$1" = remove ]; then' . "\n";
+        $postrm .= "  svcadm -v refresh @refresh_fmri || true\n" if @refresh_fmri;
+        $postrm .= "  svcadm -v restart @restart_fmri || true\n" if @restart_fmri;
+        $postrm .= "fi\n";
     }
 
-    my $shlibs = get_shlib $pkgdir;
 
     if ($postinst_configure) {
         $postinst .= 'if [ "$1" = configure ]; then' . "\n\n";
@@ -817,7 +822,9 @@ CHECK_SMF
 
     write_file "$pkgdir/DEBIAN/control", $control;
     write_file "$pkgdir/DEBIAN/conffiles", (join "\n", @conffiles) . "\n" if @conffiles;
-    write_file "$pkgdir/DEBIAN/shlibs",   $shlibs   if $shlibs;
+
+    my $shlibs = get_shlib $pkgdir;
+    write_file "$pkgdir/DEBIAN/shlibs", $shlibs if $shlibs;
 
     my $pkg_deb = "${pkgdir}_${debversion}_${ARCH}.deb";
     # FIXME: we need GNU tar
