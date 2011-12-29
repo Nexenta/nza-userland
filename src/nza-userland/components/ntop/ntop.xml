@@ -54,14 +54,14 @@
 	<exec_method
 		type='method'
 		name='start'
-		exec='/lib/svc/method/ntop.sh start'
+        exec='/usr/sbin/ntop -d'
 		timeout_seconds='60' />
 
 	<exec_method
 		type='method'
 		name='stop'
-		exec='/lib/svc/method/ntop.sh stop %{restarter/contract}'
-		timeout_seconds='-1' />
+		exec=':kill'
+		timeout_seconds='60' />
 
 	<exec_method
 		type='method'
