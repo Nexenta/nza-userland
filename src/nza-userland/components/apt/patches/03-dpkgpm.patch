@@ -1,0 +1,37 @@
+--- apt-0.8.10.3+squeeze1.orig/apt-pkg/deb/dpkgpm.cc
++++ apt-0.8.10.3+squeeze1/apt-pkg/deb/dpkgpm.cc
+@@ -36,7 +36,14 @@
+ #include <termios.h>
+ #include <unistd.h>
+ #include <sys/ioctl.h>
++#ifdef __sun
++#include "memrchr.h"
++#include "cfmakeraw.h"
++#include "openpty.h"
++typedef void (*sighandler_t) (int);
++#else
+ #include <pty.h>
++#endif
+ 
+ #include <config.h>
+ #include <apti18n.h>
+@@ -614,7 +621,8 @@
+ 
+    // now move the unprocessed bits (after the final \n that is now a 0x0) 
+    // to the start and update dpkgbuf_pos
+-   p = (char*)memrchr(dpkgbuf, 0, dpkgbuf_pos);
++//   p = (char*)memrchr(dpkgbuf, 0, dpkgbuf_pos);
++   p = (char*)memchr(dpkgbuf, 0, dpkgbuf_pos);
+    if(p == NULL)
+       return;
+ 
+@@ -1021,7 +1029,8 @@
+       /* Mask off sig int/quit. We do this because dpkg also does when 
+          it forks scripts. What happens is that when you hit ctrl-c it sends
+ 	 it to all processes in the group. Since dpkg ignores the signal 
+-	 it doesn't die but we do! So we must also ignore it */
++	 it doesn
++	 't die but we do! So we must also ignore it */
+       sighandler_t old_SIGQUIT = signal(SIGQUIT,SIG_IGN);
+       sighandler_t old_SIGINT = signal(SIGINT,SIG_IGN);
+ 

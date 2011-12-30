@@ -1,0 +1,344 @@
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+# Copyright (c) 2011, Nexenta Systems, Inc. All rights reserved.
+#
+
+<transform file path=usr.*/man/.+                -> default mangler.man.stability volatile>
+<transform file link hardlink                    -> default original_name apt>
+<transform file path=usr/lib/apt/methods/.+      -> default mode 0555>
+<transform file path=usr/lib/dpkg/methods/apt/.+ -> default mode 0555>
+
+set name=pkg.fmri \
+    value=pkg:/package/dpkg/apt@$(IPS_COMPONENT_VERSION),$(BUILD_VERSION)
+set name=pkg.summary value="Advanced front-end for dpkg"
+set name=pkg.description value="This is Debian's next generation front-end for the dpkg package manager. It provides the apt-get utility and APT dselect method that provides a simpler, safer way to install and upgrade packages"
+set name=info.classification \
+    value="org.opensolaris.category.2008:System/Packaging"
+set name=info.source_url value=$(COMPONENT_ARCHIVE_URL)
+set name=info.upstream_url value=$(COMPONENT_PROJECT_URL)
+set name=opensolaris.arc_url value=http://arc.opensolaris.org/caselog/PSARC/2006/642
+set name=org.opensolaris.consolidation value=$(CONSOLIDATION)
+
+depend fmri=pkg:/crypto/gnupg type=require
+
+dir path=etc
+dir path=etc/apt
+dir path=etc/apt/apt.conf.d
+dir path=etc/apt/preferences.d
+dir path=etc/apt/sources.list.d
+dir path=etc/apt/trusted.gpg.d
+dir path=etc/logrotate.d
+dir path=usr
+dir path=usr/bin
+dir path=usr/include
+dir path=usr/include/apt-pkg
+dir path=usr/lib
+dir path=usr/lib/apt
+dir path=usr/lib/apt/methods
+dir path=usr/lib/dpkg
+dir path=usr/lib/dpkg/methods
+dir path=usr/lib/dpkg/methods/apt
+dir path=usr/share
+dir path=usr/share/locale
+dir path=usr/share/locale/ar
+dir path=usr/share/locale/ar/LC_MESSAGES
+dir path=usr/share/locale/ast
+dir path=usr/share/locale/ast/LC_MESSAGES
+dir path=usr/share/locale/bg
+dir path=usr/share/locale/bg/LC_MESSAGES
+dir path=usr/share/locale/bs
+dir path=usr/share/locale/bs/LC_MESSAGES
+dir path=usr/share/locale/ca
+dir path=usr/share/locale/ca/LC_MESSAGES
+dir path=usr/share/locale/cs
+dir path=usr/share/locale/cs/LC_MESSAGES
+dir path=usr/share/locale/cy
+dir path=usr/share/locale/cy/LC_MESSAGES
+dir path=usr/share/locale/da
+dir path=usr/share/locale/da/LC_MESSAGES
+dir path=usr/share/locale/de
+dir path=usr/share/locale/de/LC_MESSAGES
+dir path=usr/share/locale/dz
+dir path=usr/share/locale/dz/LC_MESSAGES
+dir path=usr/share/locale/el
+dir path=usr/share/locale/el/LC_MESSAGES
+dir path=usr/share/locale/es
+dir path=usr/share/locale/es/LC_MESSAGES
+dir path=usr/share/locale/eu
+dir path=usr/share/locale/eu/LC_MESSAGES
+dir path=usr/share/locale/fi
+dir path=usr/share/locale/fi/LC_MESSAGES
+dir path=usr/share/locale/fr
+dir path=usr/share/locale/fr/LC_MESSAGES
+dir path=usr/share/locale/gl
+dir path=usr/share/locale/gl/LC_MESSAGES
+dir path=usr/share/locale/hu
+dir path=usr/share/locale/hu/LC_MESSAGES
+dir path=usr/share/locale/it
+dir path=usr/share/locale/it/LC_MESSAGES
+dir path=usr/share/locale/ja
+dir path=usr/share/locale/ja/LC_MESSAGES
+dir path=usr/share/locale/km
+dir path=usr/share/locale/km/LC_MESSAGES
+dir path=usr/share/locale/ko
+dir path=usr/share/locale/ko/LC_MESSAGES
+dir path=usr/share/locale/ku
+dir path=usr/share/locale/ku/LC_MESSAGES
+dir path=usr/share/locale/lt
+dir path=usr/share/locale/lt/LC_MESSAGES
+dir path=usr/share/locale/mr
+dir path=usr/share/locale/mr/LC_MESSAGES
+dir path=usr/share/locale/nb
+dir path=usr/share/locale/nb/LC_MESSAGES
+dir path=usr/share/locale/ne
+dir path=usr/share/locale/ne/LC_MESSAGES
+dir path=usr/share/locale/nl
+dir path=usr/share/locale/nl/LC_MESSAGES
+dir path=usr/share/locale/nn
+dir path=usr/share/locale/nn/LC_MESSAGES
+dir path=usr/share/locale/pl
+dir path=usr/share/locale/pl/LC_MESSAGES
+dir path=usr/share/locale/pt
+dir path=usr/share/locale/pt/LC_MESSAGES
+dir path=usr/share/locale/pt_BR
+dir path=usr/share/locale/pt_BR/LC_MESSAGES
+dir path=usr/share/locale/ro
+dir path=usr/share/locale/ro/LC_MESSAGES
+dir path=usr/share/locale/ru
+dir path=usr/share/locale/ru/LC_MESSAGES
+dir path=usr/share/locale/sk
+dir path=usr/share/locale/sk/LC_MESSAGES
+dir path=usr/share/locale/sl
+dir path=usr/share/locale/sl/LC_MESSAGES
+dir path=usr/share/locale/sv
+dir path=usr/share/locale/sv/LC_MESSAGES
+dir path=usr/share/locale/th
+dir path=usr/share/locale/th/LC_MESSAGES
+dir path=usr/share/locale/tl
+dir path=usr/share/locale/tl/LC_MESSAGES
+dir path=usr/share/locale/uk
+dir path=usr/share/locale/uk/LC_MESSAGES
+dir path=usr/share/locale/vi
+dir path=usr/share/locale/vi/LC_MESSAGES
+dir path=usr/share/locale/zh_CN
+dir path=usr/share/locale/zh_CN/LC_MESSAGES
+dir path=usr/share/locale/zh_TW
+dir path=usr/share/locale/zh_TW/LC_MESSAGES
+dir path=usr/share/man
+dir path=usr/share/man/man1
+dir path=usr/share/man/man5
+dir path=usr/share/man/man8
+dir path=var/cache/apt/archives/partial
+dir path=var/lib/apt/lists/partial
+dir path=var/lib/apt/mirrors/partial
+dir path=var/lib/apt/periodic
+dir path=var/log/apt
+
+
+file bin/apt-cache            path=usr/bin/apt-cache
+file bin/apt-cdrom            path=usr/bin/apt-cdrom
+file bin/apt-config           path=usr/bin/apt-config
+file bin/apt-extracttemplates path=usr/bin/apt-extracttemplates
+file bin/apt-ftparchive       path=usr/bin/apt-ftparchive
+file bin/apt-get              path=usr/bin/apt-get
+file bin/apt-key              path=usr/bin/apt-key
+file bin/apt-mark             path=usr/bin/apt-mark
+file bin/apt-sortpkgs         path=usr/bin/apt-sortpkgs
+
+#file apt-clone         path=usr/bin/apt-clone
+#file apt-zone          path=usr/bin/apt-zone
+#file apt.conf.nexenta  path=etc/apt.conf.d/01-nexenta
+
+file bin/methods/bzip2  path=usr/lib/apt/methods/bzip2
+file bin/methods/cdrom  path=usr/lib/apt/methods/cdrom
+file bin/methods/copy   path=usr/lib/apt/methods/copy
+file bin/methods/file   path=usr/lib/apt/methods/file
+file bin/methods/ftp    path=usr/lib/apt/methods/ftp
+file bin/methods/gpgv   path=usr/lib/apt/methods/gpgv
+file bin/methods/gzip   path=usr/lib/apt/methods/gzip
+file bin/methods/http   path=usr/lib/apt/methods/http
+file bin/methods/https  path=usr/lib/apt/methods/https
+file bin/methods/lzma   path=usr/lib/apt/methods/lzma
+file bin/methods/mirror path=usr/lib/apt/methods/mirror
+file bin/methods/rred   path=usr/lib/apt/methods/rred
+file bin/methods/rsh    path=usr/lib/apt/methods/rsh
+file bin/methods/ssh    path=usr/lib/apt/methods/ssh
+
+
+file scripts/dselect/desc.apt path=usr/lib/dpkg/methods/apt/desc.apt
+file scripts/dselect/install  path=usr/lib/dpkg/methods/apt/install
+file scripts/dselect/names    path=usr/lib/dpkg/methods/apt/names
+file scripts/dselect/setup    path=usr/lib/dpkg/methods/apt/setup
+file scripts/dselect/update   path=usr/lib/dpkg/methods/apt/update
+
+file bin/libapt-pkg.so.4.10.1        path=usr/lib/libapt-pkg.so.4.10.1
+link path=usr/lib/libapt-pkg.so.4.10 target=libapt-pkg.so.4.10.1
+link path=usr/lib/libapt-pkg.so      target=libapt-pkg.so.4.10
+
+file bin/libapt-inst.so.1.2.0        path=usr/lib/libapt-inst.so.1.2.0
+link path=usr/lib/libapt-inst.so.1.2 target=libapt-inst.so.1.2.0
+link path=usr/lib/libapt-inst.so     target=libapt-inst.so.1.2
+
+file include/apti18n.h path=usr/include/apt-pkg/apti18n.h
+file include/config.h  path=usr/include/apt-pkg/config.h
+
+file doc/apt-key.8              path=usr/share/man/man8/apt-key.8
+file doc/apt-cdrom.8            path=usr/share/man/man8/apt-cdrom.8
+file doc/apt-get.8              path=usr/share/man/man8/apt-get.8
+file doc/apt-ftparchive.1       path=usr/share/man/man1/apt-ftparchive.1
+file doc/apt-clone.8            path=usr/share/man/man8/apt-clone.8
+file doc/apt-secure.8           path=usr/share/man/man8/apt-secure.8
+file doc/apt-extracttemplates.1 path=usr/share/man/man1/apt-extracttemplates.1
+file doc/apt-mark.8             path=usr/share/man/man8/apt-mark.8
+file doc/apt_preferences.5      path=usr/share/man/man5/apt_preferences.5
+file doc/sources.list.5         path=usr/share/man/man5/sources.list.5
+file doc/apt.conf.5             path=usr/share/man/man5/apt.conf.5
+file doc/apt-sortpkgs.1         path=usr/share/man/man1/apt-sortpkgs.1
+file doc/apt-cache.8            path=usr/share/man/man8/apt-cache.8
+file doc/apt-config.8           path=usr/share/man/man8/apt-config.8
+file doc/apt.8                  path=usr/share/man/man8/apt.8
+
+file locale/ar/LC_MESSAGES/apt.mo               path=usr/share/locale/ar/LC_MESSAGES/apt.mo
+file locale/ar/LC_MESSAGES/libapt-inst1.2.mo    path=usr/share/locale/ar/LC_MESSAGES/libapt-inst1.2.mo
+file locale/ar/LC_MESSAGES/libapt-pkg4.10.mo    path=usr/share/locale/ar/LC_MESSAGES/libapt-pkg4.10.mo
+file locale/ast/LC_MESSAGES/apt.mo              path=usr/share/locale/ast/LC_MESSAGES/apt.mo
+file locale/ast/LC_MESSAGES/libapt-inst1.2.mo   path=usr/share/locale/ast/LC_MESSAGES/libapt-inst1.2.mo
+file locale/ast/LC_MESSAGES/libapt-pkg4.10.mo   path=usr/share/locale/ast/LC_MESSAGES/libapt-pkg4.10.mo
+file locale/bg/LC_MESSAGES/apt.mo               path=usr/share/locale/bg/LC_MESSAGES/apt.mo
+file locale/bg/LC_MESSAGES/libapt-inst1.2.mo    path=usr/share/locale/bg/LC_MESSAGES/libapt-inst1.2.mo
+file locale/bg/LC_MESSAGES/libapt-pkg4.10.mo    path=usr/share/locale/bg/LC_MESSAGES/libapt-pkg4.10.mo
+file locale/bs/LC_MESSAGES/apt.mo               path=usr/share/locale/bs/LC_MESSAGES/apt.mo
+file locale/bs/LC_MESSAGES/libapt-inst1.2.mo    path=usr/share/locale/bs/LC_MESSAGES/libapt-inst1.2.mo
+file locale/bs/LC_MESSAGES/libapt-pkg4.10.mo    path=usr/share/locale/bs/LC_MESSAGES/libapt-pkg4.10.mo
+file locale/ca/LC_MESSAGES/apt.mo               path=usr/share/locale/ca/LC_MESSAGES/apt.mo
+file locale/ca/LC_MESSAGES/libapt-inst1.2.mo    path=usr/share/locale/ca/LC_MESSAGES/libapt-inst1.2.mo
+file locale/ca/LC_MESSAGES/libapt-pkg4.10.mo    path=usr/share/locale/ca/LC_MESSAGES/libapt-pkg4.10.mo
+file locale/cs/LC_MESSAGES/apt.mo               path=usr/share/locale/cs/LC_MESSAGES/apt.mo
+file locale/cs/LC_MESSAGES/libapt-inst1.2.mo    path=usr/share/locale/cs/LC_MESSAGES/libapt-inst1.2.mo
+file locale/cs/LC_MESSAGES/libapt-pkg4.10.mo    path=usr/share/locale/cs/LC_MESSAGES/libapt-pkg4.10.mo
+file locale/cy/LC_MESSAGES/apt.mo               path=usr/share/locale/cy/LC_MESSAGES/apt.mo
+file locale/cy/LC_MESSAGES/libapt-inst1.2.mo    path=usr/share/locale/cy/LC_MESSAGES/libapt-inst1.2.mo
+file locale/cy/LC_MESSAGES/libapt-pkg4.10.mo    path=usr/share/locale/cy/LC_MESSAGES/libapt-pkg4.10.mo
+file locale/da/LC_MESSAGES/apt.mo               path=usr/share/locale/da/LC_MESSAGES/apt.mo
+file locale/da/LC_MESSAGES/libapt-inst1.2.mo    path=usr/share/locale/da/LC_MESSAGES/libapt-inst1.2.mo
+file locale/da/LC_MESSAGES/libapt-pkg4.10.mo    path=usr/share/locale/da/LC_MESSAGES/libapt-pkg4.10.mo
+file locale/de/LC_MESSAGES/apt.mo               path=usr/share/locale/de/LC_MESSAGES/apt.mo
+file locale/de/LC_MESSAGES/libapt-inst1.2.mo    path=usr/share/locale/de/LC_MESSAGES/libapt-inst1.2.mo
+file locale/de/LC_MESSAGES/libapt-pkg4.10.mo    path=usr/share/locale/de/LC_MESSAGES/libapt-pkg4.10.mo
+file locale/dz/LC_MESSAGES/apt.mo               path=usr/share/locale/dz/LC_MESSAGES/apt.mo
+file locale/dz/LC_MESSAGES/libapt-inst1.2.mo    path=usr/share/locale/dz/LC_MESSAGES/libapt-inst1.2.mo
+file locale/dz/LC_MESSAGES/libapt-pkg4.10.mo    path=usr/share/locale/dz/LC_MESSAGES/libapt-pkg4.10.mo
+file locale/el/LC_MESSAGES/apt.mo               path=usr/share/locale/el/LC_MESSAGES/apt.mo
+file locale/el/LC_MESSAGES/libapt-inst1.2.mo    path=usr/share/locale/el/LC_MESSAGES/libapt-inst1.2.mo
+file locale/el/LC_MESSAGES/libapt-pkg4.10.mo    path=usr/share/locale/el/LC_MESSAGES/libapt-pkg4.10.mo
+file locale/es/LC_MESSAGES/apt.mo               path=usr/share/locale/es/LC_MESSAGES/apt.mo
+file locale/es/LC_MESSAGES/libapt-inst1.2.mo    path=usr/share/locale/es/LC_MESSAGES/libapt-inst1.2.mo
+file locale/es/LC_MESSAGES/libapt-pkg4.10.mo    path=usr/share/locale/es/LC_MESSAGES/libapt-pkg4.10.mo
+file locale/eu/LC_MESSAGES/apt.mo               path=usr/share/locale/eu/LC_MESSAGES/apt.mo
+file locale/eu/LC_MESSAGES/libapt-inst1.2.mo    path=usr/share/locale/eu/LC_MESSAGES/libapt-inst1.2.mo
+file locale/eu/LC_MESSAGES/libapt-pkg4.10.mo    path=usr/share/locale/eu/LC_MESSAGES/libapt-pkg4.10.mo
+file locale/fi/LC_MESSAGES/apt.mo               path=usr/share/locale/fi/LC_MESSAGES/apt.mo
+file locale/fi/LC_MESSAGES/libapt-inst1.2.mo    path=usr/share/locale/fi/LC_MESSAGES/libapt-inst1.2.mo
+file locale/fi/LC_MESSAGES/libapt-pkg4.10.mo    path=usr/share/locale/fi/LC_MESSAGES/libapt-pkg4.10.mo
+file locale/fr/LC_MESSAGES/apt.mo               path=usr/share/locale/fr/LC_MESSAGES/apt.mo
+file locale/fr/LC_MESSAGES/libapt-inst1.2.mo    path=usr/share/locale/fr/LC_MESSAGES/libapt-inst1.2.mo
+file locale/fr/LC_MESSAGES/libapt-pkg4.10.mo    path=usr/share/locale/fr/LC_MESSAGES/libapt-pkg4.10.mo
+file locale/gl/LC_MESSAGES/apt.mo               path=usr/share/locale/gl/LC_MESSAGES/apt.mo
+file locale/gl/LC_MESSAGES/libapt-inst1.2.mo    path=usr/share/locale/gl/LC_MESSAGES/libapt-inst1.2.mo
+file locale/gl/LC_MESSAGES/libapt-pkg4.10.mo    path=usr/share/locale/gl/LC_MESSAGES/libapt-pkg4.10.mo
+file locale/hu/LC_MESSAGES/apt.mo               path=usr/share/locale/hu/LC_MESSAGES/apt.mo
+file locale/hu/LC_MESSAGES/libapt-inst1.2.mo    path=usr/share/locale/hu/LC_MESSAGES/libapt-inst1.2.mo
+file locale/hu/LC_MESSAGES/libapt-pkg4.10.mo    path=usr/share/locale/hu/LC_MESSAGES/libapt-pkg4.10.mo
+file locale/it/LC_MESSAGES/apt.mo               path=usr/share/locale/it/LC_MESSAGES/apt.mo
+file locale/it/LC_MESSAGES/libapt-inst1.2.mo    path=usr/share/locale/it/LC_MESSAGES/libapt-inst1.2.mo
+file locale/it/LC_MESSAGES/libapt-pkg4.10.mo    path=usr/share/locale/it/LC_MESSAGES/libapt-pkg4.10.mo
+file locale/ja/LC_MESSAGES/apt.mo               path=usr/share/locale/ja/LC_MESSAGES/apt.mo
+file locale/ja/LC_MESSAGES/libapt-inst1.2.mo    path=usr/share/locale/ja/LC_MESSAGES/libapt-inst1.2.mo
+file locale/ja/LC_MESSAGES/libapt-pkg4.10.mo    path=usr/share/locale/ja/LC_MESSAGES/libapt-pkg4.10.mo
+file locale/km/LC_MESSAGES/apt.mo               path=usr/share/locale/km/LC_MESSAGES/apt.mo
+file locale/km/LC_MESSAGES/libapt-inst1.2.mo    path=usr/share/locale/km/LC_MESSAGES/libapt-inst1.2.mo
+file locale/km/LC_MESSAGES/libapt-pkg4.10.mo    path=usr/share/locale/km/LC_MESSAGES/libapt-pkg4.10.mo
+file locale/ko/LC_MESSAGES/apt.mo               path=usr/share/locale/ko/LC_MESSAGES/apt.mo
+file locale/ko/LC_MESSAGES/libapt-inst1.2.mo    path=usr/share/locale/ko/LC_MESSAGES/libapt-inst1.2.mo
+file locale/ko/LC_MESSAGES/libapt-pkg4.10.mo    path=usr/share/locale/ko/LC_MESSAGES/libapt-pkg4.10.mo
+file locale/ku/LC_MESSAGES/apt.mo               path=usr/share/locale/ku/LC_MESSAGES/apt.mo
+file locale/ku/LC_MESSAGES/libapt-inst1.2.mo    path=usr/share/locale/ku/LC_MESSAGES/libapt-inst1.2.mo
+file locale/ku/LC_MESSAGES/libapt-pkg4.10.mo    path=usr/share/locale/ku/LC_MESSAGES/libapt-pkg4.10.mo
+file locale/lt/LC_MESSAGES/apt.mo               path=usr/share/locale/lt/LC_MESSAGES/apt.mo
+file locale/lt/LC_MESSAGES/libapt-inst1.2.mo    path=usr/share/locale/lt/LC_MESSAGES/libapt-inst1.2.mo
+file locale/lt/LC_MESSAGES/libapt-pkg4.10.mo    path=usr/share/locale/lt/LC_MESSAGES/libapt-pkg4.10.mo
+file locale/mr/LC_MESSAGES/apt.mo               path=usr/share/locale/mr/LC_MESSAGES/apt.mo
+file locale/mr/LC_MESSAGES/libapt-inst1.2.mo    path=usr/share/locale/mr/LC_MESSAGES/libapt-inst1.2.mo
+file locale/mr/LC_MESSAGES/libapt-pkg4.10.mo    path=usr/share/locale/mr/LC_MESSAGES/libapt-pkg4.10.mo
+file locale/nb/LC_MESSAGES/apt.mo               path=usr/share/locale/nb/LC_MESSAGES/apt.mo
+file locale/nb/LC_MESSAGES/libapt-inst1.2.mo    path=usr/share/locale/nb/LC_MESSAGES/libapt-inst1.2.mo
+file locale/nb/LC_MESSAGES/libapt-pkg4.10.mo    path=usr/share/locale/nb/LC_MESSAGES/libapt-pkg4.10.mo
+file locale/ne/LC_MESSAGES/apt.mo               path=usr/share/locale/ne/LC_MESSAGES/apt.mo
+file locale/ne/LC_MESSAGES/libapt-inst1.2.mo    path=usr/share/locale/ne/LC_MESSAGES/libapt-inst1.2.mo
+file locale/ne/LC_MESSAGES/libapt-pkg4.10.mo    path=usr/share/locale/ne/LC_MESSAGES/libapt-pkg4.10.mo
+file locale/nl/LC_MESSAGES/apt.mo               path=usr/share/locale/nl/LC_MESSAGES/apt.mo
+file locale/nl/LC_MESSAGES/libapt-inst1.2.mo    path=usr/share/locale/nl/LC_MESSAGES/libapt-inst1.2.mo
+file locale/nl/LC_MESSAGES/libapt-pkg4.10.mo    path=usr/share/locale/nl/LC_MESSAGES/libapt-pkg4.10.mo
+file locale/nn/LC_MESSAGES/apt.mo               path=usr/share/locale/nn/LC_MESSAGES/apt.mo
+file locale/nn/LC_MESSAGES/libapt-inst1.2.mo    path=usr/share/locale/nn/LC_MESSAGES/libapt-inst1.2.mo
+file locale/nn/LC_MESSAGES/libapt-pkg4.10.mo    path=usr/share/locale/nn/LC_MESSAGES/libapt-pkg4.10.mo
+file locale/pl/LC_MESSAGES/apt.mo               path=usr/share/locale/pl/LC_MESSAGES/apt.mo
+file locale/pl/LC_MESSAGES/libapt-inst1.2.mo    path=usr/share/locale/pl/LC_MESSAGES/libapt-inst1.2.mo
+file locale/pl/LC_MESSAGES/libapt-pkg4.10.mo    path=usr/share/locale/pl/LC_MESSAGES/libapt-pkg4.10.mo
+file locale/pt/LC_MESSAGES/apt.mo               path=usr/share/locale/pt/LC_MESSAGES/apt.mo
+file locale/pt/LC_MESSAGES/libapt-inst1.2.mo    path=usr/share/locale/pt/LC_MESSAGES/libapt-inst1.2.mo
+file locale/pt/LC_MESSAGES/libapt-pkg4.10.mo    path=usr/share/locale/pt/LC_MESSAGES/libapt-pkg4.10.mo
+file locale/pt_BR/LC_MESSAGES/apt.mo            path=usr/share/locale/pt_BR/LC_MESSAGES/apt.mo
+file locale/pt_BR/LC_MESSAGES/libapt-inst1.2.mo path=usr/share/locale/pt_BR/LC_MESSAGES/libapt-inst1.2.mo
+file locale/pt_BR/LC_MESSAGES/libapt-pkg4.10.mo path=usr/share/locale/pt_BR/LC_MESSAGES/libapt-pkg4.10.mo
+file locale/ro/LC_MESSAGES/apt.mo               path=usr/share/locale/ro/LC_MESSAGES/apt.mo
+file locale/ro/LC_MESSAGES/libapt-inst1.2.mo    path=usr/share/locale/ro/LC_MESSAGES/libapt-inst1.2.mo
+file locale/ro/LC_MESSAGES/libapt-pkg4.10.mo    path=usr/share/locale/ro/LC_MESSAGES/libapt-pkg4.10.mo
+file locale/ru/LC_MESSAGES/apt.mo               path=usr/share/locale/ru/LC_MESSAGES/apt.mo
+file locale/ru/LC_MESSAGES/libapt-inst1.2.mo    path=usr/share/locale/ru/LC_MESSAGES/libapt-inst1.2.mo
+file locale/ru/LC_MESSAGES/libapt-pkg4.10.mo    path=usr/share/locale/ru/LC_MESSAGES/libapt-pkg4.10.mo
+file locale/sk/LC_MESSAGES/apt.mo               path=usr/share/locale/sk/LC_MESSAGES/apt.mo
+file locale/sk/LC_MESSAGES/libapt-inst1.2.mo    path=usr/share/locale/sk/LC_MESSAGES/libapt-inst1.2.mo
+file locale/sk/LC_MESSAGES/libapt-pkg4.10.mo    path=usr/share/locale/sk/LC_MESSAGES/libapt-pkg4.10.mo
+file locale/sl/LC_MESSAGES/apt.mo               path=usr/share/locale/sl/LC_MESSAGES/apt.mo
+file locale/sl/LC_MESSAGES/libapt-inst1.2.mo    path=usr/share/locale/sl/LC_MESSAGES/libapt-inst1.2.mo
+file locale/sl/LC_MESSAGES/libapt-pkg4.10.mo    path=usr/share/locale/sl/LC_MESSAGES/libapt-pkg4.10.mo
+file locale/sv/LC_MESSAGES/apt.mo               path=usr/share/locale/sv/LC_MESSAGES/apt.mo
+file locale/sv/LC_MESSAGES/libapt-inst1.2.mo    path=usr/share/locale/sv/LC_MESSAGES/libapt-inst1.2.mo
+file locale/sv/LC_MESSAGES/libapt-pkg4.10.mo    path=usr/share/locale/sv/LC_MESSAGES/libapt-pkg4.10.mo
+file locale/th/LC_MESSAGES/apt.mo               path=usr/share/locale/th/LC_MESSAGES/apt.mo
+file locale/th/LC_MESSAGES/libapt-inst1.2.mo    path=usr/share/locale/th/LC_MESSAGES/libapt-inst1.2.mo
+file locale/th/LC_MESSAGES/libapt-pkg4.10.mo    path=usr/share/locale/th/LC_MESSAGES/libapt-pkg4.10.mo
+file locale/tl/LC_MESSAGES/apt.mo               path=usr/share/locale/tl/LC_MESSAGES/apt.mo
+file locale/tl/LC_MESSAGES/libapt-inst1.2.mo    path=usr/share/locale/tl/LC_MESSAGES/libapt-inst1.2.mo
+file locale/tl/LC_MESSAGES/libapt-pkg4.10.mo    path=usr/share/locale/tl/LC_MESSAGES/libapt-pkg4.10.mo
+file locale/uk/LC_MESSAGES/apt.mo               path=usr/share/locale/uk/LC_MESSAGES/apt.mo
+file locale/uk/LC_MESSAGES/libapt-inst1.2.mo    path=usr/share/locale/uk/LC_MESSAGES/libapt-inst1.2.mo
+file locale/uk/LC_MESSAGES/libapt-pkg4.10.mo    path=usr/share/locale/uk/LC_MESSAGES/libapt-pkg4.10.mo
+file locale/vi/LC_MESSAGES/apt.mo               path=usr/share/locale/vi/LC_MESSAGES/apt.mo
+file locale/vi/LC_MESSAGES/libapt-inst1.2.mo    path=usr/share/locale/vi/LC_MESSAGES/libapt-inst1.2.mo
+file locale/vi/LC_MESSAGES/libapt-pkg4.10.mo    path=usr/share/locale/vi/LC_MESSAGES/libapt-pkg4.10.mo
+file locale/zh_CN/LC_MESSAGES/apt.mo            path=usr/share/locale/zh_CN/LC_MESSAGES/apt.mo
+file locale/zh_CN/LC_MESSAGES/libapt-inst1.2.mo path=usr/share/locale/zh_CN/LC_MESSAGES/libapt-inst1.2.mo
+file locale/zh_CN/LC_MESSAGES/libapt-pkg4.10.mo path=usr/share/locale/zh_CN/LC_MESSAGES/libapt-pkg4.10.mo
+file locale/zh_TW/LC_MESSAGES/apt.mo            path=usr/share/locale/zh_TW/LC_MESSAGES/apt.mo
+file locale/zh_TW/LC_MESSAGES/libapt-inst1.2.mo path=usr/share/locale/zh_TW/LC_MESSAGES/libapt-inst1.2.mo
+file locale/zh_TW/LC_MESSAGES/libapt-pkg4.10.mo path=usr/share/locale/zh_TW/LC_MESSAGES/libapt-pkg4.10.mo
