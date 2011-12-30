@@ -1,0 +1,1670 @@
+#!/usr/bin/perl -w
+
+eval 'exec /usr/bin/perl  -S $0 ${1+"$@"}'
+    if 0; # not running under some shell
+
+##############################################################################
+##############################################################################
+#
+# apt-clone - APT-powered Nexenta Core Upgrade
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+# Copyright (C) 2005-2008 Nexenta Systems, Inc.
+# All rights reserved.
+#
+# Copyright (C) 2008 Erast Benson
+#
+##############################################################################
+##############################################################################
+
+#############################################################################
+package Exception;
+#############################################################################
+
+use strict;
+no warnings 'redefine';
+use overload ('""' => 'stringify');
+
+$Exception::IOError			= 'IOError';
+$Exception::SystemCallError		= 'SystemCallError';
+$Exception::DeviceNotFound		= 'DeviceNotFound';
+$Exception::WrongArguments		= 'WrongArguments';
+$Exception::FormatError		        = 'FormatError';
+
+sub new {
+	my ($class, $type, $msg) = @_;
+	my $msg_trace;
+	if (ref($msg) eq 'ARRAY') {
+		$msg_trace = join('', @$msg);
+		$msg = $msg->[0];
+	}
+	else {  $msg_trace = $msg; }
+
+	my $self;
+	$self->{name} = "apt-clone.$type";
+	$self->{message} = $msg;
+	bless $self, $class;
+
+	return $self;
+}
+
+sub stringify {
+    my $self = shift;
+    return $self->{name} . ": " . $self->{message} . ($self->{message} =~ /\n$/ ? "" : "\n");
+}
+
+#############################################################################
+package NMUUtil;
+#############################################################################
+
+use strict;
+no warnings 'redefine';
+
+#
+# global constants
+#
+$NMUUtil::nmu = 'nmu';
+$NMUUtil::filesystem = 'filesystem';
+$NMUUtil::UPGRADE_MENU_KEEP = 16;
+$NMUUtil::UPGRADE_ROOTFS_KEEP = 32;
+$NMUUtil::LATEST_GRUB_IDX = 2;
+$NMUUtil::SYSPOOL = 'syspool';
+$NMUUtil::ROOTFS = "$NMUUtil::SYSPOOL/rootfs";
+$NMUUtil::ROOTFS_DEFAULT = "$NMUUtil::ROOTFS-$NMUUtil::nmu-000";
+$NMUUtil::SLOT_RE = qr#^$NMUUtil::ROOTFS-$NMUUtil::nmu-(\d+)$#;
+$NMUUtil::FOLDER_PROP_USTATUS = 'nms:ustatus';
+$NMUUtil::UFLAG_KEEP_PERMANENTLY = 'keep-permanently';
+$NMUUtil::UFLAG_UPGRADE_CHECKPOINT = 'upgrade-checkpoint';
+$NMUUtil::UFLAG_ROLLBACK_CHECKPOINT = 'rollback-checkpoint';
+$NMUUtil::UFLAG_ACTIVE_UPGRADE_CHECKPOINT = 'active-upgrade-checkpoint';
+$NMUUtil::UFLAG_ACTIVE_ROLLBACK_CHECKPOINT = 'active-rollback-checkpoint';
+$NMUUtil::UFLAG_MARKED_RM = 'marked-for-removal';
+$NMUUtil::ENABLE_DEBUG = 0;
+$NMUUtil::ENABLE_ASSERT = 1;
+
+#
+# local constants
+#
+my $BOOTFS_RE = qr#^\s*bootfs\s+([\w\-\.\/]+)#;
+my $ROOTPOOL_MNT = "/syspool";
+my $ROOTFS_MNT = "/tmp/rootfs.mnt";
+my $HDR_BEGIN = "#---------- ADDED BY BOOTADM - DO NOT EDIT ----------";
+my $HDR_END = "#---------------------END BOOTADM--------------------";
+
+# mount/umount cache
+my %mnt_cache = ();
+
+sub ASSERT ($;$) {
+	if ($NMUUtil::ENABLE_ASSERT) {
+		unless($_[0]) {
+			require Carp;
+			Carp::confess( _fail_msg($_[1]) );
+		}
+	}
+}
+
+sub print_debug
+{
+	print STDOUT @_ if ($NMUUtil::ENABLE_DEBUG);
+}
+
+sub sysexec
+{
+	my ($cmd, $lines) = @_;
+	my @out_lines;
+	my $err;
+	local *FD;
+
+	my $success = open(FD, "$cmd 2>&1|");
+	if (! $success) {
+		$err = "FAILURE: $cmd: $!";
+		push @out_lines, $!;
+	}
+	else {
+		@out_lines = <FD>;
+		close FD;
+		my $rc = $?;
+
+		if ($rc) {
+			$err =  "FAILURE ($rc): $cmd";
+			$err .= ", $out_lines[0]" if (scalar @out_lines);
+		}
+	}
+	if (defined $err) {
+		if (defined $lines) {
+			if (scalar @out_lines) {
+				my $line = $out_lines[0];
+				chomp $line;
+				push @$lines, $line;
+			} else {
+				push @$lines, '';
+			}
+		}
+		return 1;
+	}
+	
+_process_out_lines:
+	for my $line (@out_lines) {
+		if (defined $lines) {
+			chomp $line;
+			push @$lines, $line;
+		}
+	}
+	return 0;
+}
+
+#
+# Get current rootfs as far as ZFS *current* settings are concerned
+#
+sub _get_current_rootfs {
+	my @lines = ();
+	if (sysexec("zfs mount", \@lines) != 0) {
+		die new Exception($Exception::SystemCallError, \@lines);
+	}
+	for my $line (@lines) {
+		return $1 if ($line =~ /^($NMUUtil::ROOTFS\S*)\s+\//);
+	}
+	die new Exception($Exception::DeviceNotFound,
+			       "Unable to find root device");
+}
+
+sub _mount {
+	my ($zname, $mntpoint, $force) = @_;
+	$force = defined $force ? $force : 0;
+
+	return if (!$force && exists $mnt_cache{$mntpoint});
+
+	my $current = _get_current_rootfs();
+
+	if (-d $mntpoint) {
+		# need to clean up in case of crash, etc..
+		sysexec("umount $mntpoint 2>/dev/null");
+	}
+
+	if ($current eq $zname) {
+		sysexec("ln -s / $mntpoint");
+	} else {
+		if (! -d $mntpoint) {
+			mkdir $mntpoint;
+		}
+		my @lines = ();
+		if (sysexec("mount -F zfs $zname $mntpoint", \@lines) != 0) {
+			die new Exception($Exception::SystemCallError, \@lines);
+		}
+	}
+
+	$mnt_cache{$mntpoint} = 1 if ($force);
+}
+
+sub _umount {
+	my ($mntpoint, $force) = @_;
+	$force = defined $force ? $force : 0;
+
+	return if (!$force && exists $mnt_cache{$mntpoint});
+
+	if (-l $mntpoint) {
+		unlink $mntpoint;
+	} else {
+		my @lines = ();
+		if (sysexec("umount $mntpoint", \@lines) != 0) {
+			die new Exception($Exception::SystemCallError, \@lines);
+		}
+		rmdir $mntpoint;
+	}
+	delete $mnt_cache{$mntpoint} if ($force);
+}
+
+sub _parse_grub {
+
+	my @lines = ();
+	if (sysexec("cat $ROOTPOOL_MNT/boot/grub/menu.lst", \@lines) != 0) {
+		die new Exception($Exception::SystemCallError, \@lines);
+	}
+
+	my %h = ();
+	my @top_lines = ();
+	my @sect = ();
+	my $bootfs = '';
+	my $first_found = 0;
+	my $safe_mode_idx = -1;
+	my $idx = 1;
+	for my $line (@lines) {
+		if ($line eq $HDR_BEGIN) {
+			$first_found++;
+			push @sect, $line;
+			next;
+		}
+		if (!$first_found) {
+			push @top_lines, $line;
+			next;
+		}
+		if ($line eq $HDR_END) {
+			push @sect, $line;
+			if ($bootfs eq '') {
+			 	if (system("zfs list $NMUUtil::ROOTFS_DEFAULT 2>/dev/null 1>&2") == 0) {
+					$bootfs = $NMUUtil::ROOTFS_DEFAULT;
+				} else {
+					$bootfs = $NMUUtil::ROOTFS;
+				}
+			}
+			unshift @sect, $bootfs;
+			my @nsect = @sect;
+			$h{$idx++} = \@nsect;
+			if (scalar @sect < 5) {
+				die new Exception($Exception::FormatError,
+				       "Failed to parse menu.lst: section content not complete");
+			}
+			@sect = ();
+			$bootfs = '';
+			next;
+		}
+
+		$safe_mode_idx = $idx if ($line =~ /Nexenta.*Safe Mode/);
+		$bootfs = $1 if ($line =~ /$BOOTFS_RE/);
+		push @sect, $line if (scalar @sect > 0);
+	}
+
+	if (scalar @sect > 0) {
+		die new Exception($Exception::FormatError,
+		       "Failed to parse menu.lst: section's end marker not found");
+	} elsif (scalar keys %h == 0) {
+		die new Exception($Exception::FormatError,
+		       "Failed to parse menu.lst: boot menu is empty");
+	} elsif (!exists $h{1}) {
+		die new Exception($Exception::FormatError,
+		       "Failed to parse menu.lst: no sections found");
+	}
+
+	# 
+	# need to make sure default rootfs and safe mode are
+	# respectively at positions #1 and #2, so we skip
+	# all other NCP GRUB records..
+	#
+	# For now, apt-clone assumes that GRUB menu.lst is binary
+	# formatted database...
+	# 
+	if ($safe_mode_idx != -1 && $idx > 3) {
+		my $saved_lines = $h{2};
+		$h{2} = $h{$safe_mode_idx};
+		$h{$safe_mode_idx} = $saved_lines;
+	}
+
+	#
+	# Get read of old NCP <= RC1 GRUB records...
+	#
+	for my $idx (sort keys %h) {
+		my $sect = $h{$idx};
+		if ($idx > 2 && grep { /Nexenta.*Core.*Platform.*Elatte/ } @$sect) {
+			delete $h{$idx};
+		}
+	}
+
+	unshift @top_lines, '';
+	$h{0} = \@top_lines;
+
+	return \%h;
+}
+
+#
+# Get default rootfs from GRUB perspective
+#
+sub _get_default_rootfs {
+	my $h = _parse_grub();
+	my $lines = $h->{1};
+	return $lines->[0];
+}
+
+#
+# Get default findroot from GRUB perspective
+#
+sub _get_default_findroot {
+	my $h = _parse_grub();
+	my $lines = $h->{1};
+	return $lines->[3];
+}
+
+
+
+sub _get_free_slot {
+	my @names = ();
+	if (sysexec("zfs list -t $NMUUtil::filesystem -r -H -o name $NMUUtil::SYSPOOL", \@names) != 0) {
+		die new Exception($Exception::SystemCallError, $names[0]);
+	}
+	my @slots = ();
+	for my $name (@names) {
+		my ($slot) =  $name =~ /$NMUUtil::SLOT_RE/;
+		push @slots, $slot if ($slot);
+	}
+	my $idx;
+	my @sorted_slots = sort {$a <=> $b} @slots;
+	if (scalar @sorted_slots == 0) {
+		$idx = 1;
+	}
+	elsif ($sorted_slots[-1] < 999) {
+		# common case
+		$idx = $sorted_slots[-1] + 1;
+	}
+	else {
+		# wrap around
+		$idx = 1;
+		for my $slot (@sorted_slots) {
+			last if ($slot != $idx);
+			$idx++;
+		}
+	}
+	return sprintf("%03d", $idx);
+}
+
+sub _build_snapname {
+	my ($slot) = @_;
+	my $rootfs = _get_current_rootfs();
+	return "$rootfs\@$NMUUtil::nmu-$slot";
+}
+
+sub _build_clonename {
+	my $slot = shift;
+	return "$NMUUtil::ROOTFS-$NMUUtil::nmu-$slot";
+}
+
+sub _get_sorted_entries {
+	my $h = shift;
+	my %creations = ();
+	for my $idx (sort {$a <=> $b} keys %$h) {
+		my $lines = $h->{$idx};
+		my $bootfs = $lines->[0];
+
+		# skip top_lines, default rootfs and safe mode
+		next if ($idx <= 2);
+
+		my @result = ();
+		if (sysexec("zfs get -o value -Hp creation $bootfs", \@result) != 0) {
+			if ($idx > 2) {
+				print_debug("Stale GRUB entry found for '$bootfs': ignored\n");
+				next;
+			}
+			die new Exception($Exception::SystemCallError, $result[0])
+		}
+		$creations{$idx} = int($result[0]);
+	}
+	# sort by values numeric, descending...
+	my @sorted_keys = sort { $creations{$b} <=> $creations{$a} } keys %creations;
+	# prepare new 'sorted' hash...
+	my %h_sorted = ();
+	$h_sorted{0} = $h->{0};
+	$h_sorted{1} = $h->{1};
+	$h_sorted{2} = $h->{2};
+	my $idx = 3;
+	my $i = 0;
+	for my $k (@sorted_keys) {
+		last if ($i++ >= $NMUUtil::UPGRADE_MENU_KEEP);
+		$h_sorted{$idx++} = $h->{$k};
+	}
+
+	return \%h_sorted;
+}
+
+sub _set_vfstab {
+	my ($rootfs) = @_;
+	local *VFSTAB;
+
+	_mount($rootfs, $ROOTFS_MNT);
+
+	my @lines = ();
+	if (sysexec("cat $ROOTFS_MNT/etc/vfstab", \@lines) != 0) {
+		_umount($ROOTFS_MNT);
+		die new Exception($Exception::SystemCallError, \@lines);
+	}
+
+	if (! open(VFSTAB, '>', "$ROOTFS_MNT/etc/vfstab")) {
+		_umount($ROOTFS_MNT);
+		die new Exception($Exception::IOError,
+			"Unable to update /etc/vfstab for system folder '$rootfs': $!");
+	}
+
+	for my $line (@lines) {
+		$line = "$line\n";
+		if ($line =~ /^\S+(\s+\S+\s+)\/(\s+zfs\s+.*)/) {
+			$line = "$rootfs$1/$2\n";
+		}
+		print VFSTAB $line;
+	}
+
+	close VFSTAB;
+	_umount($ROOTFS_MNT);
+}
+
+sub _get_rootfs_creation_times {
+	my @lines = ();
+	if (sysexec("zfs get -r -o name,value -Hp creation $NMUUtil::SYSPOOL", \@lines) != 0) {
+		die new Exception($Exception::SystemCallError, \@lines);
+	}
+	my %h = ();
+	for my $line (@lines) {
+		next if ($line !~ /^($NMUUtil::ROOTFS|$NMUUtil::ROOTFS-$NMUUtil::nmu-\d+)\s+(\d+)/);
+		my ($rootfs, $creation) = ($1, $2);
+		next if ($rootfs =~ /\@/);
+		$h{$rootfs} = $creation;
+	}
+	return \%h;
+}
+
+sub _apply_rootfs_retention {
+	my @out = ();
+	my $h = _get_rootfs_creation_times();
+
+	# sort by values numeric, descending...
+	my @sorted_keys = sort { $h->{$b} <=> $h->{$a} } keys %$h;
+	my $i = 0;
+	for my $rootfs (@sorted_keys) {
+		if ($i++ >= $NMUUtil::UPGRADE_ROOTFS_KEEP) {
+			if (_get_uflag($rootfs) eq $NMUUtil::UFLAG_KEEP_PERMANENTLY) {
+				next;
+			}
+			push @out, $rootfs
+		}
+	}
+	return \@out;
+}
+
+sub _get_mount_type {
+	my ($rootfs) = @_;
+	my @lines = ();
+	if (sysexec("zfs get -o value -Hp mountpoint $rootfs", \@lines) != 0) {
+		die new Exception($Exception::SystemCallError, \@lines);
+	}
+	return $lines[0];
+}
+
+sub _set_legacy {
+	my ($rootfs) = @_;
+	my @lines = ();
+	if (sysexec("zfs set mountpoint=legacy $rootfs", \@lines) != 0) {
+		die new Exception($Exception::SystemCallError, \@lines);
+	}
+}
+
+sub _get_origin {
+	my ($rootfs) = @_;
+	my @lines = ();
+	if (sysexec("zfs get -Ho value origin $rootfs", \@lines) != 0) {
+		return '';
+	}
+	return $lines[0];
+}
+
+sub _get_uflag {
+	my ($rootfs) = @_;
+	my @lines = ();
+	if (sysexec("zfs get -Ho value $NMUUtil::FOLDER_PROP_USTATUS $rootfs", \@lines) != 0) {
+		return '';
+	}
+	return $lines[0];
+}
+
+sub _set_uflag {
+	my ($rootfs, $flag) = @_;
+	my @lines = ();
+	if (sysexec("zfs set $NMUUtil::FOLDER_PROP_USTATUS=$flag $rootfs", \@lines) != 0) {
+		die new Exception($Exception::SystemCallError, \@lines);
+	}
+}
+
+sub _set_grub {
+	my ($h, $rootfs, $is_default, $desc) = @_;
+	my $max_idx = 0;
+	my $findroot = _get_default_findroot();
+    	my $times = _get_rootfs_creation_times();
+	if (!exists $times->{$rootfs}) {
+		die new Exception($Exception::SystemCallError,
+				       "Folder '$rootfs' not found");
+	}
+	my $date = localtime($times->{$rootfs});
+	$date =~ s/^\w+\s+//;
+
+	my ($slot) =  $rootfs =~ /$NMUUtil::SLOT_RE/;
+	$slot = "$NMUUtil::nmu-$slot";
+
+	my %out = ();
+	my $found_rootfs = 0;
+	my $orig_title = 'Nexenta Core Platform';
+	for my $idx (sort {$a <=> $b} keys %$h) {
+		$max_idx = $idx if ($idx > $max_idx);
+		my $lines = $h->{$idx};
+		my $bootfs = shift @$lines;
+
+		# output structures
+		my @nlines = ();
+		$out{$idx} = \@nlines;
+		push @nlines, $bootfs;
+
+		# top_lines case...
+		if ($bootfs eq '') {
+			ASSERT($idx == 0);
+			for my $line (@$lines) {
+				push @nlines, $line;
+			}
+			next;
+		}
+
+		# processing single section
+		my $found_title = '';
+		my $found_info = '';
+		my $found_default = 0;
+		my $found_safe = 0;
+		for my $line (@$lines) {
+
+			# default modification case...
+			if ($is_default) {
+				if ($idx == 1) {
+					if (!$found_default && $line ne $HDR_BEGIN) {
+						$line = "title " . ($desc eq '' ? $orig_title : $desc) .
+										" [$slot : $date]";
+						push @nlines, $line;
+						$found_default = 1;
+						next;
+					} elsif ($found_default == 1) {
+						if ($line =~ /^\s*findroot/) {
+							push @nlines, $line;
+							next;
+						}
+						push @nlines, "\tbootfs $rootfs";
+						$nlines[0] = $rootfs;
+						push @nlines, $line if ($line !~ /^\s*bootfs/);
+						$found_default = 2;
+						next;
+					}
+					# pass through...
+				}
+				if ($idx == 2) { # safe mode case
+					if (!$found_safe && $line ne $HDR_BEGIN) {
+						$line = "title " . ($desc eq '' ? $orig_title : $desc) .
+										" [Safe Mode, 32-bit]";
+						push @nlines, $line;
+						$found_safe = 1;
+						next;
+					} elsif ($found_safe == 1) {
+						if ($line =~ /^\s*findroot/) {
+							push @nlines, $line;
+							next;
+						}
+						push @nlines, "\tbootfs $rootfs";
+						$nlines[0] = $rootfs;
+						push @nlines, $line if ($line !~ /^\s*bootfs/);
+						$found_safe = 2;
+						next;
+					}
+					# pass through...
+				}
+				push @nlines, $line;
+				next;
+			}
+
+			if ($found_title eq '') {
+				if ($line =~ /\s*title\s+(.*)\s+(\[.*\])/) {
+					# extract and skip title...
+					$found_title = $1;
+					$found_info = $2;
+					next;
+				}
+				push @nlines, $line;
+				next;
+			}
+
+			if ($line =~ /$BOOTFS_RE/ && $rootfs eq $1 && $idx != 2) {
+				ASSERT($rootfs eq $bootfs);
+				$found_title = "title " .  ($desc eq '' ? $found_title : $desc);
+				push @nlines, "$found_title [$slot : $date]";
+				push @nlines, "$findroot";
+				push @nlines, "\tbootfs $rootfs";
+				$nlines[0] = $rootfs;
+				$found_rootfs = 1;
+				goto _flush_title;
+			}
+
+			push @nlines, "title $found_title $found_info";
+			push @nlines, $line;
+
+_flush_title:
+			# flush title..
+			$found_title = '';
+			$found_info = '';
+		}
+	}
+
+	# add new case...
+	if (!$found_rootfs && !$is_default) {
+		# output structures
+		my @nlines = ();
+		$out{++$max_idx} = \@nlines;
+		push @nlines, $rootfs;
+		my $hwplat = `uname -i`; chomp $hwplat;
+
+		$desc = $desc eq '' ? 'Upgrade Checkpoint' : $desc;
+		push @nlines, "#---------- ADDED BY BOOTADM - DO NOT EDIT ----------";
+		push @nlines, "title $desc [$slot : $date]";
+		push @nlines, "\tbootfs $rootfs";
+		if ($hwplat eq 'i86xpv') {
+			push @nlines, "\tkernel\$ /boot/\$ISADIR/xen.gz";
+			push @nlines, "\tmodule\$ /platform/i86xpv/kernel/\$ISADIR/unix /platform/i86xpv/kernel/\$ISADIR/unix -B \$ZFS-BOOTFS";
+			push @nlines, "\tmodule\$ /platform/i86pc/\$ISADIR/boot_archive";
+		} else {
+			push @nlines, "\tkernel\$ /platform/i86pc/kernel/\$ISADIR/unix -B \$ZFS-BOOTFS";
+			push @nlines, "\tmodule\$ /platform/i86pc/\$ISADIR/boot_archive";
+		}
+		push @nlines, "#---------------------END BOOTADM--------------------";
+	}
+
+	return \%out;
+}
+
+sub _rootfs_description {
+	my ($rootfs, $value) = @_;
+	my $h = _parse_grub();
+	if (defined $value && $value ne '') {
+		$h =_set_grub($h, $rootfs, 0, $value);
+		_refresh_grub($h);
+	}
+	for my $idx (keys %$h) {
+		my $lines = $h->{$idx};
+		my $bootfs = $lines->[0];
+		my $title = $lines->[2];
+		if ($bootfs eq $rootfs &&
+		    $title =~ /\s*title\s+(.*)\s+(\[.*\])/) {
+			return $1;
+		}
+	}
+	return '';
+}
+
+sub _unset_grub {
+	my ($rootfs) = @_;
+	local *MENULST;
+
+	my $h = _parse_grub();
+
+	my $found = 0;
+	for my $idx (sort {$a <=> $b} keys %$h) {
+		next if ($idx <= 2); # skip top (0), default (1) and safe (2)
+		my $lines = $h->{$idx};
+		my $bootfs = $lines->[0];
+		if ($bootfs eq $rootfs) {
+			$found = 1;
+			last;
+		}
+	}
+	if (!$found) {
+		print_debug("$rootfs: entry not found in menu.lst\n");
+		return;
+	}
+
+	if (! open(MENULST, '>', "$ROOTPOOL_MNT/boot/grub/menu.lst")) {
+		die new Exception($Exception::IOError,
+			"Unable to update /boot/grub/menu.lst for system folder '$rootfs': $!");
+	}
+
+	for my $idx (sort {$a <=> $b} keys %$h) {
+		my $lines = $h->{$idx};
+		my $bootfs = shift @$lines;
+		if ($bootfs ne $rootfs || $idx <=2) {
+			for my $line (@$lines) {
+				print MENULST $line, "\n";
+			}
+		}
+	}
+
+	close MENULST;
+}
+
+sub _refresh_grub {
+	my ($h) = @_;
+	local *MENULST;
+
+	if (! open(MENULST, '>', "$ROOTPOOL_MNT/boot/grub/menu.lst")) {
+		die new Exception($Exception::IOError,
+			"Unable to update /boot/grub/menu.lst: $!");
+	}
+
+	for my $idx (sort {$a <=> $b} keys %$h) {
+		my $lines = $h->{$idx};
+		my $bootfs = shift @$lines;
+
+		# skip not existing bootfs's - case for promote_rootfs()
+		next if ($bootfs ne '' &&
+			 system("zfs list $bootfs 2>/dev/null 1>&2") != 0);
+
+		# write section...
+		for my $line (@$lines) {
+			print MENULST $line, "\n";
+		}
+	}
+
+	close MENULST;
+}
+
+#
+# rootfs - cloned rootfs to mark
+# is_default - whether this rootfs needs to be marked as default
+# desc - optional, if not empty, set new description
+#
+sub _mark_rootfs {
+	my ($rootfs, $is_default, $desc) = @_;
+
+	# ensure legacy...
+	if (_get_mount_type($rootfs) ne 'legacy') {
+		_set_legacy($rootfs);
+	}
+
+	eval {
+		_unset_grub($rootfs);
+		my $h = _parse_grub();
+		$h = _set_grub($h, $rootfs, $is_default, $desc);
+
+		if ($is_default) {
+			my $default = _get_default_rootfs();
+			$h = _set_grub($h, $default, 0, '');
+		}
+
+		# re-sort hash, apply retention policy
+		my $h_sorted = _get_sorted_entries($h);
+		_refresh_grub($h_sorted);
+	}; if ($@) {
+		die $@;
+	}
+
+	_set_vfstab($rootfs);
+}
+
+# =============== NMU API ====================
+
+sub set_default {
+	my ($num) = @_;
+	local *MENULST;
+
+	my @lines = ();
+	if (sysexec("cat $ROOTPOOL_MNT/boot/grub/menu.lst", \@lines) != 0) {
+		die new Exception($Exception::IOError,
+			"Unable to open /boot/grub/menu.lst: $!");
+	}
+	my $idx = 0;
+	for my $line (@lines) {
+		if ($line =~ /^\s*default\s+(\d+)/) {
+			$idx = $1;
+			if ($num == $idx) {
+				print_debug("GRUB default is $num - not changing\n");
+				return;
+			}
+			last;
+		}
+	}
+	if (sysexec("sed -i -e \"s/^[ \\t]*default[ \\t]\\+[0-9]\\+/default $num/\" $ROOTPOOL_MNT/boot/grub/menu.lst") != 0) {
+		die new Exception($Exception::IOError,
+			"Unable to update /boot/grub/menu.lst: $!");
+	}
+	print_debug("GRUB default changed $idx => $num\n");
+}
+
+sub destroy_rootfs {
+	my $rootfs = shift;
+	my ($slot) = $rootfs=~ /$NMUUtil::SLOT_RE/;
+
+	if (!defined $slot) {
+		die new Exception($Exception::WrongArguments,
+		       "Wrong system folder name format '$rootfs'");
+	}
+
+	if (_get_current_rootfs() eq $rootfs) {
+		die new Exception($Exception::WrongArguments,
+			       "Can not destroy currently active system folder");
+	}
+
+	if (_get_default_rootfs() eq $rootfs) {
+		die new Exception($Exception::WrongArguments,
+			       "Can not destroy default system folder");
+	}
+
+	my @lines = ();
+	if (sysexec("zfs get -o value -Hp origin $rootfs", \@lines) != 0) {
+		die new Exception($Exception::SystemCallError,
+		       "Unable to get origin snapshot of the clone '$rootfs': $lines[0]");
+	}
+
+	my $snapname = $lines[0];
+
+	sysexec("zfs destroy $rootfs");
+	sysexec("zfs destroy $snapname");
+	_unset_grub($rootfs);
+}
+
+sub clone_rootfs {
+	my $slot = _get_free_slot();
+	my $clonename = _build_clonename($slot);
+	my $snapname = _build_snapname($slot);
+
+	my @lines = ();
+	if (sysexec("zfs snapshot $snapname", \@lines) != 0) {
+		die new Exception($Exception::SystemCallError,
+			       "Unable to create snapshot '$snapname': $lines[0]");
+	}
+
+	@lines = ();
+	if (sysexec("zfs clone $snapname $clonename", \@lines) != 0) {
+		# rollback snapshot
+		sysexec("zfs destroy $snapname");
+		die new Exception($Exception::SystemCallError,
+			       "Unable to create clone '$clonename': $lines[0]");
+	}
+
+	_mark_rootfs($clonename, 0, '');
+
+	my $arr = _apply_rootfs_retention();
+	for my $rootfs (@$arr) {
+		destroy_rootfs($rootfs);
+	}
+
+	_set_uflag($clonename, $NMUUtil::UFLAG_ROLLBACK_CHECKPOINT);
+
+	return $clonename;
+}
+
+sub set_rootfs_description {
+	_rootfs_description(@_);
+}
+
+sub activate_rootfs {
+	my $rootfs = shift;
+
+	my $current = _get_current_rootfs();
+	my $default = _get_default_rootfs();
+
+	my $default_ustatus = _get_uflag($default);
+	my $rootfs_ustatus = _get_uflag($rootfs);
+
+	if ($default eq $rootfs) {
+		if ($rootfs_ustatus ne $NMUUtil::UFLAG_ACTIVE_UPGRADE_CHECKPOINT &&
+		    $rootfs_ustatus ne $NMUUtil::UFLAG_ACTIVE_ROLLBACK_CHECKPOINT) {
+			print_debug("Warning: the default system folder '$rootfs' ".
+			      "appears to be not active ($rootfs_ustatus)");
+		}
+		die new Exception($Exception::WrongArguments,
+			"System folder '$rootfs' is already marked as default, ".
+			"cannot activate");
+	}
+
+	my @lines = ();
+	if (sysexec("zpool set bootfs=$rootfs $NMUUtil::SYSPOOL", \@lines) != 0) {
+		die new Exception($Exception::SystemCallError, \@lines);
+	}
+
+	my $origin = _get_origin($rootfs);
+	if ($origin ne '' && $origin ne '-') {
+		my $snapname = $origin;
+
+		# Try to promote given folder...
+		@lines = ();
+		if (sysexec("zfs promote $rootfs", \@lines) != 0) {
+			# No luck, restore original bootfs property..
+			sysexec("zpool set bootfs=$default $NMUUtil::SYSPOOL", \@lines);
+			die new Exception($Exception::SystemCallError, \@lines);
+		}
+		$snapname =~ s/^\S+\@/$rootfs\@/;
+
+		if ($default eq $NMUUtil::ROOTFS) {
+			if (sysexec("zfs rename $default $NMUUtil::ROOTFS_DEFAULT") == 0) {
+				_set_uflag($NMUUtil::ROOTFS_DEFAULT, $NMUUtil::UFLAG_ROLLBACK_CHECKPOINT);
+				_set_vfstab($NMUUtil::ROOTFS_DEFAULT);
+				$default = $NMUUtil::ROOTFS_DEFAULT;
+			}
+		}
+
+		# Destroy original snapshot...
+		sysexec("zfs destroy $snapname");
+	}
+
+	eval {
+		# This folder becomes our new default!
+		_mark_rootfs($rootfs, 1, '');
+	}; if ($@) {
+		# restore original bootfs property..
+		sysexec("zpool set bootfs=$default $NMUUtil::SYSPOOL");
+		die $@;
+	}
+
+	# Mark old default folder as rollback checkpoint
+	_set_uflag($default, ($default_ustatus =~ /$NMUUtil::UFLAG_ACTIVE_UPGRADE_CHECKPOINT/ ?
+			       		$NMUUtil::UFLAG_UPGRADE_CHECKPOINT :
+					$NMUUtil::UFLAG_ROLLBACK_CHECKPOINT));
+
+	_set_uflag($rootfs, ($rootfs_ustatus =~ /$NMUUtil::UFLAG_UPGRADE_CHECKPOINT/ ?
+			       		$NMUUtil::UFLAG_ACTIVE_UPGRADE_CHECKPOINT :
+					$NMUUtil::UFLAG_ACTIVE_ROLLBACK_CHECKPOINT));
+
+	set_default(0);
+}
+
+sub list_rootfs {
+	my @lines = ();
+	my @names = ();
+
+	if (sysexec("zfs list -t filesystem -o name -r $NMUUtil::SYSPOOL", \@lines) != 0) {
+		die new Exception($Exception::SystemCallError, \@lines);
+	}
+
+	for my $rootfs (@lines) {
+		next if ($rootfs eq $NMUUtil::SYSPOOL);
+
+		my $ustatus = _get_uflag($rootfs);
+		next if ($ustatus eq $NMUUtil::UFLAG_MARKED_RM);
+
+		$rootfs =~ s/^$NMUUtil::SYSPOOL\///;
+		push @names, $rootfs
+			if ($rootfs eq $NMUUtil::ROOTFS ||
+			    $rootfs =~ /$NMUUtil::SLOT_RE/);
+	}
+
+	return \@names;
+}
+
+##############################################################################
+package NMU; # still use a package so getopt etc. is not imported into
+             # the shell namespace
+
+BEGIN {
+	use File::Basename;
+	unshift @INC, dirname($0);
+}
+
+#
+# local variables
+#
+my $yes;
+my $dry_run;
+my $verbose;
+my $rootfs_activate;
+my $rootfs_rollback;
+
+sub to_bytes {
+	my $n = shift;
+	$n =~ tr/\,/\./;
+	return $1 if ($n =~ /^([\d\.]+)[bB]$/);
+	return int($1 * 1024) if ($n =~ /^([\d\.]+)[kK][bB]?$/);
+	return int($1 * 1024 * 1024) if ($n =~ /^([\d\.]+)[mM][bB]?$/);
+	return int($1 * 1024 * 1024 * 1024) if ($n =~ /^([\d\.]+)[gG][bB]?$/);
+	return int($1 * 1024 * 1024 * 1024 * 1024) if ($n =~ /^([\d\.]+)[tT][bB]?$/);
+	return $n;
+}
+
+sub print_out
+{
+	print STDOUT @_;
+}
+
+sub print_error
+{
+	print STDERR @_;
+}
+
+sub nmu_usage
+{
+	print STDOUT <<EOF;
+Usage: apt-clone [-hltsyvbkx] [-a clone] [-r clone] <apt-cmd> [pkg1 [pkg2...]]
+
+  apt-cmd               apt-get commands such as upgrade, dist-upgrade, remove
+  -h		      	Display this help message
+  -l			List upgraded clones
+  -i                    Initiate application rollback checkpoint/clone
+  -a <clone-name>       Activate given ZFS clone name
+  -r <clone-name>       Rollback/Destroy upgrade changes for ZFS clone name
+  -b <bootmenu-count>	Maximum number of boot menu entries to keep
+  -k <clone-count>	Maximum number of cloned root folders to keep
+  -x <http-proxy>	Remote repository HTTP proxy server
+  -t		      	Dry-run. Perform simulated upgrade - do not
+                        change data on system volume  
+  -s			Safe upgrade in cloned system folder (requires reboot)
+  -y		      	Do not ask any questions, assume Yes to all
+  -v		      	Verbose output
+
+  [pkg1 [pkg2...]]   	List of explicitly specified space-delimited 
+   			packages to upgrade. Note: expert usage only!
+			If omitted, the upgrade facility brings
+			the entire system up to date - which is the default
+			and recommended option.
+
+Perform Nexenta Core upgrade.
+
+Note: It is important to perform Nexenta Core upgrade operation via provided
+interface and under administrative control.
+
+EOF
+	exit 0;
+}
+
+sub confirm {
+	my $prompt = shift;
+
+	print_out($prompt . " (y/n) ");
+	my $key = <STDIN>;
+
+	print_out("\n");
+	return 1 if ($key =~ /[yY]/);
+	return 0;
+}
+
+sub nmu_system {
+	my $cmd = shift;
+	print_out("$cmd\n") if ($verbose eq '-V');
+	my $rc = system($cmd);
+	return $rc >> 8;
+}
+
+sub nmu_verify_free_space {
+	my $lines = shift;
+
+	my $need_to_get = 0;
+	my $after_unpacking = 0;
+	for my $line (@$lines) {
+		$need_to_get = to_bytes($2)
+			if ($line =~ /^Need\s+to\s+get\s+([\d\.\w]+\/)?([\d\.\w]+)\s+/);
+		if ($line =~ /^After unpacking\s+(\d+[kKmMbBgG]\w+)\s+.*(used|freed)/) {
+			$after_unpacking = to_bytes($1) if ($2 eq 'used');
+		}
+	}
+	my @list_lines = ();
+	if (NMUUtil::sysexec("zfs list -H -o avail $NMUUtil::SYSPOOL", \@list_lines) != 0) {
+		print_error("Unable to verify free space: $list_lines[0]\n");
+		exit(1);
+	}
+	my $avail = to_bytes($list_lines[0]);
+	my $need_s = sprintf("%.2f", $need_to_get/1024/1024);
+	my $info_msg = "This upgrade will download approximately ${need_s}MB";
+	my $need =  $need_to_get * 7 + $after_unpacking; # account for NMU snapshot, archive, etc
+	my $need_s2 = sprintf("%.2f", $need/1024/1024);
+	my $left = $avail - $need;
+	my $left_s = sprintf("%.2f", $left/1024/1024);
+
+	# and make sure that at least 150MB will be available after upgrade..
+	if ($left < 150 * 1024 * 1024) {
+print <<EOF;
+                          * * *
+     $info_msg.
+     Estimated free space requirement for this transactional
+     upgrade: ${need_s2}MB. Available free space: ${left_s}MB.
+   
+   +------------------------------------------------------------------+
+   |                                                                  |
+   |   Not enough free space. Suggested actions:                      |
+   |                                                                  | 
+   |    - remove older checkpoints using apt-clone command:           |
+   |      'apt-clone -r <checkpoint name>'                            |
+   |                                                                  |
+   |    - remove APT caches:                                          |
+   |      'rm -f /var/cache/apt/archives/*'                           |
+   |                                                                  |
+   +------------------------------------------------------------------+
+EOF
+		exit(1);
+	}
+
+	print_out("Success. $info_msg\n");
+}
+
+sub sysreboot {
+	my $cmd = shift;
+	system("bootadm update-archive");
+	system("sync");
+	system("sync");
+	system("$cmd -q -n");
+}
+
+sub cannot_upgrade_exit {
+	my $msg = shift;
+	print_out("Error: $msg\n");
+	print_out("ZFS on-disk version is too old: cannot upgrade\n");
+	exit 1;
+}
+
+################################ main #######################################
+
+# check global zone
+my $zone = `/sbin/zonename`;
+chomp $zone;
+if ($zone ne "global") {
+	print_error "E: apt-clone can only be run from global zone\n";
+	exit 1;
+}
+
+# flush stdout...
+select(STDOUT); $| = 1;
+
+# disable CTRL-C
+$SIG{'INT'}  = 'IGNORE';
+
+# 
+# deal with -- options, we want to pass them as-is
+# down to apt-get ...
+# 
+my $aptcmd_opts = '';
+my @ARGV_TMP = ();
+for my $possible_opt (@ARGV) {
+	if ($possible_opt =~ /^--/) {
+		$aptcmd_opts = "$aptcmd_opts $possible_opt";
+		next;
+	}
+	push @ARGV_TMP, $possible_opt;
+}
+@ARGV = @ARGV_TMP;
+
+#
+# Parse the command line and deal with the options except -r, which is
+# handled below. Option -i is ignored
+#
+my %opt = ();
+if (@ARGV) {
+	require Getopt::Std;
+	Getopt::Std::getopts('icb:k:sdtvyhx:la:r:', \%opt);
+}
+
+my @CORE_PKGS = ('system-kernel-platform', 'system-library-platform', 'sunwcs',
+		 'system-kernel', 'system-network',  'sunwcsd', 'system-library');
+
+my @ALLOWED_APT_CMDS = ('upgrade', 'dist-upgrade', 'remove', 'install',
+		 	'autoremove');
+my $aptcmd = undef;
+my @packages = ();
+
+for my $possible_cmd (@ARGV) {
+	shift @ARGV;
+	if (grep { /^$possible_cmd$/ } @ALLOWED_APT_CMDS) {
+		$aptcmd = "$aptcmd_opts $possible_cmd";
+		@packages = @ARGV;
+		last;
+	}
+}
+
+nmu_usage() if(exists $opt{h});
+
+if (exists $opt{c}) {
+	exit 0 if (exists $ENV{'APT_CLONE_ENV'} && $ENV{'APT_CLONE_ENV'} eq '1');
+	exit 0 if (! -r "/etc/svc/volatile/repository_door");
+	my @files = <STDIN>;
+	for my $file (@files) {
+		for my $pkg (@CORE_PKGS) {
+			if ($file =~ /\/${pkg}_/) {
+				print_error("E: Attempt to apt-get some of core packages (i.e. @CORE_PKGS) detected!\n");
+				print_error("   Please use apt-clone(8) for Nexenta SUNW core packages upgrades!\n");
+				exit 1;
+			}
+		}
+	}
+	exit 0;
+}
+
+if (!defined $aptcmd) {
+	if (!exists $opt{l} && !exists $opt{r} && !exists $opt{a} && !exists $opt{i}) {
+		print_error("Please specify one of the options [l,r,a,i] or specify one of apt-get(8)\n");
+		print_error("commands: @ALLOWED_APT_CMDS\n");
+		exit 1;
+	}
+} elsif (exists $opt{l} || exists $opt{r} || exists $opt{a} || exists $opt{i}) {
+	print_error("Conflicting options: '-l', '-r', '-a' or '-i' and apt-get command '$aptcmd'\n");
+	exit 1;
+}
+
+if (grep { /^-/ } @packages) {
+	print_error("Syntax error detect while parsing list of specified packages.\n");
+	exit 1;
+}
+
+my $safe = exists $opt{s};
+
+my $upgrade_proxy = $opt{x} ? $opt{x} : undef;
+$ENV{http_proxy} = $upgrade_proxy if (defined $upgrade_proxy &&
+				      $upgrade_proxy ne '');
+
+my $need_reboot = 0;
+
+# APT parameters
+$yes = exists $opt{y} ? '-y' : '';
+$dry_run = exists $opt{t} ? '-s' : '';
+$verbose = exists $opt{v} ? '-V' : '-qq';
+
+if (exists $opt{r} && !defined $opt{r}) {
+	print_error("Option '-r' requires argument.\n");
+	exit 1;
+}
+$rootfs_rollback = $opt{r} if ($opt{r});
+
+if (exists $opt{a} && !defined $opt{a}) {
+	print_error("Option '-a' requires argument.\n");
+	exit 1;
+}
+$rootfs_activate = $opt{a} if ($opt{a});
+
+if (exists $opt{l}) {
+	my $default_bootfs = &NMUUtil::_get_default_rootfs();
+	my $current_bootfs = &NMUUtil::_get_current_rootfs();
+	$default_bootfs =~ s/^$NMUUtil::SYSPOOL\///;
+	$current_bootfs =~ s/^$NMUUtil::SYSPOOL\///;
+	my $h = NMUUtil::_parse_grub();
+	my $fmt = "%-2s%-2s%-15s%s\n";
+	print_out(sprintf($fmt, "A", "C", "BOOTFS", "TITLE"));
+	for my $idx (keys %$h) {
+		my $lines = $h->{$idx};
+		my $bootfs = $lines->[0];
+		$bootfs =~ s/^$NMUUtil::SYSPOOL\///;
+		next if ($bootfs eq '');
+		my $desc = $lines->[2];
+		$desc =~ s/^\s*title\s+//;
+		$desc =~ s/\[Auto-detect.*\]/\[initial\]/;
+		next if ($desc =~ /Safe Mode/);
+		my $default_mark = $bootfs eq $default_bootfs ? 'o' : ' ';
+		my $current_mark = $bootfs eq $current_bootfs ? 'o' : ' ';
+		print_out(sprintf($fmt, $default_mark, $current_mark, $bootfs, $desc));
+	}
+	exit(1);
+}
+
+if (exists $opt{i}) {
+	my $clone_desc = 'Rollback Checkpoint';
+	my $slot = &NMUUtil::_get_free_slot();
+	my $clonename = &NMUUtil::_build_clonename($slot);
+
+	if ($yes eq '' && !confirm("This will create clone '$clonename'. Proceed ?")) {
+		print_out("Operation canceled.\n");
+		exit(1);
+	}
+
+	print_out("Creating $clone_desc...\n");
+	my $rootfs_prev = &NMUUtil::clone_rootfs();
+	&NMUUtil::set_rootfs_description($rootfs_prev, $clone_desc);
+	my ($rootfs_nosyspool) = $rootfs_prev =~ /^$NMUUtil::SYSPOOL\/(.*)/;
+
+	print_out("\n$clone_desc has been created: $rootfs_nosyspool\n\n".
+		  "Use 'zfs list -r syspool' command to list all available\n".
+		  "upgrade/rollback checkpoints\n");
+	print_out("\n");
+	exit(0);
+}
+
+if ($rootfs_rollback) {
+	$rootfs_rollback = "$NMUUtil::SYSPOOL/$rootfs_rollback"
+		if ($rootfs_rollback !~ /^$NMUUtil::SYSPOOL\//);
+	if ($yes eq '' && !confirm("This will destroy clone '$rootfs_rollback'. Proceed ?")) {
+		print_out("Operation canceled.\n");
+		exit(1);
+	}
+	&NMUUtil::destroy_rootfs($rootfs_rollback);
+	print_out("Upgrade changes for clone '$rootfs_rollback' now rolled back/destroyed.\n");
+	exit(0);
+} elsif ($rootfs_activate) {
+	$rootfs_activate = "$NMUUtil::SYSPOOL/$rootfs_activate"
+		if ($rootfs_activate !~ /^$NMUUtil::SYSPOOL\//);
+	if ($yes eq '' && !confirm("This will set default GRUB entry to '$rootfs_activate'. Proceed ?")) {
+		print_out("Operation canceled.\n");
+		exit(1);
+	}
+	&NMUUtil::activate_rootfs($rootfs_activate);
+	print_out("Upgrade changes for clone '$rootfs_activate' has been activated.\n".
+		  "Default GRUB entry '0' will boot '$rootfs_activate' ZFS clone.\n");
+	exit(1);
+}
+
+if ($yes eq '' && !confirm("This operation will upgrade your system using ZFS capabilities. Proceed ?")) {
+	print_out("Operation canceled.\n");
+	exit(1);
+}
+
+my %zones = ();
+my @lines = ();
+if (NMUUtil::sysexec("zoneadm list -c", \@lines) != 0) {
+	@lines = ();
+}
+for my $line (@lines) {
+	my $zone = $line;
+	next if ($zone eq 'global');
+	my @lines2 = ();
+	next if (NMUUtil::sysexec("zoneadm -z $zone list -p", \@lines2) != 0);
+	if ($lines2[0] =~ /^\S+:\S+:(\S+):(\S+):\S+:\S+:\S+$/) {
+		my @data = ($1, $2);
+		$zones{$zone} = \@data;
+	}
+}
+if (scalar keys %zones > 0) {
+	unless ($yes ne '' ||
+		confirm("Would you like to upgrade all Nexenta Zones as well ?")) {
+		%zones = ();
+	}
+}
+print_out("Will attempt to upgrade '". join(' ', keys %zones) ."' zone(s) ...\n\n")
+	if (scalar keys %zones > 0);
+
+print_out("Updating APT sources ...\n");
+if (nmu_system("apt-get $verbose update") != 0) {
+	print_error("Could not update APT sources. Upgrade impossible.\n");
+	exit(1);
+}
+
+$NMUUtil::ENABLE_DEBUG = exists $opt{v};
+$NMUUtil::UPGRADE_MENU_KEEP = $opt{b} if ($opt{b} && $opt{b} =~ /^\d+$/);
+$NMUUtil::UPGRADE_ROOTFS_KEEP = $opt{k} if ($opt{k} && $opt{k} =~ /^\d+$/);
+
+# only dist-upgrade is supported at the moment
+my $dpkg_opts = '-o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold"';
+my $upgrade_cmd = "$dpkg_opts $aptcmd @packages";
+
+if ($dry_run ne '') {
+	print_out("Simulating upgrade...\n");
+	exit nmu_system("apt-get $dry_run $verbose $yes $upgrade_cmd");
+} else {
+	print_out("Initiating Nexenta upgrade procedure. Please wait...\n");
+
+	#
+	# 1. We ignore return code here and checking for free space
+	#
+	local *FD;
+	open(FD, "apt-get --no-download -y -f $upgrade_cmd 2>&1|");
+	my @lines = <FD>;
+	close FD;
+	nmu_verify_free_space(\@lines);
+
+	#
+	# 1. Checking if REBOOT will be required
+	#
+	@lines = ();
+	if (NMUUtil::sysexec("apt-get -s -f -y $upgrade_cmd 2>&1", \@lines) != 0) {
+		print_error("Could not run upgrade simulation. Check failed.\n");
+		exit 1;
+	}
+	my $found_upgrades = 0;
+	for my $line (@lines) {
+		for my $pkg (@CORE_PKGS) {
+			if ($line =~ /$pkg/) {
+				$need_reboot = 1;
+				last;
+			}
+		}
+		$found_upgrades = 1 if ($line =~ /will be upgraded:/ ||
+					$line =~ /will be REMOVED:/ ||
+					$line =~ /will be installed:/);
+	}
+	if (!$found_upgrades) {
+		print_out("No upgrades found.\n");
+		exit 0
+	}
+	if ($need_reboot) {
+		@lines = ();
+		if (NMUUtil::sysexec("zfs get -Ho name,value -r version $NMUUtil::SYSPOOL 2>&1", \@lines) != 0) {
+			print_error("Error: @lines\n");
+			exit 1;
+		}
+		# 
+		# check zfs version 
+		# 
+		my $max_zfs_ver = 0;
+		for my $line (@lines) {
+			next if ($line !~ /^(\S+)\s+(\d+)/);
+			my ($fs, $ver) = ($1, $2);
+			if ($fs !~ /\@/ && $fs =~ /nmu-\d\d\d/) {
+				$max_zfs_ver = $ver if ($max_zfs_ver < $ver);
+			}
+		}
+		if ($max_zfs_ver == 1) {
+			cannot_upgrade_exit("All root filesystems (checkpoints) have an old on-disk ZFS version '$max_zfs_ver'");
+		}
+
+		# 
+		# check zpool version 
+		# 
+		@lines = ();
+		if (NMUUtil::sysexec("zpool get version $NMUUtil::SYSPOOL 2>&1", \@lines) != 0) {
+			print_error("Error: @lines\n");
+			exit 1;
+		}
+		for my $line (@lines) {
+			next if ($line !~ /^(\S+)\s+version\s+(\d+)/);
+			my ($pool, $ver) = ($1, $2);
+			if ($pool eq $NMUUtil::SYSPOOL && $ver < 10) {
+				cannot_upgrade_exit("System pool '$NMUUtil::SYSPOOL' on-disk version '$ver' is less than '10'");
+			}
+		}
+	}
+	if ($need_reboot && $yes eq '' &&
+	    !confirm("This upgrade will require REBOOT. Proceed?")) {
+		print_error("Upgrade interrupted.\n");
+		exit 1;
+	}
+	print_out("Upgrade is in progress. Please DO NOT interrupt...\n");
+}
+
+my $clone_desc;
+if ($safe || $need_reboot) {
+	$clone_desc = 'Upgrade Checkpoint';
+} else {
+	$clone_desc = 'Rollback Checkpoint';
+}
+
+my $rootfs_prev;
+my $rootfs_nosyspool;
+
+print_out("Creating $clone_desc...\n");
+$rootfs_prev = &NMUUtil::clone_rootfs();
+&NMUUtil::set_rootfs_description($rootfs_prev, $clone_desc);
+($rootfs_nosyspool) = $rootfs_prev =~ /^$NMUUtil::SYSPOOL\/(.*)/;
+
+if ($safe || $need_reboot) {
+	&NMUUtil::_set_uflag($rootfs_prev, $NMUUtil::UFLAG_UPGRADE_CHECKPOINT);
+}
+
+print_out("\n$clone_desc has been created: $rootfs_nosyspool\n\n".
+	  "Use 'zfs list -r syspool' command to list all available\n".
+	  "upgrade/rollback checkpoints\n");
+print_out("\n");
+
+sleep(3);
+
+my $rc = -1;
+
+# don't show debconf screens, use defaults
+$ENV{DEBIAN_FRONTEND} = "noninteractive";
+$ENV{DEBCONF_NONINTERACTIVE_SEEN} = "true";
+
+# first, update dpkg and apt - always!
+$rc = nmu_system("apt-get $verbose -y install dpkg apt");
+if ($rc == 0) {	
+	$ENV{LD_NOAUXFLTR} = "1";
+	if (defined (my $kid = fork)) {
+		if ($kid) {
+			waitpid($kid, 0);
+			$rc = $?;
+		} else {
+			my $err;
+			if ($safe || $need_reboot) {
+				my $tmpdir = "/tmp/upgrade-attempt.$$";
+				nmu_system("rmdir $tmpdir 2>/dev/null");
+				if (-f $tmpdir) {
+					print_error("Unable to initiate upgrade: $tmpdir already exists!\n");
+					exit(1);
+				}
+				nmu_system("mkdir $tmpdir");
+				nmu_system("mount -F zfs $rootfs_prev $tmpdir 2>/dev/null");
+				nmu_system("chroot $tmpdir mount /proc 2>/dev/null");
+				nmu_system("mount -F lofs -O /etc/mnttab $tmpdir/etc/mnttab 2>/dev/null");
+				nmu_system("mount -F lofs -O /devices $tmpdir/devices 2>/dev/null");
+				nmu_system("mount -F lofs -O /net $tmpdir/net 2>/dev/null");
+				nmu_system("mount -F lofs -O /media $tmpdir/media 2>/dev/null");
+				nmu_system("mount -F lofs -O /mnt $tmpdir/mnt 2>/dev/null");
+				nmu_system("mount -F lofs -O /tmp $tmpdir/tmp 2>/dev/null");
+				$err = nmu_system("APT_CLONE_ENV=1 chroot $tmpdir /usr/bin/apt-get $verbose $yes $upgrade_cmd");
+				nmu_system("chroot $tmpdir umount /proc 2>/dev/null");
+				nmu_system("umount $tmpdir/etc/mnttab 2>/dev/null");
+				nmu_system("umount $tmpdir/devices 2>/dev/null");
+				nmu_system("umount $tmpdir/net 2>/dev/null");
+				nmu_system("umount $tmpdir/media 2>/dev/null");
+				nmu_system("umount $tmpdir/mnt 2>/dev/null");
+				nmu_system("umount $tmpdir/tmp 2>/dev/null");
+				if ($err == 0) {
+					if (nmu_system("$tmpdir/usr/sbin/bootadm update-archive -n -R $tmpdir 2>/dev/null 1>&2")) {
+						$err = nmu_system("$tmpdir/usr/sbin/bootadm update-archive -R $tmpdir");
+					}
+				}
+				nmu_system("umount $tmpdir 2>/dev/null");
+				nmu_system("rmdir $tmpdir");
+			} else {
+				$err = nmu_system("APT_CLONE_ENV=1 apt-get $verbose $yes $upgrade_cmd");
+			}
+			exit($err);
+		}
+	}
+	# SUCCESS
+}
+
+if ($rc != 0) {
+	my $confirmed = 0;
+	if ($need_reboot || $safe) {
+		if (confirm("Upgrade failed. Would you like to rollback changes now?")) {
+			&NMUUtil::destroy_rootfs($rootfs_prev);
+			print_out("All upgrade changes now rolled back.\n");
+			$confirmed = 1;
+		}
+	}
+	print_out("\nCheckpoint '$rootfs_nosyspool' needs to be rolled back.\n\n")
+		if (!$confirmed);
+} elsif ($need_reboot || $safe) {
+
+	for my $zone (keys %zones) {
+
+		#
+		# Upgrade zones only if CORE_PKGS detected...
+		#
+		next unless ($need_reboot);
+		print_out("\n");
+
+		my $zone_data = $zones{$zone};
+		my $state = $zone_data->[0];
+		my $zonepath = $zone_data->[1];
+		my $dataset = undef;
+
+		my @lines = ();
+		if (NMUUtil::sysexec("zfs mount", \@lines) != 0) {
+			print_error("Error: $lines[0]\n");
+			last;
+		}
+		for my $line (@lines) {
+			if ($line =~ /^(\S+)\s+(\S+)/ && $2 eq $zonepath) {
+				$dataset = $1;
+				last;
+			}
+		}
+
+		if (!defined $dataset) {
+			print_error("Skipping zone '$zone' - not ZFS mounted!\n");
+			next;
+		}
+
+		if ($state eq 'running') {
+			print_out("Halting zone '$zone' ...\n");
+			nmu_system("zoneadm -z $zone halt");
+		}
+
+		my $s_name = $rootfs_nosyspool;
+		$s_name =~ s/^rootfs-//;
+		if (nmu_system("zfs snapshot $dataset\@$s_name") == 0) {
+			print_out("Created zone upgrade checkpoint '$dataset\@$s_name' ...\n");
+		}
+
+		print_out("Upgrading zone '$zone'. Please wait...\n");
+		if (defined (my $kid = fork)) {
+			if ($kid) {
+				waitpid($kid, 0);
+				waitpid($kid, 0);
+				$rc = $?;
+			} else {
+				my $err;
+				my $chrootdir = "$zonepath/root";
+				my $dev_null = $verbose eq '-qq' ? '2>/dev/null 1>&2' : ':';
+
+				# save original sources.list and
+				# use the one from the global...
+				nmu_system("mv $chrootdir/etc/apt/sources.list $chrootdir/etc/apt/sources.list.saved 2>/dev/null");
+				nmu_system("cp /etc/apt/sources.list $chrootdir/etc/apt 2>/dev/null");
+
+				# update archives from global, to avoid downloads..
+				nmu_system("cp -u /var/cache/apt/archives/*.deb $chrootdir/var/cache/apt/archives 2>/dev/null");
+
+				# refresh APT lists...
+				nmu_system("chroot $chrootdir apt-get update");
+				nmu_system("chroot $chrootdir mount /proc 2>/dev/null");
+				nmu_system("mount -F lofs -O /etc/mnttab $chrootdir/etc/mnttab 2>/dev/null");
+				nmu_system("mount -F lofs -O /devices $chrootdir/devices 2>/dev/null");
+				$err = nmu_system("APT_CLONE_ENV=1 chroot $chrootdir apt-get $verbose $yes $upgrade_cmd $dev_null");
+				nmu_system("chroot $chrootdir umount /proc 2>/dev/null");
+				nmu_system("umount $chrootdir/etc/mnttab 2>/dev/null");
+				nmu_system("umount $chrootdir/devices 2>/dev/null");
+
+				# restore original sources.list
+				nmu_system("mv $chrootdir/etc/apt/sources.list.saved $chrootdir/etc/apt/sources.list 2>/dev/null");
+
+				exit($err);
+			}
+		}
+	}
+
+	&NMUUtil::set_default($NMUUtil::LATEST_GRUB_IDX);
+
+	my $zones_msg = scalar keys %zones > 0 ?
+		"- the following Nexenta Zones now upgraded: ". join(' ', keys %zones) : "";
+
+print <<EOF;
+                          * * *
+                      SYSTEM NOTICE
+ 								 
+     The first phase of upgrade has completed successfully:
+       - created Upgrade Checkpoint '$rootfs_nosyspool'
+       - created new GRUB menu entry
+       - the system is ready to reboot into the new checkpoint
+       $zones_msg
+
+   +------------------------------------------------------------------+
+   |                                                                  |
+   |  At this point you have two options:                             |
+   |                                                                  |
+   |   1. You can reboot now, make sure that system is healthy and    |
+   |      then activate the newly created checkpoint.                 |
+   |                                                                  |
+   |   2. Or, you can simply continue using the system as is and      |
+   |      reboot/activate checkpoint later.                           |
+   |                                                                  |
+   +------------------------------------------------------------------+
+EOF
+
+	if ($yes ne '' ||
+	    confirm("Would you like to follow the option (1) above and reboot now ?")) {
+   		print_out("Activate upgrade command: 'apt-clone -a $rootfs_nosyspool'\n");
+   		print_out("Rollback changes command: 'apt-clone -r $rootfs_nosyspool'\n");
+		print_out("Operation in progress. Please wait...\n");
+		sysreboot('reboot');
+		while (1) { sleep 1; }
+	} else {
+   		print_out("Activate upgrade command: 'apt-clone -a $rootfs_nosyspool'\n");
+   		print_out("Rollback changes command: 'apt-clone -r $rootfs_nosyspool'\n");
+	}
+}
+
+exit($rc);
