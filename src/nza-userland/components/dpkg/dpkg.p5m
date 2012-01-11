@@ -439,3 +439,6 @@ file path=usr/lib/dpkg/methods/floppy/install
 file path=usr/lib/dpkg/methods/floppy/desc.floppy
 file path=usr/lib/dpkg/methods/floppy/setup
 file path=usr/lib/pkgconfig/libdpkg.pc
+
+depend fmri=system/zones/internal type=require
+depend fmri=system/library/install/libinstzones type=require

@@ -46,6 +46,7 @@ CONFIGURE_OPTIONS += --without-start-stop-daemon
 CONFIGURE_OPTIONS += --localstatedir=/var
 CONFIGURE_OPTIONS += --with-zlib
 CONFIGURE_OPTIONS += --with-bz2
+CONFIGURE_OPTIONS += --with-zones
 
 build:		$(BUILD_32)
 
