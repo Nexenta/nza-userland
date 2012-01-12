@@ -411,7 +411,7 @@ file path=usr/include/dpkg/fdio.h
 file path=usr/include/dpkg/subproc.h
 file path=usr/include/dpkg/pkg-format.h
 file path=usr/lib/libdpkg.a
-file path=usr/lib/dpkg/parsechangelog/debian
+file path=usr/lib/dpkg/parsechangelog/debian mode=0555
 file path=usr/lib/dpkg/methods/multicd/names
 file path=usr/lib/dpkg/methods/multicd/desc.multi_cd
 file path=usr/lib/dpkg/methods/multicd/desc.multi_mount
