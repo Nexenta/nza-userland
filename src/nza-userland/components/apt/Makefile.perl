@@ -21,21 +21,23 @@
 # Copyright (c) 2011, Oracle and/or its affiliates. All rights reserved.
 #
 
-include ../../../make-rules/shared-macros.mk
+include ../../make-rules/shared-macros.mk
 
-COMPONENT_NAME=		libapt-pkg-perl
-COMPONENT_VERSION=	0.1.25
-COMPONENT_SRC=		$(COMPONENT_NAME)_$(COMPONENT_VERSION)
-COMPONENT_ARCHIVE=	$(COMPONENT_SRC).tar.gz
-COMPONENT_ARCHIVE_HASH=	sha1:6a868c587728a857481089dcc37bd984b79d80db
-COMPONENT_ARCHIVE_URL=	ftp://ftp.de.debian.org/debian/pool/main/liba/libapt-pkg-perl/$(COMPONENT_ARCHIVE)
-COMPONENT_PROJECT_URL=	http://packages.debian.org/en/sid/libapt-pkg-perl
-SOURCE_DIR = 		libapt-pkg-perl-$(COMPONENT_VERSION)
+COMPONENT_NAME         = libapt-pkg-perl
+COMPONENT_VERSION      = 0.1.25
+COMPONENT_SRC          = $(COMPONENT_NAME)-$(COMPONENT_VERSION)
+COMPONENT_ARCHIVE      = $(COMPONENT_NAME)_$(COMPONENT_VERSION).tar.gz
+COMPONENT_ARCHIVE_HASH = sha1:6a868c587728a857481089dcc37bd984b79d80db
+COMPONENT_ARCHIVE_URL  = http://ftp.de.debian.org/debian/pool/main/liba/libapt-pkg-perl/$(COMPONENT_ARCHIVE)
+
+PATCH_DIR = patches.perl
 
 include $(WS_TOP)/make-rules/prep.mk
 include $(WS_TOP)/make-rules/ips.mk
 include $(WS_TOP)/make-rules/makemaker.mk
 
+LIBS ?= -lapt-pkg
+COMMON_PERL_ENV += LIBS="$(LIBS)"
 
 build:		$(BUILD_32)
 

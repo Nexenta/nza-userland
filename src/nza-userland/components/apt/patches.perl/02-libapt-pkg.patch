@@ -1,0 +1,17 @@
+Only in libapt-pkg-perl-0.1.25: .01-cxx.patched
+Only in libapt-pkg-perl-0.1.25: .patched
+Only in libapt-pkg-perl-0.1.25: .prep
+Only in libapt-pkg-perl-0.1.25: .unpacked
+diff -dubr libapt-pkg-perl-0.1.25/Makefile.PL libapt-pkg-perl-0.1.25.patched/Makefile.PL
+--- libapt-pkg-perl-0.1.25/Makefile.PL	2012-01-16 16:53:37.534101511 +0300
++++ libapt-pkg-perl-0.1.25.patched/Makefile.PL	2012-01-16 17:01:24.908007566 +0300
+@@ -11,7 +11,7 @@
+     CC		 => $ENV{'CXX'} // 'c++',
+     LD		 => $ENV{'CXX'} // 'c++',
+     OBJECT	 => '$(O_FILES)',
+-    LIBS	 => ['-lapt-pkg'],
++    LIBS	 => [$ENV{'LIBS'} // '-lapt-pkg'],
+     XSOPT	 => '-C++',
+     depend	 => { Makefile => 'AptPkg.pm debian/changelog' }, # for VERSION
+     clean	 => { FILES => 't/cache/var/*.bin'
+Only in libapt-pkg-perl-0.1.25: Makefile.PL.~1~
