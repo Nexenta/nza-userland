@@ -38,5 +38,4 @@ dir path=usr
 dir path=usr/sbin
 
 file apt-clone         path=usr/sbin/apt-clone
-file apt-zone          path=usr/sbin/apt-zone
 file apt.conf.nexenta  path=etc/apt.conf.d/01-nexenta
