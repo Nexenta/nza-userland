@@ -1,0 +1,20 @@
+--- mod_encoding/lib/iconv_hook_ja_auto.c	Sat Jun  8 12:32:41 2002
++++ mod_encoding/lib/iconv_hook_ja_auto.c.new	Fri Jan 13 22:14:21 2012
+@@ -52,7 +52,7 @@
+  
+ static int
+ ja_auto_iconv_close(iconv_t _cd) {
+-    ja_auto_iconv_t* cd = _cd;
++    ja_auto_iconv_t* cd = (ja_auto_iconv_t*)_cd;
+ 
+     if (_cd == (iconv_t)(-1) || cd == NULL) return 0;
+     free(cd->oenc);
+@@ -69,7 +69,7 @@
+ static size_t
+ ja_auto_iconv(iconv_t _cd, char **srcbuf, size_t *srclen, char **outbuf, size_t *outlen) {
+     iconv_hook_module *cm;
+-    ja_auto_iconv_t   *cd = _cd;
++    ja_auto_iconv_t   *cd = (ja_auto_iconv_t*)_cd;
+     iconv_t            cd2;
+     size_t             ret = -1;
+     const char        *enc;

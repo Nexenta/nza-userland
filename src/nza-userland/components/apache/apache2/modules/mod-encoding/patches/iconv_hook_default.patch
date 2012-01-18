@@ -1,0 +1,11 @@
+--- mod_encoding/lib/iconv_hook_default.c.new	Fri Jan 13 22:00:11 2012
++++ mod_encoding/lib/iconv_hook_default.c	Fri Jan 13 22:03:41 2012
+@@ -61,7 +61,7 @@
+   if (! (srcbuf && srclen && outbuf && outlen))
+     return 0;
+ #endif
+-  return iconv(cd, srcbuf, srclen, outbuf, outlen);
++  return iconv(cd, (const char**)srcbuf, srclen, outbuf, outlen);
+ #else
+   return 0;
+ #endif

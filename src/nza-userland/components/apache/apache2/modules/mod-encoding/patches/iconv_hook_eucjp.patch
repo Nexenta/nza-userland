@@ -1,0 +1,11 @@
+--- mod_encoding/lib/iconv_hook_eucjp.c	Mon Jun 10 16:57:52 2002
++++ mod_encoding/lib/iconv_hook_eucjp.c.new	Fri Jan 13 22:08:12 2012
+@@ -92,7 +92,7 @@
+ 
+   /* translate EUC-JP into SJIS */
+   src = (unsigned char *)*srcbuf;
+-  tmp = tmpbuf = malloc(*srclen+2);
++  tmp = tmpbuf = (unsigned char*)malloc(*srclen+2);
+   while (*src && ((tmp - tmpbuf) < *srclen)) {
+     ch = *src++;
+     if (is_ascii(ch)) {
