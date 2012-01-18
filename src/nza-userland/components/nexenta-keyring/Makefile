@@ -29,7 +29,7 @@ COMPONENT_NAME = nexenta-keyring
 
 include $(WS_TOP)/make-rules/ips.mk
 
-clean:
+clean::
 	rm -rf $(BUILD_DIR)
 
 build:
