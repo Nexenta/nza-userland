@@ -1,0 +1,14 @@
+diff -dubr apt-0.8.15.10+1/cmdline/apt-key apt-0.8.15.10+1patched/cmdline/apt-key
+--- apt-0.8.15.10+1/cmdline/apt-key	2012-01-11 16:42:59.000000000 +0300
++++ apt-0.8.15.10+1patched/cmdline/apt-key	2012-01-23 15:40:16.491882471 +0300
+@@ -21,8 +21,8 @@
+ #MASTER_KEYRING=/usr/share/keyrings/debian-master-keyring.gpg
+ #ARCHIVE_KEYRING_URI=http://ftp.debian.org/debian/debian-archive-keyring.gpg
+ 
+-ARCHIVE_KEYRING=/usr/share/keyrings/debian-archive-keyring.gpg
+-REMOVED_KEYS=/usr/share/keyrings/debian-archive-removed-keys.gpg
++ARCHIVE_KEYRING=/usr/share/keyrings/nexenta-archive-keyring.gpg
++REMOVED_KEYS=/usr/share/keyrings/nexenta-archive-removed-keys.gpg
+ 
+ requires_root() {
+ 	if [ "$(id -u)" -ne 0 ]; then
