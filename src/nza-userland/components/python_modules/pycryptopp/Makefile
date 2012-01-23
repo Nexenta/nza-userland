@@ -10,6 +10,10 @@ include $(WS_TOP)/make-rules/prep.mk
 include $(WS_TOP)/make-rules/ips.mk
 include $(WS_TOP)/make-rules/setup.py.mk
 
+# On POSIX platforms <unistd.h> should be included first
+# http://mail.python.org/pipermail/python-bugs-list/2006-September/035362.html
+CFLAGS += -include unistd.h
+
 build:      $(BUILD_32)
 install:    $(INSTALL_32)
 
