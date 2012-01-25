@@ -22,19 +22,18 @@
 #
 include ../../make-rules/shared-macros.mk
 
-PATH=$(dir $(CC)):/usr/bin:/usr/gnu/bin
 
 # I want to override PERL_VERSION and PERL_ARCH because when building
 # a new version of perl it probably isn't installed so shared-macros.mk
 # can't call it.
 
-COMPONENT_NAME=		perl
-COMPONENT_VERSION=	5.12.3
-PERL_VERSION=		5.12
-COMPONENT_SRC=		$(COMPONENT_NAME)-$(COMPONENT_VERSION)
-COMPONENT_ARCHIVE=	$(COMPONENT_SRC).tar.bz2
-COMPONENT_ARCHIVE_HASH=	sha1:86d77c6cbc7a60068dc14c88ffd0729324d1174f
-COMPONENT_ARCHIVE_URL=	http://www.cpan.org/src/5.0/$(COMPONENT_ARCHIVE)
+COMPONENT_NAME         = perl
+COMPONENT_VERSION      = 5.12.3
+PERL_VERSION           = 5.12
+COMPONENT_SRC          = $(COMPONENT_NAME)-$(COMPONENT_VERSION)
+COMPONENT_ARCHIVE      = $(COMPONENT_SRC).tar.bz2
+COMPONENT_ARCHIVE_HASH = sha1:86d77c6cbc7a60068dc14c88ffd0729324d1174f
+COMPONENT_ARCHIVE_URL  = http://www.cpan.org/src/5.0/$(COMPONENT_ARCHIVE)
 
 include ../../make-rules/prep.mk
 include ../../make-rules/justmake.mk
@@ -107,10 +106,6 @@ PKG_MACROS		+=	PERL_VERSION=$(PERL_VERSION)
 # use cc.  Trying to avoid the full path so it doesn't end up in
 # perl's config.
 #
-LD_OPTIONS=
-COMPONENT_BUILD_ENV	=	PATH=$(dir $(CC)):$(PATH)
-COMPONENT_BUILD_ENV	+=	LD_OPTIONS=$(LD_OPTIONS)
-COMPONENT_INSTALL_ENV	=	LD_OPTIONS=$(LD_OPTIONS)
 
 build:		$(BUILD_32)
 
