@@ -77,7 +77,6 @@ file path=usr/perl5/vendor_perl/5.12/PAR/Packer.pm
 file path=usr/perl5/vendor_perl/5.12/PAR/StrippedPARL/Base.pm
 file path=usr/perl5/vendor_perl/5.12/PAR/StrippedPARL/Dynamic.pm
 file path=usr/perl5/vendor_perl/5.12/PAR/StrippedPARL/Static.pm
-file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/PAR/Packer/.packlist
 file path=usr/perl5/vendor_perl/5.12/pp.pm
 depend fmri=runtime/perl-512 type=require
 depend fmri=library/perl-5/par type=require

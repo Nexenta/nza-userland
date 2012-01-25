@@ -38,12 +38,27 @@ set name=opensolaris.arc_url value=http://arc.opensolaris.org/caselog/PSARC/2006
 set name=org.opensolaris.consolidation value=$(CONSOLIDATION)
 
 depend fmri=pkg:/crypto/gnupg type=require
+depend fmri=pkg:/nexenta/keyring type=require
 
 dir path=etc/apt
 dir path=etc/apt/apt.conf.d
 dir path=etc/apt/preferences.d
 dir path=etc/apt/sources.list.d
 dir path=etc/apt/trusted.gpg.d
+dir path=var
+dir path=var/cache
+dir path=var/cache/apt
+dir path=var/cache/apt/archives
+dir path=var/cache/apt/archives/partial
+dir path=var/lib
+dir path=var/lib/apt
+dir path=var/lib/apt/lists
+dir path=var/lib/apt/lists/partial
+dir path=var/lib/apt/mirrors
+dir path=var/lib/apt/mirrors/partial
+dir path=var/lib/apt/periodic
+dir path=var/log
+dir path=var/log/apt
 
 dir path=usr
 dir path=usr/lib

@@ -10,15 +10,21 @@ PROTO_DIRS = $(PKG_PROTO_DIRS:%=-d %)
 
 # Where to create package contents
 # and debs (like debian/pkg-name)
-DEBS_DIR = $(PROTO_DIR)/debs
+DEBS_DIR = $(COMPONENT_DIR)/debs
+
+ALLDEB_DIR ?= $(WS_TOP)/debs
 
 
 # since build and install target are phony
 # 'make deb' will always run and
 # this is ok to make sure we do not have
 # garbage in $(DEBS_DIR):
-deb: $(DEBMAKER) $(MANGLED) build install
-	rm -rf $(DEBS_DIR)
+deb: build install __deb
+
+DEB_STAMP = $(BUILD_DIR)/.deb
+__deb: $(DEB_STAMP)
+$(DEB_STAMP): $(DEBMAKER) $(MANGLED)
+	$(RM) -r $(DEBS_DIR)
 	$(MKDIR) $(DEBS_DIR)
 	$(DEBMAKER) \
 		-S $(COMPONENT_NAME) \
@@ -26,6 +32,11 @@ deb: $(DEBMAKER) $(MANGLED) build install
 		-V $(DEBVERSION) \
 		-D $(DEBS_DIR) \
 		$(PROTO_DIRS) $(MANGLED)
+#	$(CP) $(DEBS_DIR)/*.{deb,changes} $(ALLDEB_DIR)/
+	$(TOUCH) $@
+
+clean::
+	$(RM) -r $(DEBS_DIR)
 
 NABAT_HOST    ?= 10.3.10.2
 NABAT_USER    ?= changeme_by_NABAT_USER

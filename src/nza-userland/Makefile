@@ -30,6 +30,7 @@ prep:		TARGET = prep
 build:		TARGET = build
 install:	TARGET = install
 publish:	TARGET = publish
+deb:		TARGET = deb
 validate:	TARGET = validate
 clean:		TARGET = clean
 clobber:	TARGET = clobber
@@ -41,7 +42,7 @@ check-environment check-env:
 
 .DEFAULT:	publish
 
-download setup prep build install publish validate clean clobber \
+download setup prep build install publish deb validate clean clobber \
 test: $(SUBDIRS)
 
 $(SUBDIRS):	FORCE

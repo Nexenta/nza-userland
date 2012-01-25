@@ -23,28 +23,22 @@
 
 include ../../../make-rules/shared-macros.mk
 
-COMPONENT_NAME=		File-MimeInfo
-COMPONENT_VERSION=	0.13
-COMPONENT_SRC=		$(COMPONENT_NAME)-$(COMPONENT_VERSION)
-COMPONENT_ARCHIVE=	$(COMPONENT_SRC).tar.gz
-COMPONENT_ARCHIVE_HASH=	sha1:366c02bd8bacddb614e70e7a2f1886724d8c21ab
-COMPONENT_ARCHIVE_URL=	http://www.cpan.org/authors/id/P/PA/PARDUS/$(COMPONENT_NAME)/$(COMPONENT_ARCHIVE)
-COMPONENT_PROJECT_URL=	http://search.cpan.org/~pardus/
+COMPONENT_NAME         = File-MimeInfo
+COMPONENT_VERSION      = 0.16
+COMPONENT_SRC          = $(COMPONENT_NAME)-$(COMPONENT_VERSION)
+COMPONENT_ARCHIVE      = $(COMPONENT_SRC).tar.gz
+COMPONENT_ARCHIVE_HASH = sha1:8b906fa584b7fe0a0e210df9298fab60885ba6a8
+COMPONENT_ARCHIVE_URL  = http://www.cpan.org/authors/id/P/PA/PARDUS/$(COMPONENT_NAME)/$(COMPONENT_ARCHIVE)
+COMPONENT_PROJECT_URL  = http://search.cpan.org/~pardus/
 
 include $(WS_TOP)/make-rules/prep.mk
 include $(WS_TOP)/make-rules/ips.mk
 include $(WS_TOP)/make-rules/makemaker.mk
 
-COMPILER = gcc
-CONFIGURE_OPTIONS<----->+=CC=cc
-#COMPONENT_INSTALL_TARGETS=	install
-
-
 build:		$(BUILD_32)
 
 install:	$(INSTALL_32)
 
-COMPONENT_TEST_TARGETS = test
 test:		$(TEST_32)
 
 BUILD_PKG_DEPENDENCIES =        $(BUILD_TOOLS)
