@@ -25,10 +25,15 @@
 BITS=32
 
 COMMON_PERL_ENV +=	MAKE=$(GMAKE)
-COMMON_PERL_ENV +=	PATH=$(dir $(CC)):$(PATH)
 COMMON_PERL_ENV +=	LANG=""
-COMMON_PERL_ENV +=	CC="$(CC)"
+COMMON_PERL_ENV +=	CC="$(CC)" CXX="$(CXX)"
 COMMON_PERL_ENV +=	CFLAGS="$(PERL_OPTIMIZE)"
+
+# Perl MakeMaker can exec cc, c++, or g++ without a full path,
+# we need to help to find proper ones.
+# CC can include extra options (such as -m32) and
+# gmake's $(dir ...) will not work. So we use dirname:
+COMMON_PERL_ENV +=	PATH=$(shell dirname "$(CC)"):$(PATH)
 
 # Yes.  Perl is just scripts, for now, but we need architecture
 # directories so that it populates all architecture prototype
