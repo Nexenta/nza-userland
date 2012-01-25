@@ -54,18 +54,19 @@ prep:			TARGET = prep
 build:			TARGET = build
 install:		TARGET = install
 publish:		TARGET = publish
+deb:			TARGET = deb
 clean:			TARGET = clean
 clobber:		TARGET = clobber
 test:			TARGET = test
-prep build install publish test:	TEMPLATE_ZONE=$(ZONE)
-prep build install publish test:	LOG = >$(WS_LOGS)/$(@F).$(TARGET).log 2>&1
+prep build install publish deb test:	TEMPLATE_ZONE=$(ZONE)
+prep build install publish deb test:	LOG = >$(WS_LOGS)/$(@F).$(TARGET).log 2>&1
 
 # turn off pkglint for the individual component builds.
 publish:		MAKEFLAGS += PKGLINT=/bin/true
 
 .DEFAULT:	publish
 
-build install publish test: $(COMPONENT_DIRS)
+build install publish deb test: $(COMPONENT_DIRS)
 
 COMPONENT_DIRS.nosetup =	$(COMPONENT_DIRS:%=%.nosetup)
 
