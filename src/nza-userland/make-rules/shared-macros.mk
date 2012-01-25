@@ -22,7 +22,7 @@
 # Copyright (c) 2011, Nexenta Systems, Inc. All rights reserved.
 #
 
-PATH=/usr/gnu/bin:/usr/bin
+PATH := /usr/gnu/bin:/usr/bin
 
 
 NEXENTA_ARCHIVE_HOST = nex-stor.nexenta.com
@@ -268,14 +268,15 @@ JAVA_HOME =	/usr/jdk/instances/jdk1.6.0
 
 # This is the default BUILD version of perl
 # Not necessarily the system's default version, i.e. /usr/bin/perl
-PERL_VERSION =  5.12
+PERL_VERSION  = 5.12
 
 PERL_VERSIONS = 5.12
 
-PERL.5.10 =     /usr/bin/perl
-PERL.5.12 =     /usr/perl5/5.12/bin/perl
+PERL.5.10     = /usr/bin/perl
+PERL.5.12     = /usr/perl5/5.12/bin/perl
 
-PERL =          $(PERL.$(PERL_VERSION))
+PERL          = $(PERL.$(PERL_VERSION))
+PATH := $(dir $(PERL)):$(PATH)
 
 PERL_ARCH =     $(shell $(PERL) -e 'use Config; print $$Config{archname}')
 # Optimally we should ask perl which C compiler was used but it doesn't
