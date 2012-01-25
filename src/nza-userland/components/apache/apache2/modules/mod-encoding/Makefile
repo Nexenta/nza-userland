@@ -22,21 +22,21 @@
 # Copyright (c) 2011, Nexenta Systems, Inc. All rights reserved.
 #
 #
-include ../../make-rules/shared-macros.mk
+include ../../../../../make-rules/shared-macros.mk
 
-COMPILER=studio
-COMPONENT_NAME=		mod_encoding
-COMPONENT_VERSION=	20060316
-COMPONENT_SRC=		$(COMPONENT_NAME)-$(COMPONENT_VERSION)
-COMPONENT_ARCHIVE=	$(COMPONENT_SRC).tar.gz
-COMPONENT_ARCHIVE_HASH=	sha1:3677e991d7b0b0fef81f229ab6c51fcce81bc0d5
-COMPONENT_ARCHIVE_URL=	http://iij.dl.sourceforge.jp/webdav/19350/$(COMPONENT_ARCHIVE)
-COMPONENT_DIR=$(shell pwd)
-SOURCE_DIR=$(COMPONENT_DIR)/mod_encoding
+COMPILER               = studio
+COMPONENT_NAME         = mod_encoding
+COMPONENT_VERSION      = 20060316
+COMPONENT_SRC          = $(COMPONENT_NAME)-$(COMPONENT_VERSION)
+COMPONENT_ARCHIVE      = $(COMPONENT_SRC).tar.gz
+COMPONENT_ARCHIVE_HASH = sha1:3677e991d7b0b0fef81f229ab6c51fcce81bc0d5
+COMPONENT_ARCHIVE_URL  = http://iij.dl.sourceforge.jp/webdav/19350/$(COMPONENT_ARCHIVE)
+COMPONENT_DIR          = $(shell pwd)
+SOURCE_DIR             = $(COMPONENT_DIR)/mod_encoding
 
-include ../../make-rules/prep.mk
-include ../../make-rules/configure.mk
-include ../../make-rules/ips.mk
+include $(WS_TOP)/make-rules/prep.mk
+include $(WS_TOP)/make-rules/configure.mk
+include $(WS_TOP)/make-rules/ips.mk
 
 APACHE_USR_PREFIX=/usr/apache2/2.2
 
@@ -70,4 +70,4 @@ build: $(BUILD_32_and_64)
 
 BUILD_PKG_DEPENDENCIES =	$(BUILD_TOOLS)
 
-include ../../make-rules/depend.mk
+include $(WS_TOP)/make-rules/depend.mk
