@@ -23,22 +23,21 @@
 
 include ../../../make-rules/shared-macros.mk
 
-COMPONENT_NAME=		Net-LibIDN
-COMPONENT_VERSION=	0
-COMPONENT_SRC=		$(COMPONENT_NAME)-$(COMPONENT_VERSION).12
-COMPONENT_ARCHIVE=	$(COMPONENT_SRC).tar.gz
-COMPONENT_ARCHIVE_HASH=	sha1:ac446edf66ac523d5463b59ed9698e2ccb9b04ab
-COMPONENT_ARCHIVE_URL=	http://www.cpan.org/authors/id/T/TH/THOR/$(COMPONENT_ARCHIVE)
-COMPONENT_PROJECT_URL=	http://search.cpan.org/~thor/
+COMPONENT_NAME         = Net-LibIDN
+COMPONENT_VERSION      = 0.12
+COMPONENT_SRC          = $(COMPONENT_NAME)-$(COMPONENT_VERSION)
+COMPONENT_ARCHIVE      = $(COMPONENT_SRC).tar.gz
+COMPONENT_ARCHIVE_HASH = sha1:ac446edf66ac523d5463b59ed9698e2ccb9b04ab
+COMPONENT_ARCHIVE_URL  = http://www.cpan.org/authors/id/T/TH/THOR/$(COMPONENT_ARCHIVE)
+COMPONENT_PROJECT_URL  = http://search.cpan.org/~thor/
 
 include $(WS_TOP)/make-rules/prep.mk
 include $(WS_TOP)/make-rules/ips.mk
 include $(WS_TOP)/make-rules/makemaker.mk
 
 CONFIGURE_OPTIONS += --with-libidn-inc=/usr/include/idn
+CONFIGURE_OPTIONS += --with-libidn=/usr/lib
 
-COMPILER = gcc
-#CONFIGURE_OPTIONS<----->+=CC=cc
 
 build:		$(BUILD_32)
 
