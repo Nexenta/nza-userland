@@ -42,13 +42,8 @@ include $(WS_TOP)/make-rules/prep.mk
 include $(WS_TOP)/make-rules/configure.mk
 include $(WS_TOP)/make-rules/ips.mk
 
-# Without this some apt-* tools crash in libstdc++.so
-# GCC < 4.5 does not have -static-libstdc++
-STATIC_LIBSTDCXX := $(shell $(CXX) -print-file-name=libstdc++.a)
-
 CONFIGURE_OPTIONS += --libexecdir=/usr/lib/apt/methods
 CONFIGURE_OPTIONS += --disable-static
-CONFIGURE_OPTIONS += LDFLAGS="$(STATIC_LIBSTDCXX)"
 
 
 build:	$(BUILD_32) run-parts perl-build-stamp
