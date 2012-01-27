@@ -39,7 +39,7 @@ COMPONENT_PRE_CONFIGURE_ACTION = \
 CONFIGURE_OPTIONS  +=	--sysconfdir=$(ETCDIR)/inet
 CONFIGURE_OPTIONS  +=	--sbindir=$(USRLIBDIR)/inet
 CONFIGURE_OPTIONS  +=	--bindir=$(USRSBINDIR)
-CONFIGURE_OPTIONS  +=	--enable-use-sockets --enable-ipv4-pktinfo
+CONFIGURE_OPTIONS  +=	--enable-ipv4-pktinfo
 
 build:		$(BUILD_32)
 
