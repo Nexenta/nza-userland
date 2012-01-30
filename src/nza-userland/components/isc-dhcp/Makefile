@@ -33,13 +33,15 @@ include ../../make-rules/prep.mk
 include ../../make-rules/configure.mk
 include ../../make-rules/ips.mk
 
+CC = /opt/SUNWspro/bin/cc
+
 COMPONENT_PRE_CONFIGURE_ACTION = \
 	($(CLONEY) $(SOURCE_DIR) $(@D))
 
 CONFIGURE_OPTIONS  +=	--sysconfdir=$(ETCDIR)/inet
 CONFIGURE_OPTIONS  +=	--sbindir=$(USRLIBDIR)/inet
 CONFIGURE_OPTIONS  +=	--bindir=$(USRSBINDIR)
-CONFIGURE_OPTIONS  +=	--enable-ipv4-pktinfo
+CONFIGURE_OPTIONS  +=	--enable-use-sockets --enable-ipv4-pktinfo
 
 build:		$(BUILD_32)
 
