@@ -52,7 +52,7 @@ STUDIOFLAGS_GCC_PERL_FIX=	(cd $(@D); /usr/gnu/bin/sed 's/^CCCDLFLAGS = -KPIC/^CC
 
 
 COMPONENT_CONFIGURE_ENV +=	$(COMMON_PERL_ENV)
-COMPONENT_CONFIGURE_ENV +=	PERL="$(PERL)"
+COMPONENT_CONFIGURE_ENV +=	PERL="$(PERL)" INSTALLDIRS=vendor CREATE_PACKLIST=0
 $(PERLBD_ARCH)-%/.configured:	$(SOURCE_DIR)/.prep
 	($(RM) -r $(@D) ; $(MKDIR) $(@D))
 	$(CLONEY) $(SOURCE_DIR) $(@D)
@@ -73,13 +73,15 @@ $(PERLBD_ARCH)-%/.built:	$(PERLBD_ARCH)-%/.configured
 	$(TOUCH) $@
 
 
-COMPONENT_INSTALL_ARGS +=	DESTDIR="$(PROTO_DIR)"
-COMPONENT_INSTALL_TARGETS =	install_vendor
-COMPONENT_INSTALL_ENV +=	$(COMMON_PERL_ENV)
-$(PERLBD_ARCH)-%/.installed:	$(PERLBD_ARCH)-%/.built
+COMPONENT_INSTALL_ENV += $(COMMON_PERL_ENV)
+$(PERLBD_ARCH)-%/.installed: $(PERLBD_ARCH)-%/.built
 	$(COMPONENT_PRE_INSTALL_ACTION)
-	(cd $(@D) ; $(ENV) $(COMPONENT_INSTALL_ENV) $(GMAKE) \
-			$(COMPONENT_INSTALL_ARGS) $(COMPONENT_INSTALL_TARGETS))
+	(cd $(@D) ; \
+		if [ -e Build ]; then \
+			$(PERL) Build install --installdirs vendor destdir=$(PROTO_DIR); \
+		else \
+			$(GMAKE) install_vendor DESTDIR=$(PROTO_DIR);\
+		fi)
 	$(COMPONENT_POST_INSTALL_ACTION)
 	$(TOUCH) $@
 
