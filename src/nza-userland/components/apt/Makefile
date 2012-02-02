@@ -45,6 +45,7 @@ include $(WS_TOP)/make-rules/ips.mk
 CONFIGURE_OPTIONS += --libexecdir=/usr/lib/apt/methods
 CONFIGURE_OPTIONS += --disable-static
 
+LD_OPTIONS =
 
 build:	$(BUILD_32) run-parts perl-build-stamp
 install:  $(INSTALL_32) run-parts perl-install-stamp
