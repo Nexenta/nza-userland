@@ -37,6 +37,6 @@ dir path=usr/lib
 dir path=usr/apache2/2.2
 dir path=usr/apache2/2.2/libexec
 dir path=usr/apache2/2.2/libexec/$(MACH64)
-file build/$(MACH32)/.libs/mod_wsgi.so path=usr/apache2/2.2/libexec/mod_wsgi.so
-file build/$(MACH64)/.libs/mod_wsgi.so path=usr/apache2/2.2/libexec/$(MACH64)/mod_wsgi.so
+file build/$(MACH32)/.libs/mod_wsgi.so path=usr/apache2/2.2/libexec/mod_wsgi.so mode=0755
+file build/$(MACH64)/.libs/mod_wsgi.so path=usr/apache2/2.2/libexec/$(MACH64)/mod_wsgi.so mode=0755
 
