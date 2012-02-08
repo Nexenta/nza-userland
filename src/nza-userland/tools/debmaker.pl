@@ -391,14 +391,33 @@ sub find_pkgs_with_paths {
     return $dpkg;
 }
 
+#FIXME : If we have 64-bit library, we have 32-bit as well, so check only 32-bit:
+my @librarypaths = qw(/lib /usr/lib /usr/gnu/lib);
 sub guess_required_deps {
     my ($path) = @_;
     my $elfs = get_output "gfind $path -type f -exec file {} \\; | ggrep ELF | cut -d: -f1";
     my @deps = ();
+    my @libraries = ();
     if (@$elfs) {
         my $libs = get_output "elfdump -d @$elfs | ggrep -E '(NEEDED|SUNW_FILTER)' | awk '{print \$4}' | sort -u";
         blab 'Required libs: ' . join(', ', @$libs);
-        my $pkgs = find_pkgs_with_paths @$libs;
+        foreach my $l (@$libs) {
+            my $found = '';
+            foreach my $p (@librarypaths) {
+                if (-e "$p/$l") {
+                    $found = "$p/$l";
+                    last;
+                }
+            }
+            if ($found) {
+                blab "found $found";
+                push @libraries, $found;
+            } else {
+                # FIXME : What is library is in package being built?
+                warning "Could not find library $l";
+            }
+        }
+        my $pkgs = find_pkgs_with_paths @libraries;
         push @deps, @$pkgs;
     }
     return \@deps;
