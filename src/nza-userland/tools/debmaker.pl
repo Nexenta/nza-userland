@@ -781,9 +781,13 @@ foreach my $manifest_file (@ARGV) {
 
     $control .= "Origin: $$manifest_data{'info.upstream_url'}\n"
         if exists $$manifest_data{'info.upstream_url'};
-    $control .= "X-Source-URL: $$manifest_data{'info.source_url'}\n"
-        if exists $$manifest_data{'info.source_url'};
     $control .= "X-FMRI: $$manifest_data{'pkg.fmri'}\n";
+
+    if (exists $$manifest_data{'info.source_url'}
+        && $$manifest_data{'info.source_url'} !~ /^file:/
+    ) {
+        $control .= "X-Source-URL: $$manifest_data{'info.source_url'}\n"
+    }
 
     my_mkdir "$pkgdir/DEBIAN";
 
