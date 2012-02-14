@@ -1003,6 +1003,7 @@ my $rootfs_rollback;
 sub to_bytes {
 	my $n = shift;
 	$n =~ tr/\,/\./;
+	$n =~ s/\s+//;
 	return $1 if ($n =~ /^([\d\.]+)[bB]$/);
 	return int($1 * 1024) if ($n =~ /^([\d\.]+)[kK][bB]?$/);
 	return int($1 * 1024 * 1024) if ($n =~ /^([\d\.]+)[mM][bB]?$/);
@@ -1081,7 +1082,7 @@ sub nmu_verify_free_space {
 	my $after_unpacking = 0;
 	for my $line (@$lines) {
 		$need_to_get = to_bytes($2)
-			if ($line =~ /^Need\s+to\s+get\s+([\d\.\w]+\/)?([\d\.\w]+)\s+/);
+			if ($line =~ /^Need\s+to\s+get\s+([\d\.\s(KB|MB)]+\/)?([\d\.\s(KB|MB)]+)\s+/);
 		if ($line =~ /^After unpacking\s+(\d+[kKmMbBgG]\w+)\s+.*(used|freed)/) {
 			$after_unpacking = to_bytes($1) if ($2 eq 'used');
 		}
