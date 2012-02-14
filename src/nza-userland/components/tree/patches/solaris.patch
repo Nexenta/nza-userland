@@ -1,0 +1,55 @@
+diff -urN tree-1.5.3.dist/Makefile tree-1.5.3/Makefile
+--- tree-1.5.3.dist/Makefile	2009-10-19 22:56:28.000000000 +0400
++++ tree-1.5.3/Makefile	2012-02-14 17:33:27.000000000 +0300
+@@ -8,7 +8,7 @@
+ 
+ prefix = /usr
+ 
+-CC=gcc
++#CC=gcc
+ 
+ VERSION=1.5.3
+ TREE_DEST=tree
+@@ -19,7 +19,7 @@
+ # Uncomment options below for your particular OS:
+ 
+ # Linux defaults:
+-CFLAGS=-ggdb -Wall -DLINUX -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64
++#CFLAGS=-ggdb -Wall -DLINUX -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64
+ #CFLAGS=-O2 -Wall -fomit-frame-pointer -DLINUX -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64
+ #LDFLAGS=-s
+ 
+@@ -29,11 +29,11 @@
+ #XOBJS=strverscmp.o
+ 
+ # Uncomment for Solaris:
+-#CC=cc
+-#CFLAGS=-xO0 -v
+-#LDFLAGS=
+-#XOBJS=strverscmp.o
+-#MANDIR=${prefix}/share/man/man1
++CC=cc
++CFLAGS=-xO0 -v
++LDFLAGS=
++XOBJS=strverscmp.o
++MANDIR=${prefix}/share/man/man1
+ 
+ # Uncomment for Cygwin:
+ #CFLAGS=-O2 -Wall -fomit-frame-pointer -DCYGWIN
+@@ -83,12 +83,12 @@
+ 	rm -f *~
+ 
+ install: tree
+-	install -d $(BINDIR)
+-	install -d $(MANDIR)
++	ginstall -d $(BINDIR)
++	ginstall -d $(MANDIR)
+ 	if [ -e $(TREE_DEST) ]; then \
+-		install -s $(TREE_DEST) $(BINDIR)/$(TREE_DEST); \
++		ginstall -s $(TREE_DEST) $(BINDIR)/$(TREE_DEST); \
+ 	fi
+-	install man/$(MAN) $(MANDIR)/$(MAN)
++	ginstall man/$(MAN) $(MANDIR)/$(MAN)
+ 
+ distclean:
+ 	if [ -f tree.o ]; then rm *.o; fi
