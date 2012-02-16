@@ -1,0 +1,15 @@
+diff --git a/src/config.h b/src/config.h
+index f38ce87..ca09ea5 100644
+--- a/src/config.h
++++ b/src/config.h
+@@ -1,6 +1,10 @@
+ #ifndef __CONFIG_H
+ #define __CONFIG_H
+ 
++#if defined(__sun) || defined(__APPLE__) || defined(__FreeBSD__) || defined(__OpenBSD__) || defined (__NetBSD__)
++#include <strings.h>
++#endif
++
+ #ifdef __APPLE__
+ #include <AvailabilityMacros.h>
+ #endif
