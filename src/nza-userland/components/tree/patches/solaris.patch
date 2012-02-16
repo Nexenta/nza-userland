@@ -42,14 +42,14 @@ diff -urN tree-1.5.3.dist/Makefile tree-1.5.3/Makefile
  install: tree
 -	install -d $(BINDIR)
 -	install -d $(MANDIR)
-+	ginstall -d $(BINDIR)
-+	ginstall -d $(MANDIR)
++	ginstall -d $(DESTDIR)/$(BINDIR)
++	ginstall -d $(DESTDIR)/$(MANDIR)
  	if [ -e $(TREE_DEST) ]; then \
 -		install -s $(TREE_DEST) $(BINDIR)/$(TREE_DEST); \
-+		ginstall -s $(TREE_DEST) $(BINDIR)/$(TREE_DEST); \
++		ginstall -s $(TREE_DEST) $(DESTDIR)/$(BINDIR)/$(TREE_DEST); \
  	fi
 -	install man/$(MAN) $(MANDIR)/$(MAN)
-+	ginstall man/$(MAN) $(MANDIR)/$(MAN)
++	ginstall man/$(MAN) $(DESTDIR)/$(MANDIR)/$(MAN)
  
  distclean:
  	if [ -f tree.o ]; then rm *.o; fi
