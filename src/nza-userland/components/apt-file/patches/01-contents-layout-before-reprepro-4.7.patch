@@ -1,0 +1,15 @@
+Index: apt-file/apt-file
+http://anonscm.debian.org/viewvc/collab-maint?view=revision&sortby=date&revision=18331
+http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=636934
+===================================================================
+--- apt-file.orig/apt-file
++++ apt-file/apt-file
+@@ -178,7 +178,7 @@ sub parse_sources_list($) {
+             my $fetch = [];
+ 
+             foreach (@extra) {
+-                push @$fetch, m{(.*?)/(?:.*)}o ? "$dist/$1" : "$dist/$_";
++                push @$fetch, m{(.*?)/(?:.*)}o ? "$dist/$1" : "$dist";
+             }
+ 
+             foreach ( @{ ( unique $fetch) } ) {
