@@ -19,12 +19,13 @@
 # CDDL HEADER END
 #
 # Copyright (c) 2012, David Höppner
+# Copyright (c) 2012, Nexenta Systems, Inc.
 #
 
 <transform file path=usr.*/man/.+ -> default mangler.man.stability volatile>
 
 set name=pkg.fmri \
-    value=pkg:/developer/vala@$(IPS_COMPONENT_VERSION),$(BUILD_VERSION)
+    value=pkg:/service/redis@$(IPS_COMPONENT_VERSION),$(BUILD_VERSION)
 set name=pkg.description \
     value="Redis is an open source, advanced key-value store."
 set name=pkg.summary value="Redis - A key-value store"
@@ -32,17 +33,20 @@ set name=info.classification \
     value="org.opensolaris.category.2008:Development/Other Languages"
 set name=info.source-url value=$(COMPONENT_ARCHIVE_URL)
 set name=info.upstream-url value=$(COMPONENT_PROJECT_URL)
-set name=opensolaris.arc-url \
-    value="http://arc.opensolaris.org/caselog/PSARC/2000/488"
 set name=org.opensolaris.consolidation value=$(CONSOLIDATION)
 
-dir path=usr
-dir path=usr/bin
+dir path=etc/redis
+file redis.conf path=etc/redis/redis.conf
 
 file path=usr/bin/redis-benchmark
 file path=usr/bin/redis-check-aof
 file path=usr/bin/redis-check-dump
 file path=usr/bin/redis-cli
 file path=usr/bin/redis-server
+
+group groupname=redis
+user username=redis group=redis home-dir=/etc/redis
+
+file redis.xml path=lib/svc/manifest/application/database/redis.xml
 
 license redis.license license="BSD"

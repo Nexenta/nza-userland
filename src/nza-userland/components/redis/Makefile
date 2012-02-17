@@ -23,13 +23,13 @@
 
 include ../../make-rules/shared-macros.mk
 
-COMPONENT_NAME=		redis
-COMPONENT_VERSION=	2.4.6
-COMPONENT_SRC=		$(COMPONENT_NAME)-$(COMPONENT_VERSION)
-COMPONENT_ARCHIVE=	$(COMPONENT_SRC).tar.gz
-COMPONENT_PROJECT_URL=  http://redis.io
-COMPONENT_ARCHIVE_HASH= sha1:de9b8dec0a13ed364b5b4af59477cfe2ba87fe76
-COMPONENT_ARCHIVE_URL=	http://redis.googlecode.com/files/$(COMPONENT_ARCHIVE)
+COMPONENT_NAME         = redis
+COMPONENT_VERSION      = 2.4.7
+COMPONENT_SRC          = $(COMPONENT_NAME)-$(COMPONENT_VERSION)
+COMPONENT_ARCHIVE      = $(COMPONENT_SRC).tar.gz
+COMPONENT_PROJECT_URL  = http://redis.io
+COMPONENT_ARCHIVE_HASH = sha1:cd0835f1076ad36797ed6543af187ac28a29953f
+COMPONENT_ARCHIVE_URL  = http://redis.googlecode.com/files/$(COMPONENT_ARCHIVE)
 
 include ../../make-rules/prep.mk
 include ../../make-rules/justmake.mk
