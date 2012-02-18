@@ -33,20 +33,30 @@ set name=info.upstream_url value=http://directory.fsf.org/GNU/gzip.html
 set name=opensolaris.arc_url \
     value=http://arc.opensolaris.org/caselog/PSARC/2000/488
 set name=org.opensolaris.consolidation value=$(CONSOLIDATION)
+
+license gzip.license license=GPLv2
+
 dir path=usr
 dir path=usr/bin
+dir path=usr/lib
 dir path=usr/share
 dir path=usr/share/info
 dir path=usr/share/man
 dir path=usr/share/man/man1
+file path=usr/bin/gunzip
+file path=usr/bin/gzcat
+file path=usr/bin/gzcmp
 file path=usr/bin/gzdiff
+file path=usr/bin/gzegrep
 file path=usr/bin/gzexe
+file path=usr/bin/gzfgrep
 file path=usr/bin/gzforce
 file path=usr/bin/gzgrep
 file path=usr/bin/gzip
 file path=usr/bin/gzless
 file path=usr/bin/gzmore
 file path=usr/bin/gznew
+file path=usr/bin/uncompress
 file path=usr/share/info/gzip.info
 file path=usr/share/man/man1/gunzip.1
 file path=usr/share/man/man1/gzcat.1
@@ -61,13 +71,3 @@ file path=usr/share/man/man1/gzip.1
 file path=usr/share/man/man1/gzless.1
 file path=usr/share/man/man1/gzmore.1
 file path=usr/share/man/man1/gznew.1
-hardlink path=usr/bin/gunzip target=gzip
-hardlink path=usr/bin/gzcat target=gzip
-hardlink path=usr/bin/gzcmp target=gzdiff
-hardlink path=usr/bin/gzegrep target=gzgrep
-hardlink path=usr/bin/gzfgrep target=gzgrep
-legacy pkg=SUNWgzip desc="The GNU Zip (gzip) compression utility 1.3.5" \
-    name="The GNU Zip (gzip) compression utility"
-
-
-license gzip.license license=GPLv2
