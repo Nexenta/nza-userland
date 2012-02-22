@@ -33,14 +33,13 @@ COMPONENT_ARCHIVE      = $(COMPONENT_SRC).tar.gz
 COMPONENT_ARCHIVE_HASH = sha1:e93c4b48379c0240fd4c7af8982faa3c4a7c834f
 COMPONENT_ARCHIVE_URL  = http://nginx.org/download/$(COMPONENT_ARCHIVE)
 
-include ../../make-rules/prep.mk
+include $(WS_TOP)/make-rules/prep.mk
 CONFIGURE_DEFAULT_DIRS = no
-include ../../make-rules/configure.mk
-include ../../make-rules/ips.mk
+include $(WS_TOP)/make-rules/configure.mk
+include $(WS_TOP)/make-rules/ips.mk
 
 COMPONENT_PRE_CONFIGURE_ACTION = $(CLONEY) $(SOURCE_DIR) $(@D);
 
-#SBIN.32 = /usr/sbin/$(MARCH)/nginx
 SBIN.32 = /usr/sbin/nginx
 SBIN.64 = /usr/sbin/$(MARCH64)/nginx
 
@@ -75,6 +74,7 @@ CONFIGURE_OPTIONS += --with-sha1=/usr/include/openssl
 CONFIGURE_OPTIONS += --with-md5=/usr/include/openssl
 CONFIGURE_OPTIONS += --with-mail
 CONFIGURE_OPTIONS += --with-mail_ssl_module 
+CONFIGURE_OPTIONS += --add-module=$(COMPONENT_DIR)/ngx_http_auth_pam_module-1.2
 
 # Not all libs have 64-bits versions
 build:		$(BUILD_32)
@@ -85,4 +85,4 @@ test:		$(NO_TESTS)
 
 BUILD_PKG_DEPENDENCIES = $(BUILD_TOOLS)
 
-include ../../make-rules/depend.mk
+include $(WS_TOP)/make-rules/depend.mk
