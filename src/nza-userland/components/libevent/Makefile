@@ -6,7 +6,7 @@
 # You may not use this file except in compliance with the License.
 #
 # You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
-# or http://www.opensolaris.org/os/licensing.
+# or http://www.opensolaris.o$(WS_TOP)/licensing.
 # See the License for the specific language governing permissions
 # and limitations under the License.
 #
@@ -25,17 +25,17 @@
 
 include ../../make-rules/shared-macros.mk
 
-COMPONENT_NAME=		libevent
-COMPONENT_VERSION=	1.3e
-IPS_COMPONENT_VERSION=	1.3.5
-COMPONENT_SRC=		$(COMPONENT_NAME)-$(COMPONENT_VERSION)
-COMPONENT_ARCHIVE=	$(COMPONENT_SRC).tar.gz
-COMPONENT_ARCHIVE_HASH=	sha1:67b064a4533c640dfb86e3d81c0cca9247427353
-COMPONENT_ARCHIVE_URL=	http://monkey.org/~provos/$(COMPONENT_ARCHIVE)
+COMPONENT_NAME         = libevent
+COMPONENT_VERSION      = 1.3e
+IPS_COMPONENT_VERSION  = 1.3.5
+COMPONENT_SRC          = $(COMPONENT_NAME)-$(COMPONENT_VERSION)
+COMPONENT_ARCHIVE      = $(COMPONENT_SRC).tar.gz
+COMPONENT_ARCHIVE_HASH = sha1:67b064a4533c640dfb86e3d81c0cca9247427353
+COMPONENT_ARCHIVE_URL  = https://github.com/downloads/$(COMPONENT_NAME)/$(COMPONENT_NAME)/$(COMPONENT_ARCHIVE)
 
-include ../../make-rules/prep.mk
-include ../../make-rules/configure.mk
-include ../../make-rules/ips.mk
+include $(WS_TOP)/make-rules/prep.mk
+include $(WS_TOP)/make-rules/configure.mk
+include $(WS_TOP)/make-rules/ips.mk
 
 COMPONENT_PRE_CONFIGURE_ACTION =  \
 	($(CLONEY) $(SOURCE_DIR) $(@D))
@@ -67,4 +67,4 @@ test:		$(NO_TESTS)
 
 BUILD_PKG_DEPENDENCIES =	$(BUILD_TOOLS)
 
-include ../../make-rules/depend.mk
+include $(WS_TOP)/make-rules/depend.mk
