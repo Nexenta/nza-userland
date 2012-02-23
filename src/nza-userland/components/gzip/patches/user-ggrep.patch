@@ -1,0 +1,12 @@
+diff -dubr gzip-1.4/zgrep.in gzip-1.4.patched/zgrep.in
+--- gzip-1.4/zgrep.in	2010-01-03 20:26:02.000000000 +0300
++++ gzip-1.4.patched/zgrep.in	2012-02-23 16:04:15.276660209 +0400
+@@ -26,7 +26,7 @@
+ esac
+ PATH=$bindir:$PATH
+ 
+-grep='${GREP-grep}'
++grep='${GREP-ggrep}'
+ 
+ version='zgrep (gzip) @VERSION@
+ Copyright (C) 2007, 2009-2010 Free Software Foundation, Inc.
