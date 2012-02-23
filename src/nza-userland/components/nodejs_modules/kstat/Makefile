@@ -38,7 +38,7 @@ include $(WS_TOP)/make-rules/prep.mk
 include $(WS_TOP)/make-rules/justmake.mk
 include $(WS_TOP)/make-rules/ips.mk
 
-build:
+build: download
 	mkdir $(BUILD_DIR)
 	$(ENV) $(COMPONENT_BUILD_ENV) npm install $(COMPONENT_ARCHIVE)
 
