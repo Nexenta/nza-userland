@@ -22,18 +22,18 @@
 #
 # Copyright (c) 2011 Nexenta Systems, Inc.  All rights reserved.
 
-include ../../make-rules/shared-macros.mk
+include ../..//make-rules/shared-macros.mk
 
-COMPONENT_NAME=		pciutils
-COMPONENT_VERSION=	3.1.8
-COMPONENT_SRC=		$(COMPONENT_NAME)-$(COMPONENT_VERSION)
-COMPONENT_ARCHIVE=	$(COMPONENT_SRC).tar.gz
-COMPONENT_ARCHIVE_HASH=	sha1:9eed8510309d17d19863a62fe6d5fe238460a723
-COMPONENT_ARCHIVE_URL=	ssh:/$(COMPONENT_ARCHIVE)
+COMPONENT_NAME         = pciutils
+COMPONENT_VERSION      = 3.1.9
+COMPONENT_SRC          = $(COMPONENT_NAME)-$(COMPONENT_VERSION)
+COMPONENT_ARCHIVE      = $(COMPONENT_SRC).tar.bz2
+COMPONENT_ARCHIVE_HASH = sha1:4ecf2eab484377d07f6ca4014a7033c091a40cef
+COMPONENT_ARCHIVE_URL  = ftp://ftp.kernel.org/pub/software/utils/$(COMPONENT_NAME)/$(COMPONENT_ARCHIVE)
 
-include ../../make-rules/prep.mk
-include ../../make-rules/justmake.mk
-include ../../make-rules/ips.mk
+include $(WS_TOP)/make-rules/prep.mk
+include $(WS_TOP)/make-rules/justmake.mk
+include $(WS_TOP)/make-rules/ips.mk
 
 
 build:		$(BUILD_32)
@@ -45,5 +45,5 @@ test:		$(TEST_32)
 
 BUILD_PKG_DEPENDENCIES = $(BUILD_TOOLS)
 
-include ../../make-rules/depend.mk
+include $(WS_TOP)/make-rules/depend.mk
 
