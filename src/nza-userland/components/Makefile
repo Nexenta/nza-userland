@@ -22,6 +22,7 @@
 #
 
 include ../make-rules/shared-macros.mk
+include $(WS_TOP)/make-rules/colors.mk
 
 # for now, the assumption is we build any directory with a Makefile.  This may
 # not always be the case. If we build a new make-like tool to drive the upper
@@ -58,8 +59,9 @@ deb:			TARGET = deb
 clean:			TARGET = clean
 clobber:		TARGET = clobber
 test:			TARGET = test
+LOGFILE = $(WS_LOGS)/$(@F).$(TARGET).log
 prep build install publish deb test:	TEMPLATE_ZONE=$(ZONE)
-prep build install publish deb test:	LOG = >$(WS_LOGS)/$(@F).$(TARGET).log 2>&1
+prep build install publish deb test:	LOG = >$(LOGFILE) 2>&1
 
 # turn off pkglint for the individual component builds.
 publish:		MAKEFLAGS += PKGLINT=/bin/true
@@ -108,9 +110,11 @@ tools:
 	echo "export PATH WS_TOP" >>$@
 
 $(COMPONENT_DIRS):	$(WS_LOGS) setup FORCE
-	@cd $@ && echo "$(TARGET) $@" && \
+	@cd $@ && printf "$(WHITE)$(TARGET)$(NO_COLOR) $@ " && \
 	 $(BASS_O_MATIC) $(TEMPLATE_ZONE:%=--template-zone %) \
-			 $(@:%=--component %) --make $(TARGET) $(LOG)
+			 $(@:%=--component %) --make $(TARGET) $(LOG) && \
+	printf "$(LIGHT_GREEN)ok$(NO_COLOR)\n" || \
+	(printf "$(LIGHT_RED)failed$(NO_COLOR). See $(LOGFILE)\n" && false)
 
 publish:
 	$(PKGREPO) rebuild -s $(PKG_REPO)
