@@ -35,7 +35,7 @@ dir path=etc
 dir path=etc/apt
 dir path=etc/apt/apt.conf.d
 dir path=usr
-dir path=usr/sbin
+dir path=usr/bin
 
-file apt-clone         path=usr/sbin/apt-clone
-file apt.conf.nexenta  path=etc/apt.conf.d/01-nexenta
+file apt-clone         path=usr/bin/apt-clone
+file apt.conf.nexenta  path=etc/apt/apt.conf.d/01-nexenta
