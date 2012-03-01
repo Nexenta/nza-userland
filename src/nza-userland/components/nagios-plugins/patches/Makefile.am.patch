@@ -1,0 +1,13 @@
+--- nagios-plugins-1.4.15/plugins-root/Makefile.am	Tue Jul 27 23:47:16 2010
++++ nagios-plugins-1.4.15/plugins-root/Makefile.am.new	Tue Jan 24 15:50:20 2012
+@@ -81,8 +81,8 @@
+ check_icmp_LDADD = @LTLIBINTL@ $(NETLIBS) $(SOCKETLIBS)
+ 
+ # -m64 needed at compiler and linker phase
+-pst3_CFLAGS = @PST3CFLAGS@
+-pst3_LDFLAGS = @PST3CFLAGS@
++#pst3_CFLAGS = @PST3CFLAGS@
++#pst3_LDFLAGS = @PST3CFLAGS@
+ # pst3 must not use nagiosplug/gnulib includes!
+ pst3_CPPFLAGS =
+ 

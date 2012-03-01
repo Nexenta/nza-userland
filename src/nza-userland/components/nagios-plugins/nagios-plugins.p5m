@@ -1,0 +1,108 @@
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+# Copyright (c) 2011 Nexenta Systems, Inc.  All rights reserved.
+#
+
+<transform file path=usr.*/man/.+ -> default mangler.man.stability volatile>
+set name=pkg.fmri \
+    value=pkg:/network/nagios-plugins-1.4.15@$(IPS_COMPONENT_VERSION),$(BUILD_VERSION)
+set name=pkg.summary value="nagios-plugins"
+set name=info.classification value=org.opensolaris.category.2008:System/Internet
+set name=info.source_url value=$(COMPONENT_ARCHIVE_URL)
+set name=info.upstream_url value=http://www.nagios.org
+set name=opensolaris.arc_url \
+    value=http://arc.opensolaris.org/caselog/PSARC/2000/488
+set name=org.opensolaris.consolidation value=$(CONSOLIDATION)
+
+dir path=usr
+
+dir path=usr/share
+dir path=usr/share/locale
+dir path=usr/share/locale/fr
+dir path=usr/share/locale/fr/LC_MESSAGES
+dir path=usr/share/locale/de
+dir path=usr/share/locale/de/LC_MESSAGES
+dir path=usr/lib
+dir path=usr/lib/nagios3
+dir path=usr/lib/nagios3/plugins
+file path=usr/lib/nagios3/plugins/check_users mode=0700
+file path=usr/lib/nagios3/plugins/check_disk_smb mode=0700
+file path=usr/lib/nagios3/plugins/check_nagios mode=0700
+file path=usr/lib/nagios3/plugins/check_by_ssh mode=0700
+file path=usr/lib/nagios3/plugins/urlize  mode=0700
+file path=usr/lib/nagios3/plugins/check_dhcp mode=0700
+file path=usr/lib/nagios3/plugins/check_wave  mode=0700
+file path=usr/lib/nagios3/plugins/check_ntp_peer mode=0700
+file path=usr/lib/nagios3/plugins/check_rpc mode=0700
+file path=usr/lib/nagios3/plugins/pst3 mode=0700
+file path=usr/lib/nagios3/plugins/check_tcp mode=0700
+file path=usr/lib/nagios3/plugins/check_ssh mode=0700
+file path=usr/lib/nagios3/plugins/check_ircd mode=0700
+file path=usr/lib/nagios3/plugins/check_log mode=0700
+file path=usr/lib/nagios3/plugins/check_oracle mode=0700
+file path=usr/lib/nagios3/plugins/check_ifoperstatus mode=0700
+file path=usr/lib/nagios3/plugins/check_sensors mode=0700
+file path=usr/lib/nagios3/plugins/check_mrtg mode=0700
+file path=usr/lib/nagios3/plugins/check_hpjd mode=0700
+file path=usr/lib/nagios3/plugins/check_overcr mode=0700
+file path=usr/lib/nagios3/plugins/check_breeze mode=0700
+file path=usr/lib/nagios3/plugins/check_nt mode=0700
+file path=usr/lib/nagios3/plugins/check_ntp mode=0700
+file path=usr/lib/nagios3/plugins/check_ntp_time mode=0700
+file path=usr/lib/nagios3/plugins/check_time mode=0700
+file path=usr/lib/nagios3/plugins/negate mode=0700
+file path=usr/lib/nagios3/plugins/check_mailq mode=0700
+file path=usr/lib/nagios3/plugins/check_ifstatus mode=0700
+file path=usr/lib/nagios3/plugins/check_procs mode=0700
+file path=usr/lib/nagios3/plugins/check_icmp mode=0700
+file path=usr/lib/nagios3/plugins/check_disk mode=0700
+file path=usr/lib/nagios3/plugins/utils.pm mode=0700
+file path=usr/lib/nagios3/plugins/check_dummy mode=0700
+file path=usr/lib/nagios3/plugins/check_http mode=0700
+file path=usr/lib/nagios3/plugins/check_file_age mode=0700
+file path=usr/lib/nagios3/plugins/check_ping mode=0700
+file path=usr/lib/nagios3/plugins/check_smtp mode=0700
+file path=usr/lib/nagios3/plugins/check_load mode=0700
+file path=usr/lib/nagios3/plugins/check_nwstat mode=0700
+file path=usr/lib/nagios3/plugins/utils.sh mode=0700
+file path=usr/lib/nagios3/plugins/check_mrtgtraf
+
+file path=usr/lib/nagios3/plugins/check_ups mode=0700
+file path=usr/lib/nagios3/plugins/check_real mode=0700
+file path=usr/lib/nagios3/plugins/check_cluster mode=0700
+file path=usr/lib/nagios3/plugins/check_snmp mode=0700
+file path=usr/lib/nagios3/plugins/check_apt mode=0700
+file path=usr/lib/nagios3/plugins/check_flexlm mode=0700
+file path=usr/share/locale/fr/LC_MESSAGES/nagios-plugins.mo
+file path=usr/share/locale/de/LC_MESSAGES/nagios-plugins.mo
+link path=usr/lib/nagios3/plugins/check_ssmtp target=check_tcp
+link path=usr/lib/nagios3/plugins/check_simap target=check_tcp
+link path=usr/lib/nagios3/plugins/check_jabber target=check_tcp
+link path=usr/lib/nagios3/plugins/check_udp target=check_tcp
+link path=usr/lib/nagios3/plugins/check_nntp target=check_tcp
+link path=usr/lib/nagios3/plugins/check_pop target=check_tcp
+link path=usr/lib/nagios3/plugins/check_spop target=check_tcp
+link path=usr/lib/nagios3/plugins/check_nntps target=check_tcp
+link path=usr/lib/nagios3/plugins/check_clamd target=check_tcp
+link path=usr/lib/nagios3/plugins/check_imap target=check_tcp
+link path=usr/lib/nagios3/plugins/check_ftp target=check_tcp
+
+

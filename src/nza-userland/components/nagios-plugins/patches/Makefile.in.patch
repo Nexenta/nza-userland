@@ -1,0 +1,11 @@
+--- nagios-plugins-1.4.15/plugins-root/Makefile.in	Tue Jul 27 23:48:10 2010
++++ nagios-plugins-1.4.15/plugins-root/Makefile.in.new	Tue Jan 24 16:49:56 2012
+@@ -145,7 +145,7 @@
+ pst3_OBJECTS = pst3-pst3.$(OBJEXT)
+ pst3_LDADD = $(LDADD)
+ pst3_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
+-	--mode=link $(CCLD) $(pst3_CFLAGS) $(CFLAGS) $(pst3_LDFLAGS) \
++	--mode=link $(CCLD)  $(CFLAGS)  \
+ 	$(LDFLAGS) -o $@
+ DEFAULT_INCLUDES = -I. -I$(top_builddir)@am__isrc@
+ depcomp = $(SHELL) $(top_srcdir)/build-aux/depcomp
