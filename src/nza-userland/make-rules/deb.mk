@@ -1,3 +1,4 @@
+# Copyright (c) 2012, Nexenta Systems, Inc. All rights reserved.
 
 # shared-macros.mk and ips.mk must be included before
 

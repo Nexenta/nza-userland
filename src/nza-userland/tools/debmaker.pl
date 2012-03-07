@@ -1,5 +1,7 @@
 #!/usr/bin/env perl
 
+# Copyright (c) 2012, Nexenta Systems, Inc. All rights reserved.
+
 use 5.010;
 use strict;
 use warnings FATAL => 'all';

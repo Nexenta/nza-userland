@@ -20,6 +20,8 @@
 #
 # Copyright (c) 2011, Oracle and/or its affiliates. All rights reserved.
 #
+# Copyright (c) 2012, Nexenta Systems, Inc. All rights reserved.
+#
 include ../../make-rules/shared-macros.mk
 COMPONENT_NAME         = ntop
 COMPONENT_VERSION      = 4.1.0
