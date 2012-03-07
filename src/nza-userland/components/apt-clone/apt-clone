@@ -1512,7 +1512,36 @@ if ($rc == 0) {
 				nmu_system("mount -F lofs -O /media $tmpdir/media 2>/dev/null");
 				nmu_system("mount -F lofs -O /mnt $tmpdir/mnt 2>/dev/null");
 				nmu_system("mount -F lofs -O /tmp $tmpdir/tmp 2>/dev/null");
-				$err = nmu_system("APT_CLONE_ENV=1 chroot $tmpdir /usr/bin/apt-get $verbose $yes $upgrade_cmd");
+
+				nmu_system("apt-get -o=dir::cache=$tmpdir/var/cache/apt update");
+				nmu_system("apt-get -o=dir::cache=$tmpdir/var/cache/apt -d -f -y --force-yes upgrade");
+
+				my @debs = ();
+				my @debnames = ();
+
+				if (NMUUtil::sysexec("apt-get -o=dir::cache=$tmpdir/var/cache/apt -s -u upgrade", \@debs) != 0) {
+					print_error("Error from apt upgrade: $debs[0]\n");
+					exit(1);
+				}
+				my @inst = grep /^Inst/, @debs;
+				for my $line (@inst) {
+					my @name = split(/ /,$line);
+					push @debnames, $name[1];
+				}
+
+				nmu_system("mount -F lofs /dev/ptmx $tmpdir/dev/ptmx 2>/dev/null");
+				nmu_system("mount -F lofs /dev/pts  $tmpdir/dev/pts 2>/dev/null");
+
+				my $chrootenv = "env -i PATH=/usr/gnu/bin:/usr/bin:/sbin:/usr/sbin APT_CLONE_ENV=1 DEBCHROOT=1 LOGNAME=root HOME=/root USER=root TERM=xterm";
+				nmu_system("chroot $tmpdir $chrootenv apt-get install -f -y sunwcs");
+				nmu_system("chroot $tmpdir $chrootenv /usr/bin/apt-get upgrade -y --force-yes");
+
+				nmu_system("chroot $tmpdir $chrootenv apt-get install --reinstall -y --force-yes sunwcs");
+				nmu_system("chroot $tmpdir $chrootenv apt-get autoremove -y --force-yes");
+				$err = nmu_system("chroot $tmpdir $chrootenv apt-get install -f -y --force-yes");
+
+				nmu_system("umount $tmpdir/dev/ptmx 2>/dev/null");
+				nmu_system("umount $tmpdir/dev/pts 2>/dev/null");
 				nmu_system("chroot $tmpdir umount /proc 2>/dev/null");
 				nmu_system("umount $tmpdir/etc/mnttab 2>/dev/null");
 				nmu_system("umount $tmpdir/devices 2>/dev/null");
@@ -1520,6 +1549,22 @@ if ($rc == 0) {
 				nmu_system("umount $tmpdir/media 2>/dev/null");
 				nmu_system("umount $tmpdir/mnt 2>/dev/null");
 				nmu_system("umount $tmpdir/tmp 2>/dev/null");
+
+				for my $dpkg (@debnames) {
+					print "Configuring $dpkg\n";
+					if ( -e "$tmpdir/var/lib/dpkg/info/$dpkg.prerm" ) {
+						if (nmu_system("BASEDIR=\"$tmpdir\" $tmpdir/var/lib/dpkg/info/$dpkg.prerm upgrade") != 0) {
+							print "Error while processing $dpkg prerm upgrade\n";
+						}
+					}
+					if ( -e "$tmpdir/var/lib/dpkg/info/$dpkg.postinst" ) {
+						if (nmu_system("DEBUPGRADE=1 BASEDIR=\"$tmpdir\" $tmpdir/var/lib/dpkg/info/$dpkg.postinst configure") != 0) {
+							print "Error while processing $dpkg postinst configure\n";
+						}
+					}
+				}
+				nmu_system("touch $tmpdir/reconfigure");
+
 				if ($err == 0) {
 					if (nmu_system("$tmpdir/usr/sbin/bootadm update-archive -n -R $tmpdir 2>/dev/null 1>&2")) {
 						$err = nmu_system("$tmpdir/usr/sbin/bootadm update-archive -R $tmpdir");
