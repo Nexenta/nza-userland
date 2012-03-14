@@ -2,7 +2,7 @@
 #
 # Copyright (c) 2012, Nexenta Systems, Inc. All rights reserved.
 #
-# VERSION 1.9
+# VERSION 1.13
 #
 
 use FindBin;
@@ -24,7 +24,6 @@ my $ignorePkgs = {};
 $$ignorePkgs{'consolidation-osnet-osnet-message-files'} = 1;
 $$ignorePkgs{'consolidation-osnet-osnet-incorporation'} = 1;
 $$ignorePkgs{'consolidation-osnet-osnet-redistributable'} = 1;
-#$$ignorePkgs{'developer-build-onbld'} = 1;
 
 my $specialPkgs = {};
 $$specialPkgs{'system-file-system-zfs'} = 1;
@@ -328,14 +327,21 @@ sub genPackage
         &saveFinalFile($file, $str);
     }
 
+# we need clean <pkg>.conffiles
+# because we have scheme for update files by postinst operation
     $operation = 'conffiles';
-    undef $operations;
-    $operations = $$output{$operation} if defined($$output{$operation});
-    if (defined ($operations) && scalar(@$operations) > 0)
-    {
-        $$tmpl{'CONFFILES'} = join("\n",@$operations);
-        &saveExtfiles($mft, $operation);
-    }
+    $$output{$operation} = "";
+    $mft->{_scripts} = $output;
+    $$tmpl{'CONFFILES'} = "";
+    &saveExtfiles($mft, $operation);
+
+#    undef $operations;
+#    $operations = $$output{$operation} if defined($$output{$operation});
+#    if (defined ($operations) && scalar(@$operations) > 0)
+#    {
+#        $$tmpl{'CONFFILES'} = join("\n",@$operations);
+#        &saveExtfiles($mft, $operation);
+#    }
 
 #    $operation = 'zone';
 #    undef $operations;
@@ -530,6 +536,9 @@ sub saveFiles
 
 	$str = "cp -f \$BASEDIR/usr/lib/isaexec \$BASEDIR/usr/sbin/rem_drv";
 	push (@$postinst, $str);
+
+	$str = "cp -f \$BASEDIR/usr/lib/isaexec \$BASEDIR/usr/sbin/update_drv";
+	push (@$postinst, $str);
     }
 
     my @buff;
@@ -557,11 +566,100 @@ sub saveFiles
 
         next if ($path =~ /etc\/motd/); # use etc/motd from base-files package
 
+
+        push(@$fixperms, "mkdir -p \$DEST/$path_dir");
+
+	$found = 0;
+	undef($path_others) if ($path_others =~ /NOHASH/ || defined($$line{'chash'}));
+        if (defined($path_others))
+        {
+	    $str = dirname("$origPath");
+	    mkpath("$$tmpl{'SAVETO'}/$$tmpl{'PKGNAME'}/$str");
+
+	    foreach my $dirOne (@dirs)
+	    {
+		next unless (-e "$dirOne/$path_others" && -f "$dirOne/$path_others");
+		copy("$dirOne/$path_others", "$$tmpl{'SAVETO'}/$$tmpl{'PKGNAME'}/$origPath") or die "Copy failed:($dirOne/$path_others), $!";
+		chown $owner, $group, "$$tmpl{'SAVETO'}/$$tmpl{'PKGNAME'}/$origPath";
+		chmod oct("$mode"), "$$tmpl{'SAVETO'}/$$tmpl{'PKGNAME'}/$origPath";
+#		last if ($? == 0);
+	    $found = 1;
+	    }
+        }
+        else
+        {
+	    foreach my $dirOne (@dirs)
+	    {
+		next if (length($dirOne) < 3);
+#		print "1 - == $dirOne, $path, $origPath\n";
+		next unless (-e "$dirOne/$origPath" && -f "$dirOne/$origPath");
+#		print "2 - == $dirOne/$path\n";
+		$str = dirname("$origPath");
+		mkpath("$$tmpl{'SAVETO'}/$$tmpl{'PKGNAME'}/$str");
+		copy("$dirOne/$origPath", "$$tmpl{'SAVETO'}/$$tmpl{'PKGNAME'}/$origPath") or die "Copy failed: $!";
+		chown $owner, $group, "$$tmpl{'SAVETO'}/$$tmpl{'PKGNAME'}/$origPath";
+		chmod oct("$mode"), "$$tmpl{'SAVETO'}/$$tmpl{'PKGNAME'}/$origPath";
+		$found = 1;
+		last;
+	    }
+        }
+
+        unless ($found)
+        {
+	    print "FAILED!\n==NOT found: $path\n"; 
+	    exit 1;
+        }
+
+	    push(@$fixperms, "test -f \"\$DEST/$origPath\" || echo '== Missing: $origPath'");
+	    push(@$fixperms, "test -f \"\$DEST/$origPath\" || exit 1");
+	    push(@$fixperms, "chmod $mode \"\$DEST/$origPath\"");
+	    push(@$fixperms, "chown $owner:$group \"\$DEST/$origPath\"");
+
+        if (defined($$line{'preserve'}) && $preserve eq 'renamenew')
+        {
+            $str = "mv \$DEST/$origPath \$DEST/$origPath.new";
+	    push(@$fixperms, $str);
+
+	    $str = "[ \"\$DEBUPGRADE\" = \"1\" ] || ([ -f \$BASEDIR/$path ] || mv -f \$BASEDIR/$path.new \$BASEDIR/$path)";
+            push(@$postinst, $str);
+        }
+
+        if (defined($$line{'preserve'}) && $preserve eq 'renameold')
+        {
+            $str = "mv \$DEST/$origPath \$DEST/$origPath.$moduleName";
+	    push(@$fixperms, $str);
+
+	    $str = "[ \"\$DEBUPGRADE\" = \"1\" ] || ([ -f \$BASEDIR/$path ] && mv -f \$BASEDIR/$path \$BASEDIR/$path.old )";
+            push(@$postinst, $str);
+
+	    $str = "[ \"\$DEBUPGRADE\" = \"1\" ] || ([ -f \$BASEDIR/$path.$moduleName ] && mv -f \$BASEDIR/$path.$moduleName \$BASEDIR/$path )";
+            push(@$postinst, $str);
+        }
+
+        if (defined($$line{'preserve'}) && $preserve eq 'legacy')
+        {
+            $str = "mv \$DEST/$origPath \$DEST/$origPath.$moduleName";
+	    push(@$fixperms, $str);
+
+	    $str = "[ \"\$DEBUPGRADE\" = \"1\" ] || ([ -f \$BASEDIR/$path ] || rm -f \$BASEDIR/$path.$moduleName )";
+            push(@$postinst, $str);
+
+	    $str = "[ \"\$DEBUPGRADE\" = \"1\" ] || ([ -f \$BASEDIR/$path ] && mv -f \$BASEDIR/$path \$BASEDIR/$path.legacy )";
+            push(@$postinst, $str);
+
+	    $str = "[ \"\$DEBUPGRADE\" = \"1\" ] || ([ -f \$BASEDIR/$path.$moduleName ] && mv -f \$BASEDIR/$path.$moduleName \$BASEDIR/$path )";
+            push(@$postinst, $str);
+        }
+
         if (defined($$line{'preserve'}) && $preserve eq 'true')
         {
-#            push(@$conffiles, "$path") unless ($path =~ /etc\//);
-#            push(@$conffiles, "$path");
-            push(@$conffiles, "$origPath");
+            $str = "mv \$DEST/$origPath \$DEST/$origPath.$moduleName";
+	    push(@$fixperms, $str);
+
+	    $str = "[ \"\$DEBUPGRADE\" = \"1\" ] ||([ -f \$BASEDIR/$path ] || mv -f \$BASEDIR/$path.$moduleName \$BASEDIR/$path )";
+            push(@$postinst, $str);
+	    $str = "[ \"\$DEBUPGRADE\" = \"1\" ] ||([ -f \$BASEDIR/$path ] && rm -f \$BASEDIR/$path.$moduleName)";
+            push(@$postinst, $str);
         }
 
         if (defined($zonevariant) && ($zonevariant eq 'global'))
@@ -580,67 +678,9 @@ sub saveFiles
 #                push(@$postinst, "fi");
             }
         }
-
-        push(@$fixperms, "mkdir -p \$DEST/$path_dir");
-
-#	$str = "mkdir -p $$tmpl{'SAVETO'}/tmp";
-#	system($str);
-
-	$found = 0;
-	undef($path_others) if ($path_others =~ /NOHASH/ || defined($$line{'chash'}));
-        if (defined($path_others))
-        {
-	    $str = dirname("$origPath");
-	    mkpath("$$tmpl{'SAVETO'}/$$tmpl{'PKGNAME'}/$str");
-
-	    foreach my $dirOne (@dirs)
-	    {
-		next unless (-e "$dirOne/$path_others" && -f "$dirOne/$path_others");
-		copy("$dirOne/$path_others", "$$tmpl{'SAVETO'}/$$tmpl{'PKGNAME'}/$origPath") or die "Copy failed:($dirOne/$path_others), $!";
-		chown $owner, $group, "$$tmpl{'SAVETO'}/$$tmpl{'PKGNAME'}/$origPath";
-		chmod oct("$mode"), "$$tmpl{'SAVETO'}/$$tmpl{'PKGNAME'}/$origPath";
-#		last if ($? == 0);
-	    $found = 1;
-	    }
-
-#	    push(@$fixperms, "test -f debian/_special_/$path_others && cp -f debian/_special_/$path_others \$DEST/$path");
-        }
-        else
-        {
-	    foreach my $dirOne (@dirs)
-	    {
-		next if (length($dirOne) < 3);
-#		print "1 - == $dirOne, $path, $origPath\n";
-		next unless (-e "$dirOne/$origPath" && -f "$dirOne/$origPath");
-#		print "2 - == $dirOne/$path\n";
-		$str = dirname("$origPath");
-		mkpath("$$tmpl{'SAVETO'}/$$tmpl{'PKGNAME'}/$str");
-		copy("$dirOne/$origPath", "$$tmpl{'SAVETO'}/$$tmpl{'PKGNAME'}/$origPath") or die "Copy failed: $!";
-		chown $owner, $group, "$$tmpl{'SAVETO'}/$$tmpl{'PKGNAME'}/$origPath";
-		chmod oct("$mode"), "$$tmpl{'SAVETO'}/$$tmpl{'PKGNAME'}/$origPath";
-#		push(@$fixperms, "mv \"$$tmpl{'SAVETO'}/proto/$path\" \"\$DEST/$str/\"");
-#		push(@$fixperms, "mv $$tmpl{'SAVETO'}/proto/$path \$DEST/$path");
-		$found = 1;
-		last;
-	    }
-        }
-        unless ($found)
-        {
-	    print "FAILED!\n==NOT found: $path\n"; 
-	    exit 1;
-        }
-
-#        push(@buff, "$path");
-
-        push(@$fixperms, "test -f \"\$DEST/$origPath\" || echo '== Missing: $origPath'");
-        push(@$fixperms, "test -f \"\$DEST/$origPath\" || exit 1");
-        push(@$fixperms, "chmod $mode \"\$DEST/$origPath\"");
-        push(@$fixperms, "chown $owner:$group \"\$DEST/$origPath\"");
     }
-#    return 1 if (scalar(@buff) < 1);
-#    return 1 if (scalar(@$fixperms) < 1);
+
     return 1 unless ($found);
-#    &saveFinalFile($file, join("\n", @buff));
 
 #    $str = "";
 #    push (@$postinst, $str) if (scalar(@$postinst) > 0);
@@ -910,6 +950,12 @@ sub saveHardLinks
 
 	$str = "mkdir -p \$DEST/usr/bin && cp -f \$DEST/usr/lib/isaexec \$DEST/usr/bin/ksh93";
         push(@$fixperms, $str);
+
+	$str = "mkdir -p \$DEST/usr/bin && cp -f \$DEST/usr/lib/isaexec \$DEST/usr/sbin/rem_drv";
+        push(@$fixperms, $str);
+
+	$str = "mkdir -p \$DEST/usr/bin && cp -f \$DEST/usr/lib/isaexec \$DEST/usr/sbin/update_drv";
+        push(@$fixperms, $str);
     }
 
 
@@ -926,6 +972,7 @@ sub saveHardLinks
 	next if ($path eq "usr/bin/ksh");
 	next if ($path eq "usr/bin/ksh93");
 	next if ($path eq "usr/sbin/rem_drv");
+	next if ($path eq "usr/sbin/update_drv");
 
         if (defined($zonevariant) && ($zonevariant eq 'global'))
         {
@@ -1069,7 +1116,7 @@ sub saveDrivers
 
         if (defined($originalClonePerm))
         {
-            $drv = 'update_drv -a -n ';
+            $drv = 'update_drv -n ';
 
             $perms = '';
             $OPTIONS = '';
@@ -1086,8 +1133,11 @@ sub saveDrivers
                 {
                     $perms =~ s/"/'/g; #"
 
-                    $str = "[ \"\$DEBCHROOT\" = \"1\" -o \"\$ZONEINST\" = \"1\" ] || (grep -c \"$perms\" \$BASEDIR/etc/minor_perm >/dev/null || $drv \$BASEDIR_OPT $OPTIONS -m $perms clone)";
+                    $str = "[ \"\$DEBCHROOT\" = \"1\" -o \"\$ZONEINST\" = \"1\" ] || (grep -c \"$perms\" \$BASEDIR/etc/minor_perm >/dev/null || $drv -a \$BASEDIR_OPT $OPTIONS -m $perms clone)";
                     push (@$postinst, $str);
+
+                    $str = "[ \"\$DEBCHROOT\" = \"1\" -o \"\$ZONEINST\" = \"1\" ] || (grep -c \"$perms\" \$BASEDIR/etc/minor_perm >/dev/null && $drv -d \$BASEDIR_OPT $OPTIONS -m $perms clone)";
+                    push (@$prerm, $str);
                 }
             }
         }
