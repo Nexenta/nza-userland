@@ -225,28 +225,33 @@ SPRO_VROOT =	$(SPRO_ROOT)/sunstudio12.1
 
 GCC_ROOT =	/usr/gcc/4.4
 
-CC.studio.32 =	$(SPRO_VROOT)/bin/cc
-CXX.studio.32 =	$(SPRO_VROOT)/bin/CC
+CC.studio.32  = $(SPRO_VROOT)/bin/cc
+CXX.studio.32 = $(SPRO_VROOT)/bin/CC
 
-CC.studio.64 =	$(SPRO_VROOT)/bin/cc
-CXX.studio.64 =	$(SPRO_VROOT)/bin/CC
+CC.studio.64  = $(SPRO_VROOT)/bin/cc
+CXX.studio.64 = $(SPRO_VROOT)/bin/CC
 
-CC.gcc.32 =	$(GCC_ROOT)/bin/gcc -m32
-CXX.gcc.32 =	$(GCC_ROOT)/bin/g++ -m32
+CC.gcc.32     = $(GCC_ROOT)/bin/gcc -m32
+CXX.gcc.32    = $(GCC_ROOT)/bin/g++ -m32
+FC.gcc.32     = $(GCC_ROOT)/bin/gfortran -m32
+F77.gcc.32    = $(GCC_ROOT)/bin/gfortran -m32
 
-CC.gcc.64 =	$(GCC_ROOT)/bin/gcc -m64
-CXX.gcc.64 =	$(GCC_ROOT)/bin/g++ -m64
+CC.gcc.64     = $(GCC_ROOT)/bin/gcc -m64
+CXX.gcc.64    = $(GCC_ROOT)/bin/g++ -m64
+FC.gcc.64     = $(GCC_ROOT)/bin/gfortran -m64
+F77.gcc.64    = $(GCC_ROOT)/bin/gfortran -m64
 
-CC =		$(CC.$(COMPILER).$(BITS))
+CC            = $(CC.$(COMPILER).$(BITS))
+CXX           = $(CXX.$(COMPILER).$(BITS))
+FC            = $(FC.$(COMPILER).$(BITS))
+F77           = $(F77.$(COMPILER).$(BITS))
 
-CXX =		$(CXX.$(COMPILER).$(BITS))
+lint.32       = $(SPRO_VROOT)/bin/lint -m32
+lint.64       = $(SPRO_VROOT)/bin/lint -m64
 
-lint.32 =	$(SPRO_VROOT)/bin/lint -m32
-lint.64 =	$(SPRO_VROOT)/bin/lint -m64
+LINT          = $(lint.$(BITS))
 
-LINT =		$(lint.$(BITS))
-
-LD =		/usr/bin/ld
+LD            = /usr/bin/ld
 
 PYTHON_VENDOR_PACKAGES.32 = /usr/lib/python$(PYTHON_VERSION)/vendor-packages
 PYTHON_VENDOR_PACKAGES.64 = /usr/lib/python$(PYTHON_VERSION)/vendor-packages/64
