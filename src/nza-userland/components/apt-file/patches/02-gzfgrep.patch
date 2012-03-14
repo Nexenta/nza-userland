@@ -1,0 +1,25 @@
+Only in apt-file: .01-no-man.patched
+diff -dubr apt-file/apt-file apt-file.noman/apt-file
+--- apt-file/apt-file	2011-07-24 19:51:39.000000000 +0400
++++ apt-file.noman/apt-file	2012-01-30 19:20:31.942729997 +0300
+@@ -343,17 +343,17 @@
+     $| = 1;
+     my $zcat;
+     if ($Conf->{is_regexp}) {
+-        $zcat = 'zcat';
++        $zcat = 'gzcat';
+     }
+     else {
+         my $ignore_case = $Conf->{ignore_case} ? "-i" : "";
+         if ($Conf->{from_file}) {
+-            $zcat = "zfgrep $ignore_case -f $Conf->{zgrep_tmpfile}";
++            $zcat = "gzfgrep $ignore_case -f $Conf->{zgrep_tmpfile}";
+         }
+         else {
+             my $zgrep_pattern = $Conf->{pattern};
+             $zgrep_pattern =~ s{^\\/}{};
+-            $zcat = "zfgrep $ignore_case $zgrep_pattern";
++            $zcat = "gzfgrep $ignore_case $zgrep_pattern";
+         }
+     }
+     my $regexp = eval { $Conf->{ignore_case} ? qr/$pattern/i : qr/$pattern/ };

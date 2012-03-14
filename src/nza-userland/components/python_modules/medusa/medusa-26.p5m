@@ -1,0 +1,90 @@
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license
+# at http://www.opensource.org/licenses/CDDL-1.0
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each file.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+#
+# Copyright (C) 2011, Nexenta Systems, Inc. and/or its affiliates. All rights reserved.
+#
+
+<transform file path=usr.*/man/.+ -> default mangler.man.stability uncommitted>
+set name=pkg.fmri value=pkg:/library/python-2/medusa-26@$(IPS_COMPONENT_VERSION),$(BUILD_VERSION)
+set name=info.classification value="org.opensolaris.category.2008:Development/Python"
+set name=pkg.summary value="A framework for implementing asynchronous servers"
+
+depend fmri=pkg:/runtime/python-26 type=require
+
+dir path=usr
+dir path=usr/lib
+dir path=usr/lib/python2.6
+dir path=usr/lib/python2.6/vendor-packages
+dir path=usr/lib/python2.6/vendor-packages/medusa
+file path=usr/lib/python2.6/vendor-packages/medusa/put_handler.py
+file path=usr/lib/python2.6/vendor-packages/medusa/chat_server.pyc
+file path=usr/lib/python2.6/vendor-packages/medusa/script_handler.py
+file path=usr/lib/python2.6/vendor-packages/medusa/logger.pyc
+file path=usr/lib/python2.6/vendor-packages/medusa/resolver.py
+file path=usr/lib/python2.6/vendor-packages/medusa/logger.py
+file path=usr/lib/python2.6/vendor-packages/medusa/ftp_server.py
+file path=usr/lib/python2.6/vendor-packages/medusa/status_handler.pyc
+file path=usr/lib/python2.6/vendor-packages/medusa/auth_handler.pyc
+file path=usr/lib/python2.6/vendor-packages/medusa/monitor.py
+file path=usr/lib/python2.6/vendor-packages/medusa/event_loop.pyc
+file path=usr/lib/python2.6/vendor-packages/medusa/m_syslog.pyc
+file path=usr/lib/python2.6/vendor-packages/medusa/http_server.py
+file path=usr/lib/python2.6/vendor-packages/medusa/virtual_handler.py
+file path=usr/lib/python2.6/vendor-packages/medusa/status_handler.py
+file path=usr/lib/python2.6/vendor-packages/medusa/script_handler.pyc
+file path=usr/lib/python2.6/vendor-packages/medusa/filesys.py
+file path=usr/lib/python2.6/vendor-packages/medusa/default_handler.pyc
+file path=usr/lib/python2.6/vendor-packages/medusa/counter.pyc
+file path=usr/lib/python2.6/vendor-packages/medusa/__init__.py
+file path=usr/lib/python2.6/vendor-packages/medusa/rpc_client.pyc
+file path=usr/lib/python2.6/vendor-packages/medusa/put_handler.pyc
+file path=usr/lib/python2.6/vendor-packages/medusa/__init__.pyc
+file path=usr/lib/python2.6/vendor-packages/medusa/monitor_client.pyc
+file path=usr/lib/python2.6/vendor-packages/medusa/ftp_server.pyc
+file path=usr/lib/python2.6/vendor-packages/medusa/rpc_server.py
+file path=usr/lib/python2.6/vendor-packages/medusa/rpc_server.pyc
+file path=usr/lib/python2.6/vendor-packages/medusa/medusa_gif.pyc
+file path=usr/lib/python2.6/vendor-packages/medusa/producers.pyc
+file path=usr/lib/python2.6/vendor-packages/medusa/unix_user_handler.pyc
+file path=usr/lib/python2.6/vendor-packages/medusa/http_server.pyc
+file path=usr/lib/python2.6/vendor-packages/medusa/virtual_handler.pyc
+file path=usr/lib/python2.6/vendor-packages/medusa/auth_handler.py
+file path=usr/lib/python2.6/vendor-packages/medusa/medusa_gif.py
+file path=usr/lib/python2.6/vendor-packages/medusa/monitor_client_win32.pyc
+file path=usr/lib/python2.6/vendor-packages/medusa/xmlrpc_handler.py
+file path=usr/lib/python2.6/vendor-packages/medusa/redirecting_handler.py
+file path=usr/lib/python2.6/vendor-packages/medusa/http_date.pyc
+file path=usr/lib/python2.6/vendor-packages/medusa/counter.py
+file path=usr/lib/python2.6/vendor-packages/medusa/rpc_client.py
+file path=usr/lib/python2.6/vendor-packages/medusa/monitor.pyc
+file path=usr/lib/python2.6/vendor-packages/medusa/filesys.pyc
+file path=usr/lib/python2.6/vendor-packages/medusa/chat_server.py
+file path=usr/lib/python2.6/vendor-packages/medusa/resolver.pyc
+file path=usr/lib/python2.6/vendor-packages/medusa/unix_user_handler.py
+file path=usr/lib/python2.6/vendor-packages/medusa/monitor_client.py
+file path=usr/lib/python2.6/vendor-packages/medusa/default_handler.py
+file path=usr/lib/python2.6/vendor-packages/medusa/http_date.py
+file path=usr/lib/python2.6/vendor-packages/medusa/event_loop.py
+file path=usr/lib/python2.6/vendor-packages/medusa/xmlrpc_handler.pyc
+file path=usr/lib/python2.6/vendor-packages/medusa/m_syslog.py
+file path=usr/lib/python2.6/vendor-packages/medusa/redirecting_handler.pyc
+file path=usr/lib/python2.6/vendor-packages/medusa/producers.py
+file path=usr/lib/python2.6/vendor-packages/medusa/monitor_client_win32.py
+file path=usr/lib/python2.6/vendor-packages/medusa-0.5.4-py2.6.egg-info

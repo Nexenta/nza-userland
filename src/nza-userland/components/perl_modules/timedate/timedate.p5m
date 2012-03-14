@@ -1,0 +1,86 @@
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+# Copyright (c) 2011, Nexenta Systems, Inc. All rights reserved.
+#
+
+<transform file path=usr.*/man/.+ -> default mangler.man.stability uncommitted>
+set name=pkg.fmri value=pkg:/library/perl-5/timedate@$(IPS_COMPONENT_VERSION),$(BUILD_VERSION)
+set name=info.classification value="org.opensolaris.category.2008:Development/Perl"
+set name=pkg.summary value="~"
+
+dir path=usr
+dir path=usr/perl5
+dir path=usr/perl5/vendor_perl
+dir path=usr/perl5/vendor_perl/5.12
+dir path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int
+dir path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto
+dir path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/TimeDate
+dir path=usr/perl5/vendor_perl/5.12/Date
+dir path=usr/perl5/vendor_perl/5.12/Date/Language
+dir path=usr/perl5/vendor_perl/5.12/Time
+dir path=usr/perl5/5.12
+dir path=usr/perl5/5.12/lib
+dir path=usr/perl5/5.12/lib/i86pc-solaris-64int
+dir path=usr/perl5/5.12/man
+dir path=usr/perl5/5.12/man/man3
+file path=usr/perl5/vendor_perl/5.12/Date/Language/German.pm
+file path=usr/perl5/vendor_perl/5.12/Date/Language/Norwegian.pm
+file path=usr/perl5/vendor_perl/5.12/Date/Language/TigrinyaEritrean.pm
+file path=usr/perl5/vendor_perl/5.12/Date/Language/Russian.pm
+file path=usr/perl5/vendor_perl/5.12/Date/Language/Austrian.pm
+file path=usr/perl5/vendor_perl/5.12/Date/Language/Brazilian.pm
+file path=usr/perl5/vendor_perl/5.12/Date/Language/Chinese.pm
+file path=usr/perl5/vendor_perl/5.12/Date/Language/Romanian.pm
+file path=usr/perl5/vendor_perl/5.12/Date/Language/Danish.pm
+file path=usr/perl5/vendor_perl/5.12/Date/Language/French.pm
+file path=usr/perl5/vendor_perl/5.12/Date/Language/Spanish.pm
+file path=usr/perl5/vendor_perl/5.12/Date/Language/Russian_cp1251.pm
+file path=usr/perl5/vendor_perl/5.12/Date/Language/TigrinyaEthiopian.pm
+file path=usr/perl5/vendor_perl/5.12/Date/Language/Czech.pm
+file path=usr/perl5/vendor_perl/5.12/Date/Language/Swedish.pm
+file path=usr/perl5/vendor_perl/5.12/Date/Language/Russian_koi8r.pm
+file path=usr/perl5/vendor_perl/5.12/Date/Language/Dutch.pm
+file path=usr/perl5/vendor_perl/5.12/Date/Language/Oromo.pm
+file path=usr/perl5/vendor_perl/5.12/Date/Language/Afar.pm
+file path=usr/perl5/vendor_perl/5.12/Date/Language/Italian.pm
+file path=usr/perl5/vendor_perl/5.12/Date/Language/English.pm
+file path=usr/perl5/vendor_perl/5.12/Date/Language/Chinese_GB.pm
+file path=usr/perl5/vendor_perl/5.12/Date/Language/Gedeo.pm
+file path=usr/perl5/vendor_perl/5.12/Date/Language/Sidama.pm
+file path=usr/perl5/vendor_perl/5.12/Date/Language/Amharic.pm
+file path=usr/perl5/vendor_perl/5.12/Date/Language/Somali.pm
+file path=usr/perl5/vendor_perl/5.12/Date/Language/Finnish.pm
+file path=usr/perl5/vendor_perl/5.12/Date/Language/Hungarian.pm
+file path=usr/perl5/vendor_perl/5.12/Date/Language/Greek.pm
+file path=usr/perl5/vendor_perl/5.12/Date/Language/Icelandic.pm
+file path=usr/perl5/vendor_perl/5.12/Date/Language/Tigrinya.pm
+file path=usr/perl5/vendor_perl/5.12/Date/Language/Turkish.pm
+file path=usr/perl5/vendor_perl/5.12/Date/Language.pm
+file path=usr/perl5/vendor_perl/5.12/Date/Parse.pm
+file path=usr/perl5/vendor_perl/5.12/Date/Format.pm
+file path=usr/perl5/vendor_perl/5.12/Time/Zone.pm
+file path=usr/perl5/5.12/man/man3/Time::Zone.3
+file path=usr/perl5/5.12/man/man3/Date::Format.3
+file path=usr/perl5/5.12/man/man3/Date::Language::Hungarian.3
+file path=usr/perl5/5.12/man/man3/Date::Parse.3
+file path=usr/perl5/5.12/man/man3/Date::Language.3
+
+depend fmri=runtime/perl-512 type=require
+

@@ -1,0 +1,21 @@
+# Config file
+
+# PKGTYPE = illumos || userland
+PKGTYPE = illumos
+
+# extension of manifest files
+MFEXT = mog
+
+# VERSION - version of packages
+VERSION ?= 1.0.11
+
+# CODEMGR_WS - full path to illumos-gate sources on file system
+CODEMGR_WS = /myshare/builds/illumos2-bitbucket-orig/illumos-gate2
+BASEGATE = $(CODEMGR_WS)
+
+# MAINTAINER - for control file
+MAINTAINER = Igor Kozhukhov <ikozhukhov@gmail.com>
+# PROTO - it is full path to PROTO of illumos-gate build.
+PROTO = $(BASEGATE)/proto/root_i386
+# MANIFESTS - it is full path to manifests(.mog) of illumos-gate build.
+MANIFESTS = $(BASEGATE)/usr/src/pkg/packages.i386

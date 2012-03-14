@@ -1,0 +1,136 @@
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+# Copyright (c) 2011, Nexenta Systems, Inc. and/or its affiliates. All rights reserved.
+#
+
+<transform file path=usr.*/man/.+ -> default mangler.man.stability uncommitted>
+set name=pkg.fmri value=pkg:/system/management/sg3-utils@$(IPS_COMPONENT_VERSION),$(BUILD_VERSION)
+set name=info.classification value="nexenta.com.20011:System/Management"
+set name=pkg.summary value="Sg3-utils"
+set name=pkg.description value="Utilities for devices using the SCSI command set"
+
+dir path=usr
+dir path=usr/share
+dir path=usr/share/man
+dir path=usr/share/man/man8
+dir path=usr/bin
+dir path=usr/include
+dir path=usr/include/scsi
+dir path=usr/lib
+file path=usr/share/man/man8/sg_verify.8
+file path=usr/share/man/man8/scsi_ready.8
+file path=usr/share/man/man8/sg_read_block_limits.8
+file path=usr/share/man/man8/sg_rdac.8
+file path=usr/share/man/man8/sg_rtpg.8
+file path=usr/share/man/man8/sg_readcap.8
+file path=usr/share/man/man8/sg_decode_sense.8
+file path=usr/share/man/man8/sg_unmap.8
+file path=usr/share/man/man8/sg_read_buffer.8
+file path=usr/share/man/man8/sg_write_buffer.8
+file path=usr/share/man/man8/sg3_utils.8
+file path=usr/share/man/man8/sg_write_same.8
+file path=usr/share/man/man8/scsi_stop.8
+file path=usr/share/man/man8/sg_luns.8
+file path=usr/share/man/man8/sg_read_long.8
+file path=usr/share/man/man8/sg_reassign.8
+file path=usr/share/man/man8/sg_start.8
+file path=usr/share/man/man8/sg_sanitize.8
+file path=usr/share/man/man8/sg_vpd.8
+file path=usr/share/man/man8/sg_get_lba_status.8
+file path=usr/share/man/man8/sg_inq.8
+file path=usr/share/man/man8/sg_modes.8
+file path=usr/share/man/man8/sg_stpg.8
+file path=usr/share/man/man8/sg_ident.8
+file path=usr/share/man/man8/sg_referrals.8
+file path=usr/share/man/man8/sg_format.8
+file path=usr/share/man/man8/sg_raw.8
+file path=usr/share/man/man8/sg_get_config.8
+file path=usr/share/man/man8/sg_logs.8
+file path=usr/share/man/man8/sg_requests.8
+file path=usr/share/man/man8/sg_sync.8
+file path=usr/share/man/man8/sg_turs.8
+file path=usr/share/man/man8/sg_wr_mode.8
+file path=usr/share/man/man8/sg_ses.8
+file path=usr/share/man/man8/sg_sat_identify.8
+file path=usr/share/man/man8/sg_persist.8
+file path=usr/share/man/man8/sg_write_long.8
+file path=usr/share/man/man8/sg_opcodes.8
+file path=usr/share/man/man8/sg_sat_phy_event.8
+file path=usr/share/man/man8/scsi_start.8
+file path=usr/share/man/man8/sg_prevent.8
+file path=usr/share/man/man8/sg_senddiag.8
+file path=usr/share/man/man8/sg_safte.8
+file path=usr/share/man/man8/sg_rmsn.8
+file path=usr/share/man/man8/scsi_readcap.8
+file path=usr/share/man/man8/sg_sat_set_features.8
+file path=usr/bin/sg_opcodes
+file path=usr/bin/sg_rmsn
+file path=usr/bin/sg_verify
+file path=usr/bin/sg_start
+file path=usr/bin/sg_ident
+file path=usr/bin/sg_safte
+file path=usr/bin/sg_persist
+file path=usr/bin/sg_stpg
+file path=usr/bin/sg_inq
+file path=usr/bin/sg_rtpg
+file path=usr/bin/sg_prevent
+file path=usr/bin/sg_reassign
+file path=usr/bin/sg_logs
+file path=usr/bin/sg_get_lba_status
+file path=usr/bin/sg_sat_phy_event
+file path=usr/bin/sg_write_same
+file path=usr/bin/sg_read_block_limits
+file path=usr/bin/sg_write_long
+file path=usr/bin/sg_format
+file path=usr/bin/sg_requests
+file path=usr/bin/sg_raw
+file path=usr/bin/sg_sync
+file path=usr/bin/sg_sat_identify
+file path=usr/bin/sg_get_config
+file path=usr/bin/sg_read_long
+file path=usr/bin/sg_referrals
+file path=usr/bin/sg_wr_mode
+file path=usr/bin/sg_write_buffer
+file path=usr/bin/sg_luns
+file path=usr/bin/sg_sat_set_features
+file path=usr/bin/sg_read_buffer
+file path=usr/bin/sg_readcap
+file path=usr/bin/sg_modes
+file path=usr/bin/sg_vpd
+file path=usr/bin/sg_senddiag
+file path=usr/bin/sg_decode_sense
+file path=usr/bin/sg_turs
+file path=usr/bin/sg_ses
+file path=usr/bin/sg_unmap
+file path=usr/bin/sg_rdac
+file path=usr/bin/sg_sanitize
+file path=usr/include/scsi/sg_lib.h
+file path=usr/include/scsi/sg_cmds_mmc.h
+file path=usr/include/scsi/sg_cmds_basic.h
+file path=usr/include/scsi/sg_cmds_extra.h
+file path=usr/include/scsi/sg_pt.h
+file path=usr/include/scsi/sg_lib_data.h
+file path=usr/include/scsi/sg_cmds.h
+file path=usr/lib/libsgutils2.a
+file path=usr/lib/libsgutils2.la
+file path=usr/lib/libsgutils2.so.2.0.0
+link path=usr/lib/libsgutils2.so target=libsgutils2.so.2.0.0
+link path=usr/lib/libsgutils2.so.2 target=libsgutils2.so.2.0.0
+license sg3-utils.license license="BSD"

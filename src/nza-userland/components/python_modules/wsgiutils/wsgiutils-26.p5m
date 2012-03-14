@@ -1,0 +1,27 @@
+<transform file path=usr.*/man/.+ -> default mangler.man.stability uncommitted>
+set name=pkg.fmri value=pkg:/library/python-2/wsgiutils-26@$(IPS_COMPONENT_VERSION),$(BUILD_VERSION)
+set name=info.classification value="org.opensolaris.category.2008:Development/Python"
+set name=pkg.summary value="WSGI Utils are a collection of useful libraries for use in a WSGI environnment"
+
+depend fmri=pkg:/runtime/python-26 type=require
+
+dir path=usr
+dir path=usr/lib
+dir path=usr/lib/python2.6
+dir path=usr/lib/python2.6/vendor-packages
+dir path=usr/lib/python2.6/vendor-packages/WSGIUtils-0.7-py2.6.egg-info
+dir path=usr/lib/python2.6/vendor-packages/wsgiutils
+file path=usr/lib/python2.6/vendor-packages/WSGIUtils-0.7-py2.6.egg-info/SOURCES.txt
+file path=usr/lib/python2.6/vendor-packages/WSGIUtils-0.7-py2.6.egg-info/PKG-INFO
+file path=usr/lib/python2.6/vendor-packages/WSGIUtils-0.7-py2.6.egg-info/top_level.txt
+file path=usr/lib/python2.6/vendor-packages/WSGIUtils-0.7-py2.6.egg-info/dependency_links.txt
+file path=usr/lib/python2.6/vendor-packages/wsgiutils/SessionClient.py
+file path=usr/lib/python2.6/vendor-packages/wsgiutils/__init__.pyc
+file path=usr/lib/python2.6/vendor-packages/wsgiutils/wsgiAdaptor.pyc
+file path=usr/lib/python2.6/vendor-packages/wsgiutils/SessionServer.py
+file path=usr/lib/python2.6/vendor-packages/wsgiutils/__init__.py
+file path=usr/lib/python2.6/vendor-packages/wsgiutils/SessionServer.pyc
+file path=usr/lib/python2.6/vendor-packages/wsgiutils/wsgiServer.pyc
+file path=usr/lib/python2.6/vendor-packages/wsgiutils/SessionClient.pyc
+file path=usr/lib/python2.6/vendor-packages/wsgiutils/wsgiAdaptor.py
+file path=usr/lib/python2.6/vendor-packages/wsgiutils/wsgiServer.py

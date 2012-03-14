@@ -1,0 +1,89 @@
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+# Copyright (c) 2011 Nexenta Systems, Inc.  All rights reserved 
+#
+<transform file path=usr.*/man/.+ -> default mangler.man.stability uncommitted>
+set name=pkg.fmri value=pkg:/library/perl-5/mailtools@$(IPS_COMPONENT_VERSION),$(BUILD_VERSION)
+set name=info.classification value=org.opensolaris.category.2008:Development/Perl
+set name=description value="Mailtools PERL module"
+set name=pkg.description value="Mailtools PERL module"
+set name=pkg.summary value="Mailtools PERL module"
+dir path=usr
+dir path=usr/perl5
+dir path=usr/perl5/5.12
+dir path=usr/perl5/5.12/lib
+dir path=usr/perl5/5.12/lib/i86pc-solaris-64int
+dir path=usr/perl5/5.12/man
+dir path=usr/perl5/5.12/man/man3
+dir path=usr/perl5/vendor_perl
+dir path=usr/perl5/vendor_perl/5.12
+dir path=usr/perl5/vendor_perl/5.12/Mail
+dir path=usr/perl5/vendor_perl/5.12/Mail/Field
+dir path=usr/perl5/vendor_perl/5.12/Mail/Mailer
+dir path=usr/perl5/vendor_perl/5.12/auto
+dir path=usr/perl5/vendor_perl/5.12/auto/Mail
+dir path=usr/perl5/vendor_perl/5.12/auto/Mail/Internet
+dir path=usr/perl5/vendor_perl/5.12/auto/Mail/Util
+dir path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int
+dir path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto
+dir path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/Mail
+file path=usr/perl5/5.12/man/man3/Mail::Address.3
+file path=usr/perl5/5.12/man/man3/Mail::Cap.3
+file path=usr/perl5/5.12/man/man3/Mail::Field.3
+file path=usr/perl5/5.12/man/man3/Mail::Field::AddrList.3
+file path=usr/perl5/5.12/man/man3/Mail::Filter.3
+file path=usr/perl5/5.12/man/man3/Mail::Header.3
+file path=usr/perl5/5.12/man/man3/Mail::Internet.3
+file path=usr/perl5/5.12/man/man3/Mail::Mailer.3
+file path=usr/perl5/5.12/man/man3/Mail::Send.3
+file path=usr/perl5/5.12/man/man3/Mail::Util.3
+file path=usr/perl5/vendor_perl/5.12/Mail/Address.pm
+file path=usr/perl5/vendor_perl/5.12/Mail/Cap.pm
+file path=usr/perl5/vendor_perl/5.12/Mail/Field.pm
+file path=usr/perl5/vendor_perl/5.12/Mail/Field/AddrList.pm
+file path=usr/perl5/vendor_perl/5.12/Mail/Field/Date.pm
+file path=usr/perl5/vendor_perl/5.12/Mail/Filter.pm
+file path=usr/perl5/vendor_perl/5.12/Mail/Header.pm
+file path=usr/perl5/vendor_perl/5.12/Mail/Internet.pm
+file path=usr/perl5/vendor_perl/5.12/Mail/Mailer.pm
+file path=usr/perl5/vendor_perl/5.12/Mail/Mailer/qmail.pm
+file path=usr/perl5/vendor_perl/5.12/Mail/Mailer/rfc822.pm
+file path=usr/perl5/vendor_perl/5.12/Mail/Mailer/sendmail.pm
+file path=usr/perl5/vendor_perl/5.12/Mail/Mailer/smtp.pm
+file path=usr/perl5/vendor_perl/5.12/Mail/Mailer/testfile.pm
+file path=usr/perl5/vendor_perl/5.12/Mail/Send.pm
+file path=usr/perl5/vendor_perl/5.12/Mail/Util.pm
+file path=usr/perl5/vendor_perl/5.12/auto/Mail/Internet/_prephdr.al
+file path=usr/perl5/vendor_perl/5.12/auto/Mail/Internet/add_signature.al
+file path=usr/perl5/vendor_perl/5.12/auto/Mail/Internet/autosplit.ix
+file path=usr/perl5/vendor_perl/5.12/auto/Mail/Internet/escape_from.al
+file path=usr/perl5/vendor_perl/5.12/auto/Mail/Internet/nntppost.al
+file path=usr/perl5/vendor_perl/5.12/auto/Mail/Internet/reply.al
+file path=usr/perl5/vendor_perl/5.12/auto/Mail/Internet/send.al
+file path=usr/perl5/vendor_perl/5.12/auto/Mail/Internet/sign.al
+file path=usr/perl5/vendor_perl/5.12/auto/Mail/Internet/smtpsend.al
+file path=usr/perl5/vendor_perl/5.12/auto/Mail/Internet/unescape_from.al
+file path=usr/perl5/vendor_perl/5.12/auto/Mail/Util/autosplit.ix
+file path=usr/perl5/vendor_perl/5.12/auto/Mail/Util/mailaddress.al
+file path=usr/perl5/vendor_perl/5.12/auto/Mail/Util/maildomain.al
+file path=usr/perl5/vendor_perl/5.12/auto/Mail/Util/read_mbox.al
+file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/Mail/.packlist
+depend fmri=runtime/perl-512 type=require

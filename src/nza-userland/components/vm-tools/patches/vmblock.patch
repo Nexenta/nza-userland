@@ -1,0 +1,15 @@
+diff -ur 1/modules/solaris/vmblock/Makefile 2/modules/solaris/vmblock/Makefile
+--- 1/modules/solaris/vmblock/Makefile	2011-07-21 01:00:09.000000000 +0400
++++ 2/modules/solaris/vmblock/Makefile	2011-11-25 19:32:29.404372682 +0300
+@@ -118,7 +118,7 @@
+ 
+ install:
+ 	@echo "Installing modules"
+-	cp $(MODULE_32) /kernel/drv/
+-	chmod 755 /kernel/drv/$(MODULE)
+-	cp $(MODULE_64) /kernel/drv/amd64
+-	chmod 755 /kernel/drv/amd64/$(MODULE)
++	cp $(MODULE_32) $(DESTDIR)/kernel/drv/
++	chmod 755 $(DESTDIR)/kernel/drv/$(MODULE)
++	cp $(MODULE_64) $(DESTDIR)/kernel/drv/amd64
++	chmod 755 $(DESTDIR)/kernel/drv/amd64/$(MODULE)

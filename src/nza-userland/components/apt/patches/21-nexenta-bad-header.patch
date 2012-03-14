@@ -1,0 +1,10 @@
+--- apt-0.8.15.10+1.orig/methods/http_main.cc	2012-01-11 16:42:59.000000000 +0300
++++ apt-0.8.15.10+1/methods/http_main.cc	2012-03-01 14:47:43.646994032 +0300
+@@ -10,6 +10,7 @@
+ int main()
+ {
+    setlocale(LC_ALL, "");
++    setlocale(LC_TIME, "C");
+ 
+    // ignore SIGPIPE, this can happen on write() if the socket
+    // closes the connection (this is dealt with via ServerDie())

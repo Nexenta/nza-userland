@@ -1,0 +1,24 @@
+diff -dubr rrdtool-1.4.3/configure rrdtool-1.4.3.patched/configure
+--- rrdtool-1.4.3/configure	2010-03-22 20:29:57.000000000 +0300
++++ rrdtool-1.4.3.patched/configure	2012-01-24 15:28:08.153820410 +0300
+@@ -32916,7 +32916,7 @@
+ 	    perlcc=`$PERL -MConfig -e 'print $Config{cc}'`
+ 	    { $as_echo "$as_me:$LINENO: result: $perlcc" >&5
+ $as_echo "$perlcc" >&6; }
+-	    if test ! -x "$perlcc"; then
++	    if test ! -x "`echo $perlcc | cut -d ' ' -f 1`"; then
+  	        # Extract the first word of "${perlcc}", so it can be a program name with args.
+ set dummy ${perlcc}; ac_word=$2
+ { $as_echo "$as_me:$LINENO: checking for $ac_word" >&5
+diff -dubr rrdtool-1.4.3/configure.ac rrdtool-1.4.3.patched/configure.ac
+--- rrdtool-1.4.3/configure.ac	2010-03-22 20:02:55.000000000 +0300
++++ rrdtool-1.4.3.patched/configure.ac	2012-01-24 15:28:18.595933181 +0300
+@@ -571,7 +571,7 @@
+             AC_MSG_CHECKING(for the C compiler perl wants to use to build its modules)
+ 	    perlcc=`$PERL -MConfig -e 'print $Config{cc}'`
+ 	    AC_MSG_RESULT($perlcc)
+-	    if test ! -x "$perlcc"; then
++	    if test ! -x "`echo $perlcc | cut -d ' ' -f 1`"; then
+  	        AC_PATH_PROG(PERL_CC, ${perlcc}, no)
+ 	        if test "$PERL_CC" = "no"; then
+                     AC_MSG_WARN([

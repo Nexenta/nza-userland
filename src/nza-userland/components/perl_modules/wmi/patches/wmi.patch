@@ -1,0 +1,54 @@
+diff -r 0199369d48a7 NET_WMI/WMI.xs
+--- a/WMI.xs	Thu Apr 29 14:03:28 2010 -0700
++++ b/WMI.xs	Tue Oct 18 07:24:16 2011 -0700
+@@ -44,8 +44,6 @@
+ #endif
+ 
+ 
+-struct com_context* com_ctx = NULL;
+-
+ /*
+  * On 32-bit OS (and some 64-bit) Perl does not have an
+  * integer type capable of storing 64 bit numbers. So
+@@ -357,9 +355,6 @@
+         dcom_proxy_IWbemWCOSmartEnum_init();
+         dcom_proxy_IWbemClassObject_init();
+         
+-        com_init_ctx(&com_ctx, NULL);
+-	dcom_client_init(com_ctx,NULL);
+-
+         DEBUG_MSG("Inited\n");
+     }
+ 
+@@ -379,10 +374,14 @@
+ 	char *pass;
+     PREINIT:
+ 	WERROR result;
+-	struct IWbemServices *con;
++	struct IWbemServices *con = NULL;
++	struct com_context* com_ctx = NULL;
+     CODE:	
++        com_init_ctx(&com_ctx, NULL);
++	dcom_client_init(com_ctx,NULL);
++
+         DEBUG_MSG("Open connection //%s %s%%%s %s\n", hostname, user, pass, namespace);
+-	 result = WBEM_ConnectServer(com_ctx, hostname, namespace, user, pass, 0,0,0,0,&con);
++	result = WBEM_ConnectServer(com_ctx, hostname, namespace, user, pass, 0,0,0,0,&con);
+ 	if (!con || !W_ERROR_IS_OK(result)) {
+ 	  _croak_error (wmi_errstr(result));
+ 	}
+@@ -703,13 +702,12 @@
+ 	  _croak_error (wmi_errstr(result));
+ 	}
+ 
+-
+ struct IWbemClassObject*
+ _GetIClassObject(obj)
+ 	struct WbemClassObject* obj;
+     PREINIT:
+     CODE:
+-	dcom_IWbemClassObject_from_WbemClassObject(com_ctx, &RETVAL, obj);
++	//dcom_IWbemClassObject_from_WbemClassObject(com_ctx, &RETVAL, obj);
+     OUTPUT:
+ 	RETVAL
+ 

@@ -1,0 +1,11 @@
+--- mod_encoding/mod_encoding.c	Wed Mar 15 17:44:59 2006
++++ mod_encoding/mod_encoding.c.new	Fri Jan 13 22:54:52 2012
+@@ -156,7 +156,7 @@
+ 
+   /* Convert every character within input string. */
+   while (srclen > 0) {
+-    if (iconv(cd, &srcbuf, &srclen, &outbuf, &outlen) == (size_t)(-1)) {
++    if (iconv(cd, (const char*)&srcbuf, &srclen, &outbuf, &outlen) == (size_t)(-1)) {
+       return NULL;
+     }
+   }

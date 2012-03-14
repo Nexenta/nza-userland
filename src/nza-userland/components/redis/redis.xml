@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!DOCTYPE service_bundle SYSTEM "/usr/share/lib/xml/dtd/service_bundle.dtd.1">
+<service_bundle type="manifest" name="redis">
+
+    <service name="application/database/redis" type="service" version="1">
+
+        <dependency name="network" grouping="require_all" restart_on="error" type="service">
+            <service_fmri value="svc:/milestone/network:default"/>
+        </dependency>
+
+        <dependency name="filesystem" grouping="require_all" restart_on="error" type="service">
+            <service_fmri value="svc:/system/filesystem/local"/>
+        </dependency>
+
+
+        <instance name="default" enabled="false">            
+
+            <method_context>
+                <method_credential user="redis" group="redis"/>
+            </method_context>
+
+            <exec_method type="method" name="start" exec="/usr/bin/redis-server %{config_file}" timeout_seconds="30"/>
+
+            <exec_method type="method" name="stop" exec=":kill" timeout_seconds="30"/>
+
+            <property_group name="startd" type="framework">
+                <propval name="duration" type="astring" value="child"/>           
+                <propval name="ignore_error" type="astring" value="core,signal"/>
+            </property_group>
+
+            <property_group name="application" type="application">
+                <propval name="config_file" type="astring"
+                    value="/etc/redis/redis.conf"/>
+            </property_group>
+
+        </instance>
+        
+        
+        
+        <stability value="Evolving"/>
+
+        <template>
+            <common_name>
+                <loctext xml:lang="C">
+                    Redis is an open-source, networked, in-memory, persistent, journaled, key-value data store.
+                </loctext>
+            </common_name>
+        </template>
+
+    </service>
+
+</service_bundle>

@@ -1,0 +1,12 @@
+diff -dubr Pound-2.5/pound.h Pound-2.5.patched/pound.h
+--- Pound-2.5/pound.h	2010-02-02 14:49:02.000000000 +0300
++++ Pound-2.5.patched/pound.h	2011-12-15 13:03:39.386009908 +0300
+@@ -182,7 +182,7 @@
+ #if HAVE_LIBPCREPOSIX
+ #if HAVE_PCREPOSIX_H
+ #include    <pcreposix.h>
+-#elif HAVE_PCRE_PCREPOSIX
++#elif HAVE_PCRE_PCREPOSIX_H
+ #include    <pcre/pcreposix.h>
+ #else
+ #error "You have libpcreposix, but the header files are missing. Use --disable-pcreposix"

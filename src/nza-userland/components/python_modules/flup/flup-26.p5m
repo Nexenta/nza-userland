@@ -1,0 +1,63 @@
+<transform file path=usr.*/man/.+ -> default mangler.man.stability uncommitted>
+set name=pkg.fmri value=pkg:/library/python-2/flup-26@$(IPS_COMPONENT_VERSION),$(BUILD_VERSION)
+set name=info.classification value="org.opensolaris.category.2008:Development/Python"
+set name=pkg.summary value="Random assortment of WSGI servers"
+
+depend fmri=pkg:/runtime/python-26 type=require
+
+dir path=usr
+dir path=usr/lib
+dir path=usr/lib/python2.6
+dir path=usr/lib/python2.6/vendor-packages
+dir path=usr/lib/python2.6/vendor-packages/flup
+dir path=usr/lib/python2.6/vendor-packages/flup/server
+dir path=usr/lib/python2.6/vendor-packages/flup/client
+dir path=usr/lib/python2.6/vendor-packages/flup-1.0.2-py2.6.egg-info
+file path=usr/lib/python2.6/vendor-packages/flup/__init__.pyc
+file path=usr/lib/python2.6/vendor-packages/flup/server/fcgi.pyc
+file path=usr/lib/python2.6/vendor-packages/flup/server/ajp.pyc
+file path=usr/lib/python2.6/vendor-packages/flup/server/fcgi_single.pyc
+file path=usr/lib/python2.6/vendor-packages/flup/server/threadedserver.pyc
+file path=usr/lib/python2.6/vendor-packages/flup/server/threadpool.pyc
+file path=usr/lib/python2.6/vendor-packages/flup/server/fcgi_base.py
+file path=usr/lib/python2.6/vendor-packages/flup/server/ajp.py
+file path=usr/lib/python2.6/vendor-packages/flup/server/scgi.pyc
+file path=usr/lib/python2.6/vendor-packages/flup/server/scgi_fork.py
+file path=usr/lib/python2.6/vendor-packages/flup/server/ajp_fork.py
+file path=usr/lib/python2.6/vendor-packages/flup/server/__init__.pyc
+file path=usr/lib/python2.6/vendor-packages/flup/server/threadedserver.py
+file path=usr/lib/python2.6/vendor-packages/flup/server/paste_factory.pyc
+file path=usr/lib/python2.6/vendor-packages/flup/server/threadpool.py
+file path=usr/lib/python2.6/vendor-packages/flup/server/preforkserver.pyc
+file path=usr/lib/python2.6/vendor-packages/flup/server/paste_factory.py
+file path=usr/lib/python2.6/vendor-packages/flup/server/fcgi_single.py
+file path=usr/lib/python2.6/vendor-packages/flup/server/fcgi.py
+file path=usr/lib/python2.6/vendor-packages/flup/server/ajp_base.pyc
+file path=usr/lib/python2.6/vendor-packages/flup/server/__init__.py
+file path=usr/lib/python2.6/vendor-packages/flup/server/scgi_fork.pyc
+file path=usr/lib/python2.6/vendor-packages/flup/server/cgi.py
+file path=usr/lib/python2.6/vendor-packages/flup/server/fcgi_fork.py
+file path=usr/lib/python2.6/vendor-packages/flup/server/fcgi_base.pyc
+file path=usr/lib/python2.6/vendor-packages/flup/server/cgi.pyc
+file path=usr/lib/python2.6/vendor-packages/flup/server/scgi.py
+file path=usr/lib/python2.6/vendor-packages/flup/server/scgi_base.py
+file path=usr/lib/python2.6/vendor-packages/flup/server/preforkserver.py
+file path=usr/lib/python2.6/vendor-packages/flup/server/ajp_base.py
+file path=usr/lib/python2.6/vendor-packages/flup/server/fcgi_fork.pyc
+file path=usr/lib/python2.6/vendor-packages/flup/server/singleserver.pyc
+file path=usr/lib/python2.6/vendor-packages/flup/server/ajp_fork.pyc
+file path=usr/lib/python2.6/vendor-packages/flup/server/singleserver.py
+file path=usr/lib/python2.6/vendor-packages/flup/server/scgi_base.pyc
+file path=usr/lib/python2.6/vendor-packages/flup/__init__.py
+file path=usr/lib/python2.6/vendor-packages/flup/client/scgi_app.py
+file path=usr/lib/python2.6/vendor-packages/flup/client/fcgi_app.pyc
+file path=usr/lib/python2.6/vendor-packages/flup/client/fcgi_app.py
+file path=usr/lib/python2.6/vendor-packages/flup/client/scgi_app.pyc
+file path=usr/lib/python2.6/vendor-packages/flup/client/__init__.py
+file path=usr/lib/python2.6/vendor-packages/flup/client/__init__.pyc
+file path=usr/lib/python2.6/vendor-packages/flup-1.0.2-py2.6.egg-info/SOURCES.txt
+file path=usr/lib/python2.6/vendor-packages/flup-1.0.2-py2.6.egg-info/PKG-INFO
+file path=usr/lib/python2.6/vendor-packages/flup-1.0.2-py2.6.egg-info/top_level.txt
+file path=usr/lib/python2.6/vendor-packages/flup-1.0.2-py2.6.egg-info/dependency_links.txt
+file path=usr/lib/python2.6/vendor-packages/flup-1.0.2-py2.6.egg-info/zip-safe
+file path=usr/lib/python2.6/vendor-packages/flup-1.0.2-py2.6.egg-info/entry_points.txt

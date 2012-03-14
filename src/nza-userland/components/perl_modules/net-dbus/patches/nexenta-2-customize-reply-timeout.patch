@@ -1,0 +1,11 @@
+--- a/lib/Net/DBus/RemoteObject.pm	2011-11-23 04:32:10.000000000 -0800
++++ b/lib/Net/DBus/RemoteObject.pm	2011-11-23 05:52:42.961514029 -0800
+@@ -172,7 +171,7 @@
+ 						  "Introspect");
+ 
+ 	my $xml = eval {
+-	    my $reply = $con->send_with_reply_and_block($call, (60 + $timeout) * 1000);
++	    my $reply = $con->send_with_reply_and_block($call, $timeout * 1000);
+ 
+ 	    my $iter = $reply->iterator;
+ 	    return $iter->get(&Net::DBus::Binding::Message::TYPE_STRING);

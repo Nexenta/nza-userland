@@ -1,0 +1,53 @@
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+# Copyright (c) 2011 Nexenta Systems, Inc.  All rights reserved.
+#
+<transform file path=usr.*/man/.+ -> default mangler.man.stability volatile>
+set name=pkg.fmri value=pkg:/library/perl-5/module-scandeps@$(IPS_COMPONENT_VERSION),$(BUILD_VERSION)
+set name=info.classification value=org.opensolaris.category.2008:Development/Perl
+set name=description value="Module-ScanDeps PERL module"
+set name=pkg.description value="Module-ScanDeps PERL module"
+set name=pkg.summary value="Module-ScanDeps PERL module"
+dir path=usr
+dir path=usr/perl5
+dir path=usr/perl5/5.12
+dir path=usr/perl5/5.12/bin
+dir path=usr/perl5/5.12/lib
+dir path=usr/perl5/5.12/lib/i86pc-solaris-64int
+dir path=usr/perl5/5.12/man
+dir path=usr/perl5/5.12/man/man1
+dir path=usr/perl5/5.12/man/man3
+dir path=usr/perl5/vendor_perl
+dir path=usr/perl5/vendor_perl/5.12
+dir path=usr/perl5/vendor_perl/5.12/Module
+dir path=usr/perl5/vendor_perl/5.12/Module/ScanDeps
+dir path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int
+dir path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto
+dir path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/Module
+dir path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/Module/ScanDeps
+file path=usr/perl5/5.12/bin/scandeps.pl mode=0555
+file path=usr/perl5/5.12/man/man1/scandeps.pl.1
+file path=usr/perl5/5.12/man/man3/Module::ScanDeps.3
+file path=usr/perl5/vendor_perl/5.12/Module/ScanDeps.pm
+file path=usr/perl5/vendor_perl/5.12/Module/ScanDeps/Cache.pm
+file path=usr/perl5/vendor_perl/5.12/Module/ScanDeps/DataFeed.pm
+file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/Module/ScanDeps/.packlist
+depend fmri=runtime/perl-512 type=require

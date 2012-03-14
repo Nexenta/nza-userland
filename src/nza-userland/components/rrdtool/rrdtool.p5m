@@ -1,0 +1,171 @@
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+# Copyright (c) 2011, Oracle and/or its affiliates. All rights reserved.
+#
+<transform file path=usr.*/man/.+ -> default mangler.man.stability uncommitted>
+set name=pkg.fmri \
+    value=pkg:/service/rrdtool@$(IPS_COMPONENT_VERSION),$(BUILD_VERSION)
+set name=pkg.summary value="RRDtool"
+set name=info.classification \
+    value="org.opensolaris.category.2008:Services"
+set name=info.source-url value=$(COMPONENT_ARCHIVE_URL)
+set name=info.upstream-url value=(COMPONENT_PROJECT_URL)
+set name=org.opensolaris.consolidation value=$(CONSOLIDATION)
+
+
+dir path=usr
+dir path=usr/include
+dir path=usr/perl5
+dir path=usr/perl5/vendor_perl
+dir path=usr/perl5/vendor_perl/5.12
+dir path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int
+dir path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto
+dir path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/RRDp
+dir path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/RRDs
+dir path=usr/perl5/5.12
+dir path=usr/perl5/5.12/lib
+dir path=usr/perl5/5.12/lib/i86pc-solaris-64int
+dir path=usr/perl5/5.12/man
+dir path=usr/perl5/5.12/man/man3
+dir path=usr/bin
+dir path=usr/bin/amd64
+dir path=usr/lib
+dir path=usr/lib/python2.6
+dir path=usr/lib/python2.6/vendor-packages
+dir path=usr/lib/amd64
+dir path=usr/lib/amd64/pkgconfig
+dir path=usr/lib/pkgconfig
+dir path=usr/share
+dir path=usr/share/man
+dir path=usr/share/man/man1
+dir path=usr/share/man/man3
+dir path=usr/share/rrdtool
+dir path=usr/share/rrdtool/examples
+dir path=usr/share/rrdtool/examples/rrdcached
+file path=mangled/usr/share/man/man3/librrd.3
+file path=mangled/usr/share/man/man1/rrdcreate.1
+file path=mangled/usr/share/man/man1/rrdlastupdate.1
+file path=mangled/usr/share/man/man1/rrddump.1
+file path=mangled/usr/share/man/man1/rrdxport.1
+file path=mangled/usr/share/man/man1/cdeftutorial.1
+file path=mangled/usr/share/man/man1/bin_dec_hex.1
+file path=mangled/usr/share/man/man1/rrdtune.1
+file path=mangled/usr/share/man/man1/rrdtool.1
+file path=mangled/usr/share/man/man1/rrdcached.1
+file path=mangled/usr/share/man/man1/rrdgraph_examples.1
+file path=mangled/usr/share/man/man1/rrdlast.1
+file path=mangled/usr/share/man/man1/rrdrestore.1
+file path=mangled/usr/share/man/man1/rrdbuild.1
+file path=mangled/usr/share/man/man1/rrdgraph.1
+file path=mangled/usr/share/man/man1/rrdcgi.1
+file path=mangled/usr/share/man/man1/rrdresize.1
+file path=mangled/usr/share/man/man1/rrdflushcached.1
+file path=mangled/usr/share/man/man1/rrd-beginners.1
+file path=mangled/usr/share/man/man1/rrdgraph_graph.1
+file path=mangled/usr/share/man/man1/rrdgraph_rpn.1
+file path=mangled/usr/share/man/man1/rrdinfo.1
+file path=mangled/usr/share/man/man1/rrdfirst.1
+file path=mangled/usr/share/man/man1/rpntutorial.1
+file path=mangled/usr/share/man/man1/rrdfetch.1
+file path=mangled/usr/share/man/man1/rrdthreads.1
+file path=mangled/usr/share/man/man1/rrdtutorial.1
+file path=mangled/usr/share/man/man1/rrdupdate.1
+file path=mangled/usr/share/man/man1/rrdgraph_data.1
+file path=usr/include/rrd_client.h
+file path=usr/include/rrd.h
+file path=usr/include/rrd_format.h
+file path=usr/perl5/vendor_perl/5.12/RRDp.pm
+file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/RRDs/RRDs.so
+file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/auto/RRDs/RRDs.bs
+file path=usr/perl5/vendor_perl/5.12/i86pc-solaris-64int/RRDs.pm
+file path=usr/perl5/5.12/man/man3/RRDp.3
+file path=usr/perl5/5.12/man/man3/RRDs.3
+file path=usr/bin/rrdcached
+file path=usr/bin/amd64/rrdcgi
+file path=usr/bin/amd64/rrdcached
+file path=usr/bin/amd64/rrdupdate
+file path=usr/bin/amd64/rrdtool
+file path=usr/bin/rrdupdate
+file path=usr/bin/rrdtool
+file path=usr/bin/rrdcgi
+file path=usr/lib/librrd_th.so.4.1.3
+file path=usr/lib/librrd.so.4.1.3
+file usr/lib/python2.6/site-packages/rrdtoolmodule.so path=usr/lib/python2.6/vendor-packages/rrdtoolmodule.so
+file usr/lib/python2.6/site-packages/py_rrdtool-0.2.1-py2.6.egg-info path=usr/lib/python2.6/vendor-packages/py_rrdtool-0.2.1-py2.6.egg-info
+file path=usr/lib/librrd_th.a
+file path=usr/lib/amd64/librrd.la
+file path=usr/lib/amd64/pkgconfig/librrd.pc
+file path=usr/lib/amd64/librrd_th.so.4.1.3
+file path=usr/lib/amd64/librrd_th.a
+file path=usr/lib/amd64/librrd.a
+file path=usr/lib/amd64/librrd.so.4.1.3
+file path=usr/lib/amd64/librrd_th.la
+file path=usr/lib/librrd.la
+file path=usr/lib/librrd.a
+file path=usr/lib/pkgconfig/librrd.pc
+file path=usr/lib/librrd_th.la
+file path=usr/share/man/man1/bin_dec_hex.1
+file path=usr/share/man/man1/rrdcgi.1
+file path=usr/share/man/man1/rrdfetch.1
+file path=usr/share/man/man1/rrdthreads.1
+file path=usr/share/man/man1/rrdgraph_graph.1
+file path=usr/share/man/man1/rrdfirst.1
+file path=usr/share/man/man1/rrdupdate.1
+file path=usr/share/man/man1/rrdinfo.1
+file path=usr/share/man/man1/rrdgraph_data.1
+file path=usr/share/man/man1/cdeftutorial.1
+file path=usr/share/man/man1/rrdbuild.1
+file path=usr/share/man/man1/rrdlastupdate.1
+file path=usr/share/man/man1/rrdgraph.1
+file path=usr/share/man/man1/rrdlast.1
+file path=usr/share/man/man1/rrdgraph_examples.1
+file path=usr/share/man/man1/rrdcreate.1
+file path=usr/share/man/man1/rrdtune.1
+file path=usr/share/man/man1/rrdtool.1
+file path=usr/share/man/man1/rrdrestore.1
+file path=usr/share/man/man1/rrdresize.1
+file path=usr/share/man/man1/rrddump.1
+file path=usr/share/man/man1/rrdflushcached.1
+file path=usr/share/man/man1/rrdxport.1
+file path=usr/share/man/man1/rpntutorial.1
+file path=usr/share/man/man1/rrdgraph_rpn.1
+file path=usr/share/man/man1/rrd-beginners.1
+file path=usr/share/man/man1/rrdtutorial.1
+file path=usr/share/man/man1/rrdcached.1
+file path=usr/share/man/man3/librrd.3
+file path=usr/share/rrdtool/examples/shared-demo.pl
+file path=usr/share/rrdtool/examples/4charts.pl
+file path=usr/share/rrdtool/examples/perftest.pl
+file path=usr/share/rrdtool/examples/minmax.pl
+file path=usr/share/rrdtool/examples/stripes.pl
+file path=usr/share/rrdtool/examples/cgi-demo.cgi
+file path=usr/share/rrdtool/examples/rrdcached/RRDCached.pm
+file path=usr/share/rrdtool/examples/rrdcached/rrdcached-size.pl
+file path=usr/share/rrdtool/examples/bigtops.pl
+file path=usr/share/rrdtool/examples/piped-demo.pl
+link path=usr/lib/librrd_th.so.4 target=librrd_th.so.4.1.3
+link path=usr/lib/librrd.so.4 target=librrd.so.4.1.3
+link path=usr/lib/librrd_th.so target=librrd_th.so.4.1.3
+link path=usr/lib/amd64/librrd.so target=librrd.so.4.1.3
+link path=usr/lib/amd64/librrd_th.so.4 target=librrd_th.so.4.1.3
+link path=usr/lib/amd64/librrd_th.so target=librrd_th.so.4.1.3
+link path=usr/lib/amd64/librrd.so.4 target=librrd.so.4.1.3
+link path=usr/lib/librrd.so target=librrd.so.4.1.3

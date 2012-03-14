@@ -1,0 +1,41 @@
+#!/bin/sh
+
+exit_if_not_in_vm () {
+	if [ ! -x /usr/bin/vmware-checkvm ] || ! /usr/bin/vmware-checkvm > /dev/null 2>&1
+	then
+		echo "Not starting as we're not running in a vm."
+		exit 1
+	fi
+}
+
+case "${1}" in
+	start)
+		# Check if we're running inside VMWare
+		exit_if_not_in_vm
+
+		echo "Starting open-vm daemon" "vmtoolsd"
+		/usr/bin/vmtoolsd --background /var/run/vmtoolsd.pid
+		;;
+
+	stop)
+		# Check if we're running inside VMWare
+		exit_if_not_in_vm
+
+		echo "Stopping open-vm guest daemon" "vmtoolsd"
+
+		if [ -f /var/run/vmtoolsd.pid ]
+		then
+			kill $(cat /var/run/vmtoolsd.pid)
+		fi
+		;;
+
+	force-reload|restart)
+		${0} stop; ${0} start
+		;;
+
+	*)
+		echo "Usage: ${0} {start|stop|restart|force-reload}"
+		exit 1
+		;;
+esac
+exit 0

@@ -1,0 +1,20 @@
+--- mod_encoding/lib/iconv_hook_mssjis.c	Mon Jun 10 16:24:49 2002
++++ mod_encoding/lib/iconv_hook_mssjis.c.new	Fri Jan 13 22:21:27 2012
+@@ -83,7 +83,7 @@
+     return 0;
+ 
+   src = (unsigned char *)*srcbuf;
+-  dst = to2 = malloc(*outlen);
++  dst = to2 = (unsigned char*)malloc(*outlen);
+   while (*src && ((dst - to2) < (*outlen - 4))) {
+     len = skip_bytes(*src);
+     if ( len == 2 ) {
+@@ -111,7 +111,7 @@
+   free(to2);
+   *srcbuf += *src;
+   *srclen = 0;
+-  *outbuf = dst;
++  *outbuf = (char*)dst;
+   *outlen = strlen(*outbuf);
+   return strlen(*outbuf);
+ }

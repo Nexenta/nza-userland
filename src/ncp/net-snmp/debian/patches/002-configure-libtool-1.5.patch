@@ -1,0 +1,13 @@
+--- configure.d/config_os_progs.1	2011-04-16 15:09:47.872795334 +0400
++++ configure.d/config_os_progs	2011-04-16 15:12:58.118310533 +0400
+@@ -82,8 +82,8 @@
+ 
+ #       libtool stuff for shared/static libraries.
+ #
+-LT_PREREQ([2.2.6])
+-LT_INIT([win32-dll])
++AC_PROG_LIBTOOL
++AC_LIBTOOL_WIN32_DLL
+ AC_SUBST(LIBTOOL_DEPS)
+ 
+ 

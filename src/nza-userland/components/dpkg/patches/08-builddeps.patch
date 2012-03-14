@@ -1,0 +1,11 @@
+diff -urN dpkg-1.16.1.1.orig/scripts/dpkg-checkbuilddeps.pl dpkg-1.16.1.1/scripts/dpkg-checkbuilddeps.pl
+--- dpkg-1.16.1.1.orig/scripts/dpkg-checkbuilddeps.pl	2011-10-14 08:58:09.000000000 +0400
++++ dpkg-1.16.1.1/scripts/dpkg-checkbuilddeps.pl	2012-02-20 18:13:11.130310746 +0300
+@@ -76,7 +76,6 @@
+ my $facts = parse_status("$admindir/status");
+ 
+ unless (defined($bd_value) or defined($bc_value)) {
+-    $bd_value = 'build-essential';
+     $bd_value .= ", " . $fields->{"Build-Depends"} if defined $fields->{"Build-Depends"};
+     if (not $binary_only and defined $fields->{"Build-Depends-Indep"}) {
+ 	$bd_value .= ", " . $fields->{"Build-Depends-Indep"};

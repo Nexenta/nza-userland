@@ -1,0 +1,105 @@
+<transform file path=usr.*/man/.+ -> default mangler.man.stability uncommitted>
+set name=pkg.fmri value=pkg:/library/python-2/toscawidgets-26@$(IPS_COMPONENT_VERSION),$(BUILD_VERSION)
+set name=info.classification value="org.opensolaris.category.2008:Development/Python"
+set name=pkg.summary value="Web widget creation toolkit based on TurboGears widgets"
+
+depend fmri=pkg:/runtime/python-26 type=require
+depend fmri=pkg:/library/python-2/turbocheetah-26 type=require
+depend fmri=pkg:/library/python-2/cheetah-26 type=require
+depend fmri=pkg:/library/python-2/kid-26 type=require
+depend fmri=pkg:/library/python-2/genshi-26 type=require
+#depend fmri=pkg:/library/python-2/widgetbrowser-26 type=require
+depend fmri=pkg:/library/python-2/turbokid-26 type=require
+depend fmri=pkg:/library/python-2/webob-26 type=require
+depend fmri=pkg:/library/python-2/mako-26 type=require
+#depend fmri=pkg:/library/python-2/sphinx-26 type=require
+
+dir path=usr
+dir path=usr/lib
+dir path=usr/lib/python2.6
+dir path=usr/lib/python2.6/vendor-packages
+dir path=usr/lib/python2.6/vendor-packages/tw
+dir path=usr/lib/python2.6/vendor-packages/tw/mods
+dir path=usr/lib/python2.6/vendor-packages/tw/core
+dir path=usr/lib/python2.6/vendor-packages/tw/paste_templates
+dir path=usr/lib/python2.6/vendor-packages/tw/paste_templates/widget_template
+dir path=usr/lib/python2.6/vendor-packages/tw/paste_templates/widget_template/+egg+.egg-info
+dir path=usr/lib/python2.6/vendor-packages/tw/paste_templates/widget_template/docs
+dir path=usr/lib/python2.6/vendor-packages/tw/paste_templates/widget_template/tests
+dir path=usr/lib/python2.6/vendor-packages/tw/paste_templates/widget_template/tw
+dir path=usr/lib/python2.6/vendor-packages/tw/paste_templates/widget_template/tw/+package+
+dir path=usr/lib/python2.6/vendor-packages/ToscaWidgets-0.9.12-py2.6.egg-info
+file path=usr/lib/python2.6/vendor-packages/ToscaWidgets-0.9.12-py2.6-nspkg.pth
+file path=usr/lib/python2.6/vendor-packages/tw/api.pyc
+file path=usr/lib/python2.6/vendor-packages/tw/paste_template.pyc
+file path=usr/lib/python2.6/vendor-packages/tw/release.py
+file path=usr/lib/python2.6/vendor-packages/tw/api.py
+file path=usr/lib/python2.6/vendor-packages/tw/mods/wsgi.pyc
+file path=usr/lib/python2.6/vendor-packages/tw/mods/cp2.py
+file path=usr/lib/python2.6/vendor-packages/tw/mods/base.pyc
+file path=usr/lib/python2.6/vendor-packages/tw/mods/cp3.py
+file path=usr/lib/python2.6/vendor-packages/tw/mods/pylonshf.pyc
+file path=usr/lib/python2.6/vendor-packages/tw/mods/cp2.pyc
+file path=usr/lib/python2.6/vendor-packages/tw/mods/pylonshf.py
+file path=usr/lib/python2.6/vendor-packages/tw/mods/wsgi.py
+file path=usr/lib/python2.6/vendor-packages/tw/mods/cp3.pyc
+file path=usr/lib/python2.6/vendor-packages/tw/mods/base.py
+file path=usr/lib/python2.6/vendor-packages/tw/mods/tg.pyc
+file path=usr/lib/python2.6/vendor-packages/tw/mods/tg.py
+file path=usr/lib/python2.6/vendor-packages/tw/core/base.pyc
+file path=usr/lib/python2.6/vendor-packages/tw/core/server.pyc
+file path=usr/lib/python2.6/vendor-packages/tw/core/testutil.pyc
+file path=usr/lib/python2.6/vendor-packages/tw/core/meta.py
+file path=usr/lib/python2.6/vendor-packages/tw/core/base.py
+file path=usr/lib/python2.6/vendor-packages/tw/core/mako_util.pyc
+file path=usr/lib/python2.6/vendor-packages/tw/core/resource_injector.py
+file path=usr/lib/python2.6/vendor-packages/tw/core/resources.py
+file path=usr/lib/python2.6/vendor-packages/tw/core/mako_util.py
+file path=usr/lib/python2.6/vendor-packages/tw/core/resources.pyc
+file path=usr/lib/python2.6/vendor-packages/tw/core/engine_plugin.py
+file path=usr/lib/python2.6/vendor-packages/tw/core/exceptions.py
+file path=usr/lib/python2.6/vendor-packages/tw/core/command.py
+file path=usr/lib/python2.6/vendor-packages/tw/core/command.pyc
+file path=usr/lib/python2.6/vendor-packages/tw/core/js.pyc
+file path=usr/lib/python2.6/vendor-packages/tw/core/js.py
+file path=usr/lib/python2.6/vendor-packages/tw/core/resource_injector.pyc
+file path=usr/lib/python2.6/vendor-packages/tw/core/middleware.pyc
+file path=usr/lib/python2.6/vendor-packages/tw/core/engine_plugin.pyc
+file path=usr/lib/python2.6/vendor-packages/tw/core/registry.pyc
+file path=usr/lib/python2.6/vendor-packages/tw/core/util.pyc
+file path=usr/lib/python2.6/vendor-packages/tw/core/exceptions.pyc
+file path=usr/lib/python2.6/vendor-packages/tw/core/view.py
+file path=usr/lib/python2.6/vendor-packages/tw/core/server.py
+file path=usr/lib/python2.6/vendor-packages/tw/core/registry.py
+file path=usr/lib/python2.6/vendor-packages/tw/core/__init__.py
+file path=usr/lib/python2.6/vendor-packages/tw/core/testutil.py
+file path=usr/lib/python2.6/vendor-packages/tw/core/__init__.pyc
+file path=usr/lib/python2.6/vendor-packages/tw/core/middleware.py
+file path=usr/lib/python2.6/vendor-packages/tw/core/view.pyc
+file path=usr/lib/python2.6/vendor-packages/tw/core/meta.pyc
+file path=usr/lib/python2.6/vendor-packages/tw/core/util.py
+file path=usr/lib/python2.6/vendor-packages/tw/release.pyc
+file path=usr/lib/python2.6/vendor-packages/tw/paste_templates/__init__.pyc
+file path=usr/lib/python2.6/vendor-packages/tw/paste_templates/__init__.py
+file path=usr/lib/python2.6/vendor-packages/tw/paste_templates/widget_template/+egg+.egg-info/paster_plugins.txt
+file path=usr/lib/python2.6/vendor-packages/tw/paste_templates/widget_template/docs/index.rst_tmpl
+file path=usr/lib/python2.6/vendor-packages/tw/paste_templates/widget_template/docs/conf.py_tmpl
+file path=usr/lib/python2.6/vendor-packages/tw/paste_templates/widget_template/tests/test_widget.py_tmpl
+file path=usr/lib/python2.6/vendor-packages/tw/paste_templates/widget_template/tests/__init__.py_tmpl
+file path=usr/lib/python2.6/vendor-packages/tw/paste_templates/widget_template/setup.cfg_tmpl
+file path=usr/lib/python2.6/vendor-packages/tw/paste_templates/widget_template/MANIFEST.in_tmpl
+file path=usr/lib/python2.6/vendor-packages/tw/paste_templates/widget_template/tw/+package+/release.py_tmpl
+file path=usr/lib/python2.6/vendor-packages/tw/paste_templates/widget_template/tw/+package+/samples.py_tmpl
+file path=usr/lib/python2.6/vendor-packages/tw/paste_templates/widget_template/tw/+package+/__init__.py_tmpl
+file path=usr/lib/python2.6/vendor-packages/tw/paste_templates/widget_template/tw/+package+/widgets.py_tmpl
+file path=usr/lib/python2.6/vendor-packages/tw/paste_templates/widget_template/tw/__init__.py_tmpl
+file path=usr/lib/python2.6/vendor-packages/tw/paste_templates/widget_template/setup.py_tmpl
+file path=usr/lib/python2.6/vendor-packages/tw/paste_template.py
+file path=usr/lib/python2.6/vendor-packages/ToscaWidgets-0.9.12-py2.6.egg-info/not-zip-safe
+file path=usr/lib/python2.6/vendor-packages/ToscaWidgets-0.9.12-py2.6.egg-info/entry_points.txt
+file path=usr/lib/python2.6/vendor-packages/ToscaWidgets-0.9.12-py2.6.egg-info/namespace_packages.txt
+file path=usr/lib/python2.6/vendor-packages/ToscaWidgets-0.9.12-py2.6.egg-info/requires.txt
+file path=usr/lib/python2.6/vendor-packages/ToscaWidgets-0.9.12-py2.6.egg-info/dependency_links.txt
+file path=usr/lib/python2.6/vendor-packages/ToscaWidgets-0.9.12-py2.6.egg-info/top_level.txt
+file path=usr/lib/python2.6/vendor-packages/ToscaWidgets-0.9.12-py2.6.egg-info/PKG-INFO
+file path=usr/lib/python2.6/vendor-packages/ToscaWidgets-0.9.12-py2.6.egg-info/SOURCES.txt

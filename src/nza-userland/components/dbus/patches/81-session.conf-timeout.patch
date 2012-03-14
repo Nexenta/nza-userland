@@ -1,0 +1,16 @@
+# Description: Raise the service startup timeout from 25 to 60 seconds. It may be too short on the live CD with slow machines.
+# UbuntuSpecific: Debian and upstream are not concerned about live CDs
+
+--- dbus-1.2.14.orig/bus/session.conf.in	2006-11-19 23:58:47.378368108 +0100
++++ dbus-1.2.14/bus/session.conf.in	2006-11-19 23:59:13.123835260 +0100
+@@ -25,6 +25,10 @@
+     <allow own="*"/>
+   </policy>
+ 
++  <!-- raise the service start timeout to 40 seconds as it can timeout
++       on the live cd on slow machines -->
++  <limit name="service_start_timeout">60000</limit>
++
+   <!-- Config files are placed here that among other things, 
+        further restrict the above policy for specific services. -->
+   <includedir>session.d</includedir>

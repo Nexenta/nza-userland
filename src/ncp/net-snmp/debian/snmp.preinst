@@ -1,0 +1,11 @@
+#! /bin/sh
+
+set -e
+
+if [ -d /usr/doc/snmp ]; then
+    rm -rf /usr/doc/snmp
+fi
+
+#DEBHELPER#
+
+exit 0

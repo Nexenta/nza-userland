@@ -1,0 +1,144 @@
+From f30088522666798294d51c094233c337014828e7 Mon Sep 17 00:00:00 2001
+From: Super-User <root@sm54.(none)>
+Date: Thu, 29 Dec 2011 09:56:35 -0800
+Subject: [PATCH 2/2] Add new APIs to make use of the encryption framework
+ externally.
+
+
+Signed-off-by: Super-User <root@sm54.(none)>
+---
+ include/libssh/packet.h |   11 ++++++++---
+ src/packet_crypt.c      |   44 ++++++++++++++++++++++++++++++++------------
+ 2 files changed, 40 insertions(+), 15 deletions(-)
+
+diff --git a/include/libssh/packet.h b/include/libssh/packet.h
+index 9d934c6..780c049 100644
+--- a/include/libssh/packet.h
++++ b/include/libssh/packet.h
+@@ -78,11 +78,16 @@ void ssh_packet_process(ssh_session session, uint8_t type);
+ 
+ /* PACKET CRYPT */
+ uint32_t packet_decrypt_len(ssh_session session, char *crypted);
+-int packet_decrypt(ssh_session session, void *packet, unsigned int len);
+-unsigned char *packet_encrypt(ssh_session session,
++LIBSSH_API int packet_decrypt(ssh_session session, void *packet, unsigned int len);
++LIBSSH_API unsigned char *packet_encrypt2(ssh_session session,
++                              void *packet,void *out_packet,
++                              unsigned int len);
++LIBSSH_API unsigned char *packet_encrypt(ssh_session session,
+                               void *packet,
+                               unsigned int len);
+-int packet_hmac_verify(ssh_session session,ssh_buffer buffer,
++LIBSSH_API int packet_hmac_verify2(ssh_session session,unsigned char *buffer,
++                       unsigned int buflen,unsigned char *mac);
++LIBSSH_API int packet_hmac_verify(ssh_session session,ssh_buffer buffer,
+                        unsigned char *mac);
+ 
+ #endif /* PACKET_H_ */
+diff --git a/src/packet_crypt.c b/src/packet_crypt.c
+index 9b6728d..c820201 100644
+--- a/src/packet_crypt.c
++++ b/src/packet_crypt.c
+@@ -55,7 +55,7 @@ uint32_t packet_decrypt_len(ssh_session session, char *crypted){
+   return ntohl(decrypted);
+ }
+ 
+-int packet_decrypt(ssh_session session, void *data,uint32_t len) {
++LIBSSH_API int packet_decrypt(ssh_session session, void *data,uint32_t len) {
+   struct ssh_cipher_struct *crypto = session->current_crypto->in_cipher;
+   char *out = NULL;
+   if(len % session->current_crypto->in_cipher->blocksize != 0){
+@@ -81,7 +81,12 @@ int packet_decrypt(ssh_session session, void *data,uint32_t len) {
+   return 0;
+ }
+ 
+-unsigned char *packet_encrypt(ssh_session session, void *data, uint32_t len) {
++LIBSSH_API unsigned char *packet_encrypt(ssh_session session, void *data, uint32_t len) {
++  return packet_encrypt2(session, data, NULL, len);
++}
++
++LIBSSH_API unsigned char *packet_encrypt2(ssh_session session, void *data,
++							void *data_out, uint32_t len) {
+   struct ssh_cipher_struct *crypto = NULL;
+   HMACCTX ctx = NULL;
+   char *out = NULL;
+@@ -95,9 +100,14 @@ unsigned char *packet_encrypt(ssh_session session, void *data, uint32_t len) {
+       ssh_set_error(session, SSH_FATAL, "Cryptographic functions must be set on at least one blocksize (received %d)",len);
+       return NULL;
+   }
+-  out = malloc(len);
+-  if (out == NULL) {
+-    return NULL;
++
++  if (data_out) {
++    out = data_out;
++  } else {
++    out = malloc(len);
++    if (out == NULL) {
++      return NULL;
++    }
+   }
+ 
+   seq = ntohl(session->send_seq);
+@@ -105,14 +115,16 @@ unsigned char *packet_encrypt(ssh_session session, void *data, uint32_t len) {
+ 
+   if (crypto->set_encrypt_key(crypto, session->current_crypto->encryptkey,
+       session->current_crypto->encryptIV) < 0) {
+-    SAFE_FREE(out);
++    if (!data_out)
++      SAFE_FREE(out);
+     return NULL;
+   }
+ 
+   if (session->version == 2) {
+     ctx = hmac_init(session->current_crypto->encryptMAC,20,SSH_HMAC_SHA1);
+     if (ctx == NULL) {
+-      SAFE_FREE(out);
++      if (!data_out)
++        SAFE_FREE(out);
+       return NULL;
+     }
+     hmac_update(ctx,(unsigned char *)&seq,sizeof(uint32_t));
+@@ -129,9 +141,11 @@ unsigned char *packet_encrypt(ssh_session session, void *data, uint32_t len) {
+ 
+   crypto->cbc_encrypt(crypto, data, out, len);
+ 
+-  memcpy(data, out, len);
+-  memset(out, 0, len);
+-  SAFE_FREE(out);
++  if (!data_out) {
++    memcpy(data, out, len);
++    memset(out, 0, len);
++    SAFE_FREE(out);
++  }
+ 
+   if (session->version == 2) {
+     return session->current_crypto->hmacbuf;
+@@ -152,8 +166,14 @@ unsigned char *packet_encrypt(ssh_session session, void *data, uint32_t len) {
+  * @return              0 if hmac and mac are equal, < 0 if not or an error
+  *                      occurred.
+  */
+-int packet_hmac_verify(ssh_session session, ssh_buffer buffer,
++LIBSSH_API int packet_hmac_verify(ssh_session session, ssh_buffer buffer,
+     unsigned char *mac) {
++  return packet_hmac_verify2(session, buffer_get_rest(buffer),
++                buffer_get_rest_len(buffer), mac);
++}
++
++LIBSSH_API int packet_hmac_verify2(ssh_session session, unsigned char *buffer,
++    unsigned int buflen, unsigned char *mac) {
+   unsigned char hmacbuf[EVP_MAX_MD_SIZE] = {0};
+   HMACCTX ctx;
+   unsigned int len;
+@@ -167,7 +187,7 @@ int packet_hmac_verify(ssh_session session, ssh_buffer buffer,
+   seq = htonl(session->recv_seq);
+ 
+   hmac_update(ctx, (unsigned char *) &seq, sizeof(uint32_t));
+-  hmac_update(ctx, buffer_get_rest(buffer), buffer_get_rest_len(buffer));
++  hmac_update(ctx, buffer, buflen);
+   hmac_final(ctx, hmacbuf, &len);
+ 
+ #ifdef DEBUG_CRYPTO
+-- 
+1.7.8.2
+

@@ -1,0 +1,20 @@
+diff -ur 1/Makefile.in 2/Makefile.in
+--- 1/Makefile.in	2008-02-18 03:49:25.000000000 +0300
++++ 2/Makefile.in	2011-11-17 16:41:32.055722805 +0300
+@@ -32,12 +32,10 @@
+ 
+ # Careful here: don't install client.txt over itself.
+ install: all
+-	${INSTALLCMD} -d $(bindir) $(datadir) $(mandir)
+-	${INSTALLCMD} dbench tbench tbench_srv $(bindir)
+-	${INSTALLCMD} client.txt $(datadir)
+-	${INSTALLCMD} -m644 dbench.1 $(mandir)
+-	ln -sf dbench.1 $(mandir)/tbench.1
+-	ln -sf dbench.1 $(mandir)/tbench_srv.1
++	mkdir -p $(DESTDIR)$(mandir)/man1
++	${INSTALLCMD} -d $(DESTDIR)$(bindir) $(DESTDIR)$(datadir)
++	${INSTALLCMD} dbench tbench tbench_srv $(DESTDIR)$(bindir)
++	${INSTALLCMD} -m644 dbench.1 $(DESTDIR)$(mandir)/man1
+ 
+ clean:
+ 	rm -f *.o *~ dbench tbench tbench_srv

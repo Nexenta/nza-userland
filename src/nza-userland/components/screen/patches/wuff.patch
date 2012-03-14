@@ -1,0 +1,56 @@
+--- screen-4.0.3.orig/doc/screen.1	2003-12-05 16:51:57.000000000 +0300
++++ screen-4.0.3/doc/screen.1	2012-01-17 11:51:16.255369984 +0300
+@@ -2925,7 +2925,7 @@
+ Sets the visual bell message. \fImessage\fP is printed to the status line if
+ the window receives a bell character (^G), vbell is set to \*Qon\*U, but the 
+ terminal does not support a visual bell.
+-The default message is \*QWuff, Wuff!!\*U.
++The default message is \*QNot supported key combination\*U.
+ Without parameter, the current message is shown.
+ .sp
+ .ne 3
+--- screen-4.0.3.orig/doc/screen.info-3	2003-12-05 16:52:07.000000000 +0300
++++ screen-4.0.3/doc/screen.info-3	2012-01-17 11:50:52.697058363 +0300
+@@ -170,7 +170,7 @@
+      Sets the visual bell message. MESSAGE is printed to the status
+      line if the window receives a bell character (^G), `vbell' is set
+      to `on' and the terminal does not support a visual bell.  The
+-     default message is `Wuff, Wuff!!'.  Without parameter, the current
++     default message is `Not supported key combination'.  Without parameter, the current
+      message is shown.
+ 
+  - Command: vbellwait sec
+--- screen-4.0.3.orig/doc/screen.texinfo	2003-12-05 16:51:46.000000000 +0300
++++ screen-4.0.3/doc/screen.texinfo	2012-01-17 11:50:32.964188491 +0300
+@@ -2529,7 +2529,7 @@
+ Sets the visual bell message. @var{Message} is printed to the status
+ line if the window receives a bell character (^G), @code{vbell} is
+ set to @samp{on} and the terminal does not support a visual bell.
+-The default message is @samp{Wuff, Wuff!!}.
++The default message is @samp{Not supported key combination}.
+ Without parameter, the current message is shown.
+ @end deffn
+ 
+--- screen-4.0.3.orig/etc/etcscreenrc	2003-12-05 16:46:13.000000000 +0300
++++ screen-4.0.3/etc/etcscreenrc	2012-01-17 11:50:08.285878247 +0300
+@@ -14,7 +14,7 @@
+ #autodetach off
+ 
+ vbell on
+-vbell_msg "   Wuff  ----  Wuff!!  "
++vbell_msg "Not supported key combination"
+ 
+ # all termcap entries are now duplicated as terminfo entries.
+ # only difference should be the slightly modified syntax, and check for
+diff -urN screen-4.0.3.orig/screen.c screen-4.0.3/screen.c
+--- screen-4.0.3.orig/screen.c	2003-09-08 18:26:41.000000000 +0400
++++ screen-4.0.3/screen.c	2012-01-17 11:49:38.484223269 +0300
+@@ -431,7 +431,7 @@
+ #endif
+ 
+   BellString = SaveStr("Bell in window %n");
+-  VisualBellString = SaveStr("   Wuff,  Wuff!!  ");
++  VisualBellString = SaveStr("Not supported key combination");
+   ActivityString = SaveStr("Activity in window %n");
+   screenlogfile = SaveStr("screenlog.%n");
+   logtstamp_string = SaveStr("-- %n:%t -- time-stamp -- %M/%d/%y %c:%s --\n");

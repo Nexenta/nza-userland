@@ -1,0 +1,43 @@
+diff -ur 1/configure 2/configure
+--- 1/configure	2011-07-21 01:00:17.000000000 +0400
++++ 2/configure	2011-11-25 19:38:52.502562321 +0300
+@@ -22808,25 +22808,26 @@
+       CPPFLAGS="$CPPFLAGS -DSOL11"
+    fi
+ 
+-   MODULES="$MODULES vmxnet vmmemctl"
++  # MODULES="$MODULES vmxnet vmmemctl"
++  MODULES="$MODULES vmblock"
+ 
+    # HGFS and vmblock need Solaris 10 at least.
+-   if test "$osVersion" -ge 510000; then
+-      MODULES="$MODULES vmhgfs vmblock"
+-   fi
++  # if test "$osVersion" -ge 510000; then
++#      MODULES="$MODULES vmhgfs vmblock"
++ #  fi
+ 
+    # vmxnet3 is built on Solaris 10 / 11 only if GLDv3 is installed.
+-   if test "$osVersion" -gt 510000; then
+-      ac_fn_c_check_header_mongrel "$LINENO" "sys/mac.h" "ac_cv_header_sys_mac_h" "$ac_includes_default"
+-if test "x$ac_cv_header_sys_mac_h" = x""yes; then :
+-  MODULES="$MODULES vmxnet3"
+-else
+-  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: GLDv3 (sys/mac.h) is not installed, vmxnet3 will not be compiled." >&5
+-$as_echo "$as_me: WARNING: GLDv3 (sys/mac.h) is not installed, vmxnet3 will not be compiled." >&2;}
+-fi
++   #if test "$osVersion" -gt 510000; then
++    #  ac_fn_c_check_header_mongrel "$LINENO" "sys/mac.h" "ac_cv_header_sys_mac_h" "$ac_includes_default"
++#if test "x$ac_cv_header_sys_mac_h" = x""yes; then :
++ # MODULES="$MODULES vmxnet3"
++#else
++#  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: GLDv3 (sys/mac.h) is not installed, vmxnet3 will not be compiled." >&5
++#$as_echo "$as_me: WARNING: GLDv3 (sys/mac.h) is not installed, vmxnet3 will not be compiled." >&2;}
++#fi
+ 
+ 
+-   fi
++ #  fi
+ 
+    if test "$with_kernel_modules" = "yes"; then
+       echo "****************************************************************"

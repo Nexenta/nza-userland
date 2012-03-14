@@ -1,0 +1,448 @@
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+# Copyright (c) 2011 Nexenta Systems, Inc.  All rights reserved.
+#
+
+<transform file path=usr.*/man/.+ -> default mangler.man.stability volatile>
+set name=pkg.fmri \
+    value=pkg:/network/nagios-3.2.3@$(IPS_COMPONENT_VERSION),$(BUILD_VERSION)
+set name=pkg.summary value="nagios "
+set name=info.classification value=org.opensolaris.category.2008:System/Internet
+set name=info.source_url value=$(COMPONENT_ARCHIVE_URL)
+set name=info.upstream_url value=http://www.nagios.org
+set name=opensolaris.arc_url \
+    value=http://arc.opensolaris.org/caselog/PSARC/2000/488
+set name=org.opensolaris.consolidation value=$(CONSOLIDATION)
+
+
+
+
+
+group groupname=nagios
+user username=nagios
+file nagios.xml path=lib/svc/manifest/net/nagios.xml
+file nagios3.conf path=etc/apache2/2.2/conf.d/nagios3.conf
+file etc/nagios3/cgi.cfg path=etc/nagios3/cgi.cfg
+file etc/nagios3/nagios.cfg path=etc/nagios3/nagios.cfg
+file etc/nagios3/resource.cfg path=etc/nagios3/resource.cfg
+file etc/nagios3/objects/commands.cfg path=etc/nagios3/objects/commands.cfg
+file etc/nagios3/objects/localhost.cfg path=etc/nagios3/objects/localhost.cfg
+file etc/nagios3/objects/printer.cfg path=etc/nagios3/objects/printer.cfg
+file etc/nagios3/objects/contacts.cfg path=etc/nagios3/objects/contacts.cfg
+file etc/nagios3/objects/switch.cfg path=etc/nagios3/objects/switch.cfg
+file etc/nagios3/objects/templates.cfg path=etc/nagios3/objects/templates.cfg
+file etc/nagios3/objects/windows.cfg path=etc/nagios3/objects/windows.cfg
+file etc/nagios3/objects/timeperiods.cfg path=etc/nagios3/objects/timeperiods.cfg
+dir path=etc
+dir path=etc/nagios3
+dir path=etc/nagios3/objects
+dir path=usr
+dir path=usr/bin
+dir path=usr/share
+dir path=usr/share/nagios3
+dir path=usr/share/nagios3/htdocs
+dir path=usr/share/nagios3/htdocs/includes
+dir path=usr/share/nagios3/htdocs/docs
+dir path=usr/share/nagios3/htdocs/docs/images
+dir path=usr/share/nagios3/htdocs/ssi
+dir path=usr/share/nagios3/htdocs/images
+dir path=usr/share/nagios3/htdocs/images/logos
+dir path=usr/share/nagios3/htdocs/stylesheets
+dir path=usr/share/nagios3/htdocs/media
+dir path=usr/share/nagios3/htdocs/contexthelp
+dir path=usr/lib
+dir path=usr/lib/nagios
+dir path=usr/lib/nagios/plugins
+dir path=var
+dir path=var/lib
+dir path=var/apache2
+dir path=var/apache2/2.2
+dir path=var/apache2/2.2/cgi-bin
+dir path=var/apache2/2.2/cgi-bin/nagios3
+dir group=nagios path=var/lib/nagios3 owner=nagios mode=0755
+dir group=nagios path=var/lib/nagios3/rw owner=nagios  mode=0755
+dir group=nagios path=var/lib/nagios3/spool owner=nagios mode=0755
+dir group=nagios path=var/lib/nagios3/spool/checkresults owner=nagios  mode=0755
+dir group=nagios path=var/lib/nagios3/archives owner=nagios  mode=0755
+
+
+
+file path=usr/bin/nagios
+file path=usr/bin/nagiostats
+
+file path=usr/share/nagios3/htdocs/includes/utils.inc.php
+file path=usr/share/nagios3/htdocs/docs/volatileservices.html
+file path=usr/share/nagios3/htdocs/docs/cachedchecks.html
+file path=usr/share/nagios3/htdocs/docs/quickstart-ubuntu.html
+file path=usr/share/nagios3/htdocs/docs/quickstart-opensuse.html
+file path=usr/share/nagios3/htdocs/docs/passivechecks.html
+file path=usr/share/nagios3/htdocs/docs/epnplugins.html
+file path=usr/share/nagios3/htdocs/docs/notifications.html
+file path=usr/share/nagios3/htdocs/docs/activechecks.html
+file path=usr/share/nagios3/htdocs/docs/passivestatetranslation.html
+file path=usr/share/nagios3/htdocs/docs/tuning.html
+file path=usr/share/nagios3/htdocs/docs/dependencies.html
+file path=usr/share/nagios3/htdocs/docs/flapping.html
+file path=usr/share/nagios3/htdocs/docs/servicechecks.html
+file path=usr/share/nagios3/htdocs/docs/plugins.html
+file path=usr/share/nagios3/htdocs/docs/stalking.html
+file path=usr/share/nagios3/htdocs/docs/monitoring-routers.html
+file path=usr/share/nagios3/htdocs/docs/oncallrotation.html
+file path=usr/share/nagios3/htdocs/docs/statetypes.html
+file path=usr/share/nagios3/htdocs/docs/toc.html
+file path=usr/share/nagios3/htdocs/docs/configmain.html
+file path=usr/share/nagios3/htdocs/docs/mrtggraphs.html
+file path=usr/share/nagios3/htdocs/docs/extcommands.html
+file path=usr/share/nagios3/htdocs/docs/about.html
+file path=usr/share/nagios3/htdocs/docs/monitoring-printers.html
+file path=usr/share/nagios3/htdocs/docs/monitoring-publicservices.html
+file path=usr/share/nagios3/htdocs/docs/robots.txt
+file path=usr/share/nagios3/htdocs/docs/cgiincludes.html
+file path=usr/share/nagios3/htdocs/docs/beginners.html
+file path=usr/share/nagios3/htdocs/docs/configobject.html
+file path=usr/share/nagios3/htdocs/docs/configcgi.html
+file path=usr/share/nagios3/htdocs/docs/distributed.html
+file path=usr/share/nagios3/htdocs/docs/perfdata.html
+file path=usr/share/nagios3/htdocs/docs/startstop.html
+file path=usr/share/nagios3/htdocs/docs/redundancy.html
+file path=usr/share/nagios3/htdocs/docs/addons.html
+file path=usr/share/nagios3/htdocs/docs/quickstart-fedora.html
+file path=usr/share/nagios3/htdocs/docs/monitoring-linux.html
+file path=usr/share/nagios3/htdocs/docs/knownissues.html
+file path=usr/share/nagios3/htdocs/docs/pluginapi.html
+file path=usr/share/nagios3/htdocs/docs/security.html
+file path=usr/share/nagios3/htdocs/docs/config.html
+file path=usr/share/nagios3/htdocs/docs/monitoring-netware.html
+file path=usr/share/nagios3/htdocs/docs/funstuff.html
+file path=usr/share/nagios3/htdocs/docs/cgis.html
+file path=usr/share/nagios3/htdocs/docs/images/security1.png
+file path=usr/share/nagios3/htdocs/docs/images/mrtg-servicestatechange.png
+file path=usr/share/nagios3/htdocs/docs/images/cachedchecks.png
+file path=usr/share/nagios3/htdocs/docs/images/downtime.png
+file path=usr/share/nagios3/htdocs/docs/images/plugins.png
+file path=usr/share/nagios3/htdocs/docs/images/redudancy.png
+file path=usr/share/nagios3/htdocs/docs/images/objects-commands.png
+file path=usr/share/nagios3/htdocs/docs/images/objects-timeperiods.png
+file path=usr/share/nagios3/htdocs/docs/images/cgi-status-a.png
+file path=usr/share/nagios3/htdocs/docs/images/redundancy.png
+file path=usr/share/nagios3/htdocs/docs/images/reachability1.png
+file path=usr/share/nagios3/htdocs/docs/images/printer.png
+file path=usr/share/nagios3/htdocs/docs/images/cgi-cmd.png
+file path=usr/share/nagios3/htdocs/docs/images/cgi-trends.png
+file path=usr/share/nagios3/htdocs/docs/images/passivehosttranslation.png
+file path=usr/share/nagios3/htdocs/docs/images/noninterleaved1.png
+file path=usr/share/nagios3/htdocs/docs/images/cgi-extinfo-b.png
+file path=usr/share/nagios3/htdocs/docs/images/cachedchecks1.png
+file path=usr/share/nagios3/htdocs/docs/images/upto.gif
+file path=usr/share/nagios3/htdocs/docs/images/fast-startup.png
+file path=usr/share/nagios3/htdocs/docs/images/multiple-templates1.png
+file path=usr/share/nagios3/htdocs/docs/images/mrtg-cachedchecks.png
+file path=usr/share/nagios3/htdocs/docs/images/fast-startup2.png
+file path=usr/share/nagios3/htdocs/docs/images/mrtg-activeservicechecks.png
+file path=usr/share/nagios3/htdocs/docs/images/mrtg-externalcommands.png
+file path=usr/share/nagios3/htdocs/docs/images/network-outage2.png
+file path=usr/share/nagios3/htdocs/docs/images/activechecks.png
+file path=usr/share/nagios3/htdocs/docs/images/freshness.png
+file path=usr/share/nagios3/htdocs/docs/images/cgi-notifications.png
+file path=usr/share/nagios3/htdocs/docs/images/switch.png
+file path=usr/share/nagios3/htdocs/docs/images/epn.png
+file path=usr/share/nagios3/htdocs/docs/images/statetransitions2.png
+file path=usr/share/nagios3/htdocs/docs/images/monitoring-routers.png
+file path=usr/share/nagios3/htdocs/docs/images/interleaved1.png
+file path=usr/share/nagios3/htdocs/docs/images/seealso.gif
+file path=usr/share/nagios3/htdocs/docs/images/cgi-summary.png
+file path=usr/share/nagios3/htdocs/docs/images/cgi-statuswrl.png
+file path=usr/share/nagios3/htdocs/docs/images/cgi-histogram.png
+file path=usr/share/nagios3/htdocs/docs/images/cgi-tac.png
+file path=usr/share/nagios3/htdocs/docs/images/logofullsize.png
+file path=usr/share/nagios3/htdocs/docs/images/cgi-history.png
+file path=usr/share/nagios3/htdocs/docs/images/mrtg-hoststatechange.png
+file path=usr/share/nagios3/htdocs/docs/images/cgi-extinfo-d.png
+file path=usr/share/nagios3/htdocs/docs/images/cgi-extinfo-c.png
+file path=usr/share/nagios3/htdocs/docs/images/stoprestart.png
+file path=usr/share/nagios3/htdocs/docs/images/cgi-avail-b.png
+file path=usr/share/nagios3/htdocs/docs/images/mrtg-serviceperfstats.png
+file path=usr/share/nagios3/htdocs/docs/images/cgi-avail-a.png
+file path=usr/share/nagios3/htdocs/docs/images/objects-services.png
+file path=usr/share/nagios3/htdocs/docs/images/nagios.jpg
+file path=usr/share/nagios3/htdocs/docs/images/important.gif
+file path=usr/share/nagios3/htdocs/docs/images/nsca.png
+file path=usr/share/nagios3/htdocs/docs/images/fast-startup1.png
+file path=usr/share/nagios3/htdocs/docs/images/nagiosexchange.png
+file path=usr/share/nagios3/htdocs/docs/images/cgi-statuswml.png
+file path=usr/share/nagios3/htdocs/docs/images/distributed.png
+file path=usr/share/nagios3/htdocs/docs/images/mrtg-activehostchecks.png
+file path=usr/share/nagios3/htdocs/docs/images/reachability4.png
+file path=usr/share/nagios3/htdocs/docs/images/cgi-status-c.png
+file path=usr/share/nagios3/htdocs/docs/images/cgi-status-d.png
+file path=usr/share/nagios3/htdocs/docs/images/nrpe.png
+file path=usr/share/nagios3/htdocs/docs/images/network-outage1.png
+file path=usr/share/nagios3/htdocs/docs/images/reachability3.png
+file path=usr/share/nagios3/htdocs/docs/images/monitoring-windows.png
+file path=usr/share/nagios3/htdocs/docs/images/tip.gif
+file path=usr/share/nagios3/htdocs/docs/images/tcpwrappers.png
+file path=usr/share/nagios3/htdocs/docs/images/security3.png
+file path=usr/share/nagios3/htdocs/docs/images/tuning.png
+file path=usr/share/nagios3/htdocs/docs/images/externalcommands.png
+file path=usr/share/nagios3/htdocs/docs/images/interleaved2.png
+file path=usr/share/nagios3/htdocs/docs/images/mrtg-commandbuffers.png
+file path=usr/share/nagios3/htdocs/docs/images/passivechecks.png
+file path=usr/share/nagios3/htdocs/docs/images/security.png
+file path=usr/share/nagios3/htdocs/docs/images/eventhandlers.png
+file path=usr/share/nagios3/htdocs/docs/images/cgi-showlog.png
+file path=usr/share/nagios3/htdocs/docs/images/objects-hosts.png
+file path=usr/share/nagios3/htdocs/docs/images/cgi-config.png
+file path=usr/share/nagios3/htdocs/docs/images/mrtg-activelychecked.png
+file path=usr/share/nagios3/htdocs/docs/images/cgi-statusmap.png
+file path=usr/share/nagios3/htdocs/docs/images/noninterleaved2.png
+file path=usr/share/nagios3/htdocs/docs/images/cgi-extinfo-a.png
+file path=usr/share/nagios3/htdocs/docs/images/multiple-templates2.png
+file path=usr/share/nagios3/htdocs/docs/images/checkmark.png
+file path=usr/share/nagios3/htdocs/docs/images/checktiming.png
+file path=usr/share/nagios3/htdocs/docs/images/mrtg-passivechecks.png
+file path=usr/share/nagios3/htdocs/docs/images/host-dependencies.png
+file path=usr/share/nagios3/htdocs/docs/images/interleaved3.png
+file path=usr/share/nagios3/htdocs/docs/images/nagiossupport.png
+file path=usr/share/nagios3/htdocs/docs/images/nscpp.png
+file path=usr/share/nagios3/htdocs/docs/images/security2.png
+file path=usr/share/nagios3/htdocs/docs/images/integrationoverview.png
+file path=usr/share/nagios3/htdocs/docs/images/cachedcheckgraphs.png
+file path=usr/share/nagios3/htdocs/docs/images/mrtg-hostperfstats.png
+file path=usr/share/nagios3/htdocs/docs/images/configoverview.png
+file path=usr/share/nagios3/htdocs/docs/images/note.gif
+file path=usr/share/nagios3/htdocs/docs/images/cgi-outages.png
+file path=usr/share/nagios3/htdocs/docs/images/ndoutils.png
+file path=usr/share/nagios3/htdocs/docs/images/monitoring-printers.png
+file path=usr/share/nagios3/htdocs/docs/images/predictive-dependency-checks.png
+file path=usr/share/nagios3/htdocs/docs/images/objects-contacts.png
+file path=usr/share/nagios3/htdocs/docs/images/service-dependencies.png
+file path=usr/share/nagios3/htdocs/docs/images/reachability2.png
+file path=usr/share/nagios3/htdocs/docs/images/cgi-status-b.png
+file path=usr/share/nagios3/htdocs/docs/images/mrtg-passivelychecked.png
+file path=usr/share/nagios3/htdocs/docs/images/statetransitions.png
+file path=usr/share/nagios3/htdocs/docs/dependencychecks.html
+file path=usr/share/nagios3/htdocs/docs/timeperiods.html
+file path=usr/share/nagios3/htdocs/docs/objectdefinitions.html
+file path=usr/share/nagios3/htdocs/docs/eventhandlers.html
+file path=usr/share/nagios3/htdocs/docs/index.html
+file path=usr/share/nagios3/htdocs/docs/downtime.html
+file path=usr/share/nagios3/htdocs/docs/macros.html
+file path=usr/share/nagios3/htdocs/docs/escalations.html
+file path=usr/share/nagios3/htdocs/docs/largeinstalltweaks.html
+file path=usr/share/nagios3/htdocs/docs/cgiauth.html
+file path=usr/share/nagios3/htdocs/docs/customobjectvars.html
+file path=usr/share/nagios3/htdocs/docs/checkscheduling.html
+file path=usr/share/nagios3/htdocs/docs/upgrading.html
+file path=usr/share/nagios3/htdocs/docs/quickstart.html
+file path=usr/share/nagios3/htdocs/docs/verifyconfig.html
+file path=usr/share/nagios3/htdocs/docs/whatsnew.html
+file path=usr/share/nagios3/htdocs/docs/embeddedperl.html
+file path=usr/share/nagios3/htdocs/docs/nagiostats.html
+file path=usr/share/nagios3/htdocs/docs/objectinheritance.html
+file path=usr/share/nagios3/htdocs/docs/monitoring-windows.html
+file path=usr/share/nagios3/htdocs/docs/networkreachability.html
+file path=usr/share/nagios3/htdocs/docs/int-tcpwrappers.html
+file path=usr/share/nagios3/htdocs/docs/objecttricks.html
+file path=usr/share/nagios3/htdocs/docs/cgisecurity.html
+file path=usr/share/nagios3/htdocs/docs/clusters.html
+file path=usr/share/nagios3/htdocs/docs/adaptive.html
+file path=usr/share/nagios3/htdocs/docs/faststartup.html
+file path=usr/share/nagios3/htdocs/docs/int-snmptrap.html
+file path=usr/share/nagios3/htdocs/docs/hostchecks.html
+file path=usr/share/nagios3/htdocs/docs/macrolist.html
+file path=usr/share/nagios3/htdocs/docs/freshness.html
+file path=usr/share/nagios3/htdocs/docs/integration.html
+file path=usr/share/nagios3/htdocs/index.php
+file path=usr/share/nagios3/htdocs/images/contexthelp1.gif
+file path=usr/share/nagios3/htdocs/images/notes.gif
+file path=usr/share/nagios3/htdocs/images/zoom2.gif
+file path=usr/share/nagios3/htdocs/images/history.gif
+file path=usr/share/nagios3/htdocs/images/redudancy.png
+file path=usr/share/nagios3/htdocs/images/detail.gif
+file path=usr/share/nagios3/htdocs/images/splunk2.gif
+file path=usr/share/nagios3/htdocs/images/tacdisabled.jpg
+file path=usr/share/nagios3/htdocs/images/noack.gif
+file path=usr/share/nagios3/htdocs/images/status4.gif
+file path=usr/share/nagios3/htdocs/images/weblogo1.png
+file path=usr/share/nagios3/htdocs/images/favicon.ico
+file path=usr/share/nagios3/htdocs/images/status3.gif
+file path=usr/share/nagios3/htdocs/images/flapping.gif
+file path=usr/share/nagios3/htdocs/images/globe-support-150x150.png
+file path=usr/share/nagios3/htdocs/images/histogram.png
+file path=usr/share/nagios3/htdocs/images/sblogo.png
+file path=usr/share/nagios3/htdocs/images/sflogo.png
+file path=usr/share/nagios3/htdocs/images/passiveonly.gif
+file path=usr/share/nagios3/htdocs/images/stop.gif
+file path=usr/share/nagios3/htdocs/images/comment.gif
+file path=usr/share/nagios3/htdocs/images/info.png
+file path=usr/share/nagios3/htdocs/images/recovery.png
+file path=usr/share/nagios3/htdocs/images/up.gif
+file path=usr/share/nagios3/htdocs/images/ack.gif
+file path=usr/share/nagios3/htdocs/images/thermcrit.png
+file path=usr/share/nagios3/htdocs/images/trends.gif
+file path=usr/share/nagios3/htdocs/images/notify.gif
+file path=usr/share/nagios3/htdocs/images/logos/nagios.gd2
+file path=usr/share/nagios3/htdocs/images/logos/unknown.gif
+file path=usr/share/nagios3/htdocs/images/logos/nagiosvrml.png
+file path=usr/share/nagios3/htdocs/images/logos/nagios.gif
+file path=usr/share/nagios3/htdocs/images/logos/unknown.gd2
+file path=usr/share/nagios3/htdocs/images/warning.png
+file path=usr/share/nagios3/htdocs/images/trendssvc.png
+file path=usr/share/nagios3/htdocs/images/ndisabled.gif
+file path=usr/share/nagios3/htdocs/images/trendshost.png
+file path=usr/share/nagios3/htdocs/images/start.gif
+file path=usr/share/nagios3/htdocs/images/tacenabled.png
+file path=usr/share/nagios3/htdocs/images/critical.png
+file path=usr/share/nagios3/htdocs/images/status2.gif
+file path=usr/share/nagios3/htdocs/images/tacdisabled.png
+file path=usr/share/nagios3/htdocs/images/enabled.gif
+file path=usr/share/nagios3/htdocs/images/orangedot.gif
+file path=usr/share/nagios3/htdocs/images/command.png
+file path=usr/share/nagios3/htdocs/images/hostevent.gif
+file path=usr/share/nagios3/htdocs/images/NagiosEnterprises-whitebg-112x46.png
+file path=usr/share/nagios3/htdocs/images/delay.gif
+file path=usr/share/nagios3/htdocs/images/restart.gif
+file path=usr/share/nagios3/htdocs/images/disabled.gif
+file path=usr/share/nagios3/htdocs/images/status.gif
+file path=usr/share/nagios3/htdocs/images/delete.gif
+file path=usr/share/nagios3/htdocs/images/logofullsize.png
+file path=usr/share/nagios3/htdocs/images/action.gif
+file path=usr/share/nagios3/htdocs/images/thermok.png
+file path=usr/share/nagios3/htdocs/images/serviceevent.gif
+file path=usr/share/nagios3/htdocs/images/downtime.gif
+file path=usr/share/nagios3/htdocs/images/right.gif
+file path=usr/share/nagios3/htdocs/images/greendot.gif
+file path=usr/share/nagios3/htdocs/images/logrotate.png
+file path=usr/share/nagios3/htdocs/images/empty.gif
+file path=usr/share/nagios3/htdocs/images/left.gif
+file path=usr/share/nagios3/htdocs/images/thermwarn.png
+file path=usr/share/nagios3/htdocs/images/zoom1.gif
+file path=usr/share/nagios3/htdocs/images/tacenabled.jpg
+file path=usr/share/nagios3/htdocs/images/redundancy.png
+file path=usr/share/nagios3/htdocs/images/contexthelp2.gif
+file path=usr/share/nagios3/htdocs/images/extinfo.gif
+file path=usr/share/nagios3/htdocs/images/down.gif
+file path=usr/share/nagios3/htdocs/images/splunk1.gif
+file path=usr/share/nagios3/htdocs/images/unknown.png
+file path=usr/share/nagios3/htdocs/stylesheets/status.css
+file path=usr/share/nagios3/htdocs/stylesheets/avail.css
+file path=usr/share/nagios3/htdocs/stylesheets/config.css
+file path=usr/share/nagios3/htdocs/stylesheets/summary.css
+file path=usr/share/nagios3/htdocs/stylesheets/histogram.css
+file path=usr/share/nagios3/htdocs/stylesheets/history.css
+file path=usr/share/nagios3/htdocs/stylesheets/checksanity.css
+file path=usr/share/nagios3/htdocs/stylesheets/statusmap.css
+file path=usr/share/nagios3/htdocs/stylesheets/ministatus.css
+file path=usr/share/nagios3/htdocs/stylesheets/showlog.css
+file path=usr/share/nagios3/htdocs/stylesheets/cmd.css
+file path=usr/share/nagios3/htdocs/stylesheets/notifications.css
+file path=usr/share/nagios3/htdocs/stylesheets/outages.css
+file path=usr/share/nagios3/htdocs/stylesheets/trends.css
+file path=usr/share/nagios3/htdocs/stylesheets/extinfo.css
+file path=usr/share/nagios3/htdocs/stylesheets/common.css
+file path=usr/share/nagios3/htdocs/stylesheets/tac.css
+file path=usr/share/nagios3/htdocs/side.php
+file path=usr/share/nagios3/htdocs/contexthelp/D1.html
+file path=usr/share/nagios3/htdocs/contexthelp/N3.html
+file path=usr/share/nagios3/htdocs/contexthelp/L13.html
+file path=usr/share/nagios3/htdocs/contexthelp/M2.html
+file path=usr/share/nagios3/htdocs/contexthelp/I9.html
+file path=usr/share/nagios3/htdocs/contexthelp/A2.html
+file path=usr/share/nagios3/htdocs/contexthelp/H1.html
+file path=usr/share/nagios3/htdocs/contexthelp/M6.html
+file path=usr/share/nagios3/htdocs/contexthelp/G4.html
+file path=usr/share/nagios3/htdocs/contexthelp/N7.html
+file path=usr/share/nagios3/htdocs/contexthelp/H5.html
+file path=usr/share/nagios3/htdocs/contexthelp/A6.html
+file path=usr/share/nagios3/htdocs/contexthelp/E1.html
+file path=usr/share/nagios3/htdocs/contexthelp/L2.html
+file path=usr/share/nagios3/htdocs/contexthelp/I1.html
+file path=usr/share/nagios3/htdocs/contexthelp/L6.html
+file path=usr/share/nagios3/htdocs/contexthelp/I5.html
+file path=usr/share/nagios3/htdocs/contexthelp/F1.html
+file path=usr/share/nagios3/htdocs/contexthelp/L3.html
+file path=usr/share/nagios3/htdocs/contexthelp/H8.html
+file path=usr/share/nagios3/htdocs/contexthelp/J1.html
+file path=usr/share/nagios3/htdocs/contexthelp/L7.html
+file path=usr/share/nagios3/htdocs/contexthelp/I4.html
+file path=usr/share/nagios3/htdocs/contexthelp/L12.html
+file path=usr/share/nagios3/htdocs/contexthelp/N2.html
+file path=usr/share/nagios3/htdocs/contexthelp/I8.html
+file path=usr/share/nagios3/htdocs/contexthelp/M3.html
+file path=usr/share/nagios3/htdocs/contexthelp/G1.html
+file path=usr/share/nagios3/htdocs/contexthelp/K1.html
+file path=usr/share/nagios3/htdocs/contexthelp/A3.html
+file path=usr/share/nagios3/htdocs/contexthelp/G5.html
+file path=usr/share/nagios3/htdocs/contexthelp/N6.html
+file path=usr/share/nagios3/htdocs/contexthelp/H4.html
+file path=usr/share/nagios3/htdocs/contexthelp/A7.html
+file path=usr/share/nagios3/htdocs/contexthelp/L1.html
+file path=usr/share/nagios3/htdocs/contexthelp/I2.html
+file path=usr/share/nagios3/htdocs/contexthelp/L5.html
+file path=usr/share/nagios3/htdocs/contexthelp/I6.html
+file path=usr/share/nagios3/htdocs/contexthelp/L10.html
+file path=usr/share/nagios3/htdocs/contexthelp/G3.html
+file path=usr/share/nagios3/htdocs/contexthelp/M1.html
+file path=usr/share/nagios3/htdocs/contexthelp/A1.html
+file path=usr/share/nagios3/htdocs/contexthelp/H2.html
+file path=usr/share/nagios3/htdocs/contexthelp/L9.html
+file path=usr/share/nagios3/htdocs/contexthelp/M5.html
+file path=usr/share/nagios3/htdocs/contexthelp/N4.html
+file path=usr/share/nagios3/htdocs/contexthelp/H6.html
+file path=usr/share/nagios3/htdocs/contexthelp/A5.html
+file path=usr/share/nagios3/htdocs/contexthelp/L11.html
+file path=usr/share/nagios3/htdocs/contexthelp/N1.html
+file path=usr/share/nagios3/htdocs/contexthelp/G2.html
+file path=usr/share/nagios3/htdocs/contexthelp/L8.html
+file path=usr/share/nagios3/htdocs/contexthelp/H3.html
+file path=usr/share/nagios3/htdocs/contexthelp/B1.html
+file path=usr/share/nagios3/htdocs/contexthelp/G6.html
+file path=usr/share/nagios3/htdocs/contexthelp/M4.html
+file path=usr/share/nagios3/htdocs/contexthelp/N5.html
+file path=usr/share/nagios3/htdocs/contexthelp/H7.html
+file path=usr/share/nagios3/htdocs/contexthelp/A4.html
+file path=usr/share/nagios3/htdocs/contexthelp/C1.html
+file path=usr/share/nagios3/htdocs/contexthelp/I3.html
+file path=usr/share/nagios3/htdocs/contexthelp/L4.html
+file path=usr/share/nagios3/htdocs/contexthelp/I7.html
+file path=usr/share/nagios3/htdocs/main.php
+file path=usr/share/nagios3/htdocs/config.inc.php
+file path=usr/share/nagios3/htdocs/robots.txt
+file path=var/apache2/2.2/cgi-bin/nagios3/status.cgi
+file path=var/apache2/2.2/cgi-bin/nagios3/extinfo.cgi
+file path=var/apache2/2.2/cgi-bin/nagios3/histogram.cgi
+file path=var/apache2/2.2/cgi-bin/nagios3/statuswrl.cgi
+file path=var/apache2/2.2/cgi-bin/nagios3/config.cgi
+file path=var/apache2/2.2/cgi-bin/nagios3/avail.cgi
+file path=var/apache2/2.2/cgi-bin/nagios3/tac.cgi
+file path=var/apache2/2.2/cgi-bin/nagios3/showlog.cgi
+file path=var/apache2/2.2/cgi-bin/nagios3/outages.cgi
+file path=var/apache2/2.2/cgi-bin/nagios3/cmd.cgi
+file path=var/apache2/2.2/cgi-bin/nagios3/statusmap.cgi
+file path=var/apache2/2.2/cgi-bin/nagios3/trends.cgi
+file path=var/apache2/2.2/cgi-bin/nagios3/notifications.cgi
+file path=var/apache2/2.2/cgi-bin/nagios3/statuswml.cgi
+file path=var/apache2/2.2/cgi-bin/nagios3/summary.cgi
+file path=var/apache2/2.2/cgi-bin/nagios3/history.cgi
+depend fmri=pkg:/network/nagios-plugins-1.4.15 type=require
+depend fmri=pkg:/web/server/apache-22 type=require
+depend fmri=pkg:/web/php-52 type=require
+depend fmri=pkg:/web/server/apache-22/module/apache-php5 type=require

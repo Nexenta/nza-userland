@@ -1,0 +1,13 @@
+diff -dubr netifaces-0.5orig/setup.py netifaces-0.5/setup.py
+--- netifaces-0.5orig/setup.py	2011-11-01 18:21:43.733183690 +0300
++++ netifaces-0.5/setup.py	2011-11-01 18:22:58.570903975 +0300
+@@ -103,6 +103,9 @@
+         print "checking for getifaddrs...",
+ 
+         result = results.get('have_getifaddrs', None)
++        # pycc fails on that testrig
++        # don't know why, but we do have getifaddrs ;-)
++        result = True
+         if result is not None:
+             cached = '(cached)'
+         else:

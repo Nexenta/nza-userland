@@ -1,0 +1,11 @@
+--- ./configure.d/config_project_ipv6_types.orig	2011-04-15 18:58:05.998254350 +0400
++++ ./configure.d/config_project_ipv6_types	2011-04-15 19:03:13.116409790 +0400
+@@ -151,7 +151,7 @@
+ #endif
+ ]])
+ 	                AC_MSG_CHECKING([[ipv6 stack type]])
+-                        if test "x$ac_cv_have_struct_sockaddr_in6_sin6_addr" = "xyes"; then
++                        if test "x$ac_cv_member_struct_sockaddr_in6_sin6_addr" = "xyes"; then
+ 				v6type=$i
+ 				v6lib=dummy
+ 				v6libdir=none

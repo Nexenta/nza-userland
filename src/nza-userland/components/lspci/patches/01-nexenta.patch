@@ -1,0 +1,20 @@
+--- pciutils-3.1.8.orig/Makefile	2011-10-02 15:28:55.000000000 +0400
++++ pciutils-3.1.8/Makefile	2012-01-12 09:23:51.877851387 +0300
+@@ -16,7 +16,7 @@
+ ZLIB=
+ 
+ # Support for resolving ID's by DNS (yes/no, default: detect)
+-DNS=
++DNS=no
+ 
+ # Build libpci as a shared library (yes/no; or local for testing; requires GCC)
+ SHARED=no
+@@ -25,7 +25,7 @@
+ ABI_VERSION=.3
+ 
+ # Installation directories
+-PREFIX=/usr/local
++PREFIX=/usr
+ SBINDIR=$(PREFIX)/sbin
+ SHAREDIR=$(PREFIX)/share
+ IDSDIR=$(SHAREDIR)
