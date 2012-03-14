@@ -1,2 +1,0 @@
---include debian/libgraphviz-dev/usr/lib/ocaml/gv/
--I tclpkg/gv/

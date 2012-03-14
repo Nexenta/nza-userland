@@ -1,2 +1,0 @@
-version=3
-http://search.cpan.org/dist/Class-C3/ .*/Class-C3-v?(\d[\d.]+)\.(?:tar(?:\.gz|\.bz2)?|tgz|zip)

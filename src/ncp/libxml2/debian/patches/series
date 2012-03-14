@@ -1,8 +1,0 @@
-configure_ld.patch
-01-remove-static.patch
-no-docs-examples.patch
-proto-mismatch.patch
-globals.patch
-globals-fix.patch
-mem-leak-fix.patch
-#libtool.patch

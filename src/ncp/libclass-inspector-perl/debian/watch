@@ -1,2 +1,0 @@
-version=3
-http://search.cpan.org/dist/Class-Inspector/ .*/Class-Inspector-v?(\d[\d_.]+)\.(?:tar(?:\.gz|\.bz2)?|tgz|zip)

@@ -1,6 +1,0 @@
-mkisofs (10:0.1) unstable; urgency=low
-
-  * Dummy package with symlinks to genisoimage 
-
- -- Nexenta Systems <maintainer@nexenta.com>  Sat, 25 Dec 2010 14:56:32 +0300
-

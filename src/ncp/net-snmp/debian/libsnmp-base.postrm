@@ -1,9 +1,0 @@
-#! /bin/sh
-
-set -e
-
-[ "$1" = purge ] && rm -fr /var/net-snmp/
-
-#DEBHELPER#
-
-exit 0

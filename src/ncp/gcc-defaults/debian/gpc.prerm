@@ -1,9 +1,0 @@
-#! /bin/sh -e
-
-if [ $1 != "upgrade" ]; then
-    update-alternatives --remove pc /usr/bin/gpc
-fi
-
-#DEBHELPER#
-
-exit 0

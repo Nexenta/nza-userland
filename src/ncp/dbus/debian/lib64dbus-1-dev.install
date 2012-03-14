@@ -1,4 +1,0 @@
-debian/tmp/usr/lib/amd64/dbus*/include/dbus/dbus*.h
-debian/tmp/usr/lib/amd64/pkgconfig/dbus-1.pc
-debian/tmp/usr/lib/amd64/libdbus-1*.a
-debian/tmp/usr/lib/amd64/*.so

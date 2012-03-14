@@ -1,4 +1,0 @@
-version=3
-opts=filenamemangle=s/.*v([0-9\.]+)/pyzmq-$1\.tar\.gz/ \
-https://github.com/zeromq/pyzmq/downloads \
-/zeromq/pyzmq/tarball/v([0-9\.]+)

@@ -1,7 +1,0 @@
-To apply the patches included in the package, run
-
-	debian/rules patch
-
-To unapply the patches, run
-
-	debian/rules unpatch

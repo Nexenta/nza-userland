@@ -1,2 +1,0 @@
-shlibs:Depends=libfreetype6 (= 2.4.2-2nexenta1), libgcc1, libx11-6, sunwcslr, sunwlibm, zlib1g (>= 1:1.2.3.3.dfsg-1)
-misc:Depends=

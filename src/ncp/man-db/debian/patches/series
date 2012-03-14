@@ -1,8 +1,0 @@
-man-l-assertion.patch
-catman-iconv-order.patch
-translation-fr.patch
-translation-man-fr.patch
-locale-warnings.patch
-manpath-assertion.patch
-getopt-fix.patch
-iconv-solaris.patch

@@ -1,5 +1,0 @@
-usr/lib/libffi-3.0.9/include usr
-usr/lib/lib*.a
-usr/lib/lib*.so
-usr/lib/pkgconfig/*
-usr/share/*

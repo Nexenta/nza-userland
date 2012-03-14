@@ -1,7 +1,0 @@
-#!/usr/bin/make -f
-#include /usr/share/quilt/quilt.make
-%:
-	quilt push -a || test $$? = 2
-	dh $@
-clean:
-	quilt pop -a || test $$? = 2

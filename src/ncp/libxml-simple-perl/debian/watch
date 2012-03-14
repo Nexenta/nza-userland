@@ -1,4 +1,0 @@
-version=3
-opts="uversionmangle=s/^v(\d)/$1/;s/^\.(\d)/0.$1/" \
-http://search.cpan.org/dist/XML-Simple/ \
-.*/XML-Simple-(v?[\d\.]+(?:a|b|b\d+|RC\d+)?).(?:tar\.gz|tgz|tar\.bz2|zip|pm\.gz|jar|shar\.gz|shar\.Z)

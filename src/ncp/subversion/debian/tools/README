@@ -1,5 +1,0 @@
-The files in this directory are used to create the default
-/etc/subversion/config and /etc/subversion/servers on Debian systems.  The
-default configuration files are created by the subversion libraries.  This
-ensures that new configuration options and changes to existing options are
-reflected in the default /etc/subversion/ files in a timely manner.

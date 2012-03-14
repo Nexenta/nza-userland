@@ -1,3 +1,0 @@
-usr/bin/orterun         usr/bin/mpirun.openmpi
-usr/bin/orterun         usr/bin/mpiexec.openmpi
-usr/share/man/man1/mpiexec.openmpi.1	usr/share/man/man1/mpirun.openmpi.1

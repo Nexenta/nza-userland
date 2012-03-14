@@ -1,3 +1,0 @@
-psfontmgr/src/*			usr/bin
-psfontmgr/libs/*		usr/share/defoma
-debian/psfontmgr.defoma		usr/share/defoma/scripts

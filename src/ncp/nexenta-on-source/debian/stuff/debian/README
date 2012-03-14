@@ -1,4 +1,0 @@
-1. modify RELEASE file build's numbers (old and current)
-2. debian/rules gen-packages - it is for generation files for packages
-3. debian/rules build-packages - it is for generation DEB packages in debian/packages dir
-

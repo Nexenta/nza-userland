@@ -1,2 +1,0 @@
-gfortran-4.4-spu: non-standard-dir-in-usr usr/spu/
-gfortran-4.4-spu: file-in-unusual-dir

@@ -1,8 +1,0 @@
-#!/bin/sh
-for i in vi view ex editor ; do
-update-alternatives \
-  --install /usr/bin/$i $i /usr/bin/vim 30 \
-  --slave /usr/share/man/man1/$i.1.gz $i.1.gz \
-          /usr/share/man/man1/vim.1.gz
-done
-

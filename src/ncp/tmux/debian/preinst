@@ -1,7 +1,0 @@
-#!/bin/sh
-set -e
-
- rm -rf /etc/rcS.d/S70tmux-cleanup 2>/dev/null
- 
-
-#DEBHELPER#

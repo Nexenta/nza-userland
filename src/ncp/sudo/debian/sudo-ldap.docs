@@ -1,8 +1,0 @@
-debian/OPTIONS 
-UPGRADE 
-HISTORY 
-README 
-README.LDAP 
-TROUBLESHOOTING
-sudoers2ldif
-schema.*

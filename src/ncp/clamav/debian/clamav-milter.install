@@ -1,3 +1,0 @@
-debian/tmp/usr/sbin/clamav-milter
-debian/clamav-milter.m4 /etc/mail/m4/
-debian/script usr/share/bug/clamav-milter/

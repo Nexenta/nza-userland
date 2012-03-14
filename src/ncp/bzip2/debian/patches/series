@@ -1,8 +1,0 @@
-fix-bzip2-man.patch
-bzgrep-debian.patch
-bzip2recover-fopen.patch
-decompress-overflow.patch
-bzdiff-mktemp-fix.patch
-bzip2-exit-after-license.patch
-add-bzexe.patch
-makefile+sharedlib.patch

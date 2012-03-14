@@ -1,2 +1,0 @@
-DPkg::Pre-Install-Pkgs {"/usr/bin/apt-clone -c";};
-APT::Zone::Upgrade {"/usr/bin/apt-zone -u";};

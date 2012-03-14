@@ -1,1 +1,0 @@
-LoadModule encoding_module mod_encoding.so

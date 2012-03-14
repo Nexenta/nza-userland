@@ -1,6 +1,0 @@
-usr/lib/python2.6/dist-packages/setuptools*
-usr/lib/python2.6/dist-packages/site.py
-usr/lib/python2.6/dist-packages/easy_install.py
-usr/lib/python2.6/dist-packages/*.egg-info
-usr/bin/easy_install*
-

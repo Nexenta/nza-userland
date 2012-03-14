@@ -1,2 +1,0 @@
-debian/install/deb32/usr/lib/lib*.so.* usr/lib
-debian/install/deb64/usr/lib/lib*.so.* usr/lib/amd64

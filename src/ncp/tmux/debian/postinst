@@ -1,9 +1,0 @@
-#!/bin/sh
-set -e
-
-if ! test -d /var/run/tmux; then
-  install -g root -m 0777 -d /var/run/tmux
-  chmod 0777 /var/run/tmux
-fi
-
-#DEBHELPER#

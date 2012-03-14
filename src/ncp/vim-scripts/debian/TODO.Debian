@@ -1,8 +1,0 @@
-
-  Write a script debian/find-missing which compares files listed in
-  debian/vim-scripts.status with all the files shipped in the vim-scripts
-  package to ensure that no file is not listed in the status file (and hence
-  that no file is missing from registry entries).
-
- -- Stefano Zacchiroli <zack@debian.org>  Tue, 16 Jan 2007 11:00:47 +0100
-

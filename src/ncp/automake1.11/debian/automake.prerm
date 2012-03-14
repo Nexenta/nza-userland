@@ -1,9 +1,0 @@
-#!/bin/sh -e
-
-ver=1.11
-
-if [ "$1" = "remove" ]; then
-	update-alternatives --remove automake /usr/bin/automake-$ver
-fi
-
-#DEBHELPER#

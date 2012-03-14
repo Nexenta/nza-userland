@@ -1,6 +1,0 @@
-build32/doc/dbus-specification.html usr/share/doc/dbus-1-doc
-build32/doc/dbus-test-plan.html usr/share/doc/dbus-1-doc
-build32/doc/api/html/* usr/share/doc/dbus-1-doc/html/api
-#dbus.devhelp usr/share/doc/dbus-1-doc/html
-build32/doc/dbus-{faq,specification,tutorial}.html usr/share/doc/dbus-1-doc/html
-doc/dcop-howto.txt usr/share/doc/dbus-1-doc

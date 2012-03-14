@@ -1,6 +1,0 @@
-install-shlib
-minizip-build
-revert-eof-reporting
-revert-transparent-feof-test
-sunw-symbols.diff
-ld-flags.patch

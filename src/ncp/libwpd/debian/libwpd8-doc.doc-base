@@ -1,8 +1,0 @@
-Document: libwpd8-doc
-Title: libwpd documentation
-Abstract: This document contains the libwpd API documentation
-Section: Apps/Programming
-
-Format: HTML
-Index: /usr/share/doc/libwpd8-doc/html/index.html
-Files: /usr/share/doc/libwpd8-doc/html/*

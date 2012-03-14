@@ -1,5 +1,0 @@
-case "$1" in
-    remove)
-        rm #BINARIES# || true
-        ;;
-esac

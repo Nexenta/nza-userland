@@ -1,3 +1,0 @@
-
-extend-diff-ignore = "(build-output.mk|configure|config\.log|config\.nice|build/lt.*|build/config\.sub|build/config\.guess|build/libtool\.m4|include/arch/unix/apr_private.h.in)"
-

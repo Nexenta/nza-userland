@@ -1,9 +1,0 @@
-000-Iperf_Fix-CPU-Usage.diff
-001-cast-to-max_size_t-instead-of-int.patch
-003-fix-hyphen-used-as-minus-sign.patch
-004-svn-r43-ro.patch
-005-iperf-die-on-bind-fail.patch
-006-iperf-die-on-connect-fail.patch
-007-iperf-reporter-deadlock.patch
-008-numofreport.patch
-009-delayloop.patch

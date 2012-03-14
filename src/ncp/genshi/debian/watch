@@ -1,2 +1,0 @@
-version=3
-opts=pasv ftp://ftp.edgewall.com/pub/genshi/Genshi-([0-9._-]*)\.tar\.gz

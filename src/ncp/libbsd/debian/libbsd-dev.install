@@ -1,5 +1,0 @@
-usr/lib/*.so
-usr/lib/*.a
-usr/lib/pkgconfig/libbsd.pc
-usr/include
-usr/share/man

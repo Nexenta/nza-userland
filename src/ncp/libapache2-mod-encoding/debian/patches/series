@@ -1,5 +1,0 @@
-strict-config.patch
-include-regex.patch
-include-apr-strings.patch
-safequery.patch
-include-strings.patch

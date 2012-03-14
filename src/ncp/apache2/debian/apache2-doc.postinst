@@ -1,9 +1,0 @@
-#!/bin/sh -e
-
-# Configs are updated
-SMFI=svc:/network/http:apache22
-if [ `svcs -Ho STATE $SMFI` = online ]; then
-    /usr/sbin/svcadm -v refresh $SMFI || true
-fi
-
-#DEBHELPER#

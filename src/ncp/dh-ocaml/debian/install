@@ -1,9 +1,0 @@
-cdbs/1                  usr/share/cdbs
-share/*                 usr/share/ocaml
-debhelper/dh_ocaml      usr/bin
-debhelper/dh_ocamlinit  usr/bin
-debhelper/dh_ocamldoc   usr/bin
-debhelper/ocaml-md5sums usr/bin
-debhelper/ocaml-lintian usr/bin
-tools/*                 usr/bin
-debhelper/ocaml.pm      usr/share/perl5/Debian/Debhelper/Sequence

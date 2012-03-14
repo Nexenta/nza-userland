@@ -1,4 +1,0 @@
-01_remove_entity_sets_and_dcl_from_catalogs.patch
-10_fix_101779_mention_artheader_to_articleinfo_change.patch
-11_fix_dbpoolx_mod_header_comment_pubid.patch
-12_fix_256119_and_turn_on_sgml_mode.patch

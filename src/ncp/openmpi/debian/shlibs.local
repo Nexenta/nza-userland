@@ -1,2 +1,0 @@
-# Temporary fix because libibverbs does not provide the information yet
-libibverbs 1 libibverbs1 (>= 1.1)

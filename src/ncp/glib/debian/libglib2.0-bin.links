@@ -1,5 +1,0 @@
-usr/bin/glib-compile-schemas usr/bin/gschema-compile
-usr/bin/amd64/glib-compile-schemas usr/bin/amd64/gschema-compile
-
-usr/bin/gsettings usr/bin/gsettings-schema-convert
-usr/bin/amd64/gsettings usr/bin/amd64/gsettings-schema-convert

@@ -1,7 +1,0 @@
-/usr/bin
-/usr/include
-/usr/lib/*.a
-/usr/lib/*.so
-/usr/lib/*.la
-/usr/share/aclocal
-/usr/share/man

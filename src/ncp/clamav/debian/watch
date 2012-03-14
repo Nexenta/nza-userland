@@ -1,4 +1,0 @@
-version=3
-opts=uversionmangle=s/(\d+)(rc)/$1~$2/,dversionmangle=s/\+dfsg// \
-http://sf.net/clamav/clamav-(.*).tar.gz debian uupdate
-

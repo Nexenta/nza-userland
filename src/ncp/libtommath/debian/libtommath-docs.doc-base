@@ -1,9 +1,0 @@
-Document: libtommath-manual
-Title: LibTomMath Manual
-Author: Tom St Denis
-Abstract: This manual describes what LibTomMath is
- and how it can be used.
-Section: Programming
-
-Format: PDF
-Files: /usr/share/doc/libtommath-docs/bn.pdf.gz

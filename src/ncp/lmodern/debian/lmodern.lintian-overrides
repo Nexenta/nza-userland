@@ -1,5 +1,0 @@
-# There is no need to depend on ucf: if present (and we are upgrading from
-# lmodern experimental versions 0.92-{4,5,6}), we call it to purge the
-# now-unused data; otherwise, there is nothing to purge anymore.
-lmodern binary: maintainer-script-needs-depends-on-ucf preinst
-lmodern binary: extra-license-file usr/share/doc/texmf/fonts/lm/GUST-FONT-LICENSE.txt

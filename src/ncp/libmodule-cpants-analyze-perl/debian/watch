@@ -1,5 +1,0 @@
-version=3
-opts="dversionmangle=s/\+dfsg//" \
-	http://search.cpan.org/dist/Module-CPANTS-Analyse/ \
-	.*/Module-CPANTS-Analyse-v?(\d[\d.-]+)\.(?:tar(?:\.gz|\.bz2)?|tgz|zip)$ \
-	debian sh debian/repack.stub

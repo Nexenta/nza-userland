@@ -1,3 +1,0 @@
-if which rebuild-gcj-db >/dev/null 2>&1; then
-	rebuild-gcj-db
-fi

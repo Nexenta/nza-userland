@@ -1,4 +1,0 @@
-#!/bin/bash
-
-cd $(basename $1) && ar x $1
-

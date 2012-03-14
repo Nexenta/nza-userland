@@ -1,1 +1,0 @@
-extend-diff-ignore = "(^|/)(doc/reference/html|doc/reference/tmpl|doc/reference/version.xml|dbus/examples/statemachine/sm-marshal\.c|INSTALL)"

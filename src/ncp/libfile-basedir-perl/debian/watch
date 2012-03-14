@@ -1,3 +1,0 @@
-version=3
-
-http://search.cpan.org/dist/File-BaseDir/   .*/File-BaseDir-v?(\d[\d.]+)\.(?:tar(?:\.gz|\.bz2)?|tgz|zip)

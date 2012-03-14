@@ -1,9 +1,0 @@
-02_fix_wrong_location.diff
-03_proper_socket_handling.diff
-04_dropping_unnecessary_privileges.diff
-05_build_kfreebsd_hurd.diff
-#06_hardening_write_return.diff
-07_fix_hyphen.diff
-08_layout_set.diff
-debian-changes-1.4-5nexenta1
-debian-changes-1.4-5nexenta3

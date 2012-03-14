@@ -1,7 +1,0 @@
-etc/groff usr/gnu/share/groff/site-tmac
-usr/gnu/bin/eqn usr/gnu/bin/geqn
-usr/gnu/bin/tbl usr/gnu/bin/gtbl
-usr/gnu/bin/pic usr/gnu/bin/gpic
-usr/gnu/share/man/man1/eqn.1.gz usr/gnu/share/man/man1/geqn.1.gz
-usr/gnu/share/man/man1/tbl.1.gz usr/gnu/share/man/man1/gtbl.1.gz
-usr/gnu/share/man/man1/pic.1.gz usr/gnu/share/man/man1/gpic.1.gz

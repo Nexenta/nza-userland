@@ -1,3 +1,0 @@
-This package is maintained in bzr and it should be build
-with:
-$ bzr-buildpackage --native

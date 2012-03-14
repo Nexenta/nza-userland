@@ -1,6 +1,0 @@
-debian/tmp/etc/net-snmp/snmp/mibs
-debian/tmp/etc/net-snmp/snmp/mib2c-data
-debian/tmp/usr/share/man/man5/snmp.conf.5snmp
-debian/tmp/usr/share/man/man5/snmp_config.5snmp
-debian/tmp/usr/share/man/man5/variables.5snmp
-

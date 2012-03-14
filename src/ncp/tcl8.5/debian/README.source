@@ -1,8 +1,0 @@
-This package uses quilt to manage all modifications to the upstream
-source. Changes are stored in the source package as diffs in
-debian/patches and applied during the build.
-
-To get detailed instructions on how to apply the series of patches
-and modify them, please read /usr/share/doc/quilt/README.source
-
- -- Sergei Golovan <sgolovan@debian.org>  Sat, 05 Sep 2009 11:33:56 +0400

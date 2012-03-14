@@ -1,9 +1,0 @@
-dtrctkit for Nexenta
---------------------
-
-This is a complete repackage of the DTraceToolkit by Brendan Gregg
-for the NexentaOS. Original package can be downloaded from
-http://www.brendangregg.com or 
-http://opensolaris.org/os/community/dtrace/dtracetoolkit/.
-
- -- Peter Bisroev <peter@probablyprime.net>, Tue,  8 May 2007 15:01:49 -0700

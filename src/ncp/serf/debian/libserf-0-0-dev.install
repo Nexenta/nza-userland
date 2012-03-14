@@ -1,5 +1,0 @@
-debian/tmp/usr/include		usr/
-debian/tmp/usr/lib/libserf*.a	usr/lib/
-debian/tmp/usr/lib/libserf*.so	usr/lib/
-#usr/lib/pkgconfig		usr/lib/
-#usr/share/pkgconfig		usr/share/

@@ -1,3 +1,0 @@
-version=3
-opts="uversionmangle=s/_/./g" \
-http://search.cpan.org/dist/Net-SSLeay/  .+/Net-SSLeay-v?(\d[\d.-]+)\.(?:tar(?:\.gz|\.bz2)?|tgz|zip)$

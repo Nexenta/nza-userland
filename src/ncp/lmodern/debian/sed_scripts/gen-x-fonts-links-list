@@ -1,2 +1,0 @@
-s@^\(.*\)$@usr/share/texmf/fonts/type1/public/lm/\1.pfb usr/share/fonts/X11/Type1/\1.pfb\
-usr/share/texmf/fonts/afm/public/lm/\1.afm usr/share/fonts/X11/Type1/\1.afm@p

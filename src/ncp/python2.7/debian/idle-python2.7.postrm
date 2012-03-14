@@ -1,9 +1,0 @@
-#! /bin/sh -e
-
-if [ "$1" = "purge" ]; then
-    rm -rf /etc/idle-python2.7
-fi
-
-#DEBHELPER#
-
-exit 0

@@ -1,1 +1,0 @@
-tmux: setgid-binary usr/bin/tmux 2755 root/utmp

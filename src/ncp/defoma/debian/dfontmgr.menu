@@ -1,2 +1,0 @@
-?package(dfontmgr):needs="x11" section="Apps/System"\
-  title="Dfontmgr" command="/usr/bin/dfontmgr"

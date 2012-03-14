@@ -1,6 +1,0 @@
-gzip: package-contains-hardlink usr/bin/gunzip
-gzip: package-contains-hardlink usr/bin/zcat
-gzip: package-contains-hardlink usr/bin/zcmp
-gzip: package-contains-hardlink usr/bin/zegrep
-gzip: package-contains-hardlink usr/bin/zfgrep
-gzip: package-contains-hardlink usr/bin/uncompress

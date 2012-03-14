@@ -1,6 +1,0 @@
-# Compulsory line, this is a version 3 file
-version=3
-
-# Uncommment to examine a FTP server
-http://ftp.andrew.cmu.edu/pub/cyrus-mail/cyrus-sasl-(.*)\.tar\.gz debian uupdate
-

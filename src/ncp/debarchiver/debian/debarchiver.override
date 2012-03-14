@@ -1,5 +1,0 @@
-debarchiver: non-standard-dir-perm var/lib/debarchiver/incoming/ 2775 != 0755
-debarchiver: non-standard-dir-perm var/lib/debarchiver/incoming/stable/ 2775 != 0755
-debarchiver: non-standard-dir-perm var/lib/debarchiver/incoming/testing/ 2775 != 0755
-debarchiver: non-standard-dir-perm var/lib/debarchiver/incoming/unstable/ 2775 != 0755
-debarchiver: package-contains-empty-directory usr/lib/debarchiver/signhelper/

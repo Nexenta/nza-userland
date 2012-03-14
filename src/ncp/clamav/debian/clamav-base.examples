@@ -1,3 +1,0 @@
-etc/clamd.conf
-debian/tmp/var/lib/clamav/daily.cvd
-debian/tmp/var/lib/clamav/main.cvd

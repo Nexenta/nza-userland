@@ -1,2 +1,0 @@
-# Depends: cache
-LoadModule disk_cache_module mod_disk_cache.so

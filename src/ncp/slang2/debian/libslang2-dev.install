@@ -1,8 +1,0 @@
-usr/lib/lib*.{a,so}
-usr/lib/amd64/lib*.{a,so}
-
-usr/include/
-
-usr/lib/pkgconfig/
-usr/lib/amd64/pkgconfig/
-

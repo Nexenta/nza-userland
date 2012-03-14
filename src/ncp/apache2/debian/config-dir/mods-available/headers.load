@@ -1,1 +1,0 @@
-LoadModule headers_module mod_headers.so

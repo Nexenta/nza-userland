@@ -1,2 +1,0 @@
-gcc-4.4: invalid-arch-string-in-source-relation
-gcc-4.4: quilt-build-dep-but-no-series-file

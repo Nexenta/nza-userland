@@ -1,7 +1,0 @@
-#! /bin/sh
-
-umask 022
-set -e
-
-
-#DEBHELPER#

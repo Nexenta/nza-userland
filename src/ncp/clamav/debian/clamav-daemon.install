@@ -1,5 +1,0 @@
-debian/tmp/usr/sbin/clamd
-debian/tmp/usr/bin/clamdscan
-debian/tmp/usr/bin/clamdtop
-debian/tmp/usr/bin/clamconf
-debian/script usr/share/bug/clamav-daemon/

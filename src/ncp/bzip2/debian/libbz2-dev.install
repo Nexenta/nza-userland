@@ -1,4 +1,0 @@
-build-tree/32/usr/lib/lib*.{a,so} usr/lib/
-build-tree/64/usr/lib/lib*.{a,so} usr/lib/amd64/
-bzlib.h usr/include/
-

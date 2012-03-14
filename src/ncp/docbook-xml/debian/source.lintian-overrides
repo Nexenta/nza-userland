@@ -1,3 +1,0 @@
-## Because this is a compilation of upstream sources and because I don't want
-## to create files by a patch system, I hereby overwrite the lintian warnings:
-docbook-xml source: patch-system-but-direct-changes-in-diff

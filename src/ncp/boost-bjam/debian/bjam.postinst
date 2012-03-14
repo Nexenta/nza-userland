@@ -1,8 +1,0 @@
-#!/bin/sh
-
-set -e
-
-update-alternatives --install /usr/bin/jam jam /usr/bin/bjam 10 \
-    --slave /usr/share/man/man1/jam.1.gz jam.1.gz /usr/share/man/man1/bjam.1.gz
-
-#DEBHELPER#
