@@ -27,7 +27,7 @@ eval 'exec /usr/bin/perl  -S $0 ${1+"$@"}'
 #
 # CDDL HEADER END
 #
-# Copyright (C) 2005-2008 Nexenta Systems, Inc.
+# Copyright (C) 2005-2012 Nexenta Systems, Inc.
 # All rights reserved.
 #
 # Copyright (C) 2008 Erast Benson
@@ -1512,7 +1512,10 @@ if ($rc == 0) {
 				nmu_system("mount -F lofs -O /media $tmpdir/media 2>/dev/null");
 				nmu_system("mount -F lofs -O /mnt $tmpdir/mnt 2>/dev/null");
 				nmu_system("mount -F lofs -O /tmp $tmpdir/tmp 2>/dev/null");
+				nmu_system("mount -F lofs /dev/ptmx $tmpdir/dev/ptmx 2>/dev/null");
+				nmu_system("mount -F lofs /dev/pts  $tmpdir/dev/pts 2>/dev/null");
 
+				# get list of packages
 				nmu_system("apt-get -o=dir::cache=$tmpdir/var/cache/apt clean");
 				nmu_system("apt-get -o=dir::cache=$tmpdir/var/cache/apt update");
 				nmu_system("apt-get -o=dir::cache=$tmpdir/var/cache/apt -d -f -y --force-yes upgrade");
@@ -1533,16 +1536,10 @@ if ($rc == 0) {
 					push @debnames, $name[1];
 				}
 
-				nmu_system("mount -F lofs /dev/ptmx $tmpdir/dev/ptmx 2>/dev/null");
-				nmu_system("mount -F lofs /dev/pts  $tmpdir/dev/pts 2>/dev/null");
-
 				my $chrootenv = "env -i PATH=/usr/gnu/bin:/usr/bin:/sbin:/usr/sbin APT_CLONE_ENV=1 DEBCHROOT=1 LOGNAME=root HOME=/root USER=root TERM=xterm";
 				nmu_system("chroot $tmpdir $chrootenv apt-get install -f -y sunwcs");
 				nmu_system("chroot $tmpdir $chrootenv /usr/bin/apt-get upgrade -y --force-yes");
 
-				# sunwcs is first
-				#nmu_system("chroot $tmpdir $chrootenv apt-get install --reinstall -y --force-yes sunwcs");
-				#nmu_system("chroot $tmpdir $chrootenv apt-get install --reinstall -y --force-yes sunwcsd");
 				nmu_system("chroot $tmpdir $chrootenv apt-get autoremove -y --force-yes");
 				$err = nmu_system("chroot $tmpdir $chrootenv apt-get install -f -y --force-yes");
 
@@ -1555,8 +1552,6 @@ if ($rc == 0) {
 				nmu_system("umount $tmpdir/media 2>/dev/null");
 				nmu_system("umount $tmpdir/mnt 2>/dev/null");
 				nmu_system("umount $tmpdir/tmp 2>/dev/null");
-
-			    
 
 				# put system-kernel first if exist
 				if ($kernel) {
