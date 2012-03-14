@@ -25,7 +25,7 @@
 
 include ../../make-rules/shared-macros.mk
 
-COMPONENT_NAME = illumos-deb
+COMPONENT_NAME = nza-kernel
 
 include $(WS_TOP)/make-rules/ips.mk
 
