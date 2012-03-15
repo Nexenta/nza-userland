@@ -1,6 +1,3 @@
-#
-# Copyright (c) 2012, Nexenta Systems, Inc. All rights reserved.
-#
 NZA_KERNEL       = nza-kernel
 NZA_CLOSED       = nza-closed
 ILLUMOS_DEB      = illumos-deb
@@ -111,8 +108,11 @@ adjust-scripts: copy-tools
 
 setrelease:
 	sed -i "s/export NIGHTLY_OPTIONS='-FnCDlmprt'/export NIGHTLY_OPTIONS='-NndritM'/" $(CODEMGR_WS)/illumos.sh
+	touch $@
+
 setdebug:
 	sed -i "s/export NIGHTLY_OPTIONS='-FnCDlmprt'/export NIGHTLY_OPTIONS='-FNnDdritM'/" $(CODEMGR_WS)/illumos.sh
+	touch $@
 
 build-releasekernel: adjust-scripts hacking setup-closed setrelease
 	$(buildkernel)
