@@ -58,8 +58,10 @@ build: $(BUILD_32_and_64)
 
 install: $(INSTALL_32_and_64)
 
-
 test: $(NO_TESTS)
+
+clean::
+	rm -rf $(BUILD_DIR)
 
 BUILD_PKG_DEPENDENCIES = $(BUILD_TOOLS)
 
