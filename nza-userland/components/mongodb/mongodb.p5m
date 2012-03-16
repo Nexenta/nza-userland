@@ -1,0 +1,94 @@
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+# Copyright (c) 2012, Nexenta Systems, Inc. All rights reserved.
+#
+
+<transform file path=usr.*/man/.+  -> default mangler.man.stability volatile>
+
+set name=pkg.fmri                      value=pkg:/service/mongodb@$(IPS_COMPONENT_VERSION),$(BUILD_VERSION)
+set name=pkg.summary                   value="scalable, high-performance, open source NoSQL database"
+set name=info.source_url               value=$(COMPONENT_ARCHIVE_URL)
+set name=info.upstream_url             value=$(COMPONENT_PROJECT_URL)
+set name=org.opensolaris.consolidation value=$(CONSOLIDATION)
+
+
+file mongodb.xml path=lib/svc/manifest/application/database/mongodb.xml
+
+# Config file from Debian: https://github.com/bobek/mongo-debian
+file mongodb.conf path=etc/mongodb.conf
+
+group groupname=mongodb
+user  username=mongodb group=mongodb home-dir=/var/lib/mongodb
+
+dir path=var/lib/mongodb owner=mongodb group=mongodb mode=0750
+dir path=var/log/mongodb owner=mongodb group=mongodb mode=0750
+
+# Man pages from Debian: https://github.com/bobek/mongo-debian
+file manpages/mongos.1       path=usr/share/man/man1/mongos.1
+file manpages/mongostat.1    path=usr/share/man/man1/mongostat.1
+file manpages/mongofiles.1   path=usr/share/man/man1/mongofiles.1
+file manpages/mongoimport.1  path=usr/share/man/man1/mongoimport.1
+file manpages/mongorestore.1 path=usr/share/man/man1/mongorestore.1
+file manpages/mongoexport.1  path=usr/share/man/man1/mongoexport.1
+file manpages/mongosniff.1   path=usr/share/man/man1/mongosniff.1
+file manpages/mongodump.1    path=usr/share/man/man1/mongodump.1
+file manpages/mongod.1       path=usr/share/man/man1/mongod.1
+file manpages/mongo.1        path=usr/share/man/man1/mongo.1
+
+hardlink path=usr/bin/bsondump     target=../lib/isaexec
+hardlink path=usr/bin/mongo        target=../lib/isaexec
+hardlink path=usr/bin/mongod       target=../lib/isaexec
+hardlink path=usr/bin/mongodump    target=../lib/isaexec
+hardlink path=usr/bin/mongoexport  target=../lib/isaexec
+hardlink path=usr/bin/mongofiles   target=../lib/isaexec
+hardlink path=usr/bin/mongoimport  target=../lib/isaexec
+hardlink path=usr/bin/mongorestore target=../lib/isaexec
+hardlink path=usr/bin/mongos       target=../lib/isaexec
+hardlink path=usr/bin/mongosniff   target=../lib/isaexec
+hardlink path=usr/bin/mongostat    target=../lib/isaexec
+hardlink path=usr/bin/mongotop     target=../lib/isaexec
+
+file $(MACH32)/usr/bin/bsondump     path=usr/bin/$(MACH32)/bsondump
+file $(MACH32)/usr/bin/mongo        path=usr/bin/$(MACH32)/mongo
+file $(MACH32)/usr/bin/mongod       path=usr/bin/$(MACH32)/mongod
+file $(MACH32)/usr/bin/mongodump    path=usr/bin/$(MACH32)/mongodump
+file $(MACH32)/usr/bin/mongoexport  path=usr/bin/$(MACH32)/mongoexport
+file $(MACH32)/usr/bin/mongofiles   path=usr/bin/$(MACH32)/mongofiles
+file $(MACH32)/usr/bin/mongoimport  path=usr/bin/$(MACH32)/mongoimport
+file $(MACH32)/usr/bin/mongorestore path=usr/bin/$(MACH32)/mongorestore
+file $(MACH32)/usr/bin/mongos       path=usr/bin/$(MACH32)/mongos
+file $(MACH32)/usr/bin/mongosniff   path=usr/bin/$(MACH32)/mongosniff
+file $(MACH32)/usr/bin/mongostat    path=usr/bin/$(MACH32)/mongostat
+file $(MACH32)/usr/bin/mongotop     path=usr/bin/$(MACH32)/mongotop
+
+file $(MACH64)/usr/bin/bsondump     path=usr/bin/$(MACH64)/bsondump
+file $(MACH64)/usr/bin/mongo        path=usr/bin/$(MACH64)/mongo
+file $(MACH64)/usr/bin/mongod       path=usr/bin/$(MACH64)/mongod
+file $(MACH64)/usr/bin/mongodump    path=usr/bin/$(MACH64)/mongodump
+file $(MACH64)/usr/bin/mongoexport  path=usr/bin/$(MACH64)/mongoexport
+file $(MACH64)/usr/bin/mongofiles   path=usr/bin/$(MACH64)/mongofiles
+file $(MACH64)/usr/bin/mongoimport  path=usr/bin/$(MACH64)/mongoimport
+file $(MACH64)/usr/bin/mongorestore path=usr/bin/$(MACH64)/mongorestore
+file $(MACH64)/usr/bin/mongos       path=usr/bin/$(MACH64)/mongos
+file $(MACH64)/usr/bin/mongosniff   path=usr/bin/$(MACH64)/mongosniff
+file $(MACH64)/usr/bin/mongostat    path=usr/bin/$(MACH64)/mongostat
+file $(MACH64)/usr/bin/mongotop     path=usr/bin/$(MACH64)/mongotop
+
