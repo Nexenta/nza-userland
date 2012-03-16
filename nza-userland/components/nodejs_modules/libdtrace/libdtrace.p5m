@@ -26,10 +26,12 @@
 set name=info.source_url               value=$(COMPONENT_ARCHIVE_URL)
 set name=info.upstream_url             value=$(COMPONENT_PROJECT_URL)
 set name=org.opensolaris.consolidation value=$(CONSOLIDATION)
-set name=pkg.fmri                      value=pkg:/web/server/nodejs/$(COMPONENT_NAME)@$(IPS_COMPONENT_VERSION),$(BUILD_VERSION)
+set name=pkg.fmri                      value=pkg:/runtime/nodejs/$(COMPONENT_NAME)@$(IPS_COMPONENT_VERSION),$(BUILD_VERSION)
 set name=pkg.summary                   value="Solaris libdtrace bindings for Node.js"
 
-depend fmri=pkg:/web/server/nodejs type=require
+depend fmri=pkg:/runtime/nodejs type=require
+depend fmri=pkg:/web/server/nodejs/$(COMPONENT_NAME) type=exclude
+
 
 file node_modules/$(COMPONENT_NAME)/build/Release/$(COMPONENT_NAME).node \
     path=usr/lib/node/$(COMPONENT_NAME).node
