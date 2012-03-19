@@ -133,7 +133,7 @@ build-debugpackages: build-debugkernel
 .PHONY: all clean clean_patches help
 
 clean:
-	rm -f checktools clonning setup-closed patching hacking
+	rm -f checktools clonning setup-closed patching hacking setrelease setdebug
 	rm -f copy-tools adjust-scripts build-releasekernel build-debugkernel build-releasepackages build-debugpackages
 	rm -rf $(CODEMGR_WS)
 

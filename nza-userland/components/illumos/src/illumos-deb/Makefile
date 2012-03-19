@@ -1,5 +1,5 @@
 # Makefile
-
+#
 # Copyright (c) 2012, Nexenta Systems, Inc. All rights reserved.
 
 FIND = /usr/gnu/bin/find
@@ -29,7 +29,7 @@ PKGS = $(PKGSALL:$(KDIRPKGS)/%=%)
 
 PKGSTAMP = $(PKGS:%=$(KSTEMP)/%.stamp)
 
-all: deb
+all: pkgs
 
 test:
 	@echo $(BASEGATE)
@@ -39,34 +39,28 @@ clean:
 	-rm -f $(KDIRPKGS)/*.deb
 	-rm -f $(KDIRPKGS)/*.changes
 	-rm -f bldpkg_err.txt
-	-rm -f ips2deb.failed.txt
 
 clobber: clean
-	-rm -f $(KPKGS)/*
-	-rm -rf $(FDIR)
+	rm -f $(KPKGS)/*
+	rm -rf $(FDIR)
 
 dirs: 
 	mkdir -p $(DIRS)
 
 gen: dirs
-	@MANIFESTGATE="$(MANIFESTS)" \
-	BASEGATE="$(PROTO)" \
-	MAINTAINER="$(MAINTAINER)" \
-	DESTINATION="$(DESTINATION)" \
-	PKGVER="$(PVERSION)" \
-	PKGTYPE="$(PKGTYPE)" \
-	MFEXT="$(MFEXT)" \
-	$(IPS2DEB) -d $(PROTO) \
-		-d $(CODEMGR_WS)/usr/src/tools/proto/root_i386-nd
-	touch $(FDIR)/.generated
+	$(IPS2DEB) --verbose \
+	--mfg "$(MANIFESTS)" \
+	--mfe "$(MFEXT)" \
+	-d "$(PROTO)" \
+	-d "$(CODEMGR_WS)/usr/src/tools/proto/root_i386-nd" \
+	-o "$(DESTINATION)" \
+	--maintainer "$(MAINTAINER)" \
+	--pv "$(PVERSION)" \
+	--category "$(PKGTYPE)"
 
-deb: dirs $(PKGSTAMP)
+pkgs: $(PKGSTAMP)
 
-$(FDIR)/.generated: gen
-	@echo "Structure of directories have been generated"
-	touch $(FDIR)/.generated
-
-$(KSTEMP)/%.stamp: $(FDIR)/.generated
+$(KSTEMP)/%.stamp:
 	@cd $(KDIRPKGS)/$*; \
 	$(BLDPKG)
 	@touch $@
