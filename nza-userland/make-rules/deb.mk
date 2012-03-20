@@ -15,11 +15,6 @@ DEBS_DIR = $(COMPONENT_DIR)/debs
 
 ALLDEB_DIR ?= $(WS_TOP)/debs
 
-
-# since build and install target are phony
-# 'make deb' will always run and
-# this is ok to make sure we do not have
-# garbage in $(DEBS_DIR):
 deb: build install __deb
 
 DEB_STAMP = $(BUILD_DIR)/.deb
