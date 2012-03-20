@@ -9,9 +9,13 @@ DEBVERSION ?= 40-0-$(VCS_REV_NUM)
 # (like debian/tmp):
 PROTO_DIRS = $(PKG_PROTO_DIRS:%=-d %)
 
+# See in make-rules/ips.mk
+# Do not use PKG_OPTIONS here cause it may not be limited to '-D's
+DEFINES = $(PKG_MACROS:%=-D %)
+
 # Where to create package contents
 # and debs (like debian/pkg-name)
-DEBS_DIR = $(COMPONENT_DIR)/debs
+OUTDIR = $(COMPONENT_DIR)/debs
 
 ALLDEB_DIR ?= $(WS_TOP)/debs
 
@@ -20,19 +24,21 @@ deb: build install __deb
 DEB_STAMP = $(BUILD_DIR)/.deb
 __deb: $(DEB_STAMP)
 $(DEB_STAMP): $(DEBMAKER) $(MANGLED)
-	$(RM) -r $(DEBS_DIR)
-	$(MKDIR) $(DEBS_DIR)
+	$(RM) -r $(OUTDIR)
+	$(MKDIR) $(OUTDIR)
 	$(DEBMAKER) \
 		-S $(COMPONENT_NAME) \
 		-N $(CONSOLIDATION) \
 		-V $(DEBVERSION) \
-		-D $(DEBS_DIR) \
-		$(PROTO_DIRS) $(MANGLED)
-#	$(CP) $(DEBS_DIR)/*.{deb,changes} $(ALLDEB_DIR)/
+		-O $(OUTDIR) \
+		$(PROTO_DIRS) \
+		$(DEFINES) \
+		$(MANGLED)
+#	$(CP) $(OUTDIR)/*.{deb,changes} $(ALLDEB_DIR)/
 	$(TOUCH) $@
 
 clean::
-	$(RM) -r $(DEBS_DIR)
+	$(RM) -r $(OUTDIR)
 
 NABAT_HOST    ?= 10.3.10.2
 NABAT_USER    ?= changeme_by_NABAT_USER
@@ -41,9 +47,9 @@ NABAT_REPO    ?= unstable
 NABAT_DESTDIR ?= pkg_upload
 
 nabat-upload:
-	@if ls $(DEBS_DIR)/*.deb 2>/dev/null 1>/dev/null ; then \
+	@if ls $(OUTDIR)/*.deb 2>/dev/null 1>/dev/null ; then \
 		echo uploading to $(NABAT_USER)@$(NABAT_HOST):$(NABAT_DESTDIR)/$(NABAT_DIST)-$(NABAT_REPO)/ ; \
-		scp $(DEBS_DIR)/*.{deb,changes} \
+		scp $(OUTDIR)/*.{deb,changes} \
 			$(NABAT_USER)@$(NABAT_HOST):$(NABAT_DESTDIR)/$(NABAT_DIST)-$(NABAT_REPO)/ ; \
 	else \
 		echo "make deb first" ; \

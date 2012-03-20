@@ -186,9 +186,15 @@ sub trim {
 # (like debian/tmp)
 my @PROTO_DIRS = ();
 
+
+# -D MACH32=i86 -D COMPONENT_VERSION=1.2.3 etc =>
+# $DEFINES{'MACH32'}='i86', $DEFINES{'COMPONENT_VERSION'}='1.2.3' etc
+my %DEFINES = ();
+
+
 # Where to create debs prototypes
 # (like debian/pkg-name)
-my $DEBS_DIR = '';
+my $OUTDIR = '';
 
 # If true, will use manifests from command line
 # to resolve dependencies:
@@ -205,13 +211,14 @@ my %PATHS = ();
 
 GetOptions (
     'd=s' => \@PROTO_DIRS,
-    'D=s' => \$DEBS_DIR,
+    'O=s' => \$OUTDIR,
     'V=s' => \$VERSION,
     'A=s' => \$ARCH,
     'M=s' => \$MAINTAINER,
     'S=s' => \$SOURCE,
     'N=s' => \$DISTRIB,
     'bootstrap!' => \$BOOTSTRAP,
+    'D=s' => \%DEFINES,
     'help|h' => sub {usage()},
 ) or usage();
 
@@ -228,7 +235,7 @@ Options:
 
     -d <proto dir>     where to find files (like debian/tmp)
 
-    -D <output dir>    where to create package structure and debs,
+    -O <output dir>    where to create package structure and debs,
                        <output dir>/pkg-name and
                        <output dir>/pkg-name*.deb will be created
 
@@ -438,11 +445,11 @@ sub get_shlib {
     return $res;
 }
 
-if (!$DEBS_DIR) {
+if (!$OUTDIR) {
     fatal "Output dir is not set. Use -D option."
 }
-if (! -d $DEBS_DIR) {
-    fatal "Not a directory: `$DEBS_DIR'"
+if (! -d $OUTDIR) {
+    fatal "Not a directory: `$OUTDIR'"
 }
 
 # Walk through all manifests
@@ -510,7 +517,7 @@ foreach my $manifest_file (@ARGV) {
     foreach my $l (@{$$manifest_data{'legacy'}}) {
         push @provides, get_debpkg_name $$l{'pkg'};
     }
-    my $pkgdir = "$DEBS_DIR/$debname";
+    my $pkgdir = "$OUTDIR/$debname";
     blab "Main package name: $debname";
 
     my $ipsversion = get_ips_version $$manifest_data{'pkg.fmri'};
@@ -784,6 +791,7 @@ foreach my $manifest_file (@ARGV) {
     $control .= "Origin: $$manifest_data{'info.upstream_url'}\n"
         if exists $$manifest_data{'info.upstream_url'};
     $control .= "X-FMRI: $$manifest_data{'pkg.fmri'}\n";
+    $control .= "X-Upstream-Version: $DEFINES{'COMPONENT_VERSION'}\n";
 
     if (exists $$manifest_data{'info.source_url'}
         && $$manifest_data{'info.source_url'} !~ /^file:/
@@ -873,5 +881,5 @@ CHECK_SMF
 }
 
 my $changes_cnt = join "\n", map {"$_: $changes{$_}"} sort keys %changes;
-write_file "$DEBS_DIR/$changes{'Source'}.changes", $changes_cnt;
+write_file "$OUTDIR/$changes{'Source'}.changes", $changes_cnt;
 
