@@ -72,7 +72,9 @@ $(SOURCE_DIR)/.prep:	$(SOURCE_DIR)/.patched
 	$(COMPONENT_PREP_ACTION)
 	$(TOUCH) $@
 
-prep::	$(SOURCE_DIR)/.prep
+prep::	 $(SOURCE_DIR)/.prep
+unpack:: $(SOURCE_DIR)/.unpacked
+patch::  $(SOURCE_DIR)/.patched
 
 download::	$(ARCHIVES:%=$(USERLAND_ARCHIVES)%)
 
