@@ -409,7 +409,11 @@ sub guess_required_deps {
     my @libraries = ();
     if (@$elfs) {
         my $libs = get_output "elfdump -d @$elfs | ggrep -E '(NEEDED|SUNW_FILTER)' | awk '{print \$4}' | sort -u";
+        my $rpath = get_output "elfdump -d @$elfs | grep RPATH | awk '{print \$4}' | gsed  's,:,\\n,g' | sort -u";
+        push @librarypaths, @$rpath;
+        uniq \@librarypaths;
         blab 'Required libs: ' . join(', ', @$libs);
+        blab 'Library search paths: ' . join(', ', @librarypaths);
         foreach my $l (@$libs) {
             my $found = '';
             foreach my $p (@librarypaths) {
