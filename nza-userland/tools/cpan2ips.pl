@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 
-# Copyright (c) 2011 Nexenta Systems, Inc.  All rights reserved.
+# Copyright (c) 2012 Nexenta Systems, Inc.  All rights reserved.
 
 # Based on ideas of cpan2tgz by Jason Woodward <woodwardj@jaos.org>
 # http://software.jaos.org/
@@ -26,7 +26,7 @@ use constant COPYRIGHT => << '__COPYRIGHT__';
 # CDDL HEADER END
 #
 #
-# Copyright (C) 2011, Nexenta Systems, Inc. and/or its affiliates. All rights reserved.
+# Copyright (C) 2012, Nexenta Systems, Inc. All rights reserved.
 #
 
 __COPYRIGHT__

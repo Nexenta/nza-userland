@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 
-# Copyright (c) 2011 Nexenta Systems, Inc.  All rights reserved.
+# Copyright (c) 2012 Nexenta Systems, Inc.  All rights reserved.
 
 use constant COPYRIGHT => << '__COPYRIGHT__';
 #
@@ -23,7 +23,7 @@ use constant COPYRIGHT => << '__COPYRIGHT__';
 # CDDL HEADER END
 #
 #
-# Copyright (C) 2011, Nexenta Systems, Inc. and/or its affiliates. All rights reserved.
+# Copyright (C) 2012, Nexenta Systems, Inc. All rights reserved.
 #
 
 __COPYRIGHT__
