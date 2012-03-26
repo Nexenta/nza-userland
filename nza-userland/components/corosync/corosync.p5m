@@ -1,0 +1,319 @@
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+# Copyright (c) 2012, Nexenta Systems, Inc. All rights reserved.
+#
+
+<transform file path=usr.*/man/.+                -> default mangler.man.stability volatile>
+
+set name=pkg.fmri value=pkg:/service/corosync@$(IPS_COMPONENT_VERSION),$(BUILD_VERSION)
+set name=pkg.summary value="cluster engine"
+set name=info.source_url value=$(COMPONENT_ARCHIVE_URL)
+set name=info.upstream_url value=$(COMPONENT_PROJECT_URL)
+set name=org.opensolaris.consolidation value=$(CONSOLIDATION)
+
+
+dir path=etc
+dir path=etc/corosync
+dir path=etc/corosync/service.d
+dir path=etc/corosync/uidgid.d
+dir path=usr
+dir path=usr/bin
+dir path=usr/bin/$(MACH64)
+dir path=usr/include
+dir path=usr/include/corosync
+dir path=usr/include/corosync/engine
+dir path=usr/include/corosync/lcr
+dir path=usr/include/corosync/totem
+dir path=usr/lib
+dir path=usr/lib/$(MACH64)
+dir path=usr/lib/$(MACH64)/pkgconfig
+dir path=usr/lib/pkgconfig
+dir path=usr/libexec
+dir path=usr/libexec/$(MACH64)
+dir path=usr/libexec/$(MACH64)/lcrso
+dir path=usr/libexec/lcrso
+dir path=usr/sbin
+dir path=usr/share
+dir path=usr/share/doc
+dir path=usr/share/doc/corosync
+dir path=usr/share/man
+dir path=usr/share/man/man3
+dir path=usr/share/man/man5
+dir path=usr/share/man/man8
+dir path=var
+dir path=var/lib
+dir path=var/lib/corosync
+dir path=var/log
+dir path=var/log/cluster
+dir path=var/run
+
+file corosync.xml path=lib/svc/manifest/network/corosync.xml
+
+file path=etc/corosync/corosync.conf.example
+file path=etc/corosync/corosync.conf.example.udpu
+file path=usr/bin/corosync-blackbox
+file path=usr/include/corosync/cfg.h
+file path=usr/include/corosync/confdb.h
+file path=usr/include/corosync/corodefs.h
+file path=usr/include/corosync/coroipc_types.h
+file path=usr/include/corosync/coroipcc.h
+file path=usr/include/corosync/coroipcs.h
+file path=usr/include/corosync/corotypes.h
+file path=usr/include/corosync/cpg.h
+file path=usr/include/corosync/cs_config.h
+file path=usr/include/corosync/engine/config.h
+file path=usr/include/corosync/engine/coroapi.h
+file path=usr/include/corosync/engine/logsys.h
+file path=usr/include/corosync/engine/objdb.h
+file path=usr/include/corosync/engine/quorum.h
+file path=usr/include/corosync/evs.h
+file path=usr/include/corosync/hdb.h
+file path=usr/include/corosync/lcr/lcr_ckpt.h
+file path=usr/include/corosync/lcr/lcr_comp.h
+file path=usr/include/corosync/lcr/lcr_ifact.h
+file path=usr/include/corosync/list.h
+file path=usr/include/corosync/mar_gen.h
+file path=usr/include/corosync/quorum.h
+file path=usr/include/corosync/sam.h
+file path=usr/include/corosync/swab.h
+file path=usr/include/corosync/totem/coropoll.h
+file path=usr/include/corosync/totem/totem.h
+file path=usr/include/corosync/totem/totemip.h
+file path=usr/include/corosync/totem/totempg.h
+file path=usr/include/corosync/votequorum.h
+file path=usr/lib/$(MACH64)/libcfg.so.4.0.1
+file path=usr/lib/$(MACH64)/libconfdb.so.4.1.0
+file path=usr/lib/$(MACH64)/libcoroipcc.so.4.0.0
+file path=usr/lib/$(MACH64)/libcoroipcs.so.4.0.0
+file path=usr/lib/$(MACH64)/libcpg.so.4.1.0
+file path=usr/lib/$(MACH64)/libevs.so.4.0.0
+file path=usr/lib/$(MACH64)/liblogsys.so.4.0.0
+file path=usr/lib/$(MACH64)/libpload.so.4.0.0
+file path=usr/lib/$(MACH64)/libquorum.so.4.0.0
+file path=usr/lib/$(MACH64)/libsam.so.4.1.0
+file path=usr/lib/$(MACH64)/libtotem_pg.so.4.0.0
+file path=usr/lib/$(MACH64)/libvotequorum.so.4.0.0
+file path=usr/lib/$(MACH64)/pkgconfig/corosync.pc
+file path=usr/lib/$(MACH64)/pkgconfig/libcfg.pc
+file path=usr/lib/$(MACH64)/pkgconfig/libconfdb.pc
+file path=usr/lib/$(MACH64)/pkgconfig/libcoroipcc.pc
+file path=usr/lib/$(MACH64)/pkgconfig/libcoroipcs.pc
+file path=usr/lib/$(MACH64)/pkgconfig/libcpg.pc
+file path=usr/lib/$(MACH64)/pkgconfig/libevs.pc
+file path=usr/lib/$(MACH64)/pkgconfig/liblogsys.pc
+file path=usr/lib/$(MACH64)/pkgconfig/libpload.pc
+file path=usr/lib/$(MACH64)/pkgconfig/libquorum.pc
+file path=usr/lib/$(MACH64)/pkgconfig/libsam.pc
+file path=usr/lib/$(MACH64)/pkgconfig/libtotem_pg.pc
+file path=usr/lib/$(MACH64)/pkgconfig/libvotequorum.pc
+file path=usr/lib/libcfg.so.4.0.1
+file path=usr/lib/libconfdb.so.4.1.0
+file path=usr/lib/libcoroipcc.so.4.0.0
+file path=usr/lib/libcoroipcs.so.4.0.0
+file path=usr/lib/libcpg.so.4.1.0
+file path=usr/lib/libevs.so.4.0.0
+file path=usr/lib/liblogsys.so.4.0.0
+file path=usr/lib/libpload.so.4.0.0
+file path=usr/lib/libquorum.so.4.0.0
+file path=usr/lib/libsam.so.4.1.0
+file path=usr/lib/libtotem_pg.so.4.0.0
+file path=usr/lib/libvotequorum.so.4.0.0
+file path=usr/lib/pkgconfig/corosync.pc
+file path=usr/lib/pkgconfig/libcfg.pc
+file path=usr/lib/pkgconfig/libconfdb.pc
+file path=usr/lib/pkgconfig/libcoroipcc.pc
+file path=usr/lib/pkgconfig/libcoroipcs.pc
+file path=usr/lib/pkgconfig/libcpg.pc
+file path=usr/lib/pkgconfig/libevs.pc
+file path=usr/lib/pkgconfig/liblogsys.pc
+file path=usr/lib/pkgconfig/libpload.pc
+file path=usr/lib/pkgconfig/libquorum.pc
+file path=usr/lib/pkgconfig/libsam.pc
+file path=usr/lib/pkgconfig/libtotem_pg.pc
+file path=usr/lib/pkgconfig/libvotequorum.pc
+file path=usr/libexec/$(MACH64)/lcrso/coroparse.lcrso
+file path=usr/libexec/$(MACH64)/lcrso/objdb.lcrso
+file path=usr/libexec/$(MACH64)/lcrso/quorum_testquorum.lcrso
+file path=usr/libexec/$(MACH64)/lcrso/quorum_votequorum.lcrso
+file path=usr/libexec/$(MACH64)/lcrso/service_cfg.lcrso
+file path=usr/libexec/$(MACH64)/lcrso/service_confdb.lcrso
+file path=usr/libexec/$(MACH64)/lcrso/service_cpg.lcrso
+file path=usr/libexec/$(MACH64)/lcrso/service_evs.lcrso
+file path=usr/libexec/$(MACH64)/lcrso/service_pload.lcrso
+file path=usr/libexec/$(MACH64)/lcrso/vsf_quorum.lcrso
+file path=usr/libexec/$(MACH64)/lcrso/vsf_ykd.lcrso
+file path=usr/libexec/lcrso/coroparse.lcrso
+file path=usr/libexec/lcrso/objdb.lcrso
+file path=usr/libexec/lcrso/quorum_testquorum.lcrso
+file path=usr/libexec/lcrso/quorum_votequorum.lcrso
+file path=usr/libexec/lcrso/service_cfg.lcrso
+file path=usr/libexec/lcrso/service_confdb.lcrso
+file path=usr/libexec/lcrso/service_cpg.lcrso
+file path=usr/libexec/lcrso/service_evs.lcrso
+file path=usr/libexec/lcrso/service_pload.lcrso
+file path=usr/libexec/lcrso/vsf_quorum.lcrso
+file path=usr/libexec/lcrso/vsf_ykd.lcrso
+file path=usr/sbin/corosync
+file path=usr/sbin/corosync-cfgtool
+file path=usr/sbin/corosync-cpgtool
+file path=usr/sbin/corosync-fplay
+file path=usr/sbin/corosync-keygen
+file path=usr/sbin/corosync-notifyd
+file path=usr/sbin/corosync-objctl
+file path=usr/sbin/corosync-pload
+file path=usr/sbin/corosync-quorumtool
+file path=usr/share/doc/corosync/AUTHORS
+file path=usr/share/doc/corosync/INSTALL
+file path=usr/share/doc/corosync/LICENSE
+file path=usr/share/doc/corosync/README.devmap
+file path=usr/share/doc/corosync/README.recovery
+file path=usr/share/doc/corosync/SECURITY
+file path=usr/share/doc/corosync/TODO
+file path=usr/share/man/man3/confdb_context_get.3
+file path=usr/share/man/man3/confdb_context_set.3
+file path=usr/share/man/man3/confdb_dispatch.3
+file path=usr/share/man/man3/confdb_fd_get.3
+file path=usr/share/man/man3/confdb_finalize.3
+file path=usr/share/man/man3/confdb_initialize.3
+file path=usr/share/man/man3/confdb_key_create.3
+file path=usr/share/man/man3/confdb_key_delete.3
+file path=usr/share/man/man3/confdb_key_iter.3
+file path=usr/share/man/man3/confdb_key_replace.3
+file path=usr/share/man/man3/confdb_object_create.3
+file path=usr/share/man/man3/confdb_object_destroy.3
+file path=usr/share/man/man3/confdb_object_find.3
+file path=usr/share/man/man3/confdb_object_iter.3
+file path=usr/share/man/man3/confdb_object_parent_get.3
+file path=usr/share/man/man3/cpg_context_get.3
+file path=usr/share/man/man3/cpg_context_set.3
+file path=usr/share/man/man3/cpg_dispatch.3
+file path=usr/share/man/man3/cpg_fd_get.3
+file path=usr/share/man/man3/cpg_finalize.3
+file path=usr/share/man/man3/cpg_initialize.3
+file path=usr/share/man/man3/cpg_join.3
+file path=usr/share/man/man3/cpg_leave.3
+file path=usr/share/man/man3/cpg_local_get.3
+file path=usr/share/man/man3/cpg_mcast_joined.3
+file path=usr/share/man/man3/cpg_membership_get.3
+file path=usr/share/man/man3/cpg_model_initialize.3
+file path=usr/share/man/man3/cpg_zcb_alloc.3
+file path=usr/share/man/man3/cpg_zcb_free.3
+file path=usr/share/man/man3/cpg_zcb_mcast_joined.3
+file path=usr/share/man/man3/evs_context_get.3
+file path=usr/share/man/man3/evs_context_set.3
+file path=usr/share/man/man3/evs_dispatch.3
+file path=usr/share/man/man3/evs_fd_get.3
+file path=usr/share/man/man3/evs_finalize.3
+file path=usr/share/man/man3/evs_initialize.3
+file path=usr/share/man/man3/evs_join.3
+file path=usr/share/man/man3/evs_leave.3
+file path=usr/share/man/man3/evs_mcast_groups.3
+file path=usr/share/man/man3/evs_mcast_joined.3
+file path=usr/share/man/man3/evs_membership_get.3
+file path=usr/share/man/man3/sam_finalize.3
+file path=usr/share/man/man3/sam_hc_callback_register.3
+file path=usr/share/man/man3/sam_hc_send.3
+file path=usr/share/man/man3/sam_initialize.3
+file path=usr/share/man/man3/sam_register.3
+file path=usr/share/man/man3/sam_start.3
+file path=usr/share/man/man3/sam_stop.3
+file path=usr/share/man/man3/sam_warn_signal_set.3
+file path=usr/share/man/man3/votequorum_context_get.3
+file path=usr/share/man/man3/votequorum_context_set.3
+file path=usr/share/man/man3/votequorum_dispatch.3
+file path=usr/share/man/man3/votequorum_fd_get.3
+file path=usr/share/man/man3/votequorum_finalize.3
+file path=usr/share/man/man3/votequorum_getinfo.3
+file path=usr/share/man/man3/votequorum_initialize.3
+file path=usr/share/man/man3/votequorum_leaving.3
+file path=usr/share/man/man3/votequorum_qdisk_getinfo.3
+file path=usr/share/man/man3/votequorum_qdisk_poll.3
+file path=usr/share/man/man3/votequorum_qdisk_register.3
+file path=usr/share/man/man3/votequorum_qdisk_unregister.3
+file path=usr/share/man/man3/votequorum_setexpected.3
+file path=usr/share/man/man3/votequorum_setvotes.3
+file path=usr/share/man/man5/corosync.conf.5
+file path=usr/share/man/man8/confdb_overview.8
+file path=usr/share/man/man8/coroipc_overview.8
+file path=usr/share/man/man8/corosync-blackbox.8
+file path=usr/share/man/man8/corosync-cfgtool.8
+file path=usr/share/man/man8/corosync-cpgtool.8
+file path=usr/share/man/man8/corosync-fplay.8
+file path=usr/share/man/man8/corosync-keygen.8
+file path=usr/share/man/man8/corosync-notifyd.8
+file path=usr/share/man/man8/corosync-objctl.8
+file path=usr/share/man/man8/corosync-pload.8
+file path=usr/share/man/man8/corosync-quorumtool.8
+file path=usr/share/man/man8/corosync.8
+file path=usr/share/man/man8/corosync_overview.8
+file path=usr/share/man/man8/cpg_overview.8
+file path=usr/share/man/man8/evs_overview.8
+file path=usr/share/man/man8/logsys_overview.8
+file path=usr/share/man/man8/sam_overview.8
+file path=usr/share/man/man8/votequorum_overview.8
+link path=usr/lib/$(MACH64)/libcfg.so target=libcfg.so.4.0.1
+link path=usr/lib/$(MACH64)/libcfg.so.4 target=libcfg.so.4.0.1
+link path=usr/lib/$(MACH64)/libconfdb.so target=libconfdb.so.4.1.0
+link path=usr/lib/$(MACH64)/libconfdb.so.4 target=libconfdb.so.4.1.0
+link path=usr/lib/$(MACH64)/libcoroipcc.so target=libcoroipcc.so.4.0.0
+link path=usr/lib/$(MACH64)/libcoroipcc.so.4 target=libcoroipcc.so.4.0.0
+link path=usr/lib/$(MACH64)/libcoroipcs.so target=libcoroipcs.so.4.0.0
+link path=usr/lib/$(MACH64)/libcoroipcs.so.4 target=libcoroipcs.so.4.0.0
+link path=usr/lib/$(MACH64)/libcpg.so target=libcpg.so.4.1.0
+link path=usr/lib/$(MACH64)/libcpg.so.4 target=libcpg.so.4.1.0
+link path=usr/lib/$(MACH64)/libevs.so target=libevs.so.4.0.0
+link path=usr/lib/$(MACH64)/libevs.so.4 target=libevs.so.4.0.0
+link path=usr/lib/$(MACH64)/liblogsys.so target=liblogsys.so.4.0.0
+link path=usr/lib/$(MACH64)/liblogsys.so.4 target=liblogsys.so.4.0.0
+link path=usr/lib/$(MACH64)/libpload.so target=libpload.so.4.0.0
+link path=usr/lib/$(MACH64)/libpload.so.4 target=libpload.so.4.0.0
+link path=usr/lib/$(MACH64)/libquorum.so target=libquorum.so.4.0.0
+link path=usr/lib/$(MACH64)/libquorum.so.4 target=libquorum.so.4.0.0
+link path=usr/lib/$(MACH64)/libsam.so target=libsam.so.4.1.0
+link path=usr/lib/$(MACH64)/libsam.so.4 target=libsam.so.4.1.0
+link path=usr/lib/$(MACH64)/libtotem_pg.so target=libtotem_pg.so.4.0.0
+link path=usr/lib/$(MACH64)/libtotem_pg.so.4 target=libtotem_pg.so.4.0.0
+link path=usr/lib/$(MACH64)/libvotequorum.so target=libvotequorum.so.4.0.0
+link path=usr/lib/$(MACH64)/libvotequorum.so.4 target=libvotequorum.so.4.0.0
+link path=usr/lib/libcfg.so target=libcfg.so.4.0.1
+link path=usr/lib/libcfg.so.4 target=libcfg.so.4.0.1
+link path=usr/lib/libconfdb.so target=libconfdb.so.4.1.0
+link path=usr/lib/libconfdb.so.4 target=libconfdb.so.4.1.0
+link path=usr/lib/libcoroipcc.so target=libcoroipcc.so.4.0.0
+link path=usr/lib/libcoroipcc.so.4 target=libcoroipcc.so.4.0.0
+link path=usr/lib/libcoroipcs.so target=libcoroipcs.so.4.0.0
+link path=usr/lib/libcoroipcs.so.4 target=libcoroipcs.so.4.0.0
+link path=usr/lib/libcpg.so target=libcpg.so.4.1.0
+link path=usr/lib/libcpg.so.4 target=libcpg.so.4.1.0
+link path=usr/lib/libevs.so target=libevs.so.4.0.0
+link path=usr/lib/libevs.so.4 target=libevs.so.4.0.0
+link path=usr/lib/liblogsys.so target=liblogsys.so.4.0.0
+link path=usr/lib/liblogsys.so.4 target=liblogsys.so.4.0.0
+link path=usr/lib/libpload.so target=libpload.so.4.0.0
+link path=usr/lib/libpload.so.4 target=libpload.so.4.0.0
+link path=usr/lib/libquorum.so target=libquorum.so.4.0.0
+link path=usr/lib/libquorum.so.4 target=libquorum.so.4.0.0
+link path=usr/lib/libsam.so target=libsam.so.4.1.0
+link path=usr/lib/libsam.so.4 target=libsam.so.4.1.0
+link path=usr/lib/libtotem_pg.so target=libtotem_pg.so.4.0.0
+link path=usr/lib/libtotem_pg.so.4 target=libtotem_pg.so.4.0.0
+link path=usr/lib/libvotequorum.so target=libvotequorum.so.4.0.0
+link path=usr/lib/libvotequorum.so.4 target=libvotequorum.so.4.0.0
