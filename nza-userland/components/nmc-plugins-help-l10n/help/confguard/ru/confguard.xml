@@ -1,0 +1,188 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<templatelist name='confguard' copyright='(C) 2006-2012 Nexenta Systems, Inc.' locale='ru'>
+<template module='ConfGuard' name='show_confguard_usage'><![CDATA[
+$cmdline
+Usage: [-v]
+
+  -v    Verbose - show full descriptions of runner's properties.
+
+The report includes:
+
+  * runtime state: running, starting, pending, ready (same as idle)
+  * status: enabled, disabled, maintenance (the latter - if reached
+    maximum fault count)
+  * monitor's and reporter's schedule
+
+Use option -v (verbose) to list all reporter's properties and their
+descriptions.
+
+See also: 'setup $NZA::CONFGUARD'
+
+See also: 'help runners'
+See also: 'help index'
+See also: 'help fault-management'
+
+See also: 'show appliance runners'
+See also: 'help terms'
+
+]]></template>
+<template module='ConfGuard' name='setup_confguard_enable_usage'><![CDATA[
+$cmdline
+
+Enables file changes monitoring. From time
+to time confguard looks for changes and
+saves generated change lists.
+
+See also: 'setup $NZA::CONFGUARD disable'
+
+See also: 'setup $NZA::CONFGUARD reporter disable'
+See also: 'setup $NZA::CONFGUARD reporter enable'
+
+]]></template>
+<template module='ConfGuard' name='setup_confguard_disable_usage'><![CDATA[
+$cmdline
+
+Disables file changes monitoring. No new change lists
+will be generated. In this case the reporter will have
+nothing to send, so it goes to suspended state.
+
+
+See also: 'setup $NZA::CONFGUARD enable'
+
+See also: 'setup $NZA::CONFGUARD reporter disable'
+See also: 'setup $NZA::CONFGUARD reporter enable'
+
+]]></template>
+<template module='ConfGuard' name='confguard_report_usage'><![CDATA[
+$cmdline
+
+Allows to control reporter
+
+* enable - enables automatic report sending
+
+* disable - disables automatic report sending
+
+* send - send a report about changes
+
+]]></template>
+<template module='ConfGuard' name='send_report_usage'><![CDATA[
+$cmdline
+
+Send an e-mail report on configuration file changes
+collected during specified time interval.
+
+There are two ways to generate report:
+
+1. Select set of already generated change lists. User
+   choose any two of displayed change lists. Confguard
+   attach to e-mail selected change lists and all that
+   are between them.
+
+2. Select two snapshots. Confguard generates a change
+   list depending on difference between these snapshots.
+   Gathered information is attached to e-mail.
+
+The latest way may take more time than the first one
+becuase of before creating e-mail confguard has to
+compare two snapshots and generate change list.
+
+In both cases there is one special item 'Latest changes'.
+Selecting this item means that before creating e-mail
+confguard has to create new snapshot and then use it in
+all following procedures.
+
+]]></template>
+<template module='ConfGuard' name='send_report'><![CDATA[
+
+    Please, select type of report:
+
+        ${NMC::RL_REVERSE}1${NMC::RL_NORMAL} Send change lists that are gatherd for the specified time interval
+
+        ${NMC::RL_REVERSE}2${NMC::RL_NORMAL} Send unified change list for the specified time interval
+
+]]></template>
+<template module='ConfGuard' name='confguard_set_property_usage'><![CDATA[
+$cmdline
+Usage: [-y] [-p value]
+
+For a given $type - view or modify its property value. To display all
+${type}'s properties, run 'show $type $runner -v'
+
+  -y            Skip confirmation dialog by automatically responding Yes.
+  -p <value>    New property value
+
+
+See also: 'show $type $runner'
+
+See also: 'setup $type reset'
+See also: 'setup $type $runner reset'
+
+See also: 'help runners'
+See also: 'help terms'
+
+]]></template>
+<template module='ConfGuard' name='setup_confguard_run_usage'><![CDATA[
+$cmdline
+
+Run monitor job. Confguard creates new snapshot
+and looks for changes. All found changes are stored
+as a new change list.
+
+Run can be executed even if monitor is disabled.
+
+]]></template>
+<template module='ConfGuard' name='_show_wizard_help'><![CDATA[
+
+The Wizard will help you to convert any of the $NZA::CONFGUARD_DOC_NAME snapshots
+into a fully-functional system checkpoint.
+
+Background on System Checkpoints
+======================
+
+Throughout the product, the terms "system folder",  "root filesystem",
+and "checkpoint" are used interchangeably.
+
+System checkpoint (or simply "checkpoint") is a bootable snapshot of the
+appliance's operating system. It contains OpenSolaris kernel and system
+configuration. You can certainly always boot into any of the saved
+checkpoints. The number of saved checkpoints is configured.
+
+System checkpoint can be 'active' - the checkpoint you are currently in,
+or 'default' - the checkpoint that the appliance will boot by default.
+Typically 'default' and 'active' point to the same checkpoint.
+
+NexentaStor provides a reliable and secure software upgrade mechanism that
+relies on system checkpoints. Prior to any software upgrade, the current
+working root filesystem is snapshot-ed and the resulting snapshot is then
+converted into a bootable system checkpoint, visible via GRUB boot menu.
+
+Process of converting $NZA::CONFGUARD_DOC_NAME snapshot to system checkpoint
+consists of only 2 steps:
+
+ 1) Convert selected $NZA::CONFGUARD_DOC_NAME snapshot to system checkpoint
+
+ 2) Optional step: activate created system checkpoint. If you
+    activate the checkpoint it is set as 'default' one.
+    Note: you must restart appliance to boot into the checkpoint
+    and set it 'active'.
+
+The Wizard will guide you through the steps.
+
+]]></template>
+<template module='ConfGuard' name='setup_checkpoint_wizard'><![CDATA[
+
+Welcome to $NZA::CONFGUARD_DOC_NAME Checkpoint Wizard.
+]]></template>
+<template module='ConfGuard' name='setup_checkpoint_wizard_usage'><![CDATA[
+$cmdline
+
+Run $NZA::CONFGUARD_DOC_NAME checkpoint wizard.
+]]></template>
+<template module='ConfGuard' name='setup_checkpoint_wizard_usage1'><![CDATA[
+
+See also: 'setup appliance checkpoint'
+
+See also: 'show appliance checkpoint'
+
+]]></template>
+</templatelist>

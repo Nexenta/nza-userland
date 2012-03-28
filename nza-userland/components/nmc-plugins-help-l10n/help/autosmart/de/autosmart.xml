@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<templatelist name='autosmart' copyright='(C) 2006-2012 Nexenta Systems, Inc.' locale='de'>
+<template module='AutoSmart' name='show_smartstats_usage'><![CDATA[
+
+Usage: 
+
+This command shows information about current SMART state and settings.
+It helps to identify that all disks are in good state and which disks
+are currently monitored by autosmart plugin.
+
+If command is issued to a single specified disk, it will show detailed SMART
+information about every attribute.
+
+Example:
+	nmc\$ show lun c1t0d0 smartstat
+
+Any single disk can be excluded from SMART monitoring, refer to 'setup lun smart disable' command.
+
+See also: 'setup lun smart enable'
+
+]]></template>
+<template module='AutoSmart' name='setup_smart_usage'><![CDATA[
+
+Usage: 
+    setup lun smart disable [-d lun_name]
+or
+    setup lun smart enable [-d lun_name]
+
+Where:
+    -d <lun_name> Name of the disk as shown by 'show lun' command
+
+Pair of commands allows you to enable or disable monitoring of SMART state
+in autosmart plugin. Commmand can work in interactive mode or in command-line 
+mode. For command line mode use '-d' option.
+
+Example:
+    nmc\$ setup lun smart enable -d c0t3d0
+
+See also: 'show lun smartstat'
+
+]]></template>
+</templatelist>

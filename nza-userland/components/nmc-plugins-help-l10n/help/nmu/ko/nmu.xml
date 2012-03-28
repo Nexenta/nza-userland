@@ -1,0 +1,167 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<templatelist name='nmu' copyright='(C) 2006-2012 Nexenta Systems, Inc.' locale='ko'>
+<template module='nmu' name='nmu_usage'><![CDATA[
+Usage: [-t] [-f] [-s] [-y] [-m] [-v] [-r RELEASE] [pkg1 [pkg2...]]
+  -t		      	Dry-run. Perform simulated upgrade - do not
+                        change data on system volume
+  -f                    Force unlock - proceed with upgrade even
+                        though some services are running
+  -s			Safe upgrade in cloned system folder (requires reboot)
+  -y		      	Do not ask any questions, assume Yes to all
+  -m                    Do not reboot after upgrade when -y parameter specified (manual reboot)
+  -c			Local upgrade (from detachable media)
+  -r		      	Upgrade to specified release
+  -v		      	Verbose output
+
+  [pkg1 [pkg2...]]   	List of explicitly specified space-delimited
+   			packages to upgrade. Note: expert usage only!
+			If omitted, the upgrade facility brings
+			the entire system up to date - which is the default
+			and recommended option.
+
+Upgrade appliance software and/or install new software components and modules.
+
+  IMPORTANT
+  =========
+  It is important to perform appliance upgrade operation via provided
+  interface and under administrative control of Nexenta management
+  software.
+
+  LOCAL UPGRADE OPTIONS
+  =====================
+  You can use Nexenta Management Console to upgrade appliance
+  software from the local media (CD-ROM or DVD-ROM).
+  To do this automatically, use the -c flag.
+  To do this manually:
+
+  1) Insert CD/DVD-ROM that contains appliance's APT repository
+     and identify the corresponding mountpoint:
+
+     $prompt show lun cdrom -v
+
+  2) Edit APT configuration via:
+
+     $prompt setup appliance repository
+
+     When in the Editor, comment out (using '\#') all existing lines
+     and add the following line:
+
+     deb file://[MOUNTPOINT] [DIST]-stable main contrib non-free
+
+     for example:
+
+     deb file:///media/Elatte_UpgradeCD elatte-stable main contrib non-free
+
+Examples:
+1) Dry-run appliance upgrade, produce detailed (verbose) output:
+   $prompt setup appliance upgrade -t -v
+
+2) Upgrade the appliance non-interactively (assume Yes to all questions)
+   $prompt setup appliance upgrade -y
+
+3) Upgrade only appliance management sub-systems: NMS, NMC, and NMV components
+   $prompt setup appliance upgrade nms nmc nmv
+
+]]></template>
+<template module='nmu' name='nmu_usage1'><![CDATA[
+Usage: [-t] [-f] [-s] [-y] [-m] [-v] [-r RELEASE] [pkg1 [pkg2...]]
+  -h		      	Display this help message
+  -b <bootmenu-count>	Maximum number of boot menu entries to keep
+  -k <clone-count>	Maximum number of cloned root folders to keep
+  -x <http-proxy>	Remote repository HTTP proxy server";
+  -t		      	Dry-run. Perform simulated upgrade - do not
+                        change data on system volume
+  -f                    Force unlock - proceed with upgrade even
+                        though some services are running
+  -s			Safe upgrade in cloned system folder (requires reboot)
+  -y		      	Do not ask any questions, assume Yes to all
+  -m                    Do not reboot after upgrade when -y parameter specified (manual reboot)
+  -c			Local upgrade (from detachable media)
+  -r		      	Upgrade to specified release
+  -v		      	Verbose output
+
+  [pkg1 [pkg2...]]   	List of explicitly specified space-delimited
+   			packages to upgrade. Note: expert usage only!
+			If omitted, the upgrade facility brings
+			the entire system up to date - which is the default
+			and recommended option.
+
+Upgrade appliance software and/or install new software components and modules.
+
+  IMPORTANT
+  =========
+  It is important to perform appliance upgrade operation via provided
+  interface and under administrative control of Nexenta management
+  software.
+
+  LOCAL UPGRADE OPTIONS
+  =====================
+  You can use Nexenta Management Console to upgrade appliance
+  software from the local media (CD-ROM or DVD-ROM).
+  To do this automatically, use the -c flag.
+
+Examples:
+1) Dry-run appliance upgrade, produce detailed (verbose) output:
+   $prompt setup appliance upgrade -t -v
+
+2) Upgrade the appliance non-interactively (assume Yes to all questions)
+   $prompt setup appliance upgrade -y
+
+3) Upgrade only appliance management sub-systems: NMS, NMC, and NMV components
+   $prompt setup appliance upgrade nms nmc nmv
+
+]]></template>
+<template module='nmu' name='nmu_verify_free_space'><![CDATA[
+                          * * *
+     $info_msg.
+     Estimated free space requirement for this transactional
+     upgrade: ${need_s2}MB. Available free space: ${avail_s}MB.
+
+   +------------------------------------------------------------------+
+   |                                                                  |
+   |   Not enough free space: at least 150MB free space required.     |
+   |   Suggested actions:                                             |
+   |                                                                  |
+   |    - remove older checkpoints using NMC command:                 |
+   |      'destroy appliance checkpoint <checkpoint name>'            |
+   |                                                                  |
+   |    - reduce the number of system checkpoints:                    |
+   |      'setup appliance nms property upgrade_rootfs_keep'          |
+   |                                                                  |
+   |    - remove unused indexes produced by search engine (if any):   |
+   |      'destroy indexer <index-name>'                              |
+   |                                                                  |
+   |    - remove unused auto-cdp services (if any):                   |
+   |      'destroy auto-cdp <service-name>'                           |
+   |                                                                  |
+   |  See also: 'setup appliance checkpoint'                          |
+   |  See also: 'setup indexer'                                       |
+   |  See also: 'setup auto-cdp'                                      |
+   |                                                                  |
+   +------------------------------------------------------------------+
+]]></template>
+<template module='nmu' name='cleanup_crash_dumps'><![CDATA[
+                          * * *
+                      SYSTEM NOTICE
+
+     The first phase of upgrade has completed successfully:
+       - created Upgrade Checkpoint '$rootfs_nosyspool'
+       - the appliance is ready to reboot into this new checkpoint
+
+   +------------------------------------------------------------------+
+   |                                                                  |
+   |  At this point there are two options:                            |
+   |                                                                  |
+   |   - You can reboot now and make sure that system is healthy.     |
+   |     You will be prompted to activate the newly created           |
+   |     checkpoint after the reboot.                                 |
+   |                                                                  |
+   |   - Or, you can simply continue using the appliance as is and    |
+   |     later activate this new checkpoint, and then reboot.         |
+   |                                                                  |
+   |  See also: 'setup appliance checkpoint'                          |
+   |  See also: 'setup appliance reboot'                              |
+   |                                                                  |
+   +------------------------------------------------------------------+
+]]></template>
+</templatelist>

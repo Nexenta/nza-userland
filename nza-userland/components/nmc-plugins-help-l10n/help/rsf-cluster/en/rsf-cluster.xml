@@ -1,0 +1,725 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<templatelist name='rsf-cluster' copyright='(C) 2006-2012 Nexenta Systems, Inc.' locale='en'>
+<template module='RsfCluster' name='appliance__upgrade_confirm'><![CDATA[
+
+Run 'show $NMC::APPL_GROUP $NZA::RSF_CLUSTER_TYPE <group_name>'
+to see group status.
+
+To switch HA cluster to manual mode of operation, run
+'setup $NMC::APPL_GROUP $NZA::RSF_CLUSTER_TYPE <group_name> <hostname> manual'.
+
+To manually initiate failover to another appliance run
+'setup $NMC::APPL_GROUP $NZA::RSF_CLUSTER_TYPE <group_name> <hostname> failover'.
+
+]]></template>
+<template module='RsfCluster' name='show_status_usage'><![CDATA[
+$cmdline
+Usage:
+
+Show status information for the cluster.
+
+See also: 'show group $NZA::RSF_CLUSTER_TYPE <cluster-name> summary'
+See also: 'show group $NZA::RSF_CLUSTER_TYPE'
+See also: 'setup group $NZA::RSF_CLUSTER_TYPE'
+
+]]></template>
+<template module='RsfCluster' name='show_summary_usage'><![CDATA[
+$cmdline
+Usage:
+
+Show summary information for the cluster.
+
+See also: 'show group $NZA::RSF_CLUSTER_TYPE'
+See also: 'setup group $NZA::RSF_CLUSTER_TYPE'
+
+]]></template>
+<template module='RsfCluster' name='show_usage'><![CDATA[
+$cmdline
+
+Show $NZA::RSF_CLUSTER_TYPE '$group_name' properties and status.
+
+A sample output follows below:
+
+nmc\$ show group rsf-cluster test
+PROPERTY                  VALUE
+===============================
+name                    : test
+appliances              : [testbox6 testbox7]
+info                    : desc
+shared-vol-name         : cldata
+hbipifs                 : testbox6.nexenta.com:testbox7.nexenta.com:
+                          testbox7.nexenta.com:testbox6.nexenta.com:
+failover-hostname       : clserv
+generation              : 1
+hbdisks                 : testbox6.nexenta.com:c2t4d0 testbox7.nexenta.com:c2t4d0
+type                    : rsf-cluster
+creation                : May 16 15:32:24 2009
+svc-cldata-ipdevs       : testbox7.nexenta.com:e1000g1
+                          testbox6.nexenta.com:e1000g1
+group-creator-host      : testbox6.nexenta.com
+
+$NZA::RSF_CLUSTER_STATUS_NAME: $group_name
+testbox6:
+ cldata       running  auto     unblocked    clserv       e1000g1  60  60
+testbox7:
+ cldata       stopped  auto     unblocked    clserv       e1000g1  60  60
+
+
+For definitions and terms, please see:
+${prompt}create group $NZA::RSF_CLUSTER_TYPE -h
+
+$NZA::RSF_CLUSTER_TYPE is a group, and therefore, similar to any other
+group of appliances, the cluster supports the following generic
+functionality:
+
+Run 'show network $NMC::appliance' to list all appliances on the
+network. These are the appliances that can for a cluster.
+
+Use 'switch' command to initiate a group mode of operation.
+See 'switch $NMC::APPL_GROUP -h' for details.
+
+
+See also: 'show network appliance'
+See also: 'show usage'
+
+]]></template>
+<template module='RsfCluster' name='setup_disable_usage'><![CDATA[
+$cmdline
+Usage:
+
+Disable a given volume sharing service in the $NZA::RSF_CLUSTER_DOC_NAME,
+or the entire cluster with all its services.
+
+For definitions and terms, please see:
+${prompt}create group $NZA::RSF_CLUSTER_TYPE -h
+
+See also: 'show group $NZA::RSF_CLUSTER_TYPE'
+See also: 'setup group $NZA::RSF_CLUSTER_TYPE'
+
+]]></template>
+<template module='RsfCluster' name='setup_reset_usage'><![CDATA[
+$cmdline
+Usage:
+
+Reset $NZA::RSF_CLUSTER_DOC_NAME to its initial state and
+DESTROY all associated HA services the cluster currently provides.
+
+To re-initialize the entire $NZA::RSF_CLUSTER_DOC_NAME software and
+DESTROY all existing cluster groups, please use:
+
+${prompt}setup group $NZA::RSF_CLUSTER_TYPE reset
+
+For definitions and terms, please see:
+${prompt}create group $NZA::RSF_CLUSTER_TYPE -h
+
+See also: 'show group $NZA::RSF_CLUSTER_TYPE'
+See also: 'setup group $NZA::RSF_CLUSTER_TYPE'
+
+]]></template>
+<template module='RsfCluster' name='setup_reinitialize_usage'><![CDATA[
+$cmdline
+Usage:
+
+Re-initialize $NZA::RSF_CLUSTER_DOC_NAME software and DESTROY all
+existing cluster groups, if any.
+
+To re-initialize (reset) a given cluster group without destroying
+this group, please use:
+
+${prompt}setup group $NZA::RSF_CLUSTER_TYPE <group> reset
+
+For definitions and terms, please see:
+${prompt}create group $NZA::RSF_CLUSTER_TYPE -h
+
+See also: 'show group $NZA::RSF_CLUSTER_TYPE'
+See also: 'setup group $NZA::RSF_CLUSTER_TYPE'
+
+]]></template>
+<template module='RsfCluster' name='setup_reinitialize'><![CDATA[
+
+                          * * *
+                      SYSTEM NOTICE
+
+   Warning! You are about to re-initialize $NZA::RSF_CLUSTER_DOC_NAME software
+   and DESTROY all existing cluster groups, if any.
+
+]]></template>
+<template module='RsfCluster' name='setup_enable_usage'><![CDATA[
+$cmdline
+Usage:
+
+Enable a given volume sharing service in the $NZA::RSF_CLUSTER_DOC_NAME,
+or the entire cluster with all its services.
+
+For definitions and terms, please see:
+${prompt}create group $NZA::RSF_CLUSTER_TYPE -h
+
+
+See also: 'show group $NZA::RSF_CLUSTER_TYPE'
+See also: 'setup group $NZA::RSF_CLUSTER_TYPE'
+
+]]></template>
+<template module='RsfCluster' name='__setup_automatic_manual_usage'><![CDATA[
+
+The switchover mode defines whether or not an appliance will attempt to
+start a service when it is not running. There are separate switchover
+mode settings for each appliance that can run a service. The combination of
+appliance and service is known as an instance.
+
+The switchover modes can be set to automatic or manual. In automatic mode, the
+appliance will attempt to start the service in question when it detects that no
+sibling appliance in the cluster is available or running it. In manual mode, it
+will not attempt to start the service but will generate warnings when it is
+unavailable. If the appliance cannot obtain a definitive answer regarding the
+state of the service (because it cannot contact its siblings in the cluster) or
+the service is not running anywhere else, the appropriate timeout must expire
+before any action can be taken.  The primary service switchover modes are
+typically set to automatic to ensure that a appliance starts its primary
+service(s) on boot up. The secondary service switchover modes are typically set
+to automatic to ensure that services will be taken over in the event of a
+failure. Alternatively, the secondary switchover modes can be left in manual,
+allowing the administrator to initiate failover themselves. Note that
+putting a service into manual mode when the service is already
+running does not stop that service, it only prevents the
+service from being started on that appliance.
+
+For definitions and terms, please see:
+${prompt}create group $NZA::RSF_CLUSTER_TYPE -h
+
+
+See also: 'show group $NZA::RSF_CLUSTER_TYPE'
+See also: 'setup group $NZA::RSF_CLUSTER_TYPE'
+
+]]></template>
+<template module='RsfCluster' name='setup_manual_usage'><![CDATA[
+$cmdline
+Usage:
+
+Set $NZA::RSF_CLUSTER_DOC_NAME switchover modes to manual.
+]]></template>
+<template module='RsfCluster' name='setup_repair_usage'><![CDATA[
+
+Repairing a service
+
+A service in the broken(safe) or broken(unsafe) states can be reset using the 'repair'
+option. This allows you to try starting the service again. To repair a
+service, run:
+
+${prompt}setup group $NZA::RSF_CLUSTER_TYPE <cluster-name> $RSFSERVICE <service-name> repair
+
+The service will be set to 'manual' mode and will be marked 'stopped'.
+To switch service to 'automatic' mode run:
+
+${prompt}setup group $NZA::RSF_CLUSTER_TYPE <cluster-name> $RSFSERVICE <service-name> automatic
+
+Repair is used only to notify RSF-1 that a service can be safely restarted. It does not
+take any remedial action upon the service or the scripts to fix previous problems that
+occurred; you must first do this yourself by referring to the log.
+
+See also: 'show group $NZA::RSF_CLUSTER_TYPE <cluster-name>'
+See also: 'setup group $NZA::RSF_CLUSTER_TYPE <cluster-name> $RSFSERVICE <service-name> automatic -h'
+]]></template>
+<template module='RsfCluster' name='setup_automatic_usage'><![CDATA[
+$cmdline
+Usage:
+
+Set $NZA::RSF_CLUSTER_DOC_NAME switchover modes to automatic.
+]]></template>
+<template module='RsfCluster' name='setup_node_failover_usage'><![CDATA[
+$cmdline
+Usage:
+
+Initiate administrative (manual) failover.
+
+Move (failover) the specified service from its current appliance to the
+target appliance. This will cause the volume sharing service to be stopped
+(and the volume getting exported) on the current appliance, and the opposite
+actions taking place on the target. The latter includes importing the shared
+volume(s).
+
+For definitions and terms, please see:
+${prompt}create group $NZA::RSF_CLUSTER_TYPE -h
+
+
+See also: 'show group $NZA::RSF_CLUSTER_TYPE'
+
+See also: 'setup group $NZA::RSF_CLUSTER_TYPE'
+
+]]></template>
+<template module='RsfCluster' name='setup_replace_node_usage'><![CDATA[
+Usage: $cmdline [-r]
+
+  -r    Hot restart
+
+Replace one cluster node with another.
+
+If you need to change or re-install one of the cluster nodes, you
+can reconfigure the cluster group by this command. This command
+will exclude old node from the cluster group configuration and
+perform host parameters checking. If new host meets the requirements
+of the cluster, it will replace the old one.
+
+To replace node, run:
+${prompt}setup group $NZA::RSF_CLUSTER_TYPE <group_name> replace_node
+
+This command chooses the node, that you would like to replace with
+another one, and the node that you would like to use instead of the
+old one.
+
+If you want to re-create the group, you may destroy and create
+it again. For this, use the following commands:
+
+${prompt}setup group $NZA::RSF_CLUSTER_TYPE <group_name> destroy
+${prompt}setup group $NZA::RSF_CLUSTER_TYPE create
+
+See also: 'show group $NZA::RSF_CLUSTER_TYPE'
+
+]]></template>
+<template module='RsfCluster' name='setup_replace_node'><![CDATA[
+
+                          * * *
+                      SYSTEM NOTICE
+
+ This action presumes existing of identical disk subsystem configuration
+ and essential disks for all shared volumes on new node. Otherwise,
+ operation won't be successful.
+
+ If you have serial port hearbeats configured, you need to have the same
+ serial ports configuration too.
+
+                  *** IMPORTANT NOTICE ***
+ This action requires cluster`s software restart. During restart all
+ shared volumes will be unavailable.
+
+]]></template>
+<template module='RsfCluster' name='setup_replace_node1'><![CDATA[
+$NZA::RSF_CLUSTER_DOC_NAME license for node '$new_node' is not found
+on the local appliance. You could now request for assistance from
+technical support personnel. The email will be generated automatically
+and will include all the information required for licensing the new
+appliance '$new_node' in the existing $NZA::RSF_CLUSTER_DOC_NAME.
+
+If you have already sent the license request and have received
+response from technical support, simply re-install the $NZA::RSF_CLUSTER_DOC_NAME
+plugin on the local appliance using the following command:
+
+  'setup plugin install rsf-cluster'
+
+]]></template>
+<template module='RsfCluster' name='setup_replace_node2'><![CDATA[
+$NZA::RSF_CLUSTER_DOC_NAME license for node '$new_node' is
+found on the local appliance, but the corresponding license is not
+found on appliance '$new_node'.
+
+It appears that the plugin is NOT re-installed on: $new_node
+
+Try to install the plugin using the following NMC command:
+
+  'setup plugin install rsf-cluster'
+
+]]></template>
+<template module='RsfCluster' name='setup_attach_volume_usage'><![CDATA[
+Usage: $cmdline [-c]
+
+  -c    Cold restart. Attach volume without exporting
+        of active volume.
+
+Attach volume to the existing shared service.
+
+This functionality lets to add a volume to the existing cluster
+without creating new shared service. The procedure automaticaly
+discovers all the disks of this volume. If the number of disks
+equals two or less, then all these disks will be used for heartbeat
+automaticaly. If there are more that two disks in the volume, you
+will be promted to interactive menu in order to specify at least
+two disks for heartbeat.
+
+
+To detach the volume, please use the folliwing command:
+
+${prompt}setup group $NZA::RSF_CLUSTER_TYPE <group_name> shared-volume <service_name> dettach-volume
+
+See also: 'show group $NZA::RSF_CLUSTER_TYPE'
+
+]]></template>
+<template module='RsfCluster' name='setup_detach_volume_usage'><![CDATA[
+Usage: $cmdline [-c]
+
+  -c    Cold restart. Dettach volume without exporting
+        of active volume.
+
+Dettach additional volume from the existing shared service.
+
+The procedure is the opposite to 'attach-volume'.
+
+To attach the volume, please use the folliwing command:
+
+${prompt}setup group $NZA::RSF_CLUSTER_TYPE <group_name> shared-volume <service_name> attach-volume
+
+See also: 'show group $NZA::RSF_CLUSTER_TYPE'
+
+]]></template>
+<template module='RsfCluster' name='setup_add_vips_usage'><![CDATA[
+$cmdline
+Usage: [-y] [-c] [-n ip1,ip_2,...]
+
+   -y             Skip confirmation dialog by automatically
+                  answering Yes.
+
+   -c             Use cold restart for rsf-1 service instead of hot restart.
+
+   -n ip1,ip2,... List of IP addresses to using with new VIP(s).
+
+Add VIP(s) to the existing $NZA::RSF_CLUSTER_DOC_NAME service.
+
+]]></template>
+<template module='RsfCluster' name='setup_remove_vips_usage'><![CDATA[
+$cmdline
+Usage: [-c] [-n ip1,ip_2,...]
+
+   -c             Use cold restart for rsf-1 service instead of hot restart.
+
+   -n ip1,ip2,... List of VIP(s) to remove.
+
+Remove VIP(s) from the existing $NZA::RSF_CLUSTER_DOC_NAME service.
+
+]]></template>
+<template module='RsfCluster' name='setup_hb_properties_usage'><![CDATA[
+$cmdline
+Change configuration of heartbeats properties for the existing
+$NZA::RSF_CLUSTER_DOC_NAME group.
+
+This commands allow you to change inter-appliance heartbeats configuration
+via dedicated heartbeats disk, primary network interfaces or serial ports.
+
+]]></template>
+<template module='RsfCluster' name='setup_s_upgrade_hbdisks_usage'><![CDATA[
+$cmdline
+Upgrade heartbeats disks property for the existing
+$NZA::RSF_CLUSTER_DOC_NAME group.
+
+This action replaces setting for dedicated heartbeats disk and adds
+couple disks under shared volumes to use as hearbeats disks.
+
+]]></template>
+<template module='RsfCluster' name='applgroup__create_group_input_field'><![CDATA[
+
+                          * * *
+                      SYSTEM NOTICE
+
+ SCSI Target is installed on some appliance(s), but is not installed on all
+ members of the HA cluster.
+
+ To install SCSI Target plugin, run:
+
+ nmc\$ setup plugin install scsitarget
+
+]]></template>
+<template module='RsfCluster' name='_print_failover_recommendations'><![CDATA[
+
+Definition:
+Shared logical hostname maps onto one of the networking interfaces
+on each appliance, using name resolution services such as DNS, NIS,
+static mapping via /etc/hosts, /etc/netmasks, etc.
+
+Recommendation:
+Please verify that shared logical hostname is resolvable on each
+appliance in the group and networking tables are properly setup.
+
+]]></template>
+<template module='RsfCluster' name='show_shared_luns_usage'><![CDATA[
+
+Show list of luns which are accessible from all appliances.
+These luns can be used to create shared-volume service in $NZA::RSF_CLUSTER_DOC_NAME.
+
+See also: 'show group $NZA::RSF_CLUSTER_TYPE'
+See also: 'setup group $NZA::RSF_CLUSTER_TYPE $RSFSERVICE add'
+]]></template>
+<template module='RsfCluster' name='_service_network_conf'><![CDATA[
+Shared logical hostname '$failover_hostname' must be resolvable from
+all appliances in the cluster.
+
+You can choose to manually configure your DNS server, or local hosts
+tables on the appliances (see 'setup appliance hosts -h' for details).
+
+Alternatively, you could allow this cluster configuration logic to update
+your local hosts records automatically.
+
+Press No to leave the appliances' local hosts tables intact.
+]]></template>
+<template module='RsfCluster' name='create_rsf_cluster_group_usage'><![CDATA[
+$cmdline
+Usage: [cluster-name] [-d description]
+       [-p] [-y]
+       [hostname1 [hostname2 ...]]
+
+   <cluster-name>            Name of the new $NZA::RSF_CLUSTER_DOC_NAME
+   -d <description>          Optional description of the group
+
+   -y                        Skip confirmation dialog by automatically
+                             answering Yes.
+
+   -p                        Ping first. When defining a group
+                             non-interactively, it often makes sense
+                             to ensure connectivity with the specified
+                             appliances. The -p option is provided
+                             to verify that each appliance supplied
+                             via command line is "pingable" and is
+                             properly ssh-bound.
+
+   -N                        Disable network monitoring and automated
+                             failover if and when the appliance
+                             becomes unaccessible for (NFS, CIFS, iSCSI,
+                             etc.) clients.
+                             By default, the cluster monitors client
+                             network interface(s). The interface-down
+                             condition will trigger a failover.
+                             Use the -N option to override this behavior
+                             and disable monitoring.
+
+   hostname1 [hostname2...]  Space-delimited appliances - members of the
+                             new group, identified by their respective
+                             hostnames.
+
+
+                       Definitions & Terms
+                       ===================
+  $NZA::RSF_CLUSTER_DOC_NAME 1.0 is defined as a number of $NZA::PRODUCT
+  appliances running a defined set of services and monitoring each
+  other for failures. These $NZA::PRODUCT appliances are interconnected
+  by means of various communication channels, through which they
+  exchange information about their states and the services running on
+  them (heartbeats).
+
+  $NZA::RSF_CLUSTER_DOC_NAME service - a transferable unit
+  consisting of application start-up and shutdown code, its network
+  identity and its data. $NZA::RSF_CLUSTER_DOC_NAME services can be migrated
+  between $NZA::RSF_CLUSTER_DOC_NAME appliances either manually or
+  automatically upon failure of one appliance.
+
+  $NZA::PRODUCT $NZA::RSF_CLUSTER_DOC_NAME provides the basic
+  volume sharing service. $NZA::RSF_CLUSTER_DOC_NAME makes a
+  given shared volume, or volumes, Highly Available (HA), by providing access
+  on a near-continuous basis, regardless of certain common types of
+  hardware and software failure, and maintenance requirements.
+
+  $NZA::RSF_CLUSTER_DOC_NAME may contain two or more $NZA::PRODUCT
+  appliances.  None of the appliances in the cluster is specificaly
+  designated to be the "primary" or "active", as opposed to being
+  "secondary" or "passive". In fact, any appliance in the cluster
+  may be replaced by any other appliance in this same cluster, as far
+  as cluster provided service is concerned.
+
+  Because $NZA::RSF_CLUSTER_DOC_NAME servers must be certain that an appliance
+  (member of the cluster) is down before taking over its services,
+  $NZA::RSF_CLUSTER_DOC_NAME is normally configured to use several
+  communication channels through which to exchange heartbeats.
+  $NZA::PRODUCT appliances in the $NZA::RSF_CLUSTER_DOC_NAME
+  constantly monitor each other states and statuses, via heartbeats.
+  Only the loss of all heartbeat channels represents a failure.
+  If an appliance wrongly detects a failure, it may attempt to start a
+  service that is already running on another server, leading to
+  so-called split brain syndrome. This can result in confusion
+  and data corruption. Therefore:
+
+  *** IMPORTANT NOTICE ***
+
+  Multiple, redundant heartbeats prevent this occurring. If no services
+  are shared between two particular $NZA::PRODUCT appliances, then no direct
+  heartbeats are required between them. However, at least one heartbeat
+  must be transmitted to each member of a cluster for control and
+  monitoring requests to be propagated.
+
+  $NZA::RSF_CLUSTER_DOC_NAME supports 3 types of heartbeat
+  communication channels:
+
+  1) shared disk accessible and writeable from all appliances
+     in the cluster (also sometimes called quorum device)
+  2) Ethernet link
+  3) Serial link
+
+  For more information, please see a note on Fencing (below).
+
+  Appliances in the $NZA::RSF_CLUSTER_DOC_NAME periodically synchronize,
+  by exchanging their respective configurations.
+  No manual intervention required - the respective configurations
+  are continuously stored and backed up on-change, upon creation
+  (and for the lifetime) of a $NZA::RSF_CLUSTER_DOC_NAME.
+
+  $NZA::RSF_CLUSTER_DOC_NAME is capable of providing a variety of
+  High Availability (HA) services.
+  $NZA::RSF_CLUSTER_DOC_NAME ensures service continuity in presence of service
+  level exceptional events, including power outage, disk failures,
+  appliance running out of memory or crashing, etc.
+
+  In its first release, the $NZA::PRODUCT $NZA::RSF_CLUSTER_TYPE plugin
+  provides a fundamental service of sharing a given ZFS volume.
+  In the $NZA::PRODUCT $NZA::RSF_CLUSTER_TYPE, a given shared
+  volume will be accessible (and all its network shares will be
+  available) even if one of the appliances goes down or becomes
+  unresponsive.
+
+                       Network Monitoring
+                       ==================
+
+  $NZA::RSF_CLUSTER_DOC_NAME constantly monitors availability,
+  as far as (NFS, CIFS, iSCSI, etc.) clients on the network are
+  concerned (see the -N option above).
+
+  The monitoring logic is defined by two parameters: X an Y, where:
+  X equals number of heartbeats the interface is observed to be
+    down before action is taken, and
+  Y represents the number of heartbeats an interface must be observed
+  as up before marking it available again to the cluster.
+  The current implementation defines these parameters as 3 and 2,
+  respectively.
+
+                       Fencing
+                       =======
+
+  $NZA::PRODUCT $NZA::RSF_CLUSTER_DOC_NAME provides reliable
+  fencing through the utilisation of multiple types of heartbeats;
+  THE MOST IMPORTANT of these is the disk heartbeat, in conjunction
+  with any other type. Generally, additional heartbeat mechanisms
+  increase reliability of the cluster's fencing logic; the disk
+  heartbeats however are essential.
+
+  In addition, $NZA::PRODUCT $NZA::RSF_CLUSTER_DOC_NAME
+  provides a number of other failsafe mechanisms:
+
+  1) When a (volume sharing) service is to be started, the IP address
+     associated with that service should NOT be attached to any
+     interface. The cluster automatically detects and reports
+     the case when this is not so - that is, when the IP address is in
+     use. In this latter case, the local service start-up is not
+     performed.
+
+  2) On disc systems which support it, a SCSI reservation can be
+     placed on a disc before accessing the file systems, and the system
+     is set to panic should that reservation be lost.
+     This also serves to protect the data on a disc system.
+
+
+                       Final note
+                       ==========
+
+  Note that $NZA::RSF_CLUSTER_DOC_NAME IS A group of appliances,
+  and therefore provides a superset of the corresponding $NZA::PRODUCT
+  "basic group" functionality.  In particular, you could still use
+  the generic 'switch' command, to switch Management Console to
+  operate in a group mode - that is, execute CLI commands on all
+  appliances in the group (in this case - in the cluster).
+  See 'switch $NMC::APPL_GROUP' for details.
+  To view the existing groups of appliances, run:
+  'show $NMC::APPL_GROUP'.
+
+
+                       References
+                       ==========
+
+  $NZA::PRODUCT $NZA::RSF_CLUSTER_TYPE plugin is based on the
+  RSF-1 (http://www.high-availability.com)
+
+  The latter, first released in 1995, is an industry-leading
+  high-availability and cluster middleware application that
+  ensures critical applications and services are kept running in
+  the event of system failures.
+
+  RSF-1 (Resilient Server Facility) "sits" between the storage
+  volume management and application layers of typically:
+  web servers, application servers, firewall servers and database
+  servers, providing support for most leading applications in those
+  areas.
+
+  The terms "HA Cluster 1.0", "$NZA::PRODUCT HA Cluster",
+  and "RSF cluster" may be used interchangeably.
+
+  RSF-1 is a registered trademark of High-Availability.Com
+
+  Please see http://www.high-availability.com for more information on
+  the RSF-1 technology.
+
+
+See also: 'setup $NMC::APPL_GROUP'
+See also: 'switch $NMC::APPL_GROUP'
+See also: 'destroy $NMC::APPL_GROUP'
+
+See also: 'setup usage'
+See also: 'help'
+
+]]></template>
+<template module='RsfCluster' name='remove_rsfservice_usage'><![CDATA[
+Usage: $cmdline [-f] [-y] [-r]
+
+  -f    Force remove operation, disregard missing ZFS volume
+
+  -y    Skip confirmation dialog by automatically responding Yes
+
+  -r    Hot restart
+
+Remove existing volume sharing HA service from the $NZA::RSF_CLUSTER_DOC_NAME
+'$group_name' cluster.
+
+$NZA::RSF_CLUSTER_DOC_NAME makes a given shared volume
+Highly Available (HA), by providing access on a near-continuous basis,
+regardless of certain common types of hardware and software failure,
+and maintenance requirements.
+
+For definitions and terms, please see:
+${prompt}create group $NZA::RSF_CLUSTER_TYPE -h
+
+To add a new service, use:
+${prompt}setup group $NZA::RSF_CLUSTER_TYPE $group_name add
+
+The latter will perform an opposite (to removing $NZA::RSF_CLUSTER_DOC_NAME service)
+operation.
+
+
+See also: 'show group $NZA::RSF_CLUSTER_TYPE <cluster-name> status'
+See also: 'show group $NZA::RSF_CLUSTER_TYPE'
+
+See also: 'setup group $NZA::RSF_CLUSTER_TYPE'
+
+See also: 'create $NMC::APPL_GROUP $NZA::RSF_CLUSTER_TYPE'
+
+]]></template>
+<template module='RsfCluster' name='add_rsfservice_usage'><![CDATA[
+Usage: $cmdline [-r]
+
+  -r    Hot restart
+
+Add a new volume sharing HA service to the $NZA::RSF_CLUSTER_DOC_NAME
+'$group_name' cluster.
+
+$NZA::RSF_CLUSTER_DOC_NAME makes a given shared volume
+Highly Available (HA), by providing access on a near-continuous basis,
+regardless of certain common types of hardware and software failure,
+and maintenance requirements.
+
+For definitions and terms, please see:
+${prompt}create group $NZA::RSF_CLUSTER_TYPE -h
+
+To remove existing service, use:
+${prompt}setup group $NZA::RSF_CLUSTER_TYPE $group_name <service-name> remove
+
+The latter will perform an opposite (to adding $NZA::RSF_CLUSTER_DOC_NAME service)
+operation.
+
+
+See also: 'show group $NZA::RSF_CLUSTER_TYPE <cluster-name> status'
+See also: 'show group $NZA::RSF_CLUSTER_TYPE'
+
+See also: 'setup group $NZA::RSF_CLUSTER_TYPE'
+
+See also: 'create $NMC::APPL_GROUP $NZA::RSF_CLUSTER_TYPE'
+
+]]></template>
+<template module='RsfCluster' name='show_rsflog_usage'><![CDATA[
+$cmdline
+Usage: [-n numlines]
+
+   -n <numlines>            Number of lines to display from the tail
+
+Print $NZA::RSF_CLUSTER_DOC_NAME log for this node
+]]></template>
+</templatelist>

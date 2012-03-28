@@ -1,0 +1,327 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<templatelist name='nmc-comstar' copyright='(C) 2006-2012 Nexenta Systems, Inc.' locale='jp'>
+<template module='VTape' name='vtape_create_usage'><![CDATA[
+
+Create new $VTAPE_VERB.
+
+$VTAPE_PROD (Virtual Tape) is an emulated and fully virtualized
+SCSI Tape target built on top of high-performance COMSTAR
+technology.
+
+See also: 'show vtape'
+See also: 'setup vtape <name> destroy'
+
+]]></template>
+<template module='VTape' name='vtape_destroy_usage'><![CDATA[
+
+Destroy selected $VTAPE_VERB.
+
+$VTAPE_PROD (Virtual Tape) is an emulated and fully virtualized
+SCSI Tape target built on top of high-performance COMSTAR
+technology.
+
+See also: 'show vtape'
+
+]]></template>
+<template module='VTape' name='vtape_show_usage'><![CDATA[
+
+Show all existing $VTAPE_PROD(s).
+
+$VTAPE_PROD (Virtual Tape) is an emulated and fully virtualized
+SCSI Tape target built on top of high-performance COMSTAR
+technology.
+
+See also: 'setup vtape <name> $VTAPE_VERB'
+
+]]></template>
+<template module='Comstar' name='iscsi_config_usage'><![CDATA[
+
+setup iscsi config save
+------------------------
+
+Save the comstar configuration into a plain text file.
+
+Comstar configuration includes the targets, initiators, target groups
+and the host groups configured in the system.
+
+This dump file could later be used to restore the configuration in the same node
+or a remote node in a cluster configuration.
+
+setup iscsi config restore
+--------------------------
+
+Restore the comstar configuration from a plain text file.
+
+Comstar configuration includes the targets, initiators, target groups
+and the host groups configured in the system.
+
+This dump file should be created by the save command in this node
+or a remote node in a cluster configuration.
+
+See also: 'setup iscsi'
+
+]]></template>
+<template module='Comstar' name='setup_iscsi_target_usage'><![CDATA[
+$cmdline
+Usage: [value]
+
+Set iSCSI Target parameter '$name' to the specified <value>.
+For more information, run 'help iscsitadm' or see iscsitadm(1m).
+
+See also: 'create zvol'
+See also: 'setup iscsi'
+
+See also: 'show iscsi target tpgt'
+
+See also: 'setup zvol <name> tpgt'
+
+]]></template>
+<template module='Comstar' name='_backround_info'><![CDATA[
+  $zvol_uc
+  $line_uc
+
+  Appliance's $NMC::ZFS_LUN is a virtual resizable thin provisoned
+  block device based on a given appliance's volume.
+
+  The primary usage for ${NMC::ZFS_LUN}s is to provide
+  irtual resizable thin provisoned block devices to SCSI initiators on
+  the Storage Area Network.
+
+  To that end, the appliance includes SCSI Target plugin.
+
+  SCSI Target (COMSTAR)
+  =====================
+
+  Common Multi-protocol SCSI TARget, or COMSTAR, is a software framework
+  that enables users to create SCSI targets of any type
+  (such as iSCSI or Fibre Channel) that can be accessed over a storage
+  network by SCSI initiator hosts. The appliance provides SCSI Target
+  plugin software, to facilitate and simplify the corresponding system
+  administration tasks.
+
+  For details, please refer to the appliance's documentation, at:
+
+  (*) http://www.nexenta.com/docs
+  (look for "SCSI Target")
+
+]]></template>
+<template module='Comstar' name='share_zvol_usage'><![CDATA[
+
+$cmdline
+
+Usage:
+  -i        map to a specified initiator group. If it is omitted
+            $NMC::ZFS_LUN is mapped to all intitiators.
+
+  -t        use a specified target group. It may be omitted.
+            Default value is 'All'.
+
+Map a given $NMC::ZFS_LUN to all SCSI initiators or specified initiator
+group on the Storage Area Network (SAN), for the subsequent access via
+any supported transport, including iSCSI and FC. The command is a
+simplified version of the general LUN mapping facility (see below),
+whereby a given virtual device gets mapped to a SCSI initiator.
+
+]]></template>
+<template module='Comstar' name='share_zvol_usage1'><![CDATA[
+You can use this appliance's CLI to perform basic operations on
+${NMC::ZFS_LUN}s, including:
+
+  1) map a given virtual block device ($NMC::ZFS_LUN) to ALL
+     SCSI initiator hosts on the SAN
+  2) map a given virtual block device ($NMC::ZFS_LUN) to a
+     specified initiator group using a specified target group
+  3) show existing LUN mappings
+
+The command line interface does not support any block level transport other
+than iSCSI at the moment. Note also that '$SHARE_WORD $NMC::ZFS_LUN' operation
+does not create iSCSI targets, implicitly or explicitly.
+The '$SHARE_WORD $NMC::ZFS_LUN' command executes on a fundamental SCSI level.
+
+Use the following command to view existing LUN mappings for all ${NMC::ZFS_LUN}s
+in the system:
+
+ ${prompt}show $NMC::ZFS_LUN $MAPPINGS_WORD
+
+The following shows the mappings for a given ${NMC::ZFS_LUN}:
+
+ ${prompt}show $NMC::ZFS_LUN $zname $MAPPINGS_WORD
+
+where '$zname' is the name of the $NMC::ZFS_LUN
+
+For advanced functionality, which includes support for Fibre Channel
+and complete management of initiator groups, target groups and LUN mappings
+please refer to:
+
+  (*) http://www.nexenta.com/corp/nexentastor-plugins
+      (look for "SCSI Target")
+
+
+See also: '$UNSHARE_WORD $NMC::ZFS_LUN'
+
+See also: 'show $SCSI_TARGET'
+
+See also: 'setup <folder> share'
+
+See also: 'setup network service iscsi-target'
+
+See also: 'show share'
+See also: 'show $NMC::ZFS_LUN'
+
+See also: 'setup usage'
+See also: 'help'
+
+]]></template>
+<template module='Comstar' name='unshare_zvol_usage'><![CDATA[
+$cmdline
+
+Unshare $NMC::ZFS_LUN - remove all existing LUN mappings.
+
+The command is a simplified and restricted version of
+the general LUN un-mapping facility, whereby a given virtual
+device gets unmapped from ALL SCSI initiators on SAN.
+
+]]></template>
+<template module='Comstar' name='unshare_zvol_usage1'><![CDATA[
+After ${NMC::ZFS_LUN} device is unshared (unmapped), it can be designated,
+for instance, as additional swap devices used by appliance's virtual memory
+subsystem when there is not enough RAM. To add or delete swap areas, use
+'setup appliance swap' command.
+
+Use the following command to view existing LUN mappings for all ${NMC::ZFS_LUN}s
+in the system:
+
+ ${prompt}show $NMC::ZFS_LUN $MAPPINGS_WORD
+
+The following shows the mappings for a given ${NMC::ZFS_LUN}:
+
+ ${prompt}show $NMC::ZFS_LUN $zname $MAPPINGS_WORD
+
+where '$zname' is the name of the $NMC::ZFS_LUN
+
+
+See also: '$SHARE_WORD $NMC::ZFS_LUN'
+
+See also: 'show $SCSI_TARGET'
+
+See also: 'setup <folder> share'
+
+See also: 'show share'
+See also: 'show $NMC::ZFS_LUN'
+
+See also: 'setup network service iscsi-target'
+
+See also: 'setup usage'
+See also: 'help'
+
+]]></template>
+<template module='Comstar' name='show_zvol_mappings_usage'><![CDATA[
+$cmdline
+Usage: [-v]
+
+  -v	Verbose output: in addition to LUN mappings,
+	show all available target groups, initiator groups and initiators.
+
+Show existing LUN mappings for a given $NMC::ZFS_LUN.
+Optionally (the -v option), include in the output all available
+target groups, initiator groups and initiators
+
+]]></template>
+<template module='Comstar' name='show_zvol_mappings_usage1'><![CDATA[
+For advanced functionality, which includes support for Fibre Channel
+and complete management of initiator groups, target groups and LUN mappings
+please refer to:
+
+  (*) http://www.nexenta.com/corp/nexentastor-plugins
+      (look for "SCSI Target")
+
+See also: '$SHARE_WORD $NMC::ZFS_LUN'
+See also: '$UNSHARE_WORD $NMC::ZFS_LUN'
+
+See also: 'show $SCSI_TARGET'
+
+See also: 'setup <folder> share'
+
+See also: 'show share'
+See also: 'show $NMC::ZFS_LUN'
+
+See also: 'setup network service iscsi-target'
+
+See also: 'setup usage'
+See also: 'help'
+
+]]></template>
+<template module='Comstar' name='show_scsi_target_usage'><![CDATA[
+$cmdline
+Usage: [-v]
+
+  -v	Verbose output: in addition all target and initiator groups,
+	show all existing LUN mappings.
+
+
+Unshare $NMC::ZFS_LUN - remove all existing LUN mappings.
+
+Show target and initiator groups, and optionally (the -v option) LUN mappings
+
+]]></template>
+<template module='Comstar' name='show_scsi_target_usage1'><![CDATA[
+
+The following shows the mappings for a given ${NMC::ZFS_LUN}:
+
+ ${prompt}show $NMC::ZFS_LUN $zname $MAPPINGS_WORD
+
+where '$zname' is the name of the $NMC::ZFS_LUN
+
+
+See also: '$SHARE_WORD $NMC::ZFS_LUN'
+
+See also: 'setup <folder> share'
+
+See also: 'show share'
+See also: 'show $NMC::ZFS_LUN'
+
+See also: 'setup network service iscsi-target'
+
+See also: 'setup usage'
+See also: 'help'
+
+]]></template>
+<template module='Comstar' name='show_cache_zvol_usage'><![CDATA[
+
+Usage: setup $NMC::ZFS_LUN $CACHE_WORD [mode]
+
+  mode:	enable  - enables write back cache for all zvols
+ 	disable - disables write back cache for all zvols
+
+NexentaStor allows to easily switch zvols write caching mode. It can be done
+for all storage devices or only for devices that belongs to the same volume.
+
+To change mode for zvols of a given volume only use a command:
+ ${prompt}setup volume volume-name $NMC::ZFS_LUN $CACHE_WORD mode
+
+By default all zvols have write cache enabled. It allows to transfer data
+faster but in some cases data corruptions may occur. Disabling the write
+caching may solve the data corruption problem but it has its own tradeoff.
+The biggest tradeoff is I/O perfomance: flushing every single write to the
+persistent storage may(and will) incur a slow down.
+
+Note also that zvols are virtual devices which can "sit" on top of iSCSI, SAS,
+SATA, FC drives, locally and remotely attached. The corresponding SCSI primitive
+that performs cache flushing may be implemented differently by the drive vendors.
+
+Examples:
+1) ${prompt}setup $NMC::ZFS_LUN $CACHE_WORD $CACHE_DISABLE
+   Disable write cache for all appliance`s zvols.
+
+2) ${prompt}setup volume data $NMC::ZFS_LUN $CACHE_WORD $CACHE_ENABLE
+   Enable write cache for all zvols of a volume data.
+
+See also: 'show $NMC::ZFS_LUN'
+
+See also: 'setup volume'
+
+See also: 'setup usage'
+See also: 'help'
+
+]]></template>
+</templatelist>
