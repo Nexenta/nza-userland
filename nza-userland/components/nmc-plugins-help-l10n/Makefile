@@ -26,7 +26,7 @@
 include ../../make-rules/shared-macros.mk
 
 COMPONENT_NAME   = nmc-plugins-help-l10n
-OMPONENT_VERSION = 40-0-0
+COMPONENT_VERSION = 40-0-0
 
 include $(WS_TOP)/make-rules/ips.mk
 
