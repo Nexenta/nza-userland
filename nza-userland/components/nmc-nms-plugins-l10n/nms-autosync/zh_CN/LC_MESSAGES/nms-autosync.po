@@ -1,0 +1,235 @@
+# Chinese translations for AUTOSYNC package
+# AUTOSYNC 软件包的简体中文翻译.
+# Copyright (C) 2012 Nexenta Systems, Inc.
+# This file is distributed under the same license as the AUTOSYNC package.
+# Automatically generated, 2012.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: AUTOSYNC 4.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-03-18 18:30-0700\n"
+"PO-Revision-Date: 2012-03-18 18:30-0700\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: nms-autosync/AutoSync.pm:316 nms-autosync/AutoSync.pm:452
+msgid "Could not mount folder %(to_fs)s on %(host)s"
+msgstr ""
+
+#: nms-autosync/AutoSync.pm:368
+msgid "Could not execute remote call to %(host)s"
+msgstr ""
+
+#: nms-autosync/AutoSync.pm:594
+msgid "Service %(fmri)s already exists."
+msgstr ""
+
+#: nms-autosync/AutoSync.pm:631
+#, perl-format
+msgid ""
+"You must have enabled reverse-direction when both appliances are online. "
+"Can't setup 'reverse-direction' on remote appliance: %s"
+msgstr ""
+
+#: nms-autosync/AutoSync.pm:638
+#, perl-format
+msgid "'reverse-direction' can't set property 'zfs/reverse_capable': %s"
+msgstr ""
+
+#: nms-autosync/AutoSync.pm:664
+msgid "Remote appliance is not running. This operation does not make sense."
+msgstr ""
+
+#: nms-autosync/AutoSync.pm:668
+msgid "Please run 'reverse-direction' on master appliance."
+msgstr ""
+
+#: nms-autosync/AutoSync.pm:680
+msgid "service %(name)s is not running."
+msgstr ""
+
+#: nms-autosync/AutoSync.pm:703 nms-autosync/AutoSync.pm:722
+#: nms-autosync/AutoSync.pm:1789
+msgid "System call error: %(lines)s"
+msgstr ""
+
+#: nms-autosync/AutoSync.pm:750
+msgid "%(name)s is locked"
+msgstr ""
+
+#: nms-autosync/AutoSync.pm:762
+msgid ""
+"Remote host is not acessible, but auto-sync service should be deleted there "
+"too. Use -f option to pass it. "
+msgstr ""
+
+#: nms-autosync/AutoSync.pm:769
+msgid "Can't access remote appliance '%(host)s'. Use -f option to pass this. "
+msgstr ""
+
+#: nms-autosync/AutoSync.pm:780
+msgid ""
+"Can't delete auto-sync service (for reverse-direction) '%(name)s' on remote "
+"appliance. Use -f option to overcome this."
+msgstr ""
+
+#: nms-autosync/AutoSync.pm:885
+msgid "Node %(host)s is not pingable. Operation failed."
+msgstr ""
+
+#: nms-autosync/AutoSync.pm:892
+msgid "lost connectivity to appliance '%(host)s' - NMS down"
+msgstr ""
+
+#: nms-autosync/AutoSync.pm:1202
+msgid "invalid source URL"
+msgstr ""
+
+#: nms-autosync/AutoSync.pm:1207
+msgid "invalid destination URL"
+msgstr ""
+
+#: nms-autosync/AutoSync.pm:1230
+msgid "invalid protocol"
+msgstr ""
+
+#: nms-autosync/AutoSync.pm:1236
+msgid "unknown protocol '%(proto)s'"
+msgstr ""
+
+#: nms-autosync/AutoSync.pm:1264
+msgid "%(proto)s: %(remdesc)s host '%(host)' not accessible via SSH"
+msgstr ""
+
+#: nms-autosync/AutoSync.pm:1275
+msgid "%(proto)s: %(remdesc)s dataset '%(host):/%(zname)' not found"
+msgstr ""
+
+#: nms-autosync/AutoSync.pm:1289
+msgid ""
+"%(proto)s: %(remdesc)s dataset '%(check_host)s:/%(dzname)s' already exist"
+msgstr ""
+
+#: nms-autosync/AutoSync.pm:1295
+msgid "%(proto)s: %(desc)s dataset 'localhost:/%(lzname)s' not found"
+msgstr ""
+
+#: nms-autosync/AutoSync.pm:1308
+msgid ""
+"%(proto)s: %(remdesc)s volume '%(check_host)s:/%(check_fs)s' already "
+"contains snapshots"
+msgstr ""
+
+#: nms-autosync/AutoSync.pm:1328
+msgid "%(proto)s: %(remdesc)% dataset '%(host)s:/%(zname)s' not found"
+msgstr ""
+
+#: nms-autosync/AutoSync.pm:1360
+msgid ""
+"%(proto)s: %(remdesc)s volume '%(host)s:/%(zname)s' already contains "
+"snapshots"
+msgstr ""
+
+#: nms-autosync/AutoSync.pm:1411
+msgid "'any' type protocol implies remote => local direction"
+msgstr ""
+
+#: nms-autosync/AutoSync.pm:1416
+msgid "source path is not specified"
+msgstr ""
+
+#: nms-autosync/AutoSync.pm:1421
+msgid "destination path is not specified"
+msgstr ""
+
+#: nms-autosync/AutoSync.pm:1426
+msgid "invalid source path '%(src_path)s', try to use '/*'"
+msgstr ""
+
+#: nms-autosync/AutoSync.pm:1432
+msgid "can't perform sync from remote to remote"
+msgstr ""
+
+#: nms-autosync/AutoSync.pm:1438
+msgid "can't perform sync, source is the same as destination"
+msgstr ""
+
+#: nms-autosync/AutoSync.pm:1594
+msgid ""
+"%(dst_proto)s: destination mount point directory '%(dst_host)s:%(prefix)s"
+"%(dst_path)s/%(dir)s' is not empty\n"
+msgstr ""
+
+#: nms-autosync/AutoSync.pm:1634
+msgid ""
+"Could not perform %(METHOD_SYNC)s to destination folder '%(dst_host)s/"
+"%(dst_path)s' because this folder used as source by '%(svcs)s'"
+msgstr ""
+
+#: nms-autosync/AutoSync.pm:1655
+msgid "cannot open '%(src_path)s' on '%(src_host)s': dataset does not exist\n"
+msgstr ""
+
+#: nms-autosync/AutoSync.pm:1666
+msgid "cannot open '%(dst_path)s' on '%(dst_host)s': dataset does not exist\n"
+msgstr ""
+
+#: nms-autosync/AutoSync.pm:1669
+#, perl-format
+msgid "Not enough space on %s. "
+msgstr ""
+
+#: nms-autosync/AutoSync.pm:1691
+msgid "Couldn't get version of volume '%(volume_name)s' at %(dst_host)s. "
+msgstr ""
+
+#: nms-autosync/AutoSync.pm:1694
+msgid ""
+"Version of volume '%(volume_name)s' at %(dst_host)s is %(vol_version)s. "
+"Volume version less than 22. "
+msgstr ""
+
+#: nms-autosync/AutoSync.pm:1700
+msgid "Deduplication and Copy permissions will be forcibly disabled."
+msgstr ""
+
+#: nms-autosync/AutoSync.pm:1773
+msgid "No folders found."
+msgstr ""
+
+#: nms-autosync/AutoSync.pm:1777
+msgid "Wrong arguments: %(arg_folder)s, %(arg_a)s"
+msgstr ""
+
+#: nms-autosync/AutoSync.pm:1833
+msgid "No appropriate folders found among following: %(folders)s"
+msgstr ""
+
+#: nms-autosync/AutoSync.pm:1857
+msgid "Couldn't find trigger object"
+msgstr ""
+
+#: nms-autosync/SYNCUtil.pm:2570
+#, perl-format
+msgid "Node %s is not pingable. Operation failed."
+msgstr ""
+
+#: nms-autosync/SYNCUtil.pm:2577
+#, perl-format
+msgid "lost connectivity to appliance '%s' - NMS down"
+msgstr ""
+
+#: nms-autosync/metafile.pm:109
+msgid "Could not transfer %(service)s to remote appliance: %s"
+msgstr ""
+
+#: nms-autosync/metafile.pm:135
+msgid ""
+"Can't share folder: dataset is destination for auto-sync service. Destroy "
+"service ':%(instance)s' first"
+msgstr ""

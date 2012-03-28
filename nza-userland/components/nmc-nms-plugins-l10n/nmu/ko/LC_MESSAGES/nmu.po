@@ -1,0 +1,140 @@
+# Korean translations for NMU package
+# NMU 패키지에 대한 한국어 번역문.
+# Copyright (C) 2012 Nexenta Systems, Inc.
+# This file is distributed under the same license as the NMU package.
+# Automatically generated, 2012.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: NMU 4.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-03-25 14:18-0700\n"
+"PO-Revision-Date: 2012-03-25 14:18-0700\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: ko\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: nmu.pl:237
+msgid "Error open file '%(NMU_ERROR_LOG)s' for write: %s"
+msgstr ""
+
+#: nmu.pl:255
+msgid "Unable to verify free space: %(list_lines)s\n"
+msgstr ""
+
+#: nmu.pl:261
+msgid "This upgrade will download approximately %(need_s)sMB"
+msgstr ""
+
+#: nmu.pl:300
+msgid "Success. %(info_msg)s\n"
+msgstr ""
+
+#: nmu.pl:305
+msgid "Error: %(msg)s\n"
+msgstr ""
+
+#: nmu.pl:306
+msgid ""
+"ZFS on-disk version is too old: cannot upgrade. For more information, please "
+"see NexentaStor FAQ or contact technical support\n"
+msgstr ""
+
+#: nmu.pl:388
+msgid "Simulating appliance upgrade...\n"
+msgstr ""
+
+#: nmu.pl:395
+msgid "Initiating appliance upgrade procedure. Please wait...\n"
+msgstr ""
+
+#: nmu.pl:397 nmu.pl:490
+msgid "Could not download all needed packages. Check failed.\n"
+msgstr ""
+
+#: nmu.pl:412
+msgid "Could not run upgrade simulation. Check failed.\n"
+msgstr ""
+
+#: nmu.pl:437
+msgid "Error get ZFS version: %(lines)s\n"
+msgstr ""
+
+#: nmu.pl:452
+msgid ""
+"All root filesystems (checkpoints) have an old on-disk ZFS version "
+"'%(max_zfs_ver)s'"
+msgstr ""
+
+#: nmu.pl:461
+msgid "Error get Volume version: %(lines)s\n"
+msgstr ""
+
+#: nmu.pl:468
+msgid "System volume '%(SYSPOOL)s' on-disk version '%(ver)s' is less than '10'"
+msgstr ""
+
+#: nmu.pl:474
+msgid "This upgrade will require REBOOT. Proceed?"
+msgstr ""
+
+#: nmu.pl:475
+msgid "Upgrade interrupted.\n"
+msgstr ""
+
+#: nmu.pl:480
+msgid ""
+"In-place upgrade is not allowed in NMV terminal. Upgrade interrupted.\n"
+"Please login using SSH and use command 'setup appliance upgrade' instead.\n"
+msgstr ""
+
+#: nmu.pl:488
+msgid "Downloading upgrades. This may take a few minutes. Please wait...\n"
+msgstr ""
+
+#: nmu.pl:498
+msgid "Upgrade is in progress. Please DO NOT interrupt...\n"
+msgstr ""
+
+#: nmu.pl:517
+msgid "Creating %(clone_desc)s...\n"
+msgstr ""
+
+#: nmu.pl:528
+msgid ""
+"\n"
+"%(clone_desc)s has been created: %(rootfs_nosyspool)s\n"
+"\n"
+"Use NMC 'show appliance checkpoint' command to list all available\n"
+"system checkpoints\n"
+msgstr ""
+
+#: nmu.pl:579
+msgid "Unable to initiate upgrade: %(tmpdir)s already exists!\n"
+msgstr ""
+
+#: nmu.pl:617
+msgid "Upgrade failed. Would you like to rollback changes now?"
+msgstr ""
+
+#: nmu.pl:622
+msgid ""
+"\n"
+"Checkpoint '%(rootfs_nosyspool)s' needs to be rolled back.\n"
+"\n"
+"Use 'setup appliance checkpoint %(rootfs_nosyspool)s activate' command to\n"
+"rollback this upgrade (i.e. revert changes) after reboot\n"
+"\n"
+msgstr ""
+
+#: nmu.pl:655
+msgid "Would you like to reboot now ?"
+msgstr ""
+
+#: nmu.pl:657
+msgid "Operation in progress...\n"
+msgstr ""

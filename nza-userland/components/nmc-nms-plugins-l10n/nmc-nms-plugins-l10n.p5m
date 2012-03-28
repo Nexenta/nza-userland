@@ -1,0 +1,83 @@
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+# Copyright (c) 2012, Nexenta Systems, Inc. All rights reserved.
+#
+
+<transform file path=usr.*/man/.+                -> default mangler.man.stability volatile>
+
+set name=pkg.fmri \
+    value=pkg:/nmc/nms/plugins/l10n@1,$(BUILD_VERSION)
+set name=pkg.summary value="Localization of NMC, NMS, NMV and plugins"
+set name=org.opensolaris.consolidation value=$(CONSOLIDATION)
+set name=variant.opensolaris.zone value=global
+
+depend fmri=pkg:/text/gnu/gettext type=require
+
+dir path=usr
+dir path=usr/share
+dir path=usr/share/locale
+dir path=usr/share/locale/de
+dir path=usr/share/locale/de/LC_MESSAGES
+dir path=usr/share/locale/ja
+dir path=usr/share/locale/ja/LC_MESSAGES
+dir path=usr/share/locale/ko
+dir path=usr/share/locale/ko/LC_MESSAGES
+dir path=usr/share/locale/ru
+dir path=usr/share/locale/ru/LC_MESSAGES
+dir path=usr/share/locale/zh_CN
+dir path=usr/share/locale/zh_CN/LC_MESSAGES
+
+file nmc/de/LC_MESSAGES/nmc.mo path=usr/share/locale/de/LC_MESSAGES/nmc.mo
+file nmc/ja/LC_MESSAGES/nmc.mo path=usr/share/locale/ja/LC_MESSAGES/nmc.mo
+file nmc/ko/LC_MESSAGES/nmc.mo path=usr/share/locale/ko/LC_MESSAGES/nmc.mo
+file nmc/ru/LC_MESSAGES/nmc.mo path=usr/share/locale/ru/LC_MESSAGES/nmc.mo
+file nmc/zh_CN/LC_MESSAGES/nmc.mo path=usr/share/locale/zh_CN/LC_MESSAGES/nmc.mo
+file nms/de/LC_MESSAGES/nms.mo path=usr/share/locale/de/LC_MESSAGES/nms.mo
+file nms/ja/LC_MESSAGES/nms.mo path=usr/share/locale/ja/LC_MESSAGES/nms.mo
+file nms/ko/LC_MESSAGES/nms.mo path=usr/share/locale/ko/LC_MESSAGES/nms.mo
+file nms/ru/LC_MESSAGES/nms.mo path=usr/share/locale/ru/LC_MESSAGES/nms.mo
+file nms/zh_CN/LC_MESSAGES/nms.mo path=usr/share/locale/zh_CN/LC_MESSAGES/nms.mo
+file nms-autosmart/de/LC_MESSAGES/nms-autosmart.mo path=usr/share/locale/de/LC_MESSAGES/nms-autosmart.mo
+file nms-autosmart/ja/LC_MESSAGES/nms-autosmart.mo path=usr/share/locale/ja/LC_MESSAGES/nms-autosmart.mo
+file nms-autosmart/ko/LC_MESSAGES/nms-autosmart.mo path=usr/share/locale/ko/LC_MESSAGES/nms-autosmart.mo
+file nms-autosmart/ru/LC_MESSAGES/nms-autosmart.mo path=usr/share/locale/ru/LC_MESSAGES/nms-autosmart.mo
+file nms-autosmart/zh_CN/LC_MESSAGES/nms-autosmart.mo path=usr/share/locale/zh_CN/LC_MESSAGES/nms-autosmart.mo
+file nms-autosync/de/LC_MESSAGES/nms-autosync.mo path=usr/share/locale/de/LC_MESSAGES/nms-autosync.mo
+file nms-autosync/ja/LC_MESSAGES/nms-autosync.mo path=usr/share/locale/ja/LC_MESSAGES/nms-autosync.mo
+file nms-autosync/ko/LC_MESSAGES/nms-autosync.mo path=usr/share/locale/ko/LC_MESSAGES/nms-autosync.mo
+file nms-autosync/ru/LC_MESSAGES/nms-autosync.mo path=usr/share/locale/ru/LC_MESSAGES/nms-autosync.mo
+file nms-autosync/zh_CN/LC_MESSAGES/nms-autosync.mo path=usr/share/locale/zh_CN/LC_MESSAGES/nms-autosync.mo
+file nms-comstar/de/LC_MESSAGES/nms-comstar.mo path=usr/share/locale/de/LC_MESSAGES/nms-comstar.mo
+file nms-comstar/ja/LC_MESSAGES/nms-comstar.mo path=usr/share/locale/ja/LC_MESSAGES/nms-comstar.mo
+file nms-comstar/ko/LC_MESSAGES/nms-comstar.mo path=usr/share/locale/ko/LC_MESSAGES/nms-comstar.mo
+file nms-comstar/ru/LC_MESSAGES/nms-comstar.mo path=usr/share/locale/ru/LC_MESSAGES/nms-comstar.mo
+file nms-comstar/zh_CN/LC_MESSAGES/nms-comstar.mo path=usr/share/locale/zh_CN/LC_MESSAGES/nms-comstar.mo
+file nms-confguard/de/LC_MESSAGES/nms-confguard.mo path=usr/share/locale/de/LC_MESSAGES/nms-confguard.mo
+file nms-confguard/ja/LC_MESSAGES/nms-confguard.mo path=usr/share/locale/ja/LC_MESSAGES/nms-confguard.mo
+file nms-confguard/ko/LC_MESSAGES/nms-confguard.mo path=usr/share/locale/ko/LC_MESSAGES/nms-confguard.mo
+file nms-confguard/ru/LC_MESSAGES/nms-confguard.mo path=usr/share/locale/ru/LC_MESSAGES/nms-confguard.mo
+file nms-confguard/zh_CN/LC_MESSAGES/nms-confguard.mo path=usr/share/locale/zh_CN/LC_MESSAGES/nms-confguard.mo
+file nmu/de/LC_MESSAGES/nmu.mo path=usr/share/locale/de/LC_MESSAGES/nmu.mo
+file nmu/ja/LC_MESSAGES/nmu.mo path=usr/share/locale/ja/LC_MESSAGES/nmu.mo
+file nmu/ko/LC_MESSAGES/nmu.mo path=usr/share/locale/ko/LC_MESSAGES/nmu.mo
+file nmu/ru/LC_MESSAGES/nmu.mo path=usr/share/locale/ru/LC_MESSAGES/nmu.mo
+file nmu/zh_CN/LC_MESSAGES/nmu.mo path=usr/share/locale/zh_CN/LC_MESSAGES/nmu.mo
+
