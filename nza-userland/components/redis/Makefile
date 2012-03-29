@@ -19,6 +19,7 @@
 # CDDL HEADER END
 #
 # Copyright (c) 2012, David Höppner
+# Copyright (c) 2012, Nexenta Systems, Inc.
 #
 
 include ../../make-rules/shared-macros.mk
@@ -31,11 +32,15 @@ COMPONENT_PROJECT_URL  = http://redis.io
 COMPONENT_ARCHIVE_HASH = sha1:cd0835f1076ad36797ed6543af187ac28a29953f
 COMPONENT_ARCHIVE_URL  = http://redis.googlecode.com/files/$(COMPONENT_ARCHIVE)
 
-include ../../make-rules/prep.mk
-include ../../make-rules/justmake.mk
-include ../../make-rules/ips.mk
+include $(WS_TOP)/make-rules/prep.mk
+include $(WS_TOP)/make-rules/justmake.mk
+include $(WS_TOP)/make-rules/ips.mk
 
-COMPONENT_BUILD_ENV= ARCH=""
+
+# Redis' Makefiles expect GCC.
+# If building with other compiler, overwrite CFLAGS.
+COMPONENT_BUILD_ENV = ARCH=""
+COMPONENT_BUILD_ENV += CC="$(CC)"
 
 COMPONENT_INSTALL_ARGS += PREFIX=/$(PROTO_DIR)/usr
 
@@ -47,4 +52,4 @@ test:		$(TEST_32)
 
 BUILD_PKG_DEPENDENCIES =	$(BUILD_TOOLS)
 
-include ../../make-rules/depend.mk
+include $(WS_TOP)/make-rules/depend.mk
