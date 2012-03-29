@@ -29,8 +29,6 @@ set name=pkg.summary value="Localization of NMC, NMS, NMV and plugins"
 set name=org.opensolaris.consolidation value=$(CONSOLIDATION)
 set name=variant.opensolaris.zone value=global
 
-depend fmri=pkg:/text/gnu/gettext type=require
-
 dir path=usr
 dir path=usr/share
 dir path=usr/share/locale
