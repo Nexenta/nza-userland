@@ -18,7 +18,7 @@
 #
 # CDDL HEADER END
 #
-# Copyright (c) 2011, Nexenta Systems, Inc. All rights reserved.
+# Copyright (c) 2012, Nexenta Systems, Inc. All rights reserved.
 #
 
 <transform file path=usr.*/man/.+                -> default mangler.man.stability volatile>
@@ -39,3 +39,5 @@ dir path=usr/bin
 
 file apt-clone         path=usr/bin/apt-clone
 file apt.conf.nexenta  path=etc/apt/apt.conf.d/01-nexenta
+
+depend fmri=pkg:/library/perl-5/file-tee type=require

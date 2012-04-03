@@ -1157,6 +1157,13 @@ select(STDOUT); $| = 1;
 # disable CTRL-C
 $SIG{'INT'}  = 'IGNORE';
 
+# logging
+use File::Tee qw(tee);
+use POSIX;
+use constant DATETIME => strftime("%Y-%m-%d_%H-%M-%S", localtime);
+my $clone_log = "/root/.aptclone.".DATETIME;
+tee(STDOUT,'>>',$clone_log);
+
 # 
 # deal with -- options, we want to pass them as-is
 # down to apt-get ...
