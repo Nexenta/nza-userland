@@ -18,38 +18,32 @@
 #
 # CDDL HEADER END
 #
-# Copyright (c) 2012, David Höppner
-# Copyright (c) 2012, Nexenta Systems, Inc.
+
+#
+# Copyright (c) 2012, Nexenta Systems, Inc. All rights reserved.
 #
 
 include ../../make-rules/shared-macros.mk
 
-COMPONENT_NAME         = redis
-COMPONENT_VERSION      = 2.4.7
-COMPONENT_SRC          = $(COMPONENT_NAME)-$(COMPONENT_VERSION)
-COMPONENT_ARCHIVE      = $(COMPONENT_SRC).tar.gz
-COMPONENT_PROJECT_URL  = http://redis.io
-COMPONENT_ARCHIVE_HASH = sha1:cd0835f1076ad36797ed6543af187ac28a29953f
-COMPONENT_ARCHIVE_URL  = http://redis.googlecode.com/files/$(COMPONENT_ARCHIVE)
+COMPONENT_NAME         := augeas
+COMPONENT_VERSION      := 0.10.0
+COMPONENT_SRC          := $(COMPONENT_NAME)-$(COMPONENT_VERSION)
+COMPONENT_ARCHIVE      := $(COMPONENT_SRC).tar.gz
+COMPONENT_ARCHIVE_URL  := http://augeas.net/download/$(COMPONENT_ARCHIVE)
+COMPONENT_ARCHIVE_HASH := sha1:6d1d7b4572c05748d537f3ff12c5ac8ceb6b49bd
+COMPONENT_PROJECT_URL  := http://augeas.net
 
 include $(WS_TOP)/make-rules/prep.mk
-include $(WS_TOP)/make-rules/justmake.mk
+include $(WS_TOP)/make-rules/configure.mk
 include $(WS_TOP)/make-rules/ips.mk
 
+build:		$(BUILD_32_and_64)
 
-# Redis' Makefiles expect GCC.
-# If building with other compiler, overwrite CFLAGS.
-COMPONENT_BUILD_ENV = ARCH=""
-COMPONENT_BUILD_ENV += CC="$(CC)"
+install:	$(INSTALL_32_and_64)
 
-COMPONENT_INSTALL_ARGS += PREFIX=/$(PROTO_DIR)/usr
+test:		$(NO_TESTS)
 
-build:		$(BUILD_32)
-
-install:	$(INSTALL_32)
-
-test:		$(TEST_32)
-
-BUILD_PKG_DEPENDENCIES =	$(BUILD_TOOLS)
+BUILD_PKG_DEPENDENCIES = $(BUILD_TOOLS)
 
 include $(WS_TOP)/make-rules/depend.mk
+
