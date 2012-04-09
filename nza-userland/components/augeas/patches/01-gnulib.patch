@@ -1,0 +1,22 @@
+diff -dubr augeas-0.10.0.orig/src/Makefile.am augeas-0.10.0/src/Makefile.am
+--- augeas-0.10.0.orig/src/Makefile.am	2012-04-07 05:50:59.130758043 +0400
++++ augeas-0.10.0/src/Makefile.am	2011-12-01 03:21:02.000000000 +0400
+@@ -1,5 +1,5 @@
+ GNULIB= ../gnulib/lib/libgnu.la
+-GNULIB_CFLAGS= -I $(top_srcdir)/gnulib/lib
++GNULIB_CFLAGS= -I $(top_builddir)/gnulib/lib -I $(top_srcdir)/gnulib/lib
+ 
+ AM_CFLAGS = @AUGEAS_CFLAGS@ @WARN_CFLAGS@ $(GNULIB_CFLAGS) $(LIBXML_CFLAGS)
+ 
+diff -dubr augeas-0.10.0.orig/src/Makefile.in augeas-0.10.0/src/Makefile.in
+--- augeas-0.10.0.orig/src/Makefile.in	2012-04-07 05:51:46.914313423 +0400
++++ augeas-0.10.0/src/Makefile.in	2011-12-02 23:48:51.000000000 +0400
+@@ -1023,7 +1023,7 @@
+ top_builddir = @top_builddir@
+ top_srcdir = @top_srcdir@
+ GNULIB = ../gnulib/lib/libgnu.la
+-GNULIB_CFLAGS = -I $(top_srcdir)/gnulib/lib
++GNULIB_CFLAGS = -I $(top_builddir)/gnulib/lib -I $(top_srcdir)/gnulib/lib
+ AM_CFLAGS = @AUGEAS_CFLAGS@ @WARN_CFLAGS@ $(GNULIB_CFLAGS) $(LIBXML_CFLAGS)
+ AM_YFLAGS = -d -p spec_
+ EXTRA_DIST = try augeas_sym.version fa_sym.version

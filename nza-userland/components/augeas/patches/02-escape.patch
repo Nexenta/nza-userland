@@ -1,0 +1,12 @@
+diff -dubr augeas-0.10.0/src/regexp.c augeas-0.10.0.patched/src/regexp.c
+--- augeas-0.10.0/src/regexp.c	2011-12-02 03:04:37.000000000 +0400
++++ augeas-0.10.0.patched/src/regexp.c	2012-04-09 16:35:25.691323806 +0400
+@@ -50,7 +50,7 @@
+     ret = fa_restrict_alphabet(r->pattern->str, strlen(r->pattern->str),
+                                &nre, &nre_len, 2, 1);
+     if (ret == 0) {
+-        pat = escape(nre, nre_len);
++        pat = escape(nre, nre_len, RX_ESCAPES);
+         free(nre);
+     }
+ #endif

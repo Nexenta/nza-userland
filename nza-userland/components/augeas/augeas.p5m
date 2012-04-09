@@ -1,0 +1,294 @@
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+# Copyright (c) 2012, Nexenta Systems, Inc. All rights reserved.
+#
+
+<transform file path=usr.*/man/.+ -> default mangler.man.stability uncommitted>
+set name=pkg.fmri value=pkg:/library/augeas@$(IPS_COMPONENT_VERSION),$(BUILD_VERSION)
+set name=pkg.summary value="configuration editing tool"
+set name=info.classification value="org.opensolaris.category.2008:System/Libraries"
+set name=info.source_url value=$(COMPONENT_ARCHIVE_URL)
+set name=info.upstream_url value=$(COMPONENT_PROJECT_URL)
+set name=org.opensolaris.consolidation value=$(CONSOLIDATION)
+
+dir path=usr
+dir path=usr/share
+dir path=usr/share/vim
+dir path=usr/share/vim/vimfiles
+dir path=usr/share/vim/vimfiles/ftdetect
+dir path=usr/share/vim/vimfiles/syntax
+dir path=usr/share/augeas
+dir path=usr/share/augeas/lenses
+dir path=usr/share/augeas/lenses/dist
+dir path=usr/share/augeas/lenses/dist/tests
+dir path=usr/share/man
+dir path=usr/share/man/man1
+dir path=usr/include
+dir path=usr/bin
+dir path=usr/bin/$(MACH64)
+dir path=usr/lib
+dir path=usr/lib/$(MACH64)
+dir path=usr/lib/$(MACH64)/pkgconfig
+dir path=usr/lib/pkgconfig
+file path=usr/share/vim/vimfiles/ftdetect/augeas.vim
+file path=usr/share/vim/vimfiles/syntax/augeas.vim
+file path=usr/share/man/man1/augparse.1
+file path=usr/share/man/man1/augtool.1
+file path=usr/include/augeas.h
+file path=usr/include/fa.h
+file path=usr/bin/augparse
+file path=usr/bin/fadot
+file path=usr/bin/augtool
+file path=usr/lib/libaugeas.so.0.15.0
+file path=usr/lib/$(MACH64)/libfa.so.1.3.5
+file path=usr/lib/$(MACH64)/pkgconfig/augeas.pc
+file path=usr/lib/$(MACH64)/libaugeas.so.0.15.0
+file path=usr/lib/libfa.so.1.3.5
+file path=usr/lib/pkgconfig/augeas.pc
+link path=usr/lib/libaugeas.so.0 target=libaugeas.so.0.15.0
+link path=usr/lib/$(MACH64)/libfa.so target=libfa.so.1.3.5
+link path=usr/lib/$(MACH64)/libfa.so.1 target=libfa.so.1.3.5
+link path=usr/lib/$(MACH64)/libaugeas.so target=libaugeas.so.0.15.0
+link path=usr/lib/$(MACH64)/libaugeas.so.0 target=libaugeas.so.0.15.0
+link path=usr/lib/libaugeas.so target=libaugeas.so.0.15.0
+link path=usr/lib/libfa.so.1 target=libfa.so.1.3.5
+link path=usr/lib/libfa.so target=libfa.so.1.3.5
+
+
+file lenses/access.aug                        path=usr/share/augeas/lenses/access.aug
+file lenses/aliases.aug                       path=usr/share/augeas/lenses/aliases.aug
+file lenses/approx.aug                        path=usr/share/augeas/lenses/approx.aug
+file lenses/aptconf.aug                       path=usr/share/augeas/lenses/aptconf.aug
+file lenses/aptpreferences.aug                path=usr/share/augeas/lenses/aptpreferences.aug
+file lenses/aptsources.aug                    path=usr/share/augeas/lenses/aptsources.aug
+file lenses/backuppchosts.aug                 path=usr/share/augeas/lenses/backuppchosts.aug
+file lenses/bbhosts.aug                       path=usr/share/augeas/lenses/bbhosts.aug
+file lenses/build.aug                         path=usr/share/augeas/lenses/build.aug
+file lenses/cgconfig.aug                      path=usr/share/augeas/lenses/cgconfig.aug
+file lenses/cgrules.aug                       path=usr/share/augeas/lenses/cgrules.aug
+file lenses/cobblermodules.aug                path=usr/share/augeas/lenses/cobblermodules.aug
+file lenses/cobblersettings.aug               path=usr/share/augeas/lenses/cobblersettings.aug
+file lenses/cron.aug                          path=usr/share/augeas/lenses/cron.aug
+file lenses/crypttab.aug                      path=usr/share/augeas/lenses/crypttab.aug
+file lenses/darkice.aug                       path=usr/share/augeas/lenses/darkice.aug
+file lenses/debctrl.aug                       path=usr/share/augeas/lenses/debctrl.aug
+file lenses/desktop.aug                       path=usr/share/augeas/lenses/desktop.aug
+file lenses/device_map.aug                    path=usr/share/augeas/lenses/device_map.aug
+file lenses/dhclient.aug                      path=usr/share/augeas/lenses/dhclient.aug
+file lenses/dhcpd.aug                         path=usr/share/augeas/lenses/dhcpd.aug
+file lenses/dnsmasq.aug                       path=usr/share/augeas/lenses/dnsmasq.aug
+file lenses/dpkg.aug                          path=usr/share/augeas/lenses/dpkg.aug
+file lenses/dput.aug                          path=usr/share/augeas/lenses/dput.aug
+file lenses/ethers.aug                        path=usr/share/augeas/lenses/ethers.aug
+file lenses/exports.aug                       path=usr/share/augeas/lenses/exports.aug
+file lenses/fai_diskconfig.aug                path=usr/share/augeas/lenses/fai_diskconfig.aug
+file lenses/fstab.aug                         path=usr/share/augeas/lenses/fstab.aug
+file lenses/gdm.aug                           path=usr/share/augeas/lenses/gdm.aug
+file lenses/group.aug                         path=usr/share/augeas/lenses/group.aug
+file lenses/grub.aug                          path=usr/share/augeas/lenses/grub.aug
+file lenses/host_conf.aug                     path=usr/share/augeas/lenses/host_conf.aug
+file lenses/hostname.aug                      path=usr/share/augeas/lenses/hostname.aug
+file lenses/hosts.aug                         path=usr/share/augeas/lenses/hosts.aug
+file lenses/hosts_access.aug                  path=usr/share/augeas/lenses/hosts_access.aug
+file lenses/httpd.aug                         path=usr/share/augeas/lenses/httpd.aug
+file lenses/inetd.aug                         path=usr/share/augeas/lenses/inetd.aug
+file lenses/inifile.aug                       path=usr/share/augeas/lenses/inifile.aug
+file lenses/inittab.aug                       path=usr/share/augeas/lenses/inittab.aug
+file lenses/interfaces.aug                    path=usr/share/augeas/lenses/interfaces.aug
+file lenses/iptables.aug                      path=usr/share/augeas/lenses/iptables.aug
+file lenses/json.aug                          path=usr/share/augeas/lenses/json.aug
+file lenses/kdump.aug                         path=usr/share/augeas/lenses/kdump.aug
+file lenses/keepalived.aug                    path=usr/share/augeas/lenses/keepalived.aug
+file lenses/krb5.aug                          path=usr/share/augeas/lenses/krb5.aug
+file lenses/limits.aug                        path=usr/share/augeas/lenses/limits.aug
+file lenses/login_defs.aug                    path=usr/share/augeas/lenses/login_defs.aug
+file lenses/logrotate.aug                     path=usr/share/augeas/lenses/logrotate.aug
+file lenses/lokkit.aug                        path=usr/share/augeas/lenses/lokkit.aug
+file lenses/mdadm_conf.aug                    path=usr/share/augeas/lenses/mdadm_conf.aug
+file lenses/mke2fs.aug                        path=usr/share/augeas/lenses/mke2fs.aug
+file lenses/modprobe.aug                      path=usr/share/augeas/lenses/modprobe.aug
+file lenses/modules.aug                       path=usr/share/augeas/lenses/modules.aug
+file lenses/modules_conf.aug                  path=usr/share/augeas/lenses/modules_conf.aug
+file lenses/monit.aug                         path=usr/share/augeas/lenses/monit.aug
+file lenses/multipath.aug                     path=usr/share/augeas/lenses/multipath.aug
+file lenses/mysql.aug                         path=usr/share/augeas/lenses/mysql.aug
+file lenses/nagioscfg.aug                     path=usr/share/augeas/lenses/nagioscfg.aug
+file lenses/nagiosobjects.aug                 path=usr/share/augeas/lenses/nagiosobjects.aug
+file lenses/networks.aug                      path=usr/share/augeas/lenses/networks.aug
+file lenses/nrpe.aug                          path=usr/share/augeas/lenses/nrpe.aug
+file lenses/nsswitch.aug                      path=usr/share/augeas/lenses/nsswitch.aug
+file lenses/ntp.aug                           path=usr/share/augeas/lenses/ntp.aug
+file lenses/odbc.aug                          path=usr/share/augeas/lenses/odbc.aug
+file lenses/openvpn.aug                       path=usr/share/augeas/lenses/openvpn.aug
+file lenses/pam.aug                           path=usr/share/augeas/lenses/pam.aug
+file lenses/passwd.aug                        path=usr/share/augeas/lenses/passwd.aug
+file lenses/pbuilder.aug                      path=usr/share/augeas/lenses/pbuilder.aug
+file lenses/pg_hba.aug                        path=usr/share/augeas/lenses/pg_hba.aug
+file lenses/php.aug                           path=usr/share/augeas/lenses/php.aug
+file lenses/phpvars.aug                       path=usr/share/augeas/lenses/phpvars.aug
+file lenses/postfix_access.aug                path=usr/share/augeas/lenses/postfix_access.aug
+file lenses/postfix_main.aug                  path=usr/share/augeas/lenses/postfix_main.aug
+file lenses/postfix_master.aug                path=usr/share/augeas/lenses/postfix_master.aug
+file lenses/properties.aug                    path=usr/share/augeas/lenses/properties.aug
+file lenses/puppet.aug                        path=usr/share/augeas/lenses/puppet.aug
+file lenses/puppetfileserver.aug              path=usr/share/augeas/lenses/puppetfileserver.aug
+file lenses/reprepro_uploaders.aug            path=usr/share/augeas/lenses/reprepro_uploaders.aug
+file lenses/resolv.aug                        path=usr/share/augeas/lenses/resolv.aug
+file lenses/rsyncd.aug                        path=usr/share/augeas/lenses/rsyncd.aug
+file lenses/rx.aug                            path=usr/share/augeas/lenses/rx.aug
+file lenses/samba.aug                         path=usr/share/augeas/lenses/samba.aug
+file lenses/schroot.aug                       path=usr/share/augeas/lenses/schroot.aug
+file lenses/securetty.aug                     path=usr/share/augeas/lenses/securetty.aug
+file lenses/sep.aug                           path=usr/share/augeas/lenses/sep.aug
+file lenses/services.aug                      path=usr/share/augeas/lenses/services.aug
+file lenses/shells.aug                        path=usr/share/augeas/lenses/shells.aug
+file lenses/shellvars.aug                     path=usr/share/augeas/lenses/shellvars.aug
+file lenses/shellvars_list.aug                path=usr/share/augeas/lenses/shellvars_list.aug
+file lenses/slapd.aug                         path=usr/share/augeas/lenses/slapd.aug
+file lenses/solaris_system.aug                path=usr/share/augeas/lenses/solaris_system.aug
+file lenses/soma.aug                          path=usr/share/augeas/lenses/soma.aug
+file lenses/spacevars.aug                     path=usr/share/augeas/lenses/spacevars.aug
+file lenses/squid.aug                         path=usr/share/augeas/lenses/squid.aug
+file lenses/ssh.aug                           path=usr/share/augeas/lenses/ssh.aug
+file lenses/sshd.aug                          path=usr/share/augeas/lenses/sshd.aug
+file lenses/stunnel.aug                       path=usr/share/augeas/lenses/stunnel.aug
+file lenses/sudoers.aug                       path=usr/share/augeas/lenses/sudoers.aug
+file lenses/sysconfig.aug                     path=usr/share/augeas/lenses/sysconfig.aug
+file lenses/sysctl.aug                        path=usr/share/augeas/lenses/sysctl.aug
+file lenses/syslog.aug                        path=usr/share/augeas/lenses/syslog.aug
+file lenses/tests/test_access.aug             path=usr/share/augeas/lenses/tests/test_access.aug
+file lenses/tests/test_aliases.aug            path=usr/share/augeas/lenses/tests/test_aliases.aug
+file lenses/tests/test_approx.aug             path=usr/share/augeas/lenses/tests/test_approx.aug
+file lenses/tests/test_aptconf.aug            path=usr/share/augeas/lenses/tests/test_aptconf.aug
+file lenses/tests/test_aptpreferences.aug     path=usr/share/augeas/lenses/tests/test_aptpreferences.aug
+file lenses/tests/test_aptsource.aug          path=usr/share/augeas/lenses/tests/test_aptsource.aug
+file lenses/tests/test_backuppchosts.aug      path=usr/share/augeas/lenses/tests/test_backuppchosts.aug
+file lenses/tests/test_bbhosts.aug            path=usr/share/augeas/lenses/tests/test_bbhosts.aug
+file lenses/tests/test_cgconfig.aug           path=usr/share/augeas/lenses/tests/test_cgconfig.aug
+file lenses/tests/test_cgrules.aug            path=usr/share/augeas/lenses/tests/test_cgrules.aug
+file lenses/tests/test_cobblermodules.aug     path=usr/share/augeas/lenses/tests/test_cobblermodules.aug
+file lenses/tests/test_cobblersettings.aug    path=usr/share/augeas/lenses/tests/test_cobblersettings.aug
+file lenses/tests/test_cron.aug               path=usr/share/augeas/lenses/tests/test_cron.aug
+file lenses/tests/test_crypttab.aug           path=usr/share/augeas/lenses/tests/test_crypttab.aug
+file lenses/tests/test_darkice.aug            path=usr/share/augeas/lenses/tests/test_darkice.aug
+file lenses/tests/test_debctrl.aug            path=usr/share/augeas/lenses/tests/test_debctrl.aug
+file lenses/tests/test_desktop.aug            path=usr/share/augeas/lenses/tests/test_desktop.aug
+file lenses/tests/test_device_map.aug         path=usr/share/augeas/lenses/tests/test_device_map.aug
+file lenses/tests/test_dhclient.aug           path=usr/share/augeas/lenses/tests/test_dhclient.aug
+file lenses/tests/test_dhcpd.aug              path=usr/share/augeas/lenses/tests/test_dhcpd.aug
+file lenses/tests/test_dnsmasq.aug            path=usr/share/augeas/lenses/tests/test_dnsmasq.aug
+file lenses/tests/test_dpkg.aug               path=usr/share/augeas/lenses/tests/test_dpkg.aug
+file lenses/tests/test_dput.aug               path=usr/share/augeas/lenses/tests/test_dput.aug
+file lenses/tests/test_ethers.aug             path=usr/share/augeas/lenses/tests/test_ethers.aug
+file lenses/tests/test_exports.aug            path=usr/share/augeas/lenses/tests/test_exports.aug
+file lenses/tests/test_fai_diskconfig.aug     path=usr/share/augeas/lenses/tests/test_fai_diskconfig.aug
+file lenses/tests/test_fstab.aug              path=usr/share/augeas/lenses/tests/test_fstab.aug
+file lenses/tests/test_gdm.aug                path=usr/share/augeas/lenses/tests/test_gdm.aug
+file lenses/tests/test_group.aug              path=usr/share/augeas/lenses/tests/test_group.aug
+file lenses/tests/test_grub.aug               path=usr/share/augeas/lenses/tests/test_grub.aug
+file lenses/tests/test_host_conf.aug          path=usr/share/augeas/lenses/tests/test_host_conf.aug
+file lenses/tests/test_hostname.aug           path=usr/share/augeas/lenses/tests/test_hostname.aug
+file lenses/tests/test_hosts.aug              path=usr/share/augeas/lenses/tests/test_hosts.aug
+file lenses/tests/test_hosts_access.aug       path=usr/share/augeas/lenses/tests/test_hosts_access.aug
+file lenses/tests/test_httpd.aug              path=usr/share/augeas/lenses/tests/test_httpd.aug
+file lenses/tests/test_inetd.aug              path=usr/share/augeas/lenses/tests/test_inetd.aug
+file lenses/tests/test_inifile.aug            path=usr/share/augeas/lenses/tests/test_inifile.aug
+file lenses/tests/test_inittab.aug            path=usr/share/augeas/lenses/tests/test_inittab.aug
+file lenses/tests/test_interfaces.aug         path=usr/share/augeas/lenses/tests/test_interfaces.aug
+file lenses/tests/test_iptables.aug           path=usr/share/augeas/lenses/tests/test_iptables.aug
+file lenses/tests/test_json.aug               path=usr/share/augeas/lenses/tests/test_json.aug
+file lenses/tests/test_kdump.aug              path=usr/share/augeas/lenses/tests/test_kdump.aug
+file lenses/tests/test_keepalived.aug         path=usr/share/augeas/lenses/tests/test_keepalived.aug
+file lenses/tests/test_krb5.aug               path=usr/share/augeas/lenses/tests/test_krb5.aug
+file lenses/tests/test_ldap.aug               path=usr/share/augeas/lenses/tests/test_ldap.aug
+file lenses/tests/test_limits.aug             path=usr/share/augeas/lenses/tests/test_limits.aug
+file lenses/tests/test_login_defs.aug         path=usr/share/augeas/lenses/tests/test_login_defs.aug
+file lenses/tests/test_logrotate.aug          path=usr/share/augeas/lenses/tests/test_logrotate.aug
+file lenses/tests/test_lokkit.aug             path=usr/share/augeas/lenses/tests/test_lokkit.aug
+file lenses/tests/test_mdadm_conf.aug         path=usr/share/augeas/lenses/tests/test_mdadm_conf.aug
+file lenses/tests/test_mke2fs.aug             path=usr/share/augeas/lenses/tests/test_mke2fs.aug
+file lenses/tests/test_modprobe.aug           path=usr/share/augeas/lenses/tests/test_modprobe.aug
+file lenses/tests/test_modules.aug            path=usr/share/augeas/lenses/tests/test_modules.aug
+file lenses/tests/test_modules_conf.aug       path=usr/share/augeas/lenses/tests/test_modules_conf.aug
+file lenses/tests/test_monit.aug              path=usr/share/augeas/lenses/tests/test_monit.aug
+file lenses/tests/test_multipath.aug          path=usr/share/augeas/lenses/tests/test_multipath.aug
+file lenses/tests/test_mysql.aug              path=usr/share/augeas/lenses/tests/test_mysql.aug
+file lenses/tests/test_nagioscfg.aug          path=usr/share/augeas/lenses/tests/test_nagioscfg.aug
+file lenses/tests/test_nagiosobjects.aug      path=usr/share/augeas/lenses/tests/test_nagiosobjects.aug
+file lenses/tests/test_networks.aug           path=usr/share/augeas/lenses/tests/test_networks.aug
+file lenses/tests/test_nrpe.aug               path=usr/share/augeas/lenses/tests/test_nrpe.aug
+file lenses/tests/test_nsswitch.aug           path=usr/share/augeas/lenses/tests/test_nsswitch.aug
+file lenses/tests/test_ntp.aug                path=usr/share/augeas/lenses/tests/test_ntp.aug
+file lenses/tests/test_odbc.aug               path=usr/share/augeas/lenses/tests/test_odbc.aug
+file lenses/tests/test_openvpn.aug            path=usr/share/augeas/lenses/tests/test_openvpn.aug
+file lenses/tests/test_pam.aug                path=usr/share/augeas/lenses/tests/test_pam.aug
+file lenses/tests/test_passwd.aug             path=usr/share/augeas/lenses/tests/test_passwd.aug
+file lenses/tests/test_pbuilder.aug           path=usr/share/augeas/lenses/tests/test_pbuilder.aug
+file lenses/tests/test_pg_hba.aug             path=usr/share/augeas/lenses/tests/test_pg_hba.aug
+file lenses/tests/test_php.aug                path=usr/share/augeas/lenses/tests/test_php.aug
+file lenses/tests/test_phpvars.aug            path=usr/share/augeas/lenses/tests/test_phpvars.aug
+file lenses/tests/test_postfix_access.aug     path=usr/share/augeas/lenses/tests/test_postfix_access.aug
+file lenses/tests/test_postfix_main.aug       path=usr/share/augeas/lenses/tests/test_postfix_main.aug
+file lenses/tests/test_postfix_master.aug     path=usr/share/augeas/lenses/tests/test_postfix_master.aug
+file lenses/tests/test_properties.aug         path=usr/share/augeas/lenses/tests/test_properties.aug
+file lenses/tests/test_puppet.aug             path=usr/share/augeas/lenses/tests/test_puppet.aug
+file lenses/tests/test_puppetfileserver.aug   path=usr/share/augeas/lenses/tests/test_puppetfileserver.aug
+file lenses/tests/test_reprepro_uploaders.aug path=usr/share/augeas/lenses/tests/test_reprepro_uploaders.aug
+file lenses/tests/test_resolv.aug             path=usr/share/augeas/lenses/tests/test_resolv.aug
+file lenses/tests/test_rsyncd.aug             path=usr/share/augeas/lenses/tests/test_rsyncd.aug
+file lenses/tests/test_rx.aug                 path=usr/share/augeas/lenses/tests/test_rx.aug
+file lenses/tests/test_samba.aug              path=usr/share/augeas/lenses/tests/test_samba.aug
+file lenses/tests/test_schroot.aug            path=usr/share/augeas/lenses/tests/test_schroot.aug
+file lenses/tests/test_securetty.aug          path=usr/share/augeas/lenses/tests/test_securetty.aug
+file lenses/tests/test_services.aug           path=usr/share/augeas/lenses/tests/test_services.aug
+file lenses/tests/test_shells.aug             path=usr/share/augeas/lenses/tests/test_shells.aug
+file lenses/tests/test_shellvars.aug          path=usr/share/augeas/lenses/tests/test_shellvars.aug
+file lenses/tests/test_shellvars_list.aug     path=usr/share/augeas/lenses/tests/test_shellvars_list.aug
+file lenses/tests/test_slapd.aug              path=usr/share/augeas/lenses/tests/test_slapd.aug
+file lenses/tests/test_solaris_system.aug     path=usr/share/augeas/lenses/tests/test_solaris_system.aug
+file lenses/tests/test_soma.aug               path=usr/share/augeas/lenses/tests/test_soma.aug
+file lenses/tests/test_spacevars.aug          path=usr/share/augeas/lenses/tests/test_spacevars.aug
+file lenses/tests/test_squid.aug              path=usr/share/augeas/lenses/tests/test_squid.aug
+file lenses/tests/test_ssh.aug                path=usr/share/augeas/lenses/tests/test_ssh.aug
+file lenses/tests/test_sshd.aug               path=usr/share/augeas/lenses/tests/test_sshd.aug
+file lenses/tests/test_stunnel.aug            path=usr/share/augeas/lenses/tests/test_stunnel.aug
+file lenses/tests/test_sudoers.aug            path=usr/share/augeas/lenses/tests/test_sudoers.aug
+file lenses/tests/test_sysconfig.aug          path=usr/share/augeas/lenses/tests/test_sysconfig.aug
+file lenses/tests/test_sysctl.aug             path=usr/share/augeas/lenses/tests/test_sysctl.aug
+file lenses/tests/test_syslog.aug             path=usr/share/augeas/lenses/tests/test_syslog.aug
+file lenses/tests/test_util.aug               path=usr/share/augeas/lenses/tests/test_util.aug
+file lenses/tests/test_vsftpd.aug             path=usr/share/augeas/lenses/tests/test_vsftpd.aug
+file lenses/tests/test_webmin.aug             path=usr/share/augeas/lenses/tests/test_webmin.aug
+file lenses/tests/test_wine.aug               path=usr/share/augeas/lenses/tests/test_wine.aug
+file lenses/tests/test_xendconfsxp.aug        path=usr/share/augeas/lenses/tests/test_xendconfsxp.aug
+file lenses/tests/test_xinetd.aug             path=usr/share/augeas/lenses/tests/test_xinetd.aug
+file lenses/tests/test_xml.aug                path=usr/share/augeas/lenses/tests/test_xml.aug
+file lenses/tests/test_xorg.aug               path=usr/share/augeas/lenses/tests/test_xorg.aug
+file lenses/tests/test_yum.aug                path=usr/share/augeas/lenses/tests/test_yum.aug
+file lenses/util.aug                          path=usr/share/augeas/lenses/util.aug
+file lenses/vsftpd.aug                        path=usr/share/augeas/lenses/vsftpd.aug
+file lenses/webmin.aug                        path=usr/share/augeas/lenses/webmin.aug
+file lenses/wine.aug                          path=usr/share/augeas/lenses/wine.aug
+file lenses/xendconfsxp.aug                   path=usr/share/augeas/lenses/xendconfsxp.aug
+file lenses/xinetd.aug                        path=usr/share/augeas/lenses/xinetd.aug
+file lenses/xml.aug                           path=usr/share/augeas/lenses/xml.aug
+file lenses/xorg.aug                          path=usr/share/augeas/lenses/xorg.aug
+file lenses/yum.aug                           path=usr/share/augeas/lenses/yum.aug
