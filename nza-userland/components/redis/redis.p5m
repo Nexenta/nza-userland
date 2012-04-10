@@ -36,7 +36,7 @@ set name=info.upstream-url value=$(COMPONENT_PROJECT_URL)
 set name=org.opensolaris.consolidation value=$(CONSOLIDATION)
 
 dir path=etc/redis
-file redis.conf path=etc/redis/redis.conf
+file redis.conf.sample path=etc/redis/redis.conf
 
 file path=usr/bin/redis-benchmark
 file path=usr/bin/redis-check-aof
@@ -46,6 +46,8 @@ file path=usr/bin/redis-server
 
 group groupname=redis
 user username=redis group=redis home-dir=/etc/redis
+dir path=var/lib/redis owner=redis group=redis mode=0755
+dir path=var/log/redis owner=redis group=redis mode=0755
 
 file redis.xml path=lib/svc/manifest/application/database/redis.xml
 
