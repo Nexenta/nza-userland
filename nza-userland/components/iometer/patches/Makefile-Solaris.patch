@@ -1,0 +1,13 @@
+--- iometer-1.1.0-rc1/src/Makefile-Solaris.i386	2012-03-29 16:41:14.326638579 +0300
++++ iometer-1.1.0-rc1/src/Makefile-Solaris.i386.new	2012-03-29 16:43:46.319820776 +0300
+@@ -142,8 +142,10 @@
+ 
+ .cpp.o:
+ 	$(CXX) $(CFLAGS) -c $<
++	mv *.o src/
+ 
+ .c.o:
+ 	$(CC) $(CFLAGS) -c $<
++	mv *.o src/
+ 
+ 

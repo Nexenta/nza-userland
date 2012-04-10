@@ -1,0 +1,42 @@
+--- iometer-1.1.0-rc1/src/Makefile-Solaris.i386	2010-11-30 01:13:41.000000000 +0200
++++ iometer-1.1.0-rc1/src/Makefile-Solaris.i386.new	2012-03-28 20:54:01.999031973 +0300
+@@ -69,8 +69,6 @@
+ CXX=g++
+ RM=/bin/rm -f
+ MV=/bin/mv
+-TOUCH=/usr/bin/touch
+-STRIP=/usr/ccs/bin/strip
+ 
+ 
+ 
+@@ -98,18 +96,18 @@
+ LIBS= -lthread -lposix4 -lnsl -lsocket -lkstat -ldl
+ 
+ # OBJECTS GO HERE
+-OBJECTS= IOGlobals.o \
+-         Pulsar.o \
+-         IOManager.o IOManagerLinux.o IOManagerSolaris.o \
+-         IOGrunt.o \
+-         IOTarget.o IOTargetDisk.o IOTargetTCP.o \
+-         IOPort.o IOPortTCP.o \
+-         Network.o NetTCP.o \
+-         ByteOrder.o \
+-         IOPerformance.o IOPerformanceLinux.o \
+-         IOTime.o \
+-         IOCQAIO.o IOCompletionQ.o \
+-         IOAccess.o
++OBJECTS= src/IOGlobals.o \
++         src/Pulsar.o \
++         src/IOManager.o src/IOManagerLinux.o src/IOManagerSolaris.o \
++         src/IOGrunt.o \
++         src/IOTarget.o src/IOTargetDisk.o src/IOTargetTCP.o \
++         src/IOPort.o src/IOPortTCP.o \
++         src/Network.o src/NetTCP.o \
++         src/ByteOrder.o \
++         src/IOPerformance.o src/IOPerformanceLinux.o \
++         src/IOTime.o \
++         src/IOCQAIO.o src/IOCompletionQ.o \
++         src/IOAccess.o
+ 
+ 
+ 
