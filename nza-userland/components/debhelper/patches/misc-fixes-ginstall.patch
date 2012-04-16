@@ -1,0 +1,1102 @@
+Index: debhelper-8.9.13~bpo60+1/Makefile
+===================================================================
+--- debhelper-8.9.13~bpo60+1/Makefile
++++ debhelper-8.9.13~bpo60+1/Makefile
+@@ -1,5 +1,5 @@
+ # List of files of dh_* commands. Sorted for debhelper man page.
+-COMMANDS=$(shell find . -maxdepth 1 -type f -perm +100 -name "dh_*" -printf "%f\n" | sort)
++COMMANDS=$(shell find . -maxdepth 1 -type f -perm +100 -name "dh_*" -printf "%f\n" | grep -v "~" | sort)
+ 
+ # Find deprecated commands by looking at their synopsis.
+ DEPRECATED=$(shell egrep -l '^dh_.* - .*deprecated' $(COMMANDS))
+@@ -34,7 +34,8 @@ MAKEMANLIST=perl -e ' \
+ 		}'
+ 
+ # Figure out the `current debhelper version.
+-VERSION=$(shell expr "`dpkg-parsechangelog |grep Version:`" : '.*Version: \(.*\)')
++#VERSION=$(shell expr "`dpkg-parsechangelog |grep Version:`" : '.*Version: \(.*\)')
++VERSION=8.9.13~bpo60+1
+ 
+ PERLLIBDIR=$(shell perl -MConfig -e 'print $$Config{vendorlib}')/Debian/Debhelper
+ 
+@@ -78,17 +79,17 @@ clean:
+ 	done;
+ 
+ install:
+-	install -d $(DESTDIR)/usr/bin \
++	ginstall -d $(DESTDIR)/usr/bin \
+ 		$(DESTDIR)/usr/share/debhelper/autoscripts \
+ 		$(DESTDIR)$(PERLLIBDIR)/Sequence \
+ 		$(DESTDIR)$(PERLLIBDIR)/Buildsystem
+-	install dh $(COMMANDS) $(DESTDIR)/usr/bin
+-	install -m 0644 autoscripts/* $(DESTDIR)/usr/share/debhelper/autoscripts
+-	install -m 0644 Debian/Debhelper/*.pm $(DESTDIR)$(PERLLIBDIR)
+-	install -m 0644 Debian/Debhelper/Sequence/*.pm $(DESTDIR)$(PERLLIBDIR)/Sequence
+-	install -m 0644 Debian/Debhelper/Buildsystem/*.pm $(DESTDIR)$(PERLLIBDIR)/Buildsystem
++	ginstall dh $(COMMANDS) $(DESTDIR)/usr/bin
++	ginstall -m 0644 autoscripts/* $(DESTDIR)/usr/share/debhelper/autoscripts
++	ginstall -m 0644 Debian/Debhelper/*.pm $(DESTDIR)$(PERLLIBDIR)
++	ginstall -m 0644 Debian/Debhelper/Sequence/*.pm $(DESTDIR)$(PERLLIBDIR)/Sequence
++	ginstall -m 0644 Debian/Debhelper/Buildsystem/*.pm $(DESTDIR)$(PERLLIBDIR)/Buildsystem
+ 
+ test: version
+-	./run perl -MTest::Harness -e 'runtests grep { ! /CVS/ && ! /\.svn/ && -f && -x } @ARGV' t/* t/buildsystems/*
++	./run perl -MTest::Harness -e 'runtests grep { ! /CVS/ && ! /\.svn/ && -f && -x && ! /~/ } @ARGV' t/* t/buildsystems/*
+ 	# clean up log etc
+ 	./run dh_clean
+Index: debhelper-8.9.13~bpo60+1/debian/rules
+===================================================================
+--- debhelper-8.9.13~bpo60+1/debian/rules
++++ debhelper-8.9.13~bpo60+1/debian/rules
+@@ -1,4 +1,4 @@
+-#!/usr/bin/make -f
++#!/usr/bin/gmake -f
+ # If you're looking for an example debian/rules that uses debhelper, see
+ # the examples directory.
+ # 
+Index: debhelper-8.9.13~bpo60+1/dh
+===================================================================
+--- debhelper-8.9.13~bpo60+1/dh
++++ debhelper-8.9.13~bpo60+1/dh
+@@ -81,14 +81,14 @@ anything:
+ This is a very simple rules file, for packages where the default sequences of
+ commands work with no additional options.
+ 
+-	#!/usr/bin/make -f
++	#!/usr/bin/gmake -f
+ 	%:
+ 		dh $@
+ 
+ Often you'll want to pass an option to a specific debhelper command. The
+ easy way to do with is by adding an override target for that command.
+ 
+-	#!/usr/bin/make -f
++	#!/usr/bin/gmake -f
+ 	%:
+ 		dh $@
+ 	
+@@ -102,7 +102,7 @@ Sometimes the automated L<dh_auto_config
+ can't guess what to do for a strange package. Here's how to avoid running
+ either and instead run your own commands.
+ 
+-	#!/usr/bin/make -f
++	#!/usr/bin/gmake -f
+ 	%:
+ 		dh $@
+ 
+@@ -110,12 +110,12 @@ either and instead run your own commands
+ 		./mondoconfig
+ 
+ 	override_dh_auto_build:
+-		make universe-explode-in-delight
++		gmake universe-explode-in-delight
+ 
+ Another common case is wanting to do something manually before or
+ after a particular debhelper command is run.
+ 
+-	#!/usr/bin/make -f
++	#!/usr/bin/gmake -f
+ 	%:
+ 		dh $@
+ 
+@@ -128,7 +128,7 @@ F<config.guess> with newer versions from
+ at build time, you can use some commands provided in B<autotools-dev>
+ that automate it, like this.
+ 
+-	#!/usr/bin/make -f
++	#!/usr/bin/gmake -f
+ 	%:
+ 		dh $@ --with autotools_dev
+ 
+@@ -136,7 +136,7 @@ Python tools are not run by dh by defaul
+ in that area. (Before compatability level v9, dh does run B<dh_pysupport>.)
+ Here is how to use B<dh_python2>.
+ 
+-	#!/usr/bin/make -f
++	#!/usr/bin/gmake -f
+ 	%:
+ 		dh $@ --with python2
+ 
+@@ -144,7 +144,7 @@ Here is how to force use of Perl's B<Mod
+ which can be necessary if debhelper wrongly detects that the package
+ uses MakeMaker.
+ 
+-	#!/usr/bin/make -f
++	#!/usr/bin/gmake -f
+ 	%:
+ 		dh $@ --buildsystem=perl_build
+ 
+@@ -152,28 +152,28 @@ Here is an example of overriding where t
+ the package's source, for a package where the source is located in a
+ subdirectory.
+ 
+-	#!/usr/bin/make -f
++	#!/usr/bin/gmake -f
+ 	%:
+ 		dh $@ --sourcedirectory=src
+ 
+ And here is an example of how to tell the B<dh_auto_>I<*> commands to build
+ in a subdirectory, which will be removed on B<clean>.
+ 
+-	#!/usr/bin/make -f
++	#!/usr/bin/gmake -f
+ 	%:
+ 		dh $@ --builddirectory=build
+ 
+ If your package can be built in parallel, you can support parallel building
+ as follows. Then B<dpkg-buildpackage -j> will work.
+ 
+-	#!/usr/bin/make -f
++	#!/usr/bin/gmake -f
+ 	%:
+ 		dh $@ --parallel
+ 
+ Here is a way to prevent B<dh> from running several commands that you don't
+ want it to run, by defining empty override targets for each command.
+ 
+-	#!/usr/bin/make -f
++	#!/usr/bin/gmake -f
+ 	%:
+ 		dh $@
+ 	
+@@ -184,7 +184,7 @@ A long build process for a separate docu
+ be separated out using architecture independent overrides.
+ These will be skipped when running build-arch and binary-arch sequences.
+ 
+-	#!/usr/bin/make -f
++	#!/usr/bin/gmake -f
+ 	%:
+ 		dh $@
+ 	
+@@ -808,7 +808,7 @@ sub rules_explicit_target {
+ 		my $processing_targets = 0;
+ 		my $not_a_target = 0;
+ 		my $current_target;
+-		open(MAKE, "LC_ALL=C make -Rrnpsf debian/rules $dummy_target 2>/dev/null |");
++		open(MAKE, "LC_ALL=C gmake -Rrnpsf debian/rules $dummy_target 2>/dev/null |");
+ 		while (<MAKE>) {
+ 			if ($processing_targets) {
+ 				if (/^# Not a target:/) {
+Index: debhelper-8.9.13~bpo60+1/dh_bugfiles
+===================================================================
+--- debhelper-8.9.13~bpo60+1/dh_bugfiles
++++ debhelper-8.9.13~bpo60+1/dh_bugfiles
+@@ -93,20 +93,20 @@ foreach my $package (@{$dh{DOPACKAGES}})
+ 	# If there is only a bug script to install, install it as
+ 	# usr/share/bug/$package (unless this path is a directory)
+ 	if (! -d $dir && scalar(keys(%bugfiles)) == 1 && exists $bugfiles{script}) {
+-		doit("install","-D","-p","-m755",$bugfiles{script},$dir);
++		doit("ginstall","-D","-p","-m755",$bugfiles{script},$dir);
+ 	}
+ 	elsif (scalar(keys(%bugfiles)) > 0) {
+ 		if (-f $dir) {
+ 			# Move usr/share/bug/$package to usr/share/bug/$package/script
+ 			doit("mv", $dir, "${dir}.tmp");
+-			doit("install","-d",$dir);
++			doit("ginstall","-d",$dir);
+ 			doit("mv", "${dir}.tmp", "$dir/script");
+ 		}
+ 		elsif (! -d $dir) {
+-			doit("install","-d",$dir);
++			doit("ginstall","-d",$dir);
+ 		}
+ 		while (my ($type, $srcfile) = each(%bugfiles)) {
+-			doit("install","-p","-m644",$srcfile, "$dir/$type");
++			doit("ginstall","-p","-m644",$srcfile, "$dir/$type");
+ 		}
+ 	}
+ 	
+Index: debhelper-8.9.13~bpo60+1/dh_compress
+===================================================================
+--- debhelper-8.9.13~bpo60+1/dh_compress
++++ debhelper-8.9.13~bpo60+1/dh_compress
+@@ -75,6 +75,8 @@ Debian policy, version 3.0
+ 
+ init();
+ 
++my $LN = '/usr/bin/ln';
++
+ foreach my $package (@{$dh{DOPACKAGES}}) {
+ 	my $tmp=tmpdir($package);
+ 	my $compress=pkgfile($package,"compress");
+@@ -104,10 +106,6 @@ foreach my $package (@{$dh{DOPACKAGES}})
+ 		# complete list of such extensions: ".gz", ".z", ".taz", 
+ 		# ".tgz", "-gz", "-z", "_z"
+ 		push @files, split(/\n/,`
+-			find usr/info usr/share/info usr/man usr/share/man usr/X11*/man -type f ! -iname "*.gz" \\
+-				! -iname "*.gif" ! -iname "*.png" ! -iname "*.jpg" \\
+-				! -iname "*.jpeg" \\
+-				2>/dev/null || true;
+ 			find usr/share/doc \\
+ 				\\( -type d -name _sources -prune -false \\) -o \\
+ 				-type f \\( -size +4k -or -name "changelog*" -or -name "NEWS*" \\) \\
+@@ -176,7 +174,7 @@ foreach my $package (@{$dh{DOPACKAGES}})
+ 		# Remove old file.
+ 	    	doit("rm","-f","$_");
+ 		# Make new hardlink.
+-		doit("ln","$hardlinks{$_}.gz","$_.gz");
++		doit("$LN","$hardlinks{$_}.gz","$_.gz");
+ 	}
+ 
+ 	verbose_print("cd '$olddir'");
+@@ -195,7 +193,7 @@ foreach my $package (@{$dh{DOPACKAGES}})
+ 			my $linkval = readlink($link);
+ 			if (! -e "$directory/$linkval" && -e "$directory/$linkval.gz") {
+ 				doit("rm","-f",$link);
+-				doit("ln","-sf","$linkval.gz","$link.gz");
++				doit("$LN","-sf","$linkval.gz","$link.gz");
+ 				delete $links{$link};
+ 				$changed++;
+ 			}
+Index: debhelper-8.9.13~bpo60+1/dh_fixperms
+===================================================================
+--- debhelper-8.9.13~bpo60+1/dh_fixperms
++++ debhelper-8.9.13~bpo60+1/dh_fixperms
+@@ -71,10 +71,18 @@ foreach my $package (@{$dh{DOPACKAGES}})
+ 
+ 	# ..and so are executable shared and static libraries 
+ 	# (and .la files from libtool) ..
+-	complex_doit("find $tmp -perm -5 -type f",
+-		"\\( -name '*.so.*' -or -name '*.so' -or -name '*.la' -or -name '*.a' \\) $find_options -print0",
+-		"2>/dev/null | xargs -0r chmod 644");
++#	complex_doit("find $tmp -perm -5 -type f",
++#		"\\( -name '*.so.*' -or -name '*.so' -or -name '*.la' -or -name '*.a' \\) $find_options -print0",
++#		"2>/dev/null | xargs -0r chmod 644");
+ 	
++	complex_doit("find $tmp -type f",
++		"\\( -name '*.so.*' -or -name '*.so' \\) $find_options -print0",
++		"2>/dev/null | xargs -0r chmod 0755");
++
++	complex_doit("find $tmp -type f",
++		"\\( -name '*.la' -or -name '*.a' \\) $find_options -print0",
++		"2>/dev/null | xargs -0r chmod 0644");
++
+ 	# ..and header files ..
+ 	complex_doit("find $tmp/usr/include -type f $find_options -print0",
+ 		"2>/dev/null | xargs -0r chmod 644");
+@@ -84,13 +92,13 @@ foreach my $package (@{$dh{DOPACKAGES}})
+ 		"2>/dev/null | xargs -0r chmod 644");
+ 
+ 	# ..and OCaml native-code shared objects ..
+-	complex_doit("find $tmp -perm -5 -type f",
++	complex_doit("find $tmp -type f",
+ 		"\\( -name '*.cmxs' \\) $find_options -print0",
+ 		"2>/dev/null | xargs -0r chmod 644");
+ 	
+ 	# .. and perl modules.
+-	complex_doit("find $tmp/usr/lib/perl5 $tmp/usr/share/perl5 -type f",
+-		"-perm -5 -name '*.pm' $find_options -print0",
++	complex_doit("find  $tmp/usr/perl5 $tmp/usr/lib/perl5 $tmp/usr/share/perl5 -type f",
++		" -name '*.pm' $find_options -print0",
+ 		"2>/dev/null | xargs -0r chmod a-X");
+ 	
+ 	# v4 and up
+Index: debhelper-8.9.13~bpo60+1/dh_gconf
+===================================================================
+--- debhelper-8.9.13~bpo60+1/dh_gconf
++++ debhelper-8.9.13~bpo60+1/dh_gconf
+@@ -65,14 +65,14 @@ foreach my $package (@{$dh{DOPACKAGES}})
+ 	my $mandatory = pkgfile($package, "gconf-mandatory");
+ 	if ($mandatory ne '') {
+ 		doit("mkdir","-p","$tmp/usr/share/gconf/mandatory");
+-		doit("install","-p","-m644",$mandatory,"$tmp/usr/share/gconf/mandatory/${priority}_$package");
++		doit("ginstall","-p","-m644",$mandatory,"$tmp/usr/share/gconf/mandatory/${priority}_$package");
+ 		addsubstvar($package, "misc:Depends", "gconf2 (>= 2.28.1-2)");
+ 		$gconf_dep = 1;
+ 	}
+ 	my $defaults = pkgfile($package,"gconf-defaults");
+ 	if ($defaults ne '') {
+ 		doit("mkdir","-p","$tmp/usr/share/gconf/defaults");
+-		doit("install","-p","-m644",$defaults,"$tmp/usr/share/gconf/defaults/${priority}_$package");
++		doit("ginstall","-p","-m644",$defaults,"$tmp/usr/share/gconf/defaults/${priority}_$package");
+ 		addsubstvar($package, "misc:Depends", "gconf2 (>= 2.28.1-2)") unless $gconf_dep;
+ 		$gconf_dep = 1;
+ 	}
+Index: debhelper-8.9.13~bpo60+1/dh_gencontrol
+===================================================================
+--- debhelper-8.9.13~bpo60+1/dh_gencontrol
++++ debhelper-8.9.13~bpo60+1/dh_gencontrol
+@@ -56,7 +56,7 @@ foreach my $package (@{$dh{DOPACKAGES}})
+ 	}
+ 
+ 	if ( ! -d "$tmp/DEBIAN" ) {
+-		doit("install","-o",0,"-g",0,"-d","$tmp/DEBIAN");
++		doit("ginstall","-o",0,"-g",0,"-d","$tmp/DEBIAN");
+ 	}
+ 
+ 	# avoid gratuitous warning
+Index: debhelper-8.9.13~bpo60+1/dh_install
+===================================================================
+--- debhelper-8.9.13~bpo60+1/dh_install
++++ debhelper-8.9.13~bpo60+1/dh_install
+@@ -193,7 +193,7 @@ foreach my $package (getpackages()) {
+ 			
+ 			# Make sure the destination directory exists.
+ 			if (! -e "$tmp/$dest") {
+-				doit("install","-d","$tmp/$dest");
++				doit("ginstall","-d","$tmp/$dest");
+ 			}
+ 			
+ 			if (-d $src && $exclude) {
+Index: debhelper-8.9.13~bpo60+1/dh_installcatalogs
+===================================================================
+--- debhelper-8.9.13~bpo60+1/dh_installcatalogs
++++ debhelper-8.9.13~bpo60+1/dh_installcatalogs
+@@ -81,10 +81,10 @@ foreach my $package (@{$dh{DOPACKAGES}})
+ 			$fulldest =~ s|//|/|g; # beautification
+ 	
+ 			if (! -d dirname($fulldest)) {
+-				doit("install","-d","-m755",$tmpdir."/".dirname($dest));
++				doit("ginstall","-d","-m755",$tmpdir."/".dirname($dest));
+ 			}
+ 
+-			doit("install","-p","-m644",$source,$fulldest);
++			doit("ginstall","-p","-m644",$source,$fulldest);
+ 	
+ 			push(@sgmlinstalled,$dest);
+ 		}
+@@ -93,7 +93,7 @@ foreach my $package (@{$dh{DOPACKAGES}})
+ 		addsubstvar($package, "misc:Depends", "sgml-base", ">= $sgmlbasever");
+ 
+ 		if (! -d "$tmpdir/etc/sgml") {
+-			doit("install","-d","-m755","$tmpdir/etc/sgml");
++			doit("ginstall","-d","-m755","$tmpdir/etc/sgml");
+ 		}
+ 
+ 		if (! $dh{NOSCRIPTS}) {
+Index: debhelper-8.9.13~bpo60+1/dh_installchangelogs
+===================================================================
+--- debhelper-8.9.13~bpo60+1/dh_installchangelogs
++++ debhelper-8.9.13~bpo60+1/dh_installchangelogs
+@@ -137,12 +137,12 @@ foreach my $package (@{$dh{DOPACKAGES}})
+ 	}
+ 
+ 	if (! -d "$tmp/usr/share/doc/$package") {
+-		doit("install","-d","$tmp/usr/share/doc/$package");
++		doit("ginstall","-d","$tmp/usr/share/doc/$package");
+ 	}
+-	doit("install","-o",0,"-g",0,"-p","-m644",$changelog,
++	doit("ginstall","-o",0,"-g",0,"-p","-m644",$changelog,
+ 		"$tmp/usr/share/doc/$package/$changelog_name");
+ 	if (-e $news) {
+-		doit("install","-o",0,"-g",0,"-p","-m644",$news,
++		doit("ginstall","-o",0,"-g",0,"-p","-m644",$news,
+ 			"$tmp/usr/share/doc/$package/$news_name");
+ 	}
+ 
+@@ -150,13 +150,13 @@ foreach my $package (@{$dh{DOPACKAGES}})
+ 		my $link_to;
+ 		if ($upstream=~m/\.html?$/i) {
+ 			# HTML changelog
+-			doit("install","-o",0,"-g",0,"-p","-m644",
++			doit("ginstall","-o",0,"-g",0,"-p","-m644",
+ 				$upstream,"$tmp/usr/share/doc/$package/changelog.html");
+ 			doit("html2text","-nobs","-o","$tmp/usr/share/doc/$package/changelog",$upstream);
+ 			$link_to='changelog.html';
+ 		}
+ 		else {
+-			doit("install","-o",0,"-g",0,"-p","-m644",
++			doit("ginstall","-o",0,"-g",0,"-p","-m644",
+ 				$upstream,"$tmp/usr/share/doc/$package/changelog");
+ 			$link_to='changelog';
+ 		}
+Index: debhelper-8.9.13~bpo60+1/dh_installcron
+===================================================================
+--- debhelper-8.9.13~bpo60+1/dh_installcron
++++ debhelper-8.9.13~bpo60+1/dh_installcron
+@@ -59,18 +59,18 @@ foreach my $package (@{$dh{DOPACKAGES}})
+ 		my $cron=pkgfile($package,"cron.$type");
+ 		if ($cron) {
+ 			if (! -d "$tmp/etc/cron.$type") {
+-				doit("install","-o",0,"-g",0,"-d","$tmp/etc/cron.$type");
++				doit("ginstall","-o",0,"-g",0,"-d","$tmp/etc/cron.$type");
+ 			}
+-			doit("install",$cron,"$tmp/etc/cron.$type/".pkgfilename($package));
++			doit("ginstall",$cron,"$tmp/etc/cron.$type/".pkgfilename($package));
+ 		}
+ 	}
+ 	# Seperate because this needs to be mode 644.
+ 	my $cron=pkgfile($package,"cron.d");
+ 	if ($cron) {
+ 		if (! -d "$tmp/etc/cron.d") {
+-			doit("install","-o",0,"-g",0,"-d","$tmp/etc/cron.d");
++			doit("ginstall","-o",0,"-g",0,"-d","$tmp/etc/cron.d");
+ 		}	
+-		doit("install","-m",644,$cron,"$tmp/etc/cron.d/".pkgfilename($package));
++		doit("ginstall","-m",644,$cron,"$tmp/etc/cron.d/".pkgfilename($package));
+ 	}
+ }
+ 
+Index: debhelper-8.9.13~bpo60+1/dh_installdeb
+===================================================================
+--- debhelper-8.9.13~bpo60+1/dh_installdeb
++++ debhelper-8.9.13~bpo60+1/dh_installdeb
+@@ -80,7 +80,7 @@ foreach my $package (@{$dh{DOPACKAGES}})
+ 	my $tmp=tmpdir($package);
+ 
+ 	if (! -d "$tmp/DEBIAN") {
+-		doit("install","-o",0,"-g",0,"-d","$tmp/DEBIAN");
++		doit("ginstall","-o",0,"-g",0,"-d","$tmp/DEBIAN");
+ 	}
+ 
+ 	if (is_udeb($package)) {
+@@ -89,7 +89,7 @@ foreach my $package (@{$dh{DOPACKAGES}})
+ 		foreach my $script (qw{postinst menutest isinstallable}) {
+ 			my $f=pkgfile($package,$script);
+ 			if ($f) {
+-				doit("install", "-o", 0, "-g", 0, "-m", 755, 
++				doit("ginstall", "-o", 0, "-g", 0, "-m", 755,
+ 				     $f, "$tmp/DEBIAN/$script");
+ 			}
+ 		}
+@@ -122,15 +122,15 @@ foreach my $package (@{$dh{DOPACKAGES}})
+ 		foreach my $file (qw{shlibs conffiles triggers}) {
+ 			my $f=pkgfile($package,$file);
+ 			if ($f) {
+-				doit("install","-o",0,"-g",0,"-m",644,"-p",$f,"$tmp/DEBIAN/$file");
++				doit("ginstall","-o",0,"-g",0,"-m",644,"-p",$f,"$tmp/DEBIAN/$file");
+ 			}
+ 		}
+ 	}
+ 
+ 	# Automatic conffiles registration: If it is in /etc, it is a
+ 	# conffile.
+-	if (! compat(2) && -d "$tmp/etc" && ! is_udeb($package)) {
+-		complex_doit("find $tmp/etc -type f -printf '/etc/%P\n' >> $tmp/DEBIAN/conffiles");
++	if (! compat(2) && -d "$tmp/etc" && ! is_udeb($package) && ! -f "$tmp/DEBIAN/conffiles") {
++		complex_doit("find $tmp/etc -type f -printf 'etc/%P\n' >> $tmp/DEBIAN/conffiles");
+ 		# Anything found?
+ 		if (-z "$tmp/DEBIAN/conffiles") {
+ 			doit("rm", "-f", "$tmp/DEBIAN/conffiles");
+Index: debhelper-8.9.13~bpo60+1/dh_installdebconf
+===================================================================
+--- debhelper-8.9.13~bpo60+1/dh_installdebconf
++++ debhelper-8.9.13~bpo60+1/dh_installdebconf
+@@ -87,7 +87,7 @@ foreach my $package (@{$dh{DOPACKAGES}})
+ 	my $templates=pkgfile($package,"templates");
+ 
+ 	if (! -d "$tmp/DEBIAN") {
+-		doit("install","-o",0,"-g",0,"-d","$tmp/DEBIAN");
++		doit("ginstall","-o",0,"-g",0,"-d","$tmp/DEBIAN");
+ 	}
+ 
+ 	if (! is_udeb($package)) {
+@@ -106,7 +106,7 @@ foreach my $package (@{$dh{DOPACKAGES}})
+ 			complex_doit("po2debconf @extraparams $templates > $tmp/DEBIAN/templates");
+ 		}
+ 		else {
+-			doit("install", "-o", 0, "-g", 0, "-m", 644, "-p",
++			doit("ginstall", "-o", 0, "-g", 0, "-m", 644, "-p",
+ 			     $templates, "$tmp/DEBIAN/templates");
+ 		}
+ 	}
+Index: debhelper-8.9.13~bpo60+1/dh_installdirs
+===================================================================
+--- debhelper-8.9.13~bpo60+1/dh_installdirs
++++ debhelper-8.9.13~bpo60+1/dh_installdirs
+@@ -53,7 +53,7 @@ foreach my $package (@{$dh{DOPACKAGES}})
+ 	my $file=pkgfile($package,"dirs");
+ 
+ 	if (! -e $tmp) {
+-		doit("install","-d",$tmp);
++		doit("ginstall","-d",$tmp);
+ 	}
+ 
+ 	my @dirs;
+@@ -79,7 +79,7 @@ foreach my $package (@{$dh{DOPACKAGES}})
+ 			  } @dirs;
+ 
+ 		# Create dirs.
+-		doit("install","-d",@dirs);
++		doit("ginstall","-d",@dirs);
+ 	}
+ }
+ 
+Index: debhelper-8.9.13~bpo60+1/dh_installdocs
+===================================================================
+--- debhelper-8.9.13~bpo60+1/dh_installdocs
++++ debhelper-8.9.13~bpo60+1/dh_installdocs
+@@ -144,7 +144,7 @@ sub ensure_docdir {
+ 
+ 	# If this is a symlink, leave it alone.
+ 	if (! -d $target && ! -l $target) {
+-		doit("install","-g",0,"-o",0,"-d",$target);
++		doit("ginstall","-g",0,"-o",0,"-d",$target);
+ 	}
+ 	$docdir_created{$package}=1;
+ }
+@@ -163,7 +163,7 @@ foreach my $package (@{$dh{DOPACKAGES}})
+ 	if ($link_doc) {
+ 		# Make sure that the parent directory exists.
+ 		if (! -d "$tmp/usr/share/doc" && ! -l "$tmp/usr/share/doc") {
+-			doit("install","-g",0,"-o",0,"-d","$tmp/usr/share/doc");
++			doit("ginstall","-g",0,"-o",0,"-d","$tmp/usr/share/doc");
+ 		}
+ 		# Create symlink to another documentation directory if
+ 		# necessary.
+@@ -226,7 +226,7 @@ foreach my $package (@{$dh{DOPACKAGES}})
+ 	}
+ 	if (! $link_doc && $readme_debian && ! excludefile($readme_debian)) {
+ 		ensure_docdir($package);
+-		doit("install","-g",0,"-o",0,"-m","644","-p","$readme_debian",
++		doit("ginstall","-g",0,"-o",0,"-m","644","-p","$readme_debian",
+ 			"$tmp/usr/share/doc/$package/README.Debian");
+ 	}
+ 
+@@ -234,11 +234,11 @@ foreach my $package (@{$dh{DOPACKAGES}})
+ 	if (! $link_doc && $todo && ! excludefile($todo)) {
+ 		ensure_docdir($package);
+ 		if (isnative($package)) {
+-			doit("install","-g",0,"-o",0,"-m","644","-p",$todo,
++			doit("ginstall","-g",0,"-o",0,"-m","644","-p",$todo,
+ 				"$tmp/usr/share/doc/$package/TODO");
+ 		}
+ 		else {
+-			doit("install","-g",0,"-o",0,"-m","644","-p",$todo,
++			doit("ginstall","-g",0,"-o",0,"-m","644","-p",$todo,
+ 				"$tmp/usr/share/doc/$package/TODO.Debian");
+ 		}
+ 	}
+@@ -256,7 +256,7 @@ foreach my $package (@{$dh{DOPACKAGES}})
+ 		}
+ 		if ($copyright && ! excludefile($copyright)) {
+ 			ensure_docdir($package);
+-			doit("install","-g",0,"-o",0,"-m","644","-p",$copyright,
++			doit("ginstall","-g",0,"-o",0,"-m","644","-p",$copyright,
+ 				"$tmp/usr/share/doc/$package/copyright");
+ 		}
+ 	}
+@@ -295,11 +295,11 @@ foreach my $package (@{$dh{DOPACKAGES}})
+ 	
+ 	if (%doc_ids) {
+ 		if (! -d "$tmp/usr/share/doc-base/") {
+-			doit("install","-g",0,"-o",0,"-d","$tmp/usr/share/doc-base/");
++			doit("ginstall","-g",0,"-o",0,"-d","$tmp/usr/share/doc-base/");
+ 		}
+ 	}
+ 	foreach my $fn (keys %doc_ids) {
+-		doit("install","-g",0,"-o",0,"-m644","-p","debian/$fn",
++		doit("ginstall","-g",0,"-o",0,"-m644","-p","debian/$fn",
+ 		     "$tmp/usr/share/doc-base/$doc_ids{$fn}");
+ 	}
+ }
+Index: debhelper-8.9.13~bpo60+1/dh_installemacsen
+===================================================================
+--- debhelper-8.9.13~bpo60+1/dh_installemacsen
++++ debhelper-8.9.13~bpo60+1/dh_installemacsen
+@@ -92,23 +92,23 @@ foreach my $package (@{$dh{DOPACKAGES}})
+ 
+ 	if ($emacsen_install ne '') {
+ 		if (! -d "$tmp/usr/lib/emacsen-common/packages/install") {
+-			doit("install","-d","$tmp/usr/lib/emacsen-common/packages/install");
++			doit("ginstall","-d","$tmp/usr/lib/emacsen-common/packages/install");
+ 		}
+-		doit("install","-m0755",$emacsen_install,"$tmp/usr/lib/emacsen-common/packages/install/$package");
++		doit("ginstall","-m0755",$emacsen_install,"$tmp/usr/lib/emacsen-common/packages/install/$package");
+ 	}
+ 
+ 	if ($emacsen_remove ne '') {
+ 		if (! -d "$tmp/usr/lib/emacsen-common/packages/remove") {
+-			doit("install","-d","$tmp/usr/lib/emacsen-common/packages/remove");
++			doit("ginstall","-d","$tmp/usr/lib/emacsen-common/packages/remove");
+ 		}
+-		doit("install","-m0755","$emacsen_remove","$tmp/usr/lib/emacsen-common/packages/remove/$package");
++		doit("ginstall","-m0755","$emacsen_remove","$tmp/usr/lib/emacsen-common/packages/remove/$package");
+ 	}
+ 	
+ 	if ($emacsen_startup ne '') {
+ 		if (! -d "$tmp/etc/$dh{FLAVOR}/site-start.d/") {
+-			doit("install","-d","$tmp/etc/$dh{FLAVOR}/site-start.d/");
++			doit("ginstall","-d","$tmp/etc/$dh{FLAVOR}/site-start.d/");
+ 		}
+-		doit("install","-m0644",$emacsen_startup,"$tmp/etc/$dh{FLAVOR}/site-start.d/$dh{PRIORITY}$package.el");
++		doit("ginstall","-m0644",$emacsen_startup,"$tmp/etc/$dh{FLAVOR}/site-start.d/$dh{PRIORITY}$package.el");
+ 	}
+ 
+ 	if ($emacsen_install ne '' || $emacsen_remove ne '') {
+Index: debhelper-8.9.13~bpo60+1/dh_installexamples
+===================================================================
+--- debhelper-8.9.13~bpo60+1/dh_installexamples
++++ debhelper-8.9.13~bpo60+1/dh_installexamples
+@@ -78,7 +78,7 @@ foreach my $package (@{$dh{DOPACKAGES}})
+ 	
+ 	if (@examples) {
+ 		if (! -d "$tmp/usr/share/doc/$package/examples") {
+-			doit("install","-d","$tmp/usr/share/doc/$package/examples");
++			doit("ginstall","-d","$tmp/usr/share/doc/$package/examples");
+ 		}
+ 		
+ 		my $exclude = '';
+Index: debhelper-8.9.13~bpo60+1/dh_installgsettings
+===================================================================
+--- debhelper-8.9.13~bpo60+1/dh_installgsettings
++++ debhelper-8.9.13~bpo60+1/dh_installgsettings
+@@ -67,7 +67,7 @@ foreach my $package (@{$dh{DOPACKAGES}})
+ 	my $override = pkgfile($package,"gsettings-override");
+ 	if ($override ne '') {
+ 		doit("mkdir","-p",$gsettings_schemas_dir);
+-		doit("install","-p","-m644",$override,"$gsettings_schemas_dir/${priority}_$package.gschema.override");
++		doit("ginstall","-p","-m644",$override,"$gsettings_schemas_dir/${priority}_$package.gschema.override");
+ 	}
+ 
+ 	if (-d "$gsettings_schemas_dir") {
+Index: debhelper-8.9.13~bpo60+1/dh_installifupdown
+===================================================================
+--- debhelper-8.9.13~bpo60+1/dh_installifupdown
++++ debhelper-8.9.13~bpo60+1/dh_installifupdown
+@@ -59,9 +59,9 @@ foreach my $package (@{$dh{DOPACKAGES}})
+ 		my $file=pkgfile($package, "if-$script");
+ 		if ($file ne '') {
+ 			if (! -d "$tmp/etc/network/if-$script.d") {
+-				doit("install","-d","$tmp/etc/network/if-$script.d");
++				doit("ginstall","-d","$tmp/etc/network/if-$script.d");
+ 			}
+-			doit("install","-p","-m755",$file,"$tmp/etc/network/if-$script.d/".pkgfilename($package));
++			doit("ginstall","-p","-m755",$file,"$tmp/etc/network/if-$script.d/".pkgfilename($package));
+ 		}
+ 	}
+ }
+Index: debhelper-8.9.13~bpo60+1/dh_installinfo
+===================================================================
+--- debhelper-8.9.13~bpo60+1/dh_installinfo
++++ debhelper-8.9.13~bpo60+1/dh_installinfo
+@@ -64,13 +64,13 @@ foreach my $package (@{$dh{DOPACKAGES}})
+ 
+ 	if (@info) {
+ 		if ( ! -d "$tmp/usr/share/info") {
+-			doit("install","-d","$tmp/usr/share/info");
++			doit("ginstall","-d","$tmp/usr/share/info");
+ 		}
+ 		doit("cp",@info,"$tmp/usr/share/info");
+ 		doit("chmod","-R", "go=rX","$tmp/usr/share/info/");
+ 		doit("chmod","-R", "u+rw","$tmp/usr/share/info/");
+ 		# For transition, could be removed later.
+-		addsubstvar($package, "misc:Depends", "dpkg (>= 1.15.4) | install-info");
++		addsubstvar($package, "misc:Depends", "dpkg | install-info");
+ 	}
+ }
+ 
+Index: debhelper-8.9.13~bpo60+1/dh_installinit
+===================================================================
+--- debhelper-8.9.13~bpo60+1/dh_installinit
++++ debhelper-8.9.13~bpo60+1/dh_installinit
+@@ -182,10 +182,10 @@ foreach my $package (@{$dh{DOPACKAGES}})
+ 	if ($job ne '' || ($dh{ONLYSCRIPTS} && -e "$tmp/etc/init/$jobfile.conf")) {
+ 		if (! $dh{ONLYSCRIPTS}) {
+ 			if (! -d "$tmp/etc/init") {
+-				doit("install","-d","$tmp/etc/init");
++				doit("ginstall","-d","$tmp/etc/init");
+ 			}
+ 		
+-			doit("install","-p","-m644",$job,"$tmp/etc/init/$jobfile.conf");
++			doit("ginstall","-p","-m644",$job,"$tmp/etc/init/$jobfile.conf");
+ 		}
+ 		
+ 		# ensures that our /etc/init.d/ symlink points to a valid
+@@ -193,7 +193,7 @@ foreach my $package (@{$dh{DOPACKAGES}})
+ 		addsubstvar($package, "misc:Depends", "upstart-job");
+ 
+ 		if (! -d "$tmp/etc/init.d") {
+-			doit("install","-d","$tmp/etc/init.d");
++			doit("ginstall","-d","$tmp/etc/init.d");
+ 		}
+ 		doit("ln","-sf","/lib/init/upstart-job","$tmp/etc/init.d/$jobfile");
+ 	}
+@@ -205,17 +205,17 @@ foreach my $package (@{$dh{DOPACKAGES}})
+ 	my $default=pkgfile($package,'default');
+ 	if ($default ne '' && ! $dh{ONLYSCRIPTS}) {
+ 		if (! -d "$tmp/etc/default") {
+-			doit("install","-d","$tmp/etc/default");
++			doit("ginstall","-d","$tmp/etc/default");
+ 		}
+-		doit("install","-p","-m644",$default,"$tmp/etc/default/$script");
++		doit("ginstall","-p","-m644",$default,"$tmp/etc/default/$script");
+ 	}
+ 
+ 	if ($init ne '' && ! $dh{ONLYSCRIPTS}) {
+ 		if (! -d "$tmp/etc/init.d") {
+-			doit("install","-d","$tmp/etc/init.d");
++			doit("ginstall","-d","$tmp/etc/init.d");
+ 		}
+ 		
+-		doit("install","-p","-m755",$init,"$tmp/etc/init.d/$script");
++		doit("ginstall","-p","-m755",$init,"$tmp/etc/init.d/$script");
+ 	}
+ 
+ 	if ($job ne '' || $init ne '' || $dh{ONLYSCRIPTS}) {
+Index: debhelper-8.9.13~bpo60+1/dh_installlogcheck
+===================================================================
+--- debhelper-8.9.13~bpo60+1/dh_installlogcheck
++++ debhelper-8.9.13~bpo60+1/dh_installlogcheck
+@@ -66,11 +66,11 @@ foreach my $package (@{$dh{DOPACKAGES}})
+ 		my $logcheck=pkgfile($package,"logcheck.$typenod");
+ 		if ($logcheck) {
+ 			if (! -d "$tmp/etc/logcheck/$type") {
+-				doit("install","-o",0,"-g",0,"-d","$tmp/etc/logcheck/$type");
++				doit("ginstall","-o",0,"-g",0,"-d","$tmp/etc/logcheck/$type");
+ 			}
+ 			my $packagenodot=pkgfilename($package); # run-parts..
+ 			$packagenodot=~s/\./_/g;
+-			doit("install","-m","0644",$logcheck,"$tmp/etc/logcheck/$type/$packagenodot");
++			doit("ginstall","-m","0644",$logcheck,"$tmp/etc/logcheck/$type/$packagenodot");
+ 		}
+ 	}
+ }
+Index: debhelper-8.9.13~bpo60+1/dh_installlogrotate
+===================================================================
+--- debhelper-8.9.13~bpo60+1/dh_installlogrotate
++++ debhelper-8.9.13~bpo60+1/dh_installlogrotate
+@@ -41,9 +41,9 @@ foreach my $package (@{$dh{DOPACKAGES}})
+ 
+ 	if ($file) {
+ 		if (! -d "$tmp/etc/logrotate.d") {
+-			doit("install","-o",0,"-g",0,"-d","$tmp/etc/logrotate.d");
++			doit("ginstall","-o",0,"-g",0,"-d","$tmp/etc/logrotate.d");
+ 		}
+-		doit("install","-m",644,$file,"$tmp/etc/logrotate.d/".pkgfilename($package));
++		doit("ginstall","-m",644,$file,"$tmp/etc/logrotate.d/".pkgfilename($package));
+ 	}
+ }
+ 
+Index: debhelper-8.9.13~bpo60+1/dh_installman
+===================================================================
+--- debhelper-8.9.13~bpo60+1/dh_installman
++++ debhelper-8.9.13~bpo60+1/dh_installman
+@@ -173,13 +173,13 @@ foreach my $package (@{$dh{DOPACKAGES}})
+ 		next if compat(5) && -e $instpage;
+ 
+ 		if (! -d $destdir) {
+-			doit "install","-d",$destdir;
++			doit "ginstall","-d",$destdir;
+ 		}
+ 		if ($gz) {
+ 			complex_doit "zcat \Q$page\E > \Q$instpage\E";
+ 		}
+ 		else {
+-			doit "install","-p","-m644",$page,$instpage;
++			doit "ginstall","-p","-m644",$page,$instpage;
+ 		}
+ 	}
+ 
+@@ -197,20 +197,20 @@ foreach my $package (@{$dh{DOPACKAGES}})
+ 	}
+ 
+ 	# Now utf-8 conversion.
+-	if (defined `man --version`) {
+-		foreach my $dir (qw{usr/share/man}) {
+-			next unless -e "$tmp/$dir";
+-			find(sub {
+-				return if ! -f $_ || -l $_;
+-				my ($tmp, $orig)=($_.".new", $_);
+-				complex_doit "man --recode UTF-8 ./\Q$orig\E > \Q$tmp\E";
+-				# recode uncompresses compressed pages
+-				doit "rm", "-f", $orig if s/\.(gz|Z)$//;
+-				doit "chmod", 644, $tmp;
+-				doit "mv", "-f", $tmp, $_;
+-			}, "$tmp/$dir");
+-		}
+-	}
++#	if (defined `man --version`) {
++#		foreach my $dir (qw{usr/share/man}) {
++#			next unless -e "$tmp/$dir";
++#			find(sub {
++#				return if ! -f $_ || -l $_;
++#				my ($tmp, $orig)=($_.".new", $_);
++#				complex_doit "man --recode UTF-8 ./\Q$orig\E > \Q$tmp\E";
++#				# recode uncompresses compressed pages
++#				doit "rm", "-f", $orig if s/\.(gz|Z)$//;
++#				doit "chmod", 644, $tmp;
++#				doit "mv", "-f", $tmp, $_;
++#			}, "$tmp/$dir");
++#		}
++#	}
+ }
+ 
+ # Check if a file is a .so man page, for use by File::Find.
+Index: debhelper-8.9.13~bpo60+1/dh_installmanpages
+===================================================================
+--- debhelper-8.9.13~bpo60+1/dh_installmanpages
++++ debhelper-8.9.13~bpo60+1/dh_installmanpages
+@@ -173,9 +173,9 @@ foreach my $package (@{$dh{DOPACKAGES}})
+ 			
+ 			if (! -e "$destdir/$basename" && !-l "$destdir/$basename") {
+ 				if (! -d $destdir) {
+-					doit "install","-d",$destdir;
++					doit "ginstall","-d",$destdir;
+ 				}
+-				doit "install","-p","-m644",$page,$destdir.$instname;
++				doit "ginstall","-p","-m644",$page,$destdir.$instname;
+ 			}
+ 		}
+ 	}
+Index: debhelper-8.9.13~bpo60+1/dh_installmenu
+===================================================================
+--- debhelper-8.9.13~bpo60+1/dh_installmenu
++++ debhelper-8.9.13~bpo60+1/dh_installmenu
+@@ -59,9 +59,9 @@ foreach my $package (@{$dh{DOPACKAGES}})
+ 	
+ 	if ($menu ne '') {
+ 		if (! -d "$tmp/usr/share/menu") {
+-			doit("install","-d","$tmp/usr/share/menu");
++			doit("ginstall","-d","$tmp/usr/share/menu");
+ 		}
+-		doit("install","-p","-m644",$menu,"$tmp/usr/share/menu/$package");
++		doit("ginstall","-p","-m644",$menu,"$tmp/usr/share/menu/$package");
+ 		
+ 		# Add the scripts if a menu-method file doesn't exist.
+ 		# The scripts for menu-method handle everything these do, too.
+@@ -73,9 +73,9 @@ foreach my $package (@{$dh{DOPACKAGES}})
+ 
+ 	if ($menu_method ne '') {
+ 		if (!-d "$tmp/etc/menu-methods") {
+-			doit("install","-d","$tmp/etc/menu-methods");
++			doit("ginstall","-d","$tmp/etc/menu-methods");
+ 		}
+-		doit("install","-p","-m644",$menu_method,"$tmp/etc/menu-methods/$package");
++		doit("ginstall","-p","-m644",$menu_method,"$tmp/etc/menu-methods/$package");
+ 
+ 		if (! $dh{NOSCRIPTS}) {
+ 			autoscript($package,"postinst","postinst-menu-method","s/#PACKAGE#/$package/");
+Index: debhelper-8.9.13~bpo60+1/dh_installmime
+===================================================================
+--- debhelper-8.9.13~bpo60+1/dh_installmime
++++ debhelper-8.9.13~bpo60+1/dh_installmime
+@@ -64,9 +64,9 @@ foreach my $package (@{$dh{DOPACKAGES}})
+ 	
+ 	if ($mime ne '') {
+ 		if (! -d "$tmp/usr/lib/mime/packages") {
+-			doit("install","-d","$tmp/usr/lib/mime/packages");
++			doit("ginstall","-d","$tmp/usr/lib/mime/packages");
+ 		}
+-		doit("install","-p","-m644",$mime,"$tmp/usr/lib/mime/packages/$package");
++		doit("ginstall","-p","-m644",$mime,"$tmp/usr/lib/mime/packages/$package");
+ 	}
+ 	# Check wether we have to call update-mime (either upstream already
+ 	# installs a MIME information file or Debian provides one)
+@@ -79,9 +79,9 @@ foreach my $package (@{$dh{DOPACKAGES}})
+ 	
+ 	if ($sharedmimeinfo ne '') {
+ 		if (! -d "$tmp/usr/share/mime/packages") {
+-			doit("install", "-d", "$tmp/usr/share/mime/packages");
++			doit("ginstall", "-d", "$tmp/usr/share/mime/packages");
+ 		}
+-		doit("install", "-p", "-m644", $sharedmimeinfo, "$tmp/usr/share/mime/packages/$package.xml");
++		doit("ginstall", "-p", "-m644", $sharedmimeinfo, "$tmp/usr/share/mime/packages/$package.xml");
+ 	}
+ 	# check wether we have to call update-mime-database (either upstream
+ 	# already installs a shared MIME information file or Debian provides
+Index: debhelper-8.9.13~bpo60+1/dh_installmodules
+===================================================================
+--- debhelper-8.9.13~bpo60+1/dh_installmodules
++++ debhelper-8.9.13~bpo60+1/dh_installmodules
+@@ -95,7 +95,7 @@ foreach my $package (@{$dh{DOPACKAGES}})
+ 	my $modprobe_file=pkgfile($package,"modprobe");
+ 
+ 	if (! -e $tmp) {
+-		doit("install","-d",$tmp);
++		doit("ginstall","-d",$tmp);
+ 	}
+ 
+ 	if ($modutils_file) {
+@@ -104,11 +104,11 @@ foreach my $package (@{$dh{DOPACKAGES}})
+ 
+ 	if ($modprobe_file) {
+ 		if (! -e "$tmp/etc/modprobe.d") {
+-			doit("install","-d","$tmp/etc/modprobe.d");
++			doit("ginstall","-d","$tmp/etc/modprobe.d");
+ 		}
+ 		my $old="/etc/modprobe.d/".pkgfilename($package);
+ 		my $new=$old.".conf";
+-		doit("install","-m","0644",$modprobe_file,"$tmp/$new");
++		doit("ginstall","-m","0644",$modprobe_file,"$tmp/$new");
+ 		autoscript($package,"preinst","preinst-moveconffile","s!#OLD#!$old!g;s!#PACKAGE#!$package!g");
+ 		autoscript($package,"postinst","postinst-moveconffile","s!#OLD#!$old!g;s!#NEW#!$new!g");
+ 	}
+Index: debhelper-8.9.13~bpo60+1/dh_installpam
+===================================================================
+--- debhelper-8.9.13~bpo60+1/dh_installpam
++++ debhelper-8.9.13~bpo60+1/dh_installpam
+@@ -50,9 +50,9 @@ foreach my $package (@{$dh{DOPACKAGES}})
+ 	
+ 	if ($pam ne '') {
+ 		if (! -d "$tmp/etc/pam.d") {
+-			doit("install","-d","$tmp/etc/pam.d");
++			doit("ginstall","-d","$tmp/etc/pam.d");
+ 		}
+-		doit("install","-p","-m644",$pam,"$tmp/etc/pam.d/".pkgfilename($package));
++		doit("ginstall","-p","-m644",$pam,"$tmp/etc/pam.d/".pkgfilename($package));
+ 	}
+ }
+ 
+Index: debhelper-8.9.13~bpo60+1/dh_installppp
+===================================================================
+--- debhelper-8.9.13~bpo60+1/dh_installppp
++++ debhelper-8.9.13~bpo60+1/dh_installppp
+@@ -55,9 +55,9 @@ foreach my $package (@{$dh{DOPACKAGES}})
+ 		my $file=pkgfile($package, "ppp.ip-$script");
+ 		if ($file ne '') {
+ 			if (! -d "$tmp/etc/ppp/ip-$script.d") {
+-				doit("install","-d","$tmp/etc/ppp/ip-$script.d");
++				doit("ginstall","-d","$tmp/etc/ppp/ip-$script.d");
+ 			}
+-			doit("install","-p","-m755",$file,"$tmp/etc/ppp/ip-$script.d/".pkgfilename($package));
++			doit("ginstall","-p","-m755",$file,"$tmp/etc/ppp/ip-$script.d/".pkgfilename($package));
+ 		}
+ 	}
+ }
+Index: debhelper-8.9.13~bpo60+1/dh_installudev
+===================================================================
+--- debhelper-8.9.13~bpo60+1/dh_installudev
++++ debhelper-8.9.13~bpo60+1/dh_installudev
+@@ -96,10 +96,10 @@ foreach my $package (@{$dh{DOPACKAGES}})
+ 
+ 	if ($rules_file) {
+ 		if (! -e "$tmp/lib/udev/rules.d") {
+-			doit("install","-d","$tmp/lib/udev/rules.d");
++			doit("ginstall","-d","$tmp/lib/udev/rules.d");
+ 		}
+ 		my $rule="/lib/udev/rules.d/$dh{PRIORITY}$filename";
+-		doit("install","-m","0644",$rules_file,$tmp.$rule);
++		doit("ginstall","-m","0644",$rules_file,$tmp.$rule);
+ 		if (! $dh{NOSCRIPTS}) {
+ 			# Remove old rule from /etc, unless it's modified,
+ 			# in which case we rename it to match the new
+Index: debhelper-8.9.13~bpo60+1/dh_link
+===================================================================
+--- debhelper-8.9.13~bpo60+1/dh_link
++++ debhelper-8.9.13~bpo60+1/dh_link
+@@ -184,7 +184,7 @@ foreach my $package (@{$dh{DOPACKAGES}})
+ 		# Make sure the directory the link will be in exists.
+ 		my $basedir=dirname("$tmp/$dest");
+ 		if (! -e $basedir) {
+-			doit("install","-d",$basedir);
++			doit("ginstall","-d",$basedir);
+ 		}
+ 		
+ 		# Policy says that if the link is all within one toplevel
+Index: debhelper-8.9.13~bpo60+1/dh_lintian
+===================================================================
+--- debhelper-8.9.13~bpo60+1/dh_lintian
++++ debhelper-8.9.13~bpo60+1/dh_lintian
+@@ -48,9 +48,9 @@ foreach my $package (@{$dh{DOPACKAGES}})
+ 
+ 	if ($overrides ne '') {
+ 		if (! -d "$or_dir") {
+-			 doit("install","-d","$or_dir");
++			 doit("ginstall","-d","$or_dir");
+ 		}
+-		doit("install","-p","-m644",$overrides,"$or_dir/$package");
++		doit("ginstall","-p","-m644",$overrides,"$or_dir/$package");
+ 	}
+ }
+ 
+Index: debhelper-8.9.13~bpo60+1/dh_makeshlibs
+===================================================================
+--- debhelper-8.9.13~bpo60+1/dh_makeshlibs
++++ debhelper-8.9.13~bpo60+1/dh_makeshlibs
+@@ -175,7 +175,7 @@ foreach my $package (@{$dh{DOPACKAGES}})
+ 		}
+ 		
+ 		if (! -d "$tmp/DEBIAN") {
+-			doit("install","-d","$tmp/DEBIAN");
++			doit("ginstall","-d","$tmp/DEBIAN");
+ 		}
+ 		my $deps=$package;
+ 		if ($dh{V_FLAG_SET}) {
+Index: debhelper-8.9.13~bpo60+1/dh_md5sums
+===================================================================
+--- debhelper-8.9.13~bpo60+1/dh_md5sums
++++ debhelper-8.9.13~bpo60+1/dh_md5sums
+@@ -54,7 +54,7 @@ foreach my $package (@{$dh{DOPACKAGES}})
+ 	my $tmp=tmpdir($package);
+ 
+ 	if (! -d "$tmp/DEBIAN") {
+-		doit("install","-d","$tmp/DEBIAN");
++		doit("ginstall","-d","$tmp/DEBIAN");
+ 	}
+ 
+ 	# Check if we should exclude conffiles.
+Index: debhelper-8.9.13~bpo60+1/dh_movefiles
+===================================================================
+--- debhelper-8.9.13~bpo60+1/dh_movefiles
++++ debhelper-8.9.13~bpo60+1/dh_movefiles
+@@ -128,7 +128,7 @@ foreach my $package (@{$dh{DOPACKAGES}})
+ 
+ 	if (@tomove) {
+ 		if (! -d $tmp) {
+-			doit("install","-d",$tmp);
++			doit("ginstall","-d",$tmp);
+ 		}
+ 
+ 		doit("rm","-f","debian/movelist");
+Index: debhelper-8.9.13~bpo60+1/dh_shlibdeps
+===================================================================
+--- debhelper-8.9.13~bpo60+1/dh_shlibdeps
++++ debhelper-8.9.13~bpo60+1/dh_shlibdeps
+@@ -117,7 +117,7 @@ foreach my $package (@{$dh{DOPACKAGES}})
+ 
+ 	# dpkg-shlibdeps expects this directory to exist
+ 	if (! -d "$tmp/DEBIAN") {
+-		doit("install","-o",0,"-g",0,"-d","$tmp/DEBIAN");
++		doit("ginstall","-o",0,"-g",0,"-d","$tmp/DEBIAN");
+ 	}
+ 
+ 	my @filelist;
+Index: debhelper-8.9.13~bpo60+1/dh_strip
+===================================================================
+--- debhelper-8.9.13~bpo60+1/dh_strip
++++ debhelper-8.9.13~bpo60+1/dh_strip
+@@ -171,7 +171,7 @@ sub make_debug {
+ 	}
+ 	my $debug_dir=dirname($debug_path);
+ 	if (! -d $debug_dir) {
+-		doit("install", "-d", $debug_dir);
++		doit("ginstall", "-d", $debug_dir);
+ 	}
+ 	doit($objcopy, "--only-keep-debug", $file, $debug_path);
+ 	# No reason for this to be executable.
+Index: debhelper-8.9.13~bpo60+1/examples/rules.tiny
+===================================================================
+--- debhelper-8.9.13~bpo60+1/examples/rules.tiny
++++ debhelper-8.9.13~bpo60+1/examples/rules.tiny
+@@ -1,3 +1,3 @@
+-#!/usr/bin/make -f
++#!/usr/bin/gmake -f
+ %:
+ 	dh $@
+Index: debhelper-8.9.13~bpo60+1/run
+===================================================================
+--- debhelper-8.9.13~bpo60+1/run
++++ debhelper-8.9.13~bpo60+1/run
+@@ -1,4 +1,4 @@
+-#!/bin/sh
++#!/bin/bash
+ # Run a debhelper command using files from this directory.
+ 
+ # Run items from current directory by preference.
+Index: debhelper-8.9.13~bpo60+1/t/buildsystems/buildsystem_tests
+===================================================================
+--- debhelper-8.9.13~bpo60+1/t/buildsystems/buildsystem_tests
++++ debhelper-8.9.13~bpo60+1/t/buildsystems/buildsystem_tests
+@@ -609,7 +609,7 @@ $ENV{MAKEFLAGS} = "-j5";
+ $ENV{DEB_BUILD_OPTIONS} = "parallel=5";
+ 
+ $tmp = write_debian_rules(<<'EOF');
+-#!/usr/bin/make -f
++#!/usr/bin/gmake -f
+ override_dh_auto_build:
+ 	$(MAKE)
+ %:
+Index: debhelper-8.9.13~bpo60+1/t/override_target
+===================================================================
+--- debhelper-8.9.13~bpo60+1/t/override_target
++++ debhelper-8.9.13~bpo60+1/t/override_target
+@@ -9,7 +9,7 @@ system("mkdir -p t/tmp/debian");
+ system("cp debian/control t/tmp/debian");
+ open (OUT, ">", "t/tmp/debian/rules") || die "$!";
+ print OUT <<EOF;
+-#!/usr/bin/make -f
++#!/usr/bin/gmake -f
+ %:
+ 	PATH=../..:\$\$PATH PERL5LIB=../.. ../../dh \$@
+ override_dh_auto_build:

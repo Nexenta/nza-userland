@@ -1,0 +1,11 @@
+--- debhelper-8.9.13~bpo60+1/Makefile.orig	2012-04-14 00:13:17.476614227 +0530
++++ debhelper-8.9.13~bpo60+1/Makefile	2012-04-14 00:13:39.067963306 +0530
+@@ -38,7 +38,7 @@
+ 
+ PERLLIBDIR=$(shell perl -MConfig -e 'print $$Config{vendorlib}')/Debian/Debhelper
+ 
+-POD2MAN=pod2man --utf8 -c Debhelper -r "$(VERSION)"
++POD2MAN=/usr/perl5/5.12/bin/pod2man --utf8 -c Debhelper -r "$(VERSION)"
+ 
+ # l10n to be built is determined from .po files
+ LANGS=$(notdir $(basename $(wildcard man/po4a/po/*.po)))

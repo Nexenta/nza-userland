@@ -1,0 +1,40 @@
+diff -Nur debhelper-8.9.13~bpo60+1.orig/autoscripts/postinst-makeshlibs debhelper-8.9.13~bpo60+1/autoscripts/postinst-makeshlibs
+--- debhelper-8.9.13~bpo60+1.orig/autoscripts/postinst-makeshlibs	2012-04-16 10:26:51.417295345 +0530
++++ debhelper-8.9.13~bpo60+1/autoscripts/postinst-makeshlibs	1970-01-01 05:30:00.000000000 +0530
+@@ -1,3 +0,0 @@
+-if [ "$1" = "configure" ]; then
+-	ldconfig
+-fi
+diff -Nur debhelper-8.9.13~bpo60+1.orig/autoscripts/postrm-makeshlibs debhelper-8.9.13~bpo60+1/autoscripts/postrm-makeshlibs
+--- debhelper-8.9.13~bpo60+1.orig/autoscripts/postrm-makeshlibs	2012-04-16 10:26:51.415073990 +0530
++++ debhelper-8.9.13~bpo60+1/autoscripts/postrm-makeshlibs	1970-01-01 05:30:00.000000000 +0530
+@@ -1,3 +0,0 @@
+-if [ "$1" = "remove" ]; then
+-	ldconfig
+-fi
+diff -Nur debhelper-8.9.13~bpo60+1.orig/dh_makeshlibs debhelper-8.9.13~bpo60+1/dh_makeshlibs
+--- debhelper-8.9.13~bpo60+1.orig/dh_makeshlibs	2012-04-16 10:26:51.436796223 +0530
++++ debhelper-8.9.13~bpo60+1/dh_makeshlibs	2012-04-16 10:28:20.193593070 +0530
+@@ -18,9 +18,6 @@
+ B<dh_makeshlibs> is a debhelper program that automatically scans for shared
+ libraries, and generates a shlibs file for the libraries it finds.
+ 
+-It also adds a call to ldconfig in the F<postinst> and F<postrm> scripts (in
+-v3 mode and above only) to any packages in which it finds shared libraries.
+-
+ Packages that support multiarch are detected, and
+ a Pre-Dependency on multiarch-support is set in ${misc:Pre-Depends} ;
+ you should make sure to put that token into an appropriate place in your
+@@ -220,12 +217,6 @@
+ 		complex_doit("echo '$_' >>$tmp/DEBIAN/shlibs");
+ 	}
+ 
+-	# New as of dh_v3.
+-	if (! compat(2) && ! $dh{NOSCRIPTS} && $need_ldconfig) {
+-		autoscript($package,"postinst","postinst-makeshlibs");
+-		autoscript($package,"postrm","postrm-makeshlibs");
+-	}
+-
+ 	if (-e "$tmp/DEBIAN/shlibs") {
+ 		doit("chmod",644,"$tmp/DEBIAN/shlibs");
+ 		doit("chown","0:0","$tmp/DEBIAN/shlibs");
