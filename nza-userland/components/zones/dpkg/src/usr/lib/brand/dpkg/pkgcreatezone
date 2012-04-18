@@ -1,0 +1,433 @@
+#!/bin/ksh -p
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+
+#
+# Copyright (c) 2007, 2011, Oracle and/or its affiliates. All rights reserved.
+#
+# Copyright (c) 2012, Nexenta Systems, Inc. All rights reserved.
+
+#
+# Resetting GZ_IMAGE to something besides slash allows for simplified
+# debugging of various global zone image configurations-- simply make
+# an image somewhere with the appropriate interesting parameters.
+#
+GZ_IMAGE=${GZ_IMAGE:-/}
+PKG_IMAGE=$GZ_IMAGE
+export PKG_IMAGE
+
+. /usr/lib/brand/dpkg/common.ksh
+
+f_a_obs=$(gettext "-a publisher=uri option is obsolete, use -P instead.")
+f_pkg5_missing=$(gettext "pkg(5) does not seem to be present on this system.\n")
+f_no_pref_publisher=$(gettext "Unable to get global zone preferred publisher information, and none was supplied.\nYou must specify one using the -P option.")
+f_key_file=$(gettext "Key file not allowed without -P")
+f_cert_file=$(gettext "Cert file not allowed without -P")
+f_img=$(gettext "failed to create image\n")
+f_pkg=$(gettext "failed to install package\n")
+f_interrupted=$(gettext "Installation cancelled due to interrupt.\n")
+f_bad_publisher=$(gettext "Syntax error in publisher information.")
+f_no_entire_in_pref=$(gettext "Unable to locate the incorporation '%s' in the preferred publisher '%s'.\nUse -P to supply a publisher which contains this package.\n")
+f_key_prop=$(gettext "Unable to propagate key %s to %s")
+f_cert_prop=$(gettext "Unable to propagate cert %s to %s")
+f_get_secinfo=$(gettext "Failed to get key/cert information for publisher %s")
+f_nosuch_key=$(gettext "Failed to find key %s")
+f_nosuch_cert=$(gettext "Failed to find cert %s")
+
+m_publisher=$(gettext   "   Publisher: Using %s (%s).")
+m_cache=$(gettext       "       Cache: Using %s.")
+m_image=$(gettext       "       Image: Preparing at %s.")
+m_incorp=$(gettext      "Sanity Check: Looking for 'entire' incorporation.\n")
+m_key_prop=$(gettext    " Credentials: Propagating %s\n")
+m_cert_prop=$(gettext   " Credentials: Propagating %s\n")
+m_core=$(gettext	"  Installing: Packages (output follows)\n")
+m_smf=$(gettext		" Postinstall: Copying SMF seed repository ...")
+m_more_brokenness=$(gettext " Postinstall: Applying workarounds.")
+m_mannote=$(gettext     "        Note: Man pages can be obtained by installing pkg:/system/manual")
+
+m_usage=$(gettext "\n        install [-h]\n        install [-c certificate_file] [-k key_file] [-P publisher=uri]\n                [-e extrapkg [...]]\n        install {-a archive|-d path} {-p|-u} [-s|-v]")
+
+m_done=$(gettext      " done.")
+
+trap_cleanup() {
+	print "$f_interrupted"
+	exit $int_code
+}
+
+int_code=$ZONE_SUBPROC_NOTCOMPLETE
+trap trap_cleanup INT
+
+extra_packages=""
+ZONENAME=""
+ZONEPATH=""
+
+# Setup i18n output
+TEXTDOMAIN="SUNW_OST_OSCMD"
+export TEXTDOMAIN
+
+unset install_archive
+unset source_dir
+unset msg
+unset silent_mode
+unset verbose_mode
+
+while getopts "a:c:d:e:hk:P:pR:suvz:" opt; do
+	case $opt in
+		a)	# We're expecting a path to an archive
+			if [[ ! -f $OPTARG ]]; then
+				# If old style 'pub=uri' parameter then error.
+				echo $OPTARG | egrep -s =
+				if (( $? == 0 )); then
+					fail_usage "$f_a_obs"
+				fi
+			fi
+			install_archive="-a $OPTARG";;
+		c)	certfile="$OPTARG" ;;
+		d)	source_dir="-d $OPTARG";;
+		e)	extra_packages="$extra_packages $OPTARG" ;;
+		h)	fail_usage "";;
+		k)	keyfile="$OPTARG" ;;
+		P)	pub_and_origins="$OPTARG" ;;
+		p)	preserve_zone="-p";;
+		R)	ZONEPATH="$OPTARG" ;;
+		s)	silent_mode=1;;
+		u)	unconfig_zone="-u";;
+		v)	verbose_mode="-v";;
+		z)	ZONENAME="$OPTARG" ;;
+		*)	fail_usage "";;
+	esac
+done
+shift $((OPTIND-1))
+
+if [[ -z $ZONEPATH || -z $ZONENAME ]]; then
+	print -u2 "Brand error: No zone path or name"
+	exit $ZONE_SUBPROC_USAGE
+fi
+
+# XXX shared/common script currently uses lower case zonename & zonepath
+zonename="$ZONENAME"
+zonepath="$ZONEPATH"
+
+is_brand_labeled
+brand_labeled=$?
+
+ZONEROOT=$ZONEPATH/root
+secinfo=""
+
+# An image install can't use both -a AND -d...
+[[ -n "$install_archive" && -n "$source_dir" ]] &&
+    fail_usage "$f_incompat_options" "-a" "-d"
+
+# The install can't be both verbose AND silent...
+[[ -n $silent_mode && -n $verbose_mode ]] && \
+    fail_usage "$f_incompat_options" "-s" "-v"
+
+# The install can't both preserve and unconfigure
+[[ -n $unconfig_zone && -n $preserve_zone ]] && \
+    fail_usage "$f_incompat_options" "-u" "-p"
+
+# p2v options aren't allowed when installing from a repo.
+if [[ -z $install_archive && -z $source_dir ]]; then
+	[[ -n $preserve_zone || -n $unconfig_zone ]] && \
+		fail_usage "$f_incompat_options" "default" "-p|-u"
+fi
+
+#
+# Before installing the zone, set up ZFS dataset hierarchy for the zone root
+# dataset.
+#
+create_active_ds
+
+#
+# If we're installing from an image, branch off to that installer.
+#
+if [[ -n $install_archive || -n $source_dir ]]; then
+	/usr/lib/brand/dpkg/image_install $ZONENAME $ZONEPATH \
+	    $install_archive $source_dir $verbose_mode $silent_mode \
+	    $unconfig_zone $preserve_zone
+	ii_result=$?
+
+	if (( $ii_result != 0 )); then
+		exit $ZONE_SUBPROC_NOTCOMPLETE
+	fi
+	exit $ZONE_SUBPROC_OK
+fi
+
+printf "$m_image\n" $ZONEROOT
+
+printf "$m_core\n"
+pkglist=""
+pkglist_on_load=""
+
+pkglist="$pkglist
+	sunwcs
+	system-network
+	system-extended-system-utilities
+	service-management-sysidtool
+	system-management-sysidtool
+	compress-bzip2
+	compress-gzip
+	compress-zip
+	compress-unzip
+	archiver-gnu-tar
+	package-dpkg
+	web-curl
+	package-dpkg-apt
+	crypto-gnupg
+	nexenta-keyring
+	locale-en
+	security-sudo"
+
+
+#
+# Get some diagnostic tools, truss, dtrace, etc.
+#
+pkglist="$pkglist
+	developer-linker
+	developer-dtrace"
+
+#
+# Needed for 'whois', 'snoop' I think; also provides rup, rmt, rsh etc.
+#
+pkglist="$pkglist
+	service-network-network-clients
+	network-ftp"
+
+#
+# Get at least one sensible shell, vim, ssh, ssh key utils, sshd.
+#
+pkglist="$pkglist
+	shell-bash
+	editor-vim
+	network-ssh
+	network-ssh-ssh-key
+	service-network-ssh"
+
+#
+# Get some name services and DNS.
+#
+pkglist="$pkglist
+	system-network-nis
+	network-dns-bind
+	naming-ldap"
+
+#
+# Get nfs client and autofs; it's a pain not to have them.
+#
+pkglist="$pkglist
+	system-file-system-autofs
+	system-file-system-nfs"
+
+#
+# Get routing daemons.  They're required for useful exclusive stack zones.
+#
+pkglist="$pkglist
+	system-network-routing"
+
+#
+# Get packages for TX zones if appropriate.
+#
+#(( $brand_labeled == 1 )) && pkglist="$pkglist pkg:///system/trusted/trusted-nonglobal"
+
+#
+# Get man(1) but not the man pages
+#
+pkglist="$pkglist
+	text-doctools"
+
+#
+# Additional packages:
+#
+pkglist="$pkglist
+	text-locale
+	locale-en
+	runtime-perl-510
+	runtime-perl-512"
+
+#
+# Add in any extra packages requested by the user.
+#
+pkglist="$pkglist $extra_packages"
+
+#pkglist_on_load="$pkglist_on_load
+
+pkglist_inst_load="
+	sunwcs
+	system-library
+	system-library-math
+	system-library-gcc-44-runtime
+	archiver-gnu-tar
+	package-dpkg
+	nexenta-keyring
+	shell-bash
+	library-zlib
+	compress-bzip2
+	library-readline
+	library-pth
+	library-security-libassuan
+	library-security-libgpg-error
+	library-security-libksba
+	system-library-security-libgcrypt
+	system-library-usb-libusb
+	crypto-gnupg
+	package-dpkg-apt"
+
+export PATH=/usr/gnu/bin:/usr/bin:/sbin:/usr/sbin:/usr/local/sbin
+
+dpkg_init
+
+apt_download $pkglist_inst_load
+
+dpkg_unpack sunwcs
+dpkg_unpack system-library
+dpkg_unpack system-library-math
+dpkg_unpack system-library-gcc-44-runtime
+dpkg_unpack library-zlib
+dpkg_unpack shell-bash
+dpkg_unpack compress-bzip2
+dpkg_unpack archiver-gnu-tar
+dpkg_unpack package-dpkg
+dpkg_unpack package-dpkg-apt
+dpkg_unpack nexenta-keyring
+
+mv $ZONEROOT/etc/vfstab.sunwcs $ZONEROOT/etc/vfstab
+cp -f /etc/nsswitch.conf $ZONEROOT/etc/
+cp -f /etc/resolv.conf $ZONEROOT/etc/
+
+apt_mount
+dpkg_inst shell-bash
+dpkg_inst sunwcs
+
+for p in system-library \
+	system-library-math \
+	system-library-gcc-44-runtime \
+	library-zlib \
+	compress-bzip2 \
+	archiver-gnu-tar \
+	package-dpkg \
+	library-readline \
+	library-pth \
+	library-security-libassuan \
+	library-security-libgpg-error \
+	library-security-libksba \
+	system-library-security-libgcrypt \
+	system-library-usb-libusb \
+	crypto-gnupg \
+	package-dpkg-apt \
+	nexenta-keyring
+do
+    dpkg_inst $p
+done
+
+cp -f /etc/apt/sources.list $ZONEROOT/etc/apt/sources.list
+
+/usr/gnu/bin/chroot $ZONEROOT env ZONEINST=1 DEBCHROOT=1 apt-get update
+/usr/gnu/bin/chroot $ZONEROOT env ZONEINST=1 DEBCHROOT=1 apt-get -o APT::Immediate-Configure=no install -f -y --force-yes
+/usr/gnu/bin/chroot $ZONEROOT env ZONEINST=1 DEBCHROOT=1 apt-get -o APT::Immediate-Configure=no install -y --force-yes $pkglist
+/usr/gnu/bin/chroot $ZONEROOT env ZONEINST=1 DEBCHROOT=1 apt-get -o APT::Immediate-Configure=no install -f -y --force-yes
+
+apt_umount
+
+# workarounds
+rm -f $ZONEROOT/dev/null
+rm -rf $ZONEROOT/boot
+rm -rf $ZONEROOT/kernel
+chown root:sys $ZONEROOT/etc
+chown root:sys $ZONEROOT/usr
+chown root:sys $ZONEROOT/var
+
+rm -f $ZONEROOT/lib/svc/manifest/system/auditset.xml
+# end workarounds
+
+printf "\n$m_mannote\n"
+
+printf "$m_smf"
+PROFILEDIR=etc/svc/profile
+ln -fs ns_files.xml $ZONEROOT/$PROFILEDIR/name_service.xml
+ln -fs generic_limited_net.xml $ZONEROOT/$PROFILEDIR/generic.xml
+ln -fs inetd_generic.xml $ZONEROOT/$PROFILEDIR/inetd_services.xml
+ln -fs platform_none.xml $ZONEROOT/$PROFILEDIR/platform.xml
+
+
+# This was formerly done in i.manifest
+repfile=$ZONEROOT/etc/svc/repository.db
+cp -f $ZONEROOT/lib/svc/seed/nonglobal.db $repfile
+chmod 0600 $repfile
+chown root:sys $repfile
+
+printf "$m_done\n"
+
+# Clean up root as a role and jack if needed
+if grep "^root::::type=role;" $ZONEROOT/etc/user_attr >/dev/null 2>&1; then
+	printf "$m_brokenness\n"
+	#
+	# Remove "jack" user.
+	#
+	print "/^jack:/d\nw" | ed -s $ZONEROOT/etc/passwd
+	chmod u+w $ZONEROOT/etc/shadow
+	print "/^jack:/d\nw" | ed -s $ZONEROOT/etc/shadow
+	chmod u-w $ZONEROOT/etc/shadow
+
+	#
+	# Set root from a role back to... not a role.  Grr.
+	#
+	print "s/^root::::type=role;/root::::/\nw" |
+	    ed -s $ZONEROOT/etc/user_attr
+fi
+
+#
+# Make sure sysidtools run; we manually poke in the SSH action
+# so that we get an SSH key.  Yes, this is seriously borken.
+# See http://defect.opensolaris.org/bz/show_bug.cgi?id=741
+#
+printf "$m_more_brokenness\n"
+/usr/sbin/sysidconfig -b $ZONEROOT -a /lib/svc/method/sshd
+touch $ZONEROOT/etc/.UNCONFIGURED
+
+#
+# Labeled zones need to be able to modify /etc/gconf files, when gnome
+# packages are installed in the zone.  Set up links in the zone to the
+# global zone files -- this will provide default versions from the global
+# zone, which can be modified by the zone, breaking the link.
+if (( $brand_labeled == 1 )); then
+	cd /etc/gconf
+	for i in $(find .); do
+		if [ ! -e $ZONEROOT/etc/gconf/$i ]; then
+			if [ -d $i ]; then
+				mkdir $ZONEROOT/etc/gconf/$i
+			else
+				ln -s /etc/gconf-global/$i \
+				    $ZONEROOT/etc/gconf/$i
+			fi
+		fi
+	done
+fi
+
+printf "$m_complete\n\n" ${SECONDS}
+if (( $brand_labeled == 0 )); then
+	printf "$m_postnote\n"
+	printf "$m_postnote2\n"
+else
+	# Umount the dataset on the root.
+	umount $ZONEROOT || printf "$f_zfs_unmount" "$ZONEPATH/root"
+fi
+
+exit $ZONE_SUBPROC_OK
