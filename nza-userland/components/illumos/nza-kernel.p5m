@@ -30,23 +30,30 @@ set name=org.opensolaris.consolidation value=$(CONSOLIDATION)
 set name=variant.opensolaris.zone value=global
 
 depend fmri=pkg:/consolidation/developer/illumos-incorporation type=require
+depend fmri=pkg:/reprepro type=require
 
 dir path=usr
 dir path=usr/src
 dir path=usr/src/nza-kernel
 dir path=usr/src/nza-kernel/nza-patches
-dir path=usr/src/nza-kernel/illumos-deb
+dir path=opt
+dir path=opt/onbld
+dir path=opt/onbld/bin
+dir path=opt/onbld/etc
+
 
 file src/Makefile path=usr/src/nza-kernel/Makefile
-file src/nza-patches/new_ssl.patch path=usr/src/nza-kernel/nza-patches/new_ssl.patch  
+file src/nza-patches/new_ssl.patch path=usr/src/nza-kernel/nza-patches/new_ssl.patch
+file src/nza-patches/new_ssl.patch path=usr/src/nza-kernel/nza-patches/deb.patch
+file src/nza-patches/new_ssl.patch path=usr/src/nza-kernel/nza-patches/libm.patch
 file src/nza-patches/perl512.patch  path=usr/src/nza-kernel/nza-patches/perl512.patch
-file src/nza-patches/series  path=usr/src/nza-kernel/nza-patches/series
 file src/nza-patches/xc99.patch  path=usr/src/nza-kernel/nza-patches/xc99.patch
+file src/nza-patches/series  path=usr/src/nza-kernel/nza-patches/series
 
-file src/illumos-deb/MFT.pm path=usr/src/nza-kernel/illumos-deb/MFT.pm
-file src/illumos-deb/Makefile path=usr/src/nza-kernel/illumos-deb/Makefile
-file src/illumos-deb/Makefile.conf.example path=usr/src/nza-kernel/illumos-deb/Makefile.conf.example
-file src/illumos-deb/README.txt path=usr/src/nza-kernel/illumos-deb/README.txt
-file src/illumos-deb/bldpkg.sh path=usr/src/nza-kernel/illumos-deb/bldpkg.sh mode=0755
-file src/illumos-deb/ips2deb.pl path=usr/src/nza-kernel/illumos-deb/ips2deb.pl mode=0755
-file src/illumos-deb/ips2deb.replaces path=usr/src/nza-kernel/illumos-deb/ips2deb.replaces
+file src/onbld/MFT.pm path=opt/onbld/bin/MFT.pm mode=0644
+file src/onbld/ips2deb.pl path=opt/onbld/bin/ips2deb.pl mode=0755
+file src/onbld/onu-deb path=opt/onbld/bin/onu-deb mode=0755
+file src/onbld/ips2deb.replaces path=opt/onbld/bin/ips2deb.replaces mode=0644
+file src/onbld/ips2deb.priorities path=opt/onbld/bin/ips2deb.priorities mode=0644
+file src/onbld/ips2deb.versions path=opt/onbld/bin/ips2deb.versions mode=0644
+file src/onbld/distributions.apt path=opt/onbld/etc/distributions.apt

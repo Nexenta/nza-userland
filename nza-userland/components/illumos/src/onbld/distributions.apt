@@ -1,0 +1,9 @@
+# Copyright 2012 Nexenta Systems, Inc. All rights reserved.
+
+Origin: illumos
+Label: illumos
+Suite: unstable
+Codename: unstable
+Architectures: solaris-i386 solaris-sparc
+Components: main
+#SignWith: XXXX

@@ -1,19 +1,18 @@
 NZA_KERNEL       = nza-kernel
 NZA_CLOSED       = nza-closed
-ILLUMOS_DEB      = illumos-deb
 NZA_PATCHES      = nza-patches
 SUNSTUDIO_PATH   = /opt/SUNWspro
 SUN_GATE         = http://dlc.sun.com/osol/on/downloads/20100817
 CLOSED_BINARY1   = on-closed-bins.i386.tar.bz2
 CLOSED_BINARY2   = on-closed-bins-nd.i386.tar.bz2
-JNUMBER         ?= -j6
+DEB_VERSION     ?= 40-0-0
+DEB_MAINTAINER  ?= Nexenta Systems <maintainer@nexenta.com>
 
 NZA_ROOT         = $(CURDIR)
 CODEMGR_WS       = $(NZA_ROOT)/$(NZA_KERNEL)
 NZA_KERNEL_PATH ?= https://repos.nexenta.com/$(NZA_KERNEL)
 NZA_CLOSED_PATH ?= https://repos.nexenta.com/$(NZA_CLOSED)
 NZA_PATCH_DIR    = $(NZA_ROOT)/$(NZA_PATCHES)
-ILLUMOS_DEB_PATH = $(NZA_ROOT)/$(ILLUMOS_DEB)
 CUR_REV          = $(CODEMGR_WS)/.rev
 
 define buildkernel
@@ -23,22 +22,22 @@ define buildkernel
 endef
 
 define buildpackages
-        cd $(CODEMGR_WS)/$(ILLUMOS_DEB) && PVERSION='$(PVERSION)' CODEMGR_WS='$(CODEMGR_WS)' gmake clobber; \
-        cd $(CODEMGR_WS)/$(ILLUMOS_DEB) && PVERSION='$(PVERSION)' CODEMGR_WS='$(CODEMGR_WS)' gmake gen; \
-        cd $(CODEMGR_WS)/$(ILLUMOS_DEB) && PVERSION='$(PVERSION)' CODEMGR_WS='$(CODEMGR_WS)' gmake $(JNUMBER) pkgs
+	REV=`cat $(CUR_REV)`; \
+	cd $(CODEMGR_WS) && CODEMGR_WS='$(CODEMGR_WS)' GATE=$$REV ksh93 bldenv.sh -d illumos.sh -c 'cd usr/src/pkg && dmake deb'; \
+	cd $(CODEMGR_WS) && CODEMGR_WS='$(CODEMGR_WS)' GATE=$$REV ksh93 bldenv.sh -d illumos.sh -c 'cd usr/src/pkg && dmake debapt';
 endef
 
-ifndef PVERSION
+ifndef DEB_VERSION
   $(warning *******************************************************************)
-  $(warning *                    PVERSION is not set!                         *)
-  $(warning * PVERSION is responsible for a version of Kernel deb packages.   *)
+  $(warning *                    DEB_VERSION is not set!                         *)
+  $(warning * DEB_VERSION is responsible for a version of Kernel deb packages.   *)
   $(warning *  For Nexenta 4.0 it should have a format 40-0-X (X:0,1,2,3,...) *)
-  $(warning *   Target will not been completed correctly!   *)
+  $(warning *   DEB_VERSION is 40-0-0 on default!   *)
   $(warning *******************************************************************)
 endif
 
 all:
-	@echo "Please, select 'build-releasepackages' or 'build-debugpackages'!"
+	@echo "Please, select 'build-releasekernel' or 'build-debugkernel'!"
 
 checktools:
 	if test ! -d $(SUNSTUDIO_PATH)/bin ; then \
@@ -49,10 +48,6 @@ checktools:
 		echo "'$(NZA_PATCHES)' not found in '$(NZA_ROOT)'!"; \
 		exit 1; \
 	fi; \
-	if test ! -d $(ILLUMOS_DEB_PATH) ; then \
-		echo "'$(ILLUMOS_DEB)' not found in '$(NZA_ROOT)'!"; \
-		exit 1; \
-	fi
 	touch $@
 
 clonning: checktools
@@ -96,45 +91,56 @@ copy-tools: patching
 	ln -sf $(CODEMGR_WS)/usr/src/tools/scripts/bldenv.sh $(CODEMGR_WS)
 	cp $(CODEMGR_WS)/usr/src/tools/scripts/nightly.sh $(CODEMGR_WS)
 	chmod +x $(CODEMGR_WS)/nightly.sh
-	cp -r $(ILLUMOS_DEB_PATH) $(CODEMGR_WS)
 	touch $@
 
 adjust-scripts: copy-tools
 	sed -i 's/export GATE=.*//' $(CODEMGR_WS)/illumos.sh
 	sed -i 's/export CODEMGR_WS=.*//' $(CODEMGR_WS)/illumos.sh
-	sed -i 's/CODEMGR_WS =.*//' $(CODEMGR_WS)/$(ILLUMOS_DEB)/Makefile.conf
-	sed -i 's/PVERSION =.*//' $(CODEMGR_WS)/$(ILLUMOS_DEB)/Makefile.conf
+	echo "export PKGS_TYPE='deb'" >> $(CODEMGR_WS)/illumos.sh
+	echo "export DEB_VERSION='$(DEB_VERSION)'" >> $(CODEMGR_WS)/illumos.sh
+	echo "export DEB_MAINTAINER='$(DEB_MAINTAINER)'" >> $(CODEMGR_WS)/illumos.sh
+	echo "export DPKG_BUILD_FLAGS='-b -d -uc'" >> $(CODEMGR_WS)/illumos.sh
+	echo "export PKGARCHIVEAPT='${CODEMGR_WS}/packages/${MACH}/apt'" >> $(CODEMGR_WS)/illumos.sh
 	touch $@
 
-setrelease:
-	sed -i "s/export NIGHTLY_OPTIONS='-FnCDlmprt'/export NIGHTLY_OPTIONS='-NndritM'/" $(CODEMGR_WS)/illumos.sh
+setrelease: adjust-scripts
+	sed -i "s/export NIGHTLY_OPTIONS='-FnCDlmprt'/export NIGHTLY_OPTIONS='-nCmprt'/" $(CODEMGR_WS)/illumos.sh
 	touch $@
 
-setdebug:
-	sed -i "s/export NIGHTLY_OPTIONS='-FnCDlmprt'/export NIGHTLY_OPTIONS='-FNnDdritM'/" $(CODEMGR_WS)/illumos.sh
+setdebug: adjust-scripts
+	sed -i "s/export NIGHTLY_OPTIONS='-FnCDlmprt'/export NIGHTLY_OPTIONS='-nFDCmprt'/" $(CODEMGR_WS)/illumos.sh
 	touch $@
 
-build-releasekernel: adjust-scripts hacking setup-closed setrelease
+build-releasekernel: hacking setup-closed setrelease
 	$(buildkernel)
 	touch $@
 
-build-debugkernel: adjust-scripts hacking setup-closed setdebug
+build-debugkernel: hacking setup-closed setdebug
 	$(buildkernel)
 	touch $@
 
-build-releasepackages: build-releasekernel
+build-releasepackages:
+	if test ! -d $(CODEMGR_WS)/proto; then \
+		echo "Run \"make build-releasekernel\" first!"; \
+		exit 1; \
+	fi; \
 	$(buildpackages)
 	touch $@
 
-build-debugpackages: build-debugkernel
+build-debugpackages:
+	if test ! -d $(CODEMGR_WS)/proto; then \
+		echo "Run \"make build-debugkernel\" first!"; \
+		exit 1; \
+	fi; \
 	$(buildpackages)
 	touch $@
+
 
 .PHONY: all clean clean_patches help
 
 clean:
 	rm -f checktools clonning setup-closed patching hacking setrelease setdebug
-	rm -f copy-tools adjust-scripts build-releasekernel build-debugkernel build-releasepackages build-debugpackages
+	rm -f copy-tools adjust-scripts build-releasekernel build-debugkernel 
 	rm -rf $(CODEMGR_WS)
 
 clean_patches:
@@ -143,9 +149,9 @@ clean_patches:
 
 help:
 	@echo ""
-	@echo "Usage: make [build-releasekernel|build-debugkernel|build-releasepackages|build-debugpackages|clean|clean_patches|help]"
+	@echo "Usage: make [build-releasekernel|build-debugkernel|clean|clean_patches|help]"
 	@echo ""
-	@echo "PVERSION:"
+	@echo "DEB_VERSION:"
 	@echo "	   Version of Kernel deb packages. Must be set for 'build-releasepackages|build-debugpackages'"
 	@echo "	   The format (for Nexenta 4.0) is: 40-0-X (X:0,1,2,3,...)."
 	@echo ""
@@ -159,7 +165,7 @@ help:
 	@echo "	   It points to mercurial repo on default."
 	@echo "	   However you can re-export this var to clone"
 	@echo "	   $(NZA_CLOSED) from your locally shared place."
-	@echo "JNUMBER:"
-	@echo "           Number of processes to build"
-	@echo "	   deb packages of Kernel. It is -j6 on default."
+	@echo "DEB_MAINTAINER:"
+	@echo "           Crafter of packages"
+	@echo "	   It is \"Nexenta Systems <maintainer@nexenta.com>\" on default."
 	@echo ""

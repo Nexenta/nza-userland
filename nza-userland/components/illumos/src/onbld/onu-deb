@@ -1,0 +1,314 @@
+#!/bin/bash
+
+# Copyright 2012 Nexenta Systems, Inc. All rights reserved.
+
+# VERSION 1.1
+
+#set -x
+
+PATH=/usr/gnu/bin:/usr/bin:/usr/sbin
+export PATH
+
+VERBOSE=0
+NO_ZONES=0
+REPODIR=""
+TARGETBE=""
+UPGRADE=0
+
+TMPDIR="/tmp/apt.$$"
+
+BEADM="/usr/sbin/beadm"
+MKDIR="/usr/bin/mkdir"
+BOOTADM="/usr/sbin/bootadm"
+CHROOT="/usr/gnu/bin/chroot"
+MOUNT="/usr/sbin/mount"
+UMOUNT="/usr/sbin/umount"
+
+LOG="/root/upgrade.log.$$"
+
+CHROOTENV="env -i \
+PATH=/usr/gnu/bin:/usr/bin:/sbin:/usr/sbin \
+DEBCHROOT=1 \
+LOGNAME=root \
+HOME=/root \
+USER=root \
+TERM=xterm"
+
+TMOUNTED=0
+
+function usage()
+{
+	echo "Usage:"
+	echo "	$0 -t <BE name> -d <path to local APT>"
+	echo ""
+	echo "Example:"
+	echo "	$0 -t nightly-`date +%Y-%m-%d` -d \$PWD/packages/i386/apt"
+	exit 0
+}
+
+function exit_error()
+{
+	echo "$*" 2>&1 | tee -a $LOG
+	exit 2
+}
+
+function do_cmd()
+{
+	[ $VERBOSE -gt 0 ] && echo "$*" 2>&1 | tee -a $LOG
+	eval "$*"
+	exit_code=$?
+	[ $exit_code -eq 0 ] && return
+	[ $TMOUNTED -eq 1 ] && tumount
+	exit_error "'$*'" failed: exit code $exit_code
+}
+
+function get_mountpoint()
+{
+	local MNTPOINT=`zfs get -H mountpoint $1 | nawk '{print \$3}'`
+	echo $MNTPOINT
+}
+
+function is_root_zpool()
+{
+	local ZROOT=0
+	BOOTFS=`zpool get bootfs $1 | grep bootfs | nawk '{print \$3}'`
+	if [ "$BOOTFS" = "-" ]; then
+	    ZROOT=0
+	else
+	    ZROOT=1
+	fi
+	echo $ZROOT
+}
+
+function mount_rec()
+{
+	local MDIR=""
+	local MPATH=""
+	local CNT=2
+	local LMNTS=`echo $1 | nawk -F'/' '{print NF}'`
+
+	(( LMNTS++ ))
+	while [ $CNT -lt $LMNTS ]
+	do
+	    MDIR=`echo $1 | cut -d'/' -f$CNT`
+	    MPATH="$MPATH/$MDIR"
+	    (( CNT++ ))
+	    $MOUNT -F lofs -O $MPATH $TMPDIR/$MPATH
+	done
+}
+
+function umount_rec()
+{
+	local REPODIRTEMP="$1"
+
+	while [ "$REPODIRTEMP" != "/" ]
+	do
+	    $UMOUNT $TMPDIR/$REPODIRTEMP
+	    REPODIRTEMP=`dirname $REPODIRTEMP`
+	done
+}
+
+
+function mount_dataset()
+{
+	local ZMNTS=`zfs list -H | nawk '{print \$5}'`
+	local REPODIRTEMP="$REPODIR"
+
+	while [ "$REPODIRTEMP" != "/" ]
+	do
+	    for ZMNT in $ZMNTS
+	    do
+		if [ "$REPODIRTEMP" = "$ZMNT" ]; then
+		    mount_rec $ZMNT
+		    return
+		fi
+	    done
+	    REPODIRTEMP=`dirname $REPODIRTEMP`
+	done
+}
+
+function umount_dataset()
+{
+	local ZMNTS=`zfs list -H | nawk '{print \$5}'`
+	local REPODIRTEMP="$REPODIR"
+
+	while [ "$REPODIRTEMP" != "/" ]
+	do
+	    for ZMNT in $ZMNTS
+	    do
+		if [ "$REPODIRTEMP" = "$ZMNT" ]; then
+		    umount_rec $ZMNT
+		    return
+		fi
+	    done
+	    REPODIRTEMP=`dirname $REPODIRTEMP`
+	done
+}
+
+function tmount ()
+{
+	local TMPDIR="$1"
+	$CHROOT $TMPDIR $MOUNT /proc
+	$MOUNT -F lofs -O /tmp $TMPDIR/tmp
+	$MOUNT -F lofs -O /devices $TMPDIR/devices
+	$MOUNT -F lofs -O /dev $TMPDIR/dev
+	$MOUNT -F lofs -O /etc/mnttab $TMPDIR/etc/mnttab
+if [ ! -z "$REPODIR" ]; then
+	mount_dataset
+fi
+	TMOUNTED=1
+}
+
+function tumount ()
+{
+	local TMPDIR="$1"
+if [ ! -z "$REPODIR" ]; then
+	umount_dataset
+fi
+	$UMOUNT $TMPDIR/etc/mnttab
+	$UMOUNT $TMPDIR/dev
+	$UMOUNT $TMPDIR/devices
+	$UMOUNT $TMPDIR/tmp
+	$CHROOT $TMPDIR $UMOUNT /proc 2> /dev/null 1>&2
+	TMOUNTED=0
+}
+
+function get_clones_dev ()
+{
+	local TMP="$1"
+	local CLONEPKGS=""
+	DEVPKGS=`ls $TMP/var/lib/dpkg/info/*.postinst`
+
+	for DEVPKG in $DEVPKGS
+	do
+	    CLONE=`cat $DEVPKG | grep update_drv | grep clone | wc -l`
+	    if (( $CLONE > 0 )); then
+		DEVPKG=`basename $DEVPKG | sed -e 's/\..*$//'`
+		CLONEPKGS="$CLONEPKGS $DEVPKG"
+	    fi
+	done
+	echo $CLONEPKGS
+}
+
+function rm_package_name ()
+{
+	local RPKG="$1"
+	shift
+	local RPKGS="$*"
+	local ROUT=""
+
+	for p in $RPKGS
+	do
+	    if [ "$p" != "$RPKG" ]; then
+		ROUT="$ROUT $p"
+	    fi
+	done
+	echo $ROUT
+}
+
+###### main ######
+
+while getopts :d:t:UvZ i ; do
+	case $i in
+	d)
+		REPODIR="$OPTARG"
+		;;
+	t)
+		TARGETBE="$OPTARG"
+		;;
+	U)
+		UPGRADE=1
+		;;
+	v)
+		VERBOSE=1
+		;;
+	Z)
+		NO_ZONES=1
+		;;
+	*)
+		usage
+	esac
+done
+shift `expr $OPTIND - 1`
+
+[ -n "$1" ] && usage
+[ -z "$TARGETBE" ] && usage
+[ -z "$REPODIR" -a $UPGRADE -lt 1 ] && usage
+if [ $UPGRADE -lt 1 -a ! -f "$REPODIR/conf/distributions" ]; then
+    echo "Error: Local APT unavailable, please check your path to repo dir: '$REPODIR'"
+    exit 1
+fi
+
+do_cmd mkdir -p "$TMPDIR" 2>&1 | tee -a $LOG
+do_cmd beadm create "$TARGETBE" 2>&1 | tee -a $LOG
+do_cmd beadm mount "$TARGETBE" "$TMPDIR" 2>&1 | tee -a $LOG
+
+if [ ! -z "$REPODIR" ]; then
+    do_cmd mv /etc/apt/sources.list /etc/apt/sources.list.saved
+    echo "deb file://$REPODIR unstable main" > /etc/apt/sources.list
+    do_cmd cp -f /etc/apt/sources.list $TMPDIR/etc/apt/sources.list
+fi
+
+KERNEL_YES=0
+
+do_cmd apt-get -o=dir::cache=$TMPDIR/var/cache/apt clean 2>&1 | tee $LOG
+
+do_cmd apt-get -o=dir::cache=$TMPDIR/var/cache/apt update 2>&1 | tee -a $LOG
+
+do_cmd apt-get -o=dir::cache=$TMPDIR/var/cache/apt -d -f -y --force-yes upgrade 2>&1 | tee -a $LOG
+
+DEBPKGS=`apt-get -o=dir::cache=$TMPDIR/var/cache/apt -s -u upgrade | grep Inst | nawk '{print $2}'`
+
+# check system-kernel
+for DEBPKG in $DEBPKGS
+do
+    if [ "x$DEBPKG" = "xsystem-kernel" ]; then
+	KERNEL_YES=1
+    fi
+done
+
+if [ "$KERNEL_YES" = "1" ]; then
+    CLONEPKGS=`get_clones_dev $TMPDIR`
+    CLONEPKGS=`rm_package_name "system-kernel" "$CLONEPKGS"`
+    for CLONPKG in $CLONEPKGS
+    do
+	DEBPKGS=`rm_package_name "$CLONPKG" "$DEBPKGS"`
+    done
+    DEBPKGS=`rm_package_name "system-kernel" "$DEBPKGS"`
+    DEBPKGS="system-kernel $CLONEPKGS $DEBPKGS"
+fi
+
+do_cmd tmount $TMPDIR
+
+do_cmd $CHROOT $TMPDIR $CHROOTENV apt-get update 2>&1 | tee -a $LOG
+
+do_cmd $CHROOT $TMPDIR $CHROOTENV apt-get upgrade -y --force-yes 2>&1 | tee -a $LOG
+
+do_cmd $CHROOT $TMPDIR $CHROOTENV apt-get install -f -y --force-yes 2>&1 | tee -a $LOG
+
+do_cmd tumount $TMPDIR
+
+for DEBPKG in $DEBPKGS
+do
+    echo "Configuring: $DEBPKG ... " 2>&1 | tee -a $LOG
+    [ -f $TMPDIR/var/lib/dpkg/info/$DEBPKG.prerm ] && ( BASEDIR="$TMPDIR" $TMPDIR/var/lib/dpkg/info/$DEBPKG.prerm upgrade 2>&1 | tee -a $LOG )
+    [ -f $TMPDIR/var/lib/dpkg/info/$DEBPKG.postinst ] && ( DEBUPGRADE=1 BASEDIR="$TMPDIR" $TMPDIR/var/lib/dpkg/info/$DEBPKG.postinst configure 2>&1 | tee -a $LOG )
+done
+
+do_cmd touch $TMPDIR/reconfigure
+
+do_cmd $BOOTADM update-archive -R $TMPDIR 2>&1 | tee -a $LOG
+
+if [ ! -z "$REPODIR" ]; then
+    do_cmd mv /etc/apt/sources.list.saved /etc/apt/sources.list
+    do_cmd cp -f /etc/apt/sources.list $TMPDIR/etc/apt/sources.list
+fi
+
+do_cmd beadm umount "$TARGETBE" 2>&1 | tee -a $LOG
+
+do_cmd beadm activate "$TARGETBE" 2>&1 | tee -a $LOG
+
+echo "Upgrade have been done. Please reboot to new dataset '$TARGETBE'." 2>&1 | tee -a $LOG
+echo "You can find log at: '$LOG'." 2>&1 | tee -a $LOG
+
+exit 0

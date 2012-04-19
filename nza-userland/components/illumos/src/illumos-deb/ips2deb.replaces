@@ -1,8 +1,0 @@
-system-data-zoneinfo:sunwcs
-library-perl-5-sun-solaris-512:library-perl-5-sun-solaris
-library-perl-5-sun-solaris-510:library-perl-510-sun-solaris
-system-library-libmtsk:system-library-math
-runtime-perl:runtime-perl-512, runtime-perl-510, runtime-perl-510-extra
-library-perl-5-dpkg:libdpkg-perl
-library-dpkg-dev:libdpkg-dev
-runtime-python-26:runtime-python-24
