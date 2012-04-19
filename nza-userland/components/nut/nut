@@ -1,0 +1,55 @@
+#!/bin/bash
+
+. /lib/svc/share/smf_include.sh
+
+
+
+NUT_DIR=/usr
+NUT_LIB=/usr/lib
+STATE_DIR=/var/run/nut
+PID_UPS=${STATE_DIR}/upsd.pid
+PID_MON=/var/run/upsmon.pid
+
+ups_stop () {
+    if [ -f ${PID_MON} ]; then
+        /usr/bin/kill `cat ${PID_MON}` > /dev/null
+        /usr/bin/rm -f ${PID_MON}
+    fi
+    if [ -f ${PID_UPS} ]; then
+        /usr/bin/kill `cat ${PID_UPS}` > /dev/null
+        /usr/bin/rm -f ${PID_UPS}
+    fi
+    ${NUT_LIB}/upsdrvctl stop > /dev/null 2>&1
+}
+
+ups_start () {
+    $NUT_LIB/bin/upsdrvctl start >/dev/null 2>&1
+    $NUT_DIR/sbin/upsd >/dev/null 2>&1
+    $NUT_DIR/sbin/upsmon >/dev/null 2>&1
+}
+
+##
+# Start of script
+#
+case "$1" in
+        start)
+            ups_start
+            ;;
+        stop)
+            ups_stop
+            ;;
+        restart)
+            ups_stop
+            while pgrep upsd > /dev/null
+            do
+                sleep 1
+            done
+            ups_start
+            ;;
+        \*)
+            echo ""
+            echo "Usage: `basename $0` { start | stop | restart }"
+            echo ""
+            exit 64
+            ;;
+esac

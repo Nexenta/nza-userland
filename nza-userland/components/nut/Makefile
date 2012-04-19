@@ -18,7 +18,7 @@
 #
 # CDDL HEADER END
 #
-# Copyright (c) 2011, Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2012, Oracle and/or its affiliates. All rights reserved.
 #
 include ../../make-rules/shared-macros.mk
 
@@ -33,12 +33,19 @@ include ../../make-rules/prep.mk
 include ../../make-rules/configure.mk
 include ../../make-rules/ips.mk
 
-COMPILER = gcc
-CONFIGURE_OPTIONS	+=CC=cc
-CONFIGURE_OPTIONS	+=CXX=
 
-CONFIGURE_PREFIX	=/usr
-
+CONFIGURE_OPTIONS	+=--with-cgi
+CONFIGURE_OPTIONS	+=--with-dev
+CONFIGURE_OPTIONS	+=--sysconfdir=/etc/nut
+CONFIGURE_OPTIONS	+=--with-drvpath=/usr/lib/nut
+CONFIGURE_OPTIONS	+=--with-statepath=/var/run/nut
+CONFIGURE_OPTIONS	+=--with-cgipath=/usr/lib/cgi-bin/nut
+CONFIGURE_OPTIONS	+=--with-htmlpath=/usr/share/nut/www
+CONFIGURE_OPTIONS	+=--with-pidpath=/var/run/nut
+CONFIGURE_OPTIONS	+=--with-pkgconfig-dir=/usr/lib/pkgconfig
+CONFIGURE_OPTIONS	+=--with-user=nut
+CONFIGURE_OPTIONS	+=--with-group=nut
+CONFIGURE_OPTIONS	+=--mandir=/usr/share/man
 # common targets
 build:		$(BUILD_32)
 
