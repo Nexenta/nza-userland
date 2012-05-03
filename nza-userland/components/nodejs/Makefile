@@ -25,12 +25,15 @@
 
 include ../../make-rules/shared-macros.mk
 
+# make sure dtrace is found:
+export PATH := /usr/sbin:$(PATH)
+
 COMPONENT_NAME         = nodejs
-COMPONENT_VERSION      = 0.6.10
+COMPONENT_VERSION      = 0.6.16
 COMPONENT_REVISION     =
 COMPONENT_SRC          = node-v$(COMPONENT_VERSION)
 COMPONENT_ARCHIVE      = $(COMPONENT_SRC)$(COMPONENT_REVISION).tar.gz
-COMPONENT_ARCHIVE_HASH = sha1:ff098852434c595d866931c34a0bd2f9d888dd9b
+COMPONENT_ARCHIVE_HASH = sha1:7046a538420df75718b175d36515b78498a2a22e
 COMPONENT_ARCHIVE_URL  = http://nodejs.org/dist/v$(COMPONENT_VERSION)/$(COMPONENT_ARCHIVE)
 COMPONENT_PROJECT_URL  = http://nodejs.org
 
@@ -43,9 +46,10 @@ COMPONENT_PRE_CONFIGURE_ACTION = ( \
 	)
 
 # Reset configure options.
-# configure is a wrapper to wtf^W waf.
+# configure is a wrapper to waf.
 CONFIGURE_OPTIONS =  --prefix=/usr
 CONFIGURE_OPTIONS += --libdir=/usr/lib
+CONFIGURE_OPTIONS += --with-dtrace
 
 build:		$(BUILD_32)
 
