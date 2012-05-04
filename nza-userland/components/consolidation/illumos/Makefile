@@ -26,6 +26,7 @@
 include ../../../make-rules/shared-macros.mk
 
 COMPONENT_NAME = illumos
+COMPONENT_VERSION=	0.1
 
 include $(WS_TOP)/make-rules/ips.mk
 

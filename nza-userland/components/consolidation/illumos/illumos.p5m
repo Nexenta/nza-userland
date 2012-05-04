@@ -39,4 +39,5 @@ depend fmri=developer/gcc-44 type=require
 depend fmri=developer/macro/gnu-m4 type=require
 depend fmri=text/gnu/grep type=require
 depend fmri=text/gnu/patch type=require
+depend fmri=developer/build/gnu-make type=require
 set name=org.illumos.consolidation value=illumos

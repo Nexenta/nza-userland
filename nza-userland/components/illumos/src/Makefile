@@ -24,7 +24,7 @@ endef
 define buildpackages
 	REV=`cat $(CUR_REV)`; \
 	cd $(CODEMGR_WS) && CODEMGR_WS='$(CODEMGR_WS)' GATE=$$REV ksh93 bldenv.sh -d illumos.sh -c 'cd usr/src/pkg && dmake deb'; \
-	cd $(CODEMGR_WS) && CODEMGR_WS='$(CODEMGR_WS)' GATE=$$REV ksh93 bldenv.sh -d illumos.sh -c 'cd usr/src/pkg && dmake debapt';
+	cd $(CODEMGR_WS) && CODEMGR_WS='$(CODEMGR_WS)' GATE=$$REV ksh93 bldenv.sh -d illumos.sh -c 'cd usr/src/pkg && dmake debapt'
 endef
 
 ifndef DEB_VERSION
