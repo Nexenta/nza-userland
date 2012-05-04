@@ -19,13 +19,13 @@ ups_stop () {
         /usr/bin/kill `cat ${PID_UPS}` > /dev/null
         /usr/bin/rm -f ${PID_UPS}
     fi
-    ${NUT_LIB}/upsdrvctl stop > /dev/null 2>&1
+    ${NUT_LIB}/nut/upsdrvctl stop > /dev/null 2>&1
 }
 
 ups_start () {
-    $NUT_LIB/bin/upsdrvctl start >/dev/null 2>&1
-    $NUT_DIR/sbin/upsd >/dev/null 2>&1
-    $NUT_DIR/sbin/upsmon >/dev/null 2>&1
+    $NUT_LIB/nut/upsdrvctl start 2>&1
+    $NUT_DIR/sbin/upsd  2>&1
+    $NUT_DIR/sbin/upsmon 2>&1
 }
 
 ##
