@@ -25,13 +25,13 @@
 
 include ../../make-rules/shared-macros.mk
 
-COMPONENT_NAME=		quilt
-COMPONENT_VERSION=	0.60
-COMPONENT_SRC=		$(COMPONENT_NAME)-$(COMPONENT_VERSION)
-COMPONENT_PROJECT_URL=	http://savannah.nongnu.org/projects/quilt
-COMPONENT_ARCHIVE=	$(COMPONENT_SRC).tar.gz
-COMPONENT_ARCHIVE_HASH=	sha1:c93c79598c55ba288f60babcc74a9fc9b04404b6
-COMPONENT_ARCHIVE_URL=	http://download.savannah.gnu.org/releases/quilt/$(COMPONENT_ARCHIVE)
+COMPONENT_NAME         := quilt
+COMPONENT_VERSION      := 0.60
+COMPONENT_SRC          := $(COMPONENT_NAME)-$(COMPONENT_VERSION)
+COMPONENT_PROJECT_URL  := http://savannah.nongnu.org/projects/quilt
+COMPONENT_ARCHIVE      := $(COMPONENT_SRC).tar.gz
+COMPONENT_ARCHIVE_HASH := sha1:c93c79598c55ba288f60babcc74a9fc9b04404b6
+COMPONENT_ARCHIVE_URL  := http://download.savannah.gnu.org/releases/quilt/$(COMPONENT_ARCHIVE)
 
 include ../../make-rules/prep.mk
 include ../../make-rules/configure.mk
