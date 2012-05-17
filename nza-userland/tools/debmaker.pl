@@ -229,7 +229,7 @@ $SOURCE =~ s/_/-/g;
 
 sub usage {
     print <<USAGE;
-Usage: $0 [options] -D <output dir> -d <proto dir> [-d <proto dir> ... ] manifests
+Usage: $0 [options] -O <output dir> -d <proto dir> [-d <proto dir> ... ] manifests
 
 Options:
 
@@ -238,6 +238,8 @@ Options:
     -O <output dir>    where to create package structure and debs,
                        <output dir>/pkg-name and
                        <output dir>/pkg-name*.deb will be created
+    -D var=value       define a variable to substitute in manifest,
+                       e. g. -D MACH32=i86 -D COMPONENT_VERSION=1.2.3
 
     -V <version>       version of created packages (default is `$VERSION'),
                        may be 'ips' to use the same as for IPS system.
