@@ -185,7 +185,7 @@ def download_paths(search, filename, url):
 	return urls
 
 def usage():
-	print "Usage: %s [-f|--file (file)] [-l|--link] [-h|--hash (hash)] [-s|--search (search-dir)] --url (url)" % (sys.argv[0].split('/')[-1])
+	print "Usage: %s [-f|--file (file)] [-l|--link] [-h|--hash (hash)] [-s|--search (search-dir)] [--url (url)]" % (sys.argv[0].split('/')[-1])
 	sys.exit(1)
 
 def main():
@@ -221,8 +221,8 @@ def main():
 		else:
 			assert False, "unknown option"
 
-	if url_arg == None:
-		usage()
+#	if url_arg == None:
+#		usage()
 
 	for url in download_paths(search_list, file_arg, url_arg):
 		print "Source %s..." % url,
