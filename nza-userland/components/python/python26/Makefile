@@ -74,6 +74,15 @@ COMPONENT_BUILD_ENV  +=		DFLAGS="-$(BITS)"
 
 COMPONENT_TEST_TARGETS =	test
 
+# Give more freedom to modules:
+CONFIGURE_OPTIONS  += ac_cv_have_decl_isfinite=no
+COMPONENT_POST_CONFIGURE_ACTION = \
+        (cd $(@D) ; \
+         perl -pi -e 's/(^\#define _POSIX_C_SOURCE.*)/\/* $$1 *\//' pyconfig.h ; \
+         perl -pi -e 's/^(\#define _XOPEN_SOURCE.*)/\/* $$1 *\//' pyconfig.h ; \
+         perl -pi -e 's/^(\#define _XOPEN_SOURCE_EXTENDED.*)/\/* $$1 *\//' \
+                        pyconfig.h)
+
 # 64 bit shared objects need to go in a 64-bit directory
 COMPONENT_INSTALL_ARGS.64 += DESTSHARED=$(CONFIGURE_PREFIX)/lib/python2.6/lib-dynload
 

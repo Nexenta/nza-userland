@@ -542,6 +542,7 @@ foreach my $manifest_file (@ARGV) {
     my $prerm    = '';
     my $postrm   = '';
     my $postinst_configure = '';
+    my $prerm_remove = '';
 
     my @groups = @{$$manifest_data{'group'}};
     my @users  = @{$$manifest_data{'user'}};
@@ -720,18 +721,24 @@ foreach my $manifest_file (@ARGV) {
     # http://src.opensolaris.org/source/xref/pkg/gate/src/modules/actions/driver.py
     if (my @drivers = @{$$manifest_data{'driver'}}) {
         blab "Adding code to register drivers ...";
+        $postinst_configure .= 'if [ -z "$2" ]; then' . "\n";
         foreach my $d (@drivers) {
-            my $cmd = 'add_drv -v';
+            my $cmd = 'add_drv -v ';
             $cmd .= "-i '" . my_join(' ', $$d{'alias'}) . "'" if exists $$d{'alias'};
             $cmd .= "-c '" . my_join(' ', $$d{'class'}) . "'" if exists $$d{'class'};
             $cmd .= "-m '" . my_join(',', $$d{'perms'}) . "'" if exists $$d{'perms'};
             $cmd .= "-P '" . my_join(',', $$d{'privs'}) . "'" if exists $$d{'privs'};
             $cmd .= "-p '" . my_join(' ', $$d{'policy'}) . "'" if exists $$d{'policy'};
-            $postinst_configure .= $cmd . " $$d{'name'} || true\n";
+            $cmd .= " $$d{name}";
+            blab $cmd;
+            $postinst_configure .= $cmd . " || true\n";
             fatal "devlink is not implemented" if exists $$d{'devlink'};
             $postinst_configure .= "update_drv -v -a -m '$$d{'clone_perms'}' clone || true\n"
                 if  exists $$d{'clone_perms'};
+
+            $prerm_remove .= "rem_drv $$d{name} || true\n";
         }
+        $postinst_configure .= 'fi # new install' . "\n";
     }
 
 
@@ -855,6 +862,11 @@ CHECK_SMF
         $postinst .= 'if [ "$1" = configure ]; then' . "\n\n";
         $postinst .= $postinst_configure;
         $postinst .= "\nfi # configure\n"
+    }
+    if ($prerm_remove) {
+        $prerm .= 'if [ "$1" = remove ]; then' . "\n\n";
+        $prerm .= $prerm_remove;
+        $prerm .= "\nfi # remove\n"
     }
 
     write_script "$pkgdir/DEBIAN/preinst",  $preinst  if $preinst;

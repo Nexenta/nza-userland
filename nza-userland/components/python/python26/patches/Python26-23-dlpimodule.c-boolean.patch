@@ -1,0 +1,17 @@
+diff -dubr Python-2.6.4/Modules/dlpimodule.c Python-2.6.4.patched/Modules/dlpimodule.c
+--- Python-2.6.4/Modules/dlpimodule.c	2012-05-30 19:06:54.526718193 +0400
++++ Python-2.6.4.patched/Modules/dlpimodule.c	2012-05-31 11:18:32.188305470 +0400
+@@ -25,6 +25,13 @@
+ #include <stdio.h>
+ #include <libdlpi.h>
+ 
++#ifndef _B_FALSE
++#define _B_FALSE B_FALSE
++#endif
++#ifndef _B_TRUE
++#define _B_TRUE B_TRUE
++#endif
++
+ typedef struct {
+ 	PyObject_HEAD
+ 	dlpi_handle_t dlpihdl;

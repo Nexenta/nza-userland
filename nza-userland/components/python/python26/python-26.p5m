@@ -19,6 +19,7 @@
 # CDDL HEADER END
 #
 # Copyright (c) 2011, Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2012, Nexenta Systems, Inc. All rights reserved.
 #
 
 <transform file path=usr.*/man/.+ -> default mangler.man.stability uncommitted>
@@ -654,7 +655,6 @@ file path=usr/lib/python2.6/lib-dynload/64/resource.so
 file path=usr/lib/python2.6/lib-dynload/64/select.so
 file path=usr/lib/python2.6/lib-dynload/64/spwd.so
 file path=usr/lib/python2.6/lib-dynload/64/strop.so
-file path=usr/lib/python2.6/lib-dynload/64/sunaudiodev.so
 file path=usr/lib/python2.6/lib-dynload/64/syslog.so
 file path=usr/lib/python2.6/lib-dynload/64/termios.so
 file path=usr/lib/python2.6/lib-dynload/64/time.so
@@ -723,7 +723,6 @@ file path=usr/lib/python2.6/lib-dynload/resource.so
 file path=usr/lib/python2.6/lib-dynload/select.so
 file path=usr/lib/python2.6/lib-dynload/spwd.so
 file path=usr/lib/python2.6/lib-dynload/strop.so
-file path=usr/lib/python2.6/lib-dynload/sunaudiodev.so
 file path=usr/lib/python2.6/lib-dynload/syslog.so
 file path=usr/lib/python2.6/lib-dynload/termios.so
 file path=usr/lib/python2.6/lib-dynload/time.so
@@ -909,8 +908,6 @@ file path=usr/lib/python2.6/stringold.py
 file path=usr/lib/python2.6/stringprep.py
 file path=usr/lib/python2.6/struct.py
 file path=usr/lib/python2.6/subprocess.py
-file path=usr/lib/python2.6/sunau.py
-file path=usr/lib/python2.6/sunaudio.py
 file path=usr/lib/python2.6/symbol.py
 file path=usr/lib/python2.6/symtable.py
 file path=usr/lib/python2.6/tabnanny.py
