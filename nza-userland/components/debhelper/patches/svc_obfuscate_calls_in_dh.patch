@@ -1,0 +1,11 @@
+--- debhelper-8.9.13~bpo60+1.orig/dh	2012-06-01 20:38:39.659384633 +0530
++++ debhelper-8.9.13~bpo60+1/dh	2012-06-01 20:39:45.090192696 +0530
+@@ -369,6 +369,8 @@
+ 	dh_installifupdown
+ 	dh_installinfo
+ 	dh_installinit
++	dh_installsvc
++	dh_obfuscate
+ 	dh_installmenu
+ 	dh_installmime
+ 	dh_installmodules
