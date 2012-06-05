@@ -1,5 +1,2 @@
 perl512.patch
-new_ssl.patch
-libm.patch
 deb.patch
-xc99.patch

@@ -31,6 +31,7 @@ set name=variant.opensolaris.zone value=global
 
 depend fmri=pkg:/consolidation/developer/illumos-incorporation type=require
 depend fmri=pkg:/reprepro type=require
+depend fmri=pkg:/package/dpkg/debhelper type=require
 
 dir path=usr
 dir path=usr/src
@@ -43,11 +44,8 @@ dir path=opt/onbld/etc
 
 
 file src/Makefile path=usr/src/nza-kernel/Makefile
-file src/nza-patches/new_ssl.patch path=usr/src/nza-kernel/nza-patches/new_ssl.patch
 file src/nza-patches/deb.patch path=usr/src/nza-kernel/nza-patches/deb.patch
-file src/nza-patches/libm.patch path=usr/src/nza-kernel/nza-patches/libm.patch
 file src/nza-patches/perl512.patch  path=usr/src/nza-kernel/nza-patches/perl512.patch
-file src/nza-patches/xc99.patch  path=usr/src/nza-kernel/nza-patches/xc99.patch
 file src/nza-patches/series  path=usr/src/nza-kernel/nza-patches/series
 
 file src/onbld/MFT.pm path=opt/onbld/bin/MFT.pm mode=0644
