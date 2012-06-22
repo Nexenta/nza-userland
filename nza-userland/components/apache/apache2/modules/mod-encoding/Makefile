@@ -22,7 +22,7 @@
 # Copyright (c) 2011, Nexenta Systems, Inc. All rights reserved.
 #
 #
-include ../../../../../make-rules/shared-macros.mk
+include $(WS_TOP)/make-rules/shared-macros.mk
 
 COMPILER               = studio
 COMPONENT_NAME         = mod_encoding
