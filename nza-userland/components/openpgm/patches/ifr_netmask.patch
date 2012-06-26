@@ -1,0 +1,15 @@
+Index: libpgm-5.1.118-1~dfsg/openpgm/pgm/configure.ac
+===================================================================
+--- libpgm-5.1.118-1~dfsg.orig/openpgm/pgm/configure.ac	2011-09-27 17:59:08.000000000 +0000
++++ libpgm-5.1.118-1~dfsg/openpgm/pgm/configure.ac	2012-06-06 20:21:04.407905323 +0000
+@@ -184,8 +184,8 @@
+ AC_COMPILE_IFELSE(
+ 	[AC_LANG_PROGRAM([[#include <sys/types.h>
+ #include <ifaddrs.h>]],
+-		[[struct ifaddrs ifa;
+-ifa.ifa_netmask = (struct sockaddr*)0;]])],
++		[[struct ifreq ifr;
++ifr.ifr_netmask = (struct sockaddr*)0;]])],
+ 	[AC_MSG_RESULT([yes])
+ 		CFLAGS="$CFLAGS -DCONFIG_HAVE_IFR_NETMASK"],
+ 	[AC_MSG_RESULT([no])])
