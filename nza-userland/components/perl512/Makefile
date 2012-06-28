@@ -106,6 +106,10 @@ PKG_MACROS		+=	PERL_VERSION=$(PERL_VERSION)
 # use cc.  Trying to avoid the full path so it doesn't end up in
 # perl's config.
 #
+LD_OPTIONS=
+COMPONENT_BUILD_ENV     +=      PATH=$(GCC_ROOT)/bin:$(PATH)
+COMPONENT_BUILD_ENV     +=      LD_OPTIONS=$(LD_OPTIONS)
+COMPONENT_INSTALL_ENV   +=      LD_OPTIONS=$(LD_OPTIONS)
 
 build:		$(BUILD_32)
 
