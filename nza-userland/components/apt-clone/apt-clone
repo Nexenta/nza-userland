@@ -1494,7 +1494,7 @@ $ENV{DEBIAN_FRONTEND} = "noninteractive";
 $ENV{DEBCONF_NONINTERACTIVE_SEEN} = "true";
 
 # first, update dpkg and apt - always!
-$rc = nmu_system("apt-get $verbose -y install dpkg apt");
+$rc = nmu_system("apt-get $verbose -y install package-dpkg package-dpkg-apt");
 if ($rc == 0) {	
 	$ENV{LD_NOAUXFLTR} = "1";
 	if (defined (my $kid = fork)) {

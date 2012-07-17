@@ -25,6 +25,7 @@
 
 include ../../make-rules/shared-macros.mk
 
+COMPONENT_VERSION = 1.0
 COMPONENT_NAME = apt-clone
 
 include $(WS_TOP)/make-rules/ips.mk

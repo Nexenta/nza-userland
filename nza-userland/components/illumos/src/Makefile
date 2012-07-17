@@ -63,7 +63,7 @@ clonning: checktools
 		cd $(CODEMGR_WS)/usr/$(NZA_CLOSED); \
 		hg pull -u; \
 	fi
-	cd $(CODEMGR_WS) && hg log -l1 --template '{node|short}' > $(CUR_REV)
+	cd $(CODEMGR_WS) && hg log -l1 -b `hg branch` --template '{node|short}' > $(CUR_REV)
 	touch $@
 
 setup-closed: clonning
@@ -141,6 +141,7 @@ build-debugpackages:
 clean:
 	rm -f checktools clonning setup-closed patching hacking setrelease setdebug
 	rm -f copy-tools adjust-scripts build-releasekernel build-debugkernel 
+	rm -f build-releasepackages build-debugpackages
 	rm -rf $(CODEMGR_WS)
 
 clean_patches:
@@ -149,7 +150,7 @@ clean_patches:
 
 help:
 	@echo ""
-	@echo "Usage: make [build-releasekernel|build-debugkernel|clean|clean_patches|help]"
+	@echo "Usage: make [build-releasekernel|build-debugkernel|build-releasepackages|build-debugpackages|clean|clean_patches|help]"
 	@echo ""
 	@echo "DEB_VERSION:"
 	@echo "	   Version of Kernel deb packages. Must be set for 'build-releasepackages|build-debugpackages'"
