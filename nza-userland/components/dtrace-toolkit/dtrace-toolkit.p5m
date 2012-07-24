@@ -1078,7 +1078,6 @@ file   path=opt/DTT/rwtop   mode=0755
 file   path=opt/DTT/statsnoop   mode=0755
 
 depend fmri=developer/dtrace type=require
-depend fmri=SUNWcs type=require
 depend fmri=runtime/python-26 type=require
 depend fmri=runtime/perl-510 type=require
 depend fmri=developer/macro/cpp type=require
