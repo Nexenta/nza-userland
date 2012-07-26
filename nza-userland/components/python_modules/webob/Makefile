@@ -22,12 +22,14 @@
 #
 
 include ../../../make-rules/shared-macros.mk
-COMPONENT_NAME     =  WebOb
-COMPONENT_VERSION  =  1.1.1
-COMPONENT_SRC      =  $(COMPONENT_NAME)-$(COMPONENT_VERSION)
-COMPONENT_ARCHIVE  =  $(COMPONENT_SRC).zip
-COMPONENT_ARCHIVE_HASH = sha1:00ba643ebc0f66a20b22b6d9fb873852b6e155aa
-COMPONENT_ARCHIVE_URL  = http://pypi.python.org/packages/source/W/WebOb/$(COMPONENT_ARCHIVE)
+COMPONENT_NAME         := WebOb
+COMPONENT_VERSION      := 1.0.8
+GIT_ID                 := 5982a58
+COMPONENT_SRC          := $(COMPONENT_NAME)-$(COMPONENT_VERSION)
+COMPONENT_ARCHIVE      := Pylons-webob-$(COMPONENT_VERSION)-0-g$(GIT_ID).tar.gz
+COMPONENT_SRC          := Pylons-webob-$(GIT_ID)
+COMPONENT_ARCHIVE_HASH := sha1:cc62dd2ce37c8d497997f2a4d2613df6efbba28b
+COMPONENT_ARCHIVE_URL  := https://github.com/Pylons/webob/tarball/$(COMPONENT_VERSION)
 
 include $(WS_TOP)/make-rules/prep.mk
 include $(WS_TOP)/make-rules/ips.mk
