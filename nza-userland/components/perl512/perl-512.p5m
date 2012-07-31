@@ -418,8 +418,8 @@ dir path=usr/perl5/site_perl
 dir path=usr/perl5/site_perl/$(PERL_VERSION)
 dir path=usr/perl5/site_perl/$(PERL_VERSION)/$(PERL_ARCH)-solaris-64int
 #hack
-dir path=usrperl5/5.10.0
-dir path=usrperl5/5.10.0/bin
+dir path=usr/perl5/5.10.0
+dir path=usr/perl5/5.10.0/bin
 
 
 file path=usr/perl5/$(PERL_VERSION)/bin/a2p
