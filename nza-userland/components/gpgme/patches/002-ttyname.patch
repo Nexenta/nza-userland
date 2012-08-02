@@ -1,0 +1,19 @@
+--- src/rungpg.c	2008-11-03 19:50:12.000000000 +0300
++++ src/rungpg.c	2012-08-02 11:06:18.379097365 +0400
+@@ -29,6 +29,7 @@
+ #include <errno.h>
+ #include <unistd.h>
+ #include <locale.h>
++#include <limits.h>
+ 
+ #include "gpgme.h"
+ #include "util.h"
+@@ -414,7 +415,7 @@
+   engine_gpg_t gpg;
+   gpgme_error_t rc = 0;
+   char *dft_display = NULL;
+-  char dft_ttyname[64];
++  char dft_ttyname[TTYNAME_MAX];
+   char *dft_ttytype = NULL;
+ 
+   gpg = calloc (1, sizeof *gpg);
