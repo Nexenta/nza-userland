@@ -3690,7 +3690,6 @@ link path=usr/bin/perl target=../perl5/5.12/bin/perl
 link path=usr/bin/cpan target=../perl5/5.12/bin/cpan
 link path=usr/perl5/$(PERL_VERSION)/lib/$(PERL_ARCH)-solaris-64int/CORE/libperl.so target=libperl.so.5.12
 link path=usr/perl5/$(PERL_VERSION)/lib/$(PERL_ARCH)-solaris-64int/CORE/libperl.so.5.12 target=libperl.so.5.12.3
-link path=usr/perl5/5.10.0/bin/perl target=../../5.12/bin/perl
 #link path=usr/perl5/bin target=./5.12/bin
 #link path=usr/perl5/man target=./5.12/man
 #link path=usr/perl5/pod target=./5.12/lib/pod
