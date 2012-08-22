@@ -1457,10 +1457,12 @@ if ($dry_run ne '') {
 			}
 		}
 	}
-	if ($need_reboot && $yes eq '' &&
-	    !confirm("This upgrade will require REBOOT. Proceed?")) {
-		print_error("Upgrade interrupted.\n");
-		exit 1;
+	if ($aptcmd !~ /force/) {
+	    if ($need_reboot && $yes eq '' &&
+		!confirm("This upgrade will require REBOOT. Proceed?")) {
+		    print_error("Upgrade interrupted.\n");
+		    exit 1;
+	    }
 	}
 	print_out("Upgrade is in progress. Please DO NOT interrupt...\n");
 }
