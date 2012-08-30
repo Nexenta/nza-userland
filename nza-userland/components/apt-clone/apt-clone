@@ -1333,10 +1333,11 @@ if ($rootfs_rollback) {
 		  "Default GRUB entry '0' will boot '$rootfs_activate' ZFS clone.\n");
 	exit(1);
 }
-
-if ($yes eq '' && !confirm("This operation will upgrade your system using ZFS capabilities. Proceed ?")) {
+if ($aptcmd !~ /force/) {
+    if ($yes eq '' && !confirm("This operation will upgrade your system using ZFS capabilities. Proceed ?")) {
 	print_out("Operation canceled.\n");
 	exit(1);
+    }
 }
 
 my %zones = ();
@@ -1354,12 +1355,15 @@ for my $line (@lines) {
 		$zones{$zone} = \@data;
 	}
 }
-if (scalar keys %zones > 0) {
+if ($aptcmd !~ /force/) {
+    if (scalar keys %zones > 0) {
 	unless ($yes ne '' ||
 		confirm("Would you like to upgrade all Nexenta Zones as well ?")) {
 		%zones = ();
 	}
+    }
 }
+
 print_out("Will attempt to upgrade '". join(' ', keys %zones) ."' zone(s) ...\n\n")
 	if (scalar keys %zones > 0);
 
@@ -1453,10 +1457,12 @@ if ($dry_run ne '') {
 			}
 		}
 	}
-	if ($need_reboot && $yes eq '' &&
-	    !confirm("This upgrade will require REBOOT. Proceed?")) {
-		print_error("Upgrade interrupted.\n");
-		exit 1;
+	if ($aptcmd !~ /force/) {
+	    if ($need_reboot && $yes eq '' &&
+		!confirm("This upgrade will require REBOOT. Proceed?")) {
+		    print_error("Upgrade interrupted.\n");
+		    exit 1;
+	    }
 	}
 	print_out("Upgrade is in progress. Please DO NOT interrupt...\n");
 }

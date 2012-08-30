@@ -68,7 +68,8 @@ dir path=usr/share/man/man1
 dir path=usr/share/man/man4
 dir path=usr/share/man/man5
 dir path=etc
-dir path=etc/bash_completion.d
+dir path=etc/bash
+dir path=etc/bash/bash_completion.d
 file path=usr/bin/git
 file path=usr/bin/git-cvsserver
 file path=usr/bin/git-shell
@@ -358,7 +359,7 @@ file path=usr/share/man/man5/gitrevisions.5
 file path=usr/share/man/man5/gittutorial-2.5
 file path=usr/share/man/man5/gittutorial.5
 file path=usr/share/man/man5/gitworkflows.5
-file git-completion.bash path=etc/bash_completion.d/git-completion
+file git-completion.bash path=etc/bash/bash_completion.d/git-completion
 hardlink path=usr/bin/git-receive-pack target=git
 hardlink path=usr/bin/git-upload-archive target=git
 hardlink path=usr/lib/git-core/git target=../../bin/git

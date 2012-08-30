@@ -1,0 +1,112 @@
+--- iozone3_408/src/current/makefile	Thu May 10 08:14:12 2012
++++ iozone3_408/src/current/makefile.new	Fri Jun 22 02:16:13 2012
+@@ -391,24 +391,24 @@
+ #
+ # Solaris 32 bit build with threads, largefiles, and async I/O
+ #
+-Solaris10gcc:	iozone_solaris10gcc.o libasync10.o libbif10.o fileop_Solaris10gcc.o pit_server_solaris10gcc.o
+-	$(GCC)  -O $(LDFLAGS) iozone_solaris10gcc.o libasync10.o libbif10.o \
++Solaris10gcc:	iozone_solaris10gcc.o src/current/libasync10.o src/current/libbif10.o fileop_Solaris10gcc.o pit_server_solaris10gcc.o
++	$(GCC)  -O $(LDFLAGS) src/current/iozone_solaris10gcc.o src/current/libasync10.o src/current/libbif10.o \
+ 		-lthread -lpthread -lposix4 -lnsl -laio \
+-		-lsocket -o iozone
+-	$(GCC)  -O fileop_Solaris10gcc.o -o fileop
+-	$(GCC)  -O pit_server_solaris10gcc.o -lthread -lpthread -lposix4 -lnsl -laio \
+-                -lsocket -o pit_server
++		-lsocket -o src/current/iozone
++	$(GCC)  -O src/current/fileop_Solaris10gcc.o -o src/current/fileop
++	$(GCC)  -O src/current/pit_server_solaris10gcc.o -lthread -lpthread -lposix4 -lnsl -laio \
++                -lsocket -o src/current/pit_server
+ 
+ #
+ # Solaris 64 bit build with threads, largefiles, and async I/O
+ #
+-Solaris10gcc-64:	iozone_solaris10gcc-64.o libasync10-64.o libbif10-64.o fileop_Solaris10gcc-64.o pit_server_solaris10gcc-64.o
++Solaris10gcc-64:	iozone_solaris10gcc-64.o src/current/libasync10-64.o src/current/libbif10-64.o fileop_Solaris10gcc-64.o pit_server_solaris10gcc-64.o
+ 	$(GCC)  -O $(LDFLAGS) $(S10GCCFLAGS) iozone_solaris10gcc-64.o libasync10-64.o libbif10-64.o \
+ 		-lthread -lpthread -lposix4 -lnsl -laio \
+-		-lsocket -o iozone
+-	$(GCC)  -O $(S10GCCFLAGS) fileop_Solaris10gcc-64.o -o fileop
+-	$(GCC)  -O $(S10GCCFLAGS) pit_server_solaris10gcc-64.o -lthread -lpthread -lposix4 \
+-		-lnsl -laio -lsocket -o pit_server
++		-lsocket -o src/current/iozone
++	$(GCC)  -O $(S10GCCFLAGS) src/current/fileop_Solaris10gcc-64.o -o src/current/fileop
++	$(GCC)  -O $(S10GCCFLAGS) src/current/pit_server_solaris10gcc-64.o -lthread -lpthread -lposix4 \
++		-lnsl -laio -lsocket -o src/current/pit_server
+ 
+ 
+ #
+@@ -651,17 +651,17 @@
+ 	@echo ""
+ 	$(CC) -c  $(CFLAGS) fileop.c  -o fileop_hpuxs-11.0.o 
+ 
+-pit_server_solaris10gcc-64.o:	pit_server.c
++pit_server_solaris10gcc-64.o:	src/current/pit_server.c
+ 	@echo ""
+ 	@echo "Building the pit_server"
+ 	@echo ""
+-	$(CC) -c  $(CFLAGS) $(S10GCCFLAGS) pit_server.c  -o pit_server_solaris10gcc-64.o 
++	$(CC) -c  $(CFLAGS) $(S10GCCFLAGS) src/current/pit_server.c  -o src/current/pit_server_solaris10gcc-64.o 
+ 
+-pit_server.o:	pit_server.c
++pit_server.o:	src/current/pit_server.c
+ 	@echo ""
+ 	@echo "Building the pit_server"
+ 	@echo ""
+-	$(CC) -c  $(CFLAGS) pit_server.c  -o pit_server.o 
++	$(CC) -c  $(CFLAGS) src/current/pit_server.c  -o src/current/pit_server.o 
+ 
+ pit_server-linux-powerpc64.o:	pit_server.c
+ 	@echo ""
+@@ -669,11 +669,11 @@
+ 	@echo ""
+ 	$(CC) -c  $(CFLAGS) $(FLAG64BIT) pit_server.c -o pit_server-linux-powerpc64.o 
+ 
+-pit_server_solaris10gcc.o:	pit_server.c
++pit_server_solaris10gcc.o:	src/current/pit_server.c
+ 	@echo ""
+ 	@echo "Building the pit_server"
+ 	@echo ""
+-	$(GCC) -c  $(CFLAGS) pit_server.c -o pit_server_solaris10gcc.o 
++	$(GCC) -c  $(CFLAGS) src/current/pit_server.c -o src/current/pit_server_solaris10gcc.o 
+ 
+ 
+ pit_server_win.o:	pit_server.c
+@@ -870,11 +870,11 @@
+ 	$(CC) -c -O $(CFLAGS) fileop.c -o fileop_Solaris10cc.o
+ 
+ 
+-fileop_Solaris10gcc.o:	fileop.c
++fileop_Solaris10gcc.o:	src/current/fileop.c
+ 	@echo ""
+ 	@echo "Building fileop for Solaris10gcc"
+ 	@echo ""
+-	$(GCC) -c -O $(CFLAGS) fileop.c -o fileop_Solaris10gcc.o
++	$(GCC) -c -O $(CFLAGS) src/current/fileop.c -o src/current/fileop_Solaris10gcc.o
+ 
+ fileop_Solaris10gcc-64.o:	fileop.c
+ 	@echo ""
+@@ -1126,19 +1126,19 @@
+ 	        -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -Dsolaris \
+ 	        -DNAME='"Solaris10"' $(CFLAGS) iozone.c -o iozone_solaris10cc.o
+ 
+-iozone_solaris10gcc.o:  iozone.c libbif.c
++iozone_solaris10gcc.o:  src/current/iozone.c src/current/libbif.c
+ 	@echo ""
+ 	@echo "Building iozone for Solaris10gcc"
+ 	@echo ""
+ 	$(GCC) -O -c  -Dunix -DHAVE_ANSIC_C -DASYNC_IO -D__LP64__ \
+                 -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -Dsolaris \
+-                $(CFLAGS) libbif.c -o libbif10.o
++                $(CFLAGS) src/current/libbif.c -o src/current/libbif10.o
+ 	$(GCC) -O -c  -Dunix -DHAVE_ANSIC_C -DASYNC_IO -D__LP64__ \
+                 -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -Dsolaris \
+-                -DNAME='"Solaris10gcc"' $(CFLAGS) libasync.c -o libasync10.o
++                -DNAME='"Solaris10gcc"' $(CFLAGS) src/current/libasync.c -o src/current/libasync10.o
+ 	$(GCC) -c -O -Dunix -DHAVE_ANSIC_C -DASYNC_IO \
+                 -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -Dsolaris \
+-                -DNAME='"Solaris10gcc"' $(CFLAGS) iozone.c -o iozone_solaris10gcc.o
++                -DNAME='"Solaris10gcc"' $(CFLAGS) src/current/iozone.c -o src/current/iozone_solaris10gcc.o
+ 
+ iozone_solaris10gcc-64.o:  iozone.c libbif.c
+ 	@echo ""
