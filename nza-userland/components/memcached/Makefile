@@ -26,11 +26,11 @@
 include ../../make-rules/shared-macros.mk
 
 COMPONENT_NAME=		memcached
-COMPONENT_VERSION=	1.4.5
+COMPONENT_VERSION=	1.4.14
 COMPONENT_SRC=		$(COMPONENT_NAME)-$(COMPONENT_VERSION)
 COMPONENT_PROJECT_URL=	http://memcached.org/
 COMPONENT_ARCHIVE=	$(COMPONENT_SRC).tar.gz
-COMPONENT_ARCHIVE_HASH=	sha1:c7d6517764b82d23ae2de76b56c2494343c53f02
+COMPONENT_ARCHIVE_HASH=	sha1:b360a6acf2454452c6fd4a5bdbbc303d85c3ec27
 COMPONENT_ARCHIVE_URL=	http://memcached.googlecode.com/files/$(COMPONENT_ARCHIVE)
 
 include ../../make-rules/prep.mk
@@ -45,6 +45,9 @@ COMPONENT_PRE_CONFIGURE_ACTION = \
 COMPONENT_TEST_TARGETS=	test
 
 studio_OPT = -xO5
+
+# http://code.google.com/p/memcached/issues/detail?id=286
+CFLAGS += -pthread
 
 CONFIGURE_BINDIR.64 =	$(CONFIGURE_PREFIX)/lib/$(MACH64)
 CONFIGURE_OPTIONS.64 +=	--with-libevent=/usr/lib/${MACH64}
