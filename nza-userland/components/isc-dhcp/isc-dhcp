@@ -29,6 +29,7 @@
 
 SVCPROP=/usr/bin/svcprop
 CHMOD=/usr/bin/chmod
+CHOWN=/usr/bin/chown
 TOUCH=/usr/bin/touch
 
 DHCPD_IPV4="svc:/network/dhcp/server:ipv4"
@@ -71,7 +72,7 @@ get_common_options() {
 	if [ "`get_prop debug`" = "true" ]; then
 		DEBUG="-d"
 	else
-		DEBUG="-q"
+		DEBUG=""
 	fi
 
 	export OPTIONS="$OPTIONS $DEBUG"
@@ -106,6 +107,7 @@ get_dhcpd_options() {
 	if [ ! -f "$LEASEFILE" ]; then
 		$TOUCH $LEASEFILE
 		$CHMOD u=rw,go=r $LEASEFILE
+		$CHOWN dhcpserv:netadm $LEASEFLE
 	fi
 
 	export OPTIONS="$OPTIONS -cf $CONFIGFILE -lf $LEASEFILE $LISTENIFNAMES"
