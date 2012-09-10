@@ -43,6 +43,9 @@ depend fmri=pkg:/library/perl-5/par/packer type=require
 depend fmri=pkg:/library/perl-5/xml/parser type=require
 depend fmri=pkg:/library/perl-5/xml/simple/512 type=require
 depend fmri=pkg:/text/doctools type=require
+depend fmri=pkg:/developer/gcc-3 type=require
+depend fmri=pkg:/developer/gcc-44 type=require
+depend fmri=pkg:/library/gnome/gnome-vfs type=require
 
 license GPL license='GPL-2'
 
