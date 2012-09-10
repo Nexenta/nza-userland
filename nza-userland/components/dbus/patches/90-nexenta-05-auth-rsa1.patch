@@ -1,0 +1,32 @@
+--- dbus-1.4.16/dbus/dbus-auth.c	2012-08-14 16:35:29.000000000 +0400
++++ dbus-1.4.16.new/dbus/dbus-auth.c	2012-08-14 16:41:17.000000000 +0400
+@@ -1352,19 +1352,22 @@
+   };
+   if ((file = fopen (file_path, "r"))) {
+     int file_size;
+-    int i;
++    int i, cnt;
+ 
+     file_size = get_file_size (file);
+     _nexenta_log ("read key from <%s>, size = %d", file_path, file_size);
+-    *ssh_key = dbus_malloc (file_size);
++    *ssh_key = dbus_malloc (file_size+1);
++    (*ssh_key)[file_size] = '\0';
++
+     if (*ssh_key == 0)
+       goto _end_read;
+     fread (*ssh_key, 1, file_size, file);
+-    i = file_size - 1;
+-    while (i > 0 && (*ssh_key)[i] != '=') {
+-      (*ssh_key)[i] = '\0';
+-      --i;
+-    };
++
++    for (i=0, cnt=0; cnt < 2 && i < file_size; i++) {
++        if ((*ssh_key)[i] == ' ') cnt++;
++    }
++    if (cnt == 2) (*ssh_key)[i-1] = '\0';
++
+ _end_read:
+     fclose (file);
+   } else {
