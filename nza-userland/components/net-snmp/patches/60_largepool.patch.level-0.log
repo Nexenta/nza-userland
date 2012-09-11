@@ -1,0 +1,11 @@
+can't find file to patch at input line 3
+Perhaps you used the wrong -p or --strip option?
+The text leading up to this was:
+--------------------------
+|--- net-snmp-5.5.orig/agent/mibgroup/host/hr_storage.c	2011-03-04 05:56:41.870233406 +0300
+|+++ net-snmp-5.5/agent/mibgroup/host/hr_storage.c	2011-03-04 06:45:41.749792478 +0300
+--------------------------
+File to patch: 
+Skip this patch? [y] 
+Skipping patch.
+2 out of 2 hunks ignored

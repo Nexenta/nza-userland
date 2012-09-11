@@ -1,0 +1,27 @@
+--- net-snmp-5.5.orig/agent/mibgroup/host/hr_storage.c	2011-03-04 05:56:41.870233406 +0300
++++ net-snmp-5.5/agent/mibgroup/host/hr_storage.c	2011-03-04 06:45:41.749792478 +0300
+@@ -186,9 +186,11 @@
+ 
+ #ifdef solaris2
+ 
++#include <limits.h>
++
+ extern struct mnttab *HRFS_entry;
+ #define HRFS_mount	mnt_mountp
+-#define HRFS_statfs	statvfs
++#define HRFS_statfs	statvfs64
+ #define HRFS_HAS_FRSIZE HAVE_STRUCT_STATVFS_F_FRSIZE
+ 
+ #elif defined(WIN32)
+@@ -547,6 +549,11 @@
+ 		snmp_log_perror(HRFS_entry->HRFS_mount);
+ 		goto try_next;
+ 	    }
++            while (stat_buf.f_blocks > LONG_MAX) {
++                stat_buf.f_blocks >>= 1;
++                stat_buf.f_bfree >>= 1;
++                stat_buf.f_frsize <<= 1;
++            }
+ 	} else {
+ 	    mem = (netsnmp_memory_info*)ptr;
+         }

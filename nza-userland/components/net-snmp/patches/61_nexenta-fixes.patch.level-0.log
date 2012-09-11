@@ -1,0 +1,36 @@
+can't find file to patch at input line 4
+Perhaps you used the wrong -p or --strip option?
+The text leading up to this was:
+--------------------------
+|diff -urN net-snmp-5.5.upstream/include/net-snmp/net-snmp-config.h.in net-snmp-5.5/include/net-snmp/net-snmp-config.h.in
+|--- net-snmp-5.5.upstream/include/net-snmp/net-snmp-config.h.in	2009-08-04 00:57:18.000000000 +0530
+|+++ net-snmp-5.5/include/net-snmp/net-snmp-config.h.in	2010-03-16 06:18:40.000000000 +0530
+--------------------------
+File to patch: 
+Skip this patch? [y] 
+Skipping patch.
+2 out of 2 hunks ignored
+can't find file to patch at input line 32
+Perhaps you used the wrong -p or --strip option?
+The text leading up to this was:
+--------------------------
+|diff -urN net-snmp-5.5.upstream/perl/TrapReceiver/const-c.inc net-snmp-5.5/perl/TrapReceiver/const-c.inc
+|--- net-snmp-5.5.upstream/perl/TrapReceiver/const-c.inc	2009-01-01 02:26:43.000000000 +0530
+|+++ net-snmp-5.5/perl/TrapReceiver/const-c.inc	2011-02-22 10:06:10.000000000 +0530
+--------------------------
+File to patch: 
+Skip this patch? [y] 
+Skipping patch.
+1 out of 1 hunk ignored
+can't find file to patch at input line 49
+Perhaps you used the wrong -p or --strip option?
+The text leading up to this was:
+--------------------------
+|diff -urN net-snmp-5.5.upstream/perl/TrapReceiver/const-xs.inc net-snmp-5.5/perl/TrapReceiver/const-xs.inc
+|--- net-snmp-5.5.upstream/perl/TrapReceiver/const-xs.inc	2009-01-01 02:26:43.000000000 +0530
+|+++ net-snmp-5.5/perl/TrapReceiver/const-xs.inc	2011-02-22 10:06:10.000000000 +0530
+--------------------------
+File to patch: 
+Skip this patch? [y] 
+Skipping patch.
+1 out of 1 hunk ignored

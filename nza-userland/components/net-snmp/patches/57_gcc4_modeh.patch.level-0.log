@@ -1,0 +1,14 @@
+(Stripping trailing CRs from patch.)
+patching file perl/ASN/ASN.xs
+(Stripping trailing CRs from patch.)
+patching file perl/OID/OID.xs
+(Stripping trailing CRs from patch.)
+patching file perl/SNMP/SNMP.xs
+(Stripping trailing CRs from patch.)
+patching file perl/TrapReceiver/TrapReceiver.xs
+(Stripping trailing CRs from patch.)
+patching file perl/agent/default_store/default_store.xs
+(Stripping trailing CRs from patch.)
+patching file perl/agent/agent.xs
+(Stripping trailing CRs from patch.)
+patching file perl/default_store/default_store.xs

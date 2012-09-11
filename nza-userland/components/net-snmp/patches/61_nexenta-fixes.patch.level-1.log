@@ -1,0 +1,3 @@
+patching file include/net-snmp/net-snmp-config.h.in
+patching file perl/TrapReceiver/const-c.inc
+patching file perl/TrapReceiver/const-xs.inc
