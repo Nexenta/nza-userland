@@ -1,0 +1,17 @@
+Descriptions: on illumos ifa_flags is uint64_t
+Bug: http://code.google.com/p/openpgm/issues/detail?id=25
+diff -dubr libpgm-5.1.118/openpgm/pgm/include/impl/getifaddrs.h libpgm-5.1.118.ifa_flags/openpgm/pgm/include/impl/getifaddrs.h
+--- libpgm-5.1.118/openpgm/pgm/include/impl/getifaddrs.h	2011-09-27 21:59:06.000000000 +0400
++++ libpgm-5.1.118.ifa_flags/openpgm/pgm/include/impl/getifaddrs.h	2012-09-18 12:46:45.887327270 +0400
+@@ -62,7 +62,11 @@
+ 	struct pgm_ifaddrs_t*	ifa_next;	/* Pointer to the next structure.  */
+ 
+ 	char*			ifa_name;	/* Name of this network interface.  */
++#if !defined(__GLIBC__) && defined(__sun__)
++	uint64_t		ifa_flags;	/* Flags as from SIOCGIFFLAGS ioctl.  */
++#else
+ 	unsigned int		ifa_flags;	/* Flags as from SIOCGIFFLAGS ioctl.  */
++#endif
+ 
+ #ifdef ifa_addr
+ #	undef ifa_addr
