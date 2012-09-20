@@ -18,18 +18,20 @@
 #
 # CDDL HEADER END
 #
-# Copyright (c) 2011, Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2011, 2012, Oracle and/or its affiliates. All rights reserved.
 #
 include ../../../make-rules/shared-macros.mk
 
 PATH=/usr/bin:/usr/gnu/bin:/usr/sbin
 
 COMPONENT_NAME=		Python
-COMPONENT_VERSION=	2.6.4
+COMPONENT_VERSION=	2.6.8
+COMPONENT_PROJECT_URL=	http://python.org/
 COMPONENT_SRC=		$(COMPONENT_NAME)-$(COMPONENT_VERSION)
 COMPONENT_ARCHIVE=	$(COMPONENT_SRC).tar.bz2
-COMPONENT_ARCHIVE_HASH=	sha1:bee572680d1966501247cb2b26e0e51f94d1cd13
-COMPONENT_ARCHIVE_URL=	http://python.org/ftp/python/$(COMPONENT_VERSION)/$(COMPONENT_ARCHIVE)
+COMPONENT_ARCHIVE_HASH=	\
+    sha256:c34036718ee1f091736677f543bc7960861cf9fcbea77d49572b59f7f1ab3c3f
+COMPONENT_ARCHIVE_URL=	$(COMPONENT_PROJECT_URL)ftp/python/$(COMPONENT_VERSION)/$(COMPONENT_ARCHIVE)
 
 include $(WS_TOP)/make-rules/prep.mk
 include $(WS_TOP)/make-rules/configure.mk
@@ -39,11 +41,20 @@ include $(WS_TOP)/make-rules/ips.mk
 COMPONENT_PREP_ACTION = \
 	(cd $(@D) ; autoheader ; autoconf)
 
+# This seems horribly wrong, but these defines break the ability to build c99
+# compliant modules or with gcc.
+COMPONENT_POST_CONFIGURE_ACTION = \
+	(cd $(@D) ; \
+	 perl -pi -e 's/(^\#define _POSIX_C_SOURCE.*)/\/* $$1 *\//' pyconfig.h ; \
+	 perl -pi -e 's/^(\#define _XOPEN_SOURCE.*)/\/* $$1 *\//' pyconfig.h ; \
+	 perl -pi -e 's/^(\#define _XOPEN_SOURCE_EXTENDED.*)/\/* $$1 *\//' \
+			pyconfig.h)
+
 # we don't want to leak $(CC_BITS) into BASECFLAGS as it causes problems with
 # python-config
-CC  += $(CFLAGS)
-CXX += $(CFLAGS)
+CC +=	$(CFLAGS)
 
+C99MODE=
 CPPFLAGS +=	-IPython
 
 # so we find the ncurses headers
@@ -53,35 +64,27 @@ CPPFLAGS +=	-D_LARGEFILE64_SOURCE
 # libffi for _ctypes
 CPPFLAGS +=	$(shell pkg-config --cflags-only-I libffi)
 
+# Python puts its header files in a special place.
+LINT_FLAGS +=	-I$(SOURCE_DIR)/Include
+
 CONFIGURE_OPTIONS  +=		--infodir=$(CONFIGURE_INFODIR)
 CONFIGURE_OPTIONS  +=		--enable-shared
-CONFIGURE_OPTIONS  +=		--disable-static
 CONFIGURE_OPTIONS  +=		--with-system-ffi
-# don't believe it, it just allows to pass any options
-# to compiler and any compiler ;-)
 CONFIGURE_OPTIONS  +=		--without-gcc
-
 CONFIGURE_OPTIONS  +=		ac_cv_opt_olimit_ok=no
 CONFIGURE_OPTIONS  +=		ac_cv_olimit_ok=no
+CONFIGURE_OPTIONS  +=		ac_cv_have_decl_isfinite=no
 CONFIGURE_OPTIONS  +=		CPPFLAGS="$(CPPFLAGS)"
 CONFIGURE_OPTIONS  +=		CFLAGS="$(CFLAGS)"
 CONFIGURE_OPTIONS  +=		CCSHARED="$(CC_PIC)"
 CONFIGURE_OPTIONS  +=		CXX="$(CXX)"
-CONFIGURE_OPTIONS  +=		CC="$(CC)"
 CONFIGURE_OPTIONS  +=		CXXFLAGS="$(CXXFLAGS)"
 CONFIGURE_OPTIONS  +=		DFLAGS="-$(BITS)"
+CONFIGURE_OPTIONS  +=		XPROFILE_DIR="$(XPROFILE_DIR)"
 COMPONENT_BUILD_ENV  +=		DFLAGS="-$(BITS)"
+COMPONENT_BUILD_ENV  +=		XPROFILE_DIR="$(XPROFILE_DIR)"
 
 COMPONENT_TEST_TARGETS =	test
-
-# Give more freedom to modules:
-CONFIGURE_OPTIONS  += ac_cv_have_decl_isfinite=no
-COMPONENT_POST_CONFIGURE_ACTION = \
-        (cd $(@D) ; \
-         perl -pi -e 's/(^\#define _POSIX_C_SOURCE.*)/\/* $$1 *\//' pyconfig.h ; \
-         perl -pi -e 's/^(\#define _XOPEN_SOURCE.*)/\/* $$1 *\//' pyconfig.h ; \
-         perl -pi -e 's/^(\#define _XOPEN_SOURCE_EXTENDED.*)/\/* $$1 *\//' \
-                        pyconfig.h)
 
 # 64 bit shared objects need to go in a 64-bit directory
 COMPONENT_INSTALL_ARGS.64 += DESTSHARED=$(CONFIGURE_PREFIX)/lib/python2.6/lib-dynload
