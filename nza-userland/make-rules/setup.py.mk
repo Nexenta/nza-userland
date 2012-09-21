@@ -22,10 +22,12 @@
 #
 
 $(BUILD_DIR)/%-2.6/.built:		PYTHON_VERSION=2.6
+$(BUILD_DIR)/%-2.7/.built:		PYTHON_VERSION=2.7
 $(BUILD_DIR)/$(MACH32)-%/.built:	BITS=32
 $(BUILD_DIR)/$(MACH64)-%/.built:	BITS=64
 
 $(BUILD_DIR)/%-2.6/.installed:		PYTHON_VERSION=2.6
+$(BUILD_DIR)/%-2.7/.installed:		PYTHON_VERSION=2.7
 $(BUILD_DIR)/$(MACH32)-%/.installed:	BITS=32
 $(BUILD_DIR)/$(MACH64)-%/.installed:	BITS=64
 
@@ -38,19 +40,19 @@ INSTALL_64 = $(PYTHON_VERSIONS:%=$(BUILD_DIR)/$(MACH64)-%/.installed)
 PYTHON_ENV =	CC="$(CC)"
 PYTHON_ENV +=	CFLAGS="$(CFLAGS)"
 
+
 # build the configured source
 $(BUILD_DIR)/%/.built:	$(SOURCE_DIR)/.prep
 	$(RM) -r $(@D) ; $(MKDIR) $(@D)
 	$(COMPONENT_PRE_BUILD_ACTION)
-	(cd $(SOURCE_DIR) ; $(ENV) $(PYTHON_ENV) \
-		$(PYTHON.$(BITS)) ./setup.py build \
-			--build-temp $(@D:$(BUILD_DIR)/%=%))
+	cd $(SOURCE_DIR) && $(ENV) $(PYTHON_ENV) \
+		$(PYTHON.$(BITS)) ./setup.py build $(COMPONENT_BUILD_ARGS)
 	$(COMPONENT_POST_BUILD_ACTION)
 	$(TOUCH) $@
 
-
 COMPONENT_INSTALL_ARGS +=	--root $(PROTO_DIR) 
 COMPONENT_INSTALL_ARGS +=	--install-lib=$(PYTHON_LIB)
+COMPONENT_INSTALL_ARGS +=	--skip-build
 
 # install the built source into a prototype area
 $(BUILD_DIR)/%/.installed:	$(BUILD_DIR)/%/.built
