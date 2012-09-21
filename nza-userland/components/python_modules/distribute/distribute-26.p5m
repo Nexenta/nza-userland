@@ -16,7 +16,6 @@ dir path=usr/lib/python2.6/vendor-packages/distribute-0.6.24-py2.6.egg-info
 dir path=usr/lib/python2.6/vendor-packages/setuptools original_name=pkg:/library/python-2/setuptools-26
 dir path=usr/lib/python2.6/vendor-packages/setuptools/command
 dir path=usr/lib/python2.6/vendor-packages/setuptools/tests
-file path=usr/bin/easy_install
 file path=usr/bin/easy_install-2.6
 file path=usr/lib/python2.6/vendor-packages/easy_install.py
 file path=usr/lib/python2.6/vendor-packages/distribute-0.6.24-py2.6.egg-info/top_level.txt
