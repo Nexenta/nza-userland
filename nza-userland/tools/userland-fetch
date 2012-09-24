@@ -105,8 +105,9 @@ def download(url, filename = None):
 		return None
 
 	# 3xx, 4xx and 5xx (f|ht)tp codes designate unsuccessfull action
-	if 3 <= int(src.getcode()/100) <= 5:
-		print "Error code: " + str(src.getcode())
+	rc = src.getcode() or 0
+	if 300 <= int(rc) <= 500:
+		print "Error code: " + str(rc)
 		return None
 
 	if filename == None:
