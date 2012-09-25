@@ -732,11 +732,20 @@ foreach my $manifest_file (@ARGV) {
             $cmd .= " $$d{name}";
             blab $cmd;
             $postinst_configure .= $cmd . " || true\n";
-            fatal "devlink is not implemented" if exists $$d{'devlink'};
             $postinst_configure .= "update_drv -v -a -m '$$d{'clone_perms'}' clone || true\n"
                 if  exists $$d{'clone_perms'};
 
             $prerm_remove .= "rem_drv $$d{name} || true\n";
+
+            if (exists $$d{'devlink'}) {
+                foreach my $devlink (as_array($$d{'devlink'})) {
+                    $devlink =~ s/\\t/\t/g;
+                    $postinst_configure .= "if ! grep -q '$devlink' /etc/devlink.tab; then\n";
+                    $postinst_configure .= "  echo '$devlink' >> /etc/devlink.tab\n";
+                    $postinst_configure .= "fi\n";
+                    $prerm_remove .= "sed -i.dpkg-old '/$devlink/d' /etc/devlink.tab || true\n";
+                }
+            };
         }
         $postinst_configure .= 'fi # new install' . "\n";
     }
