@@ -82,7 +82,7 @@ file usr/bin/$(MACH64)/python2.6 path=usr/bin/$(MACH64)/isapython2.6
 file path=usr/bin/$(MACH64)/python2.6-config pkg.depend.bypass-generate=.*
 
 file path=usr/bin/2to3
-file path=usr/bin/pydoc
+file path=usr/bin/pydoc original_name=runtime/python-24
 file path=usr/bin/python2.6-config
 
 file path=usr/include/python2.6/Python-ast.h
