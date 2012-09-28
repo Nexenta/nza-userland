@@ -1,0 +1,1165 @@
+diff -dubr gcc-4.4.7/fixincludes/fixincl.x gcc-4.4.7.illumos/fixincludes/fixincl.x
+--- gcc-4.4.7/fixincludes/fixincl.x	2010-12-13 21:22:09.000000000 +0300
++++ gcc-4.4.7.illumos/fixincludes/fixincl.x	2012-09-27 21:10:47.000000000 +0400
+@@ -6420,10 +6420,22 @@
+  */
+ tSCC zSun_Auth_ProtoBypass0[] =
+        "__cplusplus";
++tSCC zSun_Auth_ProtoBypass1[] =
++       "pragma ident.*auth.*(1.4[3-9]|1.[5-9][0-9]).*SMI";
++tSCC zSun_Auth_ProtoBypass2[] =
++       "pragma ident.*clnt.*1.[6-9][0-9].*SMI";
++tSCC zSun_Auth_ProtoBypass3[] =
++       "pragma ident.*svc.*(1.69|1.[7-9][0-9]).*SMI";
++tSCC zSun_Auth_ProtoBypass4[] =
++       "pragma ident.*xdr.*(1.4[5-9]|1.[5-9][0-9]).*SMI";
+ 
+-#define    SUN_AUTH_PROTO_TEST_CT  2
++#define    SUN_AUTH_PROTO_TEST_CT  6
+ static tTestDesc aSun_Auth_ProtoTests[] = {
+   { TT_NEGREP,   zSun_Auth_ProtoBypass0, (regex_t*)NULL },
++  { TT_NEGREP,   zSun_Auth_ProtoBypass1, (regex_t*)NULL },
++  { TT_NEGREP,   zSun_Auth_ProtoBypass2, (regex_t*)NULL },
++  { TT_NEGREP,   zSun_Auth_ProtoBypass3, (regex_t*)NULL },
++  { TT_NEGREP,   zSun_Auth_ProtoBypass4, (regex_t*)NULL },
+   { TT_EGREP,    zSun_Auth_ProtoSelect0, (regex_t*)NULL }, };
+ 
+ /*
+Только в gcc-4.4.7.illumos/fixincludes: fixincl.x.orig
+diff -dubr gcc-4.4.7/fixincludes/inclhack.def gcc-4.4.7.illumos/fixincludes/inclhack.def
+--- gcc-4.4.7/fixincludes/inclhack.def	2010-12-13 21:22:09.000000000 +0300
++++ gcc-4.4.7.illumos/fixincludes/inclhack.def	2012-09-27 21:10:47.000000000 +0400
+@@ -3459,6 +3459,21 @@
+      */
+     select    = '\(\*[a-z][a-z_]*\)\(\)';
+ 
++    /* Solaris 2.8 and above (and perhaps earlier versions) do not
++       need these fixes.  The unprototyped declarations in these files
++       are only visible if __STDC__ is not defined.  This test looks
++       for a #pragma ident directives with particular versions, since
++       we know those versions are OK.  (Earlier versions may also be
++       OK, but we do not know that.)  */
++    /* For rpc/auth.h, 1.43 or better is OK.  */
++    bypass    = "pragma ident.*auth.*(1\.4[3-9]|1\.[5-9][0-9]).*SMI";
++    /* For rpc/clnt.h, 1.60 or better is OK.  */
++    bypass    = "pragma ident.*clnt.*1\.[6-9][0-9].*SMI";
++    /* For rpc/svc.h, 1.69 or better is OK.  */
++    bypass    = "pragma ident.*svc.*(1\.69|1\.[7-9][0-9]).*SMI";
++    /* For rpc/xdr.h, 1.45 or better is OK.  */
++    bypass    = "pragma ident.*xdr.*(1\.4[5-9]|1\.[5-9][0-9]).*SMI";
++
+     c_fix     = format;
+     c_fix_arg = "#ifdef __cplusplus\n%1(...);%2\n"
+                 "#else\n%1();%2\n#endif";
+Только в gcc-4.4.7.illumos/fixincludes: inclhack.def.orig
+Только в gcc-4.4.7.illumos/gcc: ChangeLog.orig
+diff -dubr gcc-4.4.7/gcc/config/i386/i386.c gcc-4.4.7.illumos/gcc/config/i386/i386.c
+--- gcc-4.4.7/gcc/config/i386/i386.c	2012-02-22 23:47:42.000000000 +0400
++++ gcc-4.4.7.illumos/gcc/config/i386/i386.c	2012-09-27 21:10:47.000000000 +0400
+@@ -1654,10 +1654,14 @@
+ 
+    saved frame pointer if frame_pointer_needed
+ 					      <- HARD_FRAME_POINTER
+-   [saved regs]
++   [-msave-args]
+ 
+    [padding0]
+ 
++   [saved regs]
++
++   [padding05]
++
+    [saved SSE regs]
+ 
+    [padding1]          \
+@@ -1670,8 +1674,10 @@
+   */
+ struct ix86_frame
+ {
++  int nmsave_args;
+   int padding0;
+   int nsseregs;
++  int padding05;
+   int nregs;
+   int padding1;
+   int va_arg_size;
+@@ -1762,6 +1768,8 @@
+ /* Fence to use after loop using movnt.  */
+ tree x86_mfence;
+ 
++static int ix86_nsaved_args (void);
++
+ /* Register class used for passing given 64bit part of the argument.
+    These represent classes as documented by the PS ABI, with the exception
+    of SSESF, SSEDF classes, that are basically SSE class, just gcc will
+@@ -1819,6 +1827,8 @@
+ static bool ix86_can_inline_p (tree, tree);
+ static void ix86_set_current_function (tree);
+ 
++static void pro_epilogue_adjust_stack (rtx, rtx, rtx, int);
++
+ 
+ /* The svr4 ABI for the i386 says that records and unions are returned
+    in memory.  */
+@@ -2869,6 +2879,7 @@
+ 	      error ("CPU you selected does not support x86-64 "
+ 		     "instruction set");
+ 	  }
++
+         /* Intel CPUs have always interpreted SSE prefetch instructions as
+ 	   NOPs; so, we can enable SSE prefetch instructions even when
+ 	   -mtune (rather than -march) points us to a processor that has them.
+@@ -3072,6 +3083,9 @@
+   if (TARGET_SSE4_2 || TARGET_ABM)
+     ix86_isa_flags |= OPTION_MASK_ISA_POPCNT & ~ix86_isa_flags_explicit;
+ 
++  if (!TARGET_64BIT && TARGET_SAVE_ARGS)
++      error ("-msave-args makes no sense in the 32-bit mode");
++
+   /* Validate -mpreferred-stack-boundary= value or default it to
+      PREFERRED_STACK_BOUNDARY_DEFAULT.  */
+   ix86_preferred_stack_boundary = PREFERRED_STACK_BOUNDARY_DEFAULT;
+@@ -7375,8 +7389,8 @@
+     return 0;
+ 
+   ix86_compute_frame_layout (&frame);
+-  return frame.to_allocate == 0 && frame.padding0 == 0
+-         && (frame.nregs + frame.nsseregs) == 0;
++  return frame.to_allocate == 0 && frame.padding05 == 0 &&
++          frame.nmsave_args == 0 && (frame.nregs + frame.nsseregs) == 0;
+ }
+ 
+ /* Value should be nonzero if functions must have frame pointers.
+@@ -7396,6 +7410,9 @@
+   if (SUBTARGET_FRAME_POINTER_REQUIRED)
+     return 1;
+ 
++  if (TARGET_SAVE_ARGS)
++    return 1;  
++
+   /* In override_options, TARGET_OMIT_LEAF_FRAME_POINTER turns off
+      the frame pointer by default.  Turn it back on now if we've not
+      got a leaf function.  */
+@@ -7761,6 +7778,7 @@
+ 
+   frame->nregs = ix86_nsaved_regs ();
+   frame->nsseregs = ix86_nsaved_sseregs ();
++  frame->nmsave_args = ix86_nsaved_args ();
+   total_size = size;
+ 
+   stack_alignment_needed = crtl->stack_alignment_needed / BITS_PER_UNIT;
+@@ -7816,6 +7834,11 @@
+   else
+     frame->save_regs_using_mov = false;
+ 
++  if (TARGET_SAVE_ARGS)
++    {
++      cfun->machine->use_fast_prologue_epilogue = true;
++      frame->save_regs_using_mov = true;
++    }
+ 
+   /* Skip return address and saved base pointer.  */
+   offset = frame_pointer_needed ? UNITS_PER_WORD * 2 : UNITS_PER_WORD;
+@@ -7827,17 +7850,27 @@
+   if (stack_realign_fp)
+     offset = (offset + stack_alignment_needed -1) & -stack_alignment_needed;
+ 
++  /* Argument save area */
++  if (TARGET_SAVE_ARGS)
++    {
++      offset += frame->nmsave_args * UNITS_PER_WORD;
++      frame->padding0 = (frame->nmsave_args % 2) * UNITS_PER_WORD;
++      offset += frame->padding0;
++    }
++  else
++    frame->padding0 = 0;
++
+   /* Register save area */
+   offset += frame->nregs * UNITS_PER_WORD;
+ 
+   /* Align SSE reg save area.  */
+   if (frame->nsseregs)
+-    frame->padding0 = ((offset + 16 - 1) & -16) - offset;
++    frame->padding05 = ((offset + 16 - 1) & -16) - offset;
+   else
+-    frame->padding0 = 0;
++    frame->padding05 = 0;
+   
+   /* SSE register save area.  */
+-  offset += frame->padding0 + frame->nsseregs * 16;
++  offset += frame->padding05 + frame->nsseregs * 16;
+ 
+   /* Va-arg area */
+   frame->va_arg_size = ix86_varargs_gpr_size + ix86_varargs_fpr_size;
+@@ -7888,8 +7921,10 @@
+     (size + frame->padding1 + frame->padding2
+      + frame->outgoing_arguments_size + frame->va_arg_size);
+ 
+-  if ((!frame->to_allocate && frame->nregs <= 1)
+-      || (TARGET_64BIT && frame->to_allocate >= (HOST_WIDE_INT) 0x80000000))
++  if (!TARGET_SAVE_ARGS
++      && ((!frame->to_allocate && frame->nregs <= 1)
++	  || (TARGET_64BIT
++	      && frame->to_allocate >= (HOST_WIDE_INT) 0x80000000)))
+     frame->save_regs_using_mov = false;
+ 
+   if (!TARGET_64BIT_MS_ABI && TARGET_RED_ZONE
+@@ -7899,7 +7934,11 @@
+     {
+       frame->red_zone_size = frame->to_allocate;
+       if (frame->save_regs_using_mov)
+-	frame->red_zone_size += frame->nregs * UNITS_PER_WORD;
++	{
++	  frame->red_zone_size
++	    += (frame->nregs + frame->nmsave_args) * UNITS_PER_WORD;
++	  frame->red_zone_size += frame->padding0;
++	}
+       if (frame->red_zone_size > RED_ZONE_SIZE - RED_ZONE_RESERVE)
+ 	frame->red_zone_size = RED_ZONE_SIZE - RED_ZONE_RESERVE;
+     }
+@@ -7912,7 +7951,9 @@
+   fprintf (stderr, "size: %ld\n", (long)size);
+   fprintf (stderr, "nregs: %ld\n", (long)frame->nregs);
+   fprintf (stderr, "nsseregs: %ld\n", (long)frame->nsseregs);
++  fprintf (stderr, "nmsave_args: %ld\n", (long)frame->nmsave_args);
+   fprintf (stderr, "padding0: %ld\n", (long)frame->padding0);
++  fprintf (stderr, "padding05: %ld\n", (long)frame->padding0);
+   fprintf (stderr, "alignment1: %ld\n", (long)stack_alignment_needed);
+   fprintf (stderr, "padding1: %ld\n", (long)frame->padding1);
+   fprintf (stderr, "va_arg: %ld\n", (long)frame->va_arg_size);
+@@ -7929,6 +7970,7 @@
+ #endif
+ }
+ 
++
+ /* Emit code to save registers in the prologue.  */
+ 
+ static void
+@@ -7937,6 +7979,22 @@
+   unsigned int regno;
+   rtx insn;
+ 
++  if (TARGET_SAVE_ARGS)
++    {
++      int i;
++      int nsaved = ix86_nsaved_args ();
++      int start = cfun->returns_struct;
++      for (i = start; i < start + nsaved; i++)
++	{
++	  regno = x86_64_int_parameter_registers[i];
++	  insn = emit_insn (gen_push (gen_rtx_REG (Pmode, regno)));
++	  RTX_FRAME_RELATED_P (insn) = 1;
++	}
++      if (nsaved % 2 != 0)
++	pro_epilogue_adjust_stack (stack_pointer_rtx, stack_pointer_rtx,
++				   GEN_INT (-UNITS_PER_WORD), -1);
++    }
++
+   for (regno = FIRST_PSEUDO_REGISTER - 1; regno-- > 0; )
+     if (!SSE_REGNO_P (regno) && ix86_save_reg (regno, true))
+       {
+@@ -7962,6 +8020,24 @@
+ 	RTX_FRAME_RELATED_P (insn) = 1;
+ 	offset += UNITS_PER_WORD;
+       }
++
++  if (TARGET_SAVE_ARGS)
++    {
++      int i;
++      int nsaved = ix86_nsaved_args ();
++      int start = cfun->returns_struct;
++      if (nsaved % 2 != 0)
++	offset += UNITS_PER_WORD;
++      for (i = start + nsaved - 1; i >= start; i--)
++	{
++	  regno = x86_64_int_parameter_registers[i];
++	  insn = emit_move_insn (adjust_address (gen_rtx_MEM (Pmode, pointer),
++						 Pmode, offset),
++				 gen_rtx_REG (Pmode, regno));
++	  RTX_FRAME_RELATED_P (insn) = 1;
++	  offset += UNITS_PER_WORD;
++	}
++    }
+ }
+ 
+ /* Emit code to save registers using MOV insns.  First register
+@@ -8288,12 +8364,13 @@
+       RTX_FRAME_RELATED_P (insn) = 1;
+     }
+ 
+-  allocate = frame.to_allocate + frame.nsseregs * 16 + frame.padding0;
++  allocate = frame.to_allocate + frame.nsseregs * 16 + frame.padding05;
+ 
+   if (!frame.save_regs_using_mov)
+     ix86_emit_save_regs ();
+   else
+-    allocate += frame.nregs * UNITS_PER_WORD;
++    allocate += (frame.nregs + frame.nmsave_args) * UNITS_PER_WORD
++      + frame.padding0;
+ 
+   /* When using red zone we may start register saving before allocating
+      the stack frame saving one cycle of the prologue. However I will
+@@ -8306,7 +8383,8 @@
+ 				     && !crtl->stack_realign_needed) 
+                                    ? hard_frame_pointer_rtx
+ 				   : stack_pointer_rtx,
+-				   -frame.nregs * UNITS_PER_WORD);
++				   -(frame.nregs + frame.nmsave_args)
++                                   * UNITS_PER_WORD - frame.padding0);
+ 
+   if (allocate == 0)
+     ;
+@@ -8360,16 +8438,20 @@
+       && !(!TARGET_64BIT_MS_ABI && TARGET_RED_ZONE
+          && (! TARGET_STACK_PROBE || allocate < CHECK_STACK_LIMIT)))
+     {
+-      if (!frame_pointer_needed
+-	  || !(frame.to_allocate + frame.padding0)
+-	  || crtl->stack_realign_needed)
++      if (!TARGET_SAVE_ARGS &&
++          (!frame_pointer_needed
++           || !(frame.to_allocate + frame.padding05)
++           || crtl->stack_realign_needed))
+         ix86_emit_save_regs_using_mov (stack_pointer_rtx,
+ 				       frame.to_allocate
+-				       + frame.nsseregs * 16 + frame.padding0);
++				       + frame.nsseregs * 16 + frame.padding05);
+       else
++        /* XXX: Does this need help for SSE? */
+         ix86_emit_save_regs_using_mov (hard_frame_pointer_rtx,
+-				       -frame.nregs * UNITS_PER_WORD);
++				       -(frame.nregs + frame.nmsave_args)
++                                       * UNITS_PER_WORD - frame.padding0);
+     }
++  /* XXX: Does these need help for save-args? */
+   if (!frame_pointer_needed
+       || !(frame.to_allocate + frame.padding0)
+       || crtl->stack_realign_needed)
+@@ -8379,7 +8461,7 @@
+     ix86_emit_save_sse_regs_using_mov (hard_frame_pointer_rtx,
+ 				       - frame.nregs * UNITS_PER_WORD
+ 				       - frame.nsseregs * 16
+-				       - frame.padding0);
++				       - frame.padding05);
+ 
+   pic_reg_used = false;
+   if (pic_offset_table_rtx
+@@ -8538,11 +8620,11 @@
+      must be taken for the normal return case of a function using
+      eh_return: the eax and edx registers are marked as saved, but not
+      restored along this path.  */
+-  offset = frame.nregs;
++  offset = frame.nregs + frame.nmsave_args;
+   if (crtl->calls_eh_return && style != 2)
+     offset -= 2;
+   offset *= -UNITS_PER_WORD;
+-  offset -= frame.nsseregs * 16 + frame.padding0;
++  offset -= frame.nsseregs * 16 + frame.padding05 + frame.padding0;
+ 
+   /* If we're only restoring one register and sp is not valid then
+      using a move instruction to restore the register since it's
+@@ -8584,7 +8666,7 @@
+ 	  ix86_emit_restore_regs_using_mov (stack_pointer_rtx,
+ 					    frame.to_allocate
+ 					    + frame.nsseregs * 16
+-					    + frame.padding0, style == 2);
++					    + frame.padding05, style == 2);
+ 	}
+       else
+         {
+@@ -8593,7 +8675,7 @@
+ 	  ix86_emit_restore_regs_using_mov (hard_frame_pointer_rtx,
+ 					    offset
+ 					    + frame.nsseregs * 16
+-					    + frame.padding0, style == 2);
++					    + frame.padding05, style == 2);
+         }
+ 
+       /* eh_return epilogues need %ecx added to the stack pointer.  */
+@@ -8620,18 +8702,20 @@
+ 	    {
+ 	      tmp = gen_rtx_PLUS (Pmode, stack_pointer_rtx, sa);
+ 	      tmp = plus_constant (tmp, (frame.to_allocate
+-                                         + frame.nregs * UNITS_PER_WORD
++                                         + (frame.nregs + frame.nmsave_args)
++                                           * UNITS_PER_WORD
+ 					 + frame.nsseregs * 16
+-					 + frame.padding0));
++					 + frame.padding05 + frame.padding0));
+ 	      emit_insn (gen_rtx_SET (VOIDmode, stack_pointer_rtx, tmp));
+ 	    }
+ 	}
+       else if (!frame_pointer_needed)
+ 	pro_epilogue_adjust_stack (stack_pointer_rtx, stack_pointer_rtx,
+ 				   GEN_INT (frame.to_allocate
+-					    + frame.nregs * UNITS_PER_WORD
++					    + (frame.nregs + frame.nmsave_args)
++                                              * UNITS_PER_WORD
+ 					    + frame.nsseregs * 16
+-					    + frame.padding0),
++					    + frame.padding05 + frame.padding0),
+ 				   style);
+       /* If not an i386, mov & pop is faster than "leave".  */
+       else if (TARGET_USE_LEAVE || optimize_function_for_size_p (cfun)
+@@ -8676,12 +8760,17 @@
+ 	  pro_epilogue_adjust_stack (stack_pointer_rtx, stack_pointer_rtx,
+ 				     GEN_INT (frame.to_allocate
+ 				     	      + frame.nsseregs * 16
+-					      + frame.padding0), style);
++					      + frame.padding05), style);
+ 	}
+ 
+       for (regno = 0; regno < FIRST_PSEUDO_REGISTER; regno++)
+ 	if (!SSE_REGNO_P (regno) && ix86_save_reg (regno, false))
+ 	  emit_insn ((*ix86_gen_pop1) (gen_rtx_REG (Pmode, regno)));
++
++      /* XXX: Needs adjustment for SSE regs? */
++      pro_epilogue_adjust_stack (stack_pointer_rtx, stack_pointer_rtx,
++				 GEN_INT (frame.nmsave_args * UNITS_PER_WORD
++					  + frame.padding0), style);
+       if (frame_pointer_needed)
+ 	{
+ 	  /* Leave results in shorter dependency chains on CPUs that are
+@@ -9110,10 +9199,21 @@
+   return CONSTANT_P (x) && legitimate_address_p (Pmode, x, 1);
+ }
+ 
++/* Return number of arguments to be saved on the stack with
++   -msave-args.  */
++
++static int
++ix86_nsaved_args (void)
++{
++  if (TARGET_SAVE_ARGS)
++    return crtl->args.info.regno - cfun->returns_struct;
++  else
++    return 0;
++}
++
+ /* Nonzero if the constant value X is a legitimate general operand
+    when generating PIC code.  It is given that flag_pic is on and
+    that X satisfies CONSTANT_P or is a CONST_DOUBLE.  */
+-
+ bool
+ legitimate_pic_operand_p (rtx x)
+ {
+Только в gcc-4.4.7.illumos/gcc/config/i386: i386.c.orig
+diff -dubr gcc-4.4.7/gcc/config/i386/i386.opt gcc-4.4.7.illumos/gcc/config/i386/i386.opt
+--- gcc-4.4.7/gcc/config/i386/i386.opt	2009-02-20 18:20:38.000000000 +0300
++++ gcc-4.4.7.illumos/gcc/config/i386/i386.opt	2012-09-27 21:10:47.000000000 +0400
+@@ -224,6 +224,10 @@
+ Target Report Mask(TLS_DIRECT_SEG_REFS)
+ Use direct references against %gs when accessing tls data
+ 
++msave-args
++Target Report Mask(SAVE_ARGS)
++Save integer arguments on the stack at function entry
++
+ mtune=
+ Target RejectNegative Joined Var(ix86_tune_string)
+ Schedule code for given CPU
+diff -dubr gcc-4.4.7/gcc/config/i386/sol2-10.h gcc-4.4.7.illumos/gcc/config/i386/sol2-10.h
+--- gcc-4.4.7/gcc/config/i386/sol2-10.h	2010-07-15 14:08:56.000000000 +0400
++++ gcc-4.4.7.illumos/gcc/config/i386/sol2-10.h	2012-09-27 21:10:47.000000000 +0400
+@@ -94,7 +94,7 @@
+    %{R*} \
+    %{compat-bsd: \
+      %{!YP,*:%{p|pg:-Y P,/usr/ucblib/64:/usr/lib/libp/64:/lib/64:/usr/lib/64} \
+-             %{!p:%{!pg:-Y P,/usr/ucblib/64:/lib:/usr/lib/64}}} \
++             %{!p:%{!pg:-Y P,/usr/ucblib/64:/lib/64:/usr/lib/64}}} \
+              -R /usr/ucblib/64} \
+    %{!compat-bsd: \
+      %{!YP,*:%{p|pg:-Y P,/usr/lib/libp/64:/lib/64:/usr/lib/64} \
+diff -dubr gcc-4.4.7/gcc/config/sol2-c.c gcc-4.4.7.illumos/gcc/config/sol2-c.c
+--- gcc-4.4.7/gcc/config/sol2-c.c	2007-09-18 02:07:46.000000000 +0400
++++ gcc-4.4.7.illumos/gcc/config/sol2-c.c	2012-09-27 21:10:47.000000000 +0400
+@@ -114,8 +114,9 @@
+     {
+       tree decl = identifier_global_value (t);
+       if (decl && DECL_P (decl))
+-	warning (0, "%<#pragma align%> must appear before the declaration of "
+-		 "%D, ignoring", decl);
++	decl_attributes (&decl, build_tree_list (get_identifier ("aligned"),
++						   build_tree_list (NULL, x)),
++			   0);
+       else
+ 	solaris_pending_aligns = tree_cons (t, build_tree_list (NULL, x),
+ 					    solaris_pending_aligns);
+diff -dubr gcc-4.4.7/gcc/config/sol2.h gcc-4.4.7.illumos/gcc/config/sol2.h
+--- gcc-4.4.7/gcc/config/sol2.h	2010-06-02 21:51:29.000000000 +0400
++++ gcc-4.4.7.illumos/gcc/config/sol2.h	2012-09-27 21:10:47.000000000 +0400
+@@ -123,12 +123,12 @@
+    %{YP,*} \
+    %{R*} \
+    %{compat-bsd: \
+-     %{!YP,*:%{p|pg:-Y P,/usr/ucblib:/usr/ccs/lib/libp:/usr/lib/libp:/usr/ccs/lib:/usr/lib} \
+-             %{!p:%{!pg:-Y P,/usr/ucblib:/usr/ccs/lib:/usr/lib}}} \
++     %{!YP,*:%{p|pg:-Y P,/usr/ucblib:/usr/ccs/lib/libp:/usr/lib/libp:/usr/ccs/lib:/lib:/usr/lib} \
++             %{!p:%{!pg:-Y P,/usr/ucblib:/usr/ccs/lib:/lib:/usr/lib}}} \
+              -R /usr/ucblib} \
+    %{!compat-bsd: \
+-     %{!YP,*:%{p|pg:-Y P,/usr/ccs/lib/libp:/usr/lib/libp:/usr/ccs/lib:/usr/lib} \
+-             %{!p:%{!pg:-Y P,/usr/ccs/lib:/usr/lib}}}}"
++     %{!YP,*:%{p|pg:-Y P,/usr/ccs/lib/libp:/usr/lib/libp:/usr/ccs/lib:/lib:/usr/lib} \
++             %{!p:%{!pg:-Y P,/usr/ccs/lib:/lib:/usr/lib}}}}"
+ 
+ #undef LINK_ARCH32_SPEC
+ #define LINK_ARCH32_SPEC LINK_ARCH32_SPEC_BASE
+diff -dubr gcc-4.4.7/gcc/config/sparc/sol2-bi.h gcc-4.4.7.illumos/gcc/config/sparc/sol2-bi.h
+--- gcc-4.4.7/gcc/config/sparc/sol2-bi.h	2007-10-19 08:29:38.000000000 +0400
++++ gcc-4.4.7.illumos/gcc/config/sparc/sol2-bi.h	2012-09-27 21:10:47.000000000 +0400
+@@ -172,12 +172,12 @@
+    %{YP,*} \
+    %{R*} \
+    %{compat-bsd: \
+-     %{!YP,*:%{p|pg:-Y P,/usr/ucblib/sparcv9:/usr/lib/libp/sparcv9:/usr/lib/sparcv9} \
+-       %{!p:%{!pg:-Y P,/usr/ucblib/sparcv9:/usr/lib/sparcv9}}} \
++     %{!YP,*:%{p|pg:-Y P,/usr/ucblib/64:/usr/lib/libp/64:/lib/64:/usr/lib/64} \
++       %{!p:%{!pg:-Y P,/usr/ucblib/64:/lib/64:/usr/lib/64}}} \
+      -R /usr/ucblib/sparcv9} \
+    %{!compat-bsd: \
+-     %{!YP,*:%{p|pg:-Y P,/usr/lib/libp/sparcv9:/usr/lib/sparcv9} \
+-       %{!p:%{!pg:-Y P,/usr/lib/sparcv9}}}}"
++     %{!YP,*:%{p|pg:-Y P,/usr/lib/libp/64:/lib/64:/usr/lib/64} \
++       %{!p:%{!pg:-Y P,/lib/64:/usr/lib/64}}}}"
+ 
+ #define LINK_ARCH64_SPEC LINK_ARCH64_SPEC_BASE
+ 
+diff -dubr gcc-4.4.7/gcc/config/sparc/sparc.c gcc-4.4.7.illumos/gcc/config/sparc/sparc.c
+--- gcc-4.4.7/gcc/config/sparc/sparc.c	2011-06-06 03:20:56.000000000 +0400
++++ gcc-4.4.7.illumos/gcc/config/sparc/sparc.c	2012-09-27 21:10:47.000000000 +0400
+@@ -2984,6 +2984,9 @@
+ 	  if (TARGET_ARCH32 && !optimize
+ 	      && (mode == DFmode || mode == DImode))
+ 	    return 0;
++          if (TARGET_ARCH32 && TARGET_NO_INTEGER_LDD_STD
++              && mode == DImode)
++              return 0;
+ 	}
+       else if (USE_AS_OFFSETABLE_LO10
+ 	       && GET_CODE (rs1) == LO_SUM
+@@ -6574,7 +6577,8 @@
+ 
+   /* If we have legitimate args for ldd/std, we do not want
+      the split to happen.  */
+-  if ((REGNO (reg) % 2) == 0
++  if (!TARGET_NO_INTEGER_LDD_STD
++      && (REGNO (reg) % 2) == 0
+       && mem_min_alignment (mem, 8))
+     return 0;
+ 
+Только в gcc-4.4.7.illumos/gcc/config/sparc: sparc.c.orig
+diff -dubr gcc-4.4.7/gcc/config/sparc/sparc.h gcc-4.4.7.illumos/gcc/config/sparc/sparc.h
+--- gcc-4.4.7/gcc/config/sparc/sparc.h	2011-05-22 02:05:52.000000000 +0400
++++ gcc-4.4.7.illumos/gcc/config/sparc/sparc.h	2012-09-27 21:10:47.000000000 +0400
+@@ -2402,3 +2402,5 @@
+ 
+ /* We use gcc _mcount for profiling.  */
+ #define NO_PROFILE_COUNTERS 0
++
++#define ASSUME_32BIT_CALLERS sparc_assume_32bit_callers
+diff -dubr gcc-4.4.7/gcc/config/sparc/sparc.md gcc-4.4.7.illumos/gcc/config/sparc/sparc.md
+--- gcc-4.4.7/gcc/config/sparc/sparc.md	2011-06-09 23:51:17.000000000 +0400
++++ gcc-4.4.7.illumos/gcc/config/sparc/sparc.md	2012-09-27 21:10:47.000000000 +0400
+@@ -1959,7 +1959,7 @@
+ 				"=o,T,U,o,r,r,r,?T,?f,?f,?o,?f")
+         (match_operand:DI 1 "input_operand"
+ 				" J,U,T,r,o,i,r, f, T, o, f, f"))]
+-  "! TARGET_V9
++  "! TARGET_V9 && ! TARGET_NO_INTEGER_LDD_STD
+    && (register_operand (operands[0], DImode)
+        || register_or_zero_operand (operands[1], DImode))"
+   "@
+@@ -1978,12 +1978,36 @@
+   [(set_attr "type" "store,store,load,*,*,*,*,fpstore,fpload,*,*,*")
+    (set_attr "length" "2,*,*,2,2,2,2,*,*,2,2,2")])
+ 
++(define_insn "*movdi_insn_sp32_nolddstd"
++  [(set (match_operand:DI 0 "nonimmediate_operand"
++				"=o,T,U,o,r,r,r,?T,?f,?f,?o,?f")
++        (match_operand:DI 1 "input_operand"
++				" J,U,T,r,o,i,r, f, T, o, f, f"))]
++  "! TARGET_V9 && TARGET_NO_INTEGER_LDD_STD
++   && (register_operand (operands[0], DImode)
++       || register_or_zero_operand (operands[1], DImode))"
++  "@
++   #
++   #
++   #
++   #
++   #
++   #
++   #
++   std\t%1, %0
++   ldd\t%1, %0
++   #
++   #
++   #"
++  [(set_attr "type" "store,store,load,*,*,*,*,fpstore,fpload,*,*,*")
++   (set_attr "length" "2,2,2,2,2,2,2,*,*,2,2,2")])
++
+ (define_insn "*movdi_insn_sp32_v9"
+   [(set (match_operand:DI 0 "nonimmediate_operand"
+ 					"=T,o,T,U,o,r,r,r,?T,?f,?f,?o,?e,?e,?W")
+         (match_operand:DI 1 "input_operand"
+ 					" J,J,U,T,r,o,i,r, f, T, o, f, e, W, e"))]
+-  "! TARGET_ARCH64
++  "! TARGET_ARCH64 && ! TARGET_NO_INTEGER_LDD_STD
+    && TARGET_V9
+    && (register_operand (operands[0], DImode)
+        || register_or_zero_operand (operands[1], DImode))"
+@@ -2007,6 +2031,35 @@
+    (set_attr "length" "*,2,*,*,2,2,2,2,*,*,2,2,*,*,*")
+    (set_attr "fptype" "*,*,*,*,*,*,*,*,*,*,*,*,double,*,*")])
+ 
++   
++(define_insn "*movdi_insn_sp32_v9_nolddstd"
++  [(set (match_operand:DI 0 "nonimmediate_operand"
++					"=T,o,T,U,o,r,r,r,?T,?f,?f,?o,?e,?e,?W")
++        (match_operand:DI 1 "input_operand"
++					" J,J,U,T,r,o,i,r, f, T, o, f, e, W, e"))]
++  "! TARGET_ARCH64 && TARGET_V9 && TARGET_NO_INTEGER_LDD_STD 
++   && (register_operand (operands[0], DImode)
++       || register_or_zero_operand (operands[1], DImode))"
++  "@
++   stx\t%%g0, %0
++   #
++   #
++   #
++   #
++   #
++   #
++   #
++   std\t%1, %0
++   ldd\t%1, %0
++   #
++   #
++   fmovd\\t%1, %0
++   ldd\\t%1, %0
++   std\\t%1, %0"
++  [(set_attr "type" "store,store,store,load,*,*,*,*,fpstore,fpload,*,*,fpmove,fpload,fpstore")
++   (set_attr "length" "*,2,2,2,2,2,2,2,*,*,2,2,*,*,*")
++   (set_attr "fptype" "*,*,*,*,*,*,*,*,*,*,*,*,double,*,*")])
++
+ (define_insn "*movdi_insn_sp64"
+   [(set (match_operand:DI 0 "nonimmediate_operand" "=r,r,r,m,?e,?e,?W,b")
+         (match_operand:DI 1 "input_operand"   "rI,N,m,rJ,e,W,e,J"))]
+@@ -7201,7 +7254,7 @@
+       (const_int 0))
+    (set (match_operand:SI 1 "memory_operand" "")
+       (const_int 0))]
+-  "TARGET_V9
++  "TARGET_V9 && ! TARGET_NO_INTEGER_LDD_STD
+    && mems_ok_for_ldd_peep (operands[0], operands[1], NULL_RTX)"
+   [(set (match_dup 0)
+        (const_int 0))]
+@@ -7212,7 +7265,7 @@
+       (const_int 0))
+    (set (match_operand:SI 1 "memory_operand" "")
+       (const_int 0))]
+-  "TARGET_V9
++  "TARGET_V9 && ! TARGET_NO_INTEGER_LDD_STD
+    && mems_ok_for_ldd_peep (operands[1], operands[0], NULL_RTX)"
+   [(set (match_dup 1)
+        (const_int 0))]
+@@ -7223,7 +7276,8 @@
+         (match_operand:SI 1 "memory_operand" ""))
+    (set (match_operand:SI 2 "register_operand" "")
+         (match_operand:SI 3 "memory_operand" ""))]
+-  "registers_ok_for_ldd_peep (operands[0], operands[2]) 
++  "! TARGET_NO_INTEGER_LDD_STD
++   && registers_ok_for_ldd_peep (operands[0], operands[2]) 
+    && mems_ok_for_ldd_peep (operands[1], operands[3], operands[0])" 
+   [(set (match_dup 0)
+ 	(match_dup 1))]
+@@ -7235,7 +7289,8 @@
+         (match_operand:SI 1 "register_operand" ""))
+    (set (match_operand:SI 2 "memory_operand" "")
+         (match_operand:SI 3 "register_operand" ""))]
+-  "registers_ok_for_ldd_peep (operands[1], operands[3]) 
++  "! TARGET_NO_INTEGER_LDD_STD
++   && registers_ok_for_ldd_peep (operands[1], operands[3]) 
+    && mems_ok_for_ldd_peep (operands[0], operands[2], NULL_RTX)"
+   [(set (match_dup 0)
+ 	(match_dup 1))]
+@@ -7247,7 +7302,8 @@
+         (match_operand:SF 1 "memory_operand" ""))
+    (set (match_operand:SF 2 "register_operand" "")
+         (match_operand:SF 3 "memory_operand" ""))]
+-  "registers_ok_for_ldd_peep (operands[0], operands[2]) 
++  "! TARGET_NO_INTEGER_LDD_STD
++   && registers_ok_for_ldd_peep (operands[0], operands[2]) 
+    && mems_ok_for_ldd_peep (operands[1], operands[3], operands[0])"
+   [(set (match_dup 0)
+ 	(match_dup 1))]
+@@ -7259,7 +7315,8 @@
+         (match_operand:SF 1 "register_operand" ""))
+    (set (match_operand:SF 2 "memory_operand" "")
+         (match_operand:SF 3 "register_operand" ""))]
+-  "registers_ok_for_ldd_peep (operands[1], operands[3]) 
++  "! TARGET_NO_INTEGER_LDD_STD
++  && registers_ok_for_ldd_peep (operands[1], operands[3]) 
+   && mems_ok_for_ldd_peep (operands[0], operands[2], NULL_RTX)"
+   [(set (match_dup 0)
+ 	(match_dup 1))]
+@@ -7271,7 +7328,8 @@
+         (match_operand:SI 1 "memory_operand" ""))
+    (set (match_operand:SI 2 "register_operand" "")
+         (match_operand:SI 3 "memory_operand" ""))]
+-  "registers_ok_for_ldd_peep (operands[2], operands[0]) 
++  "! TARGET_NO_INTEGER_LDD_STD
++  && registers_ok_for_ldd_peep (operands[2], operands[0]) 
+   && mems_ok_for_ldd_peep (operands[3], operands[1], operands[0])"
+   [(set (match_dup 2)
+ 	(match_dup 3))]
+@@ -7283,7 +7341,8 @@
+         (match_operand:SI 1 "register_operand" ""))
+    (set (match_operand:SI 2 "memory_operand" "")
+         (match_operand:SI 3 "register_operand" ""))]
+-  "registers_ok_for_ldd_peep (operands[3], operands[1]) 
++  "! TARGET_NO_INTEGER_LDD_STD
++  && registers_ok_for_ldd_peep (operands[3], operands[1]) 
+   && mems_ok_for_ldd_peep (operands[2], operands[0], NULL_RTX)" 
+   [(set (match_dup 2)
+ 	(match_dup 3))]
+@@ -7296,7 +7355,8 @@
+         (match_operand:SF 1 "memory_operand" ""))
+    (set (match_operand:SF 2 "register_operand" "")
+         (match_operand:SF 3 "memory_operand" ""))]
+-  "registers_ok_for_ldd_peep (operands[2], operands[0]) 
++  "! TARGET_NO_INTEGER_LDD_STD
++  && registers_ok_for_ldd_peep (operands[2], operands[0]) 
+   && mems_ok_for_ldd_peep (operands[3], operands[1], operands[0])"
+   [(set (match_dup 2)
+ 	(match_dup 3))]
+@@ -7308,7 +7368,8 @@
+         (match_operand:SF 1 "register_operand" ""))
+    (set (match_operand:SF 2 "memory_operand" "")
+         (match_operand:SF 3 "register_operand" ""))]
+-  "registers_ok_for_ldd_peep (operands[3], operands[1]) 
++  "! TARGET_NO_INTEGER_LDD_STD
++  && registers_ok_for_ldd_peep (operands[3], operands[1]) 
+   && mems_ok_for_ldd_peep (operands[2], operands[0], NULL_RTX)"
+   [(set (match_dup 2)
+ 	(match_dup 3))]
+Только в gcc-4.4.7.illumos/gcc/config/sparc: sparc.md.orig
+diff -dubr gcc-4.4.7/gcc/config/sparc/sparc.opt gcc-4.4.7.illumos/gcc/config/sparc/sparc.opt
+--- gcc-4.4.7/gcc/config/sparc/sparc.opt	2007-08-02 14:49:31.000000000 +0400
++++ gcc-4.4.7.illumos/gcc/config/sparc/sparc.opt	2012-09-27 21:10:47.000000000 +0400
+@@ -38,6 +38,10 @@
+ Target Report
+ Pass -assert pure-text to linker
+ 
++mno-integer-ldd-std
++Target Report RejectNegative Mask(NO_INTEGER_LDD_STD)
++Utilize integer ldd and std
++
+ mapp-regs
+ Target Report Mask(APP_REGS)
+ Use ABI reserved registers
+@@ -102,6 +106,10 @@
+ Target Report RejectNegative Var(sparc_std_struct_return)
+ Enable strict 32-bit psABI struct return checking.
+ 
++massume-32bit-callers
++Target Report Var(sparc_assume_32bit_callers)
++Allow 64bit sparcv9 code to function with 32bit sparcv7 direct callers.
++
+ Mask(LITTLE_ENDIAN)
+ ;; Generate code for little-endian
+ 
+diff -dubr gcc-4.4.7/gcc/config.gcc gcc-4.4.7.illumos/gcc/config.gcc
+--- gcc-4.4.7/gcc/config.gcc	2011-02-19 00:39:51.000000000 +0300
++++ gcc-4.4.7.illumos/gcc/config.gcc	2012-09-27 21:10:47.000000000 +0400
+@@ -1237,6 +1237,8 @@
+ 	  "":*:yes | yes:*:yes )
+ 		thread_file=solaris
+ 		;;
++	*)
++		extra_parts="gmon.o crtbegin.o crtend.o"
+ 	esac
+ 	;;
+ i[4567]86-wrs-vxworks|i[4567]86-wrs-vxworksae)
+Только в gcc-4.4.7.illumos/gcc: config.gcc.orig
+diff -dubr gcc-4.4.7/gcc/cp/g++spec.c gcc-4.4.7.illumos/gcc/cp/g++spec.c
+--- gcc-4.4.7/gcc/cp/g++spec.c	2009-02-20 18:20:38.000000000 +0300
++++ gcc-4.4.7.illumos/gcc/cp/g++spec.c	2012-09-27 21:10:52.000000000 +0400
+@@ -260,7 +260,7 @@
+ #endif
+ 
+   /* Make sure to have room for the trailing NULL argument.  */
+-  num_args = argc + added + need_math + shared_libgcc + (library > 0) + 1;
++  num_args = argc + added + need_math + shared_libgcc + 2 * (library > 0) + 1;
+   arglist = XNEWVEC (const char *, num_args);
+ 
+   i = 0;
+diff -dubr gcc-4.4.7/gcc/cp/Make-lang.in gcc-4.4.7.illumos/gcc/cp/Make-lang.in
+--- gcc-4.4.7/gcc/cp/Make-lang.in	2009-09-09 12:46:32.000000000 +0400
++++ gcc-4.4.7.illumos/gcc/cp/Make-lang.in	2012-09-27 21:10:52.000000000 +0400
+@@ -55,7 +55,7 @@
+ g++spec.o: $(srcdir)/cp/g++spec.c $(SYSTEM_H) coretypes.h $(TM_H) $(GCC_H) $(CONFIG_H)
+ 	(SHLIB_LINK='$(SHLIB_LINK)'; \
+ 	$(CC) -c $(ALL_CFLAGS) $(ALL_CPPFLAGS) $(DRIVER_DEFINES) \
+-		$(INCLUDES) $(srcdir)/cp/g++spec.c)
++		-DLIBDIR=\"$(libdir)\" $(INCLUDES) $(srcdir)/cp/g++spec.c)
+ 
+ # Create the compiler driver for g++.
+ GXX_OBJS = $(GCC_OBJS) g++spec.o intl.o prefix.o version.o
+diff -dubr gcc-4.4.7/gcc/doc/cpp.texi gcc-4.4.7.illumos/gcc/doc/cpp.texi
+--- gcc-4.4.7/gcc/doc/cpp.texi	2008-08-05 21:24:37.000000000 +0400
++++ gcc-4.4.7.illumos/gcc/doc/cpp.texi	2012-09-27 21:10:52.000000000 +0400
+@@ -3508,8 +3508,6 @@
+ official GNU extensions either.  What historical information we have
+ been able to find, suggests they originated with System V@.
+ 
+-Both @samp{#ident} and @samp{#sccs} are deprecated extensions.
+-
+ @cindex null directive
+ The @dfn{null directive} consists of a @samp{#} followed by a newline,
+ with only whitespace (including comments) in between.  A null directive
+diff -dubr gcc-4.4.7/gcc/doc/invoke.texi gcc-4.4.7.illumos/gcc/doc/invoke.texi
+--- gcc-4.4.7/gcc/doc/invoke.texi	2011-03-24 01:02:12.000000000 +0300
++++ gcc-4.4.7.illumos/gcc/doc/invoke.texi	2012-09-27 21:10:52.000000000 +0400
+@@ -793,7 +793,8 @@
+ -mfaster-structs  -mno-faster-structs @gol
+ -mfpu  -mno-fpu  -mhard-float  -msoft-float @gol
+ -mhard-quad-float  -msoft-quad-float @gol
+--mimpure-text  -mno-impure-text  -mlittle-endian @gol
++-mimpure-text  -mno-impure-text @gol
++-mno-integer-ldd-std -mlittle-endian @gol
+ -mstack-bias  -mno-stack-bias @gol
+ -munaligned-doubles  -mno-unaligned-doubles @gol
+ -mv8plus  -mno-v8plus  -mvis  -mno-vis
+@@ -11549,6 +11550,10 @@
+ @opindex mcmodel=large
+ Generate code for the large model: This model makes no assumptions
+ about addresses and sizes of sections.
++
++@item -msave-args
++@opindex msave-args
++Save integer arguments on the stack at function entry.
+ @end table
+ 
+ @node i386 and x86-64 Windows Options
+@@ -15178,6 +15183,23 @@
+ @opindex mno-vis
+ With @option{-mvis}, GCC generates code that takes advantage of the UltraSPARC
+ Visual Instruction Set extensions.  The default is @option{-mno-vis}.
++
++@item -mno-integer-ldd-std
++@opindex mno-integer-ldd-std
++With @option{-mno-integer-ldd-std}, GCC does not use the @code{ldd}
++and @code{std} instructions for integer operands in 32-bit mode.  This
++is for use with legacy code using 64-bit quantities which are not
++64-bit aligned.
++
++@item -massume-32bit-callers
++@opindex massume-32bit-callers
++With @option{-massume-32bit-callers}, The type promotion of function
++arguments is altered such that integer arguments smaller than the word
++size are extended in the callee rather than the caller.  This is
++necessary for system calls from 32bit processes to 64bit kernels in
++certain systems.  This option should not be used in any situation
++other than compiling the kernels of such systems, and has not been
++tested outside of that scenario.
+ @end table
+ 
+ These @samp{-m} options are supported in addition to the above
+Только в gcc-4.4.7.illumos/gcc/doc: invoke.texi.orig
+diff -dubr gcc-4.4.7/gcc/dwarf2.h gcc-4.4.7.illumos/gcc/dwarf2.h
+--- gcc-4.4.7/gcc/dwarf2.h	2009-04-10 03:23:07.000000000 +0400
++++ gcc-4.4.7.illumos/gcc/dwarf2.h	2012-09-27 21:10:52.000000000 +0400
+@@ -377,6 +377,8 @@
+     DW_AT_GNU_vector = 0x2107,
+     /* VMS extensions.  */
+     DW_AT_VMS_rtnbeg_pd_address = 0x2201,
++    /* Sun extension.  */
++    DW_AT_SUN_amd64_parmdump = 0x2224,
+     /* UPC extension.  */
+     DW_AT_upc_threads_scaled = 0x3210,
+     /* PGI (STMicroelectronics) extensions.  */
+diff -dubr gcc-4.4.7/gcc/dwarf2out.c gcc-4.4.7.illumos/gcc/dwarf2out.c
+--- gcc-4.4.7/gcc/dwarf2out.c	2011-04-08 01:27:59.000000000 +0400
++++ gcc-4.4.7.illumos/gcc/dwarf2out.c	2012-09-27 21:10:53.000000000 +0400
+@@ -9362,10 +9362,6 @@
+ 
+   base_type_result = new_die (DW_TAG_base_type, comp_unit_die, type);
+ 
+-  /* This probably indicates a bug.  */
+-  if (! TYPE_NAME (type))
+-    add_name_attribute (base_type_result, "__unknown__");
+-
+   add_AT_unsigned (base_type_result, DW_AT_byte_size,
+ 		   int_size_in_bytes (type));
+   add_AT_unsigned (base_type_result, DW_AT_encoding, encoding);
+@@ -9541,6 +9537,21 @@
+ 			  ((is_const_type ? TYPE_QUAL_CONST : 0)
+ 			   | (is_volatile_type ? TYPE_QUAL_VOLATILE : 0)));
+ 
++  if (qualified_type == sizetype
++      && TYPE_NAME (qualified_type)
++      && TREE_CODE (TYPE_NAME (qualified_type)) == TYPE_DECL)
++    {
++#ifdef ENABLE_CHECKING
++      gcc_assert (TREE_CODE (TREE_TYPE (TYPE_NAME (qualified_type)))
++		  == INTEGER_TYPE
++		  && TYPE_PRECISION (TREE_TYPE (TYPE_NAME (qualified_type)))
++		     == TYPE_PRECISION (qualified_type)
++		  && TYPE_UNSIGNED (TREE_TYPE (TYPE_NAME (qualified_type)))
++		     == TYPE_UNSIGNED (qualified_type));
++#endif
++      qualified_type = TREE_TYPE (TYPE_NAME (qualified_type));
++    }
++
+   /* If we do, then we can just use its DIE, if it exists.  */
+   if (qualified_type)
+     {
+@@ -9638,6 +9649,9 @@
+ 	name = DECL_NAME (name);
+       add_name_attribute (mod_type_die, IDENTIFIER_POINTER (name));
+     }
++  /* This probably indicates a bug.  */
++  else if (mod_type_die->die_tag == DW_TAG_base_type)
++    add_name_attribute (mod_type_die, "__unknown__");
+ 
+   if (qualified_type)
+     equate_type_number_to_die (qualified_type, mod_type_die);
+@@ -13941,6 +13955,10 @@
+   /* Add the calling convention attribute if requested.  */
+   add_calling_convention_attribute (subr_die, decl);
+ 
++#ifdef TARGET_SAVE_ARGS
++  if (TARGET_SAVE_ARGS)
++    add_AT_flag (subr_die, DW_AT_SUN_amd64_parmdump, 1);
++#endif
+ }
+ 
+ /* Returns a hash value for X (which really is a die_struct).  */
+@@ -15525,9 +15543,6 @@
+ 
+   if (TREE_CODE (decl) == TYPE_DECL || TREE_CODE (decl) == CONST_DECL)
+     {
+-      if (is_base_type (TREE_TYPE (decl)))
+-	at_import_die = base_type_die (TREE_TYPE (decl));
+-      else
+ 	at_import_die = force_type_die (TREE_TYPE (decl));
+       /* For namespace N { typedef void T; } using N::T; base_type_die
+ 	 returns NULL, but DW_TAG_imported_declaration requires
+diff -dubr gcc-4.4.7/gcc/expr.c gcc-4.4.7.illumos/gcc/expr.c
+--- gcc-4.4.7/gcc/expr.c	2011-07-21 13:39:16.000000000 +0400
++++ gcc-4.4.7.illumos/gcc/expr.c	2012-09-27 21:10:53.000000000 +0400
+@@ -79,6 +79,10 @@
+ #endif
+ #endif
+ 
++#ifndef ASSUME_32BIT_CALLERS
++#define ASSUME_32BIT_CALLERS 0
++#endif
++
+ 
+ /* If this is nonzero, we do not bother generating VOLATILE
+    around volatile memory references, and we are willing to
+@@ -7361,7 +7365,8 @@
+ 	     same mode we got when the variable was declared.  */
+ 	  pmode = promote_mode (type, DECL_MODE (exp), &unsignedp,
+ 				(TREE_CODE (exp) == RESULT_DECL
+-				 || TREE_CODE (exp) == PARM_DECL) ? 1 : 0);
++				 || (!ASSUME_32BIT_CALLERS &&
++				   TREE_CODE (exp) == PARM_DECL)) ? 1 : 0);
+ 	  gcc_assert (GET_MODE (decl_rtl) == pmode);
+ 
+ 	  temp = gen_lowpart_SUBREG (mode, decl_rtl);
+Только в gcc-4.4.7.illumos/gcc: expr.c.orig
+diff -dubr gcc-4.4.7/gcc/function.c gcc-4.4.7.illumos/gcc/function.c
+--- gcc-4.4.7/gcc/function.c	2010-08-17 00:24:54.000000000 +0400
++++ gcc-4.4.7.illumos/gcc/function.c	2012-09-27 21:10:53.000000000 +0400
+@@ -83,6 +83,10 @@
+ #define NAME__MAIN "__main"
+ #endif
+ 
++#ifndef ASSUME_32BIT_CALLERS
++#define ASSUME_32BIT_CALLERS 0
++#endif
++
+ /* Round a value to the lowest integer less than it that is a multiple of
+    the required alignment.  Avoid using division in case the value is
+    negative.  Assume the alignment is a power of two.  */
+@@ -2789,7 +2793,8 @@
+   /* This is not really promoting for a call.  However we need to be
+      consistent with assign_parm_find_data_types and expand_expr_real_1.  */
+   promoted_nominal_mode
+-    = promote_mode (data->nominal_type, data->nominal_mode, &unsignedp, 1);
++    = promote_mode (data->nominal_type, data->nominal_mode, &unsignedp,
++      ASSUME_32BIT_CALLERS ? 0 : 1);
+ 
+   parmreg = gen_reg_rtx (promoted_nominal_mode);
+ 
+Только в gcc-4.4.7.illumos/gcc: function.c.orig
+diff -dubr gcc-4.4.7/gcc/Makefile.in gcc-4.4.7.illumos/gcc/Makefile.in
+--- gcc-4.4.7/gcc/Makefile.in	2010-09-07 15:07:31.000000000 +0400
++++ gcc-4.4.7.illumos/gcc/Makefile.in	2012-09-27 21:10:53.000000000 +0400
+@@ -4725,7 +4725,7 @@
+ # script does that.
+ .po.gmo:
+ 	$(mkinstalldirs) po
+-	$(GMSGFMT) --statistics -o $@ $<
++	$(GMSGFMT) -o $@ $<
+ 
+ # The new .po has to be gone over by hand, so we deposit it into
+ # build/po with a different extension.
+Только в gcc-4.4.7.illumos/gcc/testsuite: ChangeLog.orig
+diff -dubr gcc-4.4.7/gcc/testsuite/gcc.dg/pragma-align-2.c gcc-4.4.7.illumos/gcc/testsuite/gcc.dg/pragma-align-2.c
+--- gcc-4.4.7/gcc/testsuite/gcc.dg/pragma-align-2.c	2008-09-23 13:42:50.000000000 +0400
++++ gcc-4.4.7.illumos/gcc/testsuite/gcc.dg/pragma-align-2.c	2012-09-27 21:10:53.000000000 +0400
+@@ -25,9 +25,9 @@
+ #pragma align bad_align		/* { dg-warning "malformed" } */
+ #pragma align 1(bad_align	/* { dg-warning "malformed" } */
+ 
+-int x, x1, x2, x4, x8, y8, z8, x16, x32, x64, x128, y128, z128;
++int x1, x2, x4, x8, y8, z8, x16, y16, x32, x64, x128, y128, z128;
+ 
+-#pragma align 16(x)		/* { dg-warning "must appear before" } */
++#pragma align 16(y16)
+ 
+ int
+ main ()
+@@ -47,6 +47,9 @@
+   if (__alignof__ (x16) < 16)
+     abort ();
+ 
++  if (__alignof__ (y16) < 16)
++    abort ();
++
+   if (__alignof__ (x32) < 32)
+     abort ();
+ 
+diff -dubr gcc-4.4.7/gcc/testsuite/lib/gcc-dg.exp gcc-4.4.7.illumos/gcc/testsuite/lib/gcc-dg.exp
+--- gcc-4.4.7/gcc/testsuite/lib/gcc-dg.exp	2009-04-22 15:35:25.000000000 +0400
++++ gcc-4.4.7.illumos/gcc/testsuite/lib/gcc-dg.exp	2012-09-27 21:11:00.000000000 +0400
+@@ -343,6 +343,37 @@
+     }
+ }
+ 
++# ARGS is a list.  The 0th element is the line number at which the
++# dg-forbid-option directive appeared in the source file.  The 1st
++# element is a regular expression.  If the regular expression matches
++# the command-line options implied by the current multilib, then the
++# test will be treated as unsupported.  The 2nd element of the list,
++# if present, is a target selector conditionalizing this directive;
++# if the target selector does not match the current target, this
++# dg-forbid-option directive is ignored.
++
++proc dg-forbid-option { args } {
++    set target_name [target_info name]
++    set pattern [lindex $args 1]
++
++    if {[llength $args] > 2} {
++	set selector [lindex $args 2]
++	if { [dg-process-target $selector] == "N" } {
++	    return
++	}
++    }
++	
++    # Check to see if the option occurs in the multilib options
++    # for this target.
++    if {[board_info $target_name exists multilib_flags]} {
++	set multilib_flags [board_info $target_name multilib_flags]
++	if { [regexp -- ${pattern} $multilib_flags] } {
++	    upvar dg-do-what dg-do-what
++	    set dg-do-what [list [lindex ${dg-do-what} 0] "N" "P"]
++	}
++    }
++}
++
+ # Prune any messages matching ARGS[1] (a regexp) from test output.
+ proc dg-prune-output { args } {
+     global additional_prunes
+diff -dubr gcc-4.4.7/gcc/varasm.c gcc-4.4.7.illumos/gcc/varasm.c
+--- gcc-4.4.7/gcc/varasm.c	2010-01-20 14:27:49.000000000 +0300
++++ gcc-4.4.7.illumos/gcc/varasm.c	2012-09-27 21:11:00.000000000 +0400
+@@ -5484,6 +5484,9 @@
+ #endif
+     }
+ 
++  if (TREE_ASM_WRITTEN (decl))
++    return;
++
+   /* We must force creation of DECL_RTL for debug info generation, even though
+      we don't use it here.  */
+   make_decl_rtl (decl);
+diff -dubr gcc-4.4.7/intl/configure gcc-4.4.7.illumos/intl/configure
+--- gcc-4.4.7/intl/configure	2010-10-02 15:40:32.000000000 +0400
++++ gcc-4.4.7.illumos/intl/configure	2012-09-27 21:11:00.000000000 +0400
+@@ -1557,8 +1557,8 @@
+       test -z "$ac_dir" && ac_dir=.
+       for ac_exec_ext in '' $ac_executable_extensions; do
+         if $ac_executable_p "$ac_dir/$ac_word$ac_exec_ext"; then
+-          if $ac_dir/$ac_word --statistics /dev/null >/dev/null 2>&1 &&
+-     (if $ac_dir/$ac_word --statistics /dev/null 2>&1 >/dev/null | grep usage >/dev/null; then exit 1; else exit 0; fi); then
++          if $ac_dir/$ac_word /dev/null >/dev/null 2>&1 &&
++     (if $ac_dir/$ac_word /dev/null 2>&1 >/dev/null | grep usage >/dev/null; then exit 1; else exit 0; fi); then
+             ac_cv_path_MSGFMT="$ac_dir/$ac_word$ac_exec_ext"
+             break 2
+           fi
+@@ -1761,8 +1761,8 @@
+ 
+ 
+       if test "$GMSGFMT" != ":"; then
+-            if $GMSGFMT --statistics /dev/null >/dev/null 2>&1 &&
+-       (if $GMSGFMT --statistics /dev/null 2>&1 >/dev/null | grep usage >/dev/null; then exit 1; else exit 0; fi); then
++            if $GMSGFMT /dev/null >/dev/null 2>&1 &&
++       (if $GMSGFMT /dev/null 2>&1 >/dev/null | grep usage >/dev/null; then exit 1; else exit 0; fi); then
+       : ;
+     else
+       GMSGFMT=`echo "$GMSGFMT" | sed -e 's,^.*/,,'`
+Только в gcc-4.4.7.illumos/libcpp: ChangeLog.orig
+diff -dubr gcc-4.4.7/libcpp/directives.c gcc-4.4.7.illumos/libcpp/directives.c
+--- gcc-4.4.7/libcpp/directives.c	2011-01-05 02:18:52.000000000 +0300
++++ gcc-4.4.7.illumos/libcpp/directives.c	2012-09-27 21:11:00.000000000 +0400
+@@ -152,11 +152,11 @@
+ D(pragma,	T_PRAGMA,	STDC89,    IN_I)	   /*    195 */ \
+ D(warning,	T_WARNING,	EXTENSION, 0)		   /*     22 */ \
+ D(include_next,	T_INCLUDE_NEXT,	EXTENSION, INCL | EXPAND)  /*     19 */ \
+-D(ident,	T_IDENT,	EXTENSION, IN_I | DEPRECATED) /*     11 */ \
++D(ident,	T_IDENT,	EXTENSION, IN_I)           /*     11 */ \
+ D(import,	T_IMPORT,	EXTENSION, INCL | EXPAND)  /* 0 ObjC */	\
+ D(assert,	T_ASSERT,	EXTENSION, DEPRECATED)	   /* 0 SVR4 */	\
+ D(unassert,	T_UNASSERT,	EXTENSION, DEPRECATED)	   /* 0 SVR4 */	\
+-D(sccs,		T_SCCS,		EXTENSION, IN_I | DEPRECATED) /* 0 SVR4? */
++D(sccs,		T_SCCS,		EXTENSION, IN_I)           /* 0 SVR4? */
+ 
+ /* #sccs is synonymous with #ident.  */
+ #define do_sccs do_ident
+diff -dubr gcc-4.4.7/libstdc++-v3/acinclude.m4 gcc-4.4.7.illumos/libstdc++-v3/acinclude.m4
+--- gcc-4.4.7/libstdc++-v3/acinclude.m4	2009-05-06 13:00:57.000000000 +0400
++++ gcc-4.4.7.illumos/libstdc++-v3/acinclude.m4	2012-09-27 21:11:00.000000000 +0400
+@@ -2444,7 +2444,11 @@
+   old_CXXFLAGS="$CXXFLAGS"
+   
+   # Compile unoptimized.
+-  CXXFLAGS='-O0 -S'
++  # XXX: On sparc, use the lowest practical CPU level # to avoid false positives
++  case $host in
++      sparc*-*solaris*) CXXFLAGGS='-O0 -S -mcpu=v8';;
++      *) CXXFLAGS='-O0 -S';;
++  esac
+ 
+   # Fake what AC_TRY_COMPILE does, without linking as this is
+   # unnecessary for a builtins test.
+diff -dubr gcc-4.4.7/libstdc++-v3/configure gcc-4.4.7.illumos/libstdc++-v3/configure
+--- gcc-4.4.7/libstdc++-v3/configure	2009-08-26 23:04:11.000000000 +0400
++++ gcc-4.4.7.illumos/libstdc++-v3/configure	2012-09-27 21:11:00.000000000 +0400
+@@ -14758,7 +14758,11 @@
+   old_CXXFLAGS="$CXXFLAGS"
+ 
+   # Compile unoptimized.
+-  CXXFLAGS='-O0 -S'
++  # XXX: On sparc, use the lowest practical CPU level # to avoid false positives
++  case $host in
++      sparc*-*solaris*) CXXFLAGS='-O0 -S -mcpu=v8';;
++      *) CXXFLAGS='-O0 -S';;
++  esac
+ 
+   # Fake what AC_TRY_COMPILE does, without linking as this is
+   # unnecessary for a builtins test.
+Только в gcc-4.4.7.illumos/libstdc++-v3/testsuite/27_io/basic_istream/extractors_arithmetic/char: 12.cc.orig

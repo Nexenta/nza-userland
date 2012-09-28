@@ -1,0 +1,78 @@
+# 
+# CDDL HEADER START
+# 
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+# 
+# You can obtain a copy of the license
+# at http://www.opensource.org/licenses/CDDL-1.0
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each file.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+#
+# Copyright (C) 2012, Nexenta Systems, Inc. All rights reserved.
+#
+
+
+set name=pkg.fmri value=pkg:/developer/gcc/gfortran-4.4@$(IPS_COMPONENT_VERSION),$(BUILD_VERSION)
+set name=pkg.summary value="GNU Fortran 95 compiler"
+set name=info.source_url value=$(COMPONENT_ARCHIVE_URL)
+set name=info.upstream_url value=$(COMPONENT_PROJECT_URL)
+
+<transform file path=usr.*/man/.+ -> default mangler.man.stability uncommitted>
+
+depend fmri=pkg:/developer/gcc/gcc-4.4 type=require
+depend fmri=pkg:/library/gcc/libgfortran type=require
+
+
+dir path=usr
+dir path=usr/bin
+dir path=usr/share/
+dir path=usr/share/man
+dir path=usr/share/man/man1
+
+file path=usr/bin/i386-pc-solaris2.11-gfortran-4.4
+file path=usr/share/man/man1/gfortran-4.4.1
+link path=usr/bin/gfortran-4.4 target=i386-pc-solaris2.11-gfortran-4.4
+
+
+dir path=usr/lib
+dir path=usr/lib/gcc
+dir path=usr/lib/gcc/i386-pc-solaris2.11
+dir path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7
+
+
+file path=usr/libexec/gcc/i386-pc-solaris2.11/4.4.7/f951 mode=0555
+
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/amd64/libgfortranbegin.a
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/libgfortranbegin.a
+
+
+# Move static libraries out of the way:
+file usr/lib/libgfortran.a \
+    path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/libgfortran.a
+file usr/lib/amd64/libgfortran.a \
+    path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/amd64/libgfortran.a
+
+
+# libgfortran.so.3 is in a separate package:
+link path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/libgfortran.so \
+    target=/usr/lib/libgfortran.so.3
+link path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/amd64/libgfortran.so \
+    target=/usr/lib/amd64/libgfortran.so.3
+
+
+dir path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/finclude
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/finclude/omp_lib.h
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/finclude/omp_lib.f90
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/finclude/omp_lib.mod
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/finclude/omp_lib_kinds.mod
+

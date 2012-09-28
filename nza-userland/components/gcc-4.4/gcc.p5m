@@ -1,0 +1,166 @@
+# 
+# CDDL HEADER START
+# 
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+# 
+# You can obtain a copy of the license
+# at http://www.opensource.org/licenses/CDDL-1.0
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each file.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+#
+# Copyright (C) 2012, Nexenta Systems, Inc. All rights reserved.
+#
+
+
+set name=pkg.fmri value=pkg:/developer/gcc/gcc-4.4@$(IPS_COMPONENT_VERSION),$(BUILD_VERSION)
+set name=pkg.summary value="GNU C compiler"
+set name=info.source_url value=$(COMPONENT_ARCHIVE_URL)
+set name=info.upstream_url value=$(COMPONENT_PROJECT_URL)
+
+<transform file path=usr.*/man/.+ -> default mangler.man.stability uncommitted>
+
+depend fmri=pkg:/developer/gcc/cpp-4.4 type=require
+depend fmri=pkg:/library/gcc/libssp type=require
+depend fmri=pkg:/library/gcc/libgomp type=require
+depend fmri=pkg:/library/gcc/libgcc type=require
+
+
+dir path=usr
+dir path=usr/bin
+dir path=usr/share/
+dir path=usr/share/man
+dir path=usr/share/man/man1
+
+file path=usr/bin/gcov-4.4
+file path=usr/bin/i386-pc-solaris2.11-gcc-4.4
+file path=usr/share/man/man1/gcc-4.4.1
+file path=usr/share/man/man1/gcov-4.4.1
+link path=usr/bin/gcc-4.4 target=i386-pc-solaris2.11-gcc-4.4
+
+
+dir path=usr/lib
+dir path=usr/lib/gcc
+dir path=usr/lib/gcc/i386-pc-solaris2.11
+dir path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7
+
+
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/amd64/libgcc.a
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/amd64/libgcc_eh.a
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/amd64/libgcov.a
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/libgcc.a
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/libgcc_eh.a
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/libgcov.a
+
+
+# Move static libraries out of the way:
+file usr/lib/libssp.a \
+    path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/libssp.a
+file usr/lib/amd64/libssp.a \
+    path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/amd64/libssp.a
+
+file usr/lib/libssp_nonshared.a \
+    path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/libssp_nonshared.a
+file usr/lib/amd64/libssp_nonshared.a \
+    path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/amd64/libssp_nonshared.a
+
+file usr/lib/libgomp.a \
+    path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/libgomp.a
+file usr/lib/amd64/libgomp.a \
+    path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/amd64/libgomp.a
+file usr/lib/libgomp.spec \
+    path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/libgomp.spec
+file usr/lib/amd64/libgomp.spec \
+    path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/amd64/libgomp.spec
+
+
+
+# libgcc_s.so.1 is in a separate package:
+link path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/libgcc_s.so \
+    target=/lib/libgcc_s.so.1
+link path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/amd64/libgcc_s.so \
+    target=/lib/amd64/libgcc_s.so.1
+
+# Same for libgomp:
+link path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/libgomp.so \
+    target=/lib/libgomp.so.1
+link path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/amd64/libgomp.so \
+    target=/lib/amd64/libgomp.so.1
+
+# Same for libssp:
+link path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/libssp.so \
+    target=/lib/libssp.so.0
+link path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/amd64/libssp.so \
+    target=/lib/amd64/libssp.so.0
+
+
+
+file path=usr/libexec/gcc/i386-pc-solaris2.11/4.4.7/collect2 mode=0555
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/crtbegin.o
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/crtend.o
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/amd64/crtbegin.o
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/amd64/crtend.o
+
+
+# Fixed includes:
+dir path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/include-fixed
+dir path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/include-fixed/arpa
+dir path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/include-fixed/iso
+dir path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/include-fixed/sys
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/include-fixed/README
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/include-fixed/arpa/nameser_compat.h
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/include-fixed/complex.h
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/include-fixed/iso/math_c99.h
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/include-fixed/limits.h
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/include-fixed/math.h
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/include-fixed/string.h
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/include-fixed/sys/feature_tests.h
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/include-fixed/sys/varargs.h
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/include-fixed/syslimits.h
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/include-fixed/wchar.h
+
+
+dir path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/include
+dir path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/include/ssp
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/include/x86intrin.h
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/include/cpuid.h
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/include/iso646.h
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/include/avxintrin.h
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/include/xmmintrin.h
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/include/tgmath.h
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/include/stddef.h
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/include/omp.h
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/include/mm_malloc.h
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/include/tmmintrin.h
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/include/wmmintrin.h
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/include/stdfix.h
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/include/cross-stdarg.h
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/include/pmmintrin.h
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/include/smmintrin.h
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/include/stdbool.h
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/include/varargs.h
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/include/nmmintrin.h
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/include/immintrin.h
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/include/float.h
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/include/mmintrin.h
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/include/mm3dnow.h
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/include/emmintrin.h
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/include/unwind.h
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/include/stdarg.h
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/include/bmmintrin.h
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/include/mmintrin-common.h
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/include/ssp/stdio.h
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/include/ssp/ssp.h
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/include/ssp/unistd.h
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/include/ssp/string.h
+file path=usr/lib/gcc/i386-pc-solaris2.11/4.4.7/include/ammintrin.h
+
