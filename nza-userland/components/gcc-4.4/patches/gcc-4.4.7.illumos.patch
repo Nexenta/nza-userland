@@ -223,7 +223,7 @@ diff -dubr gcc-4.4.7/gcc/config/i386/i386.c gcc-4.4.7.illumos/gcc/config/i386/i3
    fprintf (stderr, "nsseregs: %ld\n", (long)frame->nsseregs);
 +  fprintf (stderr, "nmsave_args: %ld\n", (long)frame->nmsave_args);
    fprintf (stderr, "padding0: %ld\n", (long)frame->padding0);
-+  fprintf (stderr, "padding05: %ld\n", (long)frame->padding0);
++  fprintf (stderr, "padding05: %ld\n", (long)frame->padding05);
    fprintf (stderr, "alignment1: %ld\n", (long)stack_alignment_needed);
    fprintf (stderr, "padding1: %ld\n", (long)frame->padding1);
    fprintf (stderr, "va_arg: %ld\n", (long)frame->va_arg_size);
