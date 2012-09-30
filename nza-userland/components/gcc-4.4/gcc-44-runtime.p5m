@@ -32,4 +32,5 @@ depend fmri=pkg:/library/gcc/libgcc type=require
 depend fmri=pkg:/library/gcc/libgfortran type=require
 depend fmri=pkg:/library/gcc/libgomp type=require
 depend fmri=pkg:/library/gcc/libssp type=require
+depend fmri=pkg:/library/gcc/libstdc++ type=require
 
