@@ -18,7 +18,7 @@
 #
 # CDDL HEADER END
 #
-# Copyright (c) 2011, Nexenta Systems, Inc. All rights reserved.
+# Copyright (c) 2012, Nexenta Systems, Inc. All rights reserved.
 #
 
 <transform file path=usr.*/man/.+                -> default mangler.man.stability volatile>
@@ -69,6 +69,7 @@ dir path=opt/DTT/System
 dir path=opt/DTT/Tcl
 dir path=opt/DTT/User
 dir path=opt/DTT/Zones
+dir path=opt/DTT/Comstar
 link path=opt/DTT/Bin/anonpgpid.d target=../Mem/anonpgpid.d
 link path=opt/DTT/Bin/bitesize.d target=../Disk/bitesize.d
 link path=opt/DTT/Bin/connections target=../Net/connections
@@ -299,6 +300,11 @@ link path=opt/DTT/Bin/writedist.d target=../Proc/writedist.d
 link path=opt/DTT/Bin/xcallsbypid.d target=../Cpu/xcallsbypid.d
 link path=opt/DTT/Bin/xvmstat target=../Mem/xvmstat
 link path=opt/DTT/Bin/zvmstat target=../Zones/zvmstat
+link path=opt/DTT/Bin/fcwho.d  target=../Comstar/fcwho.d
+link path=opt/DTT/Bin/iscsiio.d  target=../Comstar/iscsiio.d
+link path=opt/DTT/Bin/iscsirwlat.d  target=../Comstar/iscsirwlat.d
+link path=opt/DTT/Bin/iscsisnoop.d  target=../Comstar/iscsisnoop.d
+link path=opt/DTT/Bin/iscsiwho.d  target=../Comstar/iscsiwho.d
 link path=opt/DTT/Docs/Examples target=../Examples
 link path=opt/DTT/Docs/Index target=Contents
 link path=opt/DTT/Docs/Notes target=../Notes
@@ -333,6 +339,12 @@ file   path=opt/DTT/Code/Shell/func_slow.sh   mode=0755
 file   path=opt/DTT/Code/Shell/func_waste.sh   mode=0755
 file   path=opt/DTT/Code/Tcl/func_abc.tcl   mode=0644
 file   path=opt/DTT/Code/Tcl/func_slow.tcl   mode=0644
+file   path=opt/DTT/Comstar/Readme   mode=0644
+file   path=opt/DTT/Comstar/fcwho.d   mode=0755
+file   path=opt/DTT/Comstar/iscsiio.d   mode=0755
+file   path=opt/DTT/Comstar/iscsirwlat.d  mode=0755
+file   path=opt/DTT/Comstar/iscsisnoop.d   mode=0755
+file   path=opt/DTT/Comstar/iscsiwho.d   mode=0755
 file   path=opt/DTT/Cpu/Readme   mode=0644
 file   path=opt/DTT/Cpu/cputypes.d   mode=0755
 file   path=opt/DTT/Cpu/cpuwalk.d   mode=0755

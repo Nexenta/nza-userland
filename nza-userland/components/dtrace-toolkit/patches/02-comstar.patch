@@ -1,0 +1,336 @@
+--- /dev/null
++++ DTraceToolkit-0.99/Comstar/Readme	2012-09-26 16:57:03.000000000 +0400
+@@ -0,0 +1,3 @@
++Comstar - Comstar based analysis
++
++   These are scripts that analyse I/O activity that has made it to the Comstar. 
+--- /dev/null
++++ DTraceToolkit-0.99/Comstar/fcwho.d	2012-09-27 19:38:41.000000000 +0400
+@@ -0,0 +1,78 @@
++#!/usr/sbin/dtrace -s
++/*
++ * fcwho.d -produce a report of the remote WWNs and a
++ * count of FC events.
++ *
++ * This is intended to provide a quick summary of fc activity when run on the
++ * iSCSI target server.
++ *
++ * USAGE:      fcwho.d	       # wait several seconds, then hit Ctrl-C
++ *
++ * FIELDS:
++ *              REMOTE WWN      WWN of the client
++ *              FC EVENT        FC event type.
++ *              COUNT           Number of events traced
++ */
++
++#pragma D option quiet
++
++dtrace:::BEGIN
++{
++        printf("Tracing... Hit Ctrl-C to end.\n");
++}
++
++fc:::scsi-command
++{
++        @events[args[0]->ci_remote, probename] = count();
++}
++
++fc:::scsi-response
++{
++        @events[args[0]->ci_remote, probename] = count();
++}
++
++fc:::xfer-start
++{
++        @events[args[0]->ci_remote, probename] = count();
++}
++
++fc:::xfer-done
++{
++        @events[args[0]->ci_remote, probename] = count();
++}
++
++fc:::rport-login-start
++{
++        @events[args[0]->ci_remote, probename] = count();
++}
++
++fc:::rport-login-end
++{
++        @events[args[0]->ci_remote, probename] = count();
++}
++
++fc:::rport-logout-start
++{
++        @events[args[0]->ci_remote, probename] = count();
++}
++
++fc:::rport-logout-end
++{
++        @events[args[0]->ci_remote, probename] = count();
++}
++
++fc:::fabric-login-start
++{
++        @events[args[0]->ci_remote, probename] = count();
++}
++
++fc:::fabric-login-end
++{
++        @events[args[0]->ci_remote, probename] = count();
++}
++
++dtrace:::END
++{
++        printf("   %-26s %14s %8s\n", "REMOTE WWN", "FC EVENT", "COUNT");
++        printa("   %-26s %14s %@8d\n", @events);
++}
+--- /dev/null
++++ DTraceToolkit-0.99/Comstar/iscsiio.d	2012-09-27 16:34:37.000000000 +0400
+@@ -0,0 +1,59 @@
++#!/usr/sbin/dtrace -s
++/*
++ * iscsiio.d - Report iSCSI I/O. Solaris Nevada, DTrace.
++ *
++ * This traces requested iSCSI data I/O events when run on an iSCSI server.
++ * The output reports iSCSI read and write I/O while this script was running.
++ *
++ * USAGE: iscsiio.d             # Hit Ctrl-C to end
++ *
++ * FIELDS:
++ *              REMOTE IP       IP address of the client
++ *              EVENT           Data I/O event (read/write)
++ *              COUNT           Number of I/O events
++ *              Kbytes          Total data Kbytes transferred
++ *              KB/sec          Average data Kbytes/sec transferred
++ */
++
++#pragma D option quiet
++
++dtrace:::BEGIN
++{
++        printf("Tracing... Hit Ctrl-C to end.\n");
++        start = timestamp;
++}
++
++iscsi*:::data-send
++{
++        @num[args[0]->ci_remote, "read"] = count();
++        @bytes[args[0]->ci_remote, "read"] = sum(args[1]->ii_datalen);
++        @rate[args[0]->ci_remote, "read"] = sum(args[1]->ii_datalen);
++}
++
++iscsi*:::data-receive
++{
++        @num[args[0]->ci_remote, "write"] = count();
++        @bytes[args[0]->ci_remote, "write"] = sum(args[1]->ii_datalen);
++        @rate[args[0]->ci_remote, "write"] = sum(args[1]->ii_datalen);
++}
++
++iscsi*:::scsi-command
++/args[2]->ic_cdb[0] == 0x0a || args[2]->ic_cdb[0] == 0x2a/
++{
++        /*
++         * scsi-command writes also move data. Their codes are in
++         * /usr/include/sys/scsi/generic/commands.h .
++         */
++        @num[args[0]->ci_remote, "write"] = count();
++        @bytes[args[0]->ci_remote, "write"] = sum(args[1]->ii_datalen);
++        @rate[args[0]->ci_remote, "write"] = sum(args[1]->ii_datalen);
++}
++
++dtrace:::END
++{
++        normalize(@rate, (timestamp - start) * 1024 / 1000000000);
++        printf("   %-26s %8s %8s %10s %10s\n", "REMOTE IP", "EVENT", "COUNT",
++            "Kbytes", "KB/sec");
++        normalize(@bytes, 1024);
++        printa("   %-26s %8s %@8d %@10d %@10d\n", @num, @bytes, @rate);
++}
+--- /dev/null
++++ DTraceToolkit-0.99/Comstar/iscsirwlat.d	2012-09-27 21:00:01.000000000 +0400
+@@ -0,0 +1,67 @@
++#!/usr/sbin/dtrace -s
++/*
++ * iscsirwlat.d - Report iSCSI Read/Write Latency. Solaris Nevada, DTrace.
++ *
++ * This traces iSCSI data I/O events when run on an iSCSI server, and
++ * produces a report of read/write latency in microseconds.
++ *
++ * USAGE: iscsirwlat.d          # Hit Ctrl-C to end
++ *
++ * FIELDS:
++ *              EVENT           Data I/O event (data-send/data-receive)
++ *              REMOTE IP       IP address of the client
++ *              COUNT           Number of I/O events
++ *              Kbytes          Total data Kbytes transferred
++ *
++ * NOTE: If you try to sum the read times, they will sometimes add to
++ * a time longer than the sample time - the reason is that reads can
++ * occur in parallel, and so suming them together will overcount.
++ */
++
++#pragma D option quiet
++
++dtrace:::BEGIN
++{
++        printf("Tracing... Hit Ctrl-C to end.\n");
++}
++
++iscsi*:::scsi-command
++/args[2]->ic_cdb[0] == 0x08 || args[2]->ic_cdb[0] == 0x28/
++{
++        /*
++         * self-> variables can't be used, as one thread receives the
++         * scsi command while another receives the reads.
++         */
++        start_read[args[1]->ii_itt, args[1]->ii_initiator] = timestamp;
++}
++
++iscsi*:::scsi-command
++/args[2]->ic_cdb[0] == 0x0a || args[2]->ic_cdb[0] == 0x2a/
++{
++        start_write[args[1]->ii_itt, args[1]->ii_initiator] = timestamp;
++}
++
++iscsi*:::data-send
++/start_read[args[1]->ii_itt, args[1]->ii_initiator] &&
++    (args[1]->ii_flags & 0x80)/
++{
++        @read[args[0]->ci_remote] = quantize(timestamp -
++            start_read[args[1]->ii_itt, args[1]->ii_initiator]);
++        start_read[args[1]->ii_ttt, args[1]->ii_initiator] = 0;
++}
++
++iscsi*:::scsi-response
++/start_write[args[1]->ii_itt, args[1]->ii_initiator]/
++{
++        @write[args[0]->ci_remote] = quantize(timestamp -
++            start_write[args[1]->ii_itt, args[1]->ii_initiator]);
++        start_write[args[1]->ii_itt, args[1]->ii_initiator] = 0;
++}
++
++dtrace:::END
++{
++        printf("Read Latency (ns),\n");
++        printa(@read);
++        printf("Write Latency (ns),\n");
++        printa(@write);
++}
+--- /dev/null
++++ DTraceToolkit-0.99/Comstar/iscsisnoop.d	2012-09-27 16:33:17.000000000 +0400
+@@ -0,0 +1,69 @@
++#!/usr/sbin/dtrace -s
++/*
++ * iscsisnoop.d - Snoop iSCSI events. Solaris Nevada, DTrace.
++ *
++ * This snoops iSCSI events when run on an iSCSI server.
++ *
++ * USAGE: iscsisnoop.d          # Hit Ctrl-C to end
++ *
++ * FIELDS:
++ *              CPU             CPU event occured on
++ *              REMOTE IP       IP address of the client
++ *              EVENT           Data I/O event (data-send/data-receive)
++ *              BYTES           Data bytes
++ *              ITT             Initiator task tag
++ *              SCSIOP          SCSI opcode as a description, as hex, or '-'
++ *
++ * NOTE: On multi-CPU servers output may not be in correct time order
++ * (shuffled). A change in the CPU column is a hint that this happened.
++ * If this is a problem, print an extra timestamp field and post sort.
++ */
++
++#pragma D option quiet
++#pragma D option switchrate=10
++
++dtrace:::BEGIN
++{
++        printf("%3s  %-26s %-14s %6s %10s  %6s\n", "CPU", "REMOTE IP",
++            "EVENT", "BYTES", "ITT", "SCSIOP");
++
++        /*
++         * SCSI opcode to string translation hash. This is from
++         * /usr/include/sys/scsi/generic/commands.h. If you would
++         * rather all hex, comment this out.
++         */
++        scsiop[0x08] = "read";
++        scsiop[0x0a] = "write";
++        scsiop[0x0b] = "seek";
++        scsiop[0x28] = "read(10)";
++        scsiop[0x2a] = "write(10)";
++        scsiop[0x2b] = "seek(10)";
++}
++
++iscsi*:::data-*,
++iscsi*:::login-*,
++iscsi*:::logout-*,
++iscsi*:::nop-*,
++iscsi*:::task-*,
++iscsi*:::async-*,
++iscsi*:::scsi-response
++{
++        printf("%3d  %-26s %-14s %6d %10d  -\n", cpu, args[0]->ci_remote,
++            probename, args[1]->ii_datalen, args[1]->ii_itt);
++}
++
++iscsi*:::scsi-command
++/scsiop[args[2]->ic_cdb[0]] != NULL/
++{
++        printf("%3d  %-26s %-14s %6d %10d  %s\n", cpu, args[0]->ci_remote,
++            probename, args[1]->ii_datalen, args[1]->ii_itt,
++            scsiop[args[2]->ic_cdb[0]]);
++}
++
++iscsi*:::scsi-command
++/scsiop[args[2]->ic_cdb[0]] == NULL/
++{
++        printf("%3d  %-26s %-14s %6d %10d  0x%x\n", cpu, args[0]->ci_remote,
++            probename, args[1]->ii_datalen, args[1]->ii_itt,
++            args[2]->ic_cdb[0]);
++}
+--- /dev/null
++++ DTraceToolkit-0.99/Comstar/iscsiwho.d	2012-09-27 16:31:21.000000000 +0400
+@@ -0,0 +1,42 @@
++#!/usr/sbin/dtrace -s
++/*
++ * iscsiwho.d -produce a report of the remote IP addresses and a
++ * count of iSCSI events.
++ *
++ * This is intended to provide a quick summary of iSCSI activity when
++ * run on the iSCSI target server. 
++ *
++ * USAGE:	iscsiwho.d	# wait several seconds, then hit Ctrl-C
++ *
++ * FIELDS:
++*              REMOTE IP       IP address of the client
++*              iSCSI EVENT     iSCSI event type.
++*              COUNT           Number of events traced
++*/
++
++#pragma D option quiet
++
++/*
++ * Print header
++ */
++dtrace:::BEGIN
++{
++        printf("Tracing... Hit Ctrl-C to end.\n");
++}
++
++/*
++ * Process iscsi
++ */
++iscsi*:::
++{
++        @events[args[0]->ci_remote, probename] = count();
++}
++
++/*
++ * Print final report
++ */
++dtrace:::END
++{
++        printf("   %-26s %14s %8s\n", "REMOTE IP", "iSCSI EVENT", "COUNT");
++        printa("   %-26s %14s %@8d\n", @events);
++}
