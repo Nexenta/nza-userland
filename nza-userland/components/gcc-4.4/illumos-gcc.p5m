@@ -31,5 +31,10 @@ depend fmri=pkg:/developer/gcc/g++-4.4 type=require
 
 dir path=opt
 dir path=opt/gcc
-link path=opt/gcc/4.4 target=/usr/gcc/4.4
-link path=opt/gcc/4.4.4 target=/usr/gcc/4.4
+dir path=opt/gcc/4.4.4
+dir path=opt/gcc/4.4.4/bin
+
+link path=opt/gcc/4.4.4/bin/gcc target=/usr/bin/gcc-4.4
+link path=opt/gcc/4.4.4/bin/g++ target=/usr/bin/g++-4.4
+link path=opt/gcc/4.4.4/bin/cpp target=/usr/bin/cpp-4.4
+
