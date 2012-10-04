@@ -44,5 +44,6 @@ depend fmri=text/gnu/patch type=require
 depend fmri=developer/build/gnu-make type=require
 depend fmri=file/gnu-findutils type=require
 depend fmri=runtime/perl-510/extra type=require
+depend fmri=package/dpkg/debhelper type=require
 
 set name=org.illumos.consolidation value=illumos
