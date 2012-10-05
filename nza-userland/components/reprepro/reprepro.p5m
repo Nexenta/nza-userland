@@ -35,6 +35,7 @@ set name=org.opensolaris.arc-caseid \
 set name=org.opensolaris.consolidation value=$(CONSOLIDATION)
 
 depend fmri=pkg:/library/security/gpgme type=require
+depend fmri=pkg:/archiver/gnu-tar type=require
 
 dir path=usr
 dir path=usr/bin

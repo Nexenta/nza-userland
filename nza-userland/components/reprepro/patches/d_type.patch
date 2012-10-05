@@ -1,0 +1,31 @@
+diff -dubr reprepro-4.12.3/configparser.c reprepro-4.12.3.d_type/configparser.c
+--- reprepro-4.12.3/configparser.c	2012-06-08 00:57:13.000000000 +0400
++++ reprepro-4.12.3.d_type/configparser.c	2012-10-05 16:16:31.551400317 +0400
+@@ -19,6 +19,7 @@
+ #include <assert.h>
+ #include <limits.h>
+ #include <sys/types.h>
++#include <sys/stat.h>
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
+@@ -473,14 +474,16 @@
+ 		}
+ 		while ((errno = 0, de = readdir(dir)) != NULL) {
+ 			size_t l;
+-			if (de->d_type != DT_REG && de->d_type != DT_LNK
+-					&& de->d_type != DT_UNKNOWN)
+-				continue;
++			struct stat st;
+ 			if (de->d_name[0] == '.')
+ 				continue;
+ 			l = strlen(de->d_name);
+ 			if (l < 5 || strcmp(de->d_name + l - 5, ".conf") != 0)
+ 				continue;
++			if ((stat(de->d_name, &st) != 0))
++				continue;
++			if (!S_ISREG(st.st_mode) && !S_ISLNK(st.st_mode))
++				continue;
+ 			subfilename = calc_dirconcat(fullfilename, de->d_name);
+ 			if (FAILEDTOALLOC(subfilename)) {
+ 				(void)closedir(dir);
