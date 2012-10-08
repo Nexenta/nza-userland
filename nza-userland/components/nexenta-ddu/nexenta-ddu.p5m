@@ -1,0 +1,55 @@
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+# Copyright (c) 2011, Nexenta Systems, Inc. All rights reserved.
+#
+
+<transform file path=usr.*/man/.+                -> default mangler.man.stability volatile>
+
+set name=pkg.fmri \
+    value=pkg:/nexenta/ddu@1,$(BUILD_VERSION)
+set name=pkg.summary value="Nexenta Device Driver Utility"
+set name=org.opensolaris.consolidation value=$(CONSOLIDATION)
+set name=variant.opensolaris.zone value=global
+
+dir path=usr
+dir path=usr/bin
+dir path=ddu
+dir path=usr/ddu/Legal_Documents
+dir path=usr/ddu/scripts
+dir path=usr/ddu/bin
+dir path=usr/ddu/share
+
+file src/usr/bin/ddu-text path=usr/bin/ddu-text mode=0755
+file src/usr/ddu/Legal_Documents/DDU_license.txt path=usr/ddu/Legal_Documents/DDU_license.txt
+file src/usr/ddu/Legal_Documents/DDU_ThirdPartyLicenseReadMe.txt path=usr/ddu/Legal_Documents/DDU_ThirdPartyLicenseReadMe.txt
+file src/usr/ddu/Legal_Documents/Legal_Notice.txt path=usr/ddu/Legal_Documents/Legal_Notice.txt
+file src/usr/ddu/scripts/wireless_NIC_keywords path=usr/ddu/scripts/wireless_NIC_keywords
+file src/usr/ddu/scripts/probe.sh path=usr/ddu/scripts/probe.sh mode=0755
+file src/usr/ddu/scripts/driver.db path=usr/ddu/scripts/driver.db
+file src/usr/ddu/scripts/find_driver.pl path=usr/ddu/scripts/find_driver.pl mode=0755
+file src/usr/ddu/scripts/NIC_keywords path=usr/ddu/scripts/NIC_keywords
+file src/usr/ddu/scripts/det_info.sh path=usr/ddu/scripts/det_info.sh mode=0755
+file src/usr/ddu/bin/bat_detect path=usr/ddu/bin/bat_detect mode=0755
+file src/usr/ddu/bin/hd_detect path=usr/ddu/bin/hd_detect mode=0755
+file src/usr/ddu/bin/all_devices path=usr/ddu/bin/all_devices mode=0755
+file src/usr/ddu/bin/dmi_info path=usr/ddu/bin/dmi_info mode=0755
+file src/usr/ddu/share/DDU_license.txt path=usr/ddu/share/DDU_license.txt
+
