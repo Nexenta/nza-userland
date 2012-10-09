@@ -21,8 +21,8 @@ diff -dubr reprepro-4.12.3/extractcontrol.c reprepro-4.12.3.gtar/extractcontrol.
  				brokentar?
 -"output from ar p <debfile> control.tar.gz | tar -XOzf - control":
 -"output from ar p <debfile> control.tar.gz | tar -XOzf - ./control",
-+"output from ar p <debfile> control.tar.gz | gtar -XOzf - control":
-+"output from ar p <debfile> control.tar.gz | gtar -XOzf - ./control",
++"output from ar p <debfile> control.tar.gz | gtar -xOzf - control":
++"output from ar p <debfile> control.tar.gz | gtar -xOzf - ./control",
  				&controlchunk, &controllen);
  		if (RET_IS_OK(r)) {
  			len = chunk_extract(controlchunk,
@@ -31,7 +31,7 @@ diff -dubr reprepro-4.12.3/extractcontrol.c reprepro-4.12.3.gtar/extractcontrol.
  				fprintf(stderr,
  "Unexpected emtpy line in control information within '%s'\n"
 -"(obtained via 'ar p %s control.tar.gz | tar -XOzf - %scontrol')\n",
-+"(obtained via 'ar p %s control.tar.gz | gtar -XOzf - %scontrol')\n",
++"(obtained via 'ar p %s control.tar.gz | gtar -xOzf - %scontrol')\n",
  						debfile, debfile,
  						brokentar?"":"./");
  				free(controlchunk);
