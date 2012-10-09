@@ -1,0 +1,74 @@
+Index: dpkg-1.16.3/utils/update-alternatives.c
+===================================================================
+--- dpkg-1.16.1/utils/update-alternatives.c
++++ dpkg-1.16.1/utils/update-alternatives.c
+@@ -1606,7 +1606,7 @@ alternative_config_all(void)
+ 
+ 	count = altdb_get_namelist(&table);
+ 	for (i = 0; i < count; i++) {
+-		subcall(prog_path, "--config", table[i]->d_name, NULL);
++		subcall(prog_path, "--config", table[i]->d_name, (char *)NULL);
+ 		printf("\n");
+ 	}
+ 	altdb_free_namelist(table, count);
+@@ -1723,6 +1723,18 @@ alternative_prepare_install_single(struc
+                                    const char *linkname, const char *file)
+ {
+ 	char *fntmp, *fn;
++    const char *basedir;
++    const char *newlinkname;
++    char *newlinknamebuf = NULL;
++
++    basedir = getenv("BASEDIR");
++    if (basedir == NULL || basedir[0] == '\0' || (strcmp(basedir, "/") == 0)) {
++        newlinkname = linkname;
++    } else {
++        newlinknamebuf = xmalloc(strlen(basedir) + strlen(linkname) + 1);
++        sprintf(newlinknamebuf, "%s%s", basedir, linkname);
++        newlinkname = newlinknamebuf;
++    }
+ 
+ 	/* Create link in /etc/alternatives. */
+ 	xasprintf(&fntmp, "%s/%s" DPKG_TMP_EXT, altdir, name);
+@@ -1732,13 +1744,22 @@ alternative_prepare_install_single(struc
+ 	alternative_add_commit_op(a, opcode_mv, fntmp, fn);
+ 	free(fntmp);
+ 
+-	if (alternative_path_needs_update(linkname, fn)) {
++/*    fprintf(stderr, "==DEBUG:file:%s, fn:%s, fntmp:%s, linkname:%s, newlinkname:%s, BASEDIR=%s\n",
++        file, fn, fntmp, linkname, newlinkname, basedir); */
++
++    if (basedir != NULL && (strcmp(basedir, "/") != 0))
++        xasprintf(&fn, "%s/%s", "/etc/alternatives", name);
++
++	if (alternative_path_needs_update(newlinkname, fn)) {
+ 		/* Create alternative link. */
+-		xasprintf(&fntmp, "%s" DPKG_TMP_EXT, linkname);
++		xasprintf(&fntmp, "%s" DPKG_TMP_EXT, newlinkname);
+ 		checked_rm(fntmp);
+ 		checked_symlink(fn, fntmp);
+-		alternative_add_commit_op(a, opcode_mv, fntmp, linkname);
++		alternative_add_commit_op(a, opcode_mv, fntmp, newlinkname);
+ 		free(fntmp);
++
++        if (basedir != NULL && (strcmp(basedir, "/") != 0))
++            free(newlinknamebuf);
+ 	}
+ 	free(fn);
+ }
+@@ -2056,13 +2077,13 @@ alternative_set_selection(struct alterna
+ 			xasprintf(&cmd, "%s --auto %s", PROGNAME, name);
+ 			pr(_("Call %s."), cmd);
+ 			free(cmd);
+-			subcall(prog_path, "--auto", name, NULL);
++			subcall(prog_path, "--auto", name, (char *)NULL);
+ 		} else if (alternative_has_choice(a, choice)) {
+ 			xasprintf(&cmd, "%s --set %s %s", PROGNAME,
+ 			          name, choice);
+ 			pr(_("Call %s."), cmd);
+ 			free(cmd);
+-			subcall(prog_path, "--set", name, choice, NULL);
++			subcall(prog_path, "--set", name, choice, (char *)NULL);
+ 		} else {
+ 			pr(_("Alternative %s unchanged because choice "
+ 			     "%s is not available."), name, choice);

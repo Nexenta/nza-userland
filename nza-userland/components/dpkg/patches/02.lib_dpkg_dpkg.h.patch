@@ -1,0 +1,17 @@
+Index: dpkg-1.16.2/lib/dpkg/dpkg.h
+===================================================================
+--- dpkg-1.16.2/lib/dpkg/dpkg.h
++++ dpkg-1.16.2/lib/dpkg/dpkg.h
+@@ -91,10 +91,11 @@ DPKG_BEGIN_DECLS
+ #define DPKG		"dpkg"
+ #define DEBSIGVERIFY	"/usr/bin/debsig-verify"
+ 
+-#define TAR		"tar"
++#define TAR		"gtar"
+ #define RM		"rm"
+ #define FIND		"find"
+ #define DIFF		"diff"
++#define ZONENAME	"zonename"
+ 
+ #define FIND_EXPRSTARTCHARS "-(),!"
+ 

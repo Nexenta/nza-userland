@@ -1,0 +1,136 @@
+Index: dpkg-1.16.3/src/main.c
+===================================================================
+--- dpkg-1.16.3/src/main.c
++++ dpkg-1.16.3/src/main.c
+@@ -339,6 +339,12 @@ static void setroot(const struct cmdinfo
+   instdir= value;
+   m_asprintf(&p, "%s%s", value, ADMINDIR);
+   admindir= p;
++  setenv("BASEDIR", value, 1);
++}
++
++static void setzone(const struct cmdinfo *cip, const char *value) {
++    setenv("ZONEINST", "1", 1);
++/*    fprintf(stderr, "==f_zone:%d\n", f_zone);*/
+ }
+ 
+ static void ignoredepends(const struct cmdinfo *cip, const char *value) {
+@@ -604,6 +610,8 @@ static void setforce(const struct cmdinf
+ int execbackend(const char *const *argv) DPKG_ATTR_NORET;
+ int commandfd(const char *const *argv);
+ 
++static int is_global_zone(void);
++
+ /* This table has both the action entries in it and the normal options.
+  * The action entries are made with the ACTION macro, as they all
+  * have a very similar structure. */
+@@ -656,7 +664,7 @@ static const struct cmdinfo cmdinfos[]= 
+   { "status-fd",         0,   1, NULL,          NULL,      setpipe, 0 },
+   { "log",               0,   1, NULL,          &log_file, NULL,    0 },
+   { "pending",           'a', 0, &f_pending,    NULL,      NULL,    1 },
+-  { "recursive",         'R', 0, &f_recursive,  NULL,      NULL,    1 },
++  { "recursive",         0,   0, &f_recursive,  NULL,      NULL,    1 },
+   { "no-act",            0,   0, &f_noact,      NULL,      NULL,    1 },
+   { "dry-run",           0,   0, &f_noact,      NULL,      NULL,    1 },
+   { "simulate",          0,   0, &f_noact,      NULL,      NULL,    1 },
+@@ -670,7 +678,8 @@ static const struct cmdinfo cmdinfos[]= 
+   { "no-also-select",    'N', 0, &f_alsoselect, NULL,      NULL,    0 },
+   { "skip-same-version", 'E', 0, &f_skipsame,   NULL,      NULL,    1 },
+   { "auto-deconfigure",  'B', 0, &f_autodeconf, NULL,      NULL,    1 },
+-  { "root",              0,   1, NULL,          NULL,      setroot,       0 },
++  { "root",              'R', 1, NULL,          NULL,      setroot,       0 },
++  { "zone",              'z', 0, NULL,          NULL,      setzone,       0 },
+   { "abort-after",       0,   1, &errabort,     NULL,      setinteger,    0 },
+   { "admindir",          0,   1, NULL,          &admindir, NULL,          0 },
+   { "instdir",           0,   1, NULL,          &instdir,  NULL,          0 },
+@@ -692,6 +701,54 @@ static const struct cmdinfo cmdinfos[]= 
+   { NULL,                0,   0, NULL,          NULL,      NULL,          0 }
+ };
+ 
++static int
++is_global_zone(void)
++{
++    int pi[2], r;
++    pid_t pid;
++    struct command cmd;
++    static struct varbuf output;
++    FILE *pf;
++    char c;
++    int ret = 0;
++
++    m_pipe(pi);
++    pid = subproc_fork();
++    if (pid == 0) {
++        m_dup2(pi[1],1);
++        close(pi[0]);
++        close(pi[1]);
++        command_init(&cmd, ZONENAME, NULL);
++        command_exec(&cmd);
++    }
++    close(pi[1]);
++
++    pf = fdopen(pi[0], "r");
++    if (!pf) ohshite(_("failed to fdopen pipe\n"));
++
++    varbuf_reset(&output);
++
++    while (c != EOF) {
++    c = fgetc(pf);
++    if (c != '\n' && c != EOF)
++        varbuf_add_char(&output, c);
++    else
++        varbuf_add_char(&output, '\0');
++    }
++
++    if (ferror(pf)) ohshite(_("error reading pipe"));
++    if (fclose(pf)) ohshite(_("error closing pipe"));
++
++    r = subproc_wait_check(pid, ZONENAME, PROCNOERR);
++    if (r != 0)
++        ohshit(_("returned unhandled error %i"),r);
++
++    if(strcmp(output.buf, "global") == 0)
++        ret = 1;
++
++    return ret;
++}
++
+ int
+ execbackend(const char *const *argv)
+ {
+@@ -813,6 +870,8 @@ commandfd(const char *const *argv)
+ 
+ int main(int argc, const char *const *argv) {
+   int ret;
++  int global_zone = 1;
++  const char *zoneinst;
+ 
+   setlocale(LC_ALL, "");
+   bindtextdomain(PACKAGE, LOCALEDIR);
+@@ -827,10 +886,17 @@ int main(int argc, const char *const *ar
+ 
+   admindir = dpkg_db_set_dir(admindir);
+ 
++  zoneinst = getenv("ZONEINST");
++  if (zoneinst == NULL || zoneinst[0] == '\0')
++    global_zone = is_global_zone();
++
+   /* Always set environment, to avoid possible security risks. */
+   if (setenv("DPKG_ADMINDIR", admindir, 1) < 0)
+     ohshite(_("unable to setenv for subprocesses"));
+ 
++  if (!global_zone)
++    setenv("ZONEINST", "1", 1);
++
+   if (!f_triggers)
+     f_triggers = (cipaction->arg_int == act_triggers && *argv) ? -1 : 1;
+ 
+@@ -850,5 +916,8 @@ int main(int argc, const char *const *ar
+ 
+   standard_shutdown();
+ 
++  if (!global_zone)
++    unsetenv("ZONEINST");
++
+   return reportbroken_retexitstatus(ret);
+ }

@@ -1,0 +1,24 @@
+Index: dpkg-1.16.3/src/help.c
+===================================================================
+--- dpkg-1.16.1/src/help.c
++++ dpkg-1.16.1/src/help.c
+@@ -289,6 +293,7 @@ do_script(struct pkginfo *pkg, struct pk
+ {
+   pid_t pid;
+   int r;
++  const char *basedir;
+ 
+   setexecute(cmd->filename, stab);
+ 
+@@ -302,7 +307,10 @@ do_script(struct pkginfo *pkg, struct pk
+         setenv("DPKG_RUNNING_VERSION", PACKAGE_VERSION, 1))
+       ohshite(_("unable to setenv for maintainer script"));
+ 
+-    cmd->filename = cmd->argv[0] = preexecscript(cmd);
++    basedir = getenv("BASEDIR");
++    if (basedir == NULL || basedir[0] == '\0' || (strcmp(basedir, "/") == 0)) {
++	cmd->filename = cmd->argv[0] = preexecscript(cmd);
++    }
+     command_exec(cmd);
+   }
+   subproc_signals_setup(cmd->name); /* This does a push_cleanup(). */
