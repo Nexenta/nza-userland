@@ -1,0 +1,20 @@
+diff --git a/extractcontrol.c b/extractcontrol.c
+index 369192a..f90188a 100644
+--- a/extractcontrol.c
++++ b/extractcontrol.c
+@@ -29,6 +29,7 @@
+ #include "filecntl.h"
+ #include "readtextfile.h"
+ #include "debfile.h"
++#include "chunks.h"
+ 
+ #ifdef HAVE_LIBARCHIVE
+ #error Why did this file got compiled instead of debfile.c?
+@@ -139,6 +140,7 @@ static retvalue try_extractcontrol(char **control, const char *debfile, bool bro
+ 		if (RET_IS_OK(r)) {
+ 			len = chunk_extract(controlchunk,
+ 					controlchunk, controllen,
++					true,
+ 					&afterchanges);
+ 			if (len == 0)
+ 				r = RET_NOTHING;
