@@ -1,17 +1,107 @@
 Descriptions: on illumos ifa_flags is uint64_t
 Bug: http://code.google.com/p/openpgm/issues/detail?id=25
-diff -dubr libpgm-5.1.118/openpgm/pgm/include/impl/getifaddrs.h libpgm-5.1.118.ifa_flags/openpgm/pgm/include/impl/getifaddrs.h
---- libpgm-5.1.118/openpgm/pgm/include/impl/getifaddrs.h	2011-09-27 21:59:06.000000000 +0400
-+++ libpgm-5.1.118.ifa_flags/openpgm/pgm/include/impl/getifaddrs.h	2012-09-18 12:46:45.887327270 +0400
-@@ -62,7 +62,11 @@
- 	struct pgm_ifaddrs_t*	ifa_next;	/* Pointer to the next structure.  */
+
+diff -dubr libpgm-5.1.118/openpgm/pgm/getifaddrs.c libpgm-5.1.118.flags/openpgm/pgm/getifaddrs.c
+--- libpgm-5.1.118/openpgm/pgm/getifaddrs.c	2011-09-27 21:59:08.000000000 +0400
++++ libpgm-5.1.118.flags/openpgm/pgm/getifaddrs.c	2012-09-24 05:25:16.404925472 +0400
+@@ -813,6 +813,68 @@
+ 	return TRUE;
+ }
+ #endif /* _WIN32 */
++#if defined( HAVE_GETIFADDRS )
++static
++bool
++_pgm_getifaddrs (
++   struct pgm_ifaddrs_t** restrict ifap,
++   pgm_error_t**          restrict error
++   )
++{
++   struct ifaddrs *_ifap, *_ifa;
++   const int e = getifaddrs (&_ifap);
++   if (-1 == e) {
++       char errbuf[1024];
++       pgm_set_error (error,
++               PGM_ERROR_DOMAIN_IF,
++               pgm_error_from_errno (errno),
++               _("getifaddrs failed: %s"),
++               pgm_strerror_s (errbuf, sizeof (errbuf), errno));
++       return FALSE;
++   }
++
++   int n = 0, k = 0;
++   for (_ifa = _ifap; _ifa; _ifa = _ifa->ifa_next)
++       ++n;
++
++   struct _pgm_ifaddrs_t* ifa = pgm_new0 (struct _pgm_ifaddrs_t, n);
++   struct _pgm_ifaddrs_t* ift = ifa;
++   for (_ifa = _ifap; _ifa; _ifa = _ifa->ifa_next)
++   {
++/* ensure IP adapter */
++       if (NULL == _ifa->ifa_addr ||
++             (_ifa->ifa_addr->sa_family != AF_INET &&
++              _ifa->ifa_addr->sa_family != AF_INET6) )
++       {
++           continue;
++       }
++
++/* address */
++       ift->_ifa.ifa_addr = (void*)&ift->_addr;
++       memcpy (ift->_ifa.ifa_addr, _ifa->ifa_addr, pgm_sockaddr_len (_ifa->ifa_addr));
++
++/* name */
++       ift->_ifa.ifa_name = ift->_name;
++       pgm_strncpy_s (ift->_ifa.ifa_name, IF_NAMESIZE, _ifa->ifa_name, _TRUNCATE);
++
++/* flags */
++       ift->_ifa.ifa_flags = _ifa->ifa_flags;
++
++/* netmask */
++       ift->_ifa.ifa_netmask = (void*)&ift->_netmask;
++       memcpy (ift->_ifa.ifa_netmask, _ifa->ifa_netmask, pgm_sockaddr_len (_ifa->ifa_netmask));
++
++/* next */
++       if (k++ < (n - 1)) {
++           ift->_ifa.ifa_next = (struct pgm_ifaddrs_t*)(ift + 1);
++           ift = (struct _pgm_ifaddrs_t*)(ift->_ifa.ifa_next);
++       }
++   }
++   freeifaddrs (_ifap);
++   *ifap = (struct pgm_ifaddrs_t*)ifa;
++   return TRUE;
++}
++#endif /* HAVE_GETIFADDRS */
  
- 	char*			ifa_name;	/* Name of this network interface.  */
-+#if !defined(__GLIBC__) && defined(__sun__)
-+	uint64_t		ifa_flags;	/* Flags as from SIOCGIFFLAGS ioctl.  */
-+#else
- 	unsigned int		ifa_flags;	/* Flags as from SIOCGIFFLAGS ioctl.  */
-+#endif
+ /* returns TRUE on success setting ifap to a linked list of system interfaces,
+  * returns FALSE on failure and sets error appropriately.
+@@ -830,17 +892,7 @@
+ 		(void*)ifap, (void*)error);
  
- #ifdef ifa_addr
- #	undef ifa_addr
+ #ifdef CONFIG_HAVE_GETIFADDRS
+-	const int e = getifaddrs ((struct ifaddrs**)ifap);
+-	if (-1 == e) {
+-		char errbuf[1024];
+-		pgm_set_error (error,
+-				PGM_ERROR_DOMAIN_IF,
+-				pgm_error_from_errno (errno),
+-				_("getifaddrs failed: %s"),
+-				pgm_strerror_s (errbuf, sizeof (errbuf), errno));
+-		return FALSE;
+-	}
+-	return TRUE;
++	return _pgm_getifaddrs (ifap, error);
+ #elif defined(CONFIG_TARGET_WINE)
+ 	return _pgm_getadaptersinfo (ifap, error);
+ #elif defined(_WIN32)
+@@ -861,11 +913,7 @@
+ {
+ 	pgm_return_if_fail (NULL != ifa);
+ 
+-#ifdef CONFIG_HAVE_GETIFADDRS
+-	freeifaddrs ((struct ifaddrs*)ifa);
+-#else
+ 	pgm_free (ifa);
+-#endif
+ }
+ 
+ /* eof */
+Только в libpgm-5.1.118.flags/openpgm/pgm: getifaddrs.c.orig
