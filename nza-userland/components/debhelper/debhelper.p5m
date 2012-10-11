@@ -31,9 +31,6 @@ set name=info.upstream_url value=$(COMPONENT_PROJECT_URL)
 set name=info.source_url value=$(COMPONENT_ARCHIVE_URL)
 set name=org.opensolaris.consolidation value=$(CONSOLIDATION)
 
-depend fmri=pkg:/po4a type=require
-depend fmri=pkg:/developer/build/gnu/make type=require
-depend fmri=pkg:/developer/gnu/binutils type=require
 depend fmri=pkg:/file/gnu/coreutils type=require
 depend fmri=pkg:/file/gnu/findutils type=require
 depend fmri=pkg:/library/perl-5/compiler/kit type=require
@@ -41,11 +38,7 @@ depend fmri=pkg:/library/perl-5/file/basedir type=require
 depend fmri=pkg:/library/perl-5/file/mimeinfo type=require
 depend fmri=pkg:/library/perl-5/par/packer type=require
 depend fmri=pkg:/library/perl-5/xml/parser type=require
-depend fmri=pkg:/library/perl-5/xml/simple/512 type=require
-depend fmri=pkg:/text/doctools type=require
-depend fmri=pkg:/developer/gcc-3 type=require
-depend fmri=pkg:/developer/gcc-44 type=require
-depend fmri=pkg:/library/gnome/gnome-vfs type=require
+depend fmri=pkg:/library/perl-5/xml/simple-512 type=require
 
 license GPL license='GPL-2'
 
