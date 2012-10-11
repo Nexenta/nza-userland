@@ -1,11 +1,12 @@
-SMF_INCLUDE=/lib/svc/share/smf_include.sh
-
 HAVE_SMF=no
 
-if [ -f $SMF_INCLUDE ]; then
-    source $SMF_INCLUDE
-    if smf_present; then
-        HAVE_SMF=yes
+if [ -z "$BASEDIR" ] || ["$BASEDIR" = / ]; then
+    SMF_INCLUDE=/lib/svc/share/smf_include.sh
+    if [ -f $SMF_INCLUDE ]; then
+        source $SMF_INCLUDE
+        if smf_present; then
+            HAVE_SMF=yes
+        fi
     fi
 fi
 
