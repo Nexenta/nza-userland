@@ -60,6 +60,7 @@ $(BUILD_DIR)/%/.built:	$(SOURCE_DIR)/.prep
 	$(FIND) $(SOURCE_DIR) -name '*~' | xargs $(RM)
 	$(RM) -r $(@D) ; $(MKDIR) $(@D)
 	$(CP) -rp $(SOURCE_DIR)/. $(@D)
+	$(CP) -p $(COMPONENT_DIR)/patches/dh_* $(@D)
 	(cd $(@D) ; \
 	$(ENV) $(COMPONENT_BUILD_ENV) \
 		./run dh $(COMPONENT_BUILD_ARGS))
