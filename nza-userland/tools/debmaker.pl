@@ -537,10 +537,25 @@ foreach my $manifest_file (@ARGV) {
         $debversion = $VERSION;
     }
 
-    my $preinst  = '';
-    my $postinst = '';
-    my $prerm    = '';
-    my $postrm   = '';
+    my $basedir_prolog = 
+         'if [ -z "$BASEDIR" ]; then' . "\n"
+       . "  BASEDIR=/\n"
+       . "else\n"
+       . '  BASEDIR=`cd $BASEDIR && pwd`' . "\n"
+       . "fi\n\n"
+       . 'if [ $BASEDIR != / ]; then' . "\n"
+       . '  CHROOT="chroot $BASEDIR"' . "\n"
+       . '  _drv_basedir="-b $BASEDIR"' . "\n"
+       . "else\n"
+       . "  CHROOT=\n"
+       . "  _drv_basedir=\n"
+       . "fi\n\n"
+       ;
+    my $preinst  = $basedir_prolog;
+    my $postinst = $basedir_prolog;
+    my $prerm    = $basedir_prolog;
+    my $postrm   = $basedir_prolog;
+
     my $postinst_configure = '';
     my $prerm_remove = '';
 
@@ -549,9 +564,9 @@ foreach my $manifest_file (@ARGV) {
 
     if (@groups) {
         foreach my $g (@groups) {
-            my $cmd = "if ! getent group $$g{'groupname'} >/dev/null; then\n";
+            my $cmd = 'if ! $CHROOT getent group ' . $$g{'groupname'} . ' >/dev/null; then' . "\n";
             $cmd .= qq| echo 'Adding group "$$g{'groupname'}"'\n|;
-            $cmd .= ' groupadd';
+            $cmd .= ' $CHROOT groupadd ';
             $cmd .= get_command_line {
                 'gid' => '-g'
                 }, $g;
@@ -562,9 +577,9 @@ foreach my $manifest_file (@ARGV) {
     }
     if (@users) {
         foreach my $u (@users) {
-            my $cmd = "if ! getent passwd $$u{'username'} >/dev/null; then\n";
+            my $cmd = 'if ! $CHROOT getent passwd ' . $$u{'username'} . ' >/dev/null; then' . "\n";
             $cmd .= qq| echo 'Adding user "$$u{'username'}"'\n|;
-            $cmd .= ' useradd';
+            $cmd .= ' $CHROOT useradd ';
             # map action attributes to options for 'useradd':
             $cmd .= get_command_line {
                 'uid' => '-u',
@@ -688,8 +703,8 @@ foreach my $manifest_file (@ARGV) {
                 my $b = basename $$l{path};
                 my $p = $$l{'path'};         $p = "/$p" unless $p =~ /^\//;
                 my $t = $$l{'target'};
-                $preinst .= " if ! [ -f $p ]; then\n";
-                $preinst .= "  (cd $d && ln $t $b) || true\n";
+                $preinst .= " if ! [ -f \${BASEDIR}$p ]; then\n";
+                $preinst .= "  (cd \${BASEDIR}$d && ln $t $b) || true\n";
                 $preinst .= " fi\n";
                 $postrm  .= " rm $p || true\n";
             }
@@ -709,9 +724,9 @@ foreach my $manifest_file (@ARGV) {
                 # FIXME : mediator-{version,implementation,priority}
                 # cannot be mapped to update-alternatives
                 $postinst_configure .=
-                    "update-alternatives --install $l $n $p 10 || true\n"; # FIXME : random priority ;-)
+                    '$CHROOT update-alternatives --install ' . "$l $n $p 10 || true\n"; # FIXME : random priority ;-)
                 # FIXME : too many FIXMEs
-                $prerm .= 'if [ "$1" = remove ]; then update-alternatives --remove ' . "$n $p || true; fi\n";
+                $prerm .= 'if [ "$1" = remove ]; then $CHROOT update-alternatives --remove ' . "$n $p || true; fi\n";
             } else {
                 my_symlink $$link{'target'}, "$pkgdir/$$link{'path'}";
             }
@@ -723,7 +738,7 @@ foreach my $manifest_file (@ARGV) {
         blab "Adding code to register drivers ...";
         $postinst_configure .= 'if [ -z "$2" ]; then' . "\n";
         foreach my $d (@drivers) {
-            my $cmd = 'add_drv -v ';
+            my $cmd = 'add_drv -v $_drv_basedir';
             $cmd .= "-i '" . my_join(' ', $$d{'alias'}) . "'" if exists $$d{'alias'};
             $cmd .= "-c '" . my_join(' ', $$d{'class'}) . "'" if exists $$d{'class'};
             $cmd .= "-m '" . my_join(',', $$d{'perms'}) . "'" if exists $$d{'perms'};
@@ -732,7 +747,7 @@ foreach my $manifest_file (@ARGV) {
             $cmd .= " $$d{name}";
             blab $cmd;
             $postinst_configure .= $cmd . " || true\n";
-            $postinst_configure .= "update_drv -v -a -m '$$d{'clone_perms'}' clone || true\n"
+            $postinst_configure .= "update_drv \$_drv_basedir -v -a -m '$$d{'clone_perms'}' clone || true\n"
                 if  exists $$d{'clone_perms'};
 
             $prerm_remove .= "rem_drv $$d{name} || true\n";
@@ -740,10 +755,10 @@ foreach my $manifest_file (@ARGV) {
             if (exists $$d{'devlink'}) {
                 foreach my $devlink (as_array($$d{'devlink'})) {
                     $devlink =~ s/\\t/\t/g;
-                    $postinst_configure .= "if ! grep -q '$devlink' /etc/devlink.tab; then\n";
-                    $postinst_configure .= "  echo '$devlink' >> /etc/devlink.tab\n";
+                    $postinst_configure .= "if ! grep -q '$devlink' \$BASEDIR/etc/devlink.tab; then\n";
+                    $postinst_configure .= "  echo '$devlink' >> \$BASEDIR/etc/devlink.tab\n";
                     $postinst_configure .= "fi\n";
-                    $prerm_remove .= "sed -i.dpkg-old '/$devlink/d' /etc/devlink.tab || true\n";
+                    $prerm_remove .= "sed -i.dpkg-old '/$devlink/d' \$BASEDIR/etc/devlink.tab || true\n";
                 }
             };
         }
@@ -825,13 +840,15 @@ foreach my $manifest_file (@ARGV) {
     my_mkdir "$pkgdir/DEBIAN";
 
     my $check_smf = <<'CHECK_SMF';
-SMF_INCLUDE=/lib/svc/share/smf_include.sh
 HAVE_SMF=no
-if [ -f "$SMF_INCLUDE" ]; then
- source "$SMF_INCLUDE"
- if smf_present; then
-  HAVE_SMF=yes
- fi
+if [ $BASEDIR = / ]; then
+    SMF_INCLUDE=/lib/svc/share/smf_include.sh
+    if [ -f $SMF_INCLUDE ]; then
+        source $SMF_INCLUDE
+        if smf_present; then
+            HAVE_SMF=yes
+        fi
+    fi
 fi
 CHECK_SMF
 
