@@ -691,24 +691,24 @@ foreach my $manifest_file (@ARGV) {
         my @hl_script = ();
         foreach my $link (@hardlinks) {
             if (!my_hardlink $$link{'target'}, "$pkgdir/$$link{'path'}") {
-                warning "Adding code to create hardlink in pre-install phase";
+                warning "Adding code to create hardlink at post-install phase";
                 push @hl_script, $link;
             }
         }
         if (@hl_script) {
-            $preinst .= 'if [ "$1" = install ] || [ "$1" = upgrade ]; then' . "\n";
+            $postinst .= 'if [ "$1" = install ] || [ "$1" = upgrade ]; then' . "\n";
             $postrm  .= 'if [ "$1" = remove ]; then' . "\n";
             foreach my $l (@hl_script) {
                 my $d = dirname $$l{path};   $d = "/$d" unless $d =~ /^\//;
                 my $b = basename $$l{path};
                 my $p = $$l{'path'};         $p = "/$p" unless $p =~ /^\//;
                 my $t = $$l{'target'};
-                $preinst .= " if ! [ -f \${BASEDIR}$p ]; then\n";
-                $preinst .= "  (cd \${BASEDIR}$d && ln $t $b) || true\n";
-                $preinst .= " fi\n";
+                $postinst .= " if ! [ -f \${BASEDIR}$p ]; then\n";
+                $postinst .= "  (cd \${BASEDIR}$d && ln $t $b) || true\n";
+                $postinst .= " fi\n";
                 $postrm  .= " rm $p || true\n";
             }
-            $preinst .= "fi\n";
+            $postinst .= "fi\n";
             $postrm  .= "fi\n";
         }
     }
