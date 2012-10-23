@@ -57,7 +57,7 @@ my $gatePath = '';
 # main
 #------------------------------
 {
-    $$tmpl{'MAINTAINER'} = 'Igor Kozhukhov <ikozhukhov@gmail.com>';
+    $$tmpl{'MAINTAINER'} = 'Nexenta Systems <maintainer@nexenta.com>';
     $$tmpl{'MANIFESTGATE'} = $gatePath.'/usr/src/pkg/manifests';
     $$tmpl{'DESTANATION'} = "$FindBin::Bin/packages";
     $$tmpl{'MFEXT'} = 'mog';
