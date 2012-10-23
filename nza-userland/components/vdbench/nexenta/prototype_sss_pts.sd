@@ -1,0 +1,13 @@
+#
+# Copyright 2011 Nexenta Systems, Inc.  All rights reserved.
+#
+# This characterization test matches the IOPS test from the
+# SNIA Solid State Storage (SSS) Performance Test Specification (PTS)
+# for Enterprise drives, V1.0
+#
+# Author: Richard.Elling@Nexenta.com
+# Revision: 1.0, July 4, 2011
+#
+
+sd=sd1,lun=DISK_SLICE
+include=./char_sss_pts_disk

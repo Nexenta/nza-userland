@@ -1,0 +1,26 @@
+Nexenta vdbench characterization scripts for file systems and raw disks
+
+Run procedure:
+
+1. become root in bash shell
+
+2. cd /opt/vdbench/nexenta
+
+For disks:
+The run_4k_disk_char script runs a full-stroke random read and write workload on the device.
+	./run_4k_disk_char c#t#d#
+
+For file systems:
+The run_zfs_fs_4k_char script runs a random read and write workload on a file system.
+	./run_zfs_fs_4k_char /volumes/mypool/myfolder
+
+To run the SNIA Solid State Storage Performance Test Specification for Enterprise disks:
+	./run_sss_pts_disk c#t#d#
+	or
+	./run_sss_pts_disk /dev/zvol/rdsk/poolname/zvolname
+
+In both cases, the vdbench output and other pertinent data is rolled into a timestamped tarball
+in the current directory. The script requests that you send the results to Richard at Nexenta,
+who is interested in collecting such characterization information.
+
+Copyright 2011, Nexenta Systems, Inc  All rights reserved.

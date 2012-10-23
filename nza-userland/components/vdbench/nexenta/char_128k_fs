@@ -1,0 +1,18 @@
+#
+# Copyright 2011 Nexenta Systems, Inc.  All rights reserved.
+#
+# Filesystem characterization using 128KB random I/O for vdbench
+#
+# Note: file storage definition (fsd) set elsewhere
+#
+# Author: Richard.Elling@Nexenta.com
+# Revision: 1.0, May 23, 2011
+#
+
+# File Workload Definitions (fwd)
+fwd=fwd1,fsd=fsd*,operation=read,fileio=random,fileselect=random,stopafter=10000
+fwd=fwd2,fsd=fsd*,operation=write,fileio=random,fileselect=random,stopafter=10000
+
+# Run Definitions (rd)
+rd=rd1,fwd=fwd1,fwdrate=max,format=yes,elapsed=120,interval=1,forthreads=(1-32,d),forxfersize=(128k)
+rd=rd2,fwd=fwd2,fwdrate=max,format=yes,elapsed=120,interval=1,forthreads=(1-32,d),forxfersize=(128k)

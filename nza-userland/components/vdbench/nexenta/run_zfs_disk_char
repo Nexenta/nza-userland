@@ -1,0 +1,66 @@
+#!/bin/bash
+#
+# Copyright 2011 Nexenta Systems, Inc. All rights reserved.
+#
+# Simple script for running a disk characterization
+#
+# Usage: disk-name
+# Where disk-name is of the form c*t*d*, or those names used by a
+# NexentaStor system. Slice 0 is assumed, as it is usually the 
+# full disk slice as created by NexentaStor by default.
+#
+# Author: Richard.Elling@Nexenta.com
+# Revision: 1.0, May 1, 2011
+#
+# Note: this is destructive, but we give you one chance to bail out
+
+PROTOTYPE=prototype_4k_raw.sd
+
+get_hddisco_value () {
+	hddisco -d $DISK | grep -w ^$1 | sed -e "s,^$1,,"
+}
+
+if [ ! -x /usr/bin/hddisco ]; then
+	echo "error: $0 must be run on a NexentaStor system"
+	exit 1
+fi
+
+DISK=$1
+if [ -z "$DISK" ]; then
+	echo "usage: c*t*d*"
+	exit 1
+fi
+
+A=$(ckyorn -p "Ok to destroy data on $DISK ?")
+if [ "$A" = "y" -o "$A" = "yes" -o "$A" = "Y" -o "$A" = "YES" ]; then
+	echo "consider it toasted!"
+else
+	exit 0
+fi
+
+A=$(prtvtoc /dev/rdsk/${DISK}s0 | awk '{if($1 == "0"){print $5}}')
+if [ -z "$A" ]; then
+	echo "error: ${DISK}s0, slice 0 has no size, try partitioning the disk"
+	exit 1
+fi
+
+VENDOR=$(get_hddisco_value vendor)
+PRODUCT=$(get_hddisco_value product)
+
+if [ "$VENDOR" = "NEXENTA" -a "$PRODUCT" = "COMSTAR" ]; then
+	echo "Filling $DISK with random data at $(date)"
+	dd if=/dev/urandom of=/dev/rdsk/${DISK}s0 bs=1m > /dev/null 2>& 1
+	echo "Finished filling with random data at $(date)"
+fi
+
+sed -e "s,DISK_SLICE,${DISK}s0," "$PROTOTYPE" > $DISK.sd
+vdbench -o $DISK.char -f $DISK.sd
+if [ "$?" -ne "0" ]; then
+	echo "error: vdbench seems unhappy, please check the error messages"
+	exit 1
+fi
+hddisco -d $DISK >> $DISK.char/hddisco
+DATE=$(date +%Y%m%d%H%M%S)
+tar cf $DISK.$DATE.tar $DISK.char
+gzip $DISK.$DATE.tar
+echo "Send the ${DISK}.${DATE}.tar.gz file to Richard.Elling@Nexenta.com Thanks!"

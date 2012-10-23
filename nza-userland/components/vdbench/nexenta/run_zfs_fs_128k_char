@@ -1,0 +1,50 @@
+#!/bin/bash
+#
+# Copyright 2011 Nexenta Systems, Inc. All rights reserved.
+#
+# Simple script for running a file system characterization using
+# 128k random I/O
+#
+# Usage: directory
+# Where directory is where the test files will be created,
+# For example, /volumes/mytestfolder
+#
+# Author: Richard.Elling@Nexenta.com
+# Revision: 1.0, May 23, 2011
+#
+
+PATH=/usr/sbin:/usr/bin:/usr/local/bin
+PROTOTYPE=prototype_128k_fs.sd
+ARCSTATS_TMP=before.$$.arcstats
+
+DIRECTORY=$1
+if [ -z "$DIRECTORY" ]; then
+	echo "usage: file-system"
+	exit 1
+fi
+
+if [ ! -d "$DIRECTORY" ]; then
+	echo "error: directory $DIRECTORY not found"
+	exit 1
+fi
+
+kstat -p zfs:0:arcstats > $ARCSTATS_TMP
+BDIR=$(basename "$DIRECTORY")
+OUTDIR=128k_fs-${BDIR}.char
+PARMFILE=${BDIR}.sd
+sed -e "s,DIRECTORY,${DIRECTORY}," "$PROTOTYPE" > "$PARMFILE"
+vdbench -o "$OUTDIR" -f "$PARMFILE"
+if [ "$?" -ne "0" ]; then
+	echo "error: vdbench seems unhappy, please check the error messages"
+	exit 1
+fi
+
+MOUNT_DEV=$(df "$DIRECTORY" | sed -e "s,^.*(,,;s,).*$,,")
+mount -v | grep -w ^${MOUNT_DEV} > ${OUTDIR}/mount
+mv $ARCSTATS_TMP ${OUTDIR}/before.arcstats
+kstat -p zfs:0:arcstats > ${OUTDIR}/after.arcstats
+
+DATE=$(date +%Y%m%d%H%M%S)
+tar cf ${BDIR}.${DATE}.tar "$OUTDIR"
+gzip ${BDIR}.${DATE}.tar
+echo "Send the ${BDIR}.${DATE}.tar.gz file to Richard.Elling@Nexenta.com Thanks!"

@@ -1,0 +1,14 @@
+# 
+# Copyright 2011 Nexenta Systems, Inc.  All rights reserved.
+#
+# Disk characterization run for ZFS environments
+#
+
+# Workload Definitions (wd)
+wd=wd1,sd=sd*,seekpct=random,rdpct=100
+wd=wd2,sd=sd*,seekpct=random,rdpct=0
+
+# Run Definitions (rd)
+# for ZFS environments, we are most concerned with random workloads
+rd=rd1,wd=wd1,elapsed=60,interval=10,iorate=max,forthreads=(1,2,4,8,10,16),forxfersize=(512-128k,d)
+rd=rd2,wd=wd2,elapsed=60,interval=10,iorate=max,forthreads=(1,2,4,8,10,16),forxfersize=(512-128k,d)

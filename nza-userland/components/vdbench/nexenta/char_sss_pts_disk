@@ -1,0 +1,20 @@
+# 
+# Copyright 2011 Nexenta Systems, Inc.  All rights reserved.
+#
+# This characterization test matches the IOPS test from the
+# SNIA Solid State Storage (SSS) Performance Test Specification (PTS)
+# for Enterprise drives, V1.0
+#
+# This test is run for multiple thread counts. See the test specification
+# for reporting rules related to thread counts. In general, the goal is to
+# keep the thread count consistent for a given performance report.
+#
+# Author: Richard.Elling@Nexenta.com
+# Revision: 1.0, July 4, 2011
+
+# Workload Definitions (wd)
+wd=random1,sd=sd*,seekpct=random
+
+# Run Definitions (rd)
+rd=IOPS-test,wd=random1,elapsed=60,interval=1,iorate=max,forthreads=(1,2,4,8,16,32), 
+  forxfersize=(512,4k,8k,16k,32k,64k,128k,1024k),forrdpct=(0,5,35,50,65,95,100)

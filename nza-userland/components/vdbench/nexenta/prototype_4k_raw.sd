@@ -1,0 +1,12 @@
+#
+# Copyright 2011 Nexenta Systems, Inc.  All rights reserved.
+#
+# storage definition for a single raw device to be characterized
+# using the 4KB random I/O workload
+#
+# Author: Richard.Elling@Nexenta.com
+# Revision: 1.0, May 1, 2011
+#
+
+sd=sd1,lun=/dev/rdsk/DISK_SLICE
+include=./char_zfs_raw_disk

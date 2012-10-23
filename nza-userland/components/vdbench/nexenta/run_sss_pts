@@ -1,0 +1,154 @@
+#!/bin/bash
+#
+# Copyright 2011 Nexenta Systems, Inc. All rights reserved.
+#
+# Simple script for running a disk characterization
+# This characterization test matches the IOPS test from the
+# SNIA Solid State Storage (SSS) Performance Test Specification (PTS)
+# for Enterprise drives, V1.0
+#
+# Usage: disk-name
+# Where disk-name is of the form c*t*d*, or those names used by a
+# NexentaStor system. Slice 0 is assumed, as it is usually the 
+# full disk slice as created by NexentaStor by default.
+#
+# Author: Richard.Elling@Nexenta.com
+# Revision: 1.1, August 21, 2011
+#
+# Note: this is destructive, but we give you one chance to bail out
+
+# The SSS PTS spec calls for a preconditioning process to ensure
+# that the logical size of the device has been overwritten at least
+# twice. Preconditioning writes random data to the entire device,
+# preserving any data that exists in the first 32KB (eg disk labels).
+# To avoid the prompt, set the PRECONDITION environment variable.
+# Valid settings:
+#   prompt = prompt the user with preconditioning question (yes/no)
+#   0 = do not precondition
+#   1 = always precondition
+PRECONDITON=${PRECONDITION:="prompt"}
+
+# The SSS PTS spec calls for running the benchmark repeatedly until
+# the results achieve a steady state or 25 iterations have passwd.
+# By default, this script prompts for the number of iterations. To
+# avoid prompting, set the ITERATIONS environment variable.
+# Valid settings:
+#   prompt = prompt the user with preconditioning question (yes/no)
+#   1...25 = number of iterations to run
+ITERATIONS=${ITERATIONS:="prompt"}
+
+# This benchmark is destructive. By default, prompt the user before
+# starting any destructive actions.
+# Valid settings:
+#   prompt = prompt the user before destroying data
+#   destroywithextremeprejudice = do not prompt, just destroy data
+#   any other value = prompt the user before destroying data
+BLOWITAWAY=${BLOWITAWAY:="prompt"}
+
+# Set the storage definition prototype file
+PROTOTYPE=prototype_sss_pts.sd
+
+get_hddisco_value () {
+    if [ "$DISK" = "$(basename ${DISK})" ]; then
+        hddisco -d $DISK | grep -w ^$1 | sed -e "s,^$1,,"
+    else
+        echo "-"
+    fi
+}
+
+if [ ! -x /usr/bin/hddisco ]; then
+    echo "error: $0 must be run on a NexentaStor system"
+    exit 1
+fi
+
+DISK=$1
+if [ -z "$DISK" ]; then
+    echo "usage: [ disk-name | zvol-name ]"
+exit 1
+fi
+DISKPATH=
+if [ -c "$DISK" -o -b "$DISK" ]; then
+    DISKPATH=${DISK}
+else
+    DISKPATH="/dev/rdsk/${DISK}"
+    if [ ! -c "${DISKPATH}" -a ! -b "${DISKPATH}" ]; then
+        DISKPATH="/dev/rdsk/${DISK}s0"
+        if [ ! -c "${DISKPATH}" -a ! -b "${DISKPATH}" ]; then
+            echo "error: device ${DISKPATH} not found"
+            exit 1
+        fi	
+    fi
+fi
+
+cat << EOM
+This characterization test matches the IOPS test from the
+SNIA Solid State Storage (SSS) Performance Test Specification (PTS)
+for Enterprise drives, V1.0
+EOM
+
+if [ "$BLOWITAWAY" != "destroywithextremeprejudice" ]; then
+    A=$(ckyorn -p "Ok to destroy data on $DISK ?")
+    if [ "$A" = "y" -o "$A" = "yes" -o "$A" = "Y" -o "$A" = "YES" ]; then
+        echo "consider it toasted!"
+    else
+        exit 0
+    fi
+fi
+
+A=$(prtvtoc ${DISKPATH} | awk '{if($1 == "0"){print $5}}')
+if [ -z "$A" ]; then
+    echo "error: ${DISKPATH}, has no size, try partitioning the disk"
+    exit 1
+fi
+
+VENDOR=$(get_hddisco_value vendor)
+PRODUCT=$(get_hddisco_value product)
+
+# Ask for how many iterations, or not.
+# This is intended to achieve the steady-state result per the SNIA SSS PTS
+# specification that says to reach steady state or stop at 25 iterations.
+# Set the default value to 1 as a more reasonable answer for generic use.
+# TODO: error checking for bounds
+if [ "$ITERATIONS" = "prompt" ]; then
+    ITERATIONS=$(ckint -p "Number of iterations to reach steady state (default=1)" -d 1)
+    if [ "${ITERATIONS}" = "q" ]; then
+        exit 0
+    fi
+fi
+
+if [ "$PRECONDITION" = "prompt" ]; then
+    A=$(ckyorn -p "Run preconditioning phase?")
+    if [ "$A" = "y" -o "$A" = "yes" -o "$A" = "Y" -o "$A" = "YES" ]; then
+        PRECONDITION=1
+    else
+        PRECONDITION=0
+    fi
+fi
+if [ "$PRECONDITION" = "1" ]; then
+    echo "Note: preconditioning is often performance bound by the CPU"
+    echo "Precondition pass 1 - random data fill started at $(date)"
+    dd if=/dev/urandom of=${DISKPATH} bs=32k count=3 seek=1 > /dev/null 2>& 1
+    dd if=/dev/urandom of=${DISKPATH} bs=128k seek=1 > /dev/null 2>& 1
+    echo "Precondition pass 2 - random data fill started at $(date)"
+    dd if=/dev/urandom of=${DISKPATH} bs=32k count=3 seek=1 > /dev/null 2>& 1
+    dd if=/dev/urandom of=${DISKPATH} bs=128k seek=1 > /dev/null 2>& 1
+    echo "Finished filling with random data at $(date)"
+fi
+
+DISKBASE=$(basename $DISK)
+sed -e "s,DISK_SLICE,${DISKPATH}," "$PROTOTYPE" > ${DISKBASE}.sd
+
+for ((i=0 ; i < "${ITERATIONS}"; i++)) 
+do
+    OUTDIR=${DISKBASE}-${i}.char
+    vdbench -o "${OUTDIR}" -f "${DISKBASE}.sd"
+    if [ "$?" -ne "0" ]; then
+        echo "error: vdbench seems unhappy, please check the error messages"
+        exit 1
+    fi
+    hddisco -d "$DISK" >> ${OUTDIR}/hddisco 2>&1
+    DATE=$(date +%Y%m%d%H%M%S)
+    tar cf ${OUTDIR}.$DATE.tar "${OUTDIR}"
+    gzip ${OUTDIR}.$DATE.tar
+    echo "Send the ${OUTDIR}.${DATE}.tar.gz file to Richard.Elling@Nexenta.com Thanks!"
+done
