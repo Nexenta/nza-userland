@@ -56,10 +56,11 @@ CONFIGURE_OPTIONS +=		--with-libpng-lib=/usr/lib
 CONFIGURE_OPTIONS +=		--with-libpng-include=/usr/include
 CONFIGURE_OPTIONS +=		--with-sslv3
 CONFIGURE_OPTIONS +=		--enable-i18n
+CONFIGURE_OPTIONS +=		--with-rrd-home=/usr
 
 build: $(BUILD_32)
 
-test: $(TEST_32)
+#test: $(TEST_32)
 
 install: $(INSTALL_32)
 
