@@ -1,74 +1,317 @@
-Index: dpkg-1.16.3/utils/update-alternatives.c
-===================================================================
---- dpkg-1.16.1/utils/update-alternatives.c
-+++ dpkg-1.16.1/utils/update-alternatives.c
-@@ -1606,7 +1606,7 @@ alternative_config_all(void)
+--- dpkg-1.16.1/utils/update-alternatives.c	Tue Oct 11 22:56:12 2011
++++ dpkg-1.16.1/utils/update-alternatives.c	Sun Oct 28 07:21:48 2012
+@@ -52,6 +52,7 @@
  
- 	count = altdb_get_namelist(&table);
- 	for (i = 0; i < count; i++) {
--		subcall(prog_path, "--config", table[i]->d_name, NULL);
-+		subcall(prog_path, "--config", table[i]->d_name, (char *)NULL);
- 		printf("\n");
- 	}
- 	altdb_free_namelist(table, count);
-@@ -1723,6 +1723,18 @@ alternative_prepare_install_single(struc
-                                    const char *linkname, const char *file)
- {
- 	char *fntmp, *fn;
-+    const char *basedir;
-+    const char *newlinkname;
-+    char *newlinknamebuf = NULL;
-+
-+    basedir = getenv("BASEDIR");
-+    if (basedir == NULL || basedir[0] == '\0' || (strcmp(basedir, "/") == 0)) {
-+        newlinkname = linkname;
-+    } else {
-+        newlinknamebuf = xmalloc(strlen(basedir) + strlen(linkname) + 1);
-+        sprintf(newlinknamebuf, "%s%s", basedir, linkname);
-+        newlinkname = newlinknamebuf;
-+    }
+ static const char *altdir = SYSCONFDIR "/alternatives";
+ static const char *admdir;
++static const char *basedir;
  
- 	/* Create link in /etc/alternatives. */
- 	xasprintf(&fntmp, "%s/%s" DPKG_TMP_EXT, altdir, name);
-@@ -1732,13 +1744,22 @@ alternative_prepare_install_single(struc
- 	alternative_add_commit_op(a, opcode_mv, fntmp, fn);
- 	free(fntmp);
+ static const char *prog_path = "update-alternatives";
  
--	if (alternative_path_needs_update(linkname, fn)) {
-+/*    fprintf(stderr, "==DEBUG:file:%s, fn:%s, fntmp:%s, linkname:%s, newlinkname:%s, BASEDIR=%s\n",
-+        file, fn, fntmp, linkname, newlinkname, basedir); */
+@@ -70,6 +71,13 @@
+ 
+ #define DPKG_TMP_EXT ".dpkg-tmp"
+ 
++static int xstat(char * path, struct stat * buf);
++static FILE * xfopen(char * filename, char * mode);
++static int xunlink(char *path);
++static int xsymlink(char *path, char *slink);
++static int xxxreadlink(char *path, char *buf, size_t bufsiz);
++static int xrename(char *oldname, char *newname);
 +
-+    if (basedir != NULL && (strcmp(basedir, "/") != 0))
-+        xasprintf(&fn, "%s/%s", "/etc/alternatives", name);
-+
-+	if (alternative_path_needs_update(newlinkname, fn)) {
- 		/* Create alternative link. */
--		xasprintf(&fntmp, "%s" DPKG_TMP_EXT, linkname);
-+		xasprintf(&fntmp, "%s" DPKG_TMP_EXT, newlinkname);
- 		checked_rm(fntmp);
- 		checked_symlink(fn, fntmp);
--		alternative_add_commit_op(a, opcode_mv, fntmp, linkname);
-+		alternative_add_commit_op(a, opcode_mv, fntmp, newlinkname);
- 		free(fntmp);
-+
-+        if (basedir != NULL && (strcmp(basedir, "/") != 0))
-+            free(newlinknamebuf);
- 	}
- 	free(fn);
+ /*
+  * Functions.
+  */
+@@ -264,6 +272,7 @@
+ 	return r;
  }
-@@ -2056,13 +2077,13 @@ alternative_set_selection(struct alterna
- 			xasprintf(&cmd, "%s --auto %s", PROGNAME, name);
- 			pr(_("Call %s."), cmd);
- 			free(cmd);
--			subcall(prog_path, "--auto", name, NULL);
-+			subcall(prog_path, "--auto", name, (char *)NULL);
- 		} else if (alternative_has_choice(a, choice)) {
- 			xasprintf(&cmd, "%s --set %s %s", PROGNAME,
- 			          name, choice);
- 			pr(_("Call %s."), cmd);
- 			free(cmd);
--			subcall(prog_path, "--set", name, choice, NULL);
-+			subcall(prog_path, "--set", name, choice, (char *)NULL);
- 		} else {
- 			pr(_("Alternative %s unchanged because choice "
- 			     "%s is not available."), name, choice);
+ 
++
+ static char *
+ xstrdup(const char *str)
+ {
+@@ -287,7 +296,7 @@
+ 	ssize_t size;
+ 
+ 	/* Allocate required memory to store the value of the symlink */
+-	if (lstat(linkname, &st))
++	if (xstat(linkname, &st))
+ 		return NULL;
+ 
+ 	if (!S_ISLNK(st.st_mode)) {
+@@ -298,7 +307,7 @@
+ 	buf = xmalloc(st.st_size + 1);
+ 
+ 	/* Read it and terminate the string properly */
+-	size = readlink(linkname, buf, st.st_size);
++	size = xxxreadlink(linkname, buf, st.st_size);
+ 	if (size == -1) {
+ 		int saved_errno = errno;
+ 
+@@ -360,20 +369,124 @@
+ static const char *
+ admindir_init(void)
+ {
+-	const char *basedir, *dpkg_basedir;
++	char *_basedir, *dpkg_basedir;
+ 	char *admindir;
+ 
+ 	dpkg_basedir = getenv("DPKG_ADMINDIR");
+ 	if (dpkg_basedir)
+-		basedir = dpkg_basedir;
++		_basedir = dpkg_basedir;
+ 	else
+-		basedir = ADMINDIR;
++		_basedir = ADMINDIR;
+ 
+-	xasprintf(&admindir, "%s/%s", basedir, "alternatives");
++	if(basedir){
++	    _basedir = ADMINDIR;
++	}
+ 
++	xasprintf(&admindir, "%s/%s", _basedir, "alternatives");
++
+ 	return admindir;
+ }
+ 
++static int
++xstat(char * path, struct stat * buf)
++{
++    int ret;
++
++    if (basedir) {
++	xasprintf(&path, "%s%s", basedir, path);
++    }
++
++    ret = lstat(path, buf);
++
++    return ret;
++}
++
++static FILE * 
++xfopen(char * filename, char * mode)
++{
++    FILE * fh;
++
++    if (basedir) {
++	xasprintf(&filename, "%s%s", basedir, filename);
++    }
++
++    fh = fopen(filename, mode);
++
++    return fh;
++}
++
++static int
++xunlink(char *path)
++{
++    int ret;
++
++    if (basedir) {
++	xasprintf(&path, "%s%s", basedir, path);
++    }
++
++    ret = unlink(path);
++
++    return ret;
++}
++
++static int
++xsymlink(char *path, char *slink)
++{
++    int ret;
++
++    if (basedir) {
++	xasprintf(&slink, "%s%s", basedir, slink);
++    }
++
++    ret = symlink(path, slink);
++
++    return ret;
++}
++
++static int 
++xxxreadlink(char *path, char *buf, size_t bufsiz)
++{
++    int ret;
++
++    if (basedir) {
++	xasprintf(&path, "%s%s", basedir, path);
++    }
++
++    ret = readlink(path, buf, bufsiz);
++
++    return ret;
++}
++
++static int
++xrename(char *oldname, char *newname)
++{
++    int ret;
++
++    if (basedir) {
++	xasprintf(&oldname, "%s%s", basedir, oldname);
++	xasprintf(&newname, "%s%s", basedir, newname);
++    }
++
++    ret = rename(oldname, newname);
++
++    return ret;
++}
++
++
++static const char *
++basedir_init(void)
++{
++    char *_basedir;
++    
++    _basedir = getenv("BASEDIR");
++    
++    if (!_basedir) return NULL;
++    if (_basedir[0] == '\0') return NULL;
++    if (strcmp(_basedir, "/") == 0) return NULL;
++    
++    return _basedir;
++}
++
+ static FILE *fh_log = NULL;
+ 
+ static void DPKG_ATTR_PRINTF(1)
+@@ -382,7 +495,7 @@
+ 	va_list args;
+ 
+ 	if (fh_log == NULL) {
+-		fh_log = fopen(log_file, "a");
++		fh_log = xfopen(log_file, "a");
+ 		if (fh_log == NULL && errno != EACCES)
+ 			syserr(_("cannot append to '%s'"), log_file);
+ 	}
+@@ -517,10 +630,10 @@
+ {
+ 	struct stat st;
+ 
+-	if (lstat(src, &st) != 0)
++	if (xstat(src, &st) != 0)
+ 		return false;
+ 
+-	if (rename(src, dst) != 0) {
++	if (xrename(src, dst) != 0) {
+ 		const char *args[3] = { src, dst, NULL };
+ 		int r;
+ 		r = spawn("mv", args);
+@@ -535,7 +648,7 @@
+ static void
+ checked_symlink(const char *filename, const char *linkname)
+ {
+-	if (symlink(filename, linkname))
++	if (xsymlink(filename, linkname))
+ 		syserr(_("error creating symbolic link `%.255s'"), linkname);
+ }
+ 
+@@ -549,7 +662,7 @@
+ static void
+ checked_rm(const char *f)
+ {
+-	if (!unlink(f))
++	if (!xunlink(f))
+ 		return;
+ 
+ 	if (errno != ENOENT)
+@@ -678,7 +791,7 @@
+ 		const char *slave = fileset_get_slave(fs, slave_name);
+ 
+ 		errno = 0;
+-		if (stat(slave, &st) == -1 && errno != ENOENT)
++		if (xstat(slave, &st) == -1 && errno != ENOENT)
+ 			syserr(_("cannot stat file '%s'"), slave);
+ 		install_slave = (errno == 0) ? true : false;
+ 	}
+@@ -1215,7 +1328,7 @@
+ 		}
+ 	}
+ 
+-	if (stat(master_file, &st)) {
++	if (xstat(master_file, &st)) {
+ 		char *junk;
+ 
+ 		if (errno != ENOENT)
+@@ -1277,7 +1390,7 @@
+ 	ctx.filename = fn;
+ 
+ 	/* Verify the alternative exists */
+-	if (stat(ctx.filename, &st) == -1) {
++	if (xstat(ctx.filename, &st) == -1) {
+ 		if (errno == ENOENT)
+ 			return false;
+ 		else
+@@ -1288,7 +1401,7 @@
+ 	}
+ 
+ 	/* Open the database file */
+-	ctx.fh = fopen(ctx.filename, "r");
++	ctx.fh = xfopen(ctx.filename, "r");
+ 	if (ctx.fh == NULL)
+ 		syserr(_("unable to open file '%s'"), ctx.filename);
+ 
+@@ -1368,7 +1481,7 @@
+ 	xasprintf(&filenew, "%s" DPKG_TMP_EXT, file);
+ 
+ 	ctx.filename = filenew;
+-	ctx.fh = fopen(ctx.filename, "w");
++	ctx.fh = xfopen(ctx.filename, "w");
+ 	if (ctx.fh == NULL)
+ 		syserr(_("unable to create file '%s'"), ctx.filename);
+ 
+@@ -1433,7 +1546,7 @@
+ 	char *curlink;
+ 
+ 	xasprintf(&curlink, "%s/%s", altdir, a->master_name);
+-	if (lstat(curlink, &st)) {
++	if (xstat(curlink, &st)) {
+ 		if (errno == ENOENT) {
+ 			free(curlink);
+ 			return false;
+@@ -1675,7 +1788,7 @@
+ 	struct stat st;
+ 
+ 	errno = 0;
+-	if (lstat(linkname, &st) == -1) {
++	if (xstat(linkname, &st) == -1) {
+ 		if (errno != ENOENT)
+ 			syserr(_("cannot stat file '%s'"), linkname);
+ 		return ALT_PATH_MISSING;
+@@ -2163,7 +2276,7 @@
+ 
+ 			if (new_file) {
+ 				errno = 0;
+-				if (stat(new_file, &st) == -1 && errno != ENOENT)
++				if (xstat(new_file, &st) == -1 && errno != ENOENT)
+ 					syserr(_("cannot stat file '%s'"),
+ 					       new_file);
+ 				rename_link = (errno == 0);
+@@ -2236,7 +2349,7 @@
+ 	alternative_check_args(inst_alt->master_name, inst_alt->master_link,
+ 	                       fileset->master_file);
+ 
+-	if (stat(fileset->master_file, &st) == -1) {
++	if (xstat(fileset->master_file, &st) == -1) {
+ 		if (errno == ENOENT)
+ 			error(_("alternative path %s doesn't exist."),
+ 			      fileset->master_file);
+@@ -2312,6 +2425,7 @@
+ 	bindtextdomain("dpkg", LOCALEDIR);
+ 	textdomain("dpkg");
+ 
++	basedir = basedir_init();
+ 	admdir = admindir_init();
+ 
+ 	if (setvbuf(stdout, NULL, _IONBF, 0))
+@@ -2523,7 +2637,7 @@
+ 			struct stat st;
+ 
+ 			errno = 0;
+-			if (stat(current_choice, &st) == -1 && errno != ENOENT)
++			if (xstat(current_choice, &st) == -1 && errno != ENOENT)
+ 				syserr(_("cannot stat file '%s'"), current_choice);
+ 
+ 			if (errno == ENOENT) {
