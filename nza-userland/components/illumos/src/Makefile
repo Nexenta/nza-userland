@@ -5,7 +5,7 @@ SUNSTUDIO_PATH   = /opt/SUNWspro
 SUN_GATE         = http://dlc.sun.com/osol/on/downloads/20100817
 CLOSED_BINARY1   = on-closed-bins.i386.tar.bz2
 CLOSED_BINARY2   = on-closed-bins-nd.i386.tar.bz2
-DEB_VERSION     ?= 40-0-0
+DEB_VERSION     ?= 40-0-15
 DEB_MAINTAINER  ?= Nexenta Systems <maintainer@nexenta.com>
 
 NZA_ROOT         = $(CURDIR)
@@ -101,6 +101,7 @@ adjust-scripts: copy-tools
 	echo "export DEB_MAINTAINER='$(DEB_MAINTAINER)'" >> $(CODEMGR_WS)/illumos.sh
 	echo "export DPKG_BUILD_FLAGS='-b -d -uc'" >> $(CODEMGR_WS)/illumos.sh
 	echo "export PKGARCHIVEAPT='${CODEMGR_WS}/packages/${MACH}/apt'" >> $(CODEMGR_WS)/illumos.sh
+	echo "export GCC_ROOT='/usr'" >> $(CODEMGR_WS)/illumos.sh	
 	touch $@
 
 setrelease: adjust-scripts

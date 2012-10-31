@@ -2,7 +2,7 @@
 #
 # Copyright 2010-2012 Nexenta Systems, Inc. All rights reserved.
 #
-# VERSION 1.18
+# VERSION 1.19
 #
 
 use FindBin;
@@ -640,7 +640,8 @@ sub saveFiles
             $str = "mv \$DEST/$origPath \$DEST/$origPath.new";
 	    push(@$fixperms, $str);
 
-	    $str = "[ \"\$DEBUPGRADE\" = \"1\" ] || ([ -f \$BASEDIR/$path ] || mv -f \$BASEDIR/$path.new \$BASEDIR/$path)";
+	    #$str = "[ \"\$DEBUPGRADE\" = \"1\" ] || ([ -f \$BASEDIR/$path ] || mv -f \$BASEDIR/$path.new \$BASEDIR/$path)";
+            $str = "([ -f \$BASEDIR/$path ] || mv -f \$BASEDIR/$path.new \$BASEDIR/$path)";
             push(@$postinst, $str);
         }
 
@@ -649,10 +650,12 @@ sub saveFiles
             $str = "mv \$DEST/$origPath \$DEST/$origPath.$moduleName";
 	    push(@$fixperms, $str);
 
-	    $str = "[ \"\$DEBUPGRADE\" = \"1\" ] || ([ -f \$BASEDIR/$path ] && mv -f \$BASEDIR/$path \$BASEDIR/$path.old )";
+	    #$str = "[ \"\$DEBUPGRADE\" = \"1\" ] || ([ -f \$BASEDIR/$path ] && mv -f \$BASEDIR/$path \$BASEDIR/$path.old )";
+            $str = "([ -f \$BASEDIR/$path ] && mv -f \$BASEDIR/$path \$BASEDIR/$path.old )";
             push(@$postinst, $str);
 
-	    $str = "[ \"\$DEBUPGRADE\" = \"1\" ] || ([ -f \$BASEDIR/$path.$moduleName ] && mv -f \$BASEDIR/$path.$moduleName \$BASEDIR/$path )";
+	    #$str = "[ \"\$DEBUPGRADE\" = \"1\" ] || ([ -f \$BASEDIR/$path.$moduleName ] && mv -f \$BASEDIR/$path.$moduleName \$BASEDIR/$path )";
+            $str = "([ -f \$BASEDIR/$path.$moduleName ] && mv -f \$BASEDIR/$path.$moduleName \$BASEDIR/$path )";
             push(@$postinst, $str);
         }
 
@@ -661,13 +664,16 @@ sub saveFiles
             $str = "mv \$DEST/$origPath \$DEST/$origPath.$moduleName";
 	    push(@$fixperms, $str);
 
-	    $str = "[ \"\$DEBUPGRADE\" = \"1\" ] || ([ -f \$BASEDIR/$path ] || rm -f \$BASEDIR/$path.$moduleName )";
+	    #$str = "[ \"\$DEBUPGRADE\" = \"1\" ] || ([ -f \$BASEDIR/$path ] || rm -f \$BASEDIR/$path.$moduleName )";
+            $str = "([ -f \$BASEDIR/$path ] || rm -f \$BASEDIR/$path.$moduleName )";
             push(@$postinst, $str);
 
-	    $str = "[ \"\$DEBUPGRADE\" = \"1\" ] || ([ -f \$BASEDIR/$path ] && mv -f \$BASEDIR/$path \$BASEDIR/$path.legacy )";
+	    #$str = "[ \"\$DEBUPGRADE\" = \"1\" ] || ([ -f \$BASEDIR/$path ] && mv -f \$BASEDIR/$path \$BASEDIR/$path.legacy )";
+            $str = "([ -f \$BASEDIR/$path ] && mv -f \$BASEDIR/$path \$BASEDIR/$path.legacy )";
             push(@$postinst, $str);
 
-	    $str = "[ \"\$DEBUPGRADE\" = \"1\" ] || ([ -f \$BASEDIR/$path.$moduleName ] && mv -f \$BASEDIR/$path.$moduleName \$BASEDIR/$path )";
+	    #$str = "[ \"\$DEBUPGRADE\" = \"1\" ] || ([ -f \$BASEDIR/$path.$moduleName ] && mv -f \$BASEDIR/$path.$moduleName \$BASEDIR/$path )";
+            $str = "([ -f \$BASEDIR/$path.$moduleName ] && mv -f \$BASEDIR/$path.$moduleName \$BASEDIR/$path )";
             push(@$postinst, $str);
         }
 
@@ -676,10 +682,19 @@ sub saveFiles
             $str = "mv \$DEST/$origPath \$DEST/$origPath.$moduleName";
 	    push(@$fixperms, $str);
 
-	    $str = "[ \"\$DEBUPGRADE\" = \"1\" ] ||([ -f \$BASEDIR/$path ] || mv -f \$BASEDIR/$path.$moduleName \$BASEDIR/$path )";
+	    #$str = "[ \"\$DEBUPGRADE\" = \"1\" ] ||([ -f \$BASEDIR/$path ] || mv -f \$BASEDIR/$path.$moduleName \$BASEDIR/$path )";
+            $str = "([ -f \$BASEDIR/$path.saved ] && mv -f \$BASEDIR/$path.saved \$BASEDIR/$path )";
             push(@$postinst, $str);
-	    $str = "[ \"\$DEBUPGRADE\" = \"1\" ] ||([ -f \$BASEDIR/$path ] && rm -f \$BASEDIR/$path.$moduleName)";
+            $str = "([ -f \$BASEDIR/$path ] || mv -f \$BASEDIR/$path.$moduleName \$BASEDIR/$path )";
+            
             push(@$postinst, $str);
+	    #$str = "[ \"\$DEBUPGRADE\" = \"1\" ] ||([ -f \$BASEDIR/$path ] && rm -f \$BASEDIR/$path.$moduleName)";
+            $str = "([ -f \$BASEDIR/$path ] && rm -f \$BASEDIR/$path.$moduleName)";
+            
+            push(@$postinst, $str);
+    	    $str = "([ -f \$BASEDIR/$path ] && mv -f \$BASEDIR/$path \$BASEDIR/$path.saved)";
+    	    push(@$prerm, $str);
+    	    
         }
 
         if (defined($zonevariant) && ($zonevariant eq 'global'))
@@ -694,8 +709,10 @@ sub saveFiles
             {
                 $$svcChk{"$restart_fmri"} = 1;
 #                push(@$postinst, "if [ \"\$BASEDIR\" = \"/\" ]; then");
-                push(@$postinst, "[ \"\$DEBUPGRADE\" = \"1\" -o \"\$DEBCHROOT\" = \"1\" ] || ( \$BASEDIR/usr/sbin/svcadm restart $restart_fmri || true )");
-#                push(@$postinst, "fi");
+                #push(@$postinst, "[ \"\$DEBUPGRADE\" = \"1\" -o \"\$DEBCHROOT\" = \"1\" ] || ( \$BASEDIR/usr/sbin/svcadm restart $restart_fmri || true )");
+		push(@$postinst, "[ \"\${BASEDIR}\" = \"/\" ] && ( /usr/sbin/svcadm restart $restart_fmri || true )");
+
+		#push(@$postinst, "fi");
             }
         }
     }
@@ -927,7 +944,9 @@ sub saveLinks
 	    if (defined($mediator))
 	    {
 		$alternativesName = getAlternativesName($path);
-		$str = "[ \"\$ZONEINST\" = \"1\" ] || (update-alternatives --quiet --altdir \$BASEDIR/etc/alternatives --admindir \$BASEDIR/var/lib/dpkg/alternatives --install \$BASEDIR/$path $alternativesName \$BASEDIR/$dir/$target $alternative_priority || true)";
+		#$str = "[ \"\$ZONEINST\" = \"1\" ] || (update-alternatives --quiet --altdir \$BASEDIR/etc/alternatives --admindir \$BASEDIR/var/lib/dpkg/alternatives --install \$BASEDIR/$path $alternativesName \$BASEDIR/$dir/$target $alternative_priority || true)";
+		$str = "[ \"\$ZONEINST\" = \"1\" ] || (update-alternatives --quiet --altdir \$BASEDIR/etc/alternatives --admindir \$BASEDIR/var/lib/dpkg/alternatives --install $path $alternativesName \$BASEDIR/$dir/$target $alternative_priority || true)";
+		$str = "(update-alternatives --quiet --altdir \$BASEDIR/etc/alternatives --admindir \$BASEDIR/var/lib/dpkg/alternatives --install /$path $alternativesName /$dir/$target $alternative_priority || true)";
 	    }
             push(@$postinst, $str);
         }
@@ -937,11 +956,14 @@ sub saveLinks
 	    if (defined($mediator))
 	    {
 		$alternativesName = getAlternativesName($path);
-		$str = "[ \"\$DEBCHROOT\" = \"1\" ] ||(update-alternatives --quiet --altdir \$BASEDIR/etc/alternatives --admindir \$BASEDIR/var/lib/dpkg/alternatives --install \$BASEDIR/$path $alternativesName \$BASEDIR/$dir/$target $alternative_priority || true)";
+		#$str = "[ \"\$DEBCHROOT\" = \"1\" ] ||(update-alternatives --quiet --altdir \$BASEDIR/etc/alternatives --admindir \$BASEDIR/var/lib/dpkg/alternatives --install \$BASEDIR/$path $alternativesName \$BASEDIR/$dir/$target $alternative_priority || true)";
+        	$str = "(update-alternatives --quiet --altdir \$BASEDIR/etc/alternatives --admindir \$BASEDIR/var/lib/dpkg/alternatives --install /$path $alternativesName /$dir/$target $alternative_priority || true)";
+        	
         	push(@$postinst, $str);
         	
 		$str = "if [ \"$1\" != \"upgrade\" ]; then\n";
-		$str .= "	[ \"\$DEBCHROOT\" = \"1\" ] ||(update-alternatives --altdir \$BASEDIR/etc/alternatives --admindir \$BASEDIR/var/lib/dpkg/alternatives --remove $alternativesName \$BASEDIR/$dir/$target || true)\n";
+		#$str .= "	[ \"\$DEBCHROOT\" = \"1\" ] ||(update-alternatives --altdir \$BASEDIR/etc/alternatives --admindir \$BASEDIR/var/lib/dpkg/alternatives --remove $alternativesName \$BASEDIR/$dir/$target || true)\n";
+		$str .= "	(update-alternatives --altdir \$BASEDIR/etc/alternatives --admindir \$BASEDIR/var/lib/dpkg/alternatives --remove $alternativesName /$dir/$target || true)\n";
 		$str .= "fi\n";
 		push(@$prerm, $str);
 	    }
@@ -1161,12 +1183,15 @@ sub saveDrivers
         $policy =~ s/"/'/g if defined($policy); #"
         $OPTIONS .= " -p $policy" if defined($policy);
 
-	$str = "[ \"\$DEBCHROOT\" = \"1\" -o \"\$ZONEINST\" = \"1\" ] || (grep -c \"^$name \" \$BASEDIR/etc/name_to_major >/dev/null || ( $drv \$BASEDIR_OPT $OPTIONS $name ) )";
+	#$str = "[ \"\$DEBCHROOT\" = \"1\" -o \"\$ZONEINST\" = \"1\" ] || (grep -c \"^$name \" \$BASEDIR/etc/name_to_major >/dev/null || ( $drv \$BASEDIR_OPT $OPTIONS $name ) )";
+        $str = "[ \"\$ZONEINST\" = \"1\" ] || (grep -c \"^$name \" \$BASEDIR/etc/name_to_major >/dev/null || ( $drv \$BASEDIR_OPT $OPTIONS $name ) )";
         push (@$postinst, $str);
 
 #	unless ($moduleName eq 'sunwcs')
 #	{
-	    $str = "[ \"\$DEBCHROOT\" = \"1\" ] || ( rem_drv -n \$BASEDIR_OPT $name )";
+	    #$str = "[ \"\$DEBCHROOT\" = \"1\" ] || ( rem_drv -n \$BASEDIR_OPT $name )";
+	    $str = "[ \"\$ZONEINST\" = \"1\" ] || ( rem_drv -n \$BASEDIR_OPT $name )";
+	    
 	    push (@$prerm, $str);
 #        }
 
@@ -1189,10 +1214,13 @@ sub saveDrivers
                 {
                     $perms =~ s/"/'/g; #"
 
-                    $str = "[ \"\$DEBCHROOT\" = \"1\" -o \"\$ZONEINST\" = \"1\" ] || (grep -c \"$perms\" \$BASEDIR/etc/minor_perm >/dev/null || $drv -a \$BASEDIR_OPT $OPTIONS -m $perms clone)";
+                    #$str = "[ \"\$DEBCHROOT\" = \"1\" -o \"\$ZONEINST\" = \"1\" ] || (grep -c \"$perms\" \$BASEDIR/etc/minor_perm >/dev/null || $drv -a \$BASEDIR_OPT $OPTIONS -m $perms clone)";
+                    $str = "[ \"\$ZONEINST\" = \"1\" ] || (grep -c \"$perms\" \$BASEDIR/etc/minor_perm >/dev/null || $drv -a \$BASEDIR_OPT $OPTIONS -m $perms clone)";
+                    
                     push (@$postinst, $str);
 
-                    $str = "[ \"\$DEBCHROOT\" = \"1\" -o \"\$ZONEINST\" = \"1\" ] || (grep -c \"$perms\" \$BASEDIR/etc/minor_perm >/dev/null && $drv -d \$BASEDIR_OPT $OPTIONS -m $perms clone)";
+                    #$str = "[ \"\$DEBCHROOT\" = \"1\" -o \"\$ZONEINST\" = \"1\" ] || (grep -c \"$perms\" \$BASEDIR/etc/minor_perm >/dev/null && $drv -d \$BASEDIR_OPT $OPTIONS -m $perms clone)";
+                    $str = "[ \"\$ZONEINST\" = \"1\" ] || (grep -c \"$perms\" \$BASEDIR/etc/minor_perm >/dev/null && $drv -d \$BASEDIR_OPT $OPTIONS -m $perms clone)";
                     push (@$prerm, $str);
                 }
             }
