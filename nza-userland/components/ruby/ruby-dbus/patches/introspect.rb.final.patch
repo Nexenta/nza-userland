@@ -1,0 +1,25 @@
+--- dbus.orig/introspect.rb	Thu Oct  4 10:15:02 2012
++++ /usr/ruby/1.8/lib/ruby/site_ruby/1.8/dbus/introspect.rb	Wed Oct 10 06:02:22 2012
+@@ -107,9 +107,6 @@
+ 
+     # Validates element _name_.
+     def validate_name(name)
+-      if (not name =~ MethodSignalRE) or (name.size > 255)
+-        raise InvalidMethodName name
+-      end
+     end
+ 
+     # Creates a new element with the given _name_.
+@@ -372,11 +369,7 @@
+           @object.bus.send(msg.marshall)
+         else
+           @object.bus.send_sync(msg) do |rmsg|
+-            if rmsg.is_a?(Error)
+-              raise rmsg
+-            else
+-              ret = rmsg.params
+-            end
++            ret = rmsg.params
+           end
+         end
+         ret

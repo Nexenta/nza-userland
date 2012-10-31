@@ -1,0 +1,131 @@
+--- dbus.orig/bus.rb	Thu Oct  4 10:15:02 2012
++++ /usr/ruby/1.8/lib/ruby/site_ruby/1.8/dbus/bus.rb	Fri Oct 12 11:03:38 2012
+@@ -198,33 +198,52 @@
+     # address and only "unix:path=...,guid=..." and
+     # "unix:abstract=...,guid=..." forms
+     def initialize(path)
+-      @path = path
++      @path = path.chomp
+       @unique_name = nil
+       @buffer = ""
+       @method_call_replies = Hash.new
+       @method_call_msgs = Hash.new
+       @signal_matchrules = Array.new
++      @addr = Array.new
+       @proxy = nil
+-      # FIXME: can be TCP or any stream
+-      @socket = Socket.new(Socket::Constants::PF_UNIX,
+-                           Socket::Constants::SOCK_STREAM, 0)
++      parse_session_string
+       @object_root = Node.new("/")
+     end
+ 
+     # Connect to the bus and initialize the connection.
+-    def connect
+-      parse_session_string
+-      if @transport == "unix" and @type == "abstract"
+-        if HOST_END == LIL_END
+-          sockaddr = "\1\0\0#{@unix_abstract}"
+-        else
+-          sockaddr = "\0\1\0#{@unix_abstract}"
++      def connect
++        @addr.each() do |addr|
++          if addr['transport'] == "unix"
++            @socket = Socket.new(Socket::AF_UNIX,
++                                 Socket::Constants::SOCK_STREAM, 0)
++            if addr.has_key?('path')
++              sockaddr = Socket.pack_sockaddr_un(addr['path'])
++            elsif addr.has_key?('abstract')
++              unix_abstract = addr['abstract']
++              if HOST_END == LIL_END
++                sockaddr = "\1\0\0#{unix_abstract}"
++              else
++                sockaddr = "\0\1\0#{unix_abstract}"
++              end
++            end
++          elsif addr['transport'] == "tcp"
++            @socket = Socket.new(Socket::Constants::PF_INET,
++                                 Socket::Constants::SOCK_STREAM, 0)
++            sockaddr = Socket.pack_sockaddr_in(addr['port'], addr['host'])
++          else
++            $stderr.puts "INVALID TRANSPORT '#{addr['transport']}'"
++            next
++          end
++          begin
++            @socket.connect(sockaddr)
++          rescue
++            print "CONNECTION ERROR; addr: #{sockaddr}\n"
++          else
++            init_connection
++            send_hello
++            break
++          end
+         end
+-      elsif @transport == "unix" and @type == "path"
+-        sockaddr = Socket.pack_sockaddr_un(@unix)
+-      end
+-      @socket.connect(sockaddr)
+-      init_connection
+     end
+ 
+     # Send the buffer _buf_ to the bus using Connection#writel.
+@@ -429,7 +448,7 @@
+     # Fill (append) the buffer from data that might be available on the
+     # socket.
+     def update_buffer
+-      @buffer += @socket.read_nonblock(MSG_BUF_SIZE)
++      @buffer += @socket.recv(MSG_BUF_SIZE)
+     end
+ 
+     # Get one message from the bus and remove it from the buffer.
+@@ -614,24 +633,26 @@
+     end
+ 
+     # Parse the session string (socket address).
++    def _parse_params(params_str)
++      params = Hash.new
++      params_str.split(',').each do |opt|
++        key, val = opt.split('=')
++        params[key] = val;
++      end
++      return params
++    end
++
+     def parse_session_string
+-      path_parsed = /^([^:]*):([^;]*)$/.match(@path)
+-      @transport = path_parsed[1]
+-      adr = path_parsed[2]
+-      if @transport == "unix"
+-        adr.split(",").each do |eqstr|
+-          idx, val = eqstr.split("=")
+-          case idx
+-          when "path"
+-            @type = idx
+-            @unix = val
+-          when "abstract"
+-            @type = idx
+-            @unix_abstract = val
+-          when "guid"
+-            @guid = val
+-          end
++      @path.split(";").each do |adr|
++        trans, params = adr.split(":")
++        addr = _parse_params(params)
++        addr['transport'] = case trans
++          when 'unix', 'tcp'
++            trans
++          else
++            'invalid'
+         end
++        @addr << addr;
+       end
+     end
+ 
+@@ -658,7 +679,6 @@
+     def initialize
+       super(ENV["DBUS_SESSION_BUS_ADDRESS"] || address_from_file)
+       connect
+-      send_hello
+     end
+ 
+     def address_from_file
