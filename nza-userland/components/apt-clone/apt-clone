@@ -1209,6 +1209,7 @@ for my $possible_cmd (@ARGV) {
 nmu_usage() if(exists $opt{h});
 
 if (exists $opt{c}) {
+	exit 0 if ($0 eq '/usr/bin/apt-clone');	
 	exit 0 if (exists $ENV{'APT_CLONE_ENV'} && $ENV{'APT_CLONE_ENV'} eq '1');
 	exit 0 if (! -r "/etc/svc/volatile/repository_door");
 	my @files = <STDIN>;
