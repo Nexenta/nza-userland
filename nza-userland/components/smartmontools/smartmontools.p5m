@@ -23,7 +23,7 @@
 
 <transform file path=usr.*/man/.+ -> default mangler.man.stability volatile>
 set name=pkg.fmri \
-    value=pkg:/diagnostic/smartmontools@$(IPS_COMPONENT_VERSION),$(BUILD_VERSION)
+    value=pkg:/storage/smartmontools@$(IPS_COMPONENT_VERSION),$(BUILD_VERSION)
 set name=pkg.summary value="SmartMonTool contains programs to control and monotor storage systems"
 set name=info.source_url value=$(COMPONENT_ARCHIVE_URL)
 set name=info.upstream_url value=http://www.smartmontools.org
@@ -68,7 +68,7 @@ file path=usr/share/man/man1m/smartctl.1m
 dir path=lib
 dir path=lib/svc
 dir path=lib/svc/manifest
-dir path=lib/svc/manifest/diagnostic
+dir path=lib/svc/manifest/system
 
-file smartmontools.xml path=lib/svc/manifest/diagnostic
+file smartmontools.xml path=lib/svc/manifest/system/smartmontools.xml
 

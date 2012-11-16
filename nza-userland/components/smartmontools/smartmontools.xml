@@ -2,7 +2,7 @@
 <!DOCTYPE service_bundle SYSTEM "/usr/share/lib/xml/dtd/service_bundle.dtd.1">
 <service_bundle type="manifest" name="smartd">
   <service
-     name="diagnostic/smartd"
+     name="system/smartd"
      type="service"
      version="1">
     <create_default_instance enabled="false"/>
