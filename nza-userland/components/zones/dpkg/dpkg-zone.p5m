@@ -62,7 +62,7 @@ file path=usr/lib/brand/dpkg/smf_disable.lst
 file path=usr/lib/brand/dpkg/support mode=0755
 file path=usr/lib/brand/dpkg/uninstall mode=0755
 
-depend fmri=pkg:/SUNWcs type=require
+depend fmri=pkg:/sunwcs type=require
 depend fmri=pkg:/system/library type=require
 depend fmri=pkg:/system/zones type=require
 depend fmri=pkg:/system-management-sysidtool type=require
