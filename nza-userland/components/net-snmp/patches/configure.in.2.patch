@@ -1,0 +1,28 @@
+--- net-snmp-5.4.1/configure.in	Wed Feb  8 17:52:30 2012
++++ net-snmp-5.4.1/configure.in.new	Fri Feb 10 16:57:37 2012
+@@ -3718,16 +3718,16 @@
+ fi
+ 
+ # check if compiler pre-processor defines __FUNCTION__
+-AC_CACHE_CHECK(if __FUNCTION__ is defined,ac_cv_HAVE_CPP_UNDERBAR_FUNCTION_DEFINED,
+-[
+-AC_TRY_COMPILE(,[
+-    char *cp = __FUNCTION__;
+-], ac_cv_HAVE_CPP_UNDERBAR_FUNCTION_DEFINED=yes, ac_cv_HAVE_CPP_UNDERBAR_FUNCTION_DEFINED=no)])
++#AC_CACHE_CHECK(if __FUNCTION__ is defined,ac_cv_HAVE_CPP_UNDERBAR_FUNCTION_DEFINED,
++#[
++#AC_TRY_COMPILE(,[
++#    char *cp = __FUNCTION__;
++#], ac_cv_HAVE_CPP_UNDERBAR_FUNCTION_DEFINED=yes, ac_cv_HAVE_CPP_UNDERBAR_FUNCTION_DEFINED=no)])
++#
++#if test "x$ac_cv_HAVE_CPP_UNDERBAR_FUNCTION_DEFINED" = "xyes"; then
++#  AC_DEFINE(HAVE_CPP_UNDERBAR_FUNCTION_DEFINED)
++#fi
+ 
+-if test "x$ac_cv_HAVE_CPP_UNDERBAR_FUNCTION_DEFINED" = "xyes"; then
+-  AC_DEFINE(HAVE_CPP_UNDERBAR_FUNCTION_DEFINED)
+-fi
+-
+ #--------------------------------------------------------------
+ # on SCO Unixware 7.1.4 (SCO compiler), "static inline" functions
+ # are not supported, so this disables the whole inline thing if it
