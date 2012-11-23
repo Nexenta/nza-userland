@@ -1,6 +1,6 @@
 diff -urN DTraceToolkit-0.99/Bin/tcpsnoop.d DTraceToolkit-0.99.new/Bin/tcpsnoop.d
 --- DTraceToolkit-0.99/Bin/tcpsnoop.d	2007-10-04 17:40:00.000000000 +0400
-+++ DTraceToolkit-0.99.new/Bin/tcpsnoop.d	2012-11-23 17:45:47.837795035 +0400
++++ DTraceToolkit-0.99.new/Bin/tcpsnoop.d	2012-11-23 23:50:21.307753732 +0400
 @@ -1,4 +1,5 @@
 -#!/usr/sbin/dtrace -Cs
 +#!/usr/sbin/dtrace -s
@@ -8,12 +8,11 @@ diff -urN DTraceToolkit-0.99/Bin/tcpsnoop.d DTraceToolkit-0.99.new/Bin/tcpsnoop.
  /*
   * tcpsnoop.d - snoop TCP network packets by process.
   *              Written using DTrace (Solaris 10 3/05)
-@@ -61,364 +62,38 @@
+@@ -61,364 +62,37 @@
   * 20-Apr-2006	   "	  "	Last update.
   */
  
 +/* Copyright (c) 2012, Nexenta Systems Inc. All rights reserved. */
-+#!/usr/sbin/dtrace -s
 +
  #pragma D option quiet
  #pragma D option switchrate=10hz
@@ -400,7 +399,7 @@ diff -urN DTraceToolkit-0.99/Bin/tcpsnoop.d DTraceToolkit-0.99.new/Bin/tcpsnoop.
  }
 diff -urN DTraceToolkit-0.99/Net/tcpsnoop.d DTraceToolkit-0.99.new/Net/tcpsnoop.d
 --- DTraceToolkit-0.99/Net/tcpsnoop.d	2007-10-04 17:40:00.000000000 +0400
-+++ DTraceToolkit-0.99.new/Net/tcpsnoop.d	2012-11-23 17:45:47.837795035 +0400
++++ DTraceToolkit-0.99.new/Net/tcpsnoop.d	2012-11-23 23:50:21.307753732 +0400
 @@ -1,4 +1,5 @@
 -#!/usr/sbin/dtrace -Cs
 +#!/usr/sbin/dtrace -s
@@ -408,12 +407,11 @@ diff -urN DTraceToolkit-0.99/Net/tcpsnoop.d DTraceToolkit-0.99.new/Net/tcpsnoop.
  /*
   * tcpsnoop.d - snoop TCP network packets by process.
   *              Written using DTrace (Solaris 10 3/05)
-@@ -61,364 +62,38 @@
+@@ -61,364 +62,37 @@
   * 20-Apr-2006	   "	  "	Last update.
   */
  
 +/* Copyright (c) 2012, Nexenta Systems Inc. All rights reserved. */
-+#!/usr/sbin/dtrace -s
 +
  #pragma D option quiet
  #pragma D option switchrate=10hz
