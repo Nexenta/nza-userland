@@ -40,7 +40,6 @@ include $(WS_TOP)/make-rules/deb.mk
 
 PATH=/usr/gnu/bin:/usr/bin:$(PERL_PATH)/$(PERL_VERSION)/bin
 
-COMPONENT_BUILD_ENV += PATH="$(PATH)"
 COMPONENT_BUILD_ARGS = build
 COMPONENT_INSTALL_ARGS = install -P$(PROTO_DIR)
 

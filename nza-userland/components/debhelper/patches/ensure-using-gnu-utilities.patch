@@ -1,13 +1,17 @@
-diff -dubr debhelper-8.9.13~bpo60+1/Debian/Debhelper/Dh_Lib.pm debhelper-8.9.13~bpo60+1.find/Debian/Debhelper/Dh_Lib.pm
---- debhelper-8.9.13~bpo60+1/Debian/Debhelper/Dh_Lib.pm	2011-12-22 23:09:10.000000000 +0400
-+++ debhelper-8.9.13~bpo60+1.find/Debian/Debhelper/Dh_Lib.pm	2012-11-29 15:42:55.551364683 +0400
-@@ -96,6 +96,9 @@
+Index: debhelper-8.9.13~bpo60+1/Debian/Debhelper/Dh_Lib.pm
+===================================================================
+--- a/Debian/Debhelper/Dh_Lib.pm
++++ b/Debian/Debhelper/Dh_Lib.pm
+@@ -96,6 +96,12 @@ sub init {
  	if (! exists $dh{ERROR_HANDLER} || ! defined $dh{ERROR_HANDLER}) {
  		$dh{ERROR_HANDLER}='exit \$?';
  	}
 +
-+    # Ensure using GNU utilities:
-+    $ENV{'PATH'} = '/usr/gnu/bin:/usr/bin';
++    if ($ENV{'PATH'} =~ /^\./) {
++        $ENV{'PATH'} = '.:/usr/gnu/bin:' . $ENV{'PATH'};
++    } else {
++        $ENV{'PATH'} = '/usr/gnu/bin:' . $ENV{'PATH'};
++    }
  }
  
  # Run at exit. Add the command to the log files for the packages it acted
