@@ -10,9 +10,9 @@
 #
 
 # File Workload Definitions (fwd)
-fwd=fwd1,fsd=fsd*,operation=read,fileio=random,fileselect=random,stopafter=10000
-fwd=fwd2,fsd=fsd*,operation=write,fileio=random,fileselect=random,stopafter=10000
+fwd=fwd1,fsd=fsd*,operation=read,fileio=random,fileselect=random,stopafter=10000,xfersize=(4k)
+fwd=fwd2,fsd=fsd*,operation=write,fileio=random,fileselect=random,stopafter=10000,xfersize=(4k)
 
 # Run Definitions (rd)
-rd=rd1,fwd=fwd1,fwdrate=max,format=yes,elapsed=120,interval=1,forthreads=(1-32,d),forxfersize=(4k)
-rd=rd2,fwd=fwd2,fwdrate=max,format=yes,elapsed=120,interval=1,forthreads=(1-32,d),forxfersize=(4k)
+rd=rd1,fwd=fwd1,fwdrate=max,format=yes,elapsed=120,interval=1,forthreads=(1-32,d)
+rd=rd2,fwd=fwd2,fwdrate=max,format=yes,elapsed=120,interval=1,forthreads=(1-32,d)
