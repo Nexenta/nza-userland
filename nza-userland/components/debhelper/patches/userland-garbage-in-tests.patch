@@ -1,0 +1,10 @@
+--- debhelper-8.9.13~bpo60+1/Makefile	2012-11-29 15:56:27.101972562 +0400
++++ debhelper-8.9.13~bpo60+1.garbage/Makefile	2012-11-29 16:19:54.864599974 +0400
+@@ -89,6 +89,6 @@
+ 	install -m 0644 Debian/Debhelper/Buildsystem/*.pm $(DESTDIR)$(PERLLIBDIR)/Buildsystem
+ 
+ test: version
+-	./run perl -MTest::Harness -e 'runtests grep { ! /CVS/ && ! /\.svn/ && -f && -x } @ARGV' t/* t/buildsystems/*
++	./run perl -MTest::Harness -e 'runtests grep { ! /CVS/ && ! /\.svn/ && ! /\.~1~/ && -f && -x } @ARGV' t/* t/buildsystems/*
+ 	# clean up log etc
+ 	./run dh_clean
