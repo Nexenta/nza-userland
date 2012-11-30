@@ -1,0 +1,190 @@
+diff -urN net-snmp-5.4.1/agent/helpers/table.c net-snmp-5.4.1.new/agent/helpers/table.c
+--- net-snmp-5.4.1/agent/helpers/table.c	2007-03-13 00:37:41.000000000 +0300
++++ net-snmp-5.4.1.new/agent/helpers/table.c	2012-11-30 13:53:38.614960294 +0400
+@@ -837,10 +837,7 @@
+     memcpy(&tmpoid[len], table_info->index_oid,
+            table_info->index_oid_len * sizeof(oid));
+     len += table_info->index_oid_len;
+-    if (var->name && var->name != var->name_loc)
+-        SNMP_FREE(var->name);
+-    snmp_clone_mem((void **) &var->name, tmpoid, len * sizeof(oid));
+-    var->name_length = len;
++    snmp_set_var_objid( var, tmpoid, len );
+ 
+     return SNMPERR_SUCCESS;
+ }
+diff -urN net-snmp-5.4.1/agent/mibgroup/if-mib/data_access/interface_solaris2.c net-snmp-5.4.1.new/agent/mibgroup/if-mib/data_access/interface_solaris2.c
+--- net-snmp-5.4.1/agent/mibgroup/if-mib/data_access/interface_solaris2.c	2007-03-13 00:30:27.000000000 +0300
++++ net-snmp-5.4.1.new/agent/mibgroup/if-mib/data_access/interface_solaris2.c	2012-11-30 13:48:57.558351542 +0400
+@@ -121,15 +121,15 @@
+         /*
+          * collect the information needed by IF-MIB
+          */
+-        entry->paddr = malloc(ife.ifPhysAddress.o_length);
++        entry->paddr = malloc(MAXMACADDRLEN);
+         if (entry->paddr == NULL) {
+             netsnmp_access_interface_entry_free(entry);
+             error = 1;
+             break;
+         }
+-        entry->paddr_len = ife.ifPhysAddress.o_length;
+-        (void)memcpy(entry->paddr, ife.ifPhysAddress.o_bytes, 
+-                     ife.ifPhysAddress.o_length);
++        entry->paddr_len = MAXMACADDRLEN;
++        (void)memcpy(entry->paddr, ife.ifPhysAddress.o_bytes,
++                     MAXMACADDRLEN);
+ 
+         entry->type = ife.ifType;
+         entry->mtu = ife.ifMtu;
+diff -urN net-snmp-5.4.1/agent/mibgroup/tcp-mib/data_access/tcpConn_solaris2.c net-snmp-5.4.1.new/agent/mibgroup/tcp-mib/data_access/tcpConn_solaris2.c
+--- net-snmp-5.4.1/agent/mibgroup/tcp-mib/data_access/tcpConn_solaris2.c	2006-10-11 01:13:36.000000000 +0400
++++ net-snmp-5.4.1.new/agent/mibgroup/tcp-mib/data_access/tcpConn_solaris2.c	2012-11-30 13:56:00.981190519 +0400
+@@ -95,7 +95,7 @@
+         /* 
+          * local address/port. 
+          */
+-        ep->loc_addr_len = sizeof(tc.tcpConnLocalAddress);
++        ep->loc_addr_len = MAXIPV6ADDRLEN;
+         if (sizeof(ep->loc_addr) < ep->loc_addr_len) {
+             netsnmp_access_tcpconn_entry_free(ep);
+             return (-1);
+diff -urN net-snmp-5.4.1/agent/mibgroup/udp-mib/data_access/udp_endpoint_solaris2.c net-snmp-5.4.1.new/agent/mibgroup/udp-mib/data_access/udp_endpoint_solaris2.c
+--- net-snmp-5.4.1/agent/mibgroup/udp-mib/data_access/udp_endpoint_solaris2.c	2006-10-11 01:13:36.000000000 +0400
++++ net-snmp-5.4.1.new/agent/mibgroup/udp-mib/data_access/udp_endpoint_solaris2.c	2012-11-30 13:55:27.205703086 +0400
+@@ -158,7 +158,7 @@
+         /* 
+          * local address/port. 
+          */
+-        ep->loc_addr_len = sizeof(ue6.udp6LocalAddress);
++        ep->loc_addr_len = MAXIPV6ADDRLEN;
+         if (sizeof(ep->loc_addr) < ep->loc_addr_len) {
+             netsnmp_access_udp_endpoint_entry_free(ep);
+             return (-1);
+diff -urN net-snmp-5.4.1/agent/mibgroup/utilities/iquery.c net-snmp-5.4.1.new/agent/mibgroup/utilities/iquery.c
+--- net-snmp-5.4.1/agent/mibgroup/utilities/iquery.c	2006-10-13 02:21:28.000000000 +0400
++++ net-snmp-5.4.1.new/agent/mibgroup/utilities/iquery.c	2012-11-30 13:52:26.860851576 +0400
+@@ -143,6 +143,7 @@
+      */
+     extern int callback_master_num;
+     netsnmp_session *ss = NULL;
++    engIDLen = MAXIPV6ADDRLEN;
+ 
+ #ifdef NETSNMP_TRANSPORT_CALLBACK_DOMAIN
+     ss = netsnmp_callback_open( callback_master_num, NULL, NULL, NULL);
+diff -urN net-snmp-5.4.1/include/net-snmp/net-snmp-includes.h net-snmp-5.4.1.new/include/net-snmp/net-snmp-includes.h
+--- net-snmp-5.4.1/include/net-snmp/net-snmp-includes.h	2005-08-17 16:36:14.000000000 +0400
++++ net-snmp-5.4.1.new/include/net-snmp/net-snmp-includes.h	2012-11-30 13:51:20.889740907 +0400
+@@ -84,4 +84,7 @@
+ #include <net-snmp/library/cmu_compat.h>
+ #endif
+ 
++#include <sys/mac.h>
++#define MAXIPV6ADDRLEN	46
++
+ #endif                          /* NET_SNMP_INCLUDES_H */
+diff -urN net-snmp-5.4.1/snmplib/snmp_client.c net-snmp-5.4.1.new/snmplib/snmp_client.c
+--- net-snmp-5.4.1/snmplib/snmp_client.c	2007-07-04 02:36:42.000000000 +0400
++++ net-snmp-5.4.1.new/snmplib/snmp_client.c	2012-11-30 13:54:07.575924098 +0400
+@@ -282,7 +282,7 @@
+ int
+ snmp_clone_mem(void **dstPtr, void *srcPtr, unsigned len)
+ {
+-    *dstPtr = 0;
++    *dstPtr = NULL;
+     if (srcPtr) {
+         *dstPtr = malloc(len + 1);
+         if (!*dstPtr) {
+diff -urN net-snmp-5.4.1/snmplib/snmp_enum.c net-snmp-5.4.1.new/snmplib/snmp_enum.c
+--- net-snmp-5.4.1/snmplib/snmp_enum.c	2005-02-09 22:46:35.000000000 +0300
++++ net-snmp-5.4.1.new/snmplib/snmp_enum.c	2012-11-30 13:56:41.463293625 +0400
+@@ -32,13 +32,18 @@
+ unsigned int    current_min_num;
+ struct snmp_enum_list_str *sliststorage;
+ 
++static void
++free_enum_list(struct snmp_enum_list *list);
++
+ int
+ init_snmp_enum(const char *type)
+ {
+     int             i;
+ 
+-    if (!snmp_enum_lists)
+-        snmp_enum_lists = (struct snmp_enum_list ***)
++    if (NULL != snmp_enum_lists)
++	    return SE_OK;
++    
++    snmp_enum_lists = (struct snmp_enum_list ***)
+             calloc(1, sizeof(struct snmp_enum_list **) * SE_MAX_IDS);
+     if (!snmp_enum_lists)
+         return SE_NOMEM;
+@@ -261,16 +266,19 @@
+ int
+ se_add_pair_to_list(struct snmp_enum_list **list, char *label, int value)
+ {
+-    struct snmp_enum_list *lastnode = NULL;
++    struct snmp_enum_list *lastnode = NULL, *tmp;
+ 
+     if (!list)
+         return SE_DNE;
+ 
+-    while (*list) {
+-        if ((*list)->value == value)
++    tmp = *list;
++    while (tmp) {
++        if (tmp->value == value) {
++    	    free(label);
+             return (SE_ALREADY_THERE);
+-        lastnode = (*list);
+-        (*list) = (*list)->next;
++        }
++        lastnode = (tmp);
++        tmp = tmp->next;
+     }
+ 
+     if (lastnode) {
+@@ -280,8 +288,10 @@
+         (*list) = SNMP_MALLOC_STRUCT(snmp_enum_list);
+         lastnode = (*list);
+     }
+-    if (!lastnode)
++    if (!lastnode) {
++	free(label);
+         return (SE_NOMEM);
++    }
+     lastnode->label = label;
+     lastnode->value = value;
+     lastnode->next = NULL;
+@@ -347,8 +357,10 @@
+     if (!created) {
+         struct snmp_enum_list_str *sptr =
+             SNMP_MALLOC_STRUCT(snmp_enum_list_str);
+-        if (!sptr)
++        if (!sptr) {
++	    free_enum_list(list);
+             return SE_NOMEM;
++        }
+         sptr->next = sliststorage;
+         sptr->name = strdup(listname);
+         sptr->list = list;
+@@ -357,6 +369,20 @@
+     return ret;
+ }
+ 
++static void
++free_enum_list(struct snmp_enum_list *list)
++{
++    struct snmp_enum_list *next;
++
++    while (list) {
++	next = list->next;
++	SNMP_FREE(list->label);
++	SNMP_FREE(list);
++	list = next;
++    }
++}
++
++
+ void
+ clear_snmp_enum(void)
+ {

@@ -1,0 +1,13 @@
+Index: net-snmp-5.4.1/configure
+===================================================================
+--- net-snmp-5.4.1.orig/configure
++++ net-snmp-5.4.1/configure
+@@ -41769,7 +41769,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_c
+   ac_status=$?
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); }; }; then
+-  ac_cv_HAVE_CPP_UNDERBAR_FUNCTION_DEFINED=yes
++  ac_cv_HAVE_CPP_UNDERBAR_FUNCTION_DEFINED=no
+ else
+   echo "$as_me: failed program was:" >&5
+ sed 's/^/| /' conftest.$ac_ext >&5
