@@ -649,7 +649,7 @@ foreach my $manifest_file (@ARGV) {
             if (grep($$dir{'owner'} eq $$_{'username'}, @users) ||
                 grep($$dir{'group'} eq $$_{'groupname'}, @groups))
             {
-                my $cmd = "chown $$dir{'owner'}:$$dir{'group'} '/$$dir{'path'}'";
+                my $cmd = "\$CHROOT chown $$dir{'owner'}:$$dir{'group'} '/$$dir{'path'}'";
                 warning "will chown in postinstall: $cmd";
                 $postinst_configure .= $cmd . " || true\n";
             } else {
@@ -688,7 +688,7 @@ foreach my $manifest_file (@ARGV) {
             if (grep($$file{'owner'} eq $$_{'username'}, @users) ||
                 grep($$file{'group'} eq $$_{'groupname'}, @groups))
             {
-                my $cmd = "chown $$file{'owner'}:$$file{'group'} '/$$file{'path'}'";
+                my $cmd = "\$CHROOT chown $$file{'owner'}:$$file{'group'} '/$$file{'path'}'";
                 warning "will chown in postinstall: $cmd";
                 $postinst_configure .= $cmd . " || true\n";
             } else {
