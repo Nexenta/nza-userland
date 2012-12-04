@@ -57,6 +57,8 @@ dir path=usr/share/man/man5
 dir path=usr/share/man/man8
 dir path=var
 dir path=var/db
+dir path=var/dhcp
+dir path=var/dhcp/run
 #
 # isc-dhcp lease database directory with mode 0755 to allow isc-dhcp
 # start method to create empty lease files if needed and is world
