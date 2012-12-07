@@ -127,14 +127,3 @@
      }
      if (exists $bits{path} &&
  	$bits{path} ne $path) {
---- a/lib/Net/DBus/RemoteObject.pm
-+++ b/lib/Net/DBus/RemoteObject.pm
-@@ -256,7 +256,7 @@
- 	},
- 			     $name,
- 			     $interface,
--			     $self->{service}->get_owner_name(),
-+			     $self->{service}->get_service_name(),
- 			     $self->{object_path});
- }
- 
