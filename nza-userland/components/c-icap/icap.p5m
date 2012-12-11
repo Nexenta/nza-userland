@@ -32,7 +32,7 @@ set name=info.upstream_url value="http://c-icap.sourceforge.net/"
 
 dir path=var
 dir path=var/log
-dir path=var/log/cicap owner=cicap group=cicap
+dir path=var/log/c-icap owner=cicap group=cicap
 dir path=var/run
 dir path=var/run/c-icap owner=cicap group=cicap
 dir path=usr

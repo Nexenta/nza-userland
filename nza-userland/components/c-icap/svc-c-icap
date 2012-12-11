@@ -4,7 +4,7 @@
 case "$1" in
   start)
         echo "Starting $prog "
-        su cicap -c "/usr/bin/c-icap &"
+        su cicap -c "/usr/bin/c-icap"
         ;;
   stop)
         echo "Stopping $prog "
