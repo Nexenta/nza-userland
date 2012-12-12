@@ -46,13 +46,12 @@ $$specialPkgs{'developer-dtrace'} = 1;
 $$specialPkgs{'driver-network-eri'} = 1;
 
 
-#-----------------------------------------------------------------------------#
 my $tmpl = {};
 my $modulesList = [];
 my @dirs = "";
 my $verbouse = 0;
 my $gatePath = '';
-#-----------------------------------------------------------------------------#
+
 #------------------------------
 # main
 #------------------------------
@@ -84,13 +83,8 @@ my $gatePath = '';
     chomp $arch;
     $$tmpl{'ARCH'} = $arch;
 
-#    print "$result, $pkg\n";
-#    exit 0;
 
     my $templates = &initTemplates();
-
-#    find( \&d, $ENV{'MANIFESTGATE'});
-#    find( { wanted => \&d }, $ENV{'MANIFESTGATE'});
 
     my $str;
     if ($pkgName[0] eq 'all' && scalar(@pkgName) < 2)
@@ -107,31 +101,17 @@ my $gatePath = '';
 	    $$tmpl{'MFEXT'} =~ s/.*\.//;
 	    $str = "\.".$$tmpl{'MFEXT'}."\$";
 	    $pkgNameOne =~ s/$str//;
-#print "=DEBUG:'$pkgNameOne'\n";
-#print "=DEBUG:'$$tmpl{'MFEXT'}'\n";
 	    push(@$modulesList, $pkgNameOne) unless ($pkgNameOne =~ /\.\// || $pkgNameOne eq 'all');
 	}
     }
-
-#print "== @pkgName\n";
-#print "== @$modulesList\n";
-
-#    my $ARCH = system("uname -p");
-#    &genPackage('sunwcs');
-#    &saveDepends('developer-gcc-3');
-#    &saveDepends('library-gmp');
-#exit 0;
 
     my $pkgFailed = [];
     my $pkg;
     foreach $pkg (sort @$modulesList)
     {
-#        next if (defined($$ignorePkgs{$pkg}));
         next if ($pkg =~ /^consolidation-/i);
-#print "== '$pkg'\n";
         print "Generating structure from file: $pkg ... " if $verbouse;
         my $oPackage = &genPackage($pkg);
-#        my $res = ($oPackage) ? $oPackage : 'OK';
         my $res = ($oPackage) ? 'FAILED' : 'OK';
         print "- $res\n" if $verbouse;
         print "-------------------------------------------------------------\n" if $verbouse;
@@ -164,17 +144,14 @@ my $gatePath = '';
 sub d
 {
     my $str = "\.".$$tmpl{'MFEXT'}."\$";
-#    /\.mf$/ or return;
     /$str/ or return;
 
     my $mod = basename($File::Find::name);
-#    $mod =~ s/\..*$//;
     $mod =~ s/$str//;
     if ($mod =~ /^SUNW/i)
     {
         return unless ($mod =~ /^SUNWcsd$/i || $mod =~ /^SUNWcs$/i);
     }
-#    print "$str, $mod\n";
     push(@$modulesList, $mod);
 }
 
@@ -240,9 +217,7 @@ sub genPackage
 
     $mft->init();
     $mft->setHostArch($$tmpl{'ARCH'});
-#print "== pkgFile = $packageFile\n";
     $mft->readMfFile($packageFile);
-#print "== 2\n";
     $$tmpl{'PKGNAME'} = $mft->getModuleName();
     $$tmpl{'PKGSHORTDESCRIPTION'} = $mft->getShortDescription();
     $$tmpl{'PKGDESCRIPTION'} = $mft->getDescription();
@@ -255,7 +230,6 @@ sub genPackage
     $$tmpl{'PRIORITY'} = 'optional';
     $$tmpl{'PRIORITY'} = $$specPriorities{"$$tmpl{'PKGNAME'}"} if (defined($$specPriorities{"$$tmpl{'PKGNAME'}"}));
 
-#    return '8' unless (defined($$noArchPkgs{$$tmpl{'PKGNAME'}})) || $mft->getArch() eq 'i386';
     return '8' unless ($mft->getArch() eq $$tmpl{'ARCH'});
     return '9' if ($mft->getPkgObsolete() eq 'true');
     return '0' if ($mft->getPkgRenamed() eq 'true');
@@ -263,31 +237,23 @@ sub genPackage
     return 'b' if ($$tmpl{'PKGNAME'} =~ /^consolidation-/i);
 
     $str = "test -d $$tmpl{'DESTANATION'}/$$tmpl{'PKGNAME'} && rm -rf $$tmpl{'DESTANATION'}/$$tmpl{'PKGNAME'}";
-#print "== $str == ";
     system($str);
 
     my $res='';
     my $oDirs = &saveDirs($mft);
     $res = '1' if ($oDirs);
-#print "== DEBUG: saveDirs\n";
     my $oFiles = &saveFiles($mft);
     $res .= '2' if ($oFiles);
-#print "== DEBUG: saveFiles\n";
     my $oHardLinks = &saveHardLinks($mft);
     $res .= '3' if ($oHardLinks);
-#print "== DEBUG: saveHardLinks\n";
     my $oDrivers = &saveDrivers($mft);
     $res .= '4' if ($oDrivers);
-#print "== DEBUG: saveDrivers\n";
     my $oLinks = &saveLinks($mft);
     $res .= '5' if ($oLinks);
-#print "== DEBUG: saveLinks\n";
     my $oGroups = &saveGroups($mft);
     $res .= '7' if ($oGroups);
-#print "== DEBUG: saveGroups\n";
     my $oUsers = &saveUsers($mft);
     $res .= '6' if ($oUsers);
-#print "== DEBUG: saveUsers\n";
     $dep = $mft->getDepend();
     $res .= 'a' unless (defined($dep) && scalar($dep) > 0);
 
@@ -350,22 +316,6 @@ sub genPackage
     $$tmpl{'CONFFILES'} = "";
     &saveExtfiles($mft, $operation);
 
-#    undef $operations;
-#    $operations = $$output{$operation} if defined($$output{$operation});
-#    if (defined ($operations) && scalar(@$operations) > 0)
-#    {
-#        $$tmpl{'CONFFILES'} = join("\n",@$operations);
-#        &saveExtfiles($mft, $operation);
-#    }
-
-#    $operation = 'zone';
-#    undef $operations;
-#    $operations = $$output{$operation} if defined($$output{$operation});
-#    if (defined ($operations) && scalar(@$operations) > 0)
-#    {
-#        $$tmpl{'ZONE'} = @$operations[0];
-#    }
-
     $operation = 'changelog';
     $str = fillTemplate($$templates{$operation});
     $file = $$tmpl{'SAVETO'}."/$operation";
@@ -373,10 +323,7 @@ sub genPackage
 
 
     $$tmpl{'DEPENDENCES'} .= ', sunwcs' if ($$specialPkgs{$$tmpl{'PKGNAME'}});
-#    $dep = $mft->getDepend();
-#    print "== @$dep\n";
     $$tmpl{'DEPENDENCES'} .= ', '.join(', ', @$dep) if (defined($dep) && scalar(@$dep) > 0);
-
     $$tmpl{'REPLACES'} = "\nReplaces: ".$$replaces{$$tmpl{'PKGNAME'}} if (defined($$replaces{$$tmpl{'PKGNAME'}}));
 
     $operation = 'control';
@@ -404,16 +351,12 @@ sub genPackage
     return 0;
 }
 
-#-----------------------------------------------------------------------------#
-
 #------------------------------
 # fillTemplate
 #------------------------------
 sub fillTemplate
 {
-#    my ( $file ) = @_;
     my ( $template ) = @_;
-    
     my $str = '';
 
     $str = $template;
@@ -435,8 +378,6 @@ sub fillTemplate
     $str =~ s/%%PREINST_INSTALL%%/$$tmpl{'PREINST_INSTALL'}/g;
     $str =~ s/%%PRERM_UPGRADE%%/$$tmpl{'PRERM_UPGRADE'}/g;
     $str =~ s/%%CONFFILES%%/$$tmpl{'CONFFILES'}/g;
-#    $str =~ s/%%SHLIBS%%/$$tmpl{'SHLIBS'}/g;
-#    $str =~ s/%%ZONE%%/$$tmpl{'ZONE'}/g;
     $str =~ s/%%ORIGINALVERSION%%/$$tmpl{'ORIGINALVERSION'}/g;
     $str =~ s/%%ORIGINALNAME%%/$$tmpl{'ORIGINALNAME'}/g;
     $str =~ s/%%CATEGORY%%/$$tmpl{'CATEGORY'}/g;
@@ -472,12 +413,9 @@ sub saveExtfiles
 
     my $output = $mft->getScripts();
     my $templates = &initTemplates();
-#    my $moduleName = $mft->getModuleName();
     my $operations = $$output{$operation} if defined($$output{$operation});
-#    print join("\n", @$operations) if defined($$output{$operation});
     return unless defined($$output{$operation});
 
-#    my $str = fillTemplate('tmpl/'.$operation.'.tmpl');
     my $str = fillTemplate($$templates{$operation});
     my $file = $$tmpl{'SAVETO'}.'/'.$$tmpl{'PKGNAME'}.'.'.$operation;
     &saveFinalFile($file, $str);
@@ -574,7 +512,6 @@ sub saveFiles
         my $mode = $$line{'mode'}[0];
         my $owner = $$line{'owner'}[0];
 
-#        my $chash = $$line{'chash'}[0] if defined($$line{'chash'});
         my $path = $$line{'path'}[0]; # if defined($$line{'path'});
         my $path_dir = dirname($path);
         my $path_others = $$line{'others'}[0]; # if defined($$line{'others'});
@@ -590,7 +527,6 @@ sub saveFiles
         if (defined($path_others))
         {
 	    $str = dirname("$origPath");
-#print "==DEBUG: $$tmpl{'SAVETO'}/$$tmpl{'PKGNAME'}/$str\n";
 	    mkpath("$$tmpl{'SAVETO'}/$$tmpl{'PKGNAME'}/$str");
 
 	    foreach my $dirOne (@dirs)
@@ -599,7 +535,6 @@ sub saveFiles
 		copy("$dirOne/$path_others", "$$tmpl{'SAVETO'}/$$tmpl{'PKGNAME'}/$origPath") or die "Copy failed:($dirOne/$path_others), $!";
 		chown $owner, $group, "$$tmpl{'SAVETO'}/$$tmpl{'PKGNAME'}/$origPath";
 		chmod oct("$mode"), "$$tmpl{'SAVETO'}/$$tmpl{'PKGNAME'}/$origPath";
-#		last if ($? == 0);
 	    $found = 1;
 	    }
         }
@@ -607,14 +542,9 @@ sub saveFiles
         {
 	    foreach my $dirOne (@dirs)
 	    {
-#		next if (length($dirOne) < 3);
 		next if (($dirOne =~ /^\.\//) || (length($dirOne) < 3));
-#print "==DEBUG: '$dirOne'\n";
-#print "1 - == $dirOne, $path, $origPath\n";
 		next unless (-e "$dirOne/$origPath" && -f "$dirOne/$origPath");
-#print "2 - == $dirOne/$path\n";
 		$str = dirname("$origPath");
-#print "==DEBUG2: $$tmpl{'SAVETO'}/$$tmpl{'PKGNAME'}/$str\n";
 		mkpath("$$tmpl{'SAVETO'}/$$tmpl{'PKGNAME'}/$str");
 		copy("$dirOne/$origPath", "$$tmpl{'SAVETO'}/$$tmpl{'PKGNAME'}/$origPath") or die "Copy failed: $!";
 		chown $owner, $group, "$$tmpl{'SAVETO'}/$$tmpl{'PKGNAME'}/$origPath";
@@ -640,7 +570,6 @@ sub saveFiles
             $str = "mv \$DEST/$origPath \$DEST/$origPath.new";
 	    push(@$fixperms, $str);
 
-	    #$str = "[ \"\$DEBUPGRADE\" = \"1\" ] || ([ -f \$BASEDIR/$path ] || mv -f \$BASEDIR/$path.new \$BASEDIR/$path)";
             $str = "([ -f \$BASEDIR/$path ] || mv -f \$BASEDIR/$path.new \$BASEDIR/$path)";
             push(@$postinst, $str);
         }
@@ -650,11 +579,9 @@ sub saveFiles
             $str = "mv \$DEST/$origPath \$DEST/$origPath.$moduleName";
 	    push(@$fixperms, $str);
 
-	    #$str = "[ \"\$DEBUPGRADE\" = \"1\" ] || ([ -f \$BASEDIR/$path ] && mv -f \$BASEDIR/$path \$BASEDIR/$path.old )";
             $str = "([ -f \$BASEDIR/$path ] && mv -f \$BASEDIR/$path \$BASEDIR/$path.old )";
             push(@$postinst, $str);
 
-	    #$str = "[ \"\$DEBUPGRADE\" = \"1\" ] || ([ -f \$BASEDIR/$path.$moduleName ] && mv -f \$BASEDIR/$path.$moduleName \$BASEDIR/$path )";
             $str = "([ -f \$BASEDIR/$path.$moduleName ] && mv -f \$BASEDIR/$path.$moduleName \$BASEDIR/$path )";
             push(@$postinst, $str);
         }
@@ -664,15 +591,12 @@ sub saveFiles
             $str = "mv \$DEST/$origPath \$DEST/$origPath.$moduleName";
 	    push(@$fixperms, $str);
 
-	    #$str = "[ \"\$DEBUPGRADE\" = \"1\" ] || ([ -f \$BASEDIR/$path ] || rm -f \$BASEDIR/$path.$moduleName )";
             $str = "([ -f \$BASEDIR/$path ] || rm -f \$BASEDIR/$path.$moduleName )";
             push(@$postinst, $str);
 
-	    #$str = "[ \"\$DEBUPGRADE\" = \"1\" ] || ([ -f \$BASEDIR/$path ] && mv -f \$BASEDIR/$path \$BASEDIR/$path.legacy )";
             $str = "([ -f \$BASEDIR/$path ] && mv -f \$BASEDIR/$path \$BASEDIR/$path.legacy )";
             push(@$postinst, $str);
 
-	    #$str = "[ \"\$DEBUPGRADE\" = \"1\" ] || ([ -f \$BASEDIR/$path.$moduleName ] && mv -f \$BASEDIR/$path.$moduleName \$BASEDIR/$path )";
             $str = "([ -f \$BASEDIR/$path.$moduleName ] && mv -f \$BASEDIR/$path.$moduleName \$BASEDIR/$path )";
             push(@$postinst, $str);
         }
@@ -682,13 +606,11 @@ sub saveFiles
             $str = "mv \$DEST/$origPath \$DEST/$origPath.$moduleName";
 	    push(@$fixperms, $str);
 
-	    #$str = "[ \"\$DEBUPGRADE\" = \"1\" ] ||([ -f \$BASEDIR/$path ] || mv -f \$BASEDIR/$path.$moduleName \$BASEDIR/$path )";
             $str = "([ -f \$BASEDIR/$path.saved ] && mv -f \$BASEDIR/$path.saved \$BASEDIR/$path )";
             push(@$postinst, $str);
             $str = "([ -f \$BASEDIR/$path ] || mv -f \$BASEDIR/$path.$moduleName \$BASEDIR/$path )";
             
             push(@$postinst, $str);
-	    #$str = "[ \"\$DEBUPGRADE\" = \"1\" ] ||([ -f \$BASEDIR/$path ] && rm -f \$BASEDIR/$path.$moduleName)";
             $str = "([ -f \$BASEDIR/$path ] && rm -f \$BASEDIR/$path.$moduleName)";
             
             push(@$postinst, $str);
@@ -708,26 +630,12 @@ sub saveFiles
             unless(defined($$svcChk{"$restart_fmri"}))
             {
                 $$svcChk{"$restart_fmri"} = 1;
-#                push(@$postinst, "if [ \"\$BASEDIR\" = \"/\" ]; then");
-                #push(@$postinst, "[ \"\$DEBUPGRADE\" = \"1\" -o \"\$DEBCHROOT\" = \"1\" ] || ( \$BASEDIR/usr/sbin/svcadm restart $restart_fmri || true )");
 		push(@$postinst, "[ \"\${BASEDIR}\" = \"/\" ] && ( /usr/sbin/svcadm restart $restart_fmri || true )");
-
-		#push(@$postinst, "fi");
             }
         }
     }
 
     return 1 unless ($found);
-
-#    $str = "";
-#    push (@$postinst, $str) if (scalar(@$postinst) > 0);
-
-
-#    if ($moduleName eq 'system-library')
-#    {
-#        push (@$preinst, "mount | grep -c /lib/libc.so.1 >/dev/null && umount /lib/libc.so.1");
-#    }
-
 
     $$output{'postinst'} = $postinst if (scalar(@$postinst) > 0);
     $$output{'preinst'} = $preinst if (scalar(@$preinst) > 0);
@@ -767,9 +675,7 @@ sub saveDirs
     $fixperms = $$output{'fixperms'} if (defined($$output{'fixperms'}));
 
     my @buff;
-#    my @buffperm;
     my $file = $$tmpl{'SAVETO'}.'/'.$moduleName.".dirs";
-#    my $fileperm = $$tmpl{'SAVETO'}.'/'.$moduleName.".dirs.fixperm";
     foreach my $line (@$r)
     {
         my $arch = $$line{'variant.arch'}[0] if defined($$line{'variant.arch'});
@@ -787,11 +693,7 @@ sub saveDirs
         push(@$fixperms, "chown $owner:$group \$DEST/$path");
         $found = 1;
     }
-##    return 1 if (scalar(@buff) < 1);
-#    return 1 if (scalar(@$fixperms) < 1);
     return 1 unless ($found);
-##    &saveFinalFile($file, join("\n", @buff));
-#    &saveFinalFile($fileperm, join("\n", @buffperm));
 
     $$output{'postinst'} = $postinst if (scalar(@$postinst) > 0);
     $$output{'fixperms'} = $fixperms if (scalar(@$fixperms) > 0);
@@ -825,16 +727,8 @@ sub saveUsers
         push (@$postinst, $str);
         $str = "if ! getent passwd $$user{'username'}[0] >/dev/null 2>\&1 ; then";
         push (@$postinst, $str);
-#        $str = "adduser --system --no-create-home ";
-#        $str .= "--gecos $$user{'gcos-field'}[0] " if defined ($$user{'gcos-field'});
-#        $str .= "--home $$user{'home-dir'}[0] " if defined ($$user{'home-dir'});
-#        $str .= "--shell $$user{'login-shell'}[0] " if defined ($$user{'login-shell'});
-#        $str .= "--uid $$user{'uid'}[0] ";
-#        $str .= "--ingroup $$user{'group'}[0] " if defined ($$user{'group'});
-#        $str .= " $$user{'username'}[0]";
         $str = "useradd ";
         $str .= " -c $$user{'gcos-field'}[0] " if defined ($$user{'gcos-field'});
-#        $str .= " -d $$user{'home-dir'}[0] " if defined ($$user{'home-dir'});
         $str .= " -s $$user{'login-shell'}[0] " if defined ($$user{'login-shell'});
         $str .= " -u $$user{'uid'}[0] ";
         $str .= " -g $$user{'group'}[0] " if defined ($$user{'group'});
@@ -917,7 +811,6 @@ sub saveLinks
     $prerm = $$output{'prerm'} if (defined($$output{'prerm'}));
     $fixperms = $$output{'fixperms'} if (defined($$output{'fixperms'}));
 
-#    my $file = $$tmpl{'SAVETO'}.'/'.$mft->getModuleName().".links";
     my @buff;
     foreach my $line (@$r)
     {
@@ -933,7 +826,6 @@ sub saveLinks
 
         my $zonevariant;
         $zonevariant = $$line{'variant.opensolaris.zone'}[0] if defined($$line{'variant.opensolaris.zone'});
-#        push(@buff, "$target $path");
 
         my $dir;
         my $alternativesName;
@@ -944,7 +836,6 @@ sub saveLinks
 	    if (defined($mediator))
 	    {
 		$alternativesName = getAlternativesName($path);
-		#$str = "[ \"\$ZONEINST\" = \"1\" ] || (update-alternatives --quiet --altdir \$BASEDIR/etc/alternatives --admindir \$BASEDIR/var/lib/dpkg/alternatives --install \$BASEDIR/$path $alternativesName \$BASEDIR/$dir/$target $alternative_priority || true)";
 		$str = "[ \"\$ZONEINST\" = \"1\" ] || (update-alternatives --quiet --altdir \$BASEDIR/etc/alternatives --admindir \$BASEDIR/var/lib/dpkg/alternatives --install $path $alternativesName \$BASEDIR/$dir/$target $alternative_priority || true)";
 		$str = "(update-alternatives --quiet --altdir \$BASEDIR/etc/alternatives --admindir \$BASEDIR/var/lib/dpkg/alternatives --install /$path $alternativesName /$dir/$target $alternative_priority || true)";
 	    }
@@ -956,13 +847,11 @@ sub saveLinks
 	    if (defined($mediator))
 	    {
 		$alternativesName = getAlternativesName($path);
-		#$str = "[ \"\$DEBCHROOT\" = \"1\" ] ||(update-alternatives --quiet --altdir \$BASEDIR/etc/alternatives --admindir \$BASEDIR/var/lib/dpkg/alternatives --install \$BASEDIR/$path $alternativesName \$BASEDIR/$dir/$target $alternative_priority || true)";
         	$str = "(update-alternatives --quiet --altdir \$BASEDIR/etc/alternatives --admindir \$BASEDIR/var/lib/dpkg/alternatives --install /$path $alternativesName /$dir/$target $alternative_priority || true)";
         	
         	push(@$postinst, $str);
         	
 		$str = "if [ \"$1\" != \"upgrade\" ]; then\n";
-		#$str .= "	[ \"\$DEBCHROOT\" = \"1\" ] ||(update-alternatives --altdir \$BASEDIR/etc/alternatives --admindir \$BASEDIR/var/lib/dpkg/alternatives --remove $alternativesName \$BASEDIR/$dir/$target || true)\n";
 		$str .= "	(update-alternatives --altdir \$BASEDIR/etc/alternatives --admindir \$BASEDIR/var/lib/dpkg/alternatives --remove $alternativesName /$dir/$target || true)\n";
 		$str .= "fi\n";
 		push(@$prerm, $str);
@@ -974,7 +863,6 @@ sub saveLinks
         }
 
     }
-#    &saveFinalFile($file, join("\n", @buff));
 
     $$output{'postinst'} = $postinst if (scalar(@$postinst) > 0);
     $$output{'preinst'} = $preinst if (scalar(@$preinst) > 0);
@@ -1071,9 +959,6 @@ sub saveHardLinks
         }
     }
 
-#    $str = "";
-#    push (@$postinst, $str) if (scalar(@$postinst) > 0);
-
     $$output{'postinst'} = $postinst if (scalar(@$postinst) > 0);
     $$output{'preinst'} = $preinst if (scalar(@$preinst) > 0);
     $$output{'postrm'} = $postrm if (scalar(@$postrm) > 0);
@@ -1110,8 +995,6 @@ sub saveDrivers
     $postrm = $$output{'postrm'} if (defined($$output{'postrm'}));
     $prerm = $$output{'prerm'} if (defined($$output{'prerm'}));
 
-#    local *FILE;
-#    open (FILE, ">", $mft->getModuleName().".drivers");
     foreach my $line (@$r)
     {
         my $name = $$line{'name'}[0] if defined($$line{'name'});
@@ -1183,17 +1066,11 @@ sub saveDrivers
         $policy =~ s/"/'/g if defined($policy); #"
         $OPTIONS .= " -p $policy" if defined($policy);
 
-	#$str = "[ \"\$DEBCHROOT\" = \"1\" -o \"\$ZONEINST\" = \"1\" ] || (grep -c \"^$name \" \$BASEDIR/etc/name_to_major >/dev/null || ( $drv \$BASEDIR_OPT $OPTIONS $name ) )";
         $str = "[ \"\$ZONEINST\" = \"1\" ] || (grep -c \"^$name \" \$BASEDIR/etc/name_to_major >/dev/null || ( $drv \$BASEDIR_OPT $OPTIONS $name ) )";
         push (@$postinst, $str);
 
-#	unless ($moduleName eq 'sunwcs')
-#	{
-	    #$str = "[ \"\$DEBCHROOT\" = \"1\" ] || ( rem_drv -n \$BASEDIR_OPT $name )";
-	    $str = "[ \"\$ZONEINST\" = \"1\" ] || ( rem_drv -n \$BASEDIR_OPT $name )";
-	    
-	    push (@$prerm, $str);
-#        }
+	$str = "[ \"\$ZONEINST\" = \"1\" ] || ( rem_drv -n \$BASEDIR_OPT $name )";
+	push (@$prerm, $str);
 
         if (defined($originalClonePerm))
         {
@@ -1214,12 +1091,8 @@ sub saveDrivers
                 {
                     $perms =~ s/"/'/g; #"
 
-                    #$str = "[ \"\$DEBCHROOT\" = \"1\" -o \"\$ZONEINST\" = \"1\" ] || (grep -c \"$perms\" \$BASEDIR/etc/minor_perm >/dev/null || $drv -a \$BASEDIR_OPT $OPTIONS -m $perms clone)";
                     $str = "[ \"\$ZONEINST\" = \"1\" ] || (grep -c \"$perms\" \$BASEDIR/etc/minor_perm >/dev/null || $drv -a \$BASEDIR_OPT $OPTIONS -m $perms clone)";
-                    
                     push (@$postinst, $str);
-
-                    #$str = "[ \"\$DEBCHROOT\" = \"1\" -o \"\$ZONEINST\" = \"1\" ] || (grep -c \"$perms\" \$BASEDIR/etc/minor_perm >/dev/null && $drv -d \$BASEDIR_OPT $OPTIONS -m $perms clone)";
                     $str = "[ \"\$ZONEINST\" = \"1\" ] || (grep -c \"$perms\" \$BASEDIR/etc/minor_perm >/dev/null && $drv -d \$BASEDIR_OPT $OPTIONS -m $perms clone)";
                     push (@$prerm, $str);
                 }
@@ -1237,7 +1110,6 @@ sub saveDrivers
             push (@$prerm, $str);
         }
     }
-#    close (FILE);
 
     $str = "";
     push (@$postinst, $str) if (scalar(@$postinst) > 0);
@@ -1540,7 +1412,6 @@ sub readSpecFile()
 
     my $lines = {};
     my @buff;
-#    my $line = '';
 
     local *FILE;
     open( FILE, "<", $filename ) or die "Can't open '$filename' : $!";
@@ -1548,7 +1419,6 @@ sub readSpecFile()
 
         chomp;              # remove trailing newline characters
 
-#        s/#.*//;            # ignore comments by erasing them
         next if /^(\s)*$/;  # skip blank lines
         next if /^#/;       # skip comments lines
         next if /^\s*#/;    # skip comments lines
