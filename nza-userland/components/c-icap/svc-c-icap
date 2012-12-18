@@ -3,6 +3,10 @@
 
 case "$1" in
   start)
+        if [ ! -d /var/run/c-icap ]; then
+	    mkdir /var/run/c-icap
+	    chown cicap:cicap /var/run/c-icap
+        fi
         echo "Starting $prog "
         su cicap -c "/usr/bin/c-icap"
         ;;
