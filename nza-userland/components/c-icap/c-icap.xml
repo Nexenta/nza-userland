@@ -20,6 +20,8 @@
     </exec_method>
     <instance name='default' enabled='true'>
       <property_group name='general' type='framework'>
+          <propval name='action_authorization' type='astring'
+              value='solaris.smf.manage.cicap' />
         <property name='package' type='astring'/>
       </property_group>
     </instance>

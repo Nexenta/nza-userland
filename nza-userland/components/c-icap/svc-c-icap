@@ -8,7 +8,7 @@ case "$1" in
 	    chown cicap:cicap /var/run/c-icap
         fi
         echo "Starting $prog "
-        su cicap -c "/usr/bin/c-icap"
+        /usr/bin/c-icap
         ;;
   stop)
         echo "Stopping $prog "
