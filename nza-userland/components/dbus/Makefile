@@ -20,38 +20,38 @@
 #
 # Copyright (c) 2011, Oracle and/or its affiliates. All rights reserved.
 #
-# Copyright (c) 2011 Nexenta Systems, Inc.  All rights reserved.
+# Copyright (c) 2013 Nexenta Systems, Inc.  All rights reserved.
 #
 #
 include ../../make-rules/shared-macros.mk
 
-COMPONENT_NAME=		dbus
-COMPONENT_VERSION=	1.4.16
-COMPONENT_SRC=		$(COMPONENT_NAME)-$(COMPONENT_VERSION)
-COMPONENT_ARCHIVE=	$(COMPONENT_NAME)-$(COMPONENT_VERSION).tar.gz
-COMPONENT_ARCHIVE_HASH=	sha1:d6e6538cfc1ed71992f6786a6da55d815d995b5b
-COMPONENT_ARCHIVE_URL=	http://dbus.freedesktop.org/releases/dbus/$(COMPONENT_ARCHIVE)
+COMPONENT_NAME         = dbus
+COMPONENT_VERSION      = 1.4.16
+COMPONENT_SRC          = $(COMPONENT_NAME)-$(COMPONENT_VERSION)
+COMPONENT_ARCHIVE      = $(COMPONENT_NAME)-$(COMPONENT_VERSION).tar.gz
+COMPONENT_ARCHIVE_HASH = sha1:d6e6538cfc1ed71992f6786a6da55d815d995b5b
+COMPONENT_ARCHIVE_URL  = http://dbus.freedesktop.org/releases/dbus/$(COMPONENT_ARCHIVE)
 
 include ../../make-rules/prep.mk
 include ../../make-rules/configure.mk
 include ../../make-rules/ips.mk
 
 CONFIGURE_PREFIX =	/usr
-CONFIGURE_OPTIONS +=--localstatedir=/var
-CONFIGURE_OPTIONS +=--with-dbus-user=root
-CONFIGURE_OPTIONS +=--without-x
-CONFIGURE_OPTIONS +=--disable-tests
+CONFIGURE_OPTIONS += --localstatedir=/var
+CONFIGURE_OPTIONS += --with-dbus-user=root
+CONFIGURE_OPTIONS += --without-x
+CONFIGURE_OPTIONS += --disable-tests
 
-CONFIGURE_OPTIONS.32 +=--bindir=$(CONFIGURE_PREFIX)/bin
-CONFIGURE_OPTIONS.32 +=--libdir=$(CONFIGURE_PREFIX)/lib
-CONFIGURE_OPTIONS.32 +=--libexecdir=$(CONFIGURE_PREFIX)/lib
-CONFIGURE_OPTIONS.32 +=--with-dbus-daemondir=$(CONFIGURE_PREFIX)/lib
+CONFIGURE_OPTIONS.32 += --bindir=$(CONFIGURE_PREFIX)/bin
+CONFIGURE_OPTIONS.32 += --libdir=$(CONFIGURE_PREFIX)/lib
+CONFIGURE_OPTIONS.32 += --libexecdir=$(CONFIGURE_PREFIX)/lib
+CONFIGURE_OPTIONS.32 += --with-dbus-daemondir=$(CONFIGURE_PREFIX)/lib
 
-CONFIGURE_OPTIONS.64 +=CFLAGS="$(CFLAGS) -m64" 
-CONFIGURE_OPTIONS.64 +=--bindir=$(CONFIGURE_PREFIX)/bin/$(MACH64)
-CONFIGURE_OPTIONS.64 +=--libdir=$(CONFIGURE_PREFIX)/lib/$(MACH64)
-CONFIGURE_OPTIONS.64 +=--libexecdir=$(CONFIGURE_PREFIX)/lib/$(MACH64)
-CONFIGURE_OPTIONS.64 +=--with-dbus-daemondir=$(CONFIGURE_PREFIX)/lib/$(MACH64)
+CONFIGURE_OPTIONS.64 += CFLAGS="$(CFLAGS) -m64"
+CONFIGURE_OPTIONS.64 += --bindir=$(CONFIGURE_PREFIX)/bin/$(MACH64)
+CONFIGURE_OPTIONS.64 += --libdir=$(CONFIGURE_PREFIX)/lib/$(MACH64)
+CONFIGURE_OPTIONS.64 += --libexecdir=$(CONFIGURE_PREFIX)/lib/$(MACH64)
+CONFIGURE_OPTIONS.64 += --with-dbus-daemondir=$(CONFIGURE_PREFIX)/lib/$(MACH64)
 
 build: $(BUILD_32_and_64)
 
