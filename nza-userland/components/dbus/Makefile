@@ -26,10 +26,10 @@
 include ../../make-rules/shared-macros.mk
 
 COMPONENT_NAME         = dbus
-COMPONENT_VERSION      = 1.4.16
+COMPONENT_VERSION      = 1.4.24
 COMPONENT_SRC          = $(COMPONENT_NAME)-$(COMPONENT_VERSION)
 COMPONENT_ARCHIVE      = $(COMPONENT_NAME)-$(COMPONENT_VERSION).tar.gz
-COMPONENT_ARCHIVE_HASH = sha1:d6e6538cfc1ed71992f6786a6da55d815d995b5b
+COMPONENT_ARCHIVE_HASH = sha1:02de59fe8a05a04b81e96acbac7d88c9513d1a0b
 COMPONENT_ARCHIVE_URL  = http://dbus.freedesktop.org/releases/dbus/$(COMPONENT_ARCHIVE)
 
 include ../../make-rules/prep.mk

@@ -47,10 +47,10 @@ dir path=usr/include
 dir path=usr/include/dbus-1.0
 dir path=usr/include/dbus-1.0/dbus
 
-file path=usr/lib/libdbus-1.so.3.5.8
+file path=usr/lib/libdbus-1.so.3.5.9
 file path=usr/lib/amd64/dbus-1.0/include/dbus/dbus-arch-deps.h
 file path=usr/lib/amd64/pkgconfig/dbus-1.pc
-file path=usr/lib/amd64/libdbus-1.so.3.5.8
+file path=usr/lib/amd64/libdbus-1.so.3.5.9
 file path=usr/lib/pkgconfig/dbus-1.pc
 file path=usr/lib/dbus-1.0/include/dbus/dbus-arch-deps.h
 file path=usr/include/dbus-1.0/dbus/dbus-bus.h
@@ -70,9 +70,9 @@ file path=usr/include/dbus-1.0/dbus/dbus-message.h
 file path=usr/include/dbus-1.0/dbus/dbus-protocol.h
 file path=usr/include/dbus-1.0/dbus/dbus-types.h
 
-link path=usr/lib/amd64/libdbus-1.so target=libdbus-1.so.3.5.8
-link path=usr/lib/amd64/libdbus-1.so.3 target=libdbus-1.so.3.5.8
-link path=usr/lib/libdbus-1.so target=libdbus-1.so.3.5.8
-link path=usr/lib/libdbus-1.so.3 target=libdbus-1.so.3.5.8
+link path=usr/lib/amd64/libdbus-1.so target=libdbus-1.so.3.5.9
+link path=usr/lib/amd64/libdbus-1.so.3 target=libdbus-1.so.3.5.9
+link path=usr/lib/libdbus-1.so target=libdbus-1.so.3.5.9
+link path=usr/lib/libdbus-1.so.3 target=libdbus-1.so.3.5.9
 
 license dbus.license license=LGPLv2.1
