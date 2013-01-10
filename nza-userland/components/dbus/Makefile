@@ -25,6 +25,8 @@
 #
 include ../../make-rules/shared-macros.mk
 
+DEBVERSION = 40-0-9
+
 COMPONENT_NAME         = dbus
 COMPONENT_VERSION      = 1.4.24
 COMPONENT_SRC          = $(COMPONENT_NAME)-$(COMPONENT_VERSION)
