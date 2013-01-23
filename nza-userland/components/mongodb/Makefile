@@ -52,7 +52,7 @@ $(BUILD_DIR)/%/.installed:	$(BUILD_DIR)/%/.built
 	cd $(@D) && scons \
 		--cc="$(CC)" \
 		--cxx="$(CXX)" \
-		--prefix="$(PROTO_DIR)/$*/usr" \
+		--prefix="$(PROTO_DIR)/usr" \
 		install
 	touch $@
 
