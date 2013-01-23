@@ -929,7 +929,7 @@ CHECK_SMF
 
     my $pkg_deb = "${pkgdir}_${debversion}_${ARCH}.deb";
     # FIXME: we need GNU tar
-    shell_exec "PATH=/usr/gnu/bin:/usr/bin dpkg-deb -b '$pkgdir' '$pkg_deb'";
+    shell_exec "PATH=/usr/gnu/bin:/usr/bin dpkg-deb -Zbzip2 -b '$pkgdir' '$pkg_deb'";
     shell_exec "rm -r -f '$pkgdir'";
 
     my $md5sum = get_output_line "md5sum    $pkg_deb | cut -d' ' -f1";
