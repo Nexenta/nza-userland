@@ -53,42 +53,16 @@ file manpages/mongodump.1    path=usr/share/man/man1/mongodump.1
 file manpages/mongod.1       path=usr/share/man/man1/mongod.1
 file manpages/mongo.1        path=usr/share/man/man1/mongo.1
 
-hardlink path=usr/bin/bsondump     target=../lib/isaexec
-hardlink path=usr/bin/mongo        target=../lib/isaexec
-hardlink path=usr/bin/mongod       target=../lib/isaexec
-hardlink path=usr/bin/mongodump    target=../lib/isaexec
-hardlink path=usr/bin/mongoexport  target=../lib/isaexec
-hardlink path=usr/bin/mongofiles   target=../lib/isaexec
-hardlink path=usr/bin/mongoimport  target=../lib/isaexec
-hardlink path=usr/bin/mongorestore target=../lib/isaexec
-hardlink path=usr/bin/mongos       target=../lib/isaexec
-hardlink path=usr/bin/mongosniff   target=../lib/isaexec
-hardlink path=usr/bin/mongostat    target=../lib/isaexec
-hardlink path=usr/bin/mongotop     target=../lib/isaexec
-
-file $(MACH32)/usr/bin/bsondump     path=usr/bin/$(MACH32)/bsondump
-file $(MACH32)/usr/bin/mongo        path=usr/bin/$(MACH32)/mongo
-file $(MACH32)/usr/bin/mongod       path=usr/bin/$(MACH32)/mongod
-file $(MACH32)/usr/bin/mongodump    path=usr/bin/$(MACH32)/mongodump
-file $(MACH32)/usr/bin/mongoexport  path=usr/bin/$(MACH32)/mongoexport
-file $(MACH32)/usr/bin/mongofiles   path=usr/bin/$(MACH32)/mongofiles
-file $(MACH32)/usr/bin/mongoimport  path=usr/bin/$(MACH32)/mongoimport
-file $(MACH32)/usr/bin/mongorestore path=usr/bin/$(MACH32)/mongorestore
-file $(MACH32)/usr/bin/mongos       path=usr/bin/$(MACH32)/mongos
-file $(MACH32)/usr/bin/mongosniff   path=usr/bin/$(MACH32)/mongosniff
-file $(MACH32)/usr/bin/mongostat    path=usr/bin/$(MACH32)/mongostat
-file $(MACH32)/usr/bin/mongotop     path=usr/bin/$(MACH32)/mongotop
-
-file $(MACH64)/usr/bin/bsondump     path=usr/bin/$(MACH64)/bsondump
-file $(MACH64)/usr/bin/mongo        path=usr/bin/$(MACH64)/mongo
-file $(MACH64)/usr/bin/mongod       path=usr/bin/$(MACH64)/mongod
-file $(MACH64)/usr/bin/mongodump    path=usr/bin/$(MACH64)/mongodump
-file $(MACH64)/usr/bin/mongoexport  path=usr/bin/$(MACH64)/mongoexport
-file $(MACH64)/usr/bin/mongofiles   path=usr/bin/$(MACH64)/mongofiles
-file $(MACH64)/usr/bin/mongoimport  path=usr/bin/$(MACH64)/mongoimport
-file $(MACH64)/usr/bin/mongorestore path=usr/bin/$(MACH64)/mongorestore
-file $(MACH64)/usr/bin/mongos       path=usr/bin/$(MACH64)/mongos
-file $(MACH64)/usr/bin/mongosniff   path=usr/bin/$(MACH64)/mongosniff
-file $(MACH64)/usr/bin/mongostat    path=usr/bin/$(MACH64)/mongostat
-file $(MACH64)/usr/bin/mongotop     path=usr/bin/$(MACH64)/mongotop
+file path=usr/bin/bsondump
+file path=usr/bin/mongo
+file path=usr/bin/mongod
+file path=usr/bin/mongodump
+file path=usr/bin/mongoexport
+file path=usr/bin/mongofiles
+file path=usr/bin/mongoimport
+file path=usr/bin/mongorestore
+file path=usr/bin/mongos
+file path=usr/bin/mongosniff
+file path=usr/bin/mongostat
+file path=usr/bin/mongotop
 

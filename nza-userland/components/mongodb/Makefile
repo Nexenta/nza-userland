@@ -22,11 +22,13 @@
 #
 include ../../make-rules/shared-macros.mk
 
+DEBVERSION := 40-0-1
+
 COMPONENT_NAME         := mongodb
-COMPONENT_VERSION      := 2.0.3
+COMPONENT_VERSION      := 2.0.8
 COMPONENT_SRC          := $(COMPONENT_NAME)-src-r$(COMPONENT_VERSION)
 COMPONENT_ARCHIVE      := $(COMPONENT_SRC).tar.gz
-COMPONENT_ARCHIVE_HASH := sha1:b6821a8436ce1867b49cad86a855df81499a831c
+COMPONENT_ARCHIVE_HASH := sha1:dc63e799b9d4ce45b7671de08a3c3fae020d05fc
 COMPONENT_ARCHIVE_URL  := http://downloads.mongodb.org/src/$(COMPONENT_ARCHIVE)
 COMPONENT_PROJECT_URL  := http://www.mongodb.org
 
@@ -54,9 +56,9 @@ $(BUILD_DIR)/%/.installed:	$(BUILD_DIR)/%/.built
 		install
 	touch $@
 
-build: $(BUILD_32_and_64)
+build: $(BUILD_32)
 
-install: $(INSTALL_32_and_64)
+install: $(INSTALL_32)
 
 test: $(NO_TESTS)
 
