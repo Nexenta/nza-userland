@@ -63,4 +63,3 @@ hddisco -d $DISK >> $DISK.char/hddisco
 DATE=$(date +%Y%m%d%H%M%S)
 tar cf $DISK.$DATE.tar $DISK.char
 gzip $DISK.$DATE.tar
-echo "Send the ${DISK}.${DATE}.tar.gz file to Richard.Elling@Nexenta.com Thanks!"

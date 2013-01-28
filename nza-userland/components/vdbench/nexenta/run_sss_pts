@@ -150,5 +150,4 @@ do
     DATE=$(date +%Y%m%d%H%M%S)
     tar cf ${OUTDIR}.$DATE.tar "${OUTDIR}"
     gzip ${OUTDIR}.$DATE.tar
-    echo "Send the ${OUTDIR}.${DATE}.tar.gz file to Richard.Elling@Nexenta.com Thanks!"
 done

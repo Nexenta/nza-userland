@@ -47,4 +47,3 @@ kstat -p zfs:0:arcstats > ${OUTDIR}/after.arcstats
 DATE=$(date +%Y%m%d%H%M%S)
 tar cf ${BDIR}.${DATE}.tar "$OUTDIR"
 gzip ${BDIR}.${DATE}.tar
-echo "Send the ${BDIR}.${DATE}.tar.gz file to Richard.Elling@Nexenta.com Thanks!"

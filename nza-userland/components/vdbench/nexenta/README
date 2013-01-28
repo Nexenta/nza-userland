@@ -20,7 +20,6 @@ To run the SNIA Solid State Storage Performance Test Specification for Enterpris
 	./run_sss_pts_disk /dev/zvol/rdsk/poolname/zvolname
 
 In both cases, the vdbench output and other pertinent data is rolled into a timestamped tarball
-in the current directory. The script requests that you send the results to Richard at Nexenta,
-who is interested in collecting such characterization information.
+in the current directory.
 
 Copyright 2011, Nexenta Systems, Inc  All rights reserved.
