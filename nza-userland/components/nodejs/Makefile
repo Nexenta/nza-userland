@@ -25,15 +25,17 @@
 
 include ../../make-rules/shared-macros.mk
 
+DEBVERSION := 40-0-4
+
 # make sure dtrace is found:
 export PATH := /usr/sbin:$(PATH)
 
 COMPONENT_NAME         = nodejs
-COMPONENT_VERSION      = 0.6.16
+COMPONENT_VERSION      = 0.6.21
 COMPONENT_REVISION     =
 COMPONENT_SRC          = node-v$(COMPONENT_VERSION)
 COMPONENT_ARCHIVE      = $(COMPONENT_SRC)$(COMPONENT_REVISION).tar.gz
-COMPONENT_ARCHIVE_HASH = sha1:7046a538420df75718b175d36515b78498a2a22e
+COMPONENT_ARCHIVE_HASH = sha1:31f564bf34c64b07cae3b9a88a87b4a08bab4dc5
 COMPONENT_ARCHIVE_URL  = http://nodejs.org/dist/v$(COMPONENT_VERSION)/$(COMPONENT_ARCHIVE)
 COMPONENT_PROJECT_URL  = http://nodejs.org
 
