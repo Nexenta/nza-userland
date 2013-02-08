@@ -20,22 +20,22 @@
 #
 
 #
-# Copyright (c) 2012, Nexenta Systems, Inc. All rights reserved.
+# Copyright (c) 2013, Nexenta Systems, Inc. All rights reserved.
 #
 
 include ../../make-rules/shared-macros.mk
 
-DEBVERSION := 40-0-4
+DEBVERSION := 40-0-6
 
 # make sure dtrace is found:
 export PATH := /usr/sbin:$(PATH)
 
 COMPONENT_NAME         = nodejs
-COMPONENT_VERSION      = 0.6.21
-COMPONENT_REVISION     =
+COMPONENT_VERSION      = 0.8.19
+COMPONENT_REVISION     = 
 COMPONENT_SRC          = node-v$(COMPONENT_VERSION)
 COMPONENT_ARCHIVE      = $(COMPONENT_SRC)$(COMPONENT_REVISION).tar.gz
-COMPONENT_ARCHIVE_HASH = sha1:31f564bf34c64b07cae3b9a88a87b4a08bab4dc5
+COMPONENT_ARCHIVE_HASH = sha1:f4fdbb642055be65579e11cb52c823573efabcf2
 COMPONENT_ARCHIVE_URL  = http://nodejs.org/dist/v$(COMPONENT_VERSION)/$(COMPONENT_ARCHIVE)
 COMPONENT_PROJECT_URL  = http://nodejs.org
 
@@ -47,11 +47,18 @@ COMPONENT_PRE_CONFIGURE_ACTION = ( \
 	$(CLONEY) $(SOURCE_DIR) $(@D); \
 	)
 
+CONFIG_SHELL= python
+
+
 # Reset configure options.
 # configure is a wrapper to waf.
-CONFIGURE_OPTIONS =  --prefix=/usr
-CONFIGURE_OPTIONS += --libdir=/usr/lib
+CONFIGURE_OPTIONS = --prefix=/usr
+CONFIGURE_OPTIONS += --dest-cpu=x64
 CONFIGURE_OPTIONS += --with-dtrace
+CONFIGURE_OPTIONS += --shared-zlib
+CONFIGURE_OPTIONS += --shared-openssl
+CONFIGURE_OPTIONS += --no-ssl2
+
 
 build:		$(BUILD_32)
 

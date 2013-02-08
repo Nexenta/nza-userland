@@ -38,13 +38,13 @@ dir path=usr/lib/amd64
 dir path=usr/lib/amd64/pkgconfig
 dir path=usr/lib/pkgconfig
 file path=usr/include/zmq.h
-file path=usr/include/zmq.hpp
+file zmq.hpp path=usr/include/zmq.hpp
 file path=usr/include/zmq_utils.h
-file path=usr/lib/amd64/libzmq.so.1.0.0
+file path=usr/lib/amd64/libzmq.so.3.0.0
 file path=usr/lib/amd64/pkgconfig/libzmq.pc
-file path=usr/lib/libzmq.so.1.0.0
+file path=usr/lib/libzmq.so.3.0.0
 file path=usr/lib/pkgconfig/libzmq.pc
-link path=usr/lib/amd64/libzmq.so target=libzmq.so.1.0.0
-link path=usr/lib/amd64/libzmq.so.1 target=libzmq.so.1.0.0
-link path=usr/lib/libzmq.so target=libzmq.so.1.0.0
-link path=usr/lib/libzmq.so.1 target=libzmq.so.1.0.0
+link path=usr/lib/amd64/libzmq.so target=libzmq.so.3.0.0
+link path=usr/lib/amd64/libzmq.so.1 target=libzmq.so.3.0.0
+link path=usr/lib/libzmq.so target=libzmq.so.3.0.0
+link path=usr/lib/libzmq.so.3 target=libzmq.so.3.0.0

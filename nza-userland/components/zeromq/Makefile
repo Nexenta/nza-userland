@@ -20,17 +20,17 @@
 #
 
 #
-# Copyright (c) 2012, Nexenta Systems, Inc. All rights reserved.
+# Copyright (c) 2013, Nexenta Systems, Inc. All rights reserved.
 #
 
 include ../../make-rules/shared-macros.mk
 
 COMPONENT_NAME         = zeromq
-COMPONENT_VERSION      = 2.1.11
-COMPONENT_REVISION     =
+COMPONENT_VERSION      = 3.2.2
+COMPONENT_REVISION     = 
 COMPONENT_SRC          = $(COMPONENT_NAME)-$(COMPONENT_VERSION)
 COMPONENT_ARCHIVE      = $(COMPONENT_SRC)$(COMPONENT_REVISION).tar.gz
-COMPONENT_ARCHIVE_HASH = sha1:e8691266559a8031ade6c4fe53f54738c7757447
+COMPONENT_ARCHIVE_HASH = sha1:0e8734c773b6a757b474c16fc3c517993ba47283
 COMPONENT_ARCHIVE_URL  = http://download.zeromq.org/$(COMPONENT_ARCHIVE)
 COMPONENT_PROJECT_URL  = http://www.zeromq.org
 
