@@ -5,8 +5,10 @@ SUNSTUDIO_PATH   = /opt/SUNWspro
 SUN_GATE         = http://dlc.sun.com/osol/on/downloads/20100817
 CLOSED_BINARY1   = on-closed-bins.i386.tar.bz2
 CLOSED_BINARY2   = on-closed-bins-nd.i386.tar.bz2
-DEB_VERSION     ?= 40-0-15
+DEB_VERSION     ?= 40-0-21
 DEB_MAINTAINER  ?= Nexenta Systems <maintainer@nexenta.com>
+NZA_KERNEL_REV  ?= tip
+NZA_CLOSED_REV  ?= tip
 
 NZA_ROOT         = $(CURDIR)
 CODEMGR_WS       = $(NZA_ROOT)/$(NZA_KERNEL)
@@ -53,17 +55,23 @@ checktools:
 clonning: checktools
 	if test ! -d $(CODEMGR_WS) ; then \
 		hg clone $(NZA_KERNEL_PATH) $(CODEMGR_WS); \
+		cd $(CODEMGR_WS); \
+		hg up $(NZA_KERNEL_REV) -C; \
 	else \
 		cd $(CODEMGR_WS); \
 		hg pull -u; \
+		hg up $(NZA_KERNEL_REV) -C; \
 	fi
 	if test ! -d $(CODEMGR_WS)/usr/$(NZA_CLOSED); then \
 		hg clone $(NZA_CLOSED_PATH) $(CODEMGR_WS)/usr/$(NZA_CLOSED); \
+		cd $(CODEMGR_WS)/usr/$(NZA_CLOSED); \
+		hg up $(NZA_CLOSED_REV) -C; \
 	else \
 		cd $(CODEMGR_WS)/usr/$(NZA_CLOSED); \
 		hg pull -u; \
+		hg up $(NZA_CLOSED_REV) -C; \
 	fi
-	cd $(CODEMGR_WS) && hg log -l1 -b `hg branch` --template '{node|short}' > $(CUR_REV)
+	cd $(CODEMGR_WS) && hg id -i > $(CUR_REV)
 	touch $@
 
 setup-closed: clonning
@@ -101,7 +109,6 @@ adjust-scripts: copy-tools
 	echo "export DEB_MAINTAINER='$(DEB_MAINTAINER)'" >> $(CODEMGR_WS)/illumos.sh
 	echo "export DPKG_BUILD_FLAGS='-b -d -uc'" >> $(CODEMGR_WS)/illumos.sh
 	echo "export PKGARCHIVEAPT='${CODEMGR_WS}/packages/${MACH}/apt'" >> $(CODEMGR_WS)/illumos.sh
-	echo "export GCC_ROOT='/usr'" >> $(CODEMGR_WS)/illumos.sh	
 	touch $@
 
 setrelease: adjust-scripts
@@ -112,17 +119,36 @@ setdebug: adjust-scripts
 	sed -i "s/export NIGHTLY_OPTIONS='-FnCDlmprt'/export NIGHTLY_OPTIONS='-nFDCmprt'/" $(CODEMGR_WS)/illumos.sh
 	touch $@
 
-build-releasekernel: hacking setup-closed setrelease
+setss: adjust-scripts
+	echo "export GCC_ROOT='/usr'" >> $(CODEMGR_WS)/illumos.sh
+	touch $@
+
+setgcc: adjust-scripts
+	echo "export GCC_ROOT='/usr/gcc/4.4'" >> $(CODEMGR_WS)/illumos.sh
+	echo "export CW_GCC_DIR='/usr/gcc/4.4/bin'" >> $(CODEMGR_WS)/illumos.sh
+	echo "export __GNUC=''" >> $(CODEMGR_WS)/illumos.sh
+	echo "export __GNUC4=''" >> $(CODEMGR_WS)/illumos.sh
+	touch $@
+
+build-releasekernel: hacking setup-closed setrelease setss
 	$(buildkernel)
 	touch $@
 
-build-debugkernel: hacking setup-closed setdebug
+build-releasekernel-gcc: hacking setup-closed setrelease setgcc
+	$(buildkernel)
+	touch $@
+
+build-debugkernel: hacking setup-closed setdebug setss
+	$(buildkernel)
+	touch $@
+
+build-debugkernel-gcc: hacking setup-closed setdebug setgcc
 	$(buildkernel)
 	touch $@
 
 build-releasepackages:
 	if test ! -d $(CODEMGR_WS)/proto; then \
-		echo "Run \"make build-releasekernel\" first!"; \
+		echo "Run \"make build-releasekernel or build-releasekernel-gcc\" first!"; \
 		exit 1; \
 	fi; \
 	$(buildpackages)
@@ -130,7 +156,7 @@ build-releasepackages:
 
 build-debugpackages:
 	if test ! -d $(CODEMGR_WS)/proto; then \
-		echo "Run \"make build-debugkernel\" first!"; \
+		echo "Run \"make build-debugkernel or build-debugkernel-gcc\" first!"; \
 		exit 1; \
 	fi; \
 	$(buildpackages)
@@ -141,8 +167,10 @@ build-debugpackages:
 
 clean:
 	rm -f checktools clonning setup-closed patching hacking setrelease setdebug
-	rm -f copy-tools adjust-scripts build-releasekernel build-debugkernel 
+	rm -f copy-tools adjust-scripts build-releasekernel build-debugkernel
 	rm -f build-releasepackages build-debugpackages
+	rm -f build-releasekernel-gcc build-debugkernel-gcc
+	rm -f setss setgcc
 	rm -rf $(CODEMGR_WS)
 
 clean_patches:
@@ -151,7 +179,7 @@ clean_patches:
 
 help:
 	@echo ""
-	@echo "Usage: make [build-releasekernel|build-debugkernel|build-releasepackages|build-debugpackages|clean|clean_patches|help]"
+	@echo "Usage: make [build-releasekernel|build-releasekernel-gcc|build-debugkernel|build-debugkernel-gcc|build-releasepackages|build-debugpackages|clean|clean_patches|help]"
 	@echo ""
 	@echo "DEB_VERSION:"
 	@echo "	   Version of Kernel deb packages. Must be set for 'build-releasepackages|build-debugpackages'"
@@ -167,6 +195,12 @@ help:
 	@echo "	   It points to mercurial repo on default."
 	@echo "	   However you can re-export this var to clone"
 	@echo "	   $(NZA_CLOSED) from your locally shared place."
+	@echo "NZA_KERNEL_REV:"
+	@echo "           Revision for $(NZA_KERNEL)"
+	@echo "           Is 'tip' on default. Change it if you need to build another revision of nza_kernel"
+	@echo "NZA_CLOSED_REV:"
+	@echo "           Revision for $(NZA_CLOSED)"
+	@echo "           Is 'tip' on default. Change it if you need to use another revision of nza_closed"
 	@echo "DEB_MAINTAINER:"
 	@echo "           Crafter of packages"
 	@echo "	   It is \"Nexenta Systems <maintainer@nexenta.com>\" on default."
