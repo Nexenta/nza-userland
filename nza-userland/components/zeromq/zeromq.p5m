@@ -47,4 +47,4 @@ file path=usr/lib/pkgconfig/libzmq.pc
 link path=usr/lib/amd64/libzmq.so target=libzmq.so.3.0.0
 link path=usr/lib/amd64/libzmq.so.1 target=libzmq.so.3.0.0
 link path=usr/lib/libzmq.so target=libzmq.so.3.0.0
-link path=usr/lib/libzmq.so.3 target=libzmq.so.3.0.0
+link path=usr/lib/libzmq.so.1 target=libzmq.so.3.0.0
