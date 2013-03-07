@@ -7,8 +7,8 @@ CLOSED_BINARY1   = on-closed-bins.i386.tar.bz2
 CLOSED_BINARY2   = on-closed-bins-nd.i386.tar.bz2
 DEB_VERSION     ?= 40-0-21
 DEB_MAINTAINER  ?= Nexenta Systems <maintainer@nexenta.com>
-NZA_KERNEL_REV  ?= tip
-NZA_CLOSED_REV  ?= tip
+NZA_KERNEL_REV  ?= default
+NZA_CLOSED_REV  ?= default
 
 NZA_ROOT         = $(CURDIR)
 CODEMGR_WS       = $(NZA_ROOT)/$(NZA_KERNEL)
