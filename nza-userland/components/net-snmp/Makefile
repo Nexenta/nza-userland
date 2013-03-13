@@ -63,7 +63,6 @@ CONFIGURE_OPTIONS  +=	--enable-agentx-dom-sock-only
 CONFIGURE_OPTIONS  +=	--enable-ucd-snmp-compatibility
 CONFIGURE_OPTIONS  +=	--enable-ipv6
 CONFIGURE_OPTIONS  +=	--enable-mfd-rewrites
-CONFIGURE_OPTIONS  +=	--with-pkcs
 CONFIGURE_OPTIONS  +=	--with-transports="UDP TCP UDPIPv6 TCPIPv6"
 
 # Which MIB modules do we want to build
