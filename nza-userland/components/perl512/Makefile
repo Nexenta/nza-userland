@@ -28,18 +28,22 @@ include ../../make-rules/shared-macros.mk
 # can't call it.
 
 COMPONENT_NAME         = perl
-COMPONENT_VERSION      = 5.12.3
+COMPONENT_VERSION      = 5.12.5
 PERL_VERSION           = 5.12
 COMPONENT_SRC          = $(COMPONENT_NAME)-$(COMPONENT_VERSION)
 COMPONENT_ARCHIVE      = $(COMPONENT_SRC).tar.bz2
-COMPONENT_ARCHIVE_HASH = sha1:86d77c6cbc7a60068dc14c88ffd0729324d1174f
+COMPONENT_ARCHIVE_HASH = sha1:812139ceef512eb8458af29ffbf46d78ef26c12a
 COMPONENT_ARCHIVE_URL  = http://www.cpan.org/src/5.0/$(COMPONENT_ARCHIVE)
 
 include ../../make-rules/prep.mk
 include ../../make-rules/justmake.mk
 include ../../make-rules/ips.mk
 
-COMPILER = gcc
+export CC = gcc
+
+# GNU bash, version 4.1.9(1)-release (i386-pc-solaris2.11)
+# (/usr/gnu/bin/sh) crashes:
+export PATH=/usr/bin:/usr/sbin
 
 #
 # Override these compiler settings because they are causing problems
@@ -80,7 +84,7 @@ COMPONENT_PRE_BUILD_ACTION= \
 			    -Dusedtrace \
 			    -Duse64bitint \
 			    -Duselargefiles \
-			    -Dcc="$(CC) -B/usr/ccs/bin/" \
+			    -Dcc="$(CC)" \
 			    -Accflags="-fno-stack-protector" \
 			    -Aldflags="-L/usr/lib" \
 			    -Dmyhostname="localhost" \
