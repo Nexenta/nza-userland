@@ -34,7 +34,13 @@ import shutil
 from urllib import splittype, urlopen
 import hashlib
 from urlparse import urlparse
-import paramiko
+
+try:
+    import paramiko
+    have_ssh = True
+except:
+    have_ssh = False
+
 
 
 def printError(e, txt):
@@ -250,7 +256,7 @@ def main():
 			if name == None:
 				print "failed"
 				continue
-		elif scheme in [ 'sftp' ]:
+		elif scheme in [ 'sftp' ] and have_ssh:
 			print "\n    downloading via SSH...",
 			name = download_sftp(url, file_arg)
 			if name == None:
