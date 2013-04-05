@@ -18,7 +18,7 @@
 #
 # CDDL HEADER END
 #
-# Copyright (c) 2012, Nexenta Systems, Inc. All rights reserved.
+# Copyright (c) 2012-2013, Nexenta Systems, Inc. All rights reserved.
 #
 
 <transform file path=usr.*/man/.+                -> default mangler.man.stability volatile>
@@ -45,7 +45,7 @@ dir path=opt/onbld/etc
 
 
 file src/Makefile path=usr/src/nza-kernel/Makefile
-file src/nza-patches/deb.patch path=usr/src/nza-kernel/nza-patches/deb.patch
+file src/Makefile.deb path=usr/src/nza-kernel/Makefile.deb
 file src/nza-patches/perl512.patch  path=usr/src/nza-kernel/nza-patches/perl512.patch
 file src/nza-patches/series  path=usr/src/nza-kernel/nza-patches/series
 

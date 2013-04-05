@@ -1391,7 +1391,7 @@ binary-arch:
 	-dh_shlibdeps -Xdebian/sunwcs/usr/kernel/* -- --ignore-missing-info
 	dh_gencontrol
 	dh_md5sums
-	dh_builddeb
+	dh_builddeb -- -Zbzip2 -z9
 
 ##binary: binary-indep binary-arch
 binary: binary-arch

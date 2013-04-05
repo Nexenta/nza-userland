@@ -5,10 +5,11 @@ SUNSTUDIO_PATH   = /opt/SUNWspro
 SUN_GATE         = http://dlc.sun.com/osol/on/downloads/20100817
 CLOSED_BINARY1   = on-closed-bins.i386.tar.bz2
 CLOSED_BINARY2   = on-closed-bins-nd.i386.tar.bz2
-DEB_VERSION     ?= 40-0-21
-DEB_MAINTAINER  ?= Nexenta Systems <maintainer@nexenta.com>
 NZA_KERNEL_REV  ?= default
 NZA_CLOSED_REV  ?= default
+
+export DEB_VERSION     ?= 40-0-21
+export DEB_MAINTAINER  ?= Nexenta Systems <maintainer@nexenta.com>
 
 NZA_ROOT         = $(CURDIR)
 CODEMGR_WS       = $(NZA_ROOT)/$(NZA_KERNEL)
@@ -22,21 +23,6 @@ define buildkernel
 	cd $(CODEMGR_WS) && CODEMGR_WS='$(CODEMGR_WS)' GATE=$$REV ksh93 bldenv.sh -d illumos.sh -c 'cd usr/src && dmake setup' 1>&2; \
 	cd $(CODEMGR_WS) && CODEMGR_WS='$(CODEMGR_WS)' GATE=$$REV ./nightly.sh illumos.sh
 endef
-
-define buildpackages
-	REV=`cat $(CUR_REV)`; \
-	cd $(CODEMGR_WS) && CODEMGR_WS='$(CODEMGR_WS)' GATE=$$REV ksh93 bldenv.sh -d illumos.sh -c 'cd usr/src/pkg && dmake deb'; \
-	cd $(CODEMGR_WS) && CODEMGR_WS='$(CODEMGR_WS)' GATE=$$REV ksh93 bldenv.sh -d illumos.sh -c 'cd usr/src/pkg && dmake debapt'
-endef
-
-ifndef DEB_VERSION
-  $(warning *******************************************************************)
-  $(warning *                    DEB_VERSION is not set!                         *)
-  $(warning * DEB_VERSION is responsible for a version of Kernel deb packages.   *)
-  $(warning *  For Nexenta 4.0 it should have a format 40-0-X (X:0,1,2,3,...) *)
-  $(warning *   DEB_VERSION is 40-0-0 on default!   *)
-  $(warning *******************************************************************)
-endif
 
 all:
 	@echo "Please, select 'build-releasekernel' or 'build-debugkernel'!"
@@ -61,15 +47,6 @@ clonning: checktools
 		cd $(CODEMGR_WS); \
 		hg pull -u; \
 		hg up $(NZA_KERNEL_REV) -C; \
-	fi
-	if test ! -d $(CODEMGR_WS)/usr/$(NZA_CLOSED); then \
-		hg clone $(NZA_CLOSED_PATH) $(CODEMGR_WS)/usr/$(NZA_CLOSED); \
-		cd $(CODEMGR_WS)/usr/$(NZA_CLOSED); \
-		hg up $(NZA_CLOSED_REV) -C; \
-	else \
-		cd $(CODEMGR_WS)/usr/$(NZA_CLOSED); \
-		hg pull -u; \
-		hg up $(NZA_CLOSED_REV) -C; \
 	fi
 	cd $(CODEMGR_WS) && hg id -i > $(CUR_REV)
 	touch $@
@@ -151,7 +128,7 @@ build-releasepackages:
 		echo "Run \"make build-releasekernel or build-releasekernel-gcc\" first!"; \
 		exit 1; \
 	fi; \
-	$(buildpackages)
+	$(MAKE) -f Makefile.deb apt
 	touch $@
 
 build-debugpackages:
@@ -159,7 +136,7 @@ build-debugpackages:
 		echo "Run \"make build-debugkernel or build-debugkernel-gcc\" first!"; \
 		exit 1; \
 	fi; \
-	$(buildpackages)
+	$(MAKE) -f Makefile.deb apt
 	touch $@
 
 
@@ -172,6 +149,7 @@ clean:
 	rm -f build-releasekernel-gcc build-debugkernel-gcc
 	rm -f setss setgcc
 	rm -rf $(CODEMGR_WS)
+	$(MAKE) -f Makefile.deb clean
 
 clean_patches:
 	cd $(CODEMGR_WS) && hg qpop -a

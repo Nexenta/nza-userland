@@ -1,0 +1,73 @@
+DEB_VERSION     ?= 0-0-0
+DEB_MAINTAINER  ?= Nexenta Systems <maintainer@nexenta.com>
+
+# No source packages:
+DPKG_BUILD_FLAGS = -b
+
+ROOT = nza-kernel
+MACH = i386
+
+MANIFESTDIR = $(ROOT)/usr/src/pkg/packages.$(MACH)
+
+PKGROOT = $(ROOT)/proto/root_$(MACH)
+TOOLSROOT = $(ROOT)/usr/src/tools/proto/root_$(MACH)-nd
+
+# APT repository
+APTDIR = apt
+
+# All debs, stamps are here:
+DEBDIR = debs
+
+PKGMOG := $(shell cd $(MANIFESTDIR) && ls *.mog)
+PKGDEB := $(PKGMOG:%.mog=$(DEBDIR)/%.deb-stamp)
+
+
+deb: $(PKGDEB)
+apt: $(DEBDIR)/.apt-stamp
+clean:
+	rm -rf $(APTDIR) $(DEBDIR)
+
+.PHONY: deb apt clean
+
+$(DEBDIR)/%.deb-stamp: $(MANIFESTDIR)/%.mog $(DEBDIR)/.dir-stamp
+	/opt/onbld/bin/ips2deb.pl --noverbose \
+	-p $< \
+	-d $(PKGROOT) \
+	-d $(TOOLSROOT) \
+	-o "$(DEBDIR)" \
+	--mfg "$(MANIFESTDIR)" \
+	--mfe "mog" \
+	--maintainer "$(DEB_MAINTAINER)" \
+	--pv "$(DEB_VERSION)" \
+	--category "illumos" || echo "Never mind"
+
+	d=`echo $(<F:%.mog=%) | sed -e 's/[\/_]/-/g' | nawk '{print tolower($$1)}'` ; \
+	if [ -d "$(DEBDIR)/$$d" ]; then \
+	    echo "Building pkg: $$d" ; \
+	    cd "$(DEBDIR)/$$d" ; \
+	    PATH=/usr/gnu/bin:/usr/bin:$$PATH \
+			dpkg-buildpackage $(DPKG_BUILD_FLAGS) > ../$$d.build.log 2>&1 ; \
+	fi
+
+	touch  $@
+
+$(DEBDIR)/.deb-commit-stamp: $(PKGDEB) $(APTDIR)/conf/distributions
+	for p in $(DEBDIR)/*.changes; do \
+		echo "processing $$p"; \
+		/usr/bin/reprepro -b $(APTDIR) --export=never include unstable $$p > $$p.log 2>&1 \
+		|| (cat $$.p.log && exit 1); \
+	done
+	touch $@
+
+$(DEBDIR)/.apt-stamp: $(DEBDIR)/.deb-commit-stamp
+	/usr/bin/reprepro -b $(APTDIR) export
+	touch $@
+
+$(APTDIR)/conf/distributions: /opt/onbld/etc/distributions.apt
+	mkdir -p $(@D)
+	cp -f $< $@
+
+$(DEBDIR)/.dir-stamp:
+	mkdir -p $(@D)
+	touch $@
+
