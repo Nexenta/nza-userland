@@ -1,0 +1,8 @@
+By default you have binary of 1.0.1 @ openssl-0.9.8/openssl-1.0.1e/
+
+If you want to rebuild & package deb:
+	* build && install @ openssl/openssl-1.0.1
+	* from openssl/openssl-1.0.1/build/proto/ copy libssl.so, libcrypto.so, openssl binary \
+						for i386: openssl-0.9.8/openssl-1.0.1e 
+						for amd64:  openssl-0.9.8/openssl-1.0.1e/amd64
+	* gmake deb @ openssl/opnessl-0.9.8/

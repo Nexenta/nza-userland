@@ -1,0 +1,52 @@
+--- ./engines/Makefile.old	Tue Feb  5 03:58:59 2013
++++ ./engines/Makefile	Mon Feb 25 03:42:54 2013
+@@ -20,8 +20,9 @@
+ APPS=
+ 
+ LIB=$(TOP)/libcrypto.a
+-LIBNAMES= 4758cca aep atalla cswift gmp chil nuron sureware ubsec capi
++LIBNAMES= 4758cca aep atalla cswift gmp chil nuron sureware ubsec capi devcrypto
+ 
++
+ LIBSRC=	e_4758cca.c \
+ 	e_aep.c \
+ 	e_atalla.c \
+@@ -31,7 +32,8 @@
+ 	e_nuron.c \
+ 	e_sureware.c \
+ 	e_ubsec.c \
+-	e_capi.c
++	e_capi.c \
++	e_devcrypto.c
+ LIBOBJ= e_4758cca.o \
+ 	e_aep.o \
+ 	e_atalla.o \
+@@ -41,7 +43,8 @@
+ 	e_nuron.o \
+ 	e_sureware.o \
+ 	e_ubsec.o \
+-	e_capi.o
++	e_capi.o \
++	e_devcrypto.o
+ 
+ SRC= $(LIBSRC)
+ 
+@@ -55,7 +58,8 @@
+ 	e_nuron_err.c e_nuron_err.h \
+ 	e_sureware_err.c e_sureware_err.h \
+ 	e_ubsec_err.c e_ubsec_err.h \
+-	e_capi_err.c e_capi_err.h
++	e_capi_err.c e_capi_err.h \
++	e_devcrypto_err.c e_devcrypto_err.h
+ 
+ ALL=    $(GENERAL) $(SRC) $(HEADER)
+ 
+@@ -70,7 +74,7 @@
+ 		for l in $(LIBNAMES); do \
+ 			$(MAKE) -f ../Makefile.shared -e \
+ 				LIBNAME=$$l LIBEXTRAS=e_$$l.o \
+-				LIBDEPS='-L.. -lcrypto $(EX_LIBS)' \
++				LIBDEPS='-L.. -lcrypto -lcryptoutil $(EX_LIBS)' \
+ 				link_o.$(SHLIB_TARGET); \
+ 		done; \
+ 	else \
