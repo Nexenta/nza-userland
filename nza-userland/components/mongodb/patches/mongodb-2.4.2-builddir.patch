@@ -1,0 +1,15 @@
+Description: mongodb build system includes all options into build dir path,
+ including compiler, e. g. build/sunos5/32/cc__usr_bin_gcc...
+ But does not take into account THE SPACES!!!
+ Changing builddir to simple 'foo' does not work :-/
+--- mongodb-src-r2.4.2.orig/SConstruct	2013-04-16 23:21:23.000000000 +0400
++++ mongodb-src-r2.4.2/SConstruct	2013-04-25 06:10:33.318688538 +0400
+@@ -117,7 +117,7 @@
+             a.append( name )
+         else:
+             x = get_option( name )
+-            x = re.sub( "[:,\\\\/]" , "_" , x )
++            x = re.sub( "[:,\\\\/ ]+" , "_" , x )
+             a.append( name + "_" + x )
+             
+     s = "#build/${PYSYSPLATFORM}/"

@@ -1,0 +1,28 @@
+Only in mongodb-src-r2.4.2/: .prep
+diff -dubr mongodb-src-r2.4.2.orig/src/mongo/bson/bsonobjbuilder.h mongodb-src-r2.4.2/src/mongo/bson/bsonobjbuilder.h
+--- mongodb-src-r2.4.2.orig/src/mongo/bson/bsonobjbuilder.h	2013-04-16 23:21:23.000000000 +0400
++++ mongodb-src-r2.4.2/src/mongo/bson/bsonobjbuilder.h	2013-04-23 10:16:33.225644942 +0400
+@@ -186,6 +186,11 @@
+             return append(fieldName, (int) n);
+         }
+ 
++        /** Append a pid_t - cast to a signed int. */
++        BSONObjBuilder& append(const StringData& fieldName, pid_t pid) {
++            return append(fieldName, (int) pid);
++        }
++
+         /** Append a NumberLong */
+         BSONObjBuilder& append(const StringData& fieldName, long long n) {
+             _b.appendNum((char) NumberLong);
+diff -dubr mongodb-src-r2.4.2.orig/src/mongo/shell/shell_utils_launcher.h mongodb-src-r2.4.2/src/mongo/shell/shell_utils_launcher.h
+--- mongodb-src-r2.4.2.orig/src/mongo/shell/shell_utils_launcher.h	2013-04-16 23:21:23.000000000 +0400
++++ mongodb-src-r2.4.2/src/mongo/shell/shell_utils_launcher.h	2013-04-22 23:08:46.088204618 +0400
+@@ -73,7 +73,7 @@
+             /** @return pid for a registered port. */
+             pid_t pidForPort( int port ) const;
+             /** @return port (-1 if doesn't exist) for a registered pid. */
+-            int portForPid( int port ) const;
++            int portForPid( pid_t pid ) const;
+             /** Register an unregistered port. */
+             void registerPort( int port, pid_t pid, int output );
+             void deletePort( int port );

@@ -22,13 +22,13 @@
 #
 include ../../make-rules/shared-macros.mk
 
-DEBVERSION := 40-0-2
+DEBVERSION := 40-0-3
 
 COMPONENT_NAME         := mongodb
-COMPONENT_VERSION      := 2.0.8
+COMPONENT_VERSION      := 2.4.2
 COMPONENT_SRC          := $(COMPONENT_NAME)-src-r$(COMPONENT_VERSION)
 COMPONENT_ARCHIVE      := $(COMPONENT_SRC).tar.gz
-COMPONENT_ARCHIVE_HASH := sha1:dc63e799b9d4ce45b7671de08a3c3fae020d05fc
+COMPONENT_ARCHIVE_HASH := sha1:833348fdb2b74db85e83f094716927b0ee5cab1d
 COMPONENT_ARCHIVE_URL  := http://downloads.mongodb.org/src/$(COMPONENT_ARCHIVE)
 COMPONENT_PROJECT_URL  := http://www.mongodb.org
 
@@ -46,10 +46,16 @@ $(BUILD_DIR)/%/.configured:	$(SOURCE_DIR)/.prep
 $(BUILD_DIR)/%/.built:	$(BUILD_DIR)/%/.configured
 	touch $@
 
+# For isinf():
+CXX += -D__C99FEATURES__
+
 # Never ever use Scons. bindir and friends are not supported,
 # will move files in IPS manifest:
+# --$(BITS) is to force processor=i386/x86_64, autodetection fails
+#  because uname gives i86pc. Never reinvent Autotools.
 $(BUILD_DIR)/%/.installed:	$(BUILD_DIR)/%/.built
 	cd $(@D) && scons \
+		--$(BITS) \
 		--cc="$(CC)" \
 		--cxx="$(CXX)" \
 		--prefix="$(PROTO_DIR)/usr" \

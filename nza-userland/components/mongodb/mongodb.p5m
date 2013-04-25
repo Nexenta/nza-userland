@@ -53,6 +53,7 @@ file manpages/mongodump.1    path=usr/share/man/man1/mongodump.1
 file manpages/mongod.1       path=usr/share/man/man1/mongod.1
 file manpages/mongo.1        path=usr/share/man/man1/mongo.1
 
+
 file path=usr/bin/bsondump
 file path=usr/bin/mongo
 file path=usr/bin/mongod
@@ -60,9 +61,10 @@ file path=usr/bin/mongodump
 file path=usr/bin/mongoexport
 file path=usr/bin/mongofiles
 file path=usr/bin/mongoimport
+file path=usr/bin/mongooplog
+file path=usr/bin/mongoperf
 file path=usr/bin/mongorestore
 file path=usr/bin/mongos
-file path=usr/bin/mongosniff
 file path=usr/bin/mongostat
 file path=usr/bin/mongotop
 
