@@ -1,0 +1,5 @@
+#.gitignore for userland checkouts.
+# Note: this does not try to ignore all files in a fully built workspace.
+# Rather, you are expected to "clean" before running: git status
+#
+*.deb
