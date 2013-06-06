@@ -43,7 +43,7 @@ export DOWNLOAD_SEARCH_PATH += \
 
 
 # The workspace starts at the mercurial root
-export WS_TOP ?=		$(shell hg root)/nza-userland
+export WS_TOP ?=		$(shell git rev-parse --show-cdup)/nza-userland
 
 # we want our pkg piplines to fail if there is an error
 # (like if pkgdepend fails in the middle of a pipe), but
