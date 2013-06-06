@@ -13,8 +13,10 @@ export DEB_MAINTAINER  ?= Nexenta Systems <maintainer@nexenta.com>
 
 NZA_ROOT         = $(CURDIR)
 CODEMGR_WS       = $(NZA_ROOT)/$(NZA_KERNEL)
-NZA_KERNEL_PATH ?= https://repos.nexenta.com/$(NZA_KERNEL)
-NZA_CLOSED_PATH ?= https://repos.nexenta.com/$(NZA_CLOSED)
+NZA_KERNEL_PATH ?= git@github.com:Nexenta/nza-kernel.git
+NZA_CLOSED_PATH ?= git@github.com:Nexenta/nza-closed.git
+# Override this, i.e. with stable-4.0
+NZA_BRANCH_SPEC ?= master
 NZA_PATCH_DIR    = $(NZA_ROOT)/$(NZA_PATCHES)
 CUR_REV          = $(CODEMGR_WS)/.rev
 
@@ -40,15 +42,20 @@ checktools:
 
 clonning: checktools
 	if test ! -d $(CODEMGR_WS) ; then \
-		hg clone $(NZA_KERNEL_PATH) $(CODEMGR_WS); \
-		cd $(CODEMGR_WS); \
-		hg up $(NZA_KERNEL_REV) -C; \
-	else \
-		cd $(CODEMGR_WS); \
-		hg pull -u; \
-		hg up $(NZA_KERNEL_REV) -C; \
+		git clone $(NZA_KERNEL_PATH) $(CODEMGR_WS); \
 	fi
-	cd $(CODEMGR_WS) && hg id -i > $(CUR_REV)
+	cd $(CODEMGR_WS) && ( \
+		git checkout -f $(NZA_BRANCH_SPEC); \
+		git pull --ff-only; \
+	)
+	if test ! -d $(CODEMGR_WS)/usr/$(NZA_CLOSED); then \
+		git clone $(NZA_CLOSED_PATH) $(CODEMGR_WS)/usr/$(NZA_CLOSED); \
+	fi
+	cd $(CODEMGR_WS)/usr/$(NZA_CLOSED) && ( \
+		git checkout -f $(NZA_BRANCH_SPEC); \
+		git pull --ff-only; \
+	)
+	cd $(CODEMGR_WS) && git rev-parse --short=10 HEAD > $(CUR_REV)
 	touch $@
 
 setup-closed: clonning
@@ -59,12 +66,11 @@ setup-closed: clonning
 	touch $@
 
 patching: clonning
-	mkdir -p $(CODEMGR_WS)/.hg/patches
-	rm -f $(CODEMGR_WS)/.hg/patches/*
-	ln -s $(NZA_PATCH_DIR)/* $(CODEMGR_WS)/.hg/patches
-	echo '\n[ui] \nusername = mercurial' >> $(CODEMGR_WS)/.hg/hgrc
-	echo '\n[extensions] \nmq =' >> $(CODEMGR_WS)/.hg/hgrc
-	cd $(CODEMGR_WS) && hg qpush -a
+	cd $(CODEMGR_WS) && \
+	for p in $(shell cat $(NZA_PATCH_DIR)/series); \
+	do \
+		patch -N -p1 < $(NZA_PATCH_DIR)/$$p; \
+	done
 	touch $@
 
 hacking: clonning
@@ -152,7 +158,11 @@ clean:
 	$(MAKE) -f Makefile.deb clean
 
 clean_patches:
-	cd $(CODEMGR_WS) && hg qpop -a
+	cd $(CODEMGR_WS) && \
+	for p in $(shell /usr/bin/rev -l $(NZA_PATCH_DIR)/series); \
+	do \
+	patch -N -p1 -R < $(NZA_PATCH_DIR)/$$p; \
+	done
 	rm -f patching
 
 help:
