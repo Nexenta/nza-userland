@@ -1,7 +1,3 @@
-# HG changeset patch
-# Parent 86d96517d461fc68e22b2de7bf3d0dea740155f0
-
-diff --git a/usr/src/cmd/perl/Makefile b/usr/src/cmd/perl/Makefile
 --- a/usr/src/cmd/perl/Makefile
 +++ b/usr/src/cmd/perl/Makefile
 @@ -20,6 +20,7 @@
@@ -21,7 +17,6 @@ diff --git a/usr/src/cmd/perl/Makefile b/usr/src/cmd/perl/Makefile
  
  .PARALLEL: $(PERL_VERSIONS)
  
-diff --git a/usr/src/cmd/perl/contrib/Sun/Solaris/PerlGcc/Makefile.PL b/usr/src/cmd/perl/contrib/Sun/Solaris/PerlGcc/Makefile.PL
 --- a/usr/src/cmd/perl/contrib/Sun/Solaris/PerlGcc/Makefile.PL
 +++ b/usr/src/cmd/perl/contrib/Sun/Solaris/PerlGcc/Makefile.PL
 @@ -20,6 +20,7 @@
@@ -42,7 +37,6 @@ diff --git a/usr/src/cmd/perl/contrib/Sun/Solaris/PerlGcc/Makefile.PL b/usr/src/
  # Figure out the appropriate Config.pm.  Use an older version if necessary.
  my $perlarch = ($arch eq "sparc") ? "sun4-solaris-64int":"i86pc-solaris-64int";
  
-diff --git a/usr/src/cmd/perl/skel/Makefile b/usr/src/cmd/perl/skel/Makefile
 --- a/usr/src/cmd/perl/skel/Makefile
 +++ b/usr/src/cmd/perl/skel/Makefile
 @@ -33,7 +33,7 @@
@@ -54,57 +48,6 @@ diff --git a/usr/src/cmd/perl/skel/Makefile b/usr/src/cmd/perl/skel/Makefile
  
  # Prefix for Solaris-specific extensions that are maintained by
  # Sun/Oracle.
-diff --git a/usr/src/pkg/manifests/runtime-perl-510-module-sun-solaris.mf b/usr/src/pkg/manifests/library-perl-5-sun-solaris-510.mf
-rename from usr/src/pkg/manifests/runtime-perl-510-module-sun-solaris.mf
-rename to usr/src/pkg/manifests/library-perl-5-sun-solaris-510.mf
---- a/usr/src/pkg/manifests/runtime-perl-510-module-sun-solaris.mf
-+++ b/usr/src/pkg/manifests/library-perl-5-sun-solaris-510.mf
-@@ -20,6 +20,7 @@
- #
- 
- #
-+# Copyright 2011 Nexenta Systems, Inc.  All rights reserved.
- # Copyright (c) 2010, Oracle and/or its affiliates. All rights reserved.
- #
- 
-@@ -29,7 +30,7 @@
- <transform file path=.*\.(pm|bs) -> default mode 0444>
- <transform file path=.*\.so -> default mode 0555>
- set name=pkg.fmri \
--    value=pkg:/runtime/perl-510/module/sun-solaris@0.5.11,$(PKGVERS_BUILTON)-$(PKGVERS_BRANCH)
-+    value=pkg:/library/perl-5/sun-solaris-510@0.5.11,$(PKGVERS_BUILTON)-$(PKGVERS_BRANCH)
- set name=pkg.summary value="Perl 5.10.0 Sun::Solaris Modules"
- set name=info.classification \
-     value=org.opensolaris.category.2008:Development/Perl
-@@ -70,8 +71,6 @@
- dir path=usr/perl5/5.10.0/lib/Sun/Solaris
- dir path=usr/perl5/5.10.0/lib/Sun/Solaris/BSM
- dir path=usr/perl5/5.10.0/lib/Sun/Solaris/PerlGcc
--dir path=usr/share/man
--dir path=usr/share/man/man3perl
- file path=usr/perl5/5.10.0/bin/perlgcc mode=0555
- file path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/Sun/Solaris/Exacct.pm
- file \
-@@ -137,18 +136,6 @@
- file path=usr/perl5/5.10.0/lib/Sun/Solaris/BSM/_BSMparse.pm
- file path=usr/perl5/5.10.0/lib/Sun/Solaris/PerlGcc/Config.pm
- file path=usr/perl5/5.10.0/lib/Sun/Solaris/Pg.pm
--file path=usr/share/man/man3perl/Exacct.3perl
--file path=usr/share/man/man3perl/Exacct::Catalog.3perl
--file path=usr/share/man/man3perl/Exacct::File.3perl
--file path=usr/share/man/man3perl/Exacct::Object.3perl
--file path=usr/share/man/man3perl/Exacct::Object::Group.3perl
--file path=usr/share/man/man3perl/Exacct::Object::Item.3perl
--file path=usr/share/man/man3perl/Kstat.3perl
--file path=usr/share/man/man3perl/Lgrp.3perl
--file path=usr/share/man/man3perl/Privilege.3perl
--file path=usr/share/man/man3perl/Project.3perl
--file path=usr/share/man/man3perl/Task.3perl
--file path=usr/share/man/man3perl/Ucred.3perl
- license cr_Sun license=cr_Sun
- license usr/src/cmd/perl/THIRDPARTYLICENSE \
-     license=usr/src/cmd/perl/THIRDPARTYLICENSE
-diff --git a/usr/src/pkg/manifests/library-perl-5-sun-solaris-512.mf b/usr/src/pkg/manifests/library-perl-5-sun-solaris-512.mf
 new file mode 100644
 --- /dev/null
 +++ b/usr/src/pkg/manifests/library-perl-5-sun-solaris-512.mf
@@ -246,7 +189,6 @@ new file mode 100644
 +license usr/src/cmd/perl/THIRDPARTYLICENSE \
 +    license=usr/src/cmd/perl/THIRDPARTYLICENSE
 +depend fmri=runtime/perl-512 type=require
-diff --git a/usr/src/pkg/manifests/library-perl-5-sun-solaris.mf b/usr/src/pkg/manifests/library-perl-5-sun-solaris.mf
 new file mode 100644
 --- /dev/null
 +++ b/usr/src/pkg/manifests/library-perl-5-sun-solaris.mf
@@ -277,3 +219,308 @@ new file mode 100644
 +    license=usr/src/cmd/perl/THIRDPARTYLICENSE
 +depend fmri=library/perl-5/sun-solaris-510 type=require
 +depend fmri=library/perl-5/sun-solaris-512 type=require
+deleted file mode 100644
+index e389931..0000000
+--- a/usr/src/pkg/manifests/runtime-perl-510-module-sun-solaris.mf
++++ /dev/null
+@@ -1,155 +0,0 @@
+-#
+-# CDDL HEADER START
+-#
+-# The contents of this file are subject to the terms of the
+-# Common Development and Distribution License (the "License").
+-# You may not use this file except in compliance with the License.
+-#
+-# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+-# or http://www.opensolaris.org/os/licensing.
+-# See the License for the specific language governing permissions
+-# and limitations under the License.
+-#
+-# When distributing Covered Code, include this CDDL HEADER in each
+-# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+-# If applicable, add the following below this CDDL HEADER, with the
+-# fields enclosed by brackets "[]" replaced with your own identifying
+-# information: Portions Copyright [yyyy] [name of copyright owner]
+-#
+-# CDDL HEADER END
+-#
+-
+-#
+-# Copyright (c) 2010, Oracle and/or its affiliates. All rights reserved.
+-#
+-
+-$(i386_ONLY)<transform file dir path=.*PLAT.* -> edit path PLAT i86pc>
+-$(sparc_ONLY)<transform file dir path=.*PLAT.* -> edit path PLAT sun4>
+-
+-<transform file path=.*\.(pm|bs) -> default mode 0444>
+-<transform file path=.*\.so -> default mode 0555>
+-set name=pkg.fmri \
+-    value=pkg:/runtime/perl-510/module/sun-solaris@0.5.11,$(PKGVERS_BUILTON)-$(PKGVERS_BRANCH)
+-set name=pkg.summary value="Perl 5.10.0 Sun::Solaris Modules"
+-set name=info.classification \
+-    value=org.opensolaris.category.2008:Development/Perl
+-set name=variant.arch value=$(ARCH)
+-dir path=usr group=sys
+-dir path=usr/bin
+-dir path=usr/perl5
+-dir path=usr/perl5/5.10.0
+-dir path=usr/perl5/5.10.0/bin
+-dir path=usr/perl5/5.10.0/lib
+-dir path=usr/perl5/5.10.0/lib/PLAT-solaris-64int
+-dir path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/Sun
+-dir path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/Sun/Solaris
+-dir path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/Sun/Solaris/Exacct
+-dir path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto
+-dir path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun
+-dir path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris
+-dir path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/BSM
+-dir \
+-    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/BSM/_BSMparse
+-dir path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Exacct
+-dir \
+-    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Exacct/Catalog
+-dir path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Exacct/File
+-dir \
+-    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Exacct/Object
+-dir path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Intrs
+-dir path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Kstat
+-dir path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Lgrp
+-dir path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/PerlGcc
+-dir path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Pg
+-dir path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Privilege
+-dir path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Project
+-dir path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Task
+-dir path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Ucred
+-dir path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Utils
+-dir path=usr/perl5/5.10.0/lib/Sun
+-dir path=usr/perl5/5.10.0/lib/Sun/Solaris
+-dir path=usr/perl5/5.10.0/lib/Sun/Solaris/BSM
+-dir path=usr/perl5/5.10.0/lib/Sun/Solaris/PerlGcc
+-dir path=usr/share/man
+-dir path=usr/share/man/man3perl
+-file path=usr/perl5/5.10.0/bin/perlgcc mode=0555
+-file path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/Sun/Solaris/Exacct.pm
+-file \
+-    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/Sun/Solaris/Exacct/Catalog.pm
+-file path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/Sun/Solaris/Exacct/File.pm
+-file path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/Sun/Solaris/Exacct/Object.pm
+-file path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/Sun/Solaris/Intrs.pm
+-file path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/Sun/Solaris/Kstat.pm
+-file path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/Sun/Solaris/Lgrp.pm
+-file path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/Sun/Solaris/Privilege.pm
+-file path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/Sun/Solaris/Project.pm
+-file path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/Sun/Solaris/Task.pm
+-file path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/Sun/Solaris/Ucred.pm
+-file path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/Sun/Solaris/Utils.pm
+-file \
+-    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Exacct/Catalog/Catalog.bs
+-file \
+-    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Exacct/Catalog/Catalog.so
+-file \
+-    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Exacct/Exacct.bs
+-file \
+-    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Exacct/Exacct.so
+-file \
+-    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Exacct/File/File.bs
+-file \
+-    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Exacct/File/File.so
+-file \
+-    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Exacct/Object/Object.bs
+-file \
+-    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Exacct/Object/Object.so
+-file \
+-    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Intrs/Intrs.bs
+-file \
+-    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Intrs/Intrs.so
+-file \
+-    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Kstat/Kstat.bs
+-file \
+-    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Kstat/Kstat.so
+-file \
+-    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Lgrp/Lgrp.bs
+-file \
+-    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Lgrp/Lgrp.so
+-file \
+-    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Privilege/Privilege.bs
+-file \
+-    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Privilege/Privilege.so
+-file \
+-    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Project/Project.bs
+-file \
+-    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Project/Project.so
+-file \
+-    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Task/Task.bs
+-file \
+-    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Task/Task.so
+-file \
+-    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Ucred/Ucred.bs
+-file \
+-    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Ucred/Ucred.so
+-file \
+-    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Utils/Utils.bs
+-file \
+-    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Utils/Utils.so
+-file path=usr/perl5/5.10.0/lib/Sun/Solaris/BSM/_BSMparse.pm
+-file path=usr/perl5/5.10.0/lib/Sun/Solaris/PerlGcc/Config.pm
+-file path=usr/perl5/5.10.0/lib/Sun/Solaris/Pg.pm
+-file path=usr/share/man/man3perl/Exacct.3perl
+-file path=usr/share/man/man3perl/Exacct::Catalog.3perl
+-file path=usr/share/man/man3perl/Exacct::File.3perl
+-file path=usr/share/man/man3perl/Exacct::Object.3perl
+-file path=usr/share/man/man3perl/Exacct::Object::Group.3perl
+-file path=usr/share/man/man3perl/Exacct::Object::Item.3perl
+-file path=usr/share/man/man3perl/Kstat.3perl
+-file path=usr/share/man/man3perl/Lgrp.3perl
+-file path=usr/share/man/man3perl/Privilege.3perl
+-file path=usr/share/man/man3perl/Project.3perl
+-file path=usr/share/man/man3perl/Task.3perl
+-file path=usr/share/man/man3perl/Ucred.3perl
+-license cr_Sun license=cr_Sun
+-license usr/src/cmd/perl/THIRDPARTYLICENSE \
+-    license=usr/src/cmd/perl/THIRDPARTYLICENSE
+-depend fmri=runtime/perl-510/extra type=require
+--- /dev/null	Thu Jan 01 00:00:00 1970 +0000
++++ b/usr/src/pkg/manifests/library-perl-5-sun-solaris-510.mf	Tue Jun 18 14:30:12 2013 +0400
+@@ -0,0 +1,142 @@
++#
++# CDDL HEADER START
++#
++# The contents of this file are subject to the terms of the
++# Common Development and Distribution License (the "License").
++# You may not use this file except in compliance with the License.
++#
++# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
++# or http://www.opensolaris.org/os/licensing.
++# See the License for the specific language governing permissions
++# and limitations under the License.
++#
++# When distributing Covered Code, include this CDDL HEADER in each
++# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
++# If applicable, add the following below this CDDL HEADER, with the
++# fields enclosed by brackets "[]" replaced with your own identifying
++# information: Portions Copyright [yyyy] [name of copyright owner]
++#
++# CDDL HEADER END
++#
++
++#
++# Copyright (c) 2013 Nexenta Systems, Inc. All rights reserved.
++# Copyright (c) 2010, Oracle and/or its affiliates. All rights reserved.
++#
++
++$(i386_ONLY)<transform file dir path=.*PLAT.* -> edit path PLAT i86pc>
++$(sparc_ONLY)<transform file dir path=.*PLAT.* -> edit path PLAT sun4>
++
++<transform file path=.*\.(pm|bs) -> default mode 0444>
++<transform file path=.*\.so -> default mode 0555>
++set name=pkg.fmri \
++    value=pkg:/library/perl-5/sun-solaris-510@0.5.11,$(PKGVERS_BUILTON)-$(PKGVERS_BRANCH)
++set name=pkg.summary value="Perl 5.10.0 Sun::Solaris Modules"
++set name=info.classification \
++    value=org.opensolaris.category.2008:Development/Perl
++set name=variant.arch value=$(ARCH)
++dir path=usr group=sys
++dir path=usr/bin
++dir path=usr/perl5
++dir path=usr/perl5/5.10.0
++dir path=usr/perl5/5.10.0/bin
++dir path=usr/perl5/5.10.0/lib
++dir path=usr/perl5/5.10.0/lib/PLAT-solaris-64int
++dir path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/Sun
++dir path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/Sun/Solaris
++dir path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/Sun/Solaris/Exacct
++dir path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto
++dir path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun
++dir path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris
++dir path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/BSM
++dir \
++    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/BSM/_BSMparse
++dir path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Exacct
++dir \
++    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Exacct/Catalog
++dir path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Exacct/File
++dir \
++    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Exacct/Object
++dir path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Intrs
++dir path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Kstat
++dir path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Lgrp
++dir path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/PerlGcc
++dir path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Pg
++dir path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Privilege
++dir path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Project
++dir path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Task
++dir path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Ucred
++dir path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Utils
++dir path=usr/perl5/5.10.0/lib/Sun
++dir path=usr/perl5/5.10.0/lib/Sun/Solaris
++dir path=usr/perl5/5.10.0/lib/Sun/Solaris/BSM
++dir path=usr/perl5/5.10.0/lib/Sun/Solaris/PerlGcc
++file path=usr/perl5/5.10.0/bin/perlgcc mode=0555
++file path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/Sun/Solaris/Exacct.pm
++file \
++    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/Sun/Solaris/Exacct/Catalog.pm
++file path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/Sun/Solaris/Exacct/File.pm
++file path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/Sun/Solaris/Exacct/Object.pm
++file path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/Sun/Solaris/Intrs.pm
++file path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/Sun/Solaris/Kstat.pm
++file path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/Sun/Solaris/Lgrp.pm
++file path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/Sun/Solaris/Privilege.pm
++file path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/Sun/Solaris/Project.pm
++file path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/Sun/Solaris/Task.pm
++file path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/Sun/Solaris/Ucred.pm
++file path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/Sun/Solaris/Utils.pm
++file \
++    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Exacct/Catalog/Catalog.bs
++file \
++    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Exacct/Catalog/Catalog.so
++file \
++    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Exacct/Exacct.bs
++file \
++    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Exacct/Exacct.so
++file \
++    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Exacct/File/File.bs
++file \
++    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Exacct/File/File.so
++file \
++    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Exacct/Object/Object.bs
++file \
++    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Exacct/Object/Object.so
++file \
++    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Intrs/Intrs.bs
++file \
++    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Intrs/Intrs.so
++file \
++    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Kstat/Kstat.bs
++file \
++    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Kstat/Kstat.so
++file \
++    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Lgrp/Lgrp.bs
++file \
++    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Lgrp/Lgrp.so
++file \
++    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Privilege/Privilege.bs
++file \
++    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Privilege/Privilege.so
++file \
++    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Project/Project.bs
++file \
++    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Project/Project.so
++file \
++    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Task/Task.bs
++file \
++    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Task/Task.so
++file \
++    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Ucred/Ucred.bs
++file \
++    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Ucred/Ucred.so
++file \
++    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Utils/Utils.bs
++file \
++    path=usr/perl5/5.10.0/lib/PLAT-solaris-64int/auto/Sun/Solaris/Utils/Utils.so
++file path=usr/perl5/5.10.0/lib/Sun/Solaris/BSM/_BSMparse.pm
++file path=usr/perl5/5.10.0/lib/Sun/Solaris/PerlGcc/Config.pm
++file path=usr/perl5/5.10.0/lib/Sun/Solaris/Pg.pm
++license cr_Sun license=cr_Sun
++license usr/src/cmd/perl/THIRDPARTYLICENSE \
++    license=usr/src/cmd/perl/THIRDPARTYLICENSE
++depend fmri=runtime/perl-510/extra type=require
