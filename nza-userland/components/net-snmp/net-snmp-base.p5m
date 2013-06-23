@@ -19,6 +19,7 @@
 # CDDL HEADER END
 #
 # Copyright (c) 2010, 2011, Oracle and/or its affiliates. All rights reserved.
+# Copyright 2013, Nexenta Systems, Inc.  All rights reserved.
 #
 
 <transform file path=usr.*/man/.+ -> default mangler.man.stability volatile>
@@ -178,6 +179,8 @@ file local/mib2c.table_data.conf path=etc/net-snmp/snmp/mib2c.table_data.conf
 file $(MACH32)/sun/agent/mibs/ENTITY-MIB.txt path=etc/net-snmp/snmp/mibs/ENTITY-MIB.txt
 file $(MACH64)/mibs/LM-SENSORS-MIB.txt path=etc/net-snmp/snmp/mibs/LM-SENSORS-MIB.txt
 file $(MACH64)/mibs/NETWORK-SERVICES-MIB.txt path=etc/net-snmp/snmp/mibs/NETWORK-SERVICES-MIB.txt
+file $(MACH32)/sun/agent/mibs/NEXENTA-MIB.txt path=etc/net-snmp/snmp/mibs/NEXENTA-MIB.txt
+file $(MACH32)/sun/agent/mibs/NEXENTA-ZFS-MIB.txt path=etc/net-snmp/snmp/mibs/NEXENTA-ZFS-MIB.txt
 file $(MACH32)/sun/agent/mibs/SUN-MIB.txt path=etc/net-snmp/snmp/mibs/SUN-MIB.txt
 file $(MACH32)/sun/agent/mibs/SUN-SEA-EXTENSIONS-MIB.txt path=etc/net-snmp/snmp/mibs/SUN-SEA-EXTENSIONS-MIB.txt
 file $(MACH32)/sun/agent/mibs/SUN-SEA-PROXY-MIB.txt path=etc/net-snmp/snmp/mibs/SUN-SEA-PROXY-MIB.txt
@@ -498,12 +501,14 @@ file build/prototype/$(MACH64)/usr/lib/$(MACH64)/libnetsnmpagent.so.15.1.0 path=
 file build/prototype/$(MACH64)/usr/lib/$(MACH64)/libnetsnmphelpers.so.15.1.0 path=usr/lib/$(MACH64)/libnetsnmphelpers.so.15.1.0
 file build/prototype/$(MACH64)/usr/lib/$(MACH64)/libnetsnmpmibs.so.15.1.0 path=usr/lib/$(MACH64)/libnetsnmpmibs.so.15.1.0
 file build/prototype/$(MACH64)/usr/lib/$(MACH64)/libnetsnmptrapd.so.15.1.0 path=usr/lib/$(MACH64)/libnetsnmptrapd.so.15.1.0
+file build/prototype/$(MACH64)/usr/lib/$(MACH64)/libzfs_snmp.so.1 path=usr/lib/$(MACH64)/libzfs_snmp.so.1
 file $(MACH32)/sun/agent/modules/entityMib/libentity.so path=usr/lib/libentity.so
 file path=usr/lib/libnetsnmp.so.15.1.0
 file path=usr/lib/libnetsnmpagent.so.15.1.0
 file path=usr/lib/libnetsnmphelpers.so.15.1.0
 file path=usr/lib/libnetsnmpmibs.so.15.1.0
 file path=usr/lib/libnetsnmptrapd.so.15.1.0
+file path=usr/lib/libzfs_snmp.so.1
 file path=usr/lib/libsnmp.so.15.1.0
 file $(MACH32)/sun/masfcnv path=usr/lib/net-snmp/masfcnv
 file $(MACH32)/sun/masfd path=usr/lib/net-snmp/masfd
@@ -566,6 +571,7 @@ link path=usr/lib/$(MACH64)/libnetsnmpmibs.so target=./libnetsnmpmibs.so.15.1.0
 link path=usr/lib/$(MACH64)/libnetsnmpmibs.so.15 target=./libnetsnmpmibs.so.15.1.0
 link path=usr/lib/$(MACH64)/libnetsnmptrapd.so target=./libnetsnmptrapd.so.15.1.0
 link path=usr/lib/$(MACH64)/libnetsnmptrapd.so.15 target=./libnetsnmptrapd.so.15.1.0
+link path=usr/lib/$(MACH64)/libzfs_snmp.so target=./libzfs_snmp.so.1
 link path=usr/lib/libnetsnmp.so target=./libnetsnmp.so.15.1.0
 link path=usr/lib/libnetsnmp.so.15 target=./libnetsnmp.so.15.1.0
 link path=usr/lib/libnetsnmpagent.so target=./libnetsnmpagent.so.15.1.0
@@ -578,3 +584,4 @@ link path=usr/lib/libnetsnmptrapd.so target=./libnetsnmptrapd.so.15.1.0
 link path=usr/lib/libnetsnmptrapd.so.15 target=./libnetsnmptrapd.so.15.1.0
 link path=usr/lib/libsnmp.so target=./libsnmp.so.15.1.0
 link path=usr/lib/libsnmp.so.15 target=./libsnmp.so.15.1.0
+link path=usr/lib/libzfs_snmp.so target=./libzfs_snmp.so.1

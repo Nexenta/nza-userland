@@ -1,5 +1,6 @@
 #
 # Copyright (c) 2003, 2011, Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2013 Nexenta Systems, Inc.  All rights reserved.
 #
 # U.S. Government Rights - Commercial software. Government users are subject
 # to the Sun Microsystems, Inc. standard license agreement and applicable
@@ -41,8 +42,8 @@ all:
 		it="$(SUBDIRS)" ; \
 		for i in $$it ; do       \
 			echo "making all in `pwd`/$$i"; \
-			echo "SUBDIRS2:  $(MAKE) CC=$(CC) DEBUG=$(DEBUG) ARCH=$(ARCH)" ; \
-	                ( cd $$i ; $(MAKE) CC=$(CC) DEBUG=$(DEBUG) ARCH=$(ARCH) ROOT=$(ROOT) ) ; \
+			echo "SUBDIRS2:  $(MAKE) CC="$(CC)" DEBUG=$(DEBUG) ARCH=$(ARCH)" ; \
+	                ( cd $$i ; $(MAKE) CC="$(CC)" DEBUG=$(DEBUG) ARCH=$(ARCH) ROOT=$(ROOT) ) ; \
                         if test $$? != 0 ; then \
 				exit 1 ; \
 			fi  \

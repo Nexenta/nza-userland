@@ -22,6 +22,8 @@
 
 MIBFILES= smatrap.mib \
       ENTITY-MIB.txt \
+      NEXENTA-MIB.txt \
+      NEXENTA-ZFS-MIB.txt \
       SUN-MIB.txt \
       SUN-SEA-EXTENSIONS-MIB.txt \
       SUN-SEA-PROXY-MIB.txt
@@ -30,4 +32,4 @@ all:
 # make all does nothing, but the upper-level makefile calls it
 
 install:
-	cp ./$(MIBFILES) $(ROOT)/etc/net-snmp/snmp/mibs
+	cp ./$(MIBFILES) $(ROOT)/etc/net-snmp/snmp/mibs/

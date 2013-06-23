@@ -1,0 +1,271 @@
+-- Copyright 2013, Nexenta Systems, Inc.  All rights reserved.
+
+NEXENTA-ZFS-MIB DEFINITIONS ::= BEGIN
+
+IMPORTS
+	zfs
+		FROM NEXENTA-MIB
+	MODULE-IDENTITY, OBJECT-TYPE, Unsigned32, Counter64, TimeTicks
+		FROM SNMPv2-SMI;
+
+nexentaZFSMIB MODULE-IDENTITY
+	LAST-UPDATED "201304080000Z"
+	ORGANIZATION "Nexenta Systems, Inc."
+	CONTACT-INFO "Customer Support"
+	DESCRIPTION "MIB exposing disk topology"
+	REVISION    "201304080000Z"
+	DESCRIPTION "Initial revision"
+
+	::= { zfs 1 }
+
+nexentaZFSMIBObjects OBJECT IDENTIFIER ::= { nexentaZFSMIB 1 }
+nexentaZFSMIBARCObjects OBJECT IDENTIFIER ::= { nexentaZFSMIBObjects 1 }
+
+	nexentaZFSARCTable OBJECT-TYPE
+		SYNTAX	     SEQUENCE OF ARCEntry
+		MAX-ACCESS   not-accessible
+		STATUS	     current
+		DESCRIPTION
+			"Topology map conceptual table for ARC statistics"
+		::= { nexentaZFSMIBARCObjects 1 }
+
+	arcEntry OBJECT-TYPE
+		SYNTAX		ARCEntry
+		MAX-ACCESS	not-accessible
+		STATUS		current
+		DESCRIPTION
+			"ARC statistics conceptual row"
+		INDEX		{ arcInstance }
+		::= { nexentaZFSARCTable 1 }
+
+	ARCEntry ::= SEQUENCE {
+		arcInstance			Unsigned32,
+		arcMetaUsed			Unsigned32,
+		arcC				Unsigned32,
+		arcP				Unsigned32,
+		arcSize				Unsigned32,
+		arcL2SizeLow			Unsigned32,
+		arcL2SizeHigh			Unsigned32,
+		arcHits				Counter64,
+		arcMisses			Counter64,
+		arcDemandDataHits		Counter64,
+		arcDemandDataMisses		Counter64,
+		arcDemandMetadataHits		Counter64,
+		arcDemandMetadataMisses		Counter64,
+		arcPrefetchDataHits		Counter64,
+		arcPrefetchDataMisses		Counter64,
+		arcPrefetchMetadataHits		Counter64,
+		arcPrefetchMetadataMisses	Counter64,
+		arcMfuGhostHits			Counter64,
+		arcMfuHits			Counter64,
+		arcMruGhostHits			Counter64,
+		arcMruHits			Counter64,
+		arcL2Hits			Counter64,
+		arcL2Misses			Counter64,
+		arcCrTime			TimeTicks,
+		arcSnapTime			TimeTicks
+	}
+
+	arcInstance OBJECT-TYPE
+		SYNTAX		Unsigned32
+		MAX-ACCESS	read-only
+		STATUS		current
+		DESCRIPTION
+			"ARC instance identifier"
+		::= { arcEntry 1 }
+
+	arcMetaUsed OBJECT-TYPE
+		SYNTAX		Unsigned32
+		MAX-ACCESS	read-only
+		STATUS		current
+		DESCRIPTION
+			"Current ARC metadata content in kilobytes"
+		::= { arcEntry 2 }
+
+	arcC OBJECT-TYPE
+		SYNTAX		Unsigned32
+		MAX-ACCESS	read-only
+		STATUS		current
+		DESCRIPTION
+			"Current ARC target size in kilobytes"
+		::= { arcEntry 3 }
+
+	arcP OBJECT-TYPE
+		SYNTAX		Unsigned32
+		MAX-ACCESS	read-only
+		STATUS		current
+		DESCRIPTION
+			"ARC MRU cache size in kilobytes"
+		::= { arcEntry 4 }
+
+	arcSize OBJECT-TYPE
+		SYNTAX		Unsigned32
+		MAX-ACCESS	read-only
+		STATUS		current
+		DESCRIPTION
+			"ARC current size in kilobytes"
+		::= { arcEntry 5 }
+
+	arcL2SizeLow OBJECT-TYPE
+		SYNTAX		Unsigned32
+		MAX-ACCESS	read-only
+		STATUS		current
+		DESCRIPTION
+			"L2ARC current size in kilobytes, lower-order, composed with arcL2SizeHigh"
+		::= { arcEntry 6 }
+
+	arcL2SizeHigh OBJECT-TYPE
+		SYNTAX		Unsigned32
+		MAX-ACCESS	read-only
+		STATUS		current
+		DESCRIPTION
+			"L2ARC current size in kilobytes, higher-order, composed with arcL2SizeLow"
+		::= { arcEntry 7 }
+
+	arcHits OBJECT-TYPE
+		 SYNTAX		Counter64
+		 MAX-ACCESS	read-only
+		 STATUS		current
+		 DESCRIPTION
+			"Number of ARC hits"
+		::= { arcEntry 8 }
+
+	arcMisses OBJECT-TYPE
+		 SYNTAX		Counter64
+		 MAX-ACCESS	read-only
+		 STATUS		current
+		 DESCRIPTION
+			"Number of ARC misses"
+		::= { arcEntry 9 }
+
+	arcDemandDataHits OBJECT-TYPE
+		 SYNTAX		Counter64
+		 MAX-ACCESS	read-only
+		 STATUS		current
+		 DESCRIPTION
+			"Number of on-demand ARC data cache hits"
+		::= { arcEntry 10 }
+
+	arcDemandDataMisses OBJECT-TYPE
+		 SYNTAX		Counter64
+		 MAX-ACCESS	read-only
+		 STATUS		current
+		 DESCRIPTION
+			"Number of on-demand ARC data cache misses"
+		::= { arcEntry 11 }
+
+	arcDemandMetadataHits OBJECT-TYPE
+		 SYNTAX		Counter64
+		 MAX-ACCESS	read-only
+		 STATUS		current
+		 DESCRIPTION
+			"Number of demand-driven ARC metadata cache hits"
+		::= { arcEntry 12 }
+
+	arcDemandMetadataMisses OBJECT-TYPE
+		 SYNTAX		Counter64
+		 MAX-ACCESS	read-only
+		 STATUS		current
+		 DESCRIPTION
+			"Number of demand-driven ARC metadata cache misses"
+		::= { arcEntry 13 }
+
+	arcPrefetchDataHits OBJECT-TYPE
+		 SYNTAX		Counter64
+		 MAX-ACCESS	read-only
+		 STATUS		current
+		 DESCRIPTION
+			"Number of prefetched ARC data cache hits"
+		::= { arcEntry 14 }
+
+	arcPrefetchDataMisses OBJECT-TYPE
+		 SYNTAX		Counter64
+		 MAX-ACCESS	read-only
+		 STATUS		current
+		 DESCRIPTION
+			"Number of prefetched ARC data cache misses"
+		::= { arcEntry 15 }
+
+	arcPrefetchMetadataHits OBJECT-TYPE
+		 SYNTAX		Counter64
+		 MAX-ACCESS	read-only
+		 STATUS		current
+		 DESCRIPTION
+			"Number of prefetched ARC metadata cache hits"
+		::= { arcEntry 16 }
+
+	arcPrefetchMetadataMisses OBJECT-TYPE
+		 SYNTAX		Counter64
+		 MAX-ACCESS	read-only
+		 STATUS		current
+		 DESCRIPTION
+			"Number of prefetched ARC metadata cache misses"
+		::= { arcEntry 17 }
+
+	arcMfuGhostHits OBJECT-TYPE
+		 SYNTAX		Counter64
+		 MAX-ACCESS	read-only
+		 STATUS		current
+		 DESCRIPTION
+			"Number of MFU cache ghost hits"
+		::= { arcEntry 18 }
+
+	arcMfuHits OBJECT-TYPE
+		 SYNTAX		Counter64
+		 MAX-ACCESS	read-only
+		 STATUS		current
+		 DESCRIPTION
+			"Number of MFU cache hits"
+		::= { arcEntry 19 }
+
+	arcMruGhostHits OBJECT-TYPE
+		 SYNTAX		Counter64
+		 MAX-ACCESS	read-only
+		 STATUS		current
+		 DESCRIPTION
+			"Number of MRU cache ghost hits"
+		::= { arcEntry 20 }
+
+	arcMruHits OBJECT-TYPE
+		 SYNTAX		Counter64
+		 MAX-ACCESS	read-only
+		 STATUS		current
+		 DESCRIPTION
+			"Number of MRU cache hits"
+		::= { arcEntry 21 }
+
+	arcL2Hits OBJECT-TYPE
+		 SYNTAX		Counter64
+		 MAX-ACCESS	read-only
+		 STATUS		current
+		 DESCRIPTION
+			"Number of L2ARC cache hits"
+		::= { arcEntry 22 }
+
+	arcL2Misses OBJECT-TYPE
+		 SYNTAX		Counter64
+		 MAX-ACCESS	read-only
+		 STATUS		current
+		 DESCRIPTION
+			"Number of L2ARC cache misses"
+		::= { arcEntry 23 }
+
+	arcCrTime OBJECT-TYPE
+		 SYNTAX		TimeTicks
+		 MAX-ACCESS	read-only
+		 STATUS		current
+		 DESCRIPTION
+			"ARC statistics creation time in hundredths of a second since boot"
+		::= { arcEntry 24 }
+
+	arcSnapTime OBJECT-TYPE
+		 SYNTAX		TimeTicks
+		 MAX-ACCESS	read-only
+		 STATUS		current
+		 DESCRIPTION
+			"ARC statistics update time in hundredths of a second since boot"
+		::= { arcEntry 25 }
+
+nexentaZFSMIBZpoolObjects OBJECT IDENTIFIER ::= { nexentaZFSMIBObjects 2 }
+
+END

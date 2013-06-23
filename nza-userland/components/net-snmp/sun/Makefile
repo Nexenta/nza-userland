@@ -1,5 +1,6 @@
 #
 # Copyright (c) 2008, 2011, Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2013 Nexenta Systems, Inc.  All rights reserved.
 #
 # U.S. Government Rights - Commercial software. Government users are subject
 # to the Sun Microsystems, Inc. standard license agreement and applicable
@@ -64,12 +65,12 @@ buildrevs:$(BUILDREV_PROGS)
 	$(CC) $< -o $@
 
 subdirs:
-	echo "SUBDIRS:  $(MAKE) CFGPREFIX=$(CFGPREFIX) CFGLIB64=$(CFGLIB64) CFGLIB=$(CFGLIB) CC=$(CC) DEBUG=$(DEBUG) ARCH=$(ARCH)" ; 
+	echo "SUBDIRS:  $(MAKE) CFGPREFIX=$(CFGPREFIX) CFGLIB64=$(CFGLIB64) CFGLIB=$(CFGLIB) CC=\"$(CC)\" DEBUG=$(DEBUG) ARCH=$(ARCH)" ; 
 	@if test "$(SUBDIRS)" != ""; then \
 		it="$(SUBDIRS)" ; \
 		for i in $$it ; do       \
 			echo "making all in `pwd`/$$i"; \
-	                ( cd $$i ; $(MAKE) CFGPREFIX=$(CFGPREFIX) CFGLIB64=$(CFGLIB64) CFGLIB=$(CFGLIB) CC=$(CC) DEBUG=$(DEBUG) ARCH=$(ARCH) ) ; \
+	                ( cd $$i ; $(MAKE) CFGPREFIX=$(CFGPREFIX) CFGLIB64=$(CFGLIB64) CFGLIB=$(CFGLIB) CC="$(CC)" DEBUG=$(DEBUG) ARCH=$(ARCH) ) ; \
                         if test $$? != 0 ; then \
 				exit 1 ; \
 			fi  \

@@ -1,0 +1,34 @@
+--
+-- Copyright 2013, Nexenta Systems, Inc.  All rights reserved.
+--
+
+---------------------------------------------------------------
+-- Nexenta base MIB.
+---------------------------------------------------------------
+
+NEXENTA-MIB DEFINITIONS ::= BEGIN
+
+IMPORTS
+    enterprises, MODULE-IDENTITY FROM SNMPv2-SMI;
+
+nexentaMIB MODULE-IDENTITY
+    LAST-UPDATED "201304060000Z"
+    ORGANIZATION "Nexenta Systems, Inc."
+    CONTACT-INFO "Support"
+    DESCRIPTION
+            "MIB that defines the Nexenta enterprise"
+    REVISION	 "201304060000Z"
+    DESCRIPTION
+            "Initial version"
+
+    ::= { enterprises 40045 }
+
+core OBJECT IDENTIFIER ::= { nexentaMIB 1 }
+storage OBJECT IDENTIFIER ::= { core 1 }
+zfs OBJECT IDENTIFIER ::= { storage 1 }
+devices OBJECT IDENTIFIER ::= { storage 2 }
+diskTopo OBJECT IDENTIFIER ::= { devices 1 }
+platform OBJECT IDENTIFIER ::= { core 2 }
+nza OBJECT IDENTIFIER ::= { platform 1 }
+
+END

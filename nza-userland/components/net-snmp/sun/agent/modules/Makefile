@@ -1,6 +1,7 @@
 
 #
 # Copyright (c) 2003, 2011, Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2013 Nexenta Systems, Inc.  All rights reserved.
 #
 # U.S. Government Rights - Commercial software. Government users are subject
 # to the Sun Microsystems, Inc. standard license agreement and applicable
@@ -43,16 +44,17 @@
 
 # removed healthMonitor
 
-SUBDIRS		= entityMib seaExtensions
+SUBDIRS		= entityMib seaExtensions zfs
 
 all:
 	@if test "$(SUBDIRS)" != ""; then \
 		it="$(SUBDIRS)" ; \
+		export COMPILER=`echo "$(CC)" | nawk '{print $$1}' | xargs basename`; \
 		for i in $$it ; do       \
 			echo "making all in `pwd`/$$i"; \
-			echo "SUBDIRS3:  $(MAKE) CC=$(CC) DEBUG=$(DEBUG) ARCH=$(ARCH)" ; \
-	                ( cd $$i ; $(MAKE) CC=$(CC) DEBUG=$(DEBUG) ARCH=$(ARCH) ROOT=$(ROOT) ) ; \
-			echo "====> Makeing in dir $$i"; \
+			echo "SUBDIRS3:  $(MAKE) CC=\"$(CC)\" DEBUG=$(DEBUG) ARCH=$(ARCH) COMPILER=$${COMPILER}" ; \
+	                ( cd $$i ; $(MAKE) CC="$(CC)" DEBUG=$(DEBUG) ARCH=$(ARCH) ROOT=$(ROOT) COMPILER=$${COMPILER} ) ; \
+			echo "====> Making in dir $$i"; \
                         if test $$? != 0 ; then \
 				exit 1 ; \
 			fi  \
