@@ -154,8 +154,8 @@ clean:
 	rm -f build-releasepackages build-debugpackages
 	rm -f build-releasekernel-gcc build-debugkernel-gcc
 	rm -f setss setgcc
-	rm -rf $(CODEMGR_WS)
 	$(MAKE) -f Makefile.deb clean
+	rm -rf $(CODEMGR_WS)
 
 clean_patches:
 	cd $(CODEMGR_WS) && \
