@@ -5,8 +5,6 @@ SUNSTUDIO_PATH   = /opt/SUNWspro
 SUN_GATE         = http://dlc.sun.com/osol/on/downloads/20100817
 CLOSED_BINARY1   = on-closed-bins.i386.tar.bz2
 CLOSED_BINARY2   = on-closed-bins-nd.i386.tar.bz2
-NZA_KERNEL_REV  ?= default
-NZA_CLOSED_REV  ?= default
 
 export DEB_VERSION     ?= 40-0-21
 export DEB_MAINTAINER  ?= Nexenta Systems <maintainer@nexenta.com>
@@ -17,6 +15,7 @@ NZA_KERNEL_PATH ?= git@github.com:Nexenta/nza-kernel.git
 NZA_CLOSED_PATH ?= git@github.com:Nexenta/nza-closed.git
 # Override this, i.e. with stable-4.0
 NZA_BRANCH_SPEC ?= master
+NZA_CLOSED_BRANCH_SPEC ?= master
 NZA_PATCH_DIR    = $(NZA_ROOT)/$(NZA_PATCHES)
 CUR_REV          = $(CODEMGR_WS)/.rev
 
@@ -46,14 +45,12 @@ clonning: checktools
 	fi
 	cd $(CODEMGR_WS) && ( \
 		git checkout -f $(NZA_BRANCH_SPEC); \
-		git pull --ff-only; \
 	)
 	if test ! -d $(CODEMGR_WS)/usr/$(NZA_CLOSED); then \
 		git clone $(NZA_CLOSED_PATH) $(CODEMGR_WS)/usr/$(NZA_CLOSED); \
 	fi
 	cd $(CODEMGR_WS)/usr/$(NZA_CLOSED) && ( \
-		git checkout -f $(NZA_BRANCH_SPEC); \
-		git pull --ff-only; \
+		git checkout -f $(NZA_CLOSED_BRANCH_SPEC); \
 	)
 	cd $(CODEMGR_WS) && git rev-parse --short=10 HEAD > $(CUR_REV)
 	touch $@
@@ -175,21 +172,21 @@ help:
 	@echo ""
 	@echo "NZA_KERNEL_PATH:"
 	@echo "           Path to $(NZA_KERNEL) repo."
-	@echo "	   It points to mercurial repo on default."
+	@echo "	   It points to mercurial repo by default."
 	@echo "	   However you can re-export this var to clone"
 	@echo "	   $(NZA_KERNEL) from your locally shared place."
 	@echo "NZA_CLOSED_PATH:"
 	@echo "           Path to $(NZA_CLOSED) repo."
-	@echo "	   It points to mercurial repo on default."
+	@echo "	   It points to mercurial repo by default."
 	@echo "	   However you can re-export this var to clone"
 	@echo "	   $(NZA_CLOSED) from your locally shared place."
-	@echo "NZA_KERNEL_REV:"
-	@echo "           Revision for $(NZA_KERNEL)"
-	@echo "           Is 'tip' on default. Change it if you need to build another revision of nza_kernel"
-	@echo "NZA_CLOSED_REV:"
-	@echo "           Revision for $(NZA_CLOSED)"
-	@echo "           Is 'tip' on default. Change it if you need to use another revision of nza_closed"
+	@echo "NZA_BRANCH_SPEC:"
+	@echo "           Branch/Tag/Revision for $(NZA_KERNEL)"
+	@echo "           Is 'master' by default. Change it if you need to build another branch/tag/revision of nza_kernel"
+	@echo "NZA_CLOSED_BRANCH_SPEC:"
+	@echo "           Branch/Tag/Revision for $(NZA_CLOSED)"
+	@echo "           Is 'master' by default. Change it if you need to use another branch/tag/revision of nza_closed"
 	@echo "DEB_MAINTAINER:"
 	@echo "           Crafter of packages"
-	@echo "	   It is \"Nexenta Systems <maintainer@nexenta.com>\" on default."
+	@echo "	   It is \"Nexenta Systems <maintainer@nexenta.com>\" by default."
 	@echo ""
