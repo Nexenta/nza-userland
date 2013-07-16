@@ -22,16 +22,20 @@
 #
 # Copyright (c) 2011, Oracle and/or its affiliates. All rights reserved.
 #
+# Copyright (c) 2013, Nexenta Systems, Inc. All rights reserved.
+
 
 include ../../make-rules/shared-macros.mk
 
 COMPONENT_NAME         = libevent
-COMPONENT_VERSION      = 1.3e
-IPS_COMPONENT_VERSION  = 1.3.5
-COMPONENT_SRC          = $(COMPONENT_NAME)-$(COMPONENT_VERSION)
+COMPONENT_VERSION      = 2.0.21
+IPS_COMPONENT_VERSION  = 2.0.21
+COMPONENT_SRC          = $(COMPONENT_NAME)-$(COMPONENT_VERSION)-stable
 COMPONENT_ARCHIVE      = $(COMPONENT_SRC).tar.gz
-COMPONENT_ARCHIVE_HASH = sha1:67b064a4533c640dfb86e3d81c0cca9247427353
+COMPONENT_ARCHIVE_HASH = sha1:3e6674772eb77de24908c6267c698146420ab699
 COMPONENT_ARCHIVE_URL  = https://github.com/downloads/$(COMPONENT_NAME)/$(COMPONENT_NAME)/$(COMPONENT_ARCHIVE)
+
+DEBVERSION:=40-0-2
 
 include $(WS_TOP)/make-rules/prep.mk
 include $(WS_TOP)/make-rules/configure.mk
@@ -55,7 +59,7 @@ COMPONENT_PRE_CONFIGURE_ACTION =  \
 #/usr/bin/event_rpcgen.py
 
 CONFIGURE_OPTIONS	+= CFLAGS="$(CFLAGS)"
-CONFIGURE_OPTIONS	+= --enable-threads
+CONFIGURE_OPTIONS	+= --disable-static
 
 build:		$(BUILD_32_and_64)
 

@@ -1,12 +1,10 @@
---- libevent-1.3e/configure.orig	Wed Apr 27 12:01:29 2011
-+++ libevent-1.3e/configure	Wed Apr 27 12:01:48 2011
-@@ -9129,8 +9129,8 @@
-   version_type=linux
+--- libevent-2.0.21-stable.orig/configure	2012-11-19 07:13:15.000000000 -0800
++++ libevent-2.0.21-stable/configure	2013-07-15 19:10:18.252149254 -0700
+@@ -11120,7 +11120,7 @@
    need_lib_prefix=no
    need_version=no
--  library_names_spec='${libname}${release}${shared_ext}$versuffix ${libname}${release}${shared_ext}$major $libname${shared_ext}'
+   library_names_spec='${libname}${release}${shared_ext}$versuffix ${libname}${release}${shared_ext}$major $libname${shared_ext}'
 -  soname_spec='${libname}${release}${shared_ext}$major'
-+  library_names_spec='${libname}${shared_ext}$versuffix ${libname}${shared_ext}$major $libname${shared_ext}'
 +  soname_spec='${libname}${shared_ext}$major'
    shlibpath_var=LD_LIBRARY_PATH
    shlibpath_overrides_runpath=yes
