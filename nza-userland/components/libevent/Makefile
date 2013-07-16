@@ -35,7 +35,7 @@ COMPONENT_ARCHIVE      = $(COMPONENT_SRC).tar.gz
 COMPONENT_ARCHIVE_HASH = sha1:3e6674772eb77de24908c6267c698146420ab699
 COMPONENT_ARCHIVE_URL  = https://github.com/downloads/$(COMPONENT_NAME)/$(COMPONENT_NAME)/$(COMPONENT_ARCHIVE)
 
-DEBVERSION:=40-0-2
+DEBVERSION:=40-0-3
 
 include $(WS_TOP)/make-rules/prep.mk
 include $(WS_TOP)/make-rules/configure.mk

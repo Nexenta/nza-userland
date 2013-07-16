@@ -84,29 +84,26 @@ file path=usr/include/event2/tag_compat.h
 file path=usr/include/event2/bufferevent_struct.h
 file path=usr/include/event2/keyvalq_struct.h
 
-link path=usr/lib/libevent_extra-2.0.so.5 target=libevent_extra-2.0.so.5.1.9
-link path=usr/lib/libevent_pthreads-2.0.so.5 target=libevent_pthreads-2.0.so.5.1.9
-link path=usr/lib/libevent-2.0.so.5 target=libevent-2.0.so.5.1.9
-link path=usr/lib/libevent_openssl-2.0.so.5 target=libevent_openssl-2.0.so.5.1.9
-link path=usr/lib/libevent_core-2.0.so.5 target=libevent_core-2.0.so.5.1.9
-link path=usr/lib/$(MACH64)/libevent-2.0.so.5 target=libevent-2.0.so.5.1.9
-link path=usr/lib/$(MACH64)/libevent_pthreads-2.0.so.5 target=libevent_pthreads-2.0.so.5.1.9
-link path=usr/lib/$(MACH64)/libevent_core-2.0.so.5 target=libevent_core-2.0.so.5.1.9
-link path=usr/lib/$(MACH64)/libevent_extra-2.0.so.5 target=libevent_extra-2.0.so.5.1.9
-link path=usr/lib/$(MACH64)/libevent_openssl-2.0.so.5 target=libevent_openssl-2.0.so.5.1.9
-
 link path=usr/lib/libevent.so target=libevent-2.0.so.5.1.9
-link path=usr/lib/libevent.so.1 target=libevent-2.0.so.5.1.9
+link path=usr/lib/libevent.so.5 target=libevent-2.0.so.5.1.9
 link path=usr/lib/libevent_extra.so target=libevent_extra-2.0.so.5.1.9
+link path=usr/lib/libevent_extra.so.5 target=libevent_extra-2.0.so.5.1.9
 link path=usr/lib/libevent_pthreads.so target=libevent_pthreads-2.0.so.5.1.9
+link path=usr/lib/libevent_pthreads.so.5 target=libevent_pthreads-2.0.so.5.1.9
 link path=usr/lib/libevent_openssl.so target=libevent_openssl-2.0.so.5.1.9
+link path=usr/lib/libevent_openssl.so.5 target=libevent_openssl-2.0.so.5.1.9
 link path=usr/lib/libevent_core.so target=libevent_core-2.0.so.5.1.9
+link path=usr/lib/libevent_core.so.5 target=libevent_core-2.0.so.5.1.9
 link path=usr/lib/$(MACH64)/libevent.so target=libevent-2.0.so.5.1.9
-link path=usr/lib/$(MACH64)/libevent.so.1 target=libevent-2.0.so.5.1.9
+link path=usr/lib/$(MACH64)/libevent.so.5 target=libevent-2.0.so.5.1.9
 link path=usr/lib/$(MACH64)/libevent_extra.so target=libevent_extra-2.0.so.5.1.9
+link path=usr/lib/$(MACH64)/libevent_extra.so.5 target=libevent_extra-2.0.so.5.1.9
 link path=usr/lib/$(MACH64)/libevent_pthreads.so target=libevent_pthreads-2.0.so.5.1.9
+link path=usr/lib/$(MACH64)/libevent_pthreads.so.5 target=libevent_pthreads-2.0.so.5.1.9
 link path=usr/lib/$(MACH64)/libevent_openssl.so target=libevent_openssl-2.0.so.5.1.9
+link path=usr/lib/$(MACH64)/libevent_openssl.so.5 target=libevent_openssl-2.0.so.5.1.9
 link path=usr/lib/$(MACH64)/libevent_core.so target=libevent_core-2.0.so.5.1.9
+link path=usr/lib/$(MACH64)/libevent_core.so.5 target=libevent_core-2.0.so.5.1.9
 
 
 
