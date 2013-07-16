@@ -120,6 +120,7 @@ check_pkg_list()
 		developer-build-libtool \
 		developer-build-make \
 		developer-gcc-44 \
+		developer-gcc-gcc \
 		system-library-gcc-44-runtime \
 		developer-gnome-gettext \
 		developer-java-jdk \
