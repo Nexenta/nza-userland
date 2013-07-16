@@ -119,9 +119,7 @@ check_pkg_list()
 		developer-build-gnu-make \
 		developer-build-libtool \
 		developer-build-make \
-		developer-gcc-3 \
 		developer-gcc-44 \
-		system-library-gcc-3-runtime \
 		system-library-gcc-44-runtime \
 		developer-gnome-gettext \
 		developer-java-jdk \
