@@ -18,7 +18,7 @@
 # CDDL HEADER END
 #
 #
-# Copyright (C) 2012, Nexenta Systems, Inc. All rights reserved.
+# Copyright (C) 2013, Nexenta Systems, Inc. All rights reserved.
 #
 
 set name=pkg.fmri value=pkg:/library/gcc/libssp@$(IPS_COMPONENT_VERSION),$(BUILD_VERSION)
@@ -26,6 +26,9 @@ set name=pkg.summary value="GCC stack smashing protection library"
 set name=info.source_url value=$(COMPONENT_ARCHIVE_URL)
 set name=info.upstream_url value=$(COMPONENT_PROJECT_URL)
 
-file usr/lib/$(MACH64)/libssp.so.0.0.0 path=/lib/$(MACH64)/libssp.so.0
-file usr/lib/libssp.so.0.0.0 path=/lib/libssp.so.0
+file usr/lib/$(MACH64)/libssp.so.0.0.0 path=usr/lib/$(MACH64)/libssp.so.0
+file usr/lib/libssp.so.0.0.0 path=usr/lib/libssp.so.0
+
+link path=usr/lib/$(MACH64)/libssp.so target=libssp.so.0
+link path=usr/lib/libssp.so target=libssp.so.0
 
