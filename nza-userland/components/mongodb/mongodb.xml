@@ -19,7 +19,7 @@
                 <method_credential user="mongodb" group="mongodb"/>
             </method_context>
 
-            <exec_method type="method" name="start" exec="/usr/bin/mongod -f %{config_file}" timeout_seconds="30"/>
+            <exec_method type="method" name="start" exec="/lib/svc/method/svc-mongodb start" timeout_seconds="30"/>
 
             <exec_method type="method" name="stop" exec=":kill" timeout_seconds="30"/>
 

@@ -22,7 +22,7 @@
 #
 include ../../make-rules/shared-macros.mk
 
-DEBVERSION := 40-0-3
+DEBVERSION := 40-0-4
 
 COMPONENT_NAME         := mongodb
 COMPONENT_VERSION      := 2.4.2

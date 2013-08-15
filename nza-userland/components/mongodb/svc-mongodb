@@ -1,0 +1,40 @@
+#!/bin/sh
+#
+# Copyright (c) 2013, Nexenta Systems, Inc. All rights reserved.
+#
+# Start/stop the mongodb Database
+#
+
+. /lib/svc/share/smf_include.sh
+
+PIDFILE=/var/spool/locks/mongodb
+LOGFILE=/var/log/mongodb/mongodb.log
+case "$1" in
+
+    'start')
+	if [ ! -f ${LOGFILE} ]; then
+	    touch ${LOGFILE}
+	fi
+	chown -R mongodb:mongodb /var/lib/mongodb
+	chown -R mongodb:mongodb /var/log/mongodb
+	LANG=C /usr/bin/mongod -f /etc/mongodb.conf
+        ;;
+
+    'stop')
+        if [ -f ${PIDFILE} ]; then
+		kill `cat $PIDFILE`
+        fi
+	;;
+
+    'restart')
+        stop
+        sleep1
+        start
+        ;;
+
+    *)
+	echo "usage: $0 {start|stop}"
+	exit 1
+	;;
+
+esac

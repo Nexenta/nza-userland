@@ -18,7 +18,7 @@
 #
 # CDDL HEADER END
 #
-# Copyright (c) 2012, Nexenta Systems, Inc. All rights reserved.
+# Copyright (c) 2013, Nexenta Systems, Inc. All rights reserved.
 #
 
 <transform file path=usr.*/man/.+  -> default mangler.man.stability volatile>
@@ -31,6 +31,7 @@ set name=org.opensolaris.consolidation value=$(CONSOLIDATION)
 
 
 file mongodb.xml path=lib/svc/manifest/application/database/mongodb.xml
+file svc-mongodb path=lib/svc/method/svc-mongodb mode=0755
 
 # Config file from Debian: https://github.com/bobek/mongo-debian
 file mongodb.conf path=etc/mongodb.conf
@@ -39,6 +40,7 @@ group groupname=mongodb
 user  username=mongodb group=mongodb home-dir=/var/lib/mongodb
 
 dir path=var/lib/mongodb owner=mongodb group=mongodb mode=0750
+
 dir path=var/log/mongodb owner=mongodb group=mongodb mode=0750
 
 # Man pages from Debian: https://github.com/bobek/mongo-debian
