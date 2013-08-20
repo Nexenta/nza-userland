@@ -1,0 +1,52 @@
+--- ipmitool-1.8.11/configure	2009-02-25 13:21:56.000000000 -0800
++++ ipmitool-1.8.11.new/configure	2013-07-16 10:56:39.284714628 -0700
+@@ -22081,16 +22081,16 @@
+ 	LD=gld
+ 	AR=gar
+ 	# openssl libs are in /usr/sfw/lib on solaris 10
+-        LIBS="$LIBS -R/usr/sfw/lib"
++        #LIBS="$LIBS -R/usr/sfw/lib"
+ 	# disable the linux-specific interfaces
+ 	# and bmc on SPARC (there is no bmc driver for SPARC)
+-	if [ `mach -p` = sparc ]; then
+-		enable_intf_bmc=no
+-	else
+-		enable_intf_bmc=yes
+-	fi
++	#if [ `mach -p` = sparc ]; then
++	enable_intf_bmc=no
++	#else
++	#	enable_intf_bmc=yes
++	#fi
+ 	enable_intf_imb=no
+-	enable_intf_open=no
++	enable_intf_open=yes
+ 	enable_intf_lipmi=no
+ 	enable_ipmishell=no
+ 	enable_all_options=no
+--- ipmitool-1.8.11/configure.in	2009-02-25 12:38:51.000000000 -0800
++++ ipmitool-1.8.11.new/configure.in	2013-07-16 10:55:09.422834248 -0700
+@@ -61,16 +61,16 @@
+ 	LD=gld
+ 	AR=gar
+ 	# openssl libs are in /usr/sfw/lib on solaris 10
+-        LIBS="$LIBS -R/usr/sfw/lib"
++        #LIBS="$LIBS -R/usr/sfw/lib"
+ 	# disable the linux-specific interfaces
+ 	# and bmc on SPARC (there is no bmc driver for SPARC)
+-	if [[ `mach -p` = sparc ]]; then
+-		enable_intf_bmc=no
+-	else
+-		enable_intf_bmc=yes
+-	fi
++	#if [[ `mach -p` = sparc ]]; then
++	enable_intf_bmc=no
++	#else
++	#enable_intf_bmc=yes
++	#fi
+ 	enable_intf_imb=no
+-	enable_intf_open=no
++	enable_intf_open=yes
+ 	enable_intf_lipmi=no
+ 	enable_ipmishell=no
+ 	enable_all_options=no
