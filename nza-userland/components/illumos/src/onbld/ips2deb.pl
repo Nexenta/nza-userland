@@ -1387,6 +1387,7 @@ binary-arch:
 #	dh_makeshlibs -p%%PKGNAME%%
 	dh_makeshlibs
 	dh_installdeb
+	rm -f $(CURDIR)/debian/%%PKGNAME%%/DEBIAN/conffiles
 #	dh_shlibdeps debian/tmp/lib/* debian/tmp/usr/lib/*
 	-dh_shlibdeps -Xdebian/sunwcs/usr/kernel/* -- --ignore-missing-info
 	dh_gencontrol
