@@ -18,7 +18,7 @@
 #
 # CDDL HEADER END
 #
-# Copyright (c) 2012, Nexenta Systems, Inc. All rights reserved.
+# Copyright (c) 2013, Nexenta Systems, Inc. All rights reserved.
 #
 
 <transform file path=usr.*/man/.+                -> default mangler.man.stability volatile>
@@ -1088,6 +1088,23 @@ file   path=opt/DTT/procsystime   mode=0755
 file   path=opt/DTT/rwsnoop   mode=0755
 file   path=opt/DTT/rwtop   mode=0755
 file   path=opt/DTT/statsnoop   mode=0755
+
+# custom scripts
+file custom/arcstat.pl path=opt/DTT/Bin/arcstat.pl mode=0755
+file custom/cifssvrtop path=opt/DTT/Bin/cifssvrtop mode=0755
+file custom/iscsisvrtop path=opt/DTT/Bin/iscsisvrtop mode=0755
+file custom/kmem_reap_100ms.d path=opt/DTT/Bin/kmem_reap_100ms.d mode=0755
+file custom/nfsio.d path=opt/DTT/Bin/nfsio.d mode=0755
+file custom/nfsio30sec.d path=opt/DTT/Bin/nfsio30sec.d mode=0755
+file custom/nfssvrtop path=opt/DTT/Bin/nfssvrtop mode=0755
+file custom/nfsutil.d path=opt/DTT/Bin/nfsutil.d mode=0755
+file custom/resilver.d path=opt/DTT/Bin/resilver.d mode=0755
+file custom/scrub.d path=opt/DTT/Bin/scrub.d mode=0755
+file custom/timein.sh path=opt/DTT/Bin/timein.sh mode=0755
+file custom/txg_monitor.v3.d path=opt/DTT/Bin/txg_monitor.v3.d mode=0755
+file custom/zfsio.d path=opt/DTT/Bin/zfsio.d mode=0755
+
+
 
 depend fmri=developer/dtrace type=require
 depend fmri=runtime/python-26 type=require
