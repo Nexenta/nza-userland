@@ -13,7 +13,7 @@ PKGROOT = $(ROOT)/proto/root_$(MACH)
 TOOLSROOT = $(ROOT)/usr/src/tools/proto/root_$(MACH)-nd
 
 # APT repository
-APTDIR = apt
+APTDIR ?= apt
 
 # All debs, stamps are here:
 DEBDIR = debs
