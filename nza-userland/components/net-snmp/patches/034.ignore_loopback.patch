@@ -1,0 +1,15 @@
+diff -urN net-snmp-5.4.1.orig/agent/mibgroup/kernel_sunos5.c net-snmp-5.4.1/agent/mibgroup/kernel_sunos5.c
+--- net-snmp-5.4.1.orig/agent/mibgroup/kernel_sunos5.c	2013-09-23 03:42:18.000000000 -0700
++++ net-snmp-5.4.1/agent/mibgroup/kernel_sunos5.c	2013-09-23 03:55:34.520637481 -0700
+@@ -1126,7 +1126,10 @@
+ 
+     if (devname == NULL)
+ 	return (-1);
+-    
++	
++    if (strcmp(devname, "lo0") == 0)
++	return (-1);
++
+     ret = snprintf(devstr, sizeof(devstr), "/dev/%s", devname);
+ 
+     if(ret < 0 || ret > sizeof(devstr) - 1)
