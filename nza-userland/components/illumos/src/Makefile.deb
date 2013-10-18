@@ -1,16 +1,19 @@
+NZA_KERNEL       = nza-kernel
+NZA_ROOT         = $(CURDIR)
+CODEMGR_WS       = $(NZA_ROOT)/$(NZA_KERNEL)
+
 DEB_VERSION     ?= 0-0-0
 DEB_MAINTAINER  ?= Nexenta Systems <maintainer@nexenta.com>
 
 # No source packages:
 DPKG_BUILD_FLAGS = -b
 
-ROOT = nza-kernel
 MACH = i386
 
-MANIFESTDIR = $(ROOT)/usr/src/pkg/packages.$(MACH)
+MANIFESTDIR = $(CODEMGR_WS)/usr/src/pkg/packages.$(MACH)
 
-PKGROOT = $(ROOT)/proto/root_$(MACH)
-TOOLSROOT = $(ROOT)/usr/src/tools/proto/root_$(MACH)-nd
+PKGROOT = $(CODEMGR_WS)/proto/root_$(MACH)
+TOOLSROOT = $(CODEMGR_WS)/usr/src/tools/proto/root_$(MACH)-nd
 
 # APT repository
 APTDIR ?= apt

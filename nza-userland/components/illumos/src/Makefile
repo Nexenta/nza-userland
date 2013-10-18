@@ -93,11 +93,11 @@ adjust-scripts: copy-tools
 	touch $@
 
 setrelease: adjust-scripts
-	sed -i "s/export NIGHTLY_OPTIONS='-FnCDlmprt'/export NIGHTLY_OPTIONS='-nCmprt'/" $(CODEMGR_WS)/illumos.sh
+	sed -i "s/export NIGHTLY_OPTIONS='-FnCDlmprt'/export NIGHTLY_OPTIONS='-nCmrt'/" $(CODEMGR_WS)/illumos.sh
 	touch $@
 
 setdebug: adjust-scripts
-	sed -i "s/export NIGHTLY_OPTIONS='-FnCDlmprt'/export NIGHTLY_OPTIONS='-nFDCmprt'/" $(CODEMGR_WS)/illumos.sh
+	sed -i "s/export NIGHTLY_OPTIONS='-FnCDlmprt'/export NIGHTLY_OPTIONS='-nFDCmrt'/" $(CODEMGR_WS)/illumos.sh
 	touch $@
 
 setss: adjust-scripts
