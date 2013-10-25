@@ -11,8 +11,8 @@ export DEB_MAINTAINER  ?= Nexenta Systems <maintainer@nexenta.com>
 
 NZA_ROOT         = $(CURDIR)
 CODEMGR_WS       = $(NZA_ROOT)/$(NZA_KERNEL)
-NZA_KERNEL_PATH ?= git@stash.nexenta.com:7999/os/nza-kernel.git
-NZA_CLOSED_PATH ?= git@stash.nexenta.com:7999/os/nza-closed.git
+NZA_KERNEL_PATH ?= ssh://git@stash.nexenta.com:7999/os/nza-kernel.git
+NZA_CLOSED_PATH ?= ssh://git@stash.nexenta.com:7999/os/nza-closed.git
 
 # Override this, i.e. with stable-4.0
 NZA_BRANCH_SPEC ?= master
