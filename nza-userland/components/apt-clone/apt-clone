@@ -1519,11 +1519,11 @@ if ($rc == 0) {
 				}
 				nmu_system("mkdir $tmpdir");
 				nmu_system("mount -F zfs $rootfs_prev $tmpdir 2>/dev/null");
-				nmu_system("apt-get -R $tmpdir update");
-				nmu_system("apt-get -R $tmpdir install -f -y sunwcsd");
-				nmu_system("apt-get -R $tmpdir install -f -y sunwcs");
-				nmu_system("apt-get -R $tmpdir install -f -y system-kernel");
-				$err = nmu_system("apt-get -R $tmpdir upgrade -y --force-yes");
+				nmu_system("apt-get -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\" -R $tmpdir update");
+				nmu_system("apt-get -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\" -R $tmpdir install -y --force-yes sunwcsd");
+				nmu_system("apt-get -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\" -R $tmpdir install -y --force-yes sunwcs");
+				nmu_system("apt-get -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\" -R $tmpdir install -y --force-yes system-kernel");
+				$err = nmu_system("apt-get -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\" -R $tmpdir upgrade -y --force-yes");
 				nmu_system("touch $tmpdir/reconfigure");
 
 				if ($err == 0) {
