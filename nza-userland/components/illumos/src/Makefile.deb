@@ -16,10 +16,10 @@ PKGROOT = $(CODEMGR_WS)/proto/root_$(MACH)
 TOOLSROOT = $(CODEMGR_WS)/usr/src/tools/proto/root_$(MACH)-nd
 
 # APT repository
-APTDIR ?= apt
+APTDIR ?= $(NZA_ROOT)/apt
 
 # All debs, stamps are here:
-DEBDIR = debs
+DEBDIR = $(NZA_ROOT)/debs
 
 PKGMOG := $(shell cd $(MANIFESTDIR) && ls *.mog)
 PKGDEB := $(PKGMOG:%.mog=$(DEBDIR)/%.deb-stamp)
@@ -55,10 +55,9 @@ $(DEBDIR)/%.deb-stamp: $(MANIFESTDIR)/%.mog $(DEBDIR)/.dir-stamp
 	touch  $@
 
 $(DEBDIR)/.deb-commit-stamp: $(PKGDEB) $(APTDIR)/conf/distributions
-	for p in $(DEBDIR)/*.changes; do \
+	for p in $(DEBDIR)/*.deb; do \
 		echo "processing $$p"; \
-		/usr/bin/reprepro -b $(APTDIR) --export=never include unstable $$p > $$p.log 2>&1 \
-		|| (cat $$.p.log && exit 1); \
+		/usr/bin/reprepro -b $(APTDIR) includedeb nza-kernel $$p > $$p.log;  \
 	done
 	touch $@
 

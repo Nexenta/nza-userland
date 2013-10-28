@@ -1,9 +1,7 @@
-# Copyright 2012 Nexenta Systems, Inc. All rights reserved.
-
-Origin: illumos
-Label: illumos
-Suite: unstable
-Codename: unstable
-Architectures: solaris-i386 solaris-sparc
+Origin: Kernel APT
+Codename: nza-kernel
+Architectures: solaris-i386
 Components: main
-#SignWith: XXXX
+DebIndices: Packages Release . .gz .bz2
+Description: Kernel repository
+
