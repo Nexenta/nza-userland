@@ -31,8 +31,7 @@ set name=variant.opensolaris.zone value=global
 
 depend fmri=pkg:/consolidation/developer/illumos-incorporation type=require
 depend fmri=pkg:/reprepro type=require
-depend fmri=pkg:/developer/gcc/gcc type=require
-depend fmri=pkg:/developer/gcc/g++ type=require
+depend fmri=pkg:/developer/illumos/gcc type=require
 
 dir path=usr
 dir path=usr/src

@@ -105,8 +105,8 @@ setss: adjust-scripts
 	touch $@
 
 setgcc: adjust-scripts
-	echo "export GCC_ROOT='/usr/gcc/4.4'" >> $(CODEMGR_WS)/illumos.sh
-	echo "export CW_GCC_DIR='/usr/gcc/4.4/bin'" >> $(CODEMGR_WS)/illumos.sh
+	echo "export GCC_ROOT='/opt/gcc/4.4.4'" >> $(CODEMGR_WS)/illumos.sh
+	echo "export CW_GCC_DIR='/opt/gcc/4.4.4/bin'" >> $(CODEMGR_WS)/illumos.sh
 	echo "export __GNUC=''" >> $(CODEMGR_WS)/illumos.sh
 	echo "export __GNUC4=''" >> $(CODEMGR_WS)/illumos.sh
 	touch $@
