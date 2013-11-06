@@ -1,0 +1,16 @@
+diff -urN jansson-2.5.orig/src/value.c jansson-2.5/src/value.c
+--- jansson-2.5.orig/src/value.c	2013-09-19 10:47:31.000000000 -0700
++++ jansson-2.5/src/value.c	2013-11-05 12:12:24.204435832 -0800
+@@ -21,10 +21,10 @@
+ 
+ /* Work around nonstandard isnan() and isinf() implementations */
+ #ifndef isnan
+-static JSON_INLINE int isnan(double x) { return x != x; }
++JSON_INLINE int isnan(double x) { return x != x; }
+ #endif
+ #ifndef isinf
+-static JSON_INLINE int isinf(double x) { return !isnan(x) && isnan(x - x); }
++JSON_INLINE int isinf(double x) { return !isnan(x) && isnan(x - x); }
+ #endif
+ 
+ static JSON_INLINE void json_init(json_t *json, json_type type)
