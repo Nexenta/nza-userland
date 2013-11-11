@@ -48,6 +48,12 @@ COMPONENT_PRE_PATCH_ACTION += tar -xzf $(COMPONENT_ARCHIVE_1) && \
 
 COMPONENT_PRE_CONFIGURE_ACTION = (/usr/gnu/bin/cp -a $(SOURCE_DIR)/* $(@D))
 
+CONFIGURE_OPTIONS +=            --enable-optimized
+CONFIGURE_OPTIONS +=            --disable-assertions
+CONFIGURE_OPTIONS +=            --enable-targets=x86,x86_64,cpp
+CONFIGURE_OPTIONS +=            --enable-pic=yes
+CONFIGURE_OPTIONS +=            --enable-docs=no
+
 COMPONENT_POST_INSTALL_ACTION =  for file in `echo $(PROTO_DIR)/usr/clang/$(COMPONENT_VERSION)/bin/*`; do \
  					 elfedit -e 'dyn:runpath $$ORIGIN/../lib' $$file ; \
 				done && \

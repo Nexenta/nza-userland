@@ -105,25 +105,25 @@ file usr/clang/$(COMPONENT_VERSION)/bin/llvm-symbolizer path=usr/clang/$(COMPONE
 file usr/clang/$(COMPONENT_VERSION)/bin/llvm-tblgen path=usr/clang/$(COMPONENT_VERSION)/bin/llvm-tblgen
 file usr/clang/$(COMPONENT_VERSION)/bin/macho-dump path=usr/clang/$(COMPONENT_VERSION)/bin/macho-dump
 file usr/clang/$(COMPONENT_VERSION)/bin/opt path=usr/clang/$(COMPONENT_VERSION)/bin/opt
-dir  path=usr/clang/$(COMPONENT_VERSION)/docs
-dir  path=usr/clang/$(COMPONENT_VERSION)/docs/llvm
-dir  path=usr/clang/$(COMPONENT_VERSION)/docs/llvm/html
-file usr/clang/$(COMPONENT_VERSION)/docs/llvm/html.tar.gz \
+#dir  path=usr/clang/$(COMPONENT_VERSION)/docs
+#dir  path=usr/clang/$(COMPONENT_VERSION)/docs/llvm
+#dir  path=usr/clang/$(COMPONENT_VERSION)/docs/llvm/html
+#file usr/clang/$(COMPONENT_VERSION)/docs/llvm/html.tar.gz \
     path=usr/clang/$(COMPONENT_VERSION)/docs/llvm/html.tar.gz
-file usr/clang/$(COMPONENT_VERSION)/docs/llvm/html/Dummy.html \
+#file usr/clang/$(COMPONENT_VERSION)/docs/llvm/html/Dummy.html \
     path=usr/clang/$(COMPONENT_VERSION)/docs/llvm/html/Dummy.html
-file usr/clang/$(COMPONENT_VERSION)/docs/llvm/html/LibASTMatchersReference.html \
+#file usr/clang/$(COMPONENT_VERSION)/docs/llvm/html/LibASTMatchersReference.html \
     path=usr/clang/$(COMPONENT_VERSION)/docs/llvm/html/LibASTMatchersReference.html
-dir  path=usr/clang/$(COMPONENT_VERSION)/docs/llvm/html/clang
-file usr/clang/$(COMPONENT_VERSION)/docs/llvm/html/clang/clang.html \
+#dir  path=usr/clang/$(COMPONENT_VERSION)/docs/llvm/html/clang
+#file usr/clang/$(COMPONENT_VERSION)/docs/llvm/html/clang/clang.html \
     path=usr/clang/$(COMPONENT_VERSION)/docs/llvm/html/clang/clang.html
-file usr/clang/$(COMPONENT_VERSION)/docs/llvm/html/clang/manpage.css \
+#file usr/clang/$(COMPONENT_VERSION)/docs/llvm/html/clang/manpage.css \
     path=usr/clang/$(COMPONENT_VERSION)/docs/llvm/html/clang/manpage.css
-file usr/clang/$(COMPONENT_VERSION)/docs/llvm/html/doxygen.css \
+#file usr/clang/$(COMPONENT_VERSION)/docs/llvm/html/doxygen.css \
     path=usr/clang/$(COMPONENT_VERSION)/docs/llvm/html/doxygen.css
-dir  path=usr/clang/$(COMPONENT_VERSION)/docs/llvm/html/img
-dir  path=usr/clang/$(COMPONENT_VERSION)/docs/llvm/ps
-file usr/clang/$(COMPONENT_VERSION)/docs/llvm/ps/clang.ps \
+#dir  path=usr/clang/$(COMPONENT_VERSION)/docs/llvm/html/img
+#dir  path=usr/clang/$(COMPONENT_VERSION)/docs/llvm/ps
+#file usr/clang/$(COMPONENT_VERSION)/docs/llvm/ps/clang.ps \
     path=usr/clang/$(COMPONENT_VERSION)/docs/llvm/ps/clang.ps
 dir  path=usr/clang/$(COMPONENT_VERSION)/include
 dir  path=usr/clang/$(COMPONENT_VERSION)/include/clang
@@ -2174,8 +2174,8 @@ file usr/clang/$(COMPONENT_VERSION)/lib/clang/$(COMPONENT_VERSION)/include/xopin
 file usr/clang/$(COMPONENT_VERSION)/lib/libLTO.so path=usr/clang/$(COMPONENT_VERSION)/lib/libLTO.so
 file usr/clang/$(COMPONENT_VERSION)/lib/libclang.so path=usr/clang/$(COMPONENT_VERSION)/lib/libclang.so
 file usr/clang/$(COMPONENT_VERSION)/lib/libprofile_rt.so path=usr/clang/$(COMPONENT_VERSION)/lib/libprofile_rt.so
-dir  path=usr/clang/$(COMPONENT_VERSION)/share
-dir  path=usr/clang/$(COMPONENT_VERSION)/share/man
-dir  path=usr/clang/$(COMPONENT_VERSION)/share/man/man1
-file usr/clang/$(COMPONENT_VERSION)/share/man/man1/clang.1 \
+#dir  path=usr/clang/$(COMPONENT_VERSION)/share
+#dir  path=usr/clang/$(COMPONENT_VERSION)/share/man
+#dir  path=usr/clang/$(COMPONENT_VERSION)/share/man/man1
+#file usr/clang/$(COMPONENT_VERSION)/share/man/man1/clang.1 \
     path=usr/clang/$(COMPONENT_VERSION)/share/man/man1/clang.1
