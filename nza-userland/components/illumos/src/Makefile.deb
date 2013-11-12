@@ -29,8 +29,34 @@ deb: $(PKGDEB)
 apt: $(DEBDIR)/.apt-stamp
 clean:
 	rm -rf $(APTDIR) $(DEBDIR)
+onedeb:
+	if test ! -f $(MANIFESTDIR)/$(DEB).mog; then \
+	    echo "No $(DEB).mog found in $(MANIFESTDIR)" ; \
+	    exit 1; \
+	fi;
+	/opt/onbld/bin/ips2deb.pl --noverbose \
+	-p "$(MANIFESTDIR)/$(DEB).mog" \
+	-d $(PKGROOT) \
+	-d $(TOOLSROOT) \
+	-o "$(DEBDIR)" \
+	--mfg "$(MANIFESTDIR)" \
+	--mfe "mog" \
+	--maintainer "$(DEB_MAINTAINER)" \
+	--pv "$(DEB_VERSION)" \
+	--category "illumos" || echo "Never mind"
 
-.PHONY: deb apt clean
+	if [ -d "$(DEBDIR)/$(DEB)" ]; then \
+	    echo "Building pkg: $(DEB)" ; \
+	    cd "$(DEBDIR)/$(DEB)" ; \
+	    PATH=/usr/gnu/bin:/usr/bin:$$PATH \
+			dpkg-buildpackage $(DPKG_BUILD_FLAGS) > ../$(DEB).build.log 2>&1 ; \
+	fi
+	echo "processing $(DEB)"
+	/usr/bin/reprepro -b $(APTDIR) remove nza-kernel $(DEB)
+	/usr/bin/reprepro -b $(APTDIR) includedeb nza-kernel $(DEBDIR)/$(DEB)*.deb > $(DEB).log
+	/usr/bin/reprepro -b $(APTDIR) export
+
+.PHONY: deb apt clean onedeb
 
 $(DEBDIR)/%.deb-stamp: $(MANIFESTDIR)/%.mog $(DEBDIR)/.dir-stamp
 	/opt/onbld/bin/ips2deb.pl --noverbose \

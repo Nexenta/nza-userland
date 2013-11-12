@@ -127,12 +127,14 @@ build-debugkernel-gcc: hacking setup-closed setdebug setgcc
 	$(buildkernel)
 	touch $@
 
+.SILENT: build-releasepackages build-debugpackages build-onepackage
+
 build-releasepackages:
 	if test ! -d $(CODEMGR_WS)/proto; then \
 		echo "Run \"make build-releasekernel or build-releasekernel-gcc\" first!"; \
 		exit 1; \
 	fi; \
-	$(MAKE) -f Makefile.deb apt
+	$(MAKE) -s -j4 -f Makefile.deb apt
 	touch $@
 
 build-debugpackages:
@@ -140,9 +142,15 @@ build-debugpackages:
 		echo "Run \"make build-debugkernel or build-debugkernel-gcc\" first!"; \
 		exit 1; \
 	fi; \
-	$(MAKE) -f Makefile.deb apt
+	$(MAKE) -s -j4 -f Makefile.deb apt
 	touch $@
 
+build-onepackage:
+	if test ! -d $(CODEMGR_WS)/proto; then \
+		echo "Run \"make build-releasekernel or build-debugkernel\" first!"; \
+		exit 1; \
+	fi; \
+	$(MAKE) -s -f Makefile.deb onedeb DEB=$(DEB)
 
 .PHONY: all clean clean_patches help
 
@@ -165,7 +173,18 @@ clean_patches:
 
 help:
 	@echo ""
-	@echo "Usage: make [build-releasekernel|build-releasekernel-gcc|build-debugkernel|build-debugkernel-gcc|build-releasepackages|build-debugpackages|clean|clean_patches|help]"
+	@echo "Usage: gmake [ action ]
+	@echo ""
+	@echo "       actions:  build-releasekernel
+	@echo "                 build-releasekernel-gcc
+	@echo "                 build-debugkernel
+	@echo "                 build-debugkernel-gcc
+	@echo "                 build-releasepackages
+	@echo "                 build-debugpackages
+	@echo "                 build-onepackage DEB=PACKAGE_NAME
+	@echo "                 clean
+	@echo "                 clean_patches
+	@echo "                 help"
 	@echo ""
 	@echo "DEB_VERSION:"
 	@echo "	   Version of Kernel deb packages. Must be set for 'build-releasepackages|build-debugpackages'"
@@ -190,4 +209,6 @@ help:
 	@echo "DEB_MAINTAINER:"
 	@echo "           Crafter of packages"
 	@echo "	   It is \"Nexenta Systems <maintainer@nexenta.com>\" by default."
+	@echo "DEB:"
+	@echo "           Name of package, i.e. \"gmake build-onepackage DEB=system-tnf\""
 	@echo ""

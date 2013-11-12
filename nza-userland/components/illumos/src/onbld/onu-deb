@@ -44,6 +44,7 @@ CAT="/usr/bin/cat"
 CP="/usr/bin/cp"
 MV="/usr/bin/mv"
 APTGET="/usr/bin/apt-get"
+TOUCH="/usr/bin/touch"
 
 function usage()
 {
@@ -107,7 +108,7 @@ shift `expr $OPTIND - 1`
 [ -z "$TARGETBE" -a -z "$TARGETMOUNT" ] && usage
 [ -z "$REPODIR" ] && usage
 
-if [ $UPGRADE -lt 1 -a ! -f "$REPODIR/conf/distributions" ]; then
+if [ ! -f "$REPODIR/conf/distributions" ]; then
 	logmsg "Local APT unavailable, please check your path to repo dir: '$REPODIR'"
 	fullabort
 fi
@@ -138,6 +139,7 @@ logcmd ${APTGET} -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--forc
 
 if [ -z "$TARGETMOUNT" ]; then
 	logcmd $BOOTADM update-archive -R $TMPDIR
+	logcmd ${TOUCH} $TMPDIR/reconfigure
 fi
 
 if [ ! -z "$REPODIR" -a -z "$TARGETMOUNT" ]; then
