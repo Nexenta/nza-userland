@@ -20,10 +20,17 @@ NZA_CLOSED_BRANCH_SPEC ?= master
 NZA_PATCH_DIR    = $(NZA_ROOT)/$(NZA_PATCHES)
 CUR_REV          = $(CODEMGR_WS)/.rev
 
+DPKG_MAX_JOBS ?= 7
+
 define buildkernel
 	REV=`cat $(CUR_REV)`; \
 	cd $(CODEMGR_WS) && CODEMGR_WS='$(CODEMGR_WS)' GATE=$$REV ksh93 bldenv.sh -d illumos.sh -c 'cd usr/src && dmake setup' 1>&2; \
 	cd $(CODEMGR_WS) && CODEMGR_WS='$(CODEMGR_WS)' GATE=$$REV ./nightly.sh illumos.sh
+	grep -q "^*** Error" $(CODEMGR_WS)/usr/src/install-*i386.out
+	if [ "$?" = "0" ]; then \
+		echo "Build not successfull, check nightly.log"; \
+		exit 1; \
+	fi;
 endef
 
 all:
@@ -101,14 +108,15 @@ setdebug: adjust-scripts
 	touch $@
 
 setss: adjust-scripts
-	echo "export GCC_ROOT='/usr'" >> $(CODEMGR_WS)/illumos.sh
+	echo "export GCC_ROOT='/opt/gcc/4.4.4'" >> $(CODEMGR_WS)/illumos.sh
 	touch $@
 
 setgcc: adjust-scripts
 	echo "export GCC_ROOT='/opt/gcc/4.4.4'" >> $(CODEMGR_WS)/illumos.sh
 	echo "export CW_GCC_DIR='/opt/gcc/4.4.4/bin'" >> $(CODEMGR_WS)/illumos.sh
+	echo "export CW_NO_SHADOW='1'" >> $(CODEMGR_WS)/illumos.sh
 	echo "export __GNUC=''" >> $(CODEMGR_WS)/illumos.sh
-	echo "export __GNUC4=''" >> $(CODEMGR_WS)/illumos.sh
+	echo "export ONLY_LINT_DEFS='-I$(SUNSTUDIO_PATH)/sunstudio12.1/prod/include/lint'" >> $(CODEMGR_WS)/illumos.sh
 	touch $@
 
 build-releasekernel: hacking setup-closed setrelease setss
@@ -134,7 +142,7 @@ build-releasepackages:
 		echo "Run \"make build-releasekernel or build-releasekernel-gcc\" first!"; \
 		exit 1; \
 	fi; \
-	$(MAKE) -s -j4 -f Makefile.deb apt
+	$(MAKE) -s -j$(DPKG_MAX_JOBS) -f Makefile.deb apt
 	touch $@
 
 build-debugpackages:
@@ -142,7 +150,7 @@ build-debugpackages:
 		echo "Run \"make build-debugkernel or build-debugkernel-gcc\" first!"; \
 		exit 1; \
 	fi; \
-	$(MAKE) -s -j4 -f Makefile.deb apt
+	$(MAKE) -s -j$(DPKG_MAX_JOBS) -f Makefile.deb apt
 	touch $@
 
 build-onepackage:
