@@ -26,8 +26,7 @@ define buildkernel
 	REV=`cat $(CUR_REV)`; \
 	cd $(CODEMGR_WS) && CODEMGR_WS='$(CODEMGR_WS)' GATE=$$REV ksh93 bldenv.sh -d illumos.sh -c 'cd usr/src && dmake setup' 1>&2; \
 	cd $(CODEMGR_WS) && CODEMGR_WS='$(CODEMGR_WS)' GATE=$$REV ./nightly.sh illumos.sh
-	grep -q "^*** Error" $(CODEMGR_WS)/usr/src/install-*i386.out
-	if [ "$?" = "0" ]; then \
+	if grep -q "^*** Error" $(CODEMGR_WS)/usr/src/install-*i386.out; then \
 		echo "Build not successfull, check nightly.log"; \
 		exit 1; \
 	fi;
