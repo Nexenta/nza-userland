@@ -121,6 +121,7 @@ check_pkg_list()
 		developer-build-make \
 		developer-gcc-44 \
 		developer-gcc-gcc \
+		developer-library-lint \
 		system-library-gcc-44-runtime \
 		developer-gnome-gettext \
 		developer-java-jdk \
