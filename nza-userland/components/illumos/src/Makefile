@@ -20,6 +20,11 @@ NZA_CLOSED_BRANCH_SPEC ?= master
 NZA_PATCH_DIR    = $(NZA_ROOT)/$(NZA_PATCHES)
 CUR_REV          = $(CODEMGR_WS)/.rev
 
+VERSION   = NexentaOS_4:$(shell cat $(CUR_REV))
+RELEASE_CM= \"@(\#)SunOS '\$$RELEASE' '\$$VERSION' '\$$RELEASE_DATE'\"
+DEV_CM    = \"@(\#)SunOS Developer: '\$$LOGNAME' '\$$GATE' $(shell date +%Y-%m-%d)\"
+
+
 DPKG_MAX_JOBS ?= 7
 
 define buildkernel
@@ -116,6 +121,9 @@ setgcc: adjust-scripts
 	echo "export CW_NO_SHADOW='1'" >> $(CODEMGR_WS)/illumos.sh
 	echo "export __GNUC=''" >> $(CODEMGR_WS)/illumos.sh
 	echo "export ONLY_LINT_DEFS='-I$(SUNSTUDIO_PATH)/sunstudio12.1/prod/include/lint'" >> $(CODEMGR_WS)/illumos.sh
+	echo "export VERSION='$(VERSION)'" >> $(CODEMGR_WS)/illumos.sh
+	echo "export RELEASE_CM='$(RELEASE_CM)'" >> $(CODEMGR_WS)/illumos.sh 
+	echo "export DEV_CM='$(DEV_CM)'" >> $(CODEMGR_WS)/illumos.sh
 	touch $@
 
 build-releasekernel: hacking setup-closed setrelease setss
