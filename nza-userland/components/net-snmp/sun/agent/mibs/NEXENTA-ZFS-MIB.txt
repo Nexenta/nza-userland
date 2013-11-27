@@ -6,7 +6,9 @@ IMPORTS
 	zfs
 		FROM NEXENTA-MIB
 	MODULE-IDENTITY, OBJECT-TYPE, Unsigned32, Counter64, TimeTicks
-		FROM SNMPv2-SMI;
+		FROM SNMPv2-SMI
+	TEXTUAL-CONVENTION, DisplayString, TruthValue
+		FROM SNMPv2-TC;
 
 nexentaZFSMIB MODULE-IDENTITY
 	LAST-UPDATED "201304080000Z"
@@ -19,6 +21,38 @@ nexentaZFSMIB MODULE-IDENTITY
 	::= { zfs 1 }
 
 nexentaZFSMIBObjects OBJECT IDENTIFIER ::= { nexentaZFSMIB 1 }
+
+NexentaZFSZpoolHealth ::= TEXTUAL-CONVENTION
+		STATUS	     current
+		DESCRIPTION
+			"Represents ZFS zpool health"
+		SYNTAX	     INTEGER {
+			     degraded(1),
+			     faulted(2),
+			     offline(3),
+			     online(4),
+			     removed(5),
+			     unavail(6),
+			     online(7)
+		}
+
+NexentaZFSZpoolFailmode ::= TEXTUAL-CONVENTION
+		STATUS	     current
+		DESCRIPTION
+			"Represents ZFS zpool failure mode"
+		SYNTAX	     INTEGER {
+			     wait(1),
+			     continue(2),
+			     panic(3)
+		}
+
+NexentaZFSRatio ::= TEXTUAL-CONVENTION
+		DISPLAY-HINT "d-2"
+		STATUS	     current
+		DESCRIPTION
+			"Represents ZFS ratio"
+		SYNTAX	     INTEGER
+
 nexentaZFSMIBARCObjects OBJECT IDENTIFIER ::= { nexentaZFSMIBObjects 1 }
 
 	nexentaZFSARCTable OBJECT-TYPE
@@ -26,7 +60,7 @@ nexentaZFSMIBARCObjects OBJECT IDENTIFIER ::= { nexentaZFSMIBObjects 1 }
 		MAX-ACCESS   not-accessible
 		STATUS	     current
 		DESCRIPTION
-			"Topology map conceptual table for ARC statistics"
+			"ZFS conceptual table for ARC statistics"
 		::= { nexentaZFSMIBARCObjects 1 }
 
 	arcEntry OBJECT-TYPE
@@ -267,5 +301,178 @@ nexentaZFSMIBARCObjects OBJECT IDENTIFIER ::= { nexentaZFSMIBObjects 1 }
 		::= { arcEntry 25 }
 
 nexentaZFSMIBZpoolObjects OBJECT IDENTIFIER ::= { nexentaZFSMIBObjects 2 }
+
+	nexentaZFSZpoolTable OBJECT-TYPE
+		SYNTAX	     SEQUENCE OF ZpoolEntry
+		MAX-ACCESS   not-accessible
+		STATUS	     current
+		DESCRIPTION
+			"ZFS conceptual table for zpool statistics"
+		::= { nexentaZFSMIBZpoolObjects 1 }
+
+	zpoolEntry OBJECT-TYPE
+		SYNTAX		ZpoolEntry
+		MAX-ACCESS	not-accessible
+		STATUS		current
+		DESCRIPTION
+			"ZFS zpool statistics conceptual row"
+		INDEX		{ zpoolName, zpoolGuid }
+		::= { nexentaZFSZpoolTable 1 }
+
+	ZpoolEntry ::= SEQUENCE {
+		zpoolName			DisplayString,
+		zpoolGuid			DisplayString,
+		zpoolHealth			NexentaZFSZpoolHealth,
+		zpoolFailmode			NexentaZFSZpoolFailmode,
+		zpoolCapacity			Unsigned32,
+		zpoolSizeHigh			Unsigned32,
+		zpoolSizeLow			Unsigned32,
+		zpoolAllocHigh			Unsigned32,
+		zpoolAllocLow			Unsigned32,
+		zpoolFreeHigh			Unsigned32,
+		zpoolFreeLow			Unsigned32,
+		zpoolFreeingHigh		Unsigned32,
+		zpoolFreeingLow			Unsigned32,
+		zpoolExpandSizeHigh		Unsigned32,
+		zpoolExpandSizeLow		Unsigned32,
+		zpoolDedupRatio			NexentaZFSRatio,
+		zpoolAutoexpand			TruthValue
+	}
+
+	zpoolName OBJECT-TYPE
+		SYNTAX		DisplayString
+		MAX-ACCESS	read-only
+		STATUS		current
+		DESCRIPTION
+			"zpool Name"
+		::= { zpoolEntry 1 }
+
+	zpoolGuid OBJECT-TYPE
+		SYNTAX		DisplayString
+		MAX-ACCESS	read-only
+		STATUS		current
+		DESCRIPTION
+			"zpool GUID"
+		::= { zpoolEntry 2 }
+
+	zpoolHealth OBJECT-TYPE
+		SYNTAX		NexentaZFSZpoolHealth
+		MAX-ACCESS	read-only
+		STATUS		current
+		DESCRIPTION
+			"zpool health state"
+		::= { zpoolEntry 3 }
+
+	zpoolFailmode OBJECT-TYPE
+		SYNTAX		NexentaZFSZpoolFailmode
+		MAX-ACCESS	read-only
+		STATUS		current
+		DESCRIPTION
+			"zpool failure mode"
+		::= { zpoolEntry 4 }
+
+	zpoolCapacity OBJECT-TYPE
+		SYNTAX		Unsigned32 (0..100)
+		MAX-ACCESS	read-only
+		STATUS		current
+		DESCRIPTION
+			"zpool capacity as decimal percentage"
+		::= { zpoolEntry 5 }
+
+	zpoolSizeHigh OBJECT-TYPE
+		SYNTAX		Unsigned32
+		MAX-ACCESS	read-only
+		STATUS		current
+		DESCRIPTION
+			"zpool total size in kilobytes, high-order byte, must be composed with zpoolSizeLow"
+		::= { zpoolEntry 6 }
+
+	zpoolSizeLow OBJECT-TYPE
+		SYNTAX		Unsigned32
+		MAX-ACCESS	read-only
+		STATUS		current
+		DESCRIPTION
+			"zpool total size in kilobytes, low-order byte, must be composed with zpoolSizeHigh"
+		::= { zpoolEntry 7 }
+
+	zpoolAllocHigh OBJECT-TYPE
+		SYNTAX		Unsigned32
+		MAX-ACCESS	read-only
+		STATUS		current
+		DESCRIPTION
+			"zpool allocated space in kilobytes, high-order byte, must be composed with zpoolAllocLow"
+		::= { zpoolEntry 8 }
+
+	zpoolAllocLow OBJECT-TYPE
+		SYNTAX		Unsigned32
+		MAX-ACCESS	read-only
+		STATUS		current
+		DESCRIPTION
+			"zpool allocated space in kilobytes, low-order byte, must be composed with zpoolAllocHigh"
+		::= { zpoolEntry 9 }
+
+	zpoolFreeHigh OBJECT-TYPE
+		SYNTAX		Unsigned32
+		MAX-ACCESS	read-only
+		STATUS		current
+		DESCRIPTION
+			"zpool free space in kilobytes, high-order byte, must be composed with zpoolFreeLow"
+		::= { zpoolEntry 10 }
+
+	zpoolFreeLow OBJECT-TYPE
+		SYNTAX		Unsigned32
+		MAX-ACCESS	read-only
+		STATUS		current
+		DESCRIPTION
+			"zpool allocated space in kilobytes, low-order byte, must be composed with zpoolFreeHigh"
+		::= { zpoolEntry 11 }
+
+	zpoolFreeingHigh OBJECT-TYPE
+		SYNTAX		Unsigned32
+		MAX-ACCESS	read-only
+		STATUS		current
+		DESCRIPTION
+			"zpool space pending async free in kilobytes, high-order byte, must be composed with zpoolFreeingLow"
+		::= { zpoolEntry 12 }
+
+	zpoolFreeingLow OBJECT-TYPE
+		SYNTAX		Unsigned32
+		MAX-ACCESS	read-only
+		STATUS		current
+		DESCRIPTION
+			"zpool space pending async free in kilobytes, low-order byte, must be composed with zpoolFreeingHigh"
+		::= { zpoolEntry 13 }
+
+	zpoolExpandSizeHigh OBJECT-TYPE
+		SYNTAX		Unsigned32
+		MAX-ACCESS	read-only
+		STATUS		current
+		DESCRIPTION
+			"zpool available expansion space in kilobytes, high-order byte, must be composed with zpoolExpandSizeLow"
+		::= { zpoolEntry 14 }
+
+	zpoolExpandSizeLow OBJECT-TYPE
+		SYNTAX		Unsigned32
+		MAX-ACCESS	read-only
+		STATUS		current
+		DESCRIPTION
+			"zpool available expansion space in kilobytes, high-order byte, must be composed with zpoolExpandSizeHigh"
+		::= { zpoolEntry 15 }
+
+	zpoolDedupRatio OBJECT-TYPE
+		SYNTAX		NexentaZFSRatio
+		MAX-ACCESS	read-only
+		STATUS		current
+		DESCRIPTION
+			"zpool deduplication ratio, precise to two decimals"
+		::= { zpoolEntry 16 }
+
+	zpoolAutoexpand OBJECT-TYPE
+		SYNTAX		TruthValue
+		MAX-ACCESS	read-only
+		STATUS		current
+		DESCRIPTION
+			"zpool automatically expands to use new space"
+		::= { zpoolEntry 17 }
 
 END

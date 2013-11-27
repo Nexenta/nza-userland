@@ -26,9 +26,5 @@ nexentaMIB MODULE-IDENTITY
 core OBJECT IDENTIFIER ::= { nexentaMIB 1 }
 storage OBJECT IDENTIFIER ::= { core 1 }
 zfs OBJECT IDENTIFIER ::= { storage 1 }
-devices OBJECT IDENTIFIER ::= { storage 2 }
-diskTopo OBJECT IDENTIFIER ::= { devices 1 }
-platform OBJECT IDENTIFIER ::= { core 2 }
-nza OBJECT IDENTIFIER ::= { platform 1 }
 
 END

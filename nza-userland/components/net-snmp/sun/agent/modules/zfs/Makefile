@@ -15,6 +15,7 @@
 
 LIBSRCS = \
 	arc_access.c	\
+	zprop_access.c	\
 	zfs.c
 
 LIB = libzfs_snmp.so.1
@@ -22,7 +23,7 @@ LIB = libzfs_snmp.so.1
 OBJECTS = $(LIBSRCS:%.c=%.o)
 
 SNMPLIBS = -lnetsnmp -lnetsnmphelpers -lnetsnmpagent -lnvpair -lumem -lkstat \
-	-lzfs_core -ldevid -lc
+	-lzfs_core -lc
 
 LDLIBS = $(SNMPLIBS)
 

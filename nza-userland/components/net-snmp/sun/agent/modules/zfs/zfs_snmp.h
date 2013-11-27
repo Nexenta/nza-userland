@@ -31,9 +31,11 @@ extern "C" {
 #define	ZPOOL_OID	ZFSMIBOBJ_OID, 2
 
 #define	ARCTABLE_OID	ARC_OID, 1
+#define	ZPOOLTABLE_OID	ZPOOL_OID, 1
 
 #define	MODULE_NAME	"zfs"
 #define	ARCTABLE_NAME	"nexentaZFSARCTable"
+#define	ZPOOLTABLE_NAME	"nexentaZFSZpoolTable"
 
 #ifdef __cplusplus
 }
