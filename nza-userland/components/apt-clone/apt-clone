@@ -1523,7 +1523,7 @@ if ($rc == 0) {
 				
 				my @debs = ();
 				my $kernel = 0;
-				if (NMUUtil::sysexec("apt-get -o=dir::cache=$tmpdir/var/cache/apt -s -u upgrade", \@debs) != 0) {
+				if (NMUUtil::sysexec("apt-get -R $tmpdir -s -u upgrade", \@debs) != 0) {
 					print_error("Error from apt upgrade: $debs[0]\n");
 					exit(1);
 				}
@@ -1533,10 +1533,11 @@ if ($rc == 0) {
 					my @name = split(/ /,$line);
 					$kernel = 1 if $name[1] eq 'system-kernel';
 				}
-				nmu_system("apt-get -R $tmpdir install -f -y sunwcsd");
-				nmu_system("apt-get -R $tmpdir install -f -y sunwcs");
-				nmu_system("apt-get -R $tmpdir install -f -y system-kernel");
-				$err = nmu_system("apt-get -R $tmpdir upgrade -y --force-yes");
+				nmu_system("apt-get -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\" -R $tmpdir update");
+				nmu_system("apt-get -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\" -R $tmpdir install -y --force-yes sunwcsd");
+				nmu_system("apt-get -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\" -R $tmpdir install -y --force-yes sunwcs");
+				nmu_system("apt-get -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\" -R $tmpdir install -y --force-yes system-kernel");
+				$err = nmu_system("apt-get -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\" -R $tmpdir upgrade -y --force-yes");
 				
 				# put system-kernel first if exist
 				if ($kernel) {
