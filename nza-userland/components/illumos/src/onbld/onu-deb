@@ -52,7 +52,7 @@ function usage()
 	${ECHO} "	$0 -t <BE name> -d <path to local APT>"
 	${ECHO}
 	${ECHO} "Example:"
-	${ECHO} "	$0 -t nightly-`date +%Y-%m-%d` -d \$PWD/packages/i386/apt"
+	${ECHO} "	$0 -t rootfs-nmu-`date +%Y-%m-%d` -d \$PWD/packages/i386/apt"
 	exit 0
 }
 
@@ -108,6 +108,11 @@ shift `expr $OPTIND - 1`
 [ -z "$TARGETBE" -a -z "$TARGETMOUNT" ] && usage
 [ -z "$REPODIR" ] && usage
 
+if ! (echo $REPODIR | grep '^\/'); then
+	logmsg "Please use full path for -d option"
+	fullabort
+fi
+
 if [ ! -f "$REPODIR/conf/distributions" ]; then
 	logmsg "Local APT unavailable, please check your path to repo dir: '$REPODIR'"
 	fullabort
@@ -117,14 +122,14 @@ ${ECHO} "$(basename $0) started at `date`" > $LOG
 
 if [ -z "$TARGETMOUNT" ]; then
 	logcmd ${MKDIR} -p "$TMPDIR"
-	logcmd ${BEADM} create "$TARGETBE"
+	${BEADM} create "$TARGETBE" || fullabort
 	logcmd ${BEADM} mount "$TARGETBE" "$TMPDIR"
 else
 	TMPDIR="$TARGETMOUNT"
 fi
 
 if [ ! -z "$REPODIR" -a -z "$TARGETMOUNT" ]; then
-	logcmd ${MV} /etc/apt/sources.list /etc/apt/sources.list.saved
+	logcmd ${CP} /etc/apt/sources.list /etc/apt/sources.list.saved
 	${ECHO} "deb file://$REPODIR nza-kernel main" > /etc/apt/sources.list
 	logcmd ${CP} -f /etc/apt/sources.list $TMPDIR/etc/apt/sources.list
 fi
@@ -132,6 +137,15 @@ fi
 export APT_CLONE_ENV=1
 
 logcmd ${APTGET} -R $TMPDIR update
+
+PKGNUM=$(apt-get -s upgrade | awk '/[0-9]+ upgraded,/{print $1 }')
+
+if [ "$PKGNUM" -eq 0 ]; then
+	logmsg "Nothing to upgrade. Do you want to bump DEB_VERSION?"
+	logmsg "Cleaning up"
+	${ECHO} yes | ${BEADM} destroy -f "$TARGETBE"
+fi
+
 logcmd ${APTGET} -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" -R $TMPDIR install -y --force-yes sunwcsd
 logcmd ${APTGET} -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" -R $TMPDIR install -y --force-yes sunwcs
 logcmd ${APTGET} -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" -R $TMPDIR install -y --force-yes system-kernel
@@ -143,7 +157,7 @@ if [ -z "$TARGETMOUNT" ]; then
 fi
 
 if [ ! -z "$REPODIR" -a -z "$TARGETMOUNT" ]; then
-	logcmd ${MV} /etc/apt/sources.list.saved /etc/apt/sources.list
+	logcmd ${CP} /etc/apt/sources.list.saved /etc/apt/sources.list
 	logcmd ${CP} -f /etc/apt/sources.list $TMPDIR/etc/apt/sources.list
 fi
 

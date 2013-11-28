@@ -556,7 +556,7 @@ sub saveFiles
 
         unless ($found)
         {
-	    print "FAILED!\n==NOT found: $path\n"; 
+	    print "FAILED! Not found in proto: $path\n"; 
 	    exit 1;
         }
 

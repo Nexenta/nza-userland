@@ -68,7 +68,7 @@ $(DEBDIR)/%.deb-stamp: $(MANIFESTDIR)/%.mog $(DEBDIR)/.dir-stamp
 	--mfe "mog" \
 	--maintainer "$(DEB_MAINTAINER)" \
 	--pv "$(DEB_VERSION)" \
-	--category "illumos" || echo "Never mind"
+	--category "illumos" || (echo "Error while processing: $<"; exit 1)
 
 	d=`echo $(<F:%.mog=%) | sed -e 's/[\/_]/-/g' | nawk '{print tolower($$1)}'` ; \
 	if [ -d "$(DEBDIR)/$$d" ]; then \

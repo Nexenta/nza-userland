@@ -142,19 +142,11 @@ build-debugkernel-gcc: hacking setup-closed setdebug setgcc
 	$(buildkernel)
 	touch $@
 
-.SILENT: build-releasepackages build-debugpackages build-onepackage
+.SILENT: build-packages build-onepackage
 
-build-releasepackages:
+build-packages:
 	if test ! -d $(CODEMGR_WS)/proto; then \
-		echo "Run \"make build-releasekernel or build-releasekernel-gcc\" first!"; \
-		exit 1; \
-	fi; \
-	$(MAKE) -s -j$(DPKG_MAX_JOBS) -f Makefile.deb apt
-	touch $@
-
-build-debugpackages:
-	if test ! -d $(CODEMGR_WS)/proto; then \
-		echo "Run \"make build-debugkernel or build-debugkernel-gcc\" first!"; \
+		echo "Run \"make build-releasekernel-gcc or build-debugkernel-gcc\" first!"; \
 		exit 1; \
 	fi; \
 	$(MAKE) -s -j$(DPKG_MAX_JOBS) -f Makefile.deb apt
@@ -172,7 +164,7 @@ build-onepackage:
 clean:
 	rm -f checktools clonning setup-closed patching hacking setrelease setdebug
 	rm -f copy-tools adjust-scripts build-releasekernel build-debugkernel
-	rm -f build-releasepackages build-debugpackages
+	rm -f build-packages
 	rm -f build-releasekernel-gcc build-debugkernel-gcc
 	rm -f setss setgcc
 	$(MAKE) -f Makefile.deb clean
@@ -194,15 +186,14 @@ help:
 	@echo "                 build-releasekernel-gcc
 	@echo "                 build-debugkernel
 	@echo "                 build-debugkernel-gcc
-	@echo "                 build-releasepackages
-	@echo "                 build-debugpackages
+	@echo "                 build-packages
 	@echo "                 build-onepackage DEB=PACKAGE_NAME
 	@echo "                 clean
 	@echo "                 clean_patches
 	@echo "                 help"
 	@echo ""
 	@echo "DEB_VERSION:"
-	@echo "	   Version of Kernel deb packages. Must be set for 'build-releasepackages|build-debugpackages'"
+	@echo "	   Version of Kernel deb packages. Must be set for 'build-packages'"
 	@echo "	   The format (for Nexenta 4.0) is: 40-0-X (X:0,1,2,3,...)."
 	@echo ""
 	@echo "NZA_KERNEL_PATH:"
