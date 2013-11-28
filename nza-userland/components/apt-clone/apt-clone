@@ -1519,11 +1519,64 @@ if ($rc == 0) {
 				}
 				nmu_system("mkdir $tmpdir");
 				nmu_system("mount -F zfs $rootfs_prev $tmpdir 2>/dev/null");
-				nmu_system("apt-get -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\" -R $tmpdir update");
-				nmu_system("apt-get -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\" -R $tmpdir install -y --force-yes sunwcsd");
-				nmu_system("apt-get -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\" -R $tmpdir install -y --force-yes sunwcs");
-				nmu_system("apt-get -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\" -R $tmpdir install -y --force-yes system-kernel");
-				$err = nmu_system("apt-get -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\" -R $tmpdir upgrade -y --force-yes");
+				nmu_system("apt-get -R $tmpdir update");
+				
+				my @debs = ();
+				my $kernel = 0;
+				if (NMUUtil::sysexec("apt-get -o=dir::cache=$tmpdir/var/cache/apt -s -u upgrade", \@debs) != 0) {
+					print_error("Error from apt upgrade: $debs[0]\n");
+					exit(1);
+				}
+				# get list of packages
+				my @inst = grep /^Inst/, @debs;
+				for my $line (@inst) {
+					my @name = split(/ /,$line);
+					$kernel = 1 if $name[1] eq 'system-kernel';
+				}
+				nmu_system("apt-get -R $tmpdir install -f -y sunwcsd");
+				nmu_system("apt-get -R $tmpdir install -f -y sunwcs");
+				nmu_system("apt-get -R $tmpdir install -f -y system-kernel");
+				$err = nmu_system("apt-get -R $tmpdir upgrade -y --force-yes");
+				
+				# put system-kernel first if exist
+				if ($kernel) {
+					my @clones = ();
+					my @clonedebs = ();
+					my %h;
+
+					# we need update /etc/minor_perm
+					if (NMUUtil::sysexec("cd $tmpdir/var/lib/dpkg/info && grep -r update_drv *postinst| grep clone | sed 's/.postinst:.*//g'", \@clonedebs) != 0) {
+						print_error("Can't parse postinst files in $tmpdir/var/lib/dpkg/info/\n");
+						exit(1);
+					}
+					# removing duplicates
+					my %seen=(); 
+					@clones = grep { ! $seen{$_} ++ } @clonedebs;
+					@h{@clones} = undef;
+
+					my $index = 0;
+					$index++ until $clones[$index] eq 'sunwcs';
+					splice(@clones, $index, 1);
+
+					# system-kernel sunwcs at first everytime
+					unshift(@clones, "sunwcs");
+
+					# Processing prerm and postinst scripts if exists
+					for my $dpkg (@clones) {
+						next if ( $dpkg eq 'system-kernel');
+						print "Reconfiguring $dpkg\n";
+						if ( -e "$tmpdir/var/lib/dpkg/info/$dpkg.prerm" ) {
+							if (nmu_system("BASEDIR=\"$tmpdir\" $tmpdir/var/lib/dpkg/info/$dpkg.prerm upgrade") != 0) {
+								print "Error while processing $dpkg prerm upgrade\n";
+							}
+						}
+						if ( -e "$tmpdir/var/lib/dpkg/info/$dpkg.postinst" ) {
+							if (nmu_system("BASEDIR=\"$tmpdir\" $tmpdir/var/lib/dpkg/info/$dpkg.postinst configure") != 0) {
+								print "Error while processing $dpkg postinst configure\n";
+							}
+						}
+					}
+				}
 				nmu_system("touch $tmpdir/reconfigure");
 
 				if ($err == 0) {
