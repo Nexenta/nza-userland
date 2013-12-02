@@ -1533,11 +1533,10 @@ if ($rc == 0) {
 					my @name = split(/ /,$line);
 					$kernel = 1 if $name[1] eq 'system-kernel';
 				}
-				nmu_system("apt-get -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\" -R $tmpdir update");
-				nmu_system("apt-get -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\" -R $tmpdir install -y --force-yes sunwcsd");
-				nmu_system("apt-get -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\" -R $tmpdir install -y --force-yes sunwcs");
-				nmu_system("apt-get -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\" -R $tmpdir install -y --force-yes system-kernel");
-				$err = nmu_system("apt-get -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\" -R $tmpdir upgrade -y --force-yes");
+				nmu_system("apt-get $dpkg_opts -R $tmpdir install -y --force-yes sunwcsd");
+				nmu_system("apt-get $dpkg_opts -R $tmpdir install -y --force-yes sunwcs");
+				nmu_system("apt-get $dpkg_opts -R $tmpdir install -y --force-yes system-kernel");
+				$err = nmu_system("apt-get -R $tmpdir $upgrade_cmd -y --force-yes");
 				
 				# put system-kernel first if exist
 				if ($kernel) {
@@ -1546,12 +1545,12 @@ if ($rc == 0) {
 					my %h;
 
 					# we need update /etc/minor_perm
-					if (NMUUtil::sysexec("cd $tmpdir/var/lib/dpkg/info && grep -r update_drv *postinst| grep clone | sed 's/.postinst:.*//g'", \@clonedebs) != 0) {
+					if (NMUUtil::sysexec("cd $tmpdir/var/lib/dpkg/info && grep -r update_drv *postinst | grep clone | sed 's/.postinst:.*//g'", \@clonedebs) != 0) {
 						print_error("Can't parse postinst files in $tmpdir/var/lib/dpkg/info/\n");
 						exit(1);
 					}
 					# removing duplicates
-					my %seen=(); 
+					my %seen=();
 					@clones = grep { ! $seen{$_} ++ } @clonedebs;
 					@h{@clones} = undef;
 
