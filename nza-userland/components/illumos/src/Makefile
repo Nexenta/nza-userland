@@ -1,6 +1,5 @@
 NZA_KERNEL       = nza-kernel
 NZA_CLOSED       = nza-closed
-NZA_PATCHES      = nza-patches
 SUNSTUDIO_PATH   = /opt/SUNWspro
 SUN_GATE         = http://dlc.sun.com/osol/on/downloads/20100817
 CLOSED_BINARY1   = on-closed-bins.i386.tar.bz2
@@ -17,7 +16,6 @@ NZA_CLOSED_PATH ?= ssh://git@stash.nexenta.com:7999/os/nza-closed.git
 # Override this, i.e. with stable-4.0
 NZA_BRANCH_SPEC ?= master
 NZA_CLOSED_BRANCH_SPEC ?= master
-NZA_PATCH_DIR    = $(NZA_ROOT)/$(NZA_PATCHES)
 CUR_REV          = $(CODEMGR_WS)/.rev
 
 VERSION   = NexentaOS_4:$(shell cat $(CUR_REV))
@@ -45,10 +43,6 @@ checktools:
 		echo "Sunstudio is not installed!"; \
 		exit 1; \
 	fi; \
-	if test ! -d $(NZA_PATCH_DIR) ; then \
-		echo "'$(NZA_PATCHES)' not found in '$(NZA_ROOT)'!"; \
-		exit 1; \
-	fi; \
 	touch $@
 
 clonning: checktools
@@ -74,19 +68,11 @@ setup-closed: clonning
 	tar xvpf $(CODEMGR_WS)/$(CLOSED_BINARY2) -C $(CODEMGR_WS)
 	touch $@
 
-patching: clonning
-	cd $(CODEMGR_WS) && \
-	for p in $(shell cat $(NZA_PATCH_DIR)/series); \
-	do \
-		patch -N -p1 < $(NZA_PATCH_DIR)/$$p; \
-	done
-	touch $@
-
 hacking: clonning
 	sed -i 's/^#define HAVE_CPP_UNDERBAR_FUNCTION_DEFINED 1/\/\*#define HAVE_CPP_UNDERBAR_FUNCTION_DEFINED 1\*\//' /usr/include/net-snmp/net-snmp-config.h
 	touch $@
 
-copy-tools: patching
+copy-tools:
 	cp $(CODEMGR_WS)/usr/src/tools/env/illumos.sh $(CODEMGR_WS)
 	ln -sf $(CODEMGR_WS)/usr/src/tools/scripts/bldenv.sh $(CODEMGR_WS)
 	cp $(CODEMGR_WS)/usr/src/tools/scripts/nightly.sh $(CODEMGR_WS)
@@ -159,24 +145,16 @@ build-onepackage:
 	fi; \
 	$(MAKE) -s -f Makefile.deb onedeb DEB=$(DEB)
 
-.PHONY: all clean clean_patches help
+.PHONY: all clean help
 
 clean:
-	rm -f checktools clonning setup-closed patching hacking setrelease setdebug
+	rm -f checktools clonning setup-closed hacking setrelease setdebug
 	rm -f copy-tools adjust-scripts build-releasekernel build-debugkernel
 	rm -f build-packages
 	rm -f build-releasekernel-gcc build-debugkernel-gcc
 	rm -f setss setgcc
 	$(MAKE) -f Makefile.deb clean
 	rm -rf $(CODEMGR_WS)
-
-clean_patches:
-	cd $(CODEMGR_WS) && \
-	for p in $(shell /usr/bin/rev -l $(NZA_PATCH_DIR)/series); \
-	do \
-	patch -N -p1 -R < $(NZA_PATCH_DIR)/$$p; \
-	done
-	rm -f patching
 
 help:
 	@echo ""
@@ -189,7 +167,6 @@ help:
 	@echo "                 build-packages
 	@echo "                 build-onepackage DEB=PACKAGE_NAME
 	@echo "                 clean
-	@echo "                 clean_patches
 	@echo "                 help"
 	@echo ""
 	@echo "DEB_VERSION:"
