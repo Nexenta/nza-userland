@@ -18,7 +18,7 @@
 #
 # CDDL HEADER END
 #
-# Copyright (c) 2012, Nexenta Systems, Inc. All rights reserved.
+# Copyright (c) 2014, Nexenta Systems, Inc. All rights reserved.
 #
 
 <transform file path=usr.*/man/.+  -> default mangler.man.stability volatile>
@@ -31,20 +31,26 @@ set name=info.source_url value=$(COMPONENT_ARCHIVE_URL)
 set name=info.upstream_url value=$(COMPONENT_PROJECT_URL)
 set name=org.opensolaris.consolidation value=$(CONSOLIDATION)
 
+
 dir path=usr
 dir path=usr/include
 dir path=usr/lib
-dir path=usr/lib/amd64
-dir path=usr/lib/amd64/pkgconfig
 dir path=usr/lib/pkgconfig
+dir path=usr/lib/amd64
+dir path=usr/bin
+dir path=usr/bin/amd64
+
+file path=usr/include/zmq.h
+file path=usr/include/zmq_utils.h
+file path=usr/lib/pkgconfig/libzmq.pc
+file path=usr/lib/libzmq.so.3.1.0
+file path=usr/lib/amd64/libzmq.so.3.1.0
+file path=usr/bin/amd64/curve_keygen
+file path=usr/bin/curve_keygen
 file path=usr/include/zmq.h
 file zmq.hpp path=usr/include/zmq.hpp
-file path=usr/include/zmq_utils.h
-file path=usr/lib/amd64/libzmq.so.3.0.0
-file path=usr/lib/amd64/pkgconfig/libzmq.pc
-file path=usr/lib/libzmq.so.3.0.0
-file path=usr/lib/pkgconfig/libzmq.pc
-link path=usr/lib/amd64/libzmq.so target=libzmq.so.3.0.0
-link path=usr/lib/amd64/libzmq.so.1 target=libzmq.so.3.0.0
-link path=usr/lib/libzmq.so target=libzmq.so.3.0.0
-link path=usr/lib/libzmq.so.1 target=libzmq.so.3.0.0
+
+link path=usr/lib/amd64/libzmq.so target=libzmq.so.3.1.0
+link path=usr/lib/amd64/libzmq.so.1 target=libzmq.so.3.1.0
+link path=usr/lib/libzmq.so target=libzmq.so.3.1.0
+link path=usr/lib/libzmq.so.1 target=libzmq.so.3.1.0
