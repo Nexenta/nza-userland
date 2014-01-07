@@ -20,22 +20,23 @@
 #
 
 #
-# Copyright (c) 2013, Nexenta Systems, Inc. All rights reserved.
+# Copyright (c) 2014, Nexenta Systems, Inc. All rights reserved.
 #
 
 include ../../make-rules/shared-macros.mk
 
-DEBVERSION := 40-0-6
+DEBVERSION := 40-0-7
 
 # make sure dtrace is found:
 export PATH := /usr/sbin:$(PATH)
+export CC = gcc
 
 COMPONENT_NAME         = nodejs
-COMPONENT_VERSION      = 0.8.19
+COMPONENT_VERSION      = 0.10.24
 COMPONENT_REVISION     = 
 COMPONENT_SRC          = node-v$(COMPONENT_VERSION)
 COMPONENT_ARCHIVE      = $(COMPONENT_SRC)$(COMPONENT_REVISION).tar.gz
-COMPONENT_ARCHIVE_HASH = sha1:f4fdbb642055be65579e11cb52c823573efabcf2
+COMPONENT_ARCHIVE_HASH = sha1:d162d01eb173cb5a0e7e46c9d706421c4c771039
 COMPONENT_ARCHIVE_URL  = http://nodejs.org/dist/v$(COMPONENT_VERSION)/$(COMPONENT_ARCHIVE)
 COMPONENT_PROJECT_URL  = http://nodejs.org
 
