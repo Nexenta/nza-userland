@@ -18,7 +18,7 @@
 #
 # CDDL HEADER END
 #
-# Copyright (c) 2013, Nexenta Systems, Inc. All rights reserved.
+# Copyright (c) 2014, Nexenta Systems, Inc. All rights reserved.
 #
 
 <transform file path=usr.*/man/.+  -> default mangler.man.stability volatile>
@@ -31,37 +31,50 @@ set name=info.source_url value=$(COMPONENT_ARCHIVE_URL)
 set name=info.upstream_url value=$(COMPONENT_PROJECT_URL)
 set name=org.opensolaris.consolidation value=$(CONSOLIDATION)
 
-
 dir path=usr
-dir path=usr/bin
 dir path=usr/lib
-dir path=usr/share
-dir path=usr/share/man
-dir path=usr/share/man/man7
+dir path=usr/lib/pkgconfig
+dir path=usr/lib/amd64
+dir path=usr/bin
+dir path=usr/bin/amd64
 dir path=usr/include
+file path=usr/lib/pkgconfig/libczmq.pc
+file path=usr/lib/libczmq.so.1.1.0
+file path=usr/lib/amd64/libczmq.so.1.1.0
+file path=usr/bin/makecert
+file path=usr/bin/amd64/makecert
+file path=usr/bin/amd64/czmq_selftest
+file path=usr/bin/czmq_selftest
+file path=usr/include/zframe.h
+file path=usr/include/zstr.h
+file path=usr/include/zfile.h
+file path=usr/include/zsocket.h
+file path=usr/include/zclock.h
+file path=usr/include/zconfig.h
+file path=usr/include/ztree.h
+file path=usr/include/zdir.h
+file path=usr/include/zbeacon.h
+file path=usr/include/zthread.h
+file path=usr/include/zloop.h
+file path=usr/include/zchunk.h
+file path=usr/include/zpoller.h
+file path=usr/include/zsys.h
+file path=usr/include/zsockopt.h
+file path=usr/include/zctx.h
+file path=usr/include/zauth.h
+file path=usr/include/zcertstore.h
+file path=usr/include/zcert.h
+file path=usr/include/zmutex.h
 file path=usr/include/zhash.h
 file path=usr/include/zlist.h
-file path=usr/include/zstr.h
-file path=usr/include/zclock.h
-file path=usr/include/czmq_prelude.h
-file path=usr/include/zsockopt.h
-file path=usr/include/zthread.h
-file path=usr/include/zframe.h
-file path=usr/include/zloop.h
-file path=usr/include/zsocket.h
-file path=usr/include/zctx.h
-file path=usr/include/zmutex.h
-file path=usr/include/czmq.h
 file path=usr/include/zmsg.h
-file path=usr/include/zfile.h
-file path=usr/bin/$(MACH64)/czmq_selftest
-file path=usr/bin/czmq_selftest
-file path=usr/lib/libczmq.so.1.0.0
-link path=usr/lib/libczmq.so target=libczmq.so.1.0.0
-link path=usr/lib/libczmq.so.1 target=libczmq.so.1.0.0
-file path=usr/lib/$(MACH64)/libczmq.so.1.0.0
-link path=usr/lib/$(MACH64)/libczmq.so target=libczmq.so.1.0.0
-link path=usr/lib/$(MACH64)/libczmq.so.1 target=libczmq.so.1.0.0
+file path=usr/include/czmq_prelude.h
+file path=usr/include/czmq.h
+
+link path=usr/lib/libczmq.so target=libczmq.so.1.1.0
+link path=usr/lib/libczmq.so.1 target=libczmq.so.1.1.0
+link path=usr/lib/$(MACH64)/libczmq.so target=libczmq.so.1.1.0
+link path=usr/lib/$(MACH64)/libczmq.so.1 target=libczmq.so.1.1.0
 
 depend fmri=library/zeromq type=require
 

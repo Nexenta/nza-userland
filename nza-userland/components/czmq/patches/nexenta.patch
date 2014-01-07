@@ -1,0 +1,51 @@
+diff -urN czmq-2.0.3.old/configure czmq-2.0.3/configure
+--- czmq-2.0.3.old/configure	2013-11-16 02:24:18.000000000 -0800
++++ czmq-2.0.3/configure	2014-01-07 07:51:45.386693164 -0800
+@@ -12663,7 +12663,7 @@
+ $as_echo "$czmq_install_man" >&6; }
+ 
+ # Set some default features required by libczmq code.
+-CPPFLAGS="-D_REENTRANT -D_THREAD_SAFE $CPPFLAGS"
++CPPFLAGS="-D_REENTRANT -D_POSIX_PTHREAD_SEMANTICS -D_THREAD_SAFE $CPPFLAGS"
+ 
+ # OS-specific tests
+ case "${host_os}" in
+diff -urN czmq-2.0.3.old/src/platform.h czmq-2.0.3/src/platform.h
+--- czmq-2.0.3.old/src/platform.h	2013-11-16 02:24:27.000000000 -0800
++++ czmq-2.0.3/src/platform.h	2014-01-07 07:49:23.712366059 -0800
+@@ -17,7 +17,7 @@
+ /* #undef CZMQ_HAVE_HPUX */
+ 
+ /* Have Linux OS */
+-#define CZMQ_HAVE_LINUX 1
++/* #undef CZMQ_HAVE_LINUX */
+ 
+ /* Have MinGW32 */
+ /* #undef CZMQ_HAVE_MINGW32 */
+@@ -35,7 +35,7 @@
+ /* #undef CZMQ_HAVE_QNXNTO */
+ 
+ /* Have Solaris OS */
+-/* #undef CZMQ_HAVE_SOLARIS */
++#define CZMQ_HAVE_SOLARIS 1
+ 
+ /* Have Windows OS */
+ /* #undef CZMQ_HAVE_WINDOWS */
+@@ -68,7 +68,7 @@
+ #define HAVE_LIBPTHREAD 1
+ 
+ /* Define to 1 if you have the `sodium' library (-lsodium). */
+-#define HAVE_LIBSODIUM 1
++/* undef HAVE_LIBSODIUM */
+ 
+ /* Define to 1 if you have the `zmq' library (-lzmq). */
+ #define HAVE_LIBZMQ 1
+@@ -77,7 +77,7 @@
+ #define HAVE_LIMITS_H 1
+ 
+ /* Define to 1 if you have the <linux/wireless.h> header file. */
+-#define HAVE_LINUX_WIRELESS_H 1
++/* undef HAVE_LINUX_WIRELESS_H */
+ 
+ /* Define to 1 if you have the <memory.h> header file. */
+ #define HAVE_MEMORY_H 1
