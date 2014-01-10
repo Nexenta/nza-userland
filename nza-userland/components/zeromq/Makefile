@@ -25,7 +25,7 @@
 
 include ../../make-rules/shared-macros.mk
 
-DEBVERSION := 40-0-5
+DEBVERSION := 40-0-6
 
 COMPONENT_NAME         = zeromq
 COMPONENT_VERSION      = 4.0.3
