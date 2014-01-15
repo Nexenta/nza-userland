@@ -25,7 +25,7 @@
 
 include ../../make-rules/shared-macros.mk
 
-DEBVERSION := 40-0-7
+DEBVERSION := 40-0-8
 
 # make sure dtrace is found:
 export PATH := /usr/sbin:$(PATH)
