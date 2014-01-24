@@ -19,17 +19,17 @@
 # CDDL HEADER END
 #
 #
-# Copyright (c) 2012 Nexenta Systems, Inc.  All rights reserved.
+# Copyright (c) 2014 Nexenta Systems, Inc.  All rights reserved.
 
 include ../../make-rules/shared-macros.mk
 
 COMPONENT_NAME=		smartmontools
-COMPONENT_VERSION=	5.42
+COMPONENT_VERSION=	6.2
 COMPONENT_SRC=		$(COMPONENT_NAME)-$(COMPONENT_VERSION)
 COMPONENT_PROJECT_URL=	http://downloads.sourceforge.net/smartmontools
 COMPONENT_ARCHIVE=	$(COMPONENT_SRC).tar.gz
-COMPONENT_ARCHIVE_HASH=	sha1:52f966abeb23458acc0ec734f2d6ab432f6b5a7d
-COMPONENT_ARCHIVE_URL=	http://sourceforge.net/projects/smartmontools/files/smartmontools/5.42/$(COMPONENT_ARCHIVE)
+COMPONENT_ARCHIVE_HASH=	sha1:37848ff5103d68b672463a30cd99e7d23d6696a5
+COMPONENT_ARCHIVE_URL=	http://sourceforge.net/projects/smartmontools/files/smartmontools/6.2/$(COMPONENT_ARCHIVE)
 
 include ../../make-rules/prep.mk
 
