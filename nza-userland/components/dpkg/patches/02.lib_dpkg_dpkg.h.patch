@@ -1,17 +1,22 @@
-Index: dpkg-1.16.2/lib/dpkg/dpkg.h
-===================================================================
---- dpkg-1.16.2/lib/dpkg/dpkg.h
-+++ dpkg-1.16.2/lib/dpkg/dpkg.h
-@@ -91,10 +91,11 @@ DPKG_BEGIN_DECLS
+diff -urN dpkg-1.16.1.1.old/lib/dpkg/dpkg.h dpkg-1.16.1.1/lib/dpkg/dpkg.h
+--- dpkg-1.16.1.1.old/lib/dpkg/dpkg.h	2011-10-11 22:57:48.000000000 -0700
++++ dpkg-1.16.1.1/lib/dpkg/dpkg.h	2014-01-27 22:04:18.465639873 -0800
+@@ -91,13 +91,15 @@
  #define DPKG		"dpkg"
  #define DEBSIGVERIFY	"/usr/bin/debsig-verify"
  
 -#define TAR		"tar"
 +#define TAR		"gtar"
  #define RM		"rm"
- #define FIND		"find"
- #define DIFF		"diff"
-+#define ZONENAME	"zonename"
+-#define FIND		"find"
+-#define DIFF		"diff"
++#define FIND		"gfind"
++#define DIFF		"gdiff"
  
  #define FIND_EXPRSTARTCHARS "-(),!"
+ 
++#define ZONENAME	"zonename"
++
+ #include <dpkg/progname.h>
+ #include <dpkg/ehandle.h>
  
