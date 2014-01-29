@@ -8,17 +8,16 @@
 # source.  A copy of the CDDL is also available via the Internet at
 # http://www.illumos.org/license/CDDL.
 #
-
 #
-# Copyright 2013 Alexander Pyhalov.  All rights reserved.
-#
-# Copyright (c) 2013 Nexenta Systems, Inc.  All rights reserved.
+# Copyright (c) 2014 Nexenta Systems, Inc.  All rights reserved.
 
 include ../../make-rules/shared-macros.mk
 
 COMPONENT_NAME= clang
 LLVM_NAME=llvm
 CLANG_NAME=cfe
+
+REQUIRES_RTTI=1
 
 COMPONENT_VERSION= 3.3
 COMPONENT_SUMMARY= LLVM tools and Clang compiler
@@ -41,26 +40,19 @@ include ../../make-rules/ips.mk
 
 CONFIGURE_PREFIX= /usr/clang/$(COMPONENT_VERSION)
 
-PATH=/usr/sbin:/usr/bin:/usr/perl5/bin
+PATH=/opt/gcc-4.7.2/bin:/usr/sbin:/usr/bin:/usr/perl5/bin
+GCC_ROOT=/opt/gcc-4.7.2/
 
 COMPONENT_PRE_PATCH_ACTION += tar -xzf $(COMPONENT_ARCHIVE_1) && \
 	mv $(CLANG_NAME)-$(COMPONENT_VERSION).src $(COMPONENT_SRC)/tools/clang
 
 COMPONENT_PRE_CONFIGURE_ACTION = (/usr/gnu/bin/cp -a $(SOURCE_DIR)/* $(@D))
 
-CONFIGURE_OPTIONS +=            --enable-optimized
-CONFIGURE_OPTIONS +=            --disable-assertions
-CONFIGURE_OPTIONS +=            --enable-targets=x86,x86_64,cpp
-CONFIGURE_OPTIONS +=            --enable-pic=yes
-CONFIGURE_OPTIONS +=            --enable-docs=no
-
-COMPONENT_POST_INSTALL_ACTION =  for file in `echo $(PROTO_DIR)/usr/clang/$(COMPONENT_VERSION)/bin/*`; do \
- 					 elfedit -e 'dyn:runpath $$ORIGIN/../lib' $$file ; \
-				done && \
-				for file in `echo $(PROTO_DIR)/usr/clang/$(COMPONENT_VERSION)/lib/*.so`; do \
-				  elfedit -e 'dyn:delete RUNPATH' $$file ; \
-				  elfedit -e 'dyn:delete RPATH' $$file ; \
-				done
+CONFIGURE_OPTIONS += --enable-optimized
+CONFIGURE_OPTIONS += --disable-assertions
+CONFIGURE_OPTIONS += --enable-targets=x86,cpp
+CONFIGURE_OPTIONS += --enable-pic=yes
+CONFIGURE_OPTIONS += --enable-docs=no
 
 build: $(BUILD_32)
 
