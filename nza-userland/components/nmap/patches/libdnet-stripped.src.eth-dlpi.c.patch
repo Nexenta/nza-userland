@@ -1,0 +1,21 @@
+--- nmap-6.25/libdnet-stripped/src/eth-dlpi.c.orig	2012-12-06 13:42:33.456937114 -0800
++++ nmap-6.25/libdnet-stripped/src/eth-dlpi.c	2012-12-06 13:43:16.505962826 -0800
+@@ -134,7 +134,7 @@
+ {
+ 	union DL_primitives *dlp;
+ 	uint32_t buf[8192];
+-	char *p, dev[16];
++	char *p, dev[64];
+ 	eth_t *e;
+ 	int ppa;
+ 
+@@ -159,6 +159,9 @@
+ 	ppa = atoi(p);
+ 	*p = '\0';
+ 
++#if defined(sun) || defined(__sun) || defined(__sun)
++	snprintf(dev, sizeof(dev), "/dev/net/%s", device);
++#endif
+ 	if ((e->fd = open(dev, O_RDWR)) < 0) {
+ 		snprintf(dev, sizeof(dev), "/dev/%s", device);
+ 		if ((e->fd = open(dev, O_RDWR)) < 0) {

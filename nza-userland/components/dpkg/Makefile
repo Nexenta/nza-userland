@@ -20,7 +20,7 @@
 #
 
 #
-# Copyright (c) 2011, Nexenta Systems, Inc. All rights reserved.
+# Copyright (c) 2014, Nexenta Systems, Inc. All rights reserved.
 #
 
 include ../../make-rules/shared-macros.mk
