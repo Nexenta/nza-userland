@@ -1,0 +1,92 @@
+diff -urN collectd-5.4.1/src/libcollectdclient/Makefile.am collectd-5.4.1.new/src/libcollectdclient/Makefile.am
+--- collectd-5.4.1/src/libcollectdclient/Makefile.am	2014-01-26 00:09:14.000000000 -0800
++++ collectd-5.4.1.new/src/libcollectdclient/Makefile.am	2014-02-19 01:59:51.488420695 -0800
+@@ -1,7 +1,7 @@
+ AUTOMAKE_OPTIONS = foreign no-dependencies
+ 
+ if COMPILER_IS_GCC
+-AM_CFLAGS = -Wall -Werror
++AM_CFLAGS = -Wall -Wimplicit-function-declaration
+ endif
+ 
+ pkginclude_HEADERS = collectd/client.h collectd/network.h collectd/network_buffer.h collectd/lcc_features.h
+diff -urN collectd-5.4.1/src/libcollectdclient/Makefile.in collectd-5.4.1.new/src/libcollectdclient/Makefile.in
+--- collectd-5.4.1/src/libcollectdclient/Makefile.in	2014-01-26 00:09:57.000000000 -0800
++++ collectd-5.4.1.new/src/libcollectdclient/Makefile.in	2014-02-19 02:09:07.859700340 -0800
+@@ -386,7 +386,7 @@
+ top_builddir = @top_builddir@
+ top_srcdir = @top_srcdir@
+ AUTOMAKE_OPTIONS = foreign no-dependencies
+-@COMPILER_IS_GCC_TRUE@AM_CFLAGS = -Wall -Werror
++@COMPILER_IS_GCC_TRUE@AM_CFLAGS = -Wall -Wimplicit-function-declaration
+ pkginclude_HEADERS = collectd/client.h collectd/network.h collectd/network_buffer.h collectd/lcc_features.h
+ lib_LTLIBRARIES = libcollectdclient.la
+ nodist_pkgconfig_DATA = libcollectdclient.pc
+diff -urN collectd-5.4.1/src/libcollectdclient/network_buffer.c collectd-5.4.1.new/src/libcollectdclient/network_buffer.c
+--- collectd-5.4.1/src/libcollectdclient/network_buffer.c	2014-01-26 00:09:14.000000000 -0800
++++ collectd-5.4.1.new/src/libcollectdclient/network_buffer.c	2014-02-19 02:05:14.287548125 -0800
+@@ -147,7 +147,7 @@
+ } /* }}} _Bool have_gcrypt */
+ 
+ #ifndef HAVE_HTONLL
+-static uint64_t htonll (uint64_t val) /* {{{ */
++static uint64_t chtonll (uint64_t val) /* {{{ */
+ {
+   static int config = 0;
+ 
+@@ -288,7 +288,7 @@
+     switch (vl->values_types[i])
+     {
+       case LCC_TYPE_COUNTER:
+-        pkg_values[i].counter = (counter_t) htonll (vl->values[i].counter);
++        pkg_values[i].counter = (counter_t) chtonll (vl->values[i].counter);
+         break;
+ 
+       case LCC_TYPE_GAUGE:
+@@ -296,11 +296,11 @@
+         break;
+ 
+       case LCC_TYPE_DERIVE:
+-        pkg_values[i].derive = (derive_t) htonll (vl->values[i].derive);
++        pkg_values[i].derive = (derive_t) chtonll (vl->values[i].derive);
+         break;
+ 
+       case LCC_TYPE_ABSOLUTE:
+-        pkg_values[i].absolute = (absolute_t) htonll (vl->values[i].absolute);
++        pkg_values[i].absolute = (absolute_t) chtonll (vl->values[i].absolute);
+         break;
+ 
+       default:
+@@ -355,7 +355,7 @@
+ 
+   pkg_type = htons (type);
+   pkg_length = htons ((uint16_t) packet_len);
+-  pkg_value = htonll (value);
++  pkg_value = chtonll (value);
+ 
+   packet_ptr = *ret_buffer;
+   offset = 0;
+diff -urN collectd-5.4.1/src/Makefile.am collectd-5.4.1.new/src/Makefile.am
+--- collectd-5.4.1/src/Makefile.am	2014-01-26 00:09:14.000000000 -0800
++++ collectd-5.4.1.new/src/Makefile.am	2014-02-19 01:59:25.770118569 -0800
+@@ -4,7 +4,7 @@
+ endif
+ 
+ if COMPILER_IS_GCC
+-AM_CFLAGS = -Wall -Werror
++AM_CFLAGS = -Wall -Wimplicit-function-declaration
+ endif
+ 
+ AM_CPPFLAGS = -DPREFIX='"${prefix}"'
+diff -urN collectd-5.4.1/src/Makefile.in collectd-5.4.1.new/src/Makefile.in
+--- collectd-5.4.1/src/Makefile.in	2014-01-26 00:09:56.000000000 -0800
++++ collectd-5.4.1.new/src/Makefile.in	2014-02-19 02:08:36.050123158 -0800
+@@ -2235,7 +2235,7 @@
+ top_builddir = @top_builddir@
+ top_srcdir = @top_srcdir@
+ SUBDIRS = libcollectdclient $(am__append_1)
+-@COMPILER_IS_GCC_TRUE@AM_CFLAGS = -Wall -Werror
++@COMPILER_IS_GCC_TRUE@AM_CFLAGS = -Wall -Wimplicit-function-declaration
+ AM_CPPFLAGS = -DPREFIX='"${prefix}"' \
+ 	-DCONFIGFILE='"${sysconfdir}/${PACKAGE_NAME}.conf"' \
+ 	-DLOCALSTATEDIR='"${localstatedir}"' \

@@ -1,0 +1,39 @@
+#!/bin/bash
+#
+
+case "$1" in
+  start)
+        if [ ! -d /export/home/collectd ]; then
+	    mkdir -p /export/home/collectd
+	    chown collectd:staff /export/home/collectd
+        fi
+        echo "Starting $prog "
+        /usr/sbin/collectd
+        ;;
+  stop)
+        echo "Stopping $prog "
+        /usr/bin/pkill -x collectd
+        ;;
+  restart)
+        $0 stop
+        echo "Waiting for $prog to stop.\c"
+        while ( /usr/bin/pgrep -x collectd > /dev/null )
+        do
+                echo ".\c"
+                sleep 1
+        done
+        echo
+        sleep 1
+        $0 start
+        ;;
+  refresh|reload)
+        echo "Reloading c-icap daemon configuration: "
+        /usr/bin/pkill -x -HUP collectd
+        ;;
+  *)
+        echo $"Usage: $0 { start|stop|refresh|reload|restart }"
+        exit 1
+esac
+
+exit 0
+
