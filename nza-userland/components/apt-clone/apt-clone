@@ -814,7 +814,7 @@ sub set_default {
 			last;
 		}
 	}
-	if (sysexec("sed -i -e \"s/^[ \\t]*default[ \\t]\\+[0-9]\\+/default $num/\" $ROOTPOOL_MNT/boot/grub/menu.lst") != 0) {
+	if (sysexec('sed -i -e "s/^[ \t]*default[ \t][ \t]*[0-9][0-9]*/default ' . $num . '/" ' . $ROOTPOOL_MNT. '/boot/grub/menu.lst') != 0) {
 		die new Exception($Exception::IOError,
 			"Unable to update /boot/grub/menu.lst: $!");
 	}
@@ -1705,8 +1705,9 @@ print <<EOF;
    |                                                                  |
    |  At this point you have two options:                             |
    |                                                                  |
-   |   1. You can reboot now, make sure that system is healthy and    |
-   |      then activate the newly created checkpoint.                 |
+   |   1. You can reboot now and make sure that system is healthy.    |
+   |      You will be prompted to activate the newly created          |
+   |      checkpoint after the reboot.                                |
    |                                                                  |
    |   2. Or, you can simply continue using the system as is and      |
    |      reboot/activate checkpoint later.                           |
