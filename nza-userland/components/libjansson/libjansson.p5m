@@ -47,4 +47,6 @@ file path=usr/include/jansson.h
 
 link path=usr/lib/libjansson.so target=libjansson.so.4.5.0
 link path=usr/lib/$(MACH64)/libjansson.so target=libjansson.so.4.5.0
+link path=usr/lib/libjansson.so.4 target=libjansson.so.4.5.0
+link path=usr/lib/$(MACH64)/libjansson.so.4 target=libjansson.so.4.5.0
 
