@@ -7,3 +7,4 @@ library-perl-5-sun-solaris-512:library-perl-5-sun-solaris
 library-perl-5-sun-solaris-510:library-perl-510-sun-solaris
 system-library-libmtsk:system-library-math
 text-mantools:text-doctools
+system-kernel:driver-network-platform (<< 40-0-23)
