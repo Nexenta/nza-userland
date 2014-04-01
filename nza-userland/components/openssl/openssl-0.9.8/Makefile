@@ -6,7 +6,7 @@ include ../../../make-rules/shared-macros.mk
 COMPILER = studio
 
 PATH=$(SPRO_VROOT)/bin:/usr/bin:/usr/gnu/bin:/usr/perl5/bin
-
+DEBVERSION = 40-0-3
 COMPONENT_NAME =	openssl
 COMPONENT_VERSION =	0.9.8y
 IPS_COMPONENT_VERSION = 0.9.8.25
@@ -18,10 +18,10 @@ COMPONENT_ARCHIVE_URL =	http://www.openssl.org/source/$(COMPONENT_ARCHIVE)
 include $(WS_TOP)/make-rules/prep.mk
 include $(WS_TOP)/make-rules/configure.mk
 include $(WS_TOP)/make-rules/ips.mk
+include $(WS_TOP)/make-rules/lint-libraries.mk
 
 # OpenSSL does not use autoconf but its own configure system.
 CONFIGURE_SCRIPT = $(SOURCE_DIR)/Configure
-
 PKCS11_LIB32 = /usr/lib/libpkcs11.so.1
 PKCS11_LIB64 = /usr/lib/64/libpkcs11.so.1
 
@@ -90,11 +90,32 @@ COMPONENT_PRE_BUILD_ACTION = \
 # libraries.
 COMPONENT_PRE_INSTALL_ACTION = ( $(MKDIR) $(PROTO_DIR)/usr/lib/$(MACH64); )
 
-
-$(INSTALL_64): COMPONENT_INSTALL_ARGS += DESTDIR=$(BUILD_DIR)/proto/64
+$(INSTALL_64): COMPONENT_INSTALL_ARGS += DESTDIR=$(BUILD_DIR)/proto/amd64
 
 build:		$(BUILD_32_and_64)
-install:	$(INSTALL_32)
+			( elfedit -e 'dyn:delete RUNPATH' $(BUILD_DIR_32)/libssl.so.0.9.8; \
+			elfedit -e 'dyn:delete RUNPATH' $(BUILD_DIR_64)/libssl.so.0.9.8; \
+			elfedit -e 'dyn:delete RUNPATH' $(BUILD_DIR_32)/libcrypto.so.0.9.8; \
+			elfedit -e 'dyn:delete RUNPATH' $(BUILD_DIR_64)/libcrypto.so.0.9.8; \
+			elfedit -e 'dyn:delete RPATH' $(BUILD_DIR_32)/libssl.so.0.9.8; \
+			elfedit -e 'dyn:delete RPATH' $(BUILD_DIR_64)/libssl.so.0.9.8; \
+			elfedit -e 'dyn:delete RPATH' $(BUILD_DIR_32)/libcrypto.so.0.9.8; \
+			elfedit -e 'dyn:delete RPATH' $(BUILD_DIR_64)/libcrypto.so.0.9.8; )
+
+install:	$(INSTALL_32_and_64)
+
+# We need to modify the default lint flags to include patched opensslconf.h from
+# the build directory. If we do not do that, lint will complain about md2.h
+# which is not enabled by default but it is in our opensslconf.h.
+LFLAGS_32 := -I$(BUILD_DIR_32)/include $(LINT_FLAGS)
+LFLAGS_64 := -I$(BUILD_DIR_64)/include $(LINT_FLAGS)
+
+# Set modified lint flags for our lint library targets.
+$(BUILD_DIR_32)/llib-lcrypto.ln: LINT_FLAGS=$(LFLAGS_32)
+$(BUILD_DIR_32)/llib-lssl.ln: LINT_FLAGS=$(LFLAGS_32)
+$(BUILD_DIR_64)/llib-lcrypto.ln: LINT_FLAGS=$(LFLAGS_64)
+$(BUILD_DIR_64)/llib-lssl.ln: LINT_FLAGS=$(LFLAGS_64)
+
 test:		$(NO_TESTS)
 
 BUILD_PKG_DEPENDENCIES =	$(BUILD_TOOLS)

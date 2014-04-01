@@ -80,6 +80,13 @@ file ../../../openssl-1.0.1e/libssl.so.1.0.0		path=lib/libssl.so.1.0.0
 file ../../../openssl-1.0.1e/amd64/libcrypto.so.1.0.0	path=lib/amd64/libcrypto.so.1.0.0
 file ../../../openssl-1.0.1e/amd64/libssl.so.1.0.0	path=lib/amd64/libssl.so.1.0.0
 
+file usr/lib/llib-lssl	path=lib/llib-lssl
+file usr/lib/llib-lcrypto	path=lib/llib-lcrypto
+file ../../i86/llib-lssl.ln	path=lib/llib-lssl.ln
+file ../../i86/llib-lcrypto.ln	path=lib/llib-lcrypto.ln
+file ../../amd64/llib-lssl.ln	path=lib/amd64/llib-lssl.ln
+file ../../amd64/llib-lcrypto.ln	path=lib/amd64/llib-lcrypto.ln
+
 link path=etc/sfw/openssl		target=etc/openssl
 link path=usr/sfw/bin/openssl		target=usr/bin/openssl
 link path=usr/sfw/bin/amd64/openssl	target=usr/bin/amd64/openssl
@@ -92,11 +99,6 @@ file path=etc/openssl/misc/CA.pl
 file path=etc/openssl/misc/c_info
 file path=etc/openssl/misc/c_issuer
 
-file ../../../llib-lcrypto	path=lib/llib-lcrypto
-file ../../../llib-lssl		path=lib/llib-lssl
-file ../../../llib-lcrypto	path=lib/amd64/llib-lcrypto
-file ../../../llib-lssl		path=lib/amd64/llib-lssl
-
 link path=lib/libcrypto.so              target=libcrypto.so.0.9.8
 link path=lib/libssl.so                 target=libssl.so.0.9.8
 link path=lib/amd64/libcrypto.so        target=libcrypto.so.0.9.8
@@ -104,17 +106,17 @@ link path=lib/amd64/libssl.so           target=libssl.so.0.9.8
 
 link path=usr/lib/libssl.so		target=../../lib/libssl.so
 link path=usr/lib/libcrypto.so		target=../../lib/libcrypto.so
-link path=usr/lib/amd64/libssl.so	target=../../lib/amd64/libssl.so
-link path=usr/lib/amd64/libcrypto.so	target=../../lib/amd64/libcrypto.so
+link path=usr/lib/amd64/libssl.so	target=../../../lib/amd64/libssl.so
+link path=usr/lib/amd64/libcrypto.so	target=../../../lib/amd64/libcrypto.so
 link path=usr/lib/libssl.so.0.9.8	target=../../lib/libssl.so.0.9.8
 link path=usr/lib/libcrypto.so.0.9.8		target=../../lib/libcrypto.so.0.9.8
-link path=usr/lib/amd64/libssl.so.0.9.8	target=../../lib/amd64/libssl.so.0.9.8
-link path=usr/lib/amd64/libcrypto.so.0.9.8	target=../../lib/amd64/libcrypto.so.0.9.8
+link path=usr/lib/amd64/libssl.so.0.9.8	target=../../../lib/amd64/libssl.so.0.9.8
+link path=usr/lib/amd64/libcrypto.so.0.9.8	target=../../../lib/amd64/libcrypto.so.0.9.8
 
 link path=usr/lib/libssl.so.1.0.0	target=../../lib/libssl.so.1.0.0
 link path=usr/lib/libcrypto.so.1.0.0		target=../../lib/libcrypto.so.1.0.0
-link path=usr/lib/amd64/libssl.so.1.0.0	target=../../lib/amd64/libssl.so.1.0.0
-link path=usr/lib/amd64/libcrypto.so.1.0.0	target=../../lib/amd64/libcrypto.so.1.0.0
+link path=usr/lib/amd64/libssl.so.1.0.0	target=../../../lib/amd64/libssl.so.1.0.0
+link path=usr/lib/amd64/libcrypto.so.1.0.0	target=../../../lib/amd64/libcrypto.so.1.0.0
 
 
 
