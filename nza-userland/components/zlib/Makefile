@@ -21,7 +21,7 @@
 
 #
 # Copyright (c) 2011, Oracle and/or its affiliates. All rights reserved.
-#
+# Copyright (c) 2014, Nexenta Systems, Inc. All rights reserved.
 
 include ../../make-rules/shared-macros.mk
 
@@ -35,6 +35,7 @@ COMPONENT_ARCHIVE_URL=	http://downloads.sourceforge.net/project/libpng/zlib/$(CO
 include ../../make-rules/prep.mk
 include ../../make-rules/configure.mk
 include ../../make-rules/ips.mk
+include ../../make-rules/lint-libraries.mk
 
 # Zlib won't build without cloning. We need also to get rid of default
 # Makefile and get our own version of zlib.h to avoid interactions
