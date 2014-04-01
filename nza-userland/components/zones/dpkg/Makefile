@@ -19,12 +19,13 @@
 #
 # CDDL HEADER END
 #
-# Copyright (c) 2012, Nexenta Systems, Inc. All rights reserved.
+# Copyright (c) 2014, Nexenta Systems, Inc. All rights reserved.
 #
 include ../../../make-rules/shared-macros.mk
 
 COMPONENT_NAME=         dpkg-brand-zone
-COMPONENT_VERSION=      1.1
+COMPONENT_VERSION=      1.2
+DEBVERSION:=40-0-4
 
 include $(WS_TOP)/make-rules/ips.mk
 

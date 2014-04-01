@@ -1,29 +1,13 @@
 #
-# CDDL HEADER START
+# This file and its contents are supplied under the terms of the
+# Common Development and Distribution License ("CDDL"), version 1.0.
+# You may only use this file in accordance with the terms of version
+# 1.0 of the CDDL.
 #
-# The contents of this file are subject to the terms of the
-# Common Development and Distribution License (the "License").
-# You may not use this file except in compliance with the License.
+# A full copy of the text of the CDDL should have accompanied this
+# source.  A copy of the CDDL is also available via the Internet at
+# http://www.illumos.org/license/CDDL.
 #
-# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
-# or http://www.opensolaris.org/os/licensing.
-# See the License for the specific language governing permissions
-# and limitations under the License.
-#
-# When distributing Covered Code, include this CDDL HEADER in each
-# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
-# If applicable, add the following below this CDDL HEADER, with the
-# fields enclosed by brackets "[]" replaced with your own identifying
-# information: Portions Copyright [yyyy] [name of copyright owner]
-#
-# CDDL HEADER END
-#
-
-#
-# Copyright (c) 2008, 2011, Oracle and/or its affiliates. All rights reserved.
-#
-# Copyright (c) 2012, Nexenta Systems, Inc. All rights reserved.
-
 
 unset LD_LIBRARY_PATH
 PATH=/usr/bin:/usr/sbin
@@ -218,7 +202,7 @@ mount_active_ds() {
 	mount -p | cut -d' ' -f3 | egrep -s "^$ZONEPATH/root$"
 	if (( $? == 0 )); then
 		# Umount current dataset on the root (it might be an old BE).
-		umount $ZONEPATH/root
+		umount -f $ZONEPATH/root
 		if (( $? != 0 )); then
 			# The umount failed, leave the old BE mounted.
 			# Warn about gz process preventing umount.
@@ -326,90 +310,4 @@ unconfigure_zone() {
 pkg_err_check() {
 	typeset res=$?
 	(( $res != 0 && $res != 4 )) && fail_fatal "$1"
-}
-
-### DPKG ###
-get_depends ()
-{
-    typeset PACKAGES="$*"
-    typeset DEPS=
-    DEPS=`apt-cache depends $PACKAGES | grep Depends | nawk '{print $2}'`
-    DEPS=`echo "$DEPS" | sed -e "s;<libapt-pkg4\.10>;;" | sort -u`
-    echo "$DEPS"
-}
-
-apt_download ()
-{
-    typeset PACKAGES="$*"
-    typeset APTCACHE=
-    APTCACHE=$ZONEROOT/var/cache/apt
-    env ZONEINST=1 apt-get -d -o=dir::cache=$APTCACHE update
-    env ZONEINST=1 apt-get -d -o=dir::cache=$APTCACHE -y --force-yes --reinstall install $PACKAGES
-}
-
-get_file ()
-{
-    typeset PKG="$1"
-    typeset FILE=
-    typeset PKGFILE=
-    FILE=$PKG"_*.deb"
-    PKGFILE=`find $ZONEROOT/var/cache/apt/archives -name "$FILE"`
-    echo "$PKGFILE"
-}
-
-dpkg_unpack ()
-{
-    typeset PKG=$1
-    typeset TO=
-    typeset FILE=
-    TO=$ZONEROOT
-    FILE=`get_file $PKG`
-    echo "Unpacking $PKG to $TO ..."
-    env ZONEINST=1 dpkg-deb -x $FILE $TO
-}
-
-dpkg_inst ()
-{
-    typeset PKG=$1
-    typeset FILE=
-    FILE=`get_file $PKG | sed -e "s;$ZONEROOT;;"`
-    echo "Installing $PKG ..."
-#    echo "== $ZONEROOT"
-#    echo "/usr/gnu/bin/chroot $ZONEROOT dpkg --force-all -i $FILE"
-    /usr/gnu/bin/chroot $ZONEROOT env ZONEINST=1 DEBCHROOT=1 dpkg --force-all -i $FILE
-}
-
-dpkg_init ()
-{
-    typeset TARGET=$ZONEROOT
-    mkdir -p $TARGET/var/lib/dpkg/updates
-    mkdir -p $TARGET/var/lib/dpkg/info
-    mkdir -p $TARGET/var/lib/dpkg/alien
-    mkdir -p $TARGET/var/lib/dpkg/alternatives
-    mkdir -p $TARGET/var/lib/dpkg/parts
-    mkdir -p $TARGET/var/lib/dpkg/triggers
-
-    touch $TARGET/var/lib/dpkg/status
-    touch $TARGET/var/lib/dpkg/available
-
-    mkdir -p $TARGET/var/cache/apt
-    mkdir -p $TARGET/tmp
-    mkdir -p $TARGET/devices
-    mkdir -p $TARGET/dev
-}
-
-apt_mount ()
-{
-    /usr/gnu/bin/chroot $ZONEROOT mount -F proc /proc
-    mount -F lofs -O /tmp $ZONEROOT/tmp
-    mount -F lofs -O /devices $ZONEROOT/devices
-    mount -F lofs -O /dev $ZONEROOT/dev
-}
-
-apt_umount ()
-{
-    umount $ZONEROOT/dev
-    umount $ZONEROOT/devices
-    umount $ZONEROOT/tmp
-    chroot $ZONEROOT umount /proc 2> /dev/null 1>&2
 }
