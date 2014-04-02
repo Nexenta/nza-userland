@@ -20,14 +20,14 @@
 #
 
 #
-# Copyright (c) 2013, Nexenta Systems, Inc. All rights reserved.
+# Copyright (c) 2014, Nexenta Systems, Inc. All rights reserved.
 #
 
 include ../../make-rules/shared-macros.mk
 
 COMPONENT_NAME = nza-kernel
 COMPONENT_VERSION  = 1.18
-DEBVERSION:=40-0-38
+DEBVERSION:=40-0-40
 
 include $(WS_TOP)/make-rules/ips.mk
 

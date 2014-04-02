@@ -1,7 +1,7 @@
 
 #
-# Copyright 2010-2012 Nexenta Systems, Inc. All rights reserved.
-# VERSION: 1.6
+# Copyright 2010-2014 Nexenta Systems, Inc. All rights reserved.
+# VERSION: 1.7
 
 package MFT;
 
@@ -43,11 +43,8 @@ sub init
 {
     my ($self) = @_;
     undef ($self->{_manifest});
-#    $self->{_manifest} = {};
     undef ($self->{_scripts});
-#    $self->{_scripts} = {};
     undef ($self->{_installproto});
-#    $self->{_installproto} = [];
     undef ($self->{_depends});
 }
 
@@ -122,10 +119,6 @@ sub getFileName
 sub readFile
 {
     my ( $self, $filename ) = @_;
-#    my ( $filename ) = @_;
-
-#    print $self->getFunctionName().", $filename\n";
-#    my( $filename ) = shift;
     my $lines = [];
     my $templines = [];
     my $line = '';
@@ -191,15 +184,11 @@ sub readFile
             $line = '';
             next;
         }
-#        print "== $line\n";
 
         push @$lines, $line;    # push the data line onto the array
         $line = '';
     }
     close FILE;
-
-#    $self->{_fileName} = $filename;
-#    $self->{_moduleName} = lc(basename($filename, ".mf"));
 
     return $lines;  # reference
 }
@@ -211,7 +200,6 @@ sub getData()
 {
     my ( $self, $str ) = @_;
 
-#print "input: $str\n";
     $_ = $str;
     my $res = {};
 
@@ -224,7 +212,6 @@ sub getData()
     $action = $_ =~ m/^(\S*)/;
     $action = $1;
 
-#print "== action: $action\n";
     push(@$buff, $action);
 
     my $origstr = $str;
@@ -234,7 +221,6 @@ sub getData()
     my $tmpRes = {};
     $tmpRes = $self->parser($_);
     $$tmpRes{'action'} = $$res{'action'};
-#&print_mog_line($tmpRes);
 
     return $tmpRes;
 }
@@ -321,26 +307,13 @@ sub readMfFile()
     my $result = {};
     my $actions = [];
 
-#    print "Loading file: $mffile\n";
     $self->{_fileName} = $mffile;
-#    $self->{_moduleName} = lc(basename($mffile, ".mf"));
-
 
     my $lines = $self->readFile($mffile);
-#print "== read file\n";
 
     my $mf;
     foreach my $line (sort @{$lines})
     {
-#	print "== $line\n";
-#        if($self->{_moduleName} eq 'runtime-perl-510-module-sun-solaris')
-###        if($self->{_moduleName} =~ /-sun-solaris$/)
-###        {
-###            $line =~ s/PLAT/i86pc/g;
-###            $line .= ' mode=0555' if ($line =~ /.*\.so/);
-###            $line .= ' mode=0444' if ($line =~ /.*\.(pm|bs)/);
-###        }
-#print "4 - $line\n";
         $mf = $self->getData($line);
         next unless(defined($mf));
         $actions = $$result{$$mf{'action'}[0]};
@@ -348,10 +321,7 @@ sub readMfFile()
         $$result{$$mf{'action'}[0]} = $actions;
     }
     $self->{_manifest} = $result;
-#    return $result;
-
     $self->{_moduleName} = $self->getPkgName();
-#    print "== $self->{_moduleName}\n";
 
     return $self->{_manifest};
 }
@@ -533,13 +503,11 @@ sub getOrigVersion
 	if ($$line{'name'}[0] eq 'pkg.fmri')
 	{
 	    $output = $$line{'value'}[0];
-#print "== 1 - $output\n";
 	    last;
 	}
     }
     $output =~ s/\S*\@//;
     $output =~ s/,\S*//;
-#print "== 2 - $output\n";
 
     return $output;
 }
@@ -563,7 +531,6 @@ sub getOrigName
 	if ($$line{'name'}[0] eq 'pkg.fmri')
 	{
 	    $output = $$line{'value'}[0];
-#print "== 1 - $output\n";
 	    last;
 	}
     }
@@ -571,8 +538,6 @@ sub getOrigName
     $output =~ s/\S*\///;
     $output =~ s/_/-/g;
     $output = lc($output);
-
-#print "== 2 - $output\n";
 
     return $output;
 }
@@ -583,7 +548,6 @@ sub getOrigName
 sub getPkgName
 {
     my ( $self ) = @_;
-#    my ( $self , $mf) = @_;
 
     my $mf = $self->getManifest();
     return unless defined($$mf{'set'});
@@ -596,11 +560,9 @@ sub getPkgName
 	if ($$line{'name'}[0] eq 'pkg.fmri')
 	{
 	    $output = $$line{'value'}[0];
-#print "== 1 - $output\n";
 	    last;
 	}
     }
-#    $output =~ s/\@\S*//;
     $output =~ s/\@.*$//;
 
     $output =~ s/\/openindiana.org\///;
@@ -614,10 +576,9 @@ sub getPkgName
     $output =~ s/\//-/g;
     $output = lc($output);
 
-#print "== 2 - $output\n";
-
     return $output;
 }
+
 
 
 #------------------------------
@@ -626,32 +587,59 @@ sub getPkgName
 # get dependences packages names
 sub getDepend
 {
-    my ( $self ) = @_;
+    my ( $self, $pkg, $version ) = @_;
     my $mf = $self->getManifest();
-#    print "== dep: ".$self->getFileName()."\n";
-
-    return unless defined($$mf{'depend'});
-
     my $result = [];
-#    return $result unless $self->{_dependences};
-#    my $depends = $$mf{'depend'};
+    my @deps;
+
+    $pkg =~ s/\.mog/\.dep/g;
+    my $dir = dirname($pkg);
+    my $lines = $self->readFile($pkg);
+    foreach my $line (sort @{$lines}) {
+        if ($line =~ m/^depend/i) {
+            my @fields = split / /,$line;
+            my @files = split /=/,@fields[2];
+            my @paths = split /=/,@fields[3];
+            my $file = "@paths[1]/@files[1]";
+            push(@deps, $file);
+        }
+    }
+
+    opendir(DIR, $dir);
+    my @manif = grep {/\.mog/} readdir(DIR);
+    closedir(DIR);
+    foreach my $man (@manif) {
+        my $lines2 = $self->readFile($dir."/".$man);
+        foreach my $line2 (sort @{$lines2}) {
+            foreach my $fl (@deps) {
+                if (grep{/path=$fl\s/} $line2) {
+                    $man =~ s/\.mog//g;
+                    my $lman = lc($man);
+                    next if ($lman =~ m/driver-serial-usbsksp-usbs49_fw/i);
+                    next if ($pkg =~ m/SUNWcsd/i);
+                    push(@$result, "$lman"." (>= $version)");
+                }
+            }
+        }
+    }
+
+    my $newresult = [];
+    my %seen=();
+    foreach(@$result) {
+        push(@$newresult, $_) unless ($seen{$_}++);
+    }
 
     my $r = $$mf{'depend'};
 
-#    my $fmri = $self->getActions($depends, 'fmri');
-
     my $pkgName;
-
-#    $self->toLog("depend of: ".join(",", @$fmri));
 
     foreach my $line (@$r) 
     {
-	my $fmri = $$line{'fmri'}[0] if defined($$line{'fmri'});
-	next unless defined($fmri);
-	my $type = $$line{'type'}[0] if defined($$line{'type'});
-	next if ($type eq 'exclude');
-#	next unless (($type eq 'require') || ($type eq 'conditional'));
-	next unless ($type eq 'require');
+        my $fmri = $$line{'fmri'}[0] if defined($$line{'fmri'});
+        next unless defined($fmri);
+        my $type = $$line{'type'}[0] if defined($$line{'type'});
+        next if ($type eq 'exclude');
+        next unless ($type eq 'require');
 
         $pkgName = $fmri;
         next if ($pkgName =~ m/__TBD$/i);
@@ -668,12 +656,11 @@ sub getDepend
         next if ($pkgName =~ m/compatibility-packages-sunwxwplt/i);
         next if ($pkgName =~ m/runtime-perl-584/i);
         next if ($pkgName =~ m/runtime-perl-510/i);
-#        next if ($pkgName =~ m/system-library-gcc-3-runtime/i);
-
-        push(@$result, $pkgName);
+#       next if ($pkgName =~ m/system-library-gcc-3-runtime/i);
+        push(@$newresult, $pkgName);
     }
 
-    return $result;
+    return $newresult;
 }
 
 1;

@@ -1,3 +1,5 @@
+# Copyright (c) 2014, Nexenta Systems, Inc. All rights reserved.
+
 NZA_KERNEL       = nza-kernel
 NZA_CLOSED       = nza-closed
 SUNSTUDIO_PATH   = /opt/SUNWspro

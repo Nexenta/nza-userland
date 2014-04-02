@@ -254,7 +254,7 @@ sub genPackage
     $res .= '7' if ($oGroups);
     my $oUsers = &saveUsers($mft);
     $res .= '6' if ($oUsers);
-    $dep = $mft->getDepend();
+    $dep = $mft->getDepend($packageFile, $$tmpl{'PKGVER'});
     $res .= 'a' unless (defined($dep) && scalar($dep) > 0);
 
     return $res if ($oDirs && $oFiles && $oHardLinks && $oUsers && $oGroups && ($res =~ /^a/));
@@ -434,7 +434,7 @@ sub saveDepends
     $mft->init();
     $mft->readMfFile($packageFile);
     my $res = [];
-    $res = $mft->getDepend();
+    $res = $mft->getDepend($packageFile, $$tmpl{'PKGVER'});
 
     print join(', ', @$res)."\n";
 }

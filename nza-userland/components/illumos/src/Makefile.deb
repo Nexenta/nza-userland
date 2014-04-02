@@ -1,8 +1,10 @@
+# Copyright (c) 2014, Nexenta Systems, Inc. All rights reserved.
+
 NZA_KERNEL       = nza-kernel
 NZA_ROOT         = $(CURDIR)
 CODEMGR_WS       = $(NZA_ROOT)/$(NZA_KERNEL)
 
-DEB_VERSION     ?= 0-0-0
+DEB_VERSION     ?= 40-0-0
 DEB_MAINTAINER  ?= Nexenta Systems <maintainer@nexenta.com>
 
 # No source packages:
@@ -25,7 +27,7 @@ PKGMOG := $(shell cd $(MANIFESTDIR) && ls *.mog)
 PKGDEB := $(PKGMOG:%.mog=$(DEBDIR)/%.deb-stamp)
 
 
-deb: $(PKGDEB)
+deb: $(PKGDEP) $(PKGDEB)
 apt: $(DEBDIR)/.apt-stamp
 clean:
 	rm -rf $(APTDIR) $(DEBDIR)
@@ -58,7 +60,15 @@ onedeb:
 
 .PHONY: deb apt clean onedeb
 
-$(DEBDIR)/%.deb-stamp: $(MANIFESTDIR)/%.mog $(DEBDIR)/.dir-stamp
+$(DEBDEP)/.dep-stamp:
+	for mog in $(MANIFESTDIR)/*.mog; do \
+		pkg=`echo $$mog | awk -F/ '{print $$NF}'|cut -d. -f1`; \
+		echo "Generating dependencies for $$pkg"; \
+		/usr/bin/pkgdepend generate -d $(PKGROOT) -m -D 'PLATFORM=i86pc' \
+		-D 'ISALIST=amd64'  -D 'ISALIST=i386' $$mog  > $(MANIFESTDIR)/$$pkg.dep 2>&1; \
+	done
+
+$(DEBDIR)/%.deb-stamp: $(MANIFESTDIR)/%.mog $(DEBDIR)/.dir-stamp $(DEBDEP)/.dep-stamp
 	/opt/onbld/bin/ips2deb.pl --noverbose \
 	-p $< \
 	-d $(PKGROOT) \
