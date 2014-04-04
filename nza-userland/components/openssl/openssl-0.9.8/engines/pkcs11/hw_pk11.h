@@ -1,7 +1,9 @@
 /*
- * Copyright (c) 2004, 2011, Oracle and/or its affiliates. All rights reserved.
- *
+ * Copyright 2009 Sun Microsystems, Inc.  All rights reserved.
+ * Use is subject to license terms.
  */
+
+#pragma ident	"@(#)hw_pk11.h	1.1	09/11/10 SMI"
 
 /* crypto/engine/hw_pk11.h */
 /*

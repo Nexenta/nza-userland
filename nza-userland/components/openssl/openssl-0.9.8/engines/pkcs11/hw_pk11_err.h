@@ -1,7 +1,9 @@
 /*
- * Copyright (c) 2004, 2011, Oracle and/or its affiliates. All rights reserved.
- *
+ * Copyright 2010 Sun Microsystems, Inc.  All rights reserved.
+ * Use is subject to license terms.
  */
+
+#pragma ident	"@(#)hw_pk11_err.h	1.3	10/02/01 SMI"
 
 /*
  * This product includes software developed by the OpenSSL Project for

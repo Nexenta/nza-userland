@@ -13,13 +13,15 @@ diff -ruN openssl-0.9.8k/Configure openssl-0.9.8k/Configure
  my $no_asm="::::::::::";
  
  # As for $BSDthreads. Idea is to maintain "collective" set of flags,
-@@ -235,6 +240,10 @@
+@@ -235,6 +240,12 @@
  #"sunos-cc", "cc:-O4 -DNOPROTO -DNOCONST::(unknown):SUNOS::DES_UNROLL:${no_asm}::",
  "sunos-gcc","gcc:-O3 -mv8 -Dssize_t=int::(unknown):SUNOS::BN_LLONG RC4_CHAR RC4_CHUNK DES_UNROLL DES_PTR DES_RISC1:${no_asm}::",
  
 +#### Solaris configs, used for OpenSSL as delivered by OpenSolaris
-+"solaris-x86-cc-sunw","cc:-m32 -xO3 -xspace -g -Xa::-D_REENTRANT::-lsocket -lnsl -lc -R /lib/openssl/:BN_LLONG RC4_CHAR RC4_CHUNK DES_PTR DES_UNROLL BF_PTR:${x86_elf_asm_sunw}:dlfcn:solaris-shared:-KPIC:-m32 -G -dy -z text -zdefs -Bdirect -zignore -M/usr/lib/ld/map.pagealign -M/usr/lib/ld/map.noexdata:.so.\$(SHLIB_MAJOR).\$(SHLIB_MINOR)",
-+"solaris64-x86_64-cc-sunw","cc:-xO3 -m64 -g -xstrconst -Xa -DL_ENDIAN::-D_REENTRANT::-lsocket -lnsl -lc -R /lib/openssl/64:SIXTY_FOUR_BIT_LONG RC4_CHAR RC4_CHUNK BF_PTR DES_PTR DES_INT DES_UNROLL:${x86_64_asm_sunw}:dlfcn:solaris-shared:-KPIC:-m64 -G -dy -z text -zdefs -Bdirect -zignore -M/usr/lib/ld/map.pagealign -M/usr/lib/ld/map.noexdata:.so.\$(SHLIB_MAJOR).\$(SHLIB_MINOR)",
++"solaris-x86-cc-sunw","cc:-m32 -xO3 -xspace -g -Xa::-D_REENTRANT::-lsocket -lnsl -lc:BN_LLONG RC4_CHAR RC4_CHUNK DES_PTR DES_UNROLL BF_PTR:${x86_elf_asm_sunw}:dlfcn:solaris-shared:-KPIC:-m32 -G -dy -z text -zdefs -Bdirect -zignore -M/usr/lib/ld/map.pagealign -M/usr/lib/ld/map.noexdata:.so.\$(SHLIB_MAJOR).\$(SHLIB_MINOR)",
++"solaris64-x86_64-cc-sunw","cc:-xO3 -m64 -g -xstrconst -Xa -DL_ENDIAN::-D_REENTRANT::-lsocket -lnsl -lc:SIXTY_FOUR_BIT_LONG RC4_CHAR RC4_CHUNK BF_PTR DES_PTR DES_INT DES_UNROLL:${x86_64_asm_sunw}:dlfcn:solaris-shared:-KPIC:-m64 -G -dy -z text -zdefs -Bdirect -zignore -M/usr/lib/ld/map.pagealign -M/usr/lib/ld/map.noexdata:.so.\$(SHLIB_MAJOR).\$(SHLIB_MINOR)",
++"solaris-sparcv8-cc-sunw","cc:-m32 -xregs=no%appl -xO5 -g -xstrconst -xdepend -Xa -DB_ENDIAN -DBN_DIV2W::-D_REENTRANT::-lsocket -lnsl -lc:BN_LLONG RC4_CHAR RC4_CHUNK DES_PTR DES_RISC1 DES_UNROLL BF_PTR::sparcv8plus.o::::::::::dlfcn:solaris-shared:-KPIC:-m32 -G -dy -z text -zdefs -Bdirect -zignore -M/usr/lib/ld/map.pagealign:.so.\$(SHLIB_MAJOR).\$(SHLIB_MINOR)",
++"solaris64-sparcv9-cc-sunw","cc:-m64 -xregs=no%appl -xO5 -g -xstrconst -xdepend -xspace -Xa -DB_ENDIAN::-D_REENTRANT:ULTRASPARC:-lsocket -lnsl -lc:SIXTY_FOUR_BIT_LONG RC4_CHAR RC4_CHUNK DES_INT DES_PTR DES_RISC1 DES_UNROLL BF_PTR::::::::::::dlfcn:solaris-shared:-KPIC:-m64 -G -dy -z text -zdefs -Bdirect -zignore -M/usr/lib/ld/map.pagealign:.so.\$(SHLIB_MAJOR).\$(SHLIB_MINOR):/usr/ccs/bin/ar rs",
 +
  #### IRIX 5.x configs
  # -mips2 flag is added by ./config when appropriate.

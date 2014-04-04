@@ -1,7 +1,8 @@
 /*
- * Copyright (c) 2004, 2011, Oracle and/or its affiliates. All rights reserved.
- *
+ * Copyright (c) 2004, 2010, Oracle and/or its affiliates. All rights reserved.
  */
+
+#pragma ident	"@(#)hw_pk11_err.c	1.4	10/09/23 SMI"
 
 /* crypto/engine/hw_pk11_err.c */
 /*
