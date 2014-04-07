@@ -579,7 +579,7 @@ sub saveFiles
             $str = "mv \$DEST/$origPath \$DEST/$origPath.$moduleName";
 	    push(@$fixperms, $str);
 
-            $str = "([ -f \$BASEDIR/$path ] && mv -f \$BASEDIR/$path \$BASEDIR/$path.old )";
+            $str = "([ -f \$BASEDIR/$path ] && cp -f \$BASEDIR/$path \$BASEDIR/$path.old )";
             push(@$postinst, $str);
 
             $str = "([ -f \$BASEDIR/$path.$moduleName ] && mv -f \$BASEDIR/$path.$moduleName \$BASEDIR/$path )";

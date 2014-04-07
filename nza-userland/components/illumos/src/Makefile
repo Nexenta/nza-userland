@@ -7,7 +7,7 @@ SUN_GATE         = http://dlc.sun.com/osol/on/downloads/20100817
 CLOSED_BINARY1   = on-closed-bins.i386.tar.bz2
 CLOSED_BINARY2   = on-closed-bins-nd.i386.tar.bz2
 
-export DEB_VERSION     ?= 40-0-21
+export DEB_VERSION     ?= 40-0-0
 export DEB_MAINTAINER  ?= Nexenta Systems <maintainer@nexenta.com>
 
 NZA_ROOT         = $(CURDIR)
