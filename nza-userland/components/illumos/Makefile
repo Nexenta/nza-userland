@@ -27,7 +27,7 @@ include ../../make-rules/shared-macros.mk
 
 COMPONENT_NAME = nza-kernel
 COMPONENT_VERSION  = 1.18
-DEBVERSION:=40-0-41
+DEBVERSION:=40-0-42
 
 include $(WS_TOP)/make-rules/ips.mk
 
