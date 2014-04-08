@@ -6,7 +6,7 @@ include ../../../make-rules/shared-macros.mk
 COMPILER = studio
 
 PATH=$(SPRO_VROOT)/bin:/usr/bin:/usr/gnu/bin:/usr/perl5/bin
-DEBVERSION = 40-0-7
+DEBVERSION = 40-0-8
 COMPONENT_NAME =	openssl
 COMPONENT_VERSION =	0.9.8y
 IPS_COMPONENT_VERSION = 0.9.8.25

@@ -73,12 +73,12 @@ file ../../i86/libcrypto.so.0.9.8 path=lib/libcrypto.so.0.9.8
 file ../../amd64/libssl.so.0.9.8	path=lib/amd64/libssl.so.0.9.8
 file ../../amd64/libcrypto.so.0.9.8	path=lib/amd64/libcrypto.so.0.9.8 
 
-file ../../../../openssl-1.0.1e/openssl			path=usr/bin/openssl-1.0.1
-file ../../../../openssl-1.0.1e/amd64/openssl		path=usr/bin/amd64/openssl-1.0.1
-file ../../../openssl-1.0.1e/libcrypto.so.1.0.0		path=lib/libcrypto.so.1.0.0
-file ../../../openssl-1.0.1e/libssl.so.1.0.0		path=lib/libssl.so.1.0.0
-file ../../../openssl-1.0.1e/amd64/libcrypto.so.1.0.0	path=lib/amd64/libcrypto.so.1.0.0
-file ../../../openssl-1.0.1e/amd64/libssl.so.1.0.0	path=lib/amd64/libssl.so.1.0.0
+file ../../../../openssl-1.0.1/openssl			path=usr/bin/openssl-1.0.1
+file ../../../../openssl-1.0.1/amd64/openssl		path=usr/bin/amd64/openssl-1.0.1
+file ../../../openssl-1.0.1/libcrypto.so.1.0.0		path=lib/libcrypto.so.1.0.0
+file ../../../openssl-1.0.1/libssl.so.1.0.0		path=lib/libssl.so.1.0.0
+file ../../../openssl-1.0.1/amd64/libcrypto.so.1.0.0	path=lib/amd64/libcrypto.so.1.0.0
+file ../../../openssl-1.0.1/amd64/libssl.so.1.0.0	path=lib/amd64/libssl.so.1.0.0
 
 file usr/lib/llib-lssl	path=lib/llib-lssl
 file usr/lib/llib-lcrypto	path=lib/llib-lcrypto
