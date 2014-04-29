@@ -26,7 +26,7 @@
 include ../../make-rules/shared-macros.mk
 
 COMPONENT_NAME = sas3ircu
-COMPONENT_VERSION  = 02.00.01.00
+COMPONENT_VERSION  = 05.00.00.00
 
 include ../../make-rules/ips.mk
 
