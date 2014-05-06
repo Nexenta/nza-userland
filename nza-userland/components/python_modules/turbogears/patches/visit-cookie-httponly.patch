@@ -1,0 +1,56 @@
+--- TurboGears-1.1.3.old/turbogears/visit/api.py
++++ TurboGears-1.1.3/turbogears/visit/api.py
+@@ -21,7 +21,7 @@
+     from sha import new as sha1
+ import threading
+ import time
+-
++from Cookie import Morsel
+ from random import random
+ from datetime import timedelta, datetime
+ 
+@@ -141,9 +141,11 @@
+         self.source = [s.strip().lower() for s in
+             get("visit.source", "cookie").split(',')]
+         if set(self.source).difference(('cookie', 'form')):
+-            log.warning("Unsupported 'visit.source' '%s' in configuration.")
++            log.error("Unsupported visit.source in configuration.")
+         # Get the name to use for the identity cookie.
+         self.cookie_name = get("visit.cookie.name", "tg-visit")
++        if Morsel().isReservedKey(self.cookie_name):
++            log.error("Reserved name chosen as visit.cookie.name.")
+         # and the name of the request param. MUST NOT contain dashes or dots,
+         # otherwise the NestedVariablesFilter will choke on it.
+         self.visit_key_param = get("visit.form.name", "tg_visit")
+@@ -155,11 +157,21 @@
+         self.cookie_secure = get("visit.cookie.secure", False)
+         # By default, I don't specify the cookie domain.
+         self.cookie_domain = get("visit.cookie.domain", None)
+-        assert self.cookie_domain != "localhost", "localhost" \
+-            " is not a valid value for visit.cookie.domain. Try None instead."
++        if self.cookie_domain == "localhost":
++            log.error("Invalid value 'localhost' for visit.cookie.domain."
++                " Try None instead.")
+         # Use max age only if the cookie shall explicitly be permanent
+         self.cookie_max_age = get("visit.cookie.permanent",
+             False) and int(get("visit.timeout", "20")) * 60 or None
++        # Use httponly to specify that the cookie shall only be transfered
++        # in HTTP requests, and shall not be accessible through JavaScript.
++        # This is intended to mitigate some forms of cross-site scripting.
++        self.cookie_httponly = get("visit.cookie.httponly", False)
++        if self.cookie_httponly and not Morsel().isReservedKey('httponly'):
++            # Python versions < 2.6 do not support the httponly key
++            log.error("The visit.cookie.httponly setting"
++                " is not supported by this Python version.")
++            self.cookie_httponly = False
+         log.info("Visit filter initialized")
+ 
+     def before_main(self):
+@@ -245,6 +257,8 @@
+             # 'max-age' takes precedence on standard conformant browsers
+             # (this is better because it has no time sync issues)
+             cookies[self.cookie_name]['max-age'] = max_age
++        if self.cookie_httponly:
++            cookies[self.cookie_name]['httponly'] = True
+         log.debug("Sending visit ID cookie: %s",
+             cookies[self.cookie_name].output())
