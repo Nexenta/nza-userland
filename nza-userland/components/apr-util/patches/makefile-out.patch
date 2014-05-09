@@ -1,0 +1,23 @@
+--- Makefile.in	2008-11-21 09:30:43.000000000 +0300
++++ Makefile.in	2013-07-16 11:38:01.969659907 +0400
+@@ -10,7 +10,7 @@
+ srcdir = @srcdir@
+ VPATH = @srcdir@
+ 
+-INCLUDES = @APRUTIL_PRIV_INCLUDES@ @APR_INCLUDES@ @APRUTIL_INCLUDES@
++INCLUDES = -I/usr/include/openldap @APRUTIL_PRIV_INCLUDES@ @APR_INCLUDES@ @APRUTIL_INCLUDES@
+ APRUTIL_LDFLAGS = @APRUTIL_LDFLAGS@
+ APRUTIL_LIBS = @APRUTIL_LIBS@
+ 
+@@ -73,7 +73,10 @@
+ 
+ # Create apu-config script suitable for the install tree
+ apu-config.out: $(APU_CONFIG)
+-	sed 's,^\(location=\).*$$,\1installed,' < $(APU_CONFIG) > $@
++	sed -e 's,^\(location=\).*$$,\1installed,' \
++	    -e '/^APU_SOURCE_DIR=/s,/.*",/usr/apr-util",' \
++	    -e '/^APU_BUILD_DIR=/s,/.*",/usr/apr-util",' \
++	     < $(APU_CONFIG) > $@
+ 
+ install: $(TARGETS) install-modules
+ 	$(APR_MKDIR) $(DESTDIR)$(includedir) $(DESTDIR)$(libdir)/pkgconfig \
