@@ -1,0 +1,20 @@
+diff -urN fio-2.1.7/Makefile fio-2.1.7.new/Makefile
+--- fio-2.1.7/Makefile	2014-03-31 08:05:54.000000000 -0700
++++ fio-2.1.7.new/Makefile	2014-05-19 07:28:57.439003151 -0700
+@@ -191,14 +191,14 @@
+ else
+ 	INSTALL = install
+ endif
+-prefix = /usr/local
++prefix = /usr
+ bindir = $(prefix)/bin
+ 
+ ifeq ($(CONFIG_TARGET_OS), Darwin)
+ mandir = /usr/share/man
+ sharedir = /usr/share/fio
+ else
+-mandir = $(prefix)/man
++mandir = $(prefix)/share/man
+ sharedir = $(prefix)/share/fio
+ endif
+ 
