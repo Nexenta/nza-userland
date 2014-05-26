@@ -1,5 +1,5 @@
---- docs/conf/httpd.conf.in	Fri Dec 21 03:43:00 2007
-+++ docs/conf/httpd.conf.in	Mon May 16 06:47:52 2011
+--- docs/conf/httpd.conf.in.orig	2012-02-06 08:54:24.000000000 -0800
++++ docs/conf/httpd.conf.in	2014-05-26 04:11:57.000000000 -0700
 @@ -6,6 +6,12 @@
  # <URL:http://httpd.apache.org/docs/2.2/mod/directives.html>
  # for a discussion of each configuration directive.
@@ -13,7 +13,7 @@
  # Do NOT simply read the instructions in here without understanding
  # what they do.  They're here only as hints or reminders.  If you are unsure
  # consult the online docs. You have been warned.  
-@@ -43,14 +49,17 @@
+@@ -44,14 +50,17 @@
  # Dynamic Shared Object (DSO) Support
  #
  # To be able to use the functionality of a module which was built as a DSO you
@@ -21,13 +21,14 @@
 -# directives contained in it are actually available _before_ they are used.
 -# Statically compiled modules (those listed by `httpd -l') do not need
 -# to be loaded here.
-+# have to place corresponding `LoadModule' lines within the appropriate 
-+# (32-bit or 64-bit module) @rel_sysconfdir@/conf.d/modules-*.load file so that
-+# the directives contained in it are actually available _before_ they are used.
- #
+-#
 -# Example:
 -# LoadModule foo_module modules/mod_foo.so
 -#
++# have to place corresponding `LoadModule' lines within the appropriate 
++# (32-bit or 64-bit module) @rel_sysconfdir@/conf.d/modules-*.load file so that
++# the directives contained in it are actually available _before_ they are used.
++#
 +<IfDefine 64bit>
 +Include @rel_sysconfdir@/conf.d/modules-64.load
 +</IfDefine>
@@ -38,7 +39,7 @@
  @@LoadModule@@
  
  <IfModule !mpm_netware_module>
-@@ -63,8 +72,8 @@
+@@ -64,8 +73,8 @@
  # It is usually good practice to create a dedicated user and group for
  # running httpd, as with most system services.
  #
@@ -49,7 +50,7 @@
  
  </IfModule>
  </IfModule>
-@@ -86,7 +95,7 @@
+@@ -87,7 +96,7 @@
  # e-mailed.  This address appears on some server-generated pages, such
  # as error documents.  e.g. admin@your-domain.com
  #
@@ -58,7 +59,7 @@
  
  #
  # ServerName gives the name and port that the server uses to identify itself.
-@@ -95,7 +104,7 @@
+@@ -96,7 +105,7 @@
  #
  # If your host doesn't have a registered DNS name, enter its IP address here.
  #
@@ -67,7 +68,7 @@
  
  #
  # DocumentRoot: The directory out of which you will serve your
-@@ -329,6 +338,10 @@
+@@ -330,6 +339,10 @@
      #
      #AddType text/html .shtml
      #AddOutputFilter INCLUDES .shtml
@@ -78,7 +79,7 @@
  </IfModule>
  
  #
-@@ -362,43 +375,22 @@
+@@ -370,43 +383,22 @@
  
  # Supplemental configuration
  #
@@ -136,3 +137,11 @@
  #
  # Note: The following must must be present to support
  #       starting without SSL on platforms with no /dev/random equivalent
+@@ -416,3 +408,7 @@
+ SSLRandomSeed startup builtin
+ SSLRandomSeed connect builtin
+ </IfModule>
++
++
++
++TraceEnable Off

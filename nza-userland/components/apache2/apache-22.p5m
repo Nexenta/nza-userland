@@ -69,6 +69,7 @@ file etc/apache2/2.2/extra/httpd-multilang-errordoc.conf path=etc/apache2/2.2/sa
 file path=etc/apache2/2.2/samples-conf.d/proxy_scgi.conf
 file path=etc/apache2/2.2/samples-conf.d/reqtimeout.conf
 file etc/apache2/2.2/extra/httpd-ssl.conf path=etc/apache2/2.2/samples-conf.d/ssl.conf
+file etc/apache2/2.2/extra/httpd-ssl.conf path=etc/apache2/2.2/conf.d/ssl.conf
 file etc/apache2/2.2/extra/httpd-userdir.conf path=etc/apache2/2.2/samples-conf.d/userdir.conf
 file etc/apache2/2.2/extra/httpd-vhosts.conf path=etc/apache2/2.2/samples-conf.d/vhosts.conf
 file Solaris/http-apache22.xml path=lib/svc/manifest/network/http-apache22.xml
