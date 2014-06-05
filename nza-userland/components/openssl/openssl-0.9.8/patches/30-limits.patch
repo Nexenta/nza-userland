@@ -1,0 +1,11 @@
+diff -urN openssl-0.9.8za/ssl/s3_pkt.c openssl-0.9.8za.new/ssl/s3_pkt.c
+--- openssl-0.9.8za/ssl/s3_pkt.c	2014-06-05 01:09:26.000000000 -0700
++++ openssl-0.9.8za.new/ssl/s3_pkt.c	2014-06-05 09:45:12.854196016 -0700
+@@ -110,6 +110,7 @@
+  */
+ 
+ #include <stdio.h>
++#include <limits.h>
+ #include <errno.h>
+ #define USE_SOCKETS
+ #include "ssl_locl.h"

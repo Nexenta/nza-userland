@@ -6,13 +6,13 @@ include ../../../make-rules/shared-macros.mk
 COMPILER = studio
 
 PATH=$(SPRO_VROOT)/bin:/usr/bin:/usr/gnu/bin:/usr/perl5/bin
-DEBVERSION = 40-0-8
+DEBVERSION = 40-0-9
 COMPONENT_NAME =	openssl
-COMPONENT_VERSION =	0.9.8y
-IPS_COMPONENT_VERSION = 0.9.8.25
+COMPONENT_VERSION =	0.9.8za
+IPS_COMPONENT_VERSION = 0.9.8.26
 COMPONENT_SRC =		$(COMPONENT_NAME)-$(COMPONENT_VERSION)
 COMPONENT_ARCHIVE =	$(COMPONENT_SRC).tar.gz
-COMPONENT_ARCHIVE_HASH=	sha1:32ec994d626555774548c82e48c5d220bec903c4
+COMPONENT_ARCHIVE_HASH=	sha1:aadca1eb1a103a5536b24e1ed7e45051e2939731
 COMPONENT_ARCHIVE_URL =	http://www.openssl.org/source/$(COMPONENT_ARCHIVE)
 
 include $(WS_TOP)/make-rules/prep.mk
@@ -73,9 +73,9 @@ CONFIGURE_OPTIONS += $(CONFIGURE_OPTIONS$(BITS)_$(MACH))
 # run from the build directory. The easiest way to workaround it is to copy all
 # the source files there.
 COMPONENT_PRE_CONFIGURE_ACTION = \
-	(	$(CLONEY) $(SOURCE_DIR) $(BUILD_DIR)/$(MACH$(BITS)); \
-	cd $(BUILD_DIR)/$(MACH$(BITS))/include/openssl && rm cmac.h modes.h srp.h srtp.h ts.h whrlpool.h; \
-	)
+	(	$(CLONEY) $(SOURCE_DIR) $(BUILD_DIR)/$(MACH$(BITS)))
+#	cd $(BUILD_DIR)/$(MACH$(BITS))/include/openssl && rm cmac.h modes.h srp.h srtp.h ts.h whrlpool.h; \
+#	)
 
 
 # We deliver only one opensslconf.h file which must be suitable for both 32 and
