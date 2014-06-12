@@ -1,12 +1,8 @@
 /*
- * This product includes cryptographic software developed by the OpenSSL
- * Project for use in the OpenSSL Toolkit (http://www.openssl.org/).
+ * Copyright (c) 2004, 2013, Oracle and/or its affiliates. All rights reserved.
  */
 
 /*
- * ====================================================================
- * Copyright (c) 1998-2011 The OpenSSL Project.  All rights reserved.
- *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -22,12 +18,12 @@
  * 3. All advertising materials mentioning features or use of this
  *    software must display the following acknowledgment:
  *    "This product includes software developed by the OpenSSL Project
- *    for use in the OpenSSL Toolkit. (http://www.openssl.org/)"
+ *    for use in the OpenSSL Toolkit. (http://www.OpenSSL.org/)"
  *
  * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
  *    endorse or promote products derived from this software without
  *    prior written permission. For written permission, please contact
- *    openssl-core@openssl.org.
+ *    licensing@OpenSSL.org.
  *
  * 5. Products derived from this software may not be called "OpenSSL"
  *    nor may "OpenSSL" appear in their names without prior written
@@ -36,7 +32,7 @@
  * 6. Redistributions of any form whatsoever must retain the following
  *    acknowledgment:
  *    "This product includes software developed by the OpenSSL Project
- *    for use in the OpenSSL Toolkit (http://www.openssl.org/)"
+ *    for use in the OpenSSL Toolkit (http://www.OpenSSL.org/)"
  *
  * THIS SOFTWARE IS PROVIDED BY THE OpenSSL PROJECT ``AS IS'' AND ANY
  * EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -50,48 +46,69 @@
  * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
- * ====================================================================
  */
 
-/*
- * Copyright (c) 2011, Oracle and/or its affiliates. All rights reserved.
- */
+#ifndef	E_PK11_URI_H
+#define	E_PK11_URI_H
 
-#ifndef	ENG_T4_ERR_H
-#define	ENG_T4_ERR_H
+#include <security/pkcs11t.h>
 
 #ifdef	__cplusplus
 extern "C" {
 #endif
 
-static void ERR_unload_t4_strings(void);
-#pragma inline(ERR_unload_t4_strings)
-static void ERR_t4_error(int function, int reason, char *file, int line);
+/* PKCS#11 URI related prefixes and attributes. */
+#define	PK11_URI_PREFIX		"pkcs11:"
+#define	FILE_URI_PREFIX		"file://"
+#define	PK11_TOKEN		"token"
+#define	PK11_MANUF		"manuf"
+#define	PK11_SERIAL		"serial"
+#define	PK11_MODEL		"model"
+#define	PK11_OBJECT		"object"
+#define	PK11_OBJECTTYPE		"objecttype"
+#define	PK11_ASKPASS		"passphrasedialog"
 
-#define	T4err(f, r)	ERR_t4_error((f), (r), __FILE__, __LINE__)
+/* PIN caching policy. */
+#define	POLICY_NOT_INITIALIZED	0
+#define	POLICY_NONE		1
+#define	POLICY_MEMORY		2
+#define	POLICY_MLOCKED_MEMORY	3
+#define	POLICY_WRONG_VALUE	4
 
-/* Function codes */
-#define	T4_F_INIT 				100
-#define	T4_F_DESTROY 				101
-#define	T4_F_FINISH				102
-#define	T4_F_CIPHER_INIT_AES			103
-#define	T4_F_ADD_NID				104
-#define	T4_F_GET_ALL_CIPHERS			105
-#define	T4_F_CIPHER_DO_AES			106
-#define	T4_F_CIPHER_CLEANUP			107
-#define	T4_F_CIPHER_INIT_DES			108
-#define	T4_F_CIPHER_DO_DES			109
+/*
+ * That's what getpassphrase(3c) supports.
+ */
+#define	PK11_MAX_PIN_LEN	256
 
-/* Reason codes */
-#define	T4_R_CIPHER_KEY				100
-#define	T4_R_CIPHER_NID				101
-#define	T4_R_IV_LEN_INCORRECT			102
-#define	T4_R_KEY_LEN_INCORRECT			103
-#define	T4_R_ASN1_OBJECT_CREATE			104
-#define	T4_R_NOT_BLOCKSIZE_LENGTH		105
+/* Add new attributes of the PKCS#11 URI here. */
+typedef struct pkcs11_uri_struct
+	{
+	char	*object;	/* object label, the only mandatory info */
+	char	*objecttype;	/* (private|public|cert), currently unused */
+	char	*token;		/* token label */
+	char	*manuf;		/* manufacturer label */
+	char	*serial;	/* serial number label */
+	char	*model;		/* model label */
+	char	*askpass;	/* full path to the command to get the PIN */
+	/* Not part of the PKCS11 URI itself. */
+	char	*pin;		/* token PIN */
+	} pkcs11_uri;
+
+/* For URI processing. */
+extern pthread_mutex_t *uri_lock;
+
+int pk11_get_pin(char *dialog, char **pin);
+int pk11_get_pin_caching_policy(void);
+int pk11_process_pkcs11_uri(const char *uristr, pkcs11_uri *uri_struct,
+	const char **file);
+int pk11_check_token_attrs(pkcs11_uri *uri_struct);
+void pk11_free_pkcs11_uri(pkcs11_uri *uri_struct, CK_BBOOL free_uri_itself);
+int pk11_cache_pin(char *pin);
+int pk11_token_login(CK_SESSION_HANDLE session, CK_BBOOL *login_done,
+	pkcs11_uri *uri_struct, CK_BBOOL is_private);
+int pk11_token_relogin(CK_SESSION_HANDLE session);
 
 #ifdef	__cplusplus
 }
 #endif
-
-#endif	/* ENG_T4_ERR_H */
+#endif /* E_PK11_URI_H */
