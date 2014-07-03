@@ -92,11 +92,11 @@ adjust-scripts: copy-tools
 	touch $@
 
 setrelease: adjust-scripts
-	sed -i "s/export NIGHTLY_OPTIONS='-FnCDAlmprt'/export NIGHTLY_OPTIONS='-nCmrt'/" $(CODEMGR_WS)/illumos.sh
+	sed -i "s/^.*export NIGHTLY_OPTIONS.*/export NIGHTLY_OPTIONS='-nCmrt'/" $(CODEMGR_WS)/illumos.sh
 	touch $@
 
 setdebug: adjust-scripts
-	sed -i "s/export NIGHTLY_OPTIONS='-FnCDAlmprt'/export NIGHTLY_OPTIONS='-nFDCmrt'/" $(CODEMGR_WS)/illumos.sh
+	sed -i "s/^.*export NIGHTLY_OPTIONS.*/export NIGHTLY_OPTIONS='-nFDCmrt'/" $(CODEMGR_WS)/illumos.sh
 	touch $@
 
 setss: adjust-scripts
@@ -110,7 +110,7 @@ setgcc: adjust-scripts
 	echo "export __GNUC=''" >> $(CODEMGR_WS)/illumos.sh
 	echo "export ONLY_LINT_DEFS='-I$(SUNSTUDIO_PATH)/sunstudio12.1/prod/include/lint'" >> $(CODEMGR_WS)/illumos.sh
 	echo "export VERSION='$(VERSION)'" >> $(CODEMGR_WS)/illumos.sh
-	echo "export RELEASE_CM='$(RELEASE_CM)'" >> $(CODEMGR_WS)/illumos.sh 
+	echo "export RELEASE_CM='$(RELEASE_CM)'" >> $(CODEMGR_WS)/illumos.sh
 	echo "export DEV_CM='$(DEV_CM)'" >> $(CODEMGR_WS)/illumos.sh
 	touch $@
 
