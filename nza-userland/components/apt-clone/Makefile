@@ -20,13 +20,14 @@
 #
 
 #
-# Copyright (c) 2011, Nexenta Systems, Inc. All rights reserved.
+# Copyright (c) 2014, Nexenta Systems, Inc. All rights reserved.
 #
 
 include ../../make-rules/shared-macros.mk
 
 COMPONENT_VERSION = 1.0
 COMPONENT_NAME = apt-clone
+DEBVERSION:=40-0-22
 
 include $(WS_TOP)/make-rules/ips.mk
 

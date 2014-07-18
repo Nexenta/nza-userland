@@ -18,10 +18,8 @@
 #
 # CDDL HEADER END
 #
-# Copyright (c) 2012, Nexenta Systems, Inc. All rights reserved.
+# Copyright (c) 2014, Nexenta Systems, Inc. All rights reserved.
 #
-
-<transform file path=usr.*/man/.+                -> default mangler.man.stability volatile>
 
 set name=pkg.fmri \
     value=pkg:/package/dpkg/apt-clone@1,$(BUILD_VERSION)
@@ -36,8 +34,10 @@ dir path=etc/apt
 dir path=etc/apt/apt.conf.d
 dir path=usr
 dir path=usr/bin
+dir path=usr/share
+dir path=usr/share/nexenta-profiles
 
 file apt-clone         path=usr/bin/apt-clone
 file apt.conf.nexenta  path=etc/apt/apt.conf.d/01-nexenta
-
+file nexenta_ndmp.xml  path=usr/share/nexenta-profiles/nexenta_ndmp.xml
 depend fmri=pkg:/library/perl-5/file-tee type=require
