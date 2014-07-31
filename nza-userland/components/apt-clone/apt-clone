@@ -1535,7 +1535,7 @@ if ($rc == 0) {
 				}
 				nmu_system("apt-get $dpkg_opts -R $tmpdir install -y --force-yes sunwcsd");
 				nmu_system("apt-get $dpkg_opts -R $tmpdir install -y --force-yes sunwcs");
-				nmu_system("apt-get $dpkg_opts -R $tmpdir install -y --force-yes system-kernel");
+				nmu_system("apt-get $dpkg_opts -R $tmpdir install -y --force-yes system-kernel system-kernel-platform");
 				$err = nmu_system("apt-get -R $tmpdir $upgrade_cmd -y --force-yes");
 				
 				# put system-kernel first if exist
