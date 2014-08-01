@@ -224,7 +224,7 @@ sub genPackage
     $$tmpl{'ORIGINALVERSION'} = $mft->getOrigVersion();
     $$tmpl{'ORIGINALVERSION'} = $$tmpl{'COMPONENT_VERSION'} if (defined($$tmpl{'COMPONENT_VERSION'}));
     $$tmpl{'ORIGINALNAME'} = $mft->getOrigName();
-    $$tmpl{'SAVETO'} = $$tmpl{'DESTANATION'}.'/'.$$tmpl{'PKGNAME'}.'/debian';
+    $$tmpl{'SAVETO'} = $$tmpl{'DESTANATION'}.'/'.$package.'/debian';
 
     $$tmpl{'PKGVER'} = $$specVersions{"$$tmpl{'PKGNAME'}"} if (defined($$specVersions{"$$tmpl{'PKGNAME'}"}));
     $$tmpl{'PRIORITY'} = 'optional';
