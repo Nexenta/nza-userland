@@ -54,9 +54,10 @@ onedeb:
 			dpkg-buildpackage $(DPKG_BUILD_FLAGS) > ../$(DEB).build.log 2>&1 ; \
 	fi
 	echo "processing $(DEB)"
-	/usr/bin/reprepro -b $(APTDIR) remove nza-kernel $(DEB)
-	/usr/bin/reprepro -b $(APTDIR) includedeb nza-kernel $(DEBDIR)/$(DEB)*.deb > $(DEB).log
-	/usr/bin/reprepro -b $(APTDIR) export
+	d=`awk '/^Package: /{print $$2}' $(DEBDIR)/$(DEB)/debian/control` ; \
+	/usr/bin/reprepro -b $(APTDIR) remove nza-kernel $${d} ; \
+	/usr/bin/reprepro -b $(APTDIR) includedeb nza-kernel $(DEBDIR)/$${d}_$(DEB_VERSION)_solaris-$(MACH).deb > $(DEBDIR)/$${d}.log ; \
+	/usr/bin/reprepro -b $(APTDIR) export ;
 
 .PHONY: deb apt clean onedeb
 
@@ -80,7 +81,7 @@ $(DEBDIR)/%.deb-stamp: $(MANIFESTDIR)/%.mog $(DEBDIR)/.dir-stamp $(DEBDEP)/.dep-
 	--pv "$(DEB_VERSION)" \
 	--category "illumos" || (echo "Error while processing: $<"; exit 1)
 
-	d=`echo $(<F:%.mog=%) | sed -e 's/[\/_]/-/g' | nawk '{print tolower($$1)}'` ; \
+	d=`echo $(<F:%.mog=%)` ; \
 	if [ -d "$(DEBDIR)/$$d" ]; then \
 	    echo "Building pkg: $$d" ; \
 	    cd "$(DEBDIR)/$$d" ; \
