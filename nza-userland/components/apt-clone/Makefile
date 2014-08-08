@@ -27,7 +27,7 @@ include ../../make-rules/shared-macros.mk
 
 COMPONENT_VERSION = 1.0
 COMPONENT_NAME = apt-clone
-DEBVERSION:=40-0-23
+DEBVERSION:=40-0-24
 
 include $(WS_TOP)/make-rules/ips.mk
 
