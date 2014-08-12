@@ -1577,11 +1577,6 @@ if ($rc == 0) {
 						}
 					}
 				}
-				if (! -e "/etc/svc/profile/nexenta_ndmp.xml") {
-					nmu_system("cp /usr/share/nexenta-profiles/nexenta_ndmp.xml $tmpdir/etc/svc/profile/");
-					$ENV{'SVCCFG_REPOSITORY'} = "$tmpdir/etc/svc/repository.db";
-					nmu_system("svccfg apply $tmpdir/etc/svc/profile/nexenta_ndmp.xml");
-				}
 				nmu_system("touch $tmpdir/reconfigure");
 
 				if ($err == 0) {

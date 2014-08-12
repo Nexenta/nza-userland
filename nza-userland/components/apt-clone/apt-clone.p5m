@@ -35,9 +35,12 @@ dir path=etc/apt/apt.conf.d
 dir path=usr
 dir path=usr/bin
 dir path=usr/share
-dir path=usr/share/nexenta-profiles
+dir path=usr/share/nexenta
 
 file apt-clone         path=usr/bin/apt-clone
 file apt.conf.nexenta  path=etc/apt/apt.conf.d/01-nexenta
-file nexenta_ndmp.xml  path=usr/share/nexenta-profiles/nexenta_ndmp.xml
+file nexenta_ndmp.xml  path=etc/svc/profile/nexenta_ndmp.xml
+file import_profile.sh path=usr/share/nexenta/import_profile.sh mode=0755
+file nexenta-profile.xml path=lib/svc/manifest/application/nexenta-profile.xml
+
 depend fmri=pkg:/library/perl-5/file-tee type=require
