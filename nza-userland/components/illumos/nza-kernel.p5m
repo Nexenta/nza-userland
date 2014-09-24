@@ -36,18 +36,7 @@ depend fmri=pkg:/developer/illumos/gcc type=require
 dir path=usr
 dir path=usr/src
 dir path=usr/src/nza-kernel
-dir path=opt
-dir path=opt/onbld
-dir path=opt/onbld/bin
-dir path=opt/onbld/etc
 
 
 file src/Makefile path=usr/src/nza-kernel/Makefile
 file src/Makefile.deb path=usr/src/nza-kernel/Makefile.deb
-file src/onbld/MFT.pm path=opt/onbld/bin/MFT.pm mode=0644
-file src/onbld/ips2deb.pl path=opt/onbld/bin/ips2deb.pl mode=0755
-file src/onbld/onu-deb path=opt/onbld/bin/onu-deb mode=0755
-file src/onbld/ips2deb.replaces path=opt/onbld/bin/ips2deb.replaces mode=0644
-file src/onbld/ips2deb.priorities path=opt/onbld/bin/ips2deb.priorities mode=0644
-file src/onbld/ips2deb.versions path=opt/onbld/bin/ips2deb.versions mode=0644
-file src/onbld/distributions.apt path=opt/onbld/etc/distributions.apt

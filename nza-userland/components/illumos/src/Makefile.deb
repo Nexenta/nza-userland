@@ -25,18 +25,58 @@ DEBDIR = $(NZA_ROOT)/debs
 
 PKGMOG := $(shell cd $(MANIFESTDIR) && ls *.mog)
 PKGDEB := $(PKGMOG:%.mog=$(DEBDIR)/%.deb-stamp)
+PKGIGN := $(shell cd $(DEBDIR) && ls *.deb-stamp)
+PKGALL := $(filter-out -- $(PKGIGN), $(PKGMOG:%.mog=%.deb-stamp))
+PKGALLRES := $(PKGALL:%.deb-stamp=$(MANIFESTDIR)/%.dep.res)
 
+pkgallbuild: $(PKGALL:%.deb-stamp=$(DEBDIR)/%.deb) $(APTDIR)/conf/distributions
+	for p in $(DEBDIR)/*.deb; do \
+		echo "processing $$p"; \
+		/usr/bin/reprepro -b $(APTDIR) includedeb nza-kernel $$p > $$p.log;  \
+	done
+	/usr/bin/reprepro -b $(APTDIR) export
+	touch $@
+
+$(PKGALL:%.deb-stamp=$(DEBDIR)/%.deb): pkgall
+	d=`echo $(@F:%.deb=%)` ; \
+	if [ -d "$(DEBDIR)/$$d" ]; then \
+	    echo "Building pkg: $$d" ; \
+	    cd "$(DEBDIR)/$$d" ; \
+	    PATH=/usr/gnu/bin:/usr/bin:$$PATH \
+			dpkg-buildpackage $(DPKG_BUILD_FLAGS) > ../$$d.build.log 2>&1 ; \
+	fi
+
+pkgall: $(DEBDIR)/.dir-stamp $(DEBDEP)/.dep-stamp
+	-/usr/bin/pkgdepend resolve -mvS $(MANIFESTDIR)/*.dep 2> .resolve.err.log
+	# The following is a crude hack to make sure SUNWcsd has no dependencies.
+	# This is needed to make the apt-clone and onu-deb upgrade procedures work,
+	# although the right(TM) fix would be in our handling of name_to_major and
+	# minor_perm in the postinst/prerm scripts created by ips2deb.
+	cp $(MANIFESTDIR)/SUNWcsd.mog $(MANIFESTDIR)/SUNWcsd.dep.res
+	$(TOOLSROOT)/opt/onbld/bin/ips2deb \
+	$(PKGALLRES:%=-p%) \
+	-d $(PKGROOT) \
+	-d $(TOOLSROOT) \
+	-o "$(DEBDIR)" \
+	--mfg "$(MANIFESTDIR)" \
+	--mfe "res" \
+	--maintainer "$(DEB_MAINTAINER)" \
+	--pv "$(DEB_VERSION)" \
+	-s "illumos" > ips2deb.log || (echo "Error while processing packages"; exit 1)
+	$(eval PKGERR = $(shell sed -ne '/^Error/ s/Error: //p' < ips2deb.log))
+	$(eval TFILES = $(filter-out $(PKGERR), $(PKGALLRES)))
+	-touch $(TFILES:$(MANIFESTDIR)/%.dep.res=$(DEBDIR)/%.deb-stamp) || echo "no files to touch"
 
 deb: $(PKGDEP) $(PKGDEB)
 apt: $(DEBDIR)/.apt-stamp
 clean:
-	rm -rf $(APTDIR) $(DEBDIR)
+	rm -rf $(APTDIR) $(DEBDIR) pkgallbuild ips2deb.log .resolve.err.log
 onedeb:
 	if test ! -f $(MANIFESTDIR)/$(DEB).mog; then \
 	    echo "No $(DEB).mog found in $(MANIFESTDIR)" ; \
 	    exit 1; \
 	fi;
-	/opt/onbld/bin/ips2deb.pl --noverbose \
+	$(TOOLSROOT)/opt/onbld/bin/ips2deb \
 	-p "$(MANIFESTDIR)/$(DEB).mog" \
 	-d $(PKGROOT) \
 	-d $(TOOLSROOT) \
@@ -59,18 +99,18 @@ onedeb:
 	/usr/bin/reprepro -b $(APTDIR) includedeb nza-kernel $(DEBDIR)/$${d}_$(DEB_VERSION)_solaris-$(MACH).deb > $(DEBDIR)/$${d}.log ; \
 	/usr/bin/reprepro -b $(APTDIR) export ;
 
-.PHONY: deb apt clean onedeb
+.PHONY: deb apt clean onedeb pkgall
 
 $(DEBDEP)/.dep-stamp:
 	for mog in $(MANIFESTDIR)/*.mog; do \
 		pkg=`echo $$mog | awk -F/ '{print $$NF}'|cut -d. -f1`; \
 		echo "Generating dependencies for $$pkg"; \
-		/usr/bin/pkgdepend generate -d $(PKGROOT) -m -D 'PLATFORM=i86pc' \
+		/usr/bin/pkgdepend generate -d $(PKGROOT) -d $(TOOLSROOT) -m -D 'PLATFORM=i86pc' \
 		-D 'ISALIST=amd64'  -D 'ISALIST=i386' $$mog  > $(MANIFESTDIR)/$$pkg.dep 2>&1; \
 	done
 
 $(DEBDIR)/%.deb-stamp: $(MANIFESTDIR)/%.mog $(DEBDIR)/.dir-stamp $(DEBDEP)/.dep-stamp
-	/opt/onbld/bin/ips2deb.pl --noverbose \
+	$(TOOLSROOT)/opt/onbld/bin/ips2deb \
 	-p $< \
 	-d $(PKGROOT) \
 	-d $(TOOLSROOT) \
@@ -102,9 +142,15 @@ $(DEBDIR)/.apt-stamp: $(DEBDIR)/.deb-commit-stamp
 	/usr/bin/reprepro -b $(APTDIR) export
 	touch $@
 
-$(APTDIR)/conf/distributions: /opt/onbld/etc/distributions.apt
+$(APTDIR)/conf/distributions:
 	mkdir -p $(@D)
-	cp -f $< $@
+	rm -f $@
+	echo "Origin: Kernel APT" >> $@
+	echo "Codename: nza-kernel" >> $@
+	echo "Architectures: solaris-i386" >> $@
+	echo "Components: main" >> $@
+	echo "DebIndices: Packages Release . .gz .bz2" >> $@
+	echo "Description: Kernel repository" >> $@
 
 $(DEBDIR)/.dir-stamp:
 	mkdir -p $(@D)
