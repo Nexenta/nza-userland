@@ -153,6 +153,12 @@ check_pkg_list()
 		text-gnu-sed \
 		text-groff \
 		text-texinfo \
+		developer-build-autoconf \
+		developer-build-automake-110 \
+		library-apr \
+		library-apr-util \
+		library-openldap \
+		library-apr-util-apr-ldap \
 	; do
 		_check_pkg $p
 	done
