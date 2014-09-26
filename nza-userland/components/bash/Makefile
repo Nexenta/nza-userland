@@ -32,7 +32,7 @@ COMPONENT_ARCHIVE_HASH = \
     sha256:a27a1179ec9c0830c65c6aa5d7dab60f7ce1a2a608618570f96bfa72e95ab3d8
 COMPONENT_ARCHIVE_URL=	http://ftp.gnu.org/gnu/bash/$(COMPONENT_ARCHIVE)
 COMPONENT_BUGDB=	utility/bash
-DEBVERSION:=40-0-1
+DEBVERSION:=40-0-2
 
 include ../../make-rules/prep.mk
 include ../../make-rules/configure.mk
