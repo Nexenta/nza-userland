@@ -18,16 +18,17 @@
 #
 # CDDL HEADER END
 #
-# Copyright (c) 2012, Nexenta Inc., All rights reserved.
+# Copyright (c) 2014, Nexenta Inc., All rights reserved.
 #
 include ../../make-rules/shared-macros.mk
 
 COMPONENT_NAME=		reprepro
-COMPONENT_VERSION=	4.12.3
+COMPONENT_VERSION=	4.12.5
 COMPONENT_SRC=		$(COMPONENT_NAME)-$(COMPONENT_VERSION)
-COMPONENT_ARCHIVE=	$(COMPONENT_SRC).orig.tar.gz
-COMPONENT_ARCHIVE_HASH=	sha1:b13c99e6daebe2cfee5c1f6ab2e7d936e5d0786a
-COMPONENT_ARCHIVE_URL=	http://alioth.debian.org/frs/download.php/3732/$(COMPONENT_ARCHIVE)
+COMPONENT_ARCHIVE=	$(COMPONENT_NAME)_$(COMPONENT_VERSION).orig.tar.gz
+COMPONENT_ARCHIVE_HASH=	sha1:ce11d189b78b35268619b2c2c5f75e7868d03829
+COMPONENT_ARCHIVE_URL=	http://ftp.de.debian.org/debian/pool/main/r/reprepro/$(COMPONENT_ARCHIVE)
+DEBVERSION:=40-0-7
 
 include ../../make-rules/prep.mk
 include ../../make-rules/configure.mk

@@ -1,0 +1,126 @@
+diff -urN reprepro-4.12.5.orig/configparser.c reprepro-4.12.5/configparser.c
+--- reprepro-4.12.5.orig/configparser.c	2012-12-31 07:21:20.000000000 -0800
++++ reprepro-4.12.5/configparser.c	2014-10-02 03:38:34.094972691 -0700
+@@ -24,6 +24,7 @@
+ #include <string.h>
+ #include <malloc.h>
+ #include <dirent.h>
++#include <sys/stat.h>
+ 
+ #include "error.h"
+ #include "names.h"
+@@ -473,14 +474,16 @@
+ 		}
+ 		while ((errno = 0, de = readdir(dir)) != NULL) {
+ 			size_t l;
+-			if (de->d_type != DT_REG && de->d_type != DT_LNK
+-					&& de->d_type != DT_UNKNOWN)
+-				continue;
++			struct stat st;
+ 			if (de->d_name[0] == '.')
+ 				continue;
+ 			l = strlen(de->d_name);
+ 			if (l < 5 || strcmp(de->d_name + l - 5, ".conf") != 0)
+ 				continue;
++			if ((stat(de->d_name, &st) != 0))
++				continue;
++			if (!S_ISREG(st.st_mode) && !S_ISLNK(st.st_mode))
++				continue;
+ 			subfilename = calc_dirconcat(fullfilename, de->d_name);
+ 			if (FAILEDTOALLOC(subfilename)) {
+ 				(void)closedir(dir);
+diff -urN reprepro-4.12.5.orig/dirs.c reprepro-4.12.5/dirs.c
+--- reprepro-4.12.5.orig/dirs.c	2012-12-31 07:21:20.000000000 -0800
++++ reprepro-4.12.5/dirs.c	2014-10-02 05:49:53.313745647 -0700
+@@ -38,10 +38,15 @@
+ 		if (verbose > 1)
+ 			printf("Created directory \"%s\"\n", dirname);
+ 		return RET_OK;
+-	} else if (ret < 0 && (e = errno) != EEXIST) {
+-		fprintf(stderr, "Error %d creating directory \"%s\": %s\n",
+-				e, dirname, strerror(e));
+-		return RET_ERROR;
++	} else if (ret < 0) {
++		e = errno;
++		if (e == EEXIST || e == ENOSYS) {
++			return RET_OK;
++		} else  {
++			fprintf(stderr, "Error %d creating directory \"%s\": %s\n",
++			    e, dirname, strerror(e));
++			return RET_ERROR;
++		}
+ 	}
+ 	return RET_NOTHING;
+ }
+@@ -166,7 +171,8 @@
+ 					this);
+ 		} else {
+ 			int e = errno;
+-			if (e != ENOTEMPTY) {
++			int en = errno;
++			if (e != ENOTEMPTY && en != EEXIST) {
+ 				fprintf(stderr,
+ "Error removing directory \"%s\": %s(%d)\n",
+ 						this, strerror(e), e);
+diff -urN reprepro-4.12.5.orig/extractcontrol.c reprepro-4.12.5/extractcontrol.c
+--- reprepro-4.12.5.orig/extractcontrol.c	2012-12-31 07:21:20.000000000 -0800
++++ reprepro-4.12.5/extractcontrol.c	2014-10-02 03:40:49.827647819 -0700
+@@ -112,11 +112,11 @@
+ 		close(pipe1[0]); close(pipe1[1]);
+ 		close(pipe2[0]); close(pipe2[1]);
+ 		//TODO without explicit path
+-		execl("/bin/tar", "tar", "-xOzf", "-",
++		execl("/bin/gtar", "gtar", "-xOzf", "-",
+ 				brokentar?"control":"./control",
+ 				ENDOFARGUMENTS);
+ 		e = errno;
+-		fprintf(stderr, "tar call failed with error %d: %s\n",
++		fprintf(stderr, "gtar call failed with error %d: %s\n",
+ 				e, strerror(e));
+ 		exit(254);
+ 
+@@ -134,8 +134,8 @@
+ 
+ 		r = readtextfilefd(pipe2[0],
+ 				brokentar?
+-"output from ar p <debfile> control.tar.gz | tar -XOzf - control":
+-"output from ar p <debfile> control.tar.gz | tar -XOzf - ./control",
++"output from ar p <debfile> control.tar.gz | gtar -XOzf - control":
++"output from ar p <debfile> control.tar.gz | gtar -XOzf - ./control",
+ 				&controlchunk, &controllen);
+ 		if (RET_IS_OK(r)) {
+ 			len = chunk_extract(controlchunk,
+@@ -146,7 +146,7 @@
+ 			if (*afterchanges != '\0') {
+ 				fprintf(stderr,
+ "Unexpected emtpy line in control information within '%s'\n"
+-"(obtained via 'ar p %s control.tar.gz | tar -XOzf - %scontrol')\n",
++"(obtained via 'ar p %s control.tar.gz | gtar -XOzf - %scontrol')\n",
+ 						debfile, debfile,
+ 						brokentar?"":"./");
+ 				free(controlchunk);
+diff -urN reprepro-4.12.5.orig/override.c reprepro-4.12.5/override.c
+--- reprepro-4.12.5.orig/override.c	2012-12-31 07:21:20.000000000 -0800
++++ reprepro-4.12.5/override.c	2014-10-02 03:42:09.078409759 -0700
+@@ -70,7 +70,9 @@
+ 	if (info == NULL)
+ 		return;
+ 
++#ifdef HAVE_TDESTROY
+ 	tdestroy(info->packages, freeoverridepackage);
++#endif
+ 	while ((i = info->patterns) != NULL) {
+ 		if (i == NULL)
+ 			return;
+diff -urN reprepro-4.12.5.orig/pool.c reprepro-4.12.5/pool.c
+--- reprepro-4.12.5.orig/pool.c	2012-12-31 07:21:20.000000000 -0800
++++ reprepro-4.12.5/pool.c	2014-10-02 03:34:50.700441433 -0700
+@@ -474,7 +474,7 @@
+ 				}
+ 			} else {
+ 				en = errno;
+-				if (en != ENOTEMPTY) {
++				if (en != ENOTEMPTY && en != EEXIST) {
+ 					//TODO: check here if only some
+ 					//other error was first and it
+ 					//is not empty so we do not have
