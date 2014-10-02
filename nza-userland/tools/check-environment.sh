@@ -95,7 +95,7 @@ index=0
 # check that a given package is installed
 _check_pkg()
 {
-	if dpkg -l | grep $1 > /dev/null 2> /dev/null ; then
+	if dpkg -l $1 > /dev/null 2> /dev/null ; then
 		echo "package $1 ... $GREEN installed $DEF"
 	else
 		echo "package $1 ... $RED not installed $DEF"
