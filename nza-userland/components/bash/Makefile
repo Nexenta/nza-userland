@@ -32,7 +32,7 @@ COMPONENT_ARCHIVE_HASH = \
     sha256:a27a1179ec9c0830c65c6aa5d7dab60f7ce1a2a608618570f96bfa72e95ab3d8
 COMPONENT_ARCHIVE_URL=	http://ftp.gnu.org/gnu/bash/$(COMPONENT_ARCHIVE)
 COMPONENT_BUGDB=	utility/bash
-DEBVERSION:=40-0-2
+DEBVERSION:=40-0-3
 
 include ../../make-rules/prep.mk
 include ../../make-rules/configure.mk
@@ -112,13 +112,11 @@ CONFIGURE_OPTIONS  += 		--enable-usg-echo-default=yes
 CONFIGURE_OPTIONS  += 		--enable-xpg-echo-default=yes
 CONFIGURE_OPTIONS  += 		--enable-mem-scramble	
 CONFIGURE_OPTIONS  += 		--disable-profiling	
-#CONFIGURE_OPTIONS  += 		--enable-static-link	
 CONFIGURE_OPTIONS  += 		--enable-largefile
 CONFIGURE_OPTIONS  += 		--enable-nls	
 CONFIGURE_OPTIONS  += 		--with-bash-malloc=yes
 CONFIGURE_OPTIONS  += 		--with-curses	
 CONFIGURE_OPTIONS  += 		--with-installed-readline=no	
-CONFIGURE_OPTIONS  +=		--infodir=$(CONFIGURE_INFODIR)
 
 TEST_ENV +=	-i
 TEST_ENV +=	$(TEST_PATH)
