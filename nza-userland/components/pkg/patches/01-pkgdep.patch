@@ -1,0 +1,13 @@
+diff --git a/src/pkgdep.py b/src/pkgdep.py
+index a210b4e..5c48bb0 100644
+--- a/src/pkgdep.py
++++ b/src/pkgdep.py
+@@ -308,7 +308,7 @@ def resolve(args, img_dir):
+         try:
+                 api_inst = api.ImageInterface(img_dir, CLIENT_API_VERSION,
+                     progress.QuietProgressTracker(), None, PKG_CLIENT_NAME,
+-                    exact_match=provided_image_dir)
++                    exact_match=provided_image_dir) if use_system_to_resolve else None
+         except api_errors.ImageNotFoundException, e:
+                 if e.user_specified:
+                         if pkg_image_used:
