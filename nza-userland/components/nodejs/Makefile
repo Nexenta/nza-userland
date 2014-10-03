@@ -25,18 +25,18 @@
 
 include ../../make-rules/shared-macros.mk
 
-DEBVERSION := 40-0-8
+DEBVERSION := 40-0-9
 
 # make sure dtrace is found:
 export PATH := /usr/sbin:$(PATH)
 export CC = gcc
 
 COMPONENT_NAME         = nodejs
-COMPONENT_VERSION      = 0.10.24
+COMPONENT_VERSION      = 0.10.29
 COMPONENT_REVISION     = 
 COMPONENT_SRC          = node-v$(COMPONENT_VERSION)
 COMPONENT_ARCHIVE      = $(COMPONENT_SRC)$(COMPONENT_REVISION).tar.gz
-COMPONENT_ARCHIVE_HASH = sha1:d162d01eb173cb5a0e7e46c9d706421c4c771039
+COMPONENT_ARCHIVE_HASH = sha1:0d5dc62090404f7c903f29779295758935529242
 COMPONENT_ARCHIVE_URL  = http://nodejs.org/dist/v$(COMPONENT_VERSION)/$(COMPONENT_ARCHIVE)
 COMPONENT_PROJECT_URL  = http://nodejs.org
 
@@ -50,15 +50,14 @@ COMPONENT_PRE_CONFIGURE_ACTION = ( \
 
 CONFIG_SHELL= python
 
-
 # Reset configure options.
 # configure is a wrapper to waf.
-CONFIGURE_OPTIONS = --prefix=/usr
-CONFIGURE_OPTIONS += --dest-cpu=x64
+CONFIGURE_OPTIONS = --dest-cpu=x64
 CONFIGURE_OPTIONS += --with-dtrace
 CONFIGURE_OPTIONS += --shared-zlib
 CONFIGURE_OPTIONS += --shared-openssl
 CONFIGURE_OPTIONS += --no-ssl2
+CONFIGURE_OPTIONS += --prefix=/usr
 
 
 build:		$(BUILD_32)

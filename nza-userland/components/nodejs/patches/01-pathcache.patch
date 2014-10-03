@@ -1,0 +1,32 @@
+diff --git a/lib/module.js b/lib/module.js
+index 77a2a8d..0fea34f 100644
+--- a/lib/module.js
++++ b/lib/module.js
+@@ -365,6 +365,17 @@ Module.prototype.require = function(path) {
+ };
+ 
+ 
++Module.loadPathCache = function(cache) {
++  try {
++    var fs = NativeModule.require('fs');
++    Module._pathCache = JSON.parse(fs.readFileSync(cache, 'utf8'));
++    debug('OK, loaded pathCache');
++  } catch (e) {
++    debug('Cannot load pathCache:', e);
++  }
++};
++
++
+ // Resolved path to process.argv[1] will be lazily placed here
+ // (needed for setting breakpoint when called with --debug-brk)
+ var resolvedArgv;
+@@ -400,6 +411,9 @@ Module.prototype._compile = function(content, filename) {
+   };
+ 
+   require.cache = Module._cache;
++  require.pathCache = Module._pathCache;
++
++  require.loadPathCache = Module.loadPathCache;
+ 
+   var dirname = path.dirname(filename);
+ 

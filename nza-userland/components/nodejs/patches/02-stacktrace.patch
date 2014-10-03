@@ -1,0 +1,139 @@
+Rough attempt to ensure stack overflows provide more useful context. Can be
+removed when upgrading to next nodejs major version:
+https://github.com/dizzyd/node/commit/40434019540ffc17e984ff0653500a3c5db87deb
+
+diff --git a/deps/v8/src/isolate.cc b/deps/v8/src/isolate.cc
+index 75e15a4..360666e 100644
+--- a/deps/v8/src/isolate.cc
++++ b/deps/v8/src/isolate.cc
+@@ -507,7 +507,85 @@ void Isolate::UnregisterTryCatchHandler(v8::TryCatch* that) {
+ }
+ 
+ 
+-Handle<String> Isolate::StackTraceString() {
++Handle<String> Isolate::FrameTraceString(const char* header, int nFrames) {
++  if (stack_trace_nesting_level_ == 0) {
++    stack_trace_nesting_level_++;
++    HeapStringAllocator allocator;
++    StringStream::ClearMentionedObjectCache();
++    StringStream accumulator(&allocator);
++    incomplete_message_ = &accumulator;
++
++    // Add the header message to the accumulator
++    accumulator.Add(header);
++
++    // First, we traverse through the frames and determine how many Javascript
++    // specific frames are present. We'll use this count to ensure we show
++    // at _least_ the first/last N frames with Javascript.
++    int jsFrames = 0;
++    StackFrameIterator it;
++    for (; !it.done(); it.Advance())
++    {
++        if (it.frame()->is_java_script()) {
++            jsFrames++;
++        }
++    }
++
++    // Reset the iterator for another pass through the stack
++    it.Reset();
++
++    // The first part of the pass will dump the first nFrames of the stack
++    int framesToPrint = 2 * nFrames;
++    int i = 0;
++    for (; !it.done(); it.Advance(), i++) {
++        if (framesToPrint == nFrames) {
++            break;
++        }
++
++        it.frame()->Print(&accumulator, StackFrame::OVERVIEW, i);
++        if (it.frame()->is_java_script()) {
++            framesToPrint--;
++            jsFrames--;
++        }
++    }
++
++    accumulator.Add("...\n");
++
++    // The second part of the pass will skip until there are only nFrames of
++    // Javascript remaining
++    for (; !it.done(); it.Advance(), i++) {
++        if (jsFrames < framesToPrint) {
++            it.frame()->Print(&accumulator, StackFrame::OVERVIEW, i);
++            if (it.frame()->is_java_script()) {
++                framesToPrint--;
++            }
++        }
++
++        if (it.frame()->is_java_script()) {
++            jsFrames--;
++        }
++    }
++
++    Handle<String> stack_trace = accumulator.ToString();
++    incomplete_message_ = NULL;
++    stack_trace_nesting_level_ = 0;
++    return stack_trace;
++  } else if (stack_trace_nesting_level_ == 1) {
++    stack_trace_nesting_level_++;
++    OS::PrintError(
++      "\n\nAttempt to print stack while printing stack (double fault)\n");
++    OS::PrintError(
++      "If you are lucky you may find a partial stack dump on stdout.\n\n");
++    incomplete_message_->OutputToStdOut();
++    return factory()->empty_symbol();
++  } else {
++    OS::Abort();
++    // Unreachable
++    return factory()->empty_symbol();
++  }
++}
++
++
++ Handle<String> Isolate::StackTraceString() {
+   if (stack_trace_nesting_level_ == 0) {
+     stack_trace_nesting_level_++;
+     HeapStringAllocator allocator;
+@@ -923,14 +1001,26 @@ const char* const Isolate::kStackOverflowMessage =
+ 
+ Failure* Isolate::StackOverflow() {
+   HandleScope scope;
++
++  // Get the pre-allocated RangeError object and make a copy
+   Handle<String> key = factory()->stack_overflow_symbol();
+   Handle<JSObject> boilerplate =
+       Handle<JSObject>::cast(GetProperty(js_builtins_object(), key));
+-  Handle<Object> exception = Copy(boilerplate);
+-  // TODO(1240995): To avoid having to call JavaScript code to compute
+-  // the message for stack overflow exceptions which is very likely to
+-  // double fault with another stack overflow exception, we use a
+-  // precomputed message.
++  Handle<JSObject> exception = Copy(boilerplate);
++
++  // Construct (without using Javascript) a string that contains
++  // the first and last 20 frames
++  Handle<String> trace = FrameTraceString("Maximum call stack size exceeded\n",
++                                          20);
++
++  // EVIL...forcibly set the undefined "stack" property to our frame
++  // trace. We want to preserve the property of being a RangeError,
++  // but having a stack is nice. It's unclear to me if the stack property
++  // should be something other than a string.
++  JSObject::SetProperty(exception,
++                        factory()->LookupAsciiSymbol("stack"),
++                        trace,
++                        NONE, kStrictMode);
+   DoThrow(*exception, NULL);
+   return Failure::Exception();
+ }
+diff --git a/deps/v8/src/isolate.h b/deps/v8/src/isolate.h
+index 1d7bc6f..225bd13 100644
+--- a/deps/v8/src/isolate.h
++++ b/deps/v8/src/isolate.h
+@@ -706,6 +706,7 @@ class Isolate {
+   void PrintStackTrace(FILE* out, char* thread_data);
+   void PrintStack(StringStream* accumulator);
+   void PrintStack();
++  Handle<String> FrameTraceString(const char* header, int nFrames);
+   Handle<String> StackTraceString();
+   NO_INLINE(void PushStackTraceAndDie(unsigned int magic,
+                                       Object* object,
