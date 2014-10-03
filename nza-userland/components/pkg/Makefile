@@ -26,7 +26,7 @@ include ../../make-rules/shared-macros.mk
 
 COMPONENT_VERSION = 0.5.11
 COMPONENT_NAME = pkg
-DEBVERSION:=40-0-2
+DEBVERSION:=40-0-3
 
 include $(WS_TOP)/make-rules/ips.mk
 
@@ -36,6 +36,7 @@ clean::
 build:
 	$(MKDIR) $(BUILD_DIR)
 	git clone git://github.com/OpenIndiana/pkg5.git $(BUILD_DIR)
+	$(GPATCH) -d $(BUILD_DIR) -p1 < patches/01-pkgdep.patch
 	cd $(BUILD_DIR)/src && python setup.py install
 	$(MKDIR) $(BUILD_DIR)/proto/i386
 	$(MV) $(BUILD_DIR)/proto/root_i386/* $(BUILD_DIR)/proto/i386/
