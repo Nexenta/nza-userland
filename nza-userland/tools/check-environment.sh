@@ -159,6 +159,8 @@ check_pkg_list()
 		library-apr-util \
 		library-openldap \
 		library-apr-util-apr-ldap \
+		library-libpgm-5-1 \
+		crypto-ca-certificates \
 	; do
 		_check_pkg $p
 	done
