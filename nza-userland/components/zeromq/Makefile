@@ -25,14 +25,14 @@
 
 include ../../make-rules/shared-macros.mk
 
-DEBVERSION := 40-0-6
+DEBVERSION := 40-0-7
 
 COMPONENT_NAME         = zeromq
-COMPONENT_VERSION      = 4.0.3
+COMPONENT_VERSION      = 4.0.4
 COMPONENT_REVISION     = 
 COMPONENT_SRC          = $(COMPONENT_NAME)-$(COMPONENT_VERSION)
 COMPONENT_ARCHIVE      = $(COMPONENT_SRC)$(COMPONENT_REVISION).tar.gz
-COMPONENT_ARCHIVE_HASH = sha1:a363ddfff75f73976f656b3ba48f32544b214075
+COMPONENT_ARCHIVE_HASH = sha1:2328014e5990efac31390439b75c5528e38e4490
 COMPONENT_ARCHIVE_URL  = http://download.zeromq.org/$(COMPONENT_ARCHIVE)
 COMPONENT_PROJECT_URL  = http://www.zeromq.org
 
@@ -41,6 +41,7 @@ include $(WS_TOP)/make-rules/configure.mk
 include $(WS_TOP)/make-rules/ips.mk
 
 CONFIGURE_OPTIONS += --with-system-pgm
+CONFIGURE_OPTIONS += --with-libsodium
 
 build:		$(BUILD_32_and_64)
 

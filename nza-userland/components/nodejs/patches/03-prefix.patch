@@ -1,0 +1,12 @@
+diff -urN node-v0.10.29.orig/tools/install.py node-v0.10.29/tools/install.py
+--- node-v0.10.29.orig/tools/install.py	2014-06-09 10:04:36.000000000 -0700
++++ node-v0.10.29/tools/install.py	2014-10-03 01:49:00.178700402 -0700
+@@ -179,7 +179,7 @@
+   target_defaults = conf['target_defaults']
+ 
+   # argv[2] is a custom install prefix for packagers (think DESTDIR)
+-  dst_dir = node_prefix = variables.get('node_prefix') or '/usr/local'
++  dst_dir = node_prefix = variables.get('node_prefix') or '/usr'
+   if len(args) > 2: dst_dir = abspath(args[2] + '/' + dst_dir)
+ 
+   cmd = args[1] if len(args) > 1 else 'install'
