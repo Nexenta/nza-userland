@@ -137,7 +137,7 @@ build-packages:
 		echo "Run \"make build-releasekernel-gcc or build-debugkernel-gcc\" first!"; \
 		exit 1; \
 	fi; \
-	$(MAKE) -s -j$(DPKG_MAX_JOBS) -f Makefile.deb apt
+	$(MAKE) -s -j$(DPKG_MAX_JOBS) -f Makefile.deb pkgallbuild
 	touch $@
 
 build-onepackage:

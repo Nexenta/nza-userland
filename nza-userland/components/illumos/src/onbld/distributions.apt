@@ -1,7 +1,0 @@
-Origin: Kernel APT
-Codename: nza-kernel
-Architectures: solaris-i386
-Components: main
-DebIndices: Packages Release . .gz .bz2
-Description: Kernel repository
-
