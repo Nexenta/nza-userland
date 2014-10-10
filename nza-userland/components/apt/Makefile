@@ -20,34 +20,60 @@
 #
 
 #
-# Copyright (c) 2011, Nexenta Systems, Inc. All rights reserved.
+# Copyright (c) 2014, Nexenta Systems, Inc. All rights reserved.
 #
 
 include ../../make-rules/shared-macros.mk
 
-# This APT is ported to autotools and gnulib.
-# See https://code.launchpad.net/~pashev-igor/+junk/apt
-# for updates
-
 COMPONENT_NAME         = apt
-IPS_COMPONENT_VERSION  = 0.8.15.10
-COMPONENT_VERSION      = $(IPS_COMPONENT_VERSION)+1
-COMPONENT_SRC          = $(COMPONENT_NAME)-$(COMPONENT_VERSION)
+IPS_COMPONENT_VERSION  = 0.9.7.9
+COMPONENT_VERSION      = $(IPS_COMPONENT_VERSION)+deb7u6
+COMPONENT_SRC          = $(COMPONENT_NAME)-$(IPS_COMPONENT_VERSION)+deb7u4
 COMPONENT_PROJECT_URL  = http://debian.org
-COMPONENT_ARCHIVE      = $(COMPONENT_NAME)-$(COMPONENT_VERSION).tar.bz2
-COMPONENT_ARCHIVE_HASH = sha1:3d35f3212f4b7534d61086d89d94db2a9e87f992
-COMPONENT_ARCHIVE_URL  = $(COMPONENT_ARCHIVE)
+COMPONENT_ARCHIVE      = $(COMPONENT_NAME)_$(COMPONENT_VERSION).tar.gz
+COMPONENT_ARCHIVE_HASH = sha1:c87899f8ec4e97daebf438bf9ea47dc7a501ccde
+COMPONENT_ARCHIVE_URL  = http://security.debian.org/debian-security/pool/updates/main/a/apt/$(COMPONENT_ARCHIVE)
+DEBVERSION=40-0-11
 
 include $(WS_TOP)/make-rules/prep.mk
 include $(WS_TOP)/make-rules/configure.mk
 include $(WS_TOP)/make-rules/ips.mk
 
-CONFIGURE_OPTIONS += --libexecdir=/usr/lib/apt/methods
-CONFIGURE_OPTIONS += --disable-static
+COMPONENT_PREP_ACTION = \
+        (cd $(@D) ; \
+            aclocal -I buildlib; \
+            libtoolize --copy --force --install; \
+            automake --add-missing --copy ; \
+            autoconf )
 
-LD_OPTIONS =
+COMPONENT_PRE_CONFIGURE_ACTION = \
+    ($(CLONEY) $(SOURCE_DIR) $(@D))
+
+CONFIGURE_OPTIONS += --libexecdir=/usr/lib/apt/methods
 
 build:	$(BUILD_32) run-parts perl-build-stamp
+
+$(BUILD_DIR_32)/.installed:
+	$(MKDIR) $(PROTO_DIR)/usr/bin $(PROTO_DIR)/usr/lib
+	$(CP) $(BUILD_DIR_32)/bin/apt-* $(PROTO_DIR)/usr/bin/
+	$(CP) $(BUILD_DIR_32)/bin/libapt-pkg.so.4.12.0 $(PROTO_DIR)/usr/lib/
+	$(CP) $(BUILD_DIR_32)/bin/libapt-inst.so.1.5.0 $(PROTO_DIR)/usr/lib/
+	$(MKDIR) $(PROTO_DIR)/usr/lib/apt/methods
+	$(CP) $(BUILD_DIR_32)/bin/methods/* $(PROTO_DIR)/usr/lib/apt/methods/
+	$(MKDIR) $(PROTO_DIR)/usr/lib/dpkg/methods/apt
+	$(MKDIR) $(PROTO_DIR)/usr/share
+	$(CP) -r $(BUILD_DIR_32)/locale $(PROTO_DIR)/usr/share/
+	$(MKDIR) $(PROTO_DIR)/etc/apt/apt.conf.d
+	$(MKDIR) $(PROTO_DIR)/usr/share/man/man8
+	$(MKDIR) $(PROTO_DIR)/usr/share/man/man5
+	$(MKDIR) $(PROTO_DIR)/usr/share/man/man1
+	$(CP) $(SOURCE_DIR)/doc/*.8 $(PROTO_DIR)/usr/share/man/man8/
+	$(CP) $(SOURCE_DIR)/doc/*.5 $(PROTO_DIR)/usr/share/man/man5/
+	$(CP) $(SOURCE_DIR)/doc/*.1 $(PROTO_DIR)/usr/share/man/man1/
+	$(MKDIR) $(PROTO_DIR)/usr/include
+	$(CP) -r $(BUILD_DIR_32)/include/apt-pkg $(PROTO_DIR)/usr/include/
+	$(TOUCH) $@
+
 install:  $(INSTALL_32) run-parts perl-install-stamp
 
 # run-parts is a part of debianutils,
