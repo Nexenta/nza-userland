@@ -1,0 +1,1236 @@
+diff -urN apt-0.9.7.9+deb7u4.orig/Makefile apt-0.9.7.9+deb7u4/Makefile
+--- apt-0.9.7.9+deb7u4.orig/Makefile	2013-03-01 02:51:21.000000000 -0800
++++ apt-0.9.7.9+deb7u4/Makefile	2014-09-25 08:27:11.000000000 -0700
+@@ -18,8 +18,8 @@
+ 	$(MAKE) -C ftparchive $@
+ 	$(MAKE) -C dselect $@
+ 	$(MAKE) -C doc $@
+	$(MAKE) -C po $@
+-	$(MAKE) -C test $@
++#	$(MAKE) -C test $@
+ 
+ all headers library clean veryclean binary program doc manpages debiandoc test update-po: startup dirs
+ 
+diff -urN apt-0.9.7.9+deb7u4.orig/apt-pkg/contrib/sha2_internal.cc apt-0.9.7.9+deb7u4/apt-pkg/contrib/sha2_internal.cc
+--- apt-0.9.7.9+deb7u4.orig/apt-pkg/contrib/sha2_internal.cc	2013-03-01 02:51:21.000000000 -0800
++++ apt-0.9.7.9+deb7u4/apt-pkg/contrib/sha2_internal.cc	2014-09-25 05:12:20.000000000 -0700
+@@ -86,22 +86,26 @@
+  * <machine/endian.h> where the appropriate definitions are actually
+  * made).
+  */
++
++#define LITTLE_ENDIAN 1234
++#define BYTE_ORDER LITTLE_ENDIAN
++
+ #if !defined(BYTE_ORDER) || (BYTE_ORDER != LITTLE_ENDIAN && BYTE_ORDER != BIG_ENDIAN)
+ #error Define BYTE_ORDER to be equal to either LITTLE_ENDIAN or BIG_ENDIAN
+ #endif
+ 
+ /*
+  * Define the followingsha2_* types to types of the correct length on
+- * the native archtecture.   Most BSD systems and Linux define u_intXX_t
++ * the native archtecture.   Most BSD systems and Linux define uintXX_t
+  * types.  Machines with very recent ANSI C headers, can use the
+  * uintXX_t definintions from inttypes.h by defining SHA2_USE_INTTYPES_H
+  * during compile or in the sha.h header file.
+  *
+- * Machines that support neither u_intXX_t nor inttypes.h's uintXX_t
++ * Machines that support neither uintXX_t nor inttypes.h's uintXX_t
+  * will need to define these three typedefs below (and the appropriate
+  * ones in sha.h too) by hand according to their system architecture.
+  *
+- * Thank you, Jun-ichiro itojun Hagino, for suggesting using u_intXX_t
++ * Thank you, Jun-ichiro itojun Hagino, for suggesting using uintXX_t
+  * types and pointing out recent ANSI C support for uintXX_t in inttypes.h.
+  */
+ #ifdef SHA2_USE_INTTYPES_H
+@@ -112,9 +116,9 @@
+ 
+ #else /* SHA2_USE_INTTYPES_H */
+ 
+-typedef u_int8_t  sha2_byte;	/* Exactly 1 byte */
+-typedef u_int32_t sha2_word32;	/* Exactly 4 bytes */
+-typedef u_int64_t sha2_word64;	/* Exactly 8 bytes */
++typedef uint8_t  sha2_byte;	/* Exactly 1 byte */
++typedef uint32_t sha2_word32;	/* Exactly 4 bytes */
++typedef uint64_t sha2_word64;	/* Exactly 8 bytes */
+ 
+ #endif /* SHA2_USE_INTTYPES_H */
+ 
+diff -urN apt-0.9.7.9+deb7u4.orig/apt-pkg/contrib/sha2_internal.h apt-0.9.7.9+deb7u4/apt-pkg/contrib/sha2_internal.h
+--- apt-0.9.7.9+deb7u4.orig/apt-pkg/contrib/sha2_internal.h	2013-03-01 02:51:21.000000000 -0800
++++ apt-0.9.7.9+deb7u4/apt-pkg/contrib/sha2_internal.h	2014-09-25 05:10:03.000000000 -0700
+@@ -36,7 +36,7 @@
+ #define __SHA2_H__
+ 
+ /*
+- * Import u_intXX_t size_t type definitions from system headers.  You
++ * Import uintXX_t size_t type definitions from system headers.  You
+  * may need to change this, or define these things yourself in this
+  * file.
+  */
+@@ -62,17 +62,17 @@
+ 
+ 
+ /*** SHA-256/384/512 Context Structures *******************************/
+-/* NOTE: If your architecture does not define either u_intXX_t types or
++/* NOTE: If your architecture does not define either uintXX_t types or
+  * uintXX_t (from inttypes.h), you may need to define things by hand
+  * for your system:
+  */
+ #if 0
+-typedef unsigned char u_int8_t;		/* 1-byte  (8-bits)  */
+-typedef unsigned int u_int32_t;		/* 4-bytes (32-bits) */
+-typedef unsigned long long u_int64_t;	/* 8-bytes (64-bits) */
++typedef unsigned char uint8_t;		/* 1-byte  (8-bits)  */
++typedef unsigned int uint32_t;		/* 4-bytes (32-bits) */
++typedef unsigned long long uint64_t;	/* 8-bytes (64-bits) */
+ #endif
+ /*
+- * Most BSD systems already define u_intXX_t types, as does Linux.
++ * Most BSD systems already define uintXX_t types, as does Linux.
+  * Some systems, however, like Compaq's Tru64 Unix instead can use
+  * uintXX_t types defined by very recent ANSI C standards and included
+  * in the file:
+@@ -103,14 +103,14 @@
+ #else /* SHA2_USE_INTTYPES_H */
+ 
+ typedef struct _SHA256_CTX {
+-	u_int32_t	state[8];
+-	u_int64_t	bitcount;
+-	u_int8_t	buffer[SHA256_BLOCK_LENGTH];
++	uint32_t	state[8];
++	uint64_t	bitcount;
++	uint8_t	buffer[SHA256_BLOCK_LENGTH];
+ } SHA256_CTX;
+ typedef struct _SHA512_CTX {
+-	u_int64_t	state[8];
+-	u_int64_t	bitcount[2];
+-	u_int8_t	buffer[SHA512_BLOCK_LENGTH];
++	uint64_t	state[8];
++	uint64_t	bitcount[2];
++	uint8_t	buffer[SHA512_BLOCK_LENGTH];
+ } SHA512_CTX;
+ 
+ #endif /* SHA2_USE_INTTYPES_H */
+@@ -143,22 +143,22 @@
+ #else /* SHA2_USE_INTTYPES_H */
+ 
+ void SHA256_Init(SHA256_CTX *);
+-void SHA256_Update(SHA256_CTX*, const u_int8_t*, size_t);
+-void SHA256_Final(u_int8_t[SHA256_DIGEST_LENGTH], SHA256_CTX*);
++void SHA256_Update(SHA256_CTX*, const uint8_t*, size_t);
++void SHA256_Final(uint8_t[SHA256_DIGEST_LENGTH], SHA256_CTX*);
+ char* SHA256_End(SHA256_CTX*, char[SHA256_DIGEST_STRING_LENGTH]);
+-char* SHA256_Data(const u_int8_t*, size_t, char[SHA256_DIGEST_STRING_LENGTH]);
++char* SHA256_Data(const uint8_t*, size_t, char[SHA256_DIGEST_STRING_LENGTH]);
+ 
+ void SHA384_Init(SHA384_CTX*);
+-void SHA384_Update(SHA384_CTX*, const u_int8_t*, size_t);
+-void SHA384_Final(u_int8_t[SHA384_DIGEST_LENGTH], SHA384_CTX*);
++void SHA384_Update(SHA384_CTX*, const uint8_t*, size_t);
++void SHA384_Final(uint8_t[SHA384_DIGEST_LENGTH], SHA384_CTX*);
+ char* SHA384_End(SHA384_CTX*, char[SHA384_DIGEST_STRING_LENGTH]);
+-char* SHA384_Data(const u_int8_t*, size_t, char[SHA384_DIGEST_STRING_LENGTH]);
++char* SHA384_Data(const uint8_t*, size_t, char[SHA384_DIGEST_STRING_LENGTH]);
+ 
+ void SHA512_Init(SHA512_CTX*);
+-void SHA512_Update(SHA512_CTX*, const u_int8_t*, size_t);
+-void SHA512_Final(u_int8_t[SHA512_DIGEST_LENGTH], SHA512_CTX*);
++void SHA512_Update(SHA512_CTX*, const uint8_t*, size_t);
++void SHA512_Final(uint8_t[SHA512_DIGEST_LENGTH], SHA512_CTX*);
+ char* SHA512_End(SHA512_CTX*, char[SHA512_DIGEST_STRING_LENGTH]);
+-char* SHA512_Data(const u_int8_t*, size_t, char[SHA512_DIGEST_STRING_LENGTH]);
++char* SHA512_Data(const uint8_t*, size_t, char[SHA512_DIGEST_STRING_LENGTH]);
+ 
+ #endif /* SHA2_USE_INTTYPES_H */
+ 
+diff -urN apt-0.9.7.9+deb7u4.orig/apt-pkg/contrib/strutl.cc apt-0.9.7.9+deb7u4/apt-pkg/contrib/strutl.cc
+--- apt-0.9.7.9+deb7u4.orig/apt-pkg/contrib/strutl.cc	2013-03-01 02:51:21.000000000 -0800
++++ apt-0.9.7.9+deb7u4/apt-pkg/contrib/strutl.cc	2014-09-25 05:05:32.000000000 -0700
+@@ -70,7 +70,7 @@
+   {
+      char *outptr = outbuf;
+      size_t outsize = bufsize;
+-     size_t const err = iconv(cd, &inptr, &insize, &outptr, &outsize);
++     size_t const err = iconv(cd, (const char**)&inptr, &insize, &outptr, &outsize);
+      dest->append(outbuf, outptr - outbuf);
+      if (err == (size_t)(-1))
+      {
+diff -urN apt-0.9.7.9+deb7u4.orig/apt-pkg/deb/deblistparser.cc apt-0.9.7.9+deb7u4/apt-pkg/deb/deblistparser.cc
+--- apt-0.9.7.9+deb7u4.orig/apt-pkg/deb/deblistparser.cc	2013-11-16 03:43:40.000000000 -0800
++++ apt-0.9.7.9+deb7u4/apt-pkg/deb/deblistparser.cc	2014-09-25 07:29:35.000000000 -0700
+@@ -786,6 +786,112 @@
+    }   
+    return false;
+ }
++
++#include <config.h>
++/* Specification. */
++#include <string.h>
++/* Find the first occurrence of C in S. */
++void *
++rawmemchr (const void *s, int c_in)
++{
++/* On 32-bit hardware, choosing longword to be a 32-bit unsigned
++long instead of a 64-bit uintmax_t tends to give better
++performance. On 64-bit hardware, unsigned long is generally 64
++bits already. Change this typedef to experiment with
++performance. */
++typedef unsigned long int longword;
++const unsigned char *char_ptr;
++const longword *longword_ptr;
++longword repeated_one;
++longword repeated_c;
++unsigned char c;
++c = (unsigned char) c_in;
++/* Handle the first few bytes by reading one byte at a time.
++Do this until CHAR_PTR is aligned on a longword boundary. */
++for (char_ptr = (const unsigned char *) s;
++(size_t) char_ptr % sizeof (longword) != 0;
++++char_ptr)
++if (*char_ptr == c)
++return (void *) char_ptr;
++longword_ptr = (const longword *) char_ptr;
++/* All these elucidatory comments refer to 4-byte longwords,
++but the theory applies equally well to any size longwords. */
++/* Compute auxiliary longword values:
++repeated_one is a value which has a 1 in every byte.
++repeated_c has c in every byte. */
++repeated_one = 0x01010101;
++repeated_c = c | (c << 8);
++repeated_c |= repeated_c << 16;
++if (0xffffffffU < (longword) -1)
++{
++repeated_one |= repeated_one << 31 << 1;
++repeated_c |= repeated_c << 31 << 1;
++if (8 < sizeof (longword))
++{
++size_t i;
++for (i = 64; i < sizeof (longword) * 8; i *= 2)
++{
++repeated_one |= repeated_one << i;
++repeated_c |= repeated_c << i;
++}
++}
++}
++/* Instead of the traditional loop which tests each byte, we will
++test a longword at a time. The tricky part is testing if *any of
++the four* bytes in the longword in question are equal to NUL or
++c. We first use an xor with repeated_c. This reduces the task
++to testing whether *any of the four* bytes in longword1 is zero.
++We compute tmp =
++((longword1 - repeated_one) & ~longword1) & (repeated_one << 7).
++That is, we perform the following operations:
++1. Subtract repeated_one.
++2. & ~longword1.
++3. & a mask consisting of 0x80 in every byte.
++Consider what happens in each byte:
++- If a byte of longword1 is zero, step 1 and 2 transform it into 0xff,
++and step 3 transforms it into 0x80. A carry can also be propagated
++to more significant bytes.
++- If a byte of longword1 is nonzero, let its lowest 1 bit be at
++position k (0 <= k <= 7); so the lowest k bits are 0. After step 1,
++the byte ends in a single bit of value 0 and k bits of value 1.
++After step 2, the result is just k bits of value 1: 2^k - 1. After
++step 3, the result is 0. And no carry is produced.
++So, if longword1 has only non-zero bytes, tmp is zero.
++Whereas if longword1 has a zero byte, call j the position of the least
++significant zero byte. Then the result has a zero at positions 0, ...,
++j-1 and a 0x80 at position j. We cannot predict the result at the more
++significant bytes (positions j+1..3), but it does not matter since we
++already have a non-zero bit at position 8*j+7.
++The test whether any byte in longword1 is zero is equivalent
++to testing whether tmp is nonzero.
++This test can read beyond the end of a string, depending on where
++C_IN is encountered. However, this is considered safe since the
++initialization phase ensured that the read will be aligned,
++therefore, the read will not cross page boundaries and will not
++cause a fault. */
++while (1)
++{
++longword longword1 = *longword_ptr ^ repeated_c;
++if ((((longword1 - repeated_one) & ~longword1)
++& (repeated_one << 7)) != 0)
++break;
++longword_ptr++;
++}
++char_ptr = (const unsigned char *) longword_ptr;
++/* At this point, we know that one of the sizeof (longword) bytes
++starting at char_ptr is == c. On little-endian machines, we
++could determine the first such byte without any further memory
++accesses, just by looking at the tmp result from the last loop
++iteration. But this does not work on big-endian machines.
++Choose code that works in both cases. */
++char_ptr = (unsigned char *) longword_ptr;
++while (*char_ptr != c)
++char_ptr++;
++return (void *) char_ptr;
++}
++
++
++
+ 									/*}}}*/
+ // ListParser::LoadReleaseInfo - Load the release information		/*{{{*/
+ // ---------------------------------------------------------------------
+diff -urN apt-0.9.7.9+deb7u4.dist/apt-pkg/deb/debversion.cc apt-0.9.7.9+deb7u4/apt-pkg/deb/debversion.cc
+--- apt-0.9.7.9+deb7u4.dist/apt-pkg/deb/debversion.cc	2013-03-01 02:51:21.000000000 -0800
++++ apt-0.9.7.9+deb7u4/apt-pkg/deb/debversion.cc	2014-09-30 08:55:40.369079155 -0700
+@@ -17,6 +17,9 @@
+ 
+ #include <stdlib.h>
+ #include <ctype.h>
++
++void * memrchr (void const *, int, size_t);
++
+ 									/*}}}*/
+ 
+ debVersioningSystem debVS;
+
+diff -urN apt-0.9.7.9+deb7u4.orig/apt-pkg/deb/dpkgpm.cc apt-0.9.7.9+deb7u4/apt-pkg/deb/dpkgpm.cc
+--- apt-0.9.7.9+deb7u4.orig/apt-pkg/deb/dpkgpm.cc	2013-03-01 02:51:21.000000000 -0800
++++ apt-0.9.7.9+deb7u4/apt-pkg/deb/dpkgpm.cc	2014-09-25 08:03:32.000000000 -0700
+@@ -41,11 +41,17 @@
+ #include <termios.h>
+ #include <unistd.h>
+ #include <sys/ioctl.h>
+-#include <pty.h>
+ 
+ #include <apti18n.h>
+ 									/*}}}*/
+ 
++#include <openpty.h>
++#include <memrchr.h>
++#include <cfmakeraw.h>
++
++typedef void (*sighandler_t) (int);
++
++
+ using namespace std;
+ 
+ class pkgDPkgPMPrivate 
+diff -urN apt-0.9.7.9+deb7u4.orig/include/cfmakeraw.h apt-0.9.7.9+deb7u4/include/cfmakeraw.h
+--- apt-0.9.7.9+deb7u4.orig/include/cfmakeraw.h	1969-12-31 16:00:00.000000000 -0800
++++ apt-0.9.7.9+deb7u4/include/cfmakeraw.h	2014-09-25 07:44:10.000000000 -0700
+@@ -0,0 +1,9 @@
++void cfmakeraw(struct termios *t) {
++  if (t != NULL) {
++    t->c_iflag &= ~(IMAXBEL|IGNBRK|BRKINT|PARMRK|ISTRIP|INLCR|IGNCR|ICRNL|IXON);
++    t->c_oflag &= ~OPOST;
++    t->c_lflag &= ~(ECHO|ECHONL|ICANON|ISIG|IEXTEN);
++    t->c_cflag &= ~(CSIZE|PARENB);
++    t->c_cflag |= CS8;
++  }
++}
+diff -urN apt-0.9.7.9+deb7u4.orig/include/memrchr.h apt-0.9.7.9+deb7u4/include/memrchr.h
+--- apt-0.9.7.9+deb7u4.orig/include/memrchr.h	1969-12-31 16:00:00.000000000 -0800
++++ apt-0.9.7.9+deb7u4/include/memrchr.h	2014-09-25 07:42:47.000000000 -0700
+@@ -0,0 +1,161 @@
++/* memrchr -- find the last occurrence of a byte in a memory block
++
++   Copyright (C) 1991, 1993, 1996-1997, 1999-2000, 2003-2010 Free Software
++   Foundation, Inc.
++
++   Based on strlen implementation by Torbjorn Granlund (tege@sics.se),
++   with help from Dan Sahlin (dan@sics.se) and
++   commentary by Jim Blandy (jimb@ai.mit.edu);
++   adaptation to memchr suggested by Dick Karpinski (dick@cca.ucsf.edu),
++   and implemented by Roland McGrath (roland@ai.mit.edu).
++
++   This program is free software: you can redistribute it and/or modify
++   it under the terms of the GNU General Public License as published by
++   the Free Software Foundation; either version 3 of the License, or
++   (at your option) any later version.
++
++   This program is distributed in the hope that it will be useful,
++   but WITHOUT ANY WARRANTY; without even the implied warranty of
++   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++   GNU General Public License for more details.
++
++   You should have received a copy of the GNU General Public License
++   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
++
++#if defined _LIBC
++# include <memcopy.h>
++#else
++# include <config.h>
++# define reg_char char
++#endif
++
++#include <string.h>
++#include <limits.h>
++
++#undef __memrchr
++#ifdef _LIBC
++# undef memrchr
++#endif
++
++#ifndef weak_alias
++# define __memrchr memrchr
++#endif
++
++/* Search no more than N bytes of S for C.  */
++void *
++__memrchr (void const *s, int c_in, size_t n)
++{
++  /* On 32-bit hardware, choosing longword to be a 32-bit unsigned
++     long instead of a 64-bit uintmax_t tends to give better
++     performance.  On 64-bit hardware, unsigned long is generally 64
++     bits already.  Change this typedef to experiment with
++     performance.  */
++  typedef unsigned long int longword;
++
++  const unsigned char *char_ptr;
++  const longword *longword_ptr;
++  longword repeated_one;
++  longword repeated_c;
++  unsigned reg_char c;
++
++  c = (unsigned char) c_in;
++
++  /* Handle the last few bytes by reading one byte at a time.
++     Do this until CHAR_PTR is aligned on a longword boundary.  */
++  for (char_ptr = (const unsigned char *) s + n;
++       n > 0 && (size_t) char_ptr % sizeof (longword) != 0;
++       --n)
++    if (*--char_ptr == c)
++      return (void *) char_ptr;
++
++  longword_ptr = (const longword *) char_ptr;
++
++  /* All these elucidatory comments refer to 4-byte longwords,
++     but the theory applies equally well to any size longwords.  */
++
++  /* Compute auxiliary longword values:
++     repeated_one is a value which has a 1 in every byte.
++     repeated_c has c in every byte.  */
++  repeated_one = 0x01010101;
++  repeated_c = c | (c << 8);
++  repeated_c |= repeated_c << 16;
++  if (0xffffffffU < (longword) -1)
++    {
++      repeated_one |= repeated_one << 31 << 1;
++      repeated_c |= repeated_c << 31 << 1;
++      if (8 < sizeof (longword))
++        {
++          size_t i;
++
++          for (i = 64; i < sizeof (longword) * 8; i *= 2)
++            {
++              repeated_one |= repeated_one << i;
++              repeated_c |= repeated_c << i;
++            }
++        }
++    }
++
++  /* Instead of the traditional loop which tests each byte, we will test a
++     longword at a time.  The tricky part is testing if *any of the four*
++     bytes in the longword in question are equal to c.  We first use an xor
++     with repeated_c.  This reduces the task to testing whether *any of the
++     four* bytes in longword1 is zero.
++
++     We compute tmp =
++       ((longword1 - repeated_one) & ~longword1) & (repeated_one << 7).
++     That is, we perform the following operations:
++       1. Subtract repeated_one.
++       2. & ~longword1.
++       3. & a mask consisting of 0x80 in every byte.
++     Consider what happens in each byte:
++       - If a byte of longword1 is zero, step 1 and 2 transform it into 0xff,
++         and step 3 transforms it into 0x80.  A carry can also be propagated
++         to more significant bytes.
++       - If a byte of longword1 is nonzero, let its lowest 1 bit be at
++         position k (0 <= k <= 7); so the lowest k bits are 0.  After step 1,
++         the byte ends in a single bit of value 0 and k bits of value 1.
++         After step 2, the result is just k bits of value 1: 2^k - 1.  After
++         step 3, the result is 0.  And no carry is produced.
++     So, if longword1 has only non-zero bytes, tmp is zero.
++     Whereas if longword1 has a zero byte, call j the position of the least
++     significant zero byte.  Then the result has a zero at positions 0, ...,
++     j-1 and a 0x80 at position j.  We cannot predict the result at the more
++     significant bytes (positions j+1..3), but it does not matter since we
++     already have a non-zero bit at position 8*j+7.
++
++     So, the test whether any byte in longword1 is zero is equivalent to
++     testing whether tmp is nonzero.  */
++
++  while (n >= sizeof (longword))
++    {
++      longword longword1 = *--longword_ptr ^ repeated_c;
++
++      if ((((longword1 - repeated_one) & ~longword1)
++           & (repeated_one << 7)) != 0)
++        {
++          longword_ptr++;
++          break;
++        }
++      n -= sizeof (longword);
++    }
++
++  char_ptr = (const unsigned char *) longword_ptr;
++
++  /* At this point, we know that either n < sizeof (longword), or one of the
++     sizeof (longword) bytes starting at char_ptr is == c.  On little-endian
++     machines, we could determine the first such byte without any further
++     memory accesses, just by looking at the tmp result from the last loop
++     iteration.  But this does not work on big-endian machines.  Choose code
++     that works in both cases.  */
++
++  while (n-- > 0)
++    {
++      if (*--char_ptr == c)
++        return (void *) char_ptr;
++    }
++
++  return NULL;
++}
++#ifdef weak_alias
++weak_alias (__memrchr, memrchr)
++#endif
+diff -urN apt-0.9.7.9+deb7u4.orig/include/openpty.h apt-0.9.7.9+deb7u4/include/openpty.h
+--- apt-0.9.7.9+deb7u4.orig/include/openpty.h	1969-12-31 16:00:00.000000000 -0800
++++ apt-0.9.7.9+deb7u4/include/openpty.h	2014-09-25 07:37:21.000000000 -0700
+@@ -0,0 +1,155 @@
++/* Open a pseudo-terminal.
++   Copyright (C) 2010 Free Software Foundation, Inc.
++
++   This program is free software: you can redistribute it and/or modify
++   it under the terms of the GNU General Public License as published by
++   the Free Software Foundation; either version 3 of the License, or
++   (at your option) any later version.
++
++   This program is distributed in the hope that it will be useful,
++   but WITHOUT ANY WARRANTY; without even the implied warranty of
++   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++   GNU General Public License for more details.
++
++   You should have received a copy of the GNU General Public License
++   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
++
++#include <config.h>
++
++/* Specification.  */
++#ifndef __sun
++#include <pty.h>
++#endif
++
++#if HAVE_OPENPTY
++
++/* Provide a wrapper with the prototype of glibc-2.8 and newer.  */
++# undef openpty
++int
++rpl_openpty (int *amaster, int *aslave, char *name,
++             struct termios const *termp, struct winsize const *winp)
++{
++  /* Cast away const, for implementations with weaker prototypes.  */
++  return openpty (amaster, aslave, name, (struct termios *) termp,
++                  (struct winsize *) winp);
++}
++
++#else /* AIX 5.1, HP-UX 11, IRIX 6.5, Solaris 10, mingw */
++
++# include <fcntl.h>
++# include <string.h>
++# include <sys/ioctl.h>
++# include <termios.h>
++# include <unistd.h>
++# if defined __sun || defined __hpux /* Solaris, HP-UX */
++#  include <stropts.h>
++# endif
++
++int
++openpty (int *amaster, int *aslave, char *name,
++         struct termios const *termp, struct winsize const *winp)
++{
++  int master;
++  char *slave_name;
++  int slave;
++
++# if HAVE__GETPTY /* IRIX */
++
++  slave_name = _getpty (&master, O_RDWR, 0622, 0);
++  if (slave_name == NULL)
++    return -1;
++
++# else /* AIX 5.1, HP-UX 11, Solaris 10, mingw */
++
++#  if HAVE_POSIX_OPENPT /* Solaris 10 */
++
++  master = posix_openpt (O_RDWR | O_NOCTTY);
++  if (master < 0)
++    return -1;
++
++#  else /* AIX 5.1, HP-UX 11, Solaris 9, mingw */
++
++#   ifdef _AIX /* AIX */
++
++  master = open ("/dev/ptc", O_RDWR | O_NOCTTY);
++  if (master < 0)
++    return -1;
++
++#   else /* HP-UX 11, Solaris 9, mingw */
++
++  /* HP-UX, Solaris have /dev/ptmx.
++     HP-UX also has /dev/ptym/clone, but this should not be needed.
++     Linux also has /dev/ptmx, but Linux already has openpty().
++     MacOS X also has /dev/ptmx, but MacOS X already has openpty().
++     OSF/1 also has /dev/ptmx and /dev/ptmx_bsd, but OSF/1 already has
++     openpty().  */
++  master = open ("/dev/ptmx", O_RDWR | O_NOCTTY);
++  if (master < 0)
++    return -1;
++
++#   endif
++
++#  endif
++
++  /* If all this does not work, we could try to open, one by one:
++     - On MacOS X: /dev/pty[p-w][0-9a-f]
++     - On *BSD:    /dev/pty[p-sP-S][0-9a-v]
++     - On AIX:     /dev/ptyp[0-9a-f]
++     - On HP-UX:   /dev/pty[p-r][0-9a-f]
++     - On OSF/1:   /dev/pty[p-q][0-9a-f]
++     - On Solaris: /dev/pty[p-r][0-9a-f]
++   */
++# endif
++
++  /* This call does not require a dependency to the 'grantpt' module,
++     because AIX, HP-UX, IRIX, Solaris all have the grantpt() function.  */
++  if (grantpt (master))
++    goto fail;
++
++  /* This call does not require a dependency to the 'unlockpt' module,
++     because AIX, HP-UX, IRIX, Solaris all have the unlockpt() function.  */
++  if (unlockpt (master))
++    goto fail;
++
++# if !HAVE__GETPTY /* !IRIX */
++  slave_name = ptsname (master);
++  if (slave_name == NULL)
++    goto fail;
++# endif
++
++  slave = open (slave_name, O_RDWR | O_NOCTTY);
++  if (slave == -1)
++    goto fail;
++
++# if defined __sun || defined __hpux /* Solaris, HP-UX */
++  if (ioctl (slave, I_PUSH, "ptem") < 0
++      || ioctl (slave, I_PUSH, "ldterm") < 0
++#  if defined __sun
++      || ioctl (slave, I_PUSH, "ttcompat") < 0
++#  endif
++     )
++    {
++      close (slave);
++      goto fail;
++    }
++# endif
++
++  /* XXX Should we ignore errors here?  */
++  if (termp)
++    tcsetattr (slave, TCSAFLUSH, termp);
++  if (winp)
++    ioctl (slave, TIOCSWINSZ, winp);
++
++  *amaster = master;
++  *aslave = slave;
++  if (name != NULL)
++    strcpy (name, slave_name);
++
++  return 0;
++
++ fail:
++  close (master);
++  return -1;
++}
++
++#endif
+diff -urN apt-0.9.7.9+deb7u4.orig/methods/makefile apt-0.9.7.9+deb7u4/methods/makefile
+--- apt-0.9.7.9+deb7u4.orig/methods/makefile	2013-03-01 02:51:21.000000000 -0800
++++ apt-0.9.7.9+deb7u4/methods/makefile	2014-09-25 07:55:42.000000000 -0700
+@@ -11,77 +11,77 @@
+ 
+ # The file method
+ PROGRAM=file
+-SLIBS = -lapt-pkg $(INTLLIBS)
++SLIBS = -lapt-pkg -lz -lbz2 $(INTLLIBS)
+ LIB_MAKES = apt-pkg/makefile
+ SOURCE = file.cc
+ include $(PROGRAM_H)
+ 
+ # The copy method
+ PROGRAM=copy
+-SLIBS = -lapt-pkg $(INTLLIBS)
++SLIBS = -lapt-pkg -lz -lbz2 $(INTLLIBS)
+ LIB_MAKES = apt-pkg/makefile
+ SOURCE = copy.cc
+ include $(PROGRAM_H)
+ 
+ # The gzip method
+ PROGRAM=gzip
+-SLIBS = -lapt-pkg $(INTLLIBS)
++SLIBS = -lapt-pkg -lz -lbz2 $(INTLLIBS)
+ LIB_MAKES = apt-pkg/makefile
+ SOURCE = gzip.cc
+ include $(PROGRAM_H)
+ 
+ # The gpgv method
+ PROGRAM=gpgv
+-SLIBS = -lapt-pkg $(INTLLIBS)
++SLIBS = -lapt-pkg -lz -lbz2 $(INTLLIBS)
+ LIB_MAKES = apt-pkg/makefile
+ SOURCE = gpgv.cc
+ include $(PROGRAM_H)
+ 
+ # The cdrom method
+ PROGRAM=cdrom
+-SLIBS = -lapt-pkg -ldl $(INTLLIBS)
++SLIBS = -lapt-pkg -ldl -lz -lbz2 $(INTLLIBS)
+ LIB_MAKES = apt-pkg/makefile
+ SOURCE = cdrom.cc
+ include $(PROGRAM_H)
+ 
+ # The http method
+ PROGRAM=http
+-SLIBS = -lapt-pkg $(SOCKETLIBS) $(INTLLIBS)
++SLIBS = -lapt-pkg $(SOCKETLIBS) -lz -lbz2 $(INTLLIBS)
+ LIB_MAKES = apt-pkg/makefile
+ SOURCE = http.cc http_main.cc rfc2553emu.cc connect.cc
+ include $(PROGRAM_H)
+ 
+ # The https method
+ PROGRAM=https
+-SLIBS = -lapt-pkg -lcurl $(INTLLIBS)
++SLIBS = -lapt-pkg -lcurl -lz -lbz2 $(INTLLIBS)
+ LIB_MAKES = apt-pkg/makefile
+ SOURCE = https.cc
+ include $(PROGRAM_H)
+ 
+ # The ftp method
+ PROGRAM=ftp
+-SLIBS = -lapt-pkg $(SOCKETLIBS) $(INTLLIBS)
++SLIBS = -lapt-pkg $(SOCKETLIBS) -lz -lbz2 $(INTLLIBS)
+ LIB_MAKES = apt-pkg/makefile
+ SOURCE = ftp.cc rfc2553emu.cc connect.cc
+ include $(PROGRAM_H)
+ 
+ # The rred method
+ PROGRAM=rred
+-SLIBS = -lapt-pkg $(SOCKETLIBS) $(INTLLIBS)
++SLIBS = -lapt-pkg $(SOCKETLIBS) -lz -lbz2 $(INTLLIBS)
+ LIB_MAKES = apt-pkg/makefile
+ SOURCE = rred.cc
+ include $(PROGRAM_H)
+ 
+ # The rsh method
+ PROGRAM=rsh
+-SLIBS = -lapt-pkg $(INTLLIBS)
++SLIBS = -lapt-pkg -lz -lbz2 $(INTLLIBS)
+ LIB_MAKES = apt-pkg/makefile
+ SOURCE = rsh.cc
+ include $(PROGRAM_H)
+ 
+ # The mirror method
+ PROGRAM=mirror
+-SLIBS = -lapt-pkg $(SOCKETLIBS)
++SLIBS = -lapt-pkg -lz -lbz2 $(SOCKETLIBS)
+ LIB_MAKES = apt-pkg/makefile
+ SOURCE = mirror.cc http.cc rfc2553emu.cc connect.cc
+ include $(PROGRAM_H)
+diff -urN apt-0.9.7.9+deb7u4.orig/cmdline/makefile apt-0.9.7.9+deb7u4/cmdline/makefile
+--- apt-0.9.7.9+deb7u4.orig/cmdline/makefile	2013-03-01 02:51:21.000000000 -0800
++++ apt-0.9.7.9+deb7u4/cmdline/makefile	2014-09-25 08:00:15.000000000 -0700
+@@ -7,28 +7,28 @@
+ 
+ # The apt-cache program
+ PROGRAM=apt-cache
+-SLIBS = -lapt-pkg $(INTLLIBS)
++SLIBS = -lapt-pkg -lz -lbz2 $(INTLLIBS)
+ LIB_MAKES = apt-pkg/makefile
+ SOURCE = apt-cache.cc
+ include $(PROGRAM_H)
+ 
+ # The apt-get program
+ PROGRAM=apt-get
+-SLIBS = -lapt-pkg -lutil $(INTLLIBS)
++SLIBS = -lapt-pkg -lz -lbz2 $(INTLLIBS)
+ LIB_MAKES = apt-pkg/makefile
+ SOURCE = apt-get.cc acqprogress.cc
+ include $(PROGRAM_H)
+ 
+ # The apt-config program
+ PROGRAM=apt-config
+-SLIBS = -lapt-pkg $(INTLLIBS)
++SLIBS = -lapt-pkg -lz -lbz2 $(INTLLIBS)
+ LIB_MAKES = apt-pkg/makefile
+ SOURCE = apt-config.cc
+ include $(PROGRAM_H)
+ 
+ # The apt-cdrom program
+ PROGRAM=apt-cdrom
+-SLIBS = -lapt-pkg $(INTLLIBS)
++SLIBS = -lapt-pkg -lz -lbz2 $(INTLLIBS)
+ LIB_MAKES = apt-pkg/makefile
+ SOURCE = apt-cdrom.cc 
+ include $(PROGRAM_H)
+@@ -41,7 +41,7 @@
+ 
+ # The apt-mark program
+ PROGRAM=apt-mark
+-SLIBS = -lapt-pkg $(INTLLIBS)
++SLIBS = -lapt-pkg -lz -lbz2 $(INTLLIBS)
+ LIB_MAKES = apt-pkg/makefile
+ SOURCE = apt-mark.cc
+ include $(PROGRAM_H)
+@@ -59,28 +59,28 @@
+ 
+ # The apt-sortpkgs program
+ PROGRAM=apt-sortpkgs
+-SLIBS = -lapt-pkg $(INTLLIBS)
++SLIBS = -lapt-pkg -lz -lbz2 $(INTLLIBS)
+ LIB_MAKES = apt-pkg/makefile
+ SOURCE = apt-sortpkgs.cc
+ include $(PROGRAM_H)
+ 
+ # The apt-extracttemplates program
+ PROGRAM=apt-extracttemplates
+-SLIBS = -lapt-pkg -lapt-inst $(INTLLIBS)
++SLIBS = -lapt-pkg -lapt-inst -lz -lbz2 $(INTLLIBS)
+ LIB_MAKES = apt-pkg/makefile
+ SOURCE = apt-extracttemplates.cc 
+ include $(PROGRAM_H)
+ 
+ # The internal solver acting as an external
+ PROGRAM=apt-internal-solver
+-SLIBS = -lapt-pkg $(INTLLIBS)
++SLIBS = -lapt-pkg -lz -lbz2 $(INTLLIBS)
+ LIB_MAKES = apt-pkg/makefile
+ SOURCE = apt-internal-solver.cc
+ include $(PROGRAM_H)
+ 
+ # This just dumps out the state
+ PROGRAM=apt-dump-solver
+-SLIBS = -lapt-pkg $(INTLLIBS)
++SLIBS = -lapt-pkg -lz -lbz2 $(INTLLIBS)
+ LIB_MAKES = apt-pkg/makefile
+ SOURCE = apt-dump-solver.cc
+ include $(PROGRAM_H)
+diff -urN apt-0.9.7.9+deb7u4.orig/ftparchive/cachedb.cc apt-0.9.7.9+deb7u4/ftparchive/cachedb.cc
+--- apt-0.9.7.9+deb7u4.orig/ftparchive/cachedb.cc	2013-03-01 02:51:21.000000000 -0800
++++ apt-0.9.7.9+deb7u4/ftparchive/cachedb.cc	2014-09-25 08:07:08.000000000 -0700
+@@ -24,6 +24,7 @@
+ 
+ #include "cachedb.h"
+ 
++#include <memrchr.h>
+ #include <apti18n.h>
+ 									/*}}}*/
+ 
+diff -urN apt-0.9.7.9+deb7u4.orig/ftparchive/makefile apt-0.9.7.9+deb7u4/ftparchive/makefile
+--- apt-0.9.7.9+deb7u4.orig/ftparchive/makefile	2013-03-01 02:51:21.000000000 -0800
++++ apt-0.9.7.9+deb7u4/ftparchive/makefile	2014-09-25 08:10:14.000000000 -0700
+@@ -9,7 +9,7 @@
+ ifdef BDBLIB
+ APT_DOMAIN:=apt-utils
+ PROGRAM=apt-ftparchive
+-SLIBS = -lapt-pkg -lapt-inst $(BDBLIB) $(INTLLIBS)
++SLIBS = -lapt-pkg -lapt-inst -lbz2 -lz $(BDBLIB) $(INTLLIBS)
+ LIB_MAKES = apt-pkg/makefile apt-inst/makefile
+ SOURCE = apt-ftparchive.cc cachedb.cc writer.cc contents.cc override.cc \
+          multicompress.cc
+diff -urN apt-0.9.7.9+deb7u4.orig/doc/manpage-style.xsl apt-0.9.7.9+deb7u4/doc/manpage-style.xsl
+--- apt-0.9.7.9+deb7u4.orig/doc/manpage-style.xsl	2013-03-01 02:51:21.000000000 -0800
++++ apt-0.9.7.9+deb7u4/doc/manpage-style.xsl	2014-09-25 08:12:25.000000000 -0700
+@@ -2,7 +2,7 @@
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  version="1.0">
+ 
+-<xsl:import href="/usr/share/xml/docbook/stylesheet/nwalsh/manpages/docbook.xsl" />
++<xsl:import href="/usr/share/sgml/docbook/xsl-stylesheets-1.69.1-5.1/manpages/docbook.xsl" />
+ 
+ <xsl:param name="man.output.encoding" select="'UTF-8'" />
+ <!-- LANGUAGE -->
+diff -urN apt-0.9.7.9+deb7u4.dist/buildlib/defaults.mak apt-0.9.7.9+deb7u4/buildlib/defaults.mak
+--- apt-0.9.7.9+deb7u4.dist/buildlib/defaults.mak	2013-03-01 02:51:21.000000000 -0800
++++ apt-0.9.7.9+deb7u4/buildlib/defaults.mak	2014-09-30 08:56:44.897390830 -0700
+@@ -87,14 +87,6 @@
+ 
+ include $(BUILD)/environment.mak
+ 
+-ifdef STATICLIBS
+-LIBRARY_H += $(BASE)/buildlib/staticlibrary.mak
+-endif
+-
+-ifdef ONLYSTATICLIBS
+-LIBRARY_H = $(BASE)/buildlib/staticlibrary.mak
+-endif
+-
+ # Source location control
+ # SUBDIRS specifies sub components of the module that
+ # may be located in subdirectories of the source dir. 
+diff -urN apt-0.9.7.9+deb7u4.dist/buildlib/environment.mak.in apt-0.9.7.9+deb7u4/buildlib/environment.mak.in
+--- apt-0.9.7.9+deb7u4.dist/buildlib/environment.mak.in	2013-03-01 02:51:21.000000000 -0800
++++ apt-0.9.7.9+deb7u4/buildlib/environment.mak.in	2014-09-30 08:56:10.397839687 -0700
+@@ -61,7 +61,7 @@
+ 
+ # Shared library things
+ HOST_OS = @host_os@
+-ifneq ($(words $(filter gnu% linux-gnu% kfreebsd-gnu% %-gnu,$(HOST_OS))),0)
++ifneq ($(words $(filter solaris% gnu% linux-gnu% kfreebsd-gnu% %-gnu,$(HOST_OS))),0)
+    SONAME_MAGIC=-Wl,-soname -Wl,
+    LFLAGS_SO=
+ else
+diff -urN apt-0.9.7.9+deb7u4.dist/apt-pkg/makefile apt-0.9.7.9+deb7u4/apt-pkg/makefile
+--- apt-0.9.7.9+deb7u4.dist/apt-pkg/makefile	2013-03-01 02:51:21.000000000 -0800
++++ apt-0.9.7.9+deb7u4/apt-pkg/makefile	2014-10-01 00:07:44.845938789 -0700
+@@ -14,7 +14,7 @@
+ LIBRARY=apt-pkg
+ MAJOR=$(LIBAPTPKG_MAJOR)
+ MINOR=$(LIBAPTPKG_RELEASE)
+-SLIBS=$(PTHREADLIB) $(INTLLIBS) -lutil -ldl
++SLIBS=$(PTHREADLIB) $(INTLLIBS) -ldl
+ ifeq ($(HAVE_ZLIB),yes)
+ SLIBS+= -lz
+ endif
+diff -urN apt-0.9.7.9+deb7u4.dist/doc/makefile apt-0.9.7.9+deb7u4/doc/makefile
+--- apt-0.9.7.9+deb7u4.dist/doc/makefile	2013-03-01 02:51:21.000000000 -0800
++++ apt-0.9.7.9+deb7u4/doc/makefile	2014-09-25 08:13:32.000000000 -0700
+@@ -68,7 +68,7 @@
+ stats:
+ 	for i in po/*.po; do echo -n "$$i: "; msgfmt --output-file=/dev/null --statistics $$i; done
+ 
+-ifdef PO4A
++ifdef PO4ADONTWANT
+ DOCUMENTATIONPO = $(patsubst %.po,%,$(notdir $(wildcard po/*.po)))
+ MANPAGEPOLIST = $(addprefix manpages-translation-,$(DOCUMENTATIONPO))
+ DEBIANDOCPOLIST = $(addprefix debiandoc-translation-,$(DOCUMENTATIONPO))
+diff -urN apt-0.9.7.9+deb7u4.dist/po/makefile apt-0.9.7.9+deb7u4/po/makefile
+--- apt-0.9.7.9+deb7u4.dist/po/makefile	2013-03-01 02:51:21.000000000 -0800
++++ apt-0.9.7.9+deb7u4/po/makefile	2014-09-25 08:26:15.000000000 -0700
+@@ -40,7 +40,7 @@
+ 	  --keyword=P_:1,2 \
+ 	  --files-from=$(PO)/POTFILES_$*.in -o $(PO)/domains/$*/c.pot
+ 	rm -f $(PO)/POTFILES_$*.in
+-	$(MSGCOMM) --omit-header --more-than=0 $(PO)/domains/$*/c.pot $(PO)/domains/$*/sh.pot --output=$@
++	/usr/bin/msgcomm --omit-header --more-than=0 $(PO)/domains/$*/c.pot $(PO)/domains/$*/sh.pot --output=$@
+ 	# copy into the domain dirs to make rosetta happy
+ 	rm -f $(PO)/domains/$*/*.pot
+ 	cp $@ $(PO)/domains/$*
+@@ -52,7 +52,7 @@
+ $(LANG_POFILES) : $(PO_DOMAINS)/%.po : $(POTFILES)
+ 	printf "%s " "Generating $@"
+ 	echo $@ : $(notdir $@) $(PO)/$(call GETDOMAIN,$*).pot > $(PO)/$(call GETDOMAIN,$*)_$(notdir $@).d
+-	$(MSGMERGE) --no-location $(notdir $@) $(PO)/$(call GETDOMAIN,$*).pot -o $@
++	/usr/bin/msgmerge --no-location $(notdir $@) $(PO)/$(call GETDOMAIN,$*).pot -o $@
+ 
+ $(MOFILES) : $(PO_DOMAINS)/%.mo : $(PO_DOMAINS)/%.po
+ 	printf "%s: " "Generating $(LOCALE)/$(notdir $*)/LC_MESSAGES/$(call GETDOMAIN,$*).mo"
+@@ -71,14 +71,14 @@
+ 	$(XGETTEXT) --default-domain=$(PO)/$(PACKAGE)-dummy.pot --foreign --language=c \
+ 		-o $(PO)/$(PACKAGE)-dummy.pot --force-po --package-name='$(PACKAGE)' \
+ 		--package-version='$(PACKAGE_VERSION)' --msgid-bugs-address='$(PACKAGE_MAIL)' /dev/null
+-	$(MSGCOMM) --more-than=0 $(PO)/$(PACKAGE)-dummy.pot $(POTFILES) --output=$(PACKAGE)-all.pot
++	/usr/bin/msgcomm --more-than=0 $(PO)/$(PACKAGE)-dummy.pot $(POTFILES) --output=$(PACKAGE)-all.pot
+ 	rm -f $(PO)/$(PACKAGE)-dummy.pot
+ 
+ .PHONY: update-po
+ update-po: $(PACKAGE)-all.pot
+ 	for lang in ${LINGUAS}; do \
+ 	echo "Updating $$lang.po"; \
+-	$(MSGMERGE) $$lang.po $(PACKAGE)-all.pot -o $$lang.new.po; \
++	/usr/bin/msgmerge $$lang.po $(PACKAGE)-all.pot -o $$lang.new.po; \
+ 	cmp $$lang.new.po $$lang.po || cp $$lang.new.po $$lang.po; \
+ 	rm -f $$lang.new.po; \
+ 	done
+diff -urN apt-0.9.7.9+deb7u4.dist/cmdline/apt-get.cc apt-0.9.7.9+deb7u4/cmdline/apt-get.cc
+--- apt-0.9.7.9+deb7u4.dist/cmdline/apt-get.cc	2014-07-28 02:23:22.000000000 -0700
++++ apt-0.9.7.9+deb7u4/cmdline/apt-get.cc	2014-10-01 02:29:55.209787962 -0700
+@@ -68,10 +68,19 @@
+ #include <regex.h>
+ #include <sys/wait.h>
+ #include <sstream>
++#include <pwd.h>
++#include <grp.h>
+ 
+ #include <apti18n.h>
+ 									/*}}}*/
+ 
++#ifdef __sun
++#define statfs statvfs64
++#else
++#define statfs statfs64
++#endif
++ 
++
+ #define RAMFS_MAGIC     0x858458f6
+ 
+ using namespace std;
+@@ -3488,6 +3497,10 @@
+ 									/*}}}*/
+ int main(int argc,const char *argv[])					/*{{{*/
+ {
++
++   char *path;
++   char newpath[512];
++
+    CommandLine::Args Args[] = {
+       {'h',"help","help",0},
+       {'v',"version","version",0},
+@@ -3537,6 +3550,8 @@
+       {0,"solver","APT::Solver",CommandLine::HasArg},
+       {'c',"config-file",0,CommandLine::ConfigFile},
+       {'o',"option",0,CommandLine::ArbItem},
++      {'R',"root","APT::Get::Root",CommandLine::HasArg},
++      {'z',"zone","APT::Get::Zone-Install",0},
+       {0,0,0,0}};
+    CommandLine::Dispatch Cmds[] = {{"update",&DoUpdate},
+                                    {"upgrade",&DoUpgrade},
+@@ -3563,6 +3578,17 @@
+    setlocale(LC_ALL,"");
+    textdomain(PACKAGE);
+ 
++   // Set gnu PATH
++   path = getenv ("PATH");
++   if (path != NULL) {
++               strlcpy (newpath, "/usr/gnu/bin:", sizeof (newpath));
++               strlcat (newpath, path, sizeof (newpath));
++   } else {
++               strlcpy (newpath, "/usr/gnu/bin:", sizeof (newpath));
++               strlcat (newpath, "/usr/bin:/usr/sbin:/sbin", sizeof (newpath));
++   }
++   setenv ("PATH", newpath, 1);
++
+    // Parse the command line and initialize the package library
+    CommandLine CmdL(Args,_config);
+    if (pkgInitConfig(*_config) == false ||
+@@ -3576,6 +3602,121 @@
+       return 100;
+    }
+ 
++   // define root
++   string DefRoot = _config->Find("APT::Get::Root");
++   if (DefRoot.empty() == false) {
++        string TempStr = _config->FindDir("Dir::Cache");
++        string NewSet = DefRoot + TempStr;
++        if (CreateDirectory(DefRoot,NewSet) == false)
++            _error->Error(_("Failed:%s"), NewSet.c_str());
++        _config->Set("Dir::Cache", NewSet.c_str());
++
++        TempStr = _config->FindDir("Dir::State::lists");
++        NewSet = DefRoot + TempStr;
++        if (CreateDirectory(DefRoot,NewSet) == false)
++            _error->Error(_("Failed:%s"), NewSet.c_str());
++        _config->Set("Dir::State::lists", NewSet.c_str());
++
++        TempStr = _config->FindDir("Dir::Etc");
++        NewSet = DefRoot + TempStr;
++        if (CreateDirectory(DefRoot,NewSet) == false)
++            _error->Error(_("Failed:%s"), NewSet.c_str());
++//        _config->Set("Dir::Etc", NewSet.c_str());
++
++        TempStr = _config->FindFile("Dir::Etc::sourcelist");
++        NewSet = DefRoot + TempStr;
++        if(!RealFileExists(NewSet)) {
++            FileFd FromFile, ToFile;
++            FromFile.Open(TempStr, FileFd::ReadOnly);
++            ToFile.Open(NewSet, FileFd::WriteAtomic);
++            if (CopyFile(FromFile, ToFile) == false)
++                _error->Error(_("Failed:copy %s %s"), TempStr.c_str(), NewSet.c_str());
++            ToFile.Close();
++            FromFile.Close();
++        }
++        _config->Set("Dir::State::sourcelist", NewSet.c_str());
++
++        TempStr = _config->FindFile("Dir::State::status");
++        NewSet = DefRoot + TempStr;
++        _config->Set("Dir::State::status", NewSet.c_str());
++
++        TempStr = _config->FindFile("Dir::State::extended_states");
++        NewSet = DefRoot + TempStr;
++        _config->Set("Dir::State::extended_states", NewSet.c_str());
++
++
++        NewSet = "-R=" + DefRoot;
++        _config->Set("Dpkg::Options::", NewSet.c_str());
++
++        NewSet = DefRoot + "/var/lib/dpkg/updates";
++        if (CreateDirectory(DefRoot,NewSet) == false)
++            _error->Error(_("Failed:%s"), NewSet.c_str());
++
++        NewSet = DefRoot + "/var/lib/dpkg/info";
++        if (CreateDirectory(DefRoot,NewSet) == false)
++            _error->Error(_("Failed:%s"), NewSet.c_str());
++
++        NewSet = DefRoot + "/var/lib/dpkg/alien";
++        if (CreateDirectory(DefRoot,NewSet) == false)
++            _error->Error(_("Failed:%s"), NewSet.c_str());
++
++        NewSet = DefRoot + "/var/lib/dpkg/alternatives";
++        if (CreateDirectory(DefRoot,NewSet) == false)
++            _error->Error(_("Failed:%s"), NewSet.c_str());
++
++        NewSet = DefRoot + "/var/lib/dpkg/parts";
++        if (CreateDirectory(DefRoot,NewSet) == false)
++            _error->Error(_("Failed:%s"), NewSet.c_str());
++
++        NewSet = DefRoot + "/var/lib/dpkg/triggers";
++        if (CreateDirectory(DefRoot,NewSet) == false)
++            _error->Error(_("Failed:%s"), NewSet.c_str());
++
++       FileFd StateFile;
++       string state = _config->FindFile("Dir::State::extended_states");
++       // if it does not exist, create a empty one
++       if(!RealFileExists(state))
++       {
++          StateFile.Open(state, FileFd::WriteAtomic);
++          StateFile.Close();
++       }
++
++       state = _config->FindFile("Dir::State::status");
++       // if it does not exist, create a empty one
++       if(!RealFileExists(state))
++       {
++          StateFile.Open(state, FileFd::WriteAtomic);
++          StateFile.Close();
++       }
++
++       state = DefRoot + "/var/lib/dpkg/available";
++       // if it does not exist, create a empty one
++       if(!RealFileExists(state))
++       {
++          StateFile.Open(state, FileFd::WriteAtomic);
++          StateFile.Close();
++       }
++
++       struct passwd *pw;
++       struct group *gr;
++
++       NewSet = DefRoot + "/var";
++       pw = getpwnam("root");
++       gr = getgrnam("sys");
++       if (pw != NULL && gr != NULL)
++       chown(NewSet.c_str(), pw->pw_uid, gr->gr_gid);
++       chmod(NewSet.c_str(), 0755);
++
++       NewSet = DefRoot + "/etc";
++       if (pw != NULL && gr != NULL)
++       chown(NewSet.c_str(), pw->pw_uid, gr->gr_gid);
++       chmod(NewSet.c_str(), 0755);
++   }
++
++   // set ZONEINST=1 for zones
++   if (_config->FindB("APT::Get::Zone-Install", false) == true)
++        setenv("ZONEINST", "1", 1);
++
+    // See if the help should be shown
+    if (_config->FindB("help") == true ||
+        _config->FindB("version") == true ||
+diff -urN apt-0.9.7.9+deb7u4.dist/cmdline/apt-key apt-0.9.7.9+deb7u4/cmdline/apt-key
+--- apt-0.9.7.9+deb7u4.dist/cmdline/apt-key	2013-03-01 02:51:21.000000000 -0800
++++ apt-0.9.7.9+deb7u4/cmdline/apt-key	2014-10-01 02:21:39.322190771 -0700
+@@ -1,18 +1,20 @@
+-#!/bin/sh
++#!/bin/bash
+ 
+ set -e
+ unset GREP_OPTIONS
+ 
++GPGBIN="gpg2"
++
+ # We don't use a secret keyring, of course, but gpg panics and
+ # implodes if there isn't one available
+-SECRETKEYRING="$(mktemp)"
++SECRETKEYRING="/tmp/tempkey.$$"
+ trap "rm -f '${SECRETKEYRING}'" 0 HUP INT QUIT ILL ABRT FPE SEGV PIPE TERM
+-GPG_CMD="gpg --ignore-time-conflict --no-options --no-default-keyring --secret-keyring ${SECRETKEYRING}"
++GPG_CMD="$GPGBIN --ignore-time-conflict --no-options --no-default-keyring --secret-keyring ${SECRETKEYRING}"
+ 
+ if [ "$(id -u)" -eq 0 ]; then
+ 	# we could use a tmpfile here too, but creation of this tends to be time-consuming
+ 	eval $(apt-config shell TRUSTDBDIR Dir::Etc/d)
+-	GPG_CMD="$GPG_CMD --trustdb-name ${TRUSTDBDIR}/trustdb.gpg"
++	GPG_CMD="$GPG_CMD --trustdb-name ${BASEDIR}${TRUSTDBDIR}/trustdb.gpg"
+ fi
+ 
+ GPG="$GPG_CMD"
+@@ -22,8 +24,8 @@
+ #MASTER_KEYRING=/usr/share/keyrings/debian-master-keyring.gpg
+ #ARCHIVE_KEYRING_URI=http://ftp.debian.org/debian/debian-archive-keyring.gpg
+ 
+-ARCHIVE_KEYRING=/usr/share/keyrings/debian-archive-keyring.gpg
+-REMOVED_KEYS=/usr/share/keyrings/debian-archive-removed-keys.gpg
++ARCHIVE_KEYRING=/usr/share/keyrings/nexenta-archive-keyring.gpg
++REMOVED_KEYS=/usr/share/keyrings/nexenta-archive-removed-keys.gpg
+ 
+ requires_root() {
+ 	if [ "$(id -u)" -ne 0 ]; then
+@@ -80,15 +82,15 @@
+ 	echo >&2 "ERROR: an installed wget is required for a network-based update"
+ 	exit 1
+     fi
+-    if [ ! -d /var/lib/apt/keyrings ]; then
+-	mkdir -p /var/lib/apt/keyrings
++    if [ ! -d ${BASEDIR}/var/lib/apt/keyrings ]; then
++	mkdir -p ${BASEDIR}/var/lib/apt/keyrings
+     fi
+-    keyring=/var/lib/apt/keyrings/$(basename $ARCHIVE_KEYRING)
++    keyring=${BASEDIR}/var/lib/apt/keyrings/$(basename $ARCHIVE_KEYRING)
+     old_mtime=0
+     if [ -e $keyring ]; then
+ 	old_mtime=$(stat -c %Y $keyring)
+     fi
+-    (cd  /var/lib/apt/keyrings; wget -q -N $ARCHIVE_KEYRING_URI)
++    (cd  ${BASEDIR}/var/lib/apt/keyrings; wget -q -N $ARCHIVE_KEYRING_URI)
+     if [ ! -e $keyring ]; then
+ 	return
+     fi
+@@ -102,7 +104,7 @@
+ update() {
+     if [ ! -f $ARCHIVE_KEYRING ]; then
+ 	echo >&2 "ERROR: Can't find the archive-keyring"
+-	echo >&2 "Is the debian-archive-keyring package installed?"
++	echo >&2 "Is the archive-keyring package installed?"
+ 	exit 1
+     fi
+     requires_root
+@@ -166,15 +168,17 @@
+ 	TRUSTEDFILE="/etc/apt/trusted.gpg"
+ 	eval $(apt-config shell TRUSTEDFILE Apt::GPGV::TrustedKeyring)
+ 	eval $(apt-config shell TRUSTEDFILE Dir::Etc::Trusted/f)
++	TRUSTEDFILE="${BASEDIR}$TRUSTEDFILE"
+ 	if [ -r "$TRUSTEDFILE" ]; then
+ 		GPG="$GPG --keyring $TRUSTEDFILE"
+ 	fi
+ 	GPG="$GPG --primary-keyring $TRUSTEDFILE"
+ 	TRUSTEDPARTS="/etc/apt/trusted.gpg.d"
+ 	eval $(apt-config shell TRUSTEDPARTS Dir::Etc::TrustedParts/d)
++	TRUSTEDPARTS="${BASEDIR}$TRUSTEDPARTS"
+ 	if [ -d "$TRUSTEDPARTS" ]; then
+ 		#echo "parts active"
+-		for trusted in $(run-parts --list $TRUSTEDPARTS --regex '^.*\.gpg$'); do
++		for trusted in $(find $TRUSTEDPARTS -name '^.*\.gpg$'); do
+ 			#echo "part -> $trusted"
+ 			GPG="$GPG --keyring $trusted"
+ 		done
+@@ -189,7 +193,7 @@
+ fi
+ shift
+ 
+-if [ "$command" != "help" ] && ! which gpg >/dev/null 2>&1; then
++if [ "$command" != "help" ] && ! which $GPGBIN >/dev/null 2>&1; then
+     echo >&2 "Warning: gnupg does not seem to be installed."
+     echo >&2 "Warning: apt-key requires gnupg for most operations."
+     echo >&2
+diff -urN apt-0.9.7.9+deb7u4.dist/configure.in apt-0.9.7.9+deb7u4/configure.in
+--- apt-0.9.7.9+deb7u4.dist/configure.in	2013-06-04 02:24:29.000000000 -0700
++++ apt-0.9.7.9+deb7u4/configure.in	2014-10-01 02:56:18.482915301 -0700
+@@ -18,7 +18,7 @@
+ AC_CONFIG_HEADER(include/config.h:buildlib/config.h.in include/apti18n.h:buildlib/apti18n.h.in)
+ 
+ PACKAGE="apt"
+-PACKAGE_VERSION="0.9.7.9"
++PACKAGE_VERSION="0.9.7.9-nexenta1"
+ PACKAGE_MAIL="APT Development Team <deity@lists.debian.org>"
+ AC_DEFINE_UNQUOTED(PACKAGE,"$PACKAGE")
+ AC_DEFINE_UNQUOTED(PACKAGE_VERSION,"$PACKAGE_VERSION")
