@@ -1,0 +1,12 @@
+diff -urN ncurses-5.9.orig/c++/Makefile.in ncurses-5.9/c++/Makefile.in
+--- ncurses-5.9.orig/c++/Makefile.in	2010-11-27 13:45:27.000000000 -0800
++++ ncurses-5.9/c++/Makefile.in	2014-10-10 05:44:17.839142811 -0700
+@@ -76,7 +76,7 @@
+ CXXLIBS		= @CXXLIBS@
+ 
+ INCDIR		= ../include
+-CPPFLAGS	= -I../c++ -I$(INCDIR) -I$(srcdir) -DHAVE_CONFIG_H @CPPFLAGS@
++CPPFLAGS	= -I../c++ -I$(INCDIR) -I$(srcdir) -DHAVE_CONFIG_H -D__EXTENSIONS__ -D_FILE_OFFSET_BITS=64  -DNDEBUG -I. -I../include -I${srcdir}/../include -I${includedir}
+ 
+ CTAGS		= @CTAGS@
+ ETAGS		= @ETAGS@
