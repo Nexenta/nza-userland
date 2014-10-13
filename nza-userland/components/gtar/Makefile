@@ -31,6 +31,7 @@ COMPONENT_ARCHIVE_HASH=	\
     sha256:9b0fb3ce8512059337add0da5f8f0f7d7647f2201f5ece24581d620ea60337c6
 COMPONENT_ARCHIVE_URL=	http://ftp.gnu.org/gnu/tar/$(COMPONENT_ARCHIVE)
 COMPONENT_BUGDB=	utility/gtar
+DEBVERSION:=40-0-1
 
 include ../../make-rules/prep.mk
 include ../../make-rules/configure.mk
