@@ -45,6 +45,7 @@ dir path=var/ntp group=sys
 dir path=var/ntp/ntpstats group=sys
 file Solaris/ntp.client path=etc/inet/ntp.client group=sys
 file Solaris/ntp.server path=etc/inet/ntp.server group=sys
+file Solaris/ntp.conf path=etc/inet/ntp.conf group=sys
 file Solaris/auth_attr path=etc/security/auth_attr.d/ntp
 file Solaris/prof_attr path=etc/security/prof_attr.d/ntp
 file Solaris/ntp.xml path=lib/svc/manifest/network/ntp.xml
