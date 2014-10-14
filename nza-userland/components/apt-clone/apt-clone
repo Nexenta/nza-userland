@@ -27,7 +27,7 @@ eval 'exec /usr/bin/perl  -S $0 ${1+"$@"}'
 #
 # CDDL HEADER END
 #
-# Copyright (C) 2005-2012 Nexenta Systems, Inc.
+# Copyright (C) 2005-2014 Nexenta Systems, Inc.
 # All rights reserved.
 #
 # Copyright (C) 2008 Erast Benson
@@ -108,6 +108,8 @@ my $ROOTPOOL_MNT = "/syspool";
 my $ROOTFS_MNT = "/tmp/rootfs.mnt";
 my $HDR_BEGIN = "#---------- ADDED BY BOOTADM - DO NOT EDIT ----------";
 my $HDR_END = "#---------------------END BOOTADM--------------------";
+my $BE_NUM = undef;
+my $cloned = 0;
 
 # mount/umount cache
 my %mnt_cache = ();
@@ -184,6 +186,16 @@ sub _get_current_rootfs {
 	}
 	die new Exception($Exception::DeviceNotFound,
 			       "Unable to find root device");
+}
+
+sub cleanup_be {
+	my @out;
+	if ($cloned && $BE_NUM) {
+		my $current = _get_current_rootfs();
+		print "There was error, destroying $current\@nmu-$BE_NUM\n";
+		system("zfs destroy -R $current\@nmu-$BE_NUM");
+		$cloned = 0;
+	}
 }
 
 sub _mount {
@@ -269,8 +281,9 @@ sub _parse_grub {
 			my @nsect = @sect;
 			$h{$idx++} = \@nsect;
 			if (scalar @sect < 5) {
-				die new Exception($Exception::FormatError,
-				       "Failed to parse menu.lst: section content not complete");
+				print_debug("Failed to parse menu.lst: section content not complete");
+				$idx--;
+				delete $h{$idx};
 			}
 			@sect = ();
 			$bootfs = '';
@@ -283,12 +296,15 @@ sub _parse_grub {
 	}
 
 	if (scalar @sect > 0) {
+		cleanup_be();
 		die new Exception($Exception::FormatError,
 		       "Failed to parse menu.lst: section's end marker not found");
 	} elsif (scalar keys %h == 0) {
+		cleanup_be();
 		die new Exception($Exception::FormatError,
 		       "Failed to parse menu.lst: boot menu is empty");
 	} elsif (!exists $h{1}) {
+		cleanup_be();
 		die new Exception($Exception::FormatError,
 		       "Failed to parse menu.lst: no sections found");
 	}
@@ -872,6 +888,9 @@ sub clone_rootfs {
 			       "Unable to create clone '$clonename': $lines[0]");
 	}
 
+	$BE_NUM = $slot;
+	$cloned = 1;
+
 	_mark_rootfs($clonename, 0, '');
 
 	my $arr = _apply_rootfs_retention();
@@ -1379,6 +1398,9 @@ $NMUUtil::UPGRADE_MENU_KEEP = $opt{b} if ($opt{b} && $opt{b} =~ /^\d+$/);
 $NMUUtil::UPGRADE_ROOTFS_KEEP = $opt{k} if ($opt{k} && $opt{k} =~ /^\d+$/);
 
 # only dist-upgrade is supported at the moment
+$aptcmd =~ s/^\s+//;
+$aptcmd = "dist-upgrade" if ($aptcmd =~ /^upgrade/);
+
 my $dpkg_opts = '-o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold"';
 my $upgrade_cmd = "$dpkg_opts $aptcmd @packages";
 
