@@ -33,6 +33,7 @@ COMPONENT_ARCHIVE_HASH=	\
     sha256:53dbf1945401c43f4ce19c1971baecdbf8bc32e0f37fa3f49fe7b6992d0d2030
 COMPONENT_ARCHIVE_URL=	http://ftp.gnu.org/pub/gnu/automake/$(COMPONENT_ARCHIVE)
 COMPONENT_BUGDB=	utility/automake
+DEBVERSION=40-0-2
 
 include $(WS_TOP)/make-rules/prep.mk
 include $(WS_TOP)/make-rules/configure.mk

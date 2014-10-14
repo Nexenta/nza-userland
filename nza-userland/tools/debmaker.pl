@@ -745,9 +745,9 @@ foreach my $manifest_file (@ARGV) {
                 # FIXME : mediator-{version,implementation,priority}
                 # cannot be mapped to update-alternatives
                 $postinst_configure .=
-                    '$CHROOT update-alternatives --install ' . "$l $n $p 10 || true\n"; # FIXME : random priority ;-)
+                    'update-alternatives --quiet --install ' . "$l $n $p 10 || true\n"; # FIXME : random priority ;-)
                 # FIXME : too many FIXMEs
-                $prerm .= 'if [ "$1" = remove ]; then $CHROOT update-alternatives --remove ' . "$n $p || true; fi\n";
+                $prerm .= 'if [ "$1" = remove ]; then update-alternatives --quiet --remove ' . "$n $p || true; fi\n";
             } else {
                 my_symlink $$link{'target'}, "$pkgdir/$$link{'path'}";
             }
