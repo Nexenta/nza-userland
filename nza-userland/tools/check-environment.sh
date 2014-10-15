@@ -151,6 +151,7 @@ check_pkg_list()
 		text-gnu-patch \
 		text-gnu-sed \
 		text-groff \
+		text-intltool \
 		text-texinfo \
 		developer-build-autoconf \
 		developer-build-automake-110 \
