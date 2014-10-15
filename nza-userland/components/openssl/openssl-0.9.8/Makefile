@@ -6,13 +6,13 @@ include ../../../make-rules/shared-macros.mk
 COMPILER = studio
 
 PATH=$(SPRO_VROOT)/bin:/usr/bin:/usr/gnu/bin:/usr/perl5/bin
-DEBVERSION = 40-0-9
+DEBVERSION = 40-0-10
 COMPONENT_NAME =	openssl
-COMPONENT_VERSION =	0.9.8za
+COMPONENT_VERSION =	0.9.8zc
 IPS_COMPONENT_VERSION = 0.9.8.26
 COMPONENT_SRC =		$(COMPONENT_NAME)-$(COMPONENT_VERSION)
 COMPONENT_ARCHIVE =	$(COMPONENT_SRC).tar.gz
-COMPONENT_ARCHIVE_HASH=	sha1:aadca1eb1a103a5536b24e1ed7e45051e2939731
+COMPONENT_ARCHIVE_HASH=	sha1:c7c4715b09d1b68aec564671afd7ec416edf764f
 COMPONENT_ARCHIVE_URL =	http://www.openssl.org/source/$(COMPONENT_ARCHIVE)
 
 include $(WS_TOP)/make-rules/prep.mk
@@ -98,6 +98,25 @@ COMPONENT_PRE_BUILD_ACTION = \
 build:		$(BUILD_32_and_64)
 		(    elfedit -e 'cap:hw1 -and -cmp sse2' -e 'cap:hw1 -and -cmp mmx' $(BUILD_DIR_32)/libcrypto.so.0.9.8; )
 
+
+# Build openssl-1 if not yet built.
+$(COMPONENT_DIR)/../openssl-1.0.1/build/$(MACH32)/.built \
+$(COMPONENT_DIR)/../openssl-1.0.1/build/$(MACH64)/.built:
+	$(GMAKE) -C $(COMPONENT_DIR)/../openssl-1.0.1 build
+
+$(PROTO_DIR)/.openssl-1.0.1:	$(COMPONENT_DIR)/../openssl-1.0.1/build/$(MACH32)/.built \
+				$(COMPONENT_DIR)/../openssl-1.0.1/build/$(MACH64)/.built
+	$(MKDIR) $(PROTO_DIR)/lib/$(MACH64)
+	$(CP) -a $(COMPONENT_DIR)/../openssl-1.0.1/build/$(MACH32)/libssl.so.1.0.0 $(PROTO_DIR)/lib
+	$(CP) -a $(COMPONENT_DIR)/../openssl-1.0.1/build/$(MACH32)/libcrypto.so.1.0.0 $(PROTO_DIR)/lib
+	$(CP) -a $(COMPONENT_DIR)/../openssl-1.0.1/build/$(MACH64)/libssl.so.1.0.0 $(PROTO_DIR)/lib/$(MACH64)
+	$(CP) -a $(COMPONENT_DIR)/../openssl-1.0.1/build/$(MACH64)/libcrypto.so.1.0.0 $(PROTO_DIR)/lib/$(MACH64)
+	$(TOUCH) $@
+	
+
+
+
+
 # OpenSSL uses sections man[1357] by default so we must create the man
 # directories we use for OpenSSL man pages in Solaris. Note that we patch the
 # OpenSSL man page install script to use the correct directories.
@@ -124,7 +143,7 @@ $(INSTALL_64): COMPONENT_POST_INSTALL_ACTION= \
 # from the tarball which would corrupt some man pages.
 COMPONENT_INSTALL_ARGS += PATH=$(PATH) MANDIR=/usr/share/man
 
-install:	$(INSTALL_32)
+install:	$(INSTALL_32) $(PROTO_DIR)/.openssl-1.0.1
 
 # We need to modify the default lint flags to include patched opensslconf.h from
 # the build directory. If we do not do that, lint will complain about md2.h
