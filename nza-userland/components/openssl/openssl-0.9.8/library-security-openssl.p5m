@@ -73,8 +73,8 @@ file ../../i86/libcrypto.so.0.9.8 path=lib/libcrypto.so.0.9.8
 file ../../amd64/libssl.so.0.9.8	path=lib/amd64/libssl.so.0.9.8
 file ../../amd64/libcrypto.so.0.9.8	path=lib/amd64/libcrypto.so.0.9.8 
 
-#file path=usr/bin/openssl-1.0.1
-#file path=usr/bin/amd64/openssl-1.0.1
+file path=usr/bin/openssl-1.0.1
+file path=usr/bin/amd64/openssl-1.0.1
 file path=lib/libcrypto.so.1.0.0
 file path=lib/libssl.so.1.0.0
 file path=lib/amd64/libcrypto.so.1.0.0

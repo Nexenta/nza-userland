@@ -107,6 +107,9 @@ $(COMPONENT_DIR)/../openssl-1.0.1/build/$(MACH64)/.built:
 $(PROTO_DIR)/.openssl-1.0.1:	$(COMPONENT_DIR)/../openssl-1.0.1/build/$(MACH32)/.built \
 				$(COMPONENT_DIR)/../openssl-1.0.1/build/$(MACH64)/.built
 	$(MKDIR) $(PROTO_DIR)/lib/$(MACH64)
+	$(CP) -a $(COMPONENT_DIR)/../openssl-1.0.1/build/$(MACH32)/apps/openssl $(PROTO_DIR)/usr/bin/openssl-1.0.1
+	$(MKDIR) $(PROTO_DIR)/usr/bin/$(MACH64)
+	$(CP) -a $(COMPONENT_DIR)/../openssl-1.0.1/build/$(MACH64)/apps/openssl $(PROTO_DIR)/usr/bin/$(MACH64)/openssl-1.0.1
 	$(CP) -a $(COMPONENT_DIR)/../openssl-1.0.1/build/$(MACH32)/libssl.so.1.0.0 $(PROTO_DIR)/lib
 	$(CP) -a $(COMPONENT_DIR)/../openssl-1.0.1/build/$(MACH32)/libcrypto.so.1.0.0 $(PROTO_DIR)/lib
 	$(CP) -a $(COMPONENT_DIR)/../openssl-1.0.1/build/$(MACH64)/libssl.so.1.0.0 $(PROTO_DIR)/lib/$(MACH64)

@@ -181,6 +181,6 @@
 +#</VirtualHost>                                  
  
 -</VirtualHost>                                  
-+# Disable Weak Ciphers and SSL 2.0
-+SSLProtocol -ALL +SSLv3 +TLSv1
-+SSLCipherSuite ALL:!ADH:RC4+RSA:+HIGH:+MEDIUM:!LOW:!RC4:!SSLv2:!EXPORT
++# Disable Weak Ciphers and SSL 2,3
++SSLProtocol -ALL +TLSv1
++SSLCipherSuite ALL:!ADH:RC4+RSA:+HIGH:+MEDIUM:!LOW:!RC4:!SSLv2:!SSLv3:!EXPORT
