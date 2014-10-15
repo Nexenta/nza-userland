@@ -123,7 +123,6 @@ check_pkg_list()
 		developer-gcc-gcc \
 		developer-library-lint \
 		system-library-gcc-44-runtime \
-		developer-gnome-gettext \
 		developer-java-jdk \
 		developer-java-junit \
 		developer-lexer-flex \
