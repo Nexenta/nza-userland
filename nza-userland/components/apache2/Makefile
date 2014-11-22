@@ -40,7 +40,7 @@ include ../../make-rules/configure.mk
 include ../../make-rules/ips.mk
 
 PATCH_LEVEL=0
-DEBVERSION:=40-0-7
+DEBVERSION:=40-0-8
 
 # Some patches need configure script re-creation.
 COMPONENT_PREP_ACTION +=($(CP) mod_sed/* $(@D)/modules/filters);
