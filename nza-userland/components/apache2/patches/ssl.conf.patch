@@ -14,8 +14,8 @@
 +# Enable Solaris crypto framework
 +#
 +SSLCryptoDevice pkcs11
- 
- 
+
+
  #
 @@ -32,9 +37,9 @@
  # standard HTTP port (see above) and to the HTTPS port
@@ -26,32 +26,32 @@
  #
 -Listen @@SSLPort@@
 +#Listen 443
- 
+
  ##
  ##  SSL Global Context
 @@ -58,41 +63,41 @@
  #   Inter-Process Session Cache:
- #   Configure the SSL Session Cache: First the mechanism 
+ #   Configure the SSL Session Cache: First the mechanism
  #   to use and second the expiring timeout (in seconds).
 -#SSLSessionCache         "dbm:@exp_runtimedir@/ssl_scache"
 -SSLSessionCache        "shmcb:@exp_runtimedir@/ssl_scache(512000)"
 +#SSLSessionCache         "dbm:/var/run/apache2/2.2/ssl_scache"
 +SSLSessionCache        "shmcb:/var/run/apache2/2.2/ssl_scache(512000)"
  SSLSessionCacheTimeout  300
- 
+
  #   Semaphore:
  #   Configure the path to the mutual exclusion semaphore the
- #   SSL engine uses internally for inter-process synchronization. 
+ #   SSL engine uses internally for inter-process synchronization.
 -SSLMutex  "file:@exp_runtimedir@/ssl_mutex"
 +SSLMutex  "file:/var/run/apache2/2.2/ssl_mutex"
- 
+
  ##
  ## SSL Virtual Host Context
  ##
- 
+
 -<VirtualHost _default_:@@SSLPort@@>
 +#<VirtualHost _default_:443>
- 
+
  #   General setup for the virtual host
 -DocumentRoot "@exp_htdocsdir@"
 -ServerName www.example.com:@@SSLPort@@
@@ -63,24 +63,24 @@
 +#ServerAdmin you@example.com
 +#ErrorLog "/var/apache2/2.2/logs/error_log"
 +#TransferLog "/var/apache2/2.2/logs/access_log"
- 
+
  #   SSL Engine Switch:
  #   Enable/Disable SSL for this virtual host.
 -SSLEngine on
 +#SSLEngine on
- 
+
  #   SSL Protocol support:
  #   List the protocol versions which clients are allowed to
  #   connect with. Disable SSLv2 by default (cf. RFC 6176).
 -SSLProtocol all -SSLv2
 +#SSLProtocol all -SSLv2
- 
+
  #   SSL Cipher Suite:
  #   List the ciphers that the client is permitted to negotiate.
  #   See the mod_ssl documentation for a complete list.
 -SSLCipherSuite HIGH:MEDIUM:!aNULL:!MD5
 +#SSLCipherSuite HIGH:MEDIUM:!aNULL:!MD5
- 
+
  #   Speed-optimized SSL Cipher configuration:
  #   If speed is your main concern (on busy HTTPS servers e.g.),
 @@ -117,9 +122,9 @@
@@ -93,7 +93,7 @@
 +#SSLCertificateFile "/etc/apache2/2.2/server.crt"
 +#SSLCertificateFile "/etc/apache2/2.2/server-dsa.crt"
 +#SSLCertificateFile "/etc/apache2/2.2/server-ecc.crt"
- 
+
  #   Server Private Key:
  #   If the key is not combined with the certificate, use this
 @@ -127,9 +132,9 @@
@@ -106,7 +106,7 @@
 +#SSLCertificateKeyFile "/etc/apache2/2.2/server.key"
 +#SSLCertificateKeyFile "/etc/apache2/2.2/server-dsa.key"
 +#SSLCertificateKeyFile "/etc/apache2/2.2/server-ecc.key"
- 
+
  #   Server Certificate Chain:
  #   Point SSLCertificateChainFile at a file containing the
 @@ -138,7 +143,7 @@
@@ -115,7 +115,7 @@
  #   certificate for convenience.
 -#SSLCertificateChainFile "@exp_sysconfdir@/server-ca.crt"
 +#SSLCertificateChainFile "/etc/apache2/2.2/server-ca.crt"
- 
+
  #   Certificate Authority (CA):
  #   Set the CA certificate verification path where to find CA
 @@ -147,8 +152,8 @@
@@ -126,7 +126,7 @@
 -#SSLCACertificateFile "@exp_sysconfdir@/ssl.crt/ca-bundle.crt"
 +#SSLCACertificatePath "/etc/apache2/2.2/ssl.crt"
 +#SSLCACertificateFile "/etc/apache2/2.2/ssl.crt/ca-bundle.crt"
- 
+
  #   Certificate Revocation Lists (CRL):
  #   Set the CA revocation path where to find CA CRLs for client
 @@ -157,8 +162,8 @@
@@ -137,12 +137,12 @@
 -#SSLCARevocationFile "@exp_sysconfdir@/ssl.crl/ca-bundle.crl"
 +#SSLCARevocationPath "/etc/apache2/2.2/ssl.crl"
 +#SSLCARevocationFile "/etc/apache2/2.2/ssl.crl/ca-bundle.crl"
- 
+
  #   Client Authentication (Type):
  #   Client certificate verification type and depth.  Types are
 @@ -211,12 +216,12 @@
  #     This enables optimized SSL connection renegotiation handling when SSL
- #     directives are used in per-directory context. 
+ #     directives are used in per-directory context.
  #SSLOptions +FakeBasicAuth +ExportCertData +StrictRequire
 -<FilesMatch "\.(cgi|shtml|phtml|php)$">
 -    SSLOptions +StdEnvVars
@@ -156,7 +156,7 @@
 +#<Directory "/var/apache2/2.2/cgi-bin">
 +#    SSLOptions +StdEnvVars
 +#</Directory>
- 
+
  #   SSL Protocol Adjustments:
  #   The safe and default but still SSL/TLS standard compliant shutdown
 @@ -242,14 +247,18 @@
@@ -169,7 +169,7 @@
 +#BrowserMatch "MSIE [2-5]" \
 +#         nokeepalive ssl-unclean-shutdown \
 +#         downgrade-1.0 force-response-1.0
- 
+
  #   Per-Server Logging:
  #   The home of a custom SSL log file. Use this when you want a
  #   compact non-error SSL logfile on a virtual host basis.
@@ -178,9 +178,9 @@
 +#CustomLog "/var/apache2/2.2/logs/ssl_request_log" \
 +#          "%t %h %{SSL_PROTOCOL}x %{SSL_CIPHER}x \"%r\" %b"
 +#
-+#</VirtualHost>                                  
- 
--</VirtualHost>                                  
-+# Disable Weak Ciphers and SSL 2,3
++#</VirtualHost>
+
+-</VirtualHost>
++# Disable Weak Ciphers
 +SSLProtocol -ALL +TLSv1
-+SSLCipherSuite ALL:!ADH:RC4+RSA:+HIGH:+MEDIUM:!LOW:!RC4:!SSLv2:!SSLv3:!EXPORT
++SSLCipherSuite TLSv1:!ADH:!NULL:!RC4:+HIGH:+MEDIUM:!LOW:!EXPORT
