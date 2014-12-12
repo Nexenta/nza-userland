@@ -3,7 +3,7 @@
 NZA_KERNEL       = nza-kernel
 NZA_CLOSED       = nza-closed
 SUNSTUDIO_PATH   = /opt/SUNWspro
-SUN_GATE         = http://dlc.sun.com/osol/on/downloads/20100817
+SUN_GATE         = http://10.3.10.246/illumos-gate
 CLOSED_BINARY1   = on-closed-bins.i386.tar.bz2
 CLOSED_BINARY2   = on-closed-bins-nd.i386.tar.bz2
 
