@@ -1,0 +1,20 @@
+<?xml version='1.0'?>
+<!DOCTYPE service_bundle SYSTEM '/usr/share/lib/xml/dtd/service_bundle.dtd.1'>
+<service_bundle type='manifest' name='export'>
+  <service name='network/snmptrapd' type='service' version='0'>
+    <create_default_instance enabled='false'/>
+    <exec_method name='start' type='method' exec='/usr/sbin/snmptrapd -Lf /var/log/snmptraps.log -A -p /var/run/snmptrapd.pid' timeout_seconds='60'>
+      <method_context>
+        <method_environment>
+          <envvar name='SNMPCONFPATH' value='/etc/net-snmp/snmp:/var/net-snmp'/>
+        </method_environment>
+      </method_context>
+    </exec_method>
+    <exec_method name='stop' type='method' exec=':kill' timeout_seconds='10'/>
+    <template>
+      <common_name>
+        <loctext xml:lang='C'>SNMP traps receiver</loctext>
+      </common_name>
+    </template>
+  </service>
+</service_bundle>
