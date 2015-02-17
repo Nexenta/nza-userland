@@ -89,6 +89,7 @@ adjust-scripts: copy-tools
 	echo "export DEB_MAINTAINER='$(DEB_MAINTAINER)'" >> $(CODEMGR_WS)/illumos.sh
 	echo "export DPKG_BUILD_FLAGS='-b -d -uc'" >> $(CODEMGR_WS)/illumos.sh
 	echo "export PKGARCHIVEAPT='${CODEMGR_WS}/packages/${MACH}/apt'" >> $(CODEMGR_WS)/illumos.sh
+	echo "export JAVA_ROOT='/usr/jdk/instances/openjdk1.7.0'" >> $(CODEMGR_WS)/illumos.sh
 	touch $@
 
 setrelease: adjust-scripts
