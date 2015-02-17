@@ -275,3 +275,4 @@ file path=usr/jdk/instances/openjdk1.7.0/sample/scripting/scriptpad/src/scripts/
 file path=usr/jdk/instances/openjdk1.7.0/sample/scripting/scriptpad/src/scripts/textcolor.js
 file path=usr/jdk/instances/openjdk1.7.0/src.zip
 license openjdk.license license="GPLv2 with Classpath Exception"
+depend type=require fmri=pkg:/runtime/java/openjdk7
