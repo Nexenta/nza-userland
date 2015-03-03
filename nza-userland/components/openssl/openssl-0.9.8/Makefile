@@ -4,15 +4,16 @@
 include ../../../make-rules/shared-macros.mk
 
 COMPILER = studio
-
+# we need patched ss12
+SPRO_VROOT = $(SPRO_ROOT)
 PATH=$(SPRO_VROOT)/bin:/usr/bin:/usr/gnu/bin:/usr/perl5/bin
-DEBVERSION = 40-0-10
+DEBVERSION = 40-0-12
 COMPONENT_NAME =	openssl
-COMPONENT_VERSION =	0.9.8zc
+COMPONENT_VERSION =	0.9.8zd
 IPS_COMPONENT_VERSION = 0.9.8.26
 COMPONENT_SRC =		$(COMPONENT_NAME)-$(COMPONENT_VERSION)
 COMPONENT_ARCHIVE =	$(COMPONENT_SRC).tar.gz
-COMPONENT_ARCHIVE_HASH=	sha1:c7c4715b09d1b68aec564671afd7ec416edf764f
+COMPONENT_ARCHIVE_HASH=	sha1:b9a6356d5385e0bd6b8af660576bfdef7b45666e
 COMPONENT_ARCHIVE_URL =	http://www.openssl.org/source/$(COMPONENT_ARCHIVE)
 
 include $(WS_TOP)/make-rules/prep.mk
