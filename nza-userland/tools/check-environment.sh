@@ -161,6 +161,7 @@ check_pkg_list()
 		library-apr-util-apr-ldap \
 		library-libpgm-5-1 \
 		crypto-ca-certificates \
+		developer-build-makedepend \
 	; do
 		_check_pkg $p
 	done
