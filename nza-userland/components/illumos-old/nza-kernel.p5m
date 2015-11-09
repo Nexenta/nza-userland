@@ -1,0 +1,56 @@
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+# Copyright (c) 2012-2013, Nexenta Systems, Inc. All rights reserved.
+#
+
+<transform file path=usr.*/man/.+                -> default mangler.man.stability volatile>
+
+set name=pkg.fmri \
+    value=pkg:/developer/build/nza-kernel@1,$(BUILD_VERSION)
+set name=pkg.summary value="All stuff to build nza-kernel gate"
+set name=org.opensolaris.consolidation value=$(CONSOLIDATION)
+set name=variant.opensolaris.zone value=global
+
+depend fmri=pkg:/consolidation/developer/illumos-incorporation type=require
+depend fmri=pkg:/reprepro type=require
+depend fmri=pkg:/developer/illumos/gcc type=require
+
+dir path=usr
+dir path=usr/src
+dir path=usr/src/nza-kernel
+dir path=usr/src/nza-kernel/patches
+dir path=usr/src/nza-kernel/patches/toyou
+dir path=opt
+dir path=opt/onbld
+dir path=opt/onbld/bin
+dir path=opt/onbld/etc
+
+
+file src/Makefile path=usr/src/nza-kernel/Makefile
+file src/Makefile.deb path=usr/src/nza-kernel/Makefile.deb
+file src/onbld/MFT.pm path=opt/onbld/bin/MFT.pm mode=0644
+file src/onbld/ips2deb.pl path=opt/onbld/bin/ips2deb.pl mode=0755
+file src/onbld/onu-deb path=opt/onbld/bin/onu-deb mode=0755
+file src/onbld/ips2deb.replaces path=opt/onbld/bin/ips2deb.replaces mode=0644
+file src/onbld/ips2deb.priorities path=opt/onbld/bin/ips2deb.priorities mode=0644
+file src/onbld/ips2deb.versions path=opt/onbld/bin/ips2deb.versions mode=0644
+file src/onbld/distributions.apt path=opt/onbld/etc/distributions.apt
+file src/patches/toyou/toyou.patch path=usr/src/nza-kernel/patches/toyou mode=0644

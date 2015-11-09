@@ -1,0 +1,12 @@
+# Copyright 2010-2014 Nexenta Systems, Inc. All rights reserved.
+# Format:
+# <pkg name>:<pkg1[, pkg2, ...]>
+
+system-data-zoneinfo:sunwcs
+library-perl-5-sun-solaris-512:library-perl-5-sun-solaris
+library-perl-5-sun-solaris-510:library-perl-510-sun-solaris
+system-library-libmtsk:system-library-math
+text-mantools:text-doctools
+system-man:text-mantools
+system-kernel:driver-network-platform (<< 40-0-23)
+runtime-perl-510-module-sun-solaris: library-perl-5-sun-solaris-510, library-perl-5-sun-solaris-512

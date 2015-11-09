@@ -1,0 +1,39 @@
+diff --git a/usr/src/lib/libiscsit/common/libiscsit.h b/usr/src/lib/libiscsit/common/libiscsit.h
+index 704c790..98327ef 100644
+--- a/usr/src/lib/libiscsit/common/libiscsit.h
++++ b/usr/src/lib/libiscsit/common/libiscsit.h
+@@ -52,7 +52,7 @@ extern "C" {
+  * Other distros using it need to change accordingly.
+  */
+ 
+-#define	DEFAULT_IQN	"iqn.2010-08.org.illumos:"
++#define	DEFAULT_IQN	"iqn.1997-03.cn.com.toyou:"
+ 
+ /*
+  * Object Hierarchy
+diff --git a/usr/src/uts/common/io/comstar/lu/stmf_sbd/sbd.c b/usr/src/uts/common/io/comstar/lu/stmf_sbd/sbd.c
+index e1bace5..21dcebc 100644
+--- a/usr/src/uts/common/io/comstar/lu/stmf_sbd/sbd.c
++++ b/usr/src/uts/common/io/comstar/lu/stmf_sbd/sbd.c
+@@ -112,7 +112,7 @@ static dev_info_t	*sbd_dip;
+ static uint32_t		sbd_lu_count = 0;
+ 
+ /* Global property settings for the logical unit */
+-char sbd_vendor_id[]	= "NEXENTA ";
++char sbd_vendor_id[]	= "TOYOU   ";
+ char sbd_product_id[]	= "COMSTAR         ";
+ char sbd_revision[]	= "1.0 ";
+ char *sbd_mgmt_url = NULL;
+diff --git a/usr/src/uts/common/io/scsi/adapters/iscsi/iscsid.c b/usr/src/uts/common/io/scsi/adapters/iscsi/iscsid.c
+index 075f4e8..70027e7 100644
+--- a/usr/src/uts/common/io/scsi/adapters/iscsi/iscsid.c
++++ b/usr/src/uts/common/io/scsi/adapters/iscsi/iscsid.c
+@@ -2001,7 +2001,7 @@ iscsid_set_default_initiator_node_settings(iscsi_hba_t *ihp, boolean_t minimal)
+ 		    ISCSI_MAX_NAME_LEN);
+ 	} else {
+ 		(void) snprintf((char *)ihp->hba_name, ISCSI_MAX_NAME_LEN,
+-		    "iqn.2005-07.com.nexenta:01:");
++		    "iqn.1997-03.cn.com.toyou:01:");
+ 
+ 		(void) localetheraddr(NULL, &eaddr);
+ 		for (i = 0; i <  ETHERADDRL; i++) {
