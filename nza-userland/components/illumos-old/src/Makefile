@@ -7,7 +7,7 @@ SUN_GATE         = http://10.3.10.246/illumos-gate
 CLOSED_BINARY1   = on-closed-bins.i386.tar.bz2
 CLOSED_BINARY2   = on-closed-bins-nd.i386.tar.bz2
 
-export DEB_VERSION     ?= 40-4-0
+export DEB_VERSION     ?= 40-4-1
 export DEB_MAINTAINER  ?= Nexenta Systems <maintainer@nexenta.com>
 
 NZA_ROOT         = $(CURDIR)
@@ -16,11 +16,11 @@ NZA_KERNEL_PATH ?= ssh://git@stash.nexenta.com:7999/os/nza-kernel.git
 NZA_CLOSED_PATH ?= ssh://git@stash.nexenta.com:7999/os/nza-closed.git
 
 # Override this, i.e. with stable-4.0
-NZA_BRANCH_SPEC ?= release-4.0.4
-NZA_CLOSED_BRANCH_SPEC ?= release-4.0.4
+NZA_BRANCH_SPEC ?= release-4.0.4-FP
+NZA_CLOSED_BRANCH_SPEC ?= release-4.0.4-FP
 CUR_REV          = $(CODEMGR_WS)/.rev
 
-OS_NAME   = NexentaOS_4
+OS_NAME   ?= NexentaOS_4
 VERSION   = $(OS_NAME):$(shell cat $(CUR_REV))
 RELEASE_CM= \"@(\#)SunOS '\$$RELEASE' '\$$VERSION' '\$$RELEASE_DATE'\"
 DEV_CM    = \"@(\#)SunOS Developer: '\$$LOGNAME' '\$$GATE' $(shell date +%Y-%m-%d)\"
@@ -50,12 +50,7 @@ define applypatches
 	fi;
 endef
 
-all:
-	@echo "Please, select the available options:"
-	@echo "PATCHSET=name_of_patchset apply-patches"
-	@echo "build-releasekernel-gcc"
-	@echo "build-debugkernel-gcc"
-	@echo "build-packages'"
+all: help
 
 checktools:
 	if test ! -d $(SUNSTUDIO_PATH)/bin ; then \
@@ -176,6 +171,7 @@ clean:
 	rm -f build-packages
 	rm -f build-releasekernel-gcc build-debugkernel-gcc
 	rm -f setss setgcc
+	rm -f apply-patches
 	$(MAKE) -f Makefile.deb clean
 	rm -rf $(CODEMGR_WS)
 
@@ -189,6 +185,7 @@ help:
 	@echo "                 build-debugkernel-gcc
 	@echo "                 build-packages
 	@echo "                 build-onepackage DEB=PACKAGE_NAME
+	@echo "                 PATCHSET=name_of_patchset apply-patches
 	@echo "                 clean
 	@echo "                 help"
 	@echo ""
@@ -217,4 +214,7 @@ help:
 	@echo "	   It is \"Nexenta Systems <maintainer@nexenta.com>\" by default."
 	@echo "DEB:"
 	@echo "           Name of package, i.e. \"gmake build-onepackage DEB=system-tnf\""
+	@echo ""
+	@echo "PATCHSET:"
+	@echo "           Name of patch set, i.e. \"PATCHSET=name_of_patchset gmake apply-patches\""
 	@echo ""
