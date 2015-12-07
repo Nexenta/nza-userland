@@ -120,8 +120,24 @@ file path=usr/sbin/collectdmon
 file path=usr/bin/collectd-nagios
 file path=usr/bin/collectdctl
 file path=usr/bin/collectd-tg
-file path=etc/collectd.conf
+
+file files/collectd.conf path=etc/collectd.conf mode=0644
+
+file files/exec_cpu.pl path=usr/lib/collectd/exec_cpu.pl mode=0555
+file files/exec_iostat.pl path=usr/lib/collectd/exec_iostat.pl mode=0555
+file files/exec_mem.pl path=usr/lib/collectd/exec_mem.pl mode=0555
+file files/exec_net.pl path=usr/lib/collectd/exec_net.pl mode=0555
+file files/exec_nfsv3.pl path=usr/lib/collectd/exec_nfsv3.pl mode=0555
+file files/exec_nfsv4.pl path=usr/lib/collectd/exec_nfsv4.pl mode=0555
+file files/exec_sderr.pl path=usr/lib/collectd/exec_sderr.pl mode=0555
+file files/exec_smbmon.py path=usr/lib/collectd/exec_smbmon.py mode=0555
+file files/exec_smb2mon.py path=usr/lib/collectd/exec_smb2mon.py mode=0555
+file files/exec_tcp.pl path=usr/lib/collectd/exec_tcp.pl mode=0555
+file files/smb2mon.d path=usr/lib/collectd/smb2mon.d mode=0555
+file files/exec_cpu.pl path=usr/lib/collectd/exec_cpu.pl mode=0555
+file files/smbmon.d path=usr/lib/collectd/smbmon.d mode=0555
 
 file collectd.xml path=lib/svc/manifest/network/collectd.xml
 file svc-collectd path=lib/svc/method/svc-collectd
 user username=collectd group=staff home-dir=/export/home/collectd
+dir path=/export/home/collectd mode=0700 owner=collectd group=staff
