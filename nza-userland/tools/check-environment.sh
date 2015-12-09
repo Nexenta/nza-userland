@@ -162,6 +162,7 @@ check_pkg_list()
 		library-libpgm-5-1 \
 		crypto-ca-certificates \
 		developer-build-makedepend \
+		developer-gnome-gettext \
 	; do
 		_check_pkg $p
 	done
