@@ -1,0 +1,112 @@
+# Copyright (c) 2014, Nexenta Systems, Inc. All rights reserved.
+
+NZA_KERNEL       = nza-kernel
+NZA_ROOT         = $(CURDIR)
+CODEMGR_WS       = $(NZA_ROOT)/$(NZA_KERNEL)
+
+DEB_VERSION     ?= 40-0-0
+DEB_MAINTAINER  ?= Nexenta Systems <maintainer@nexenta.com>
+
+# No source packages:
+DPKG_BUILD_FLAGS = -b
+
+MACH = i386
+
+MANIFESTDIR = $(CODEMGR_WS)/usr/src/pkg/packages.$(MACH)
+
+PKGROOT = $(CODEMGR_WS)/proto/root_$(MACH)
+TOOLSROOT = $(CODEMGR_WS)/usr/src/tools/proto/root_$(MACH)-nd
+
+# APT repository
+APTDIR ?= $(NZA_ROOT)/apt
+
+# All debs, stamps are here:
+DEBDIR = $(NZA_ROOT)/debs
+
+PKGMOG := $(shell cd $(MANIFESTDIR) && ls *.mog)
+PKGDEB := $(PKGMOG:%.mog=$(DEBDIR)/%.deb-stamp)
+
+
+deb: $(PKGDEP) $(PKGDEB)
+apt: $(DEBDIR)/.apt-stamp
+clean:
+	rm -rf $(APTDIR) $(DEBDIR)
+onedeb:
+	if test ! -f $(MANIFESTDIR)/$(DEB).mog; then \
+	    echo "No $(DEB).mog found in $(MANIFESTDIR)" ; \
+	    exit 1; \
+	fi;
+	/opt/onbld/bin/ips2deb.pl --noverbose \
+	-p "$(MANIFESTDIR)/$(DEB).mog" \
+	-d $(PKGROOT) \
+	-d $(TOOLSROOT) \
+	-o "$(DEBDIR)" \
+	--mfg "$(MANIFESTDIR)" \
+	--mfe "mog" \
+	--maintainer "$(DEB_MAINTAINER)" \
+	--pv "$(DEB_VERSION)" \
+	--category "illumos" || echo "Never mind"
+
+	if [ -d "$(DEBDIR)/$(DEB)" ]; then \
+	    echo "Building pkg: $(DEB)" ; \
+	    cd "$(DEBDIR)/$(DEB)" ; \
+	    PATH=/usr/gnu/bin:/usr/bin:$$PATH \
+			dpkg-buildpackage $(DPKG_BUILD_FLAGS) > ../$(DEB).build.log 2>&1 ; \
+	fi
+	echo "processing $(DEB)"
+	d=`awk '/^Package: /{print $$2}' $(DEBDIR)/$(DEB)/debian/control` ; \
+	/usr/bin/reprepro -b $(APTDIR) remove nza-kernel $${d} ; \
+	/usr/bin/reprepro -b $(APTDIR) includedeb nza-kernel $(DEBDIR)/$${d}_$(DEB_VERSION)_solaris-$(MACH).deb > $(DEBDIR)/$${d}.log ; \
+	/usr/bin/reprepro -b $(APTDIR) export ;
+
+.PHONY: deb apt clean onedeb
+
+$(DEBDEP)/.dep-stamp:
+	for mog in $(MANIFESTDIR)/*.mog; do \
+		pkg=`echo $$mog | awk -F/ '{print $$NF}'|cut -d. -f1`; \
+		echo "Generating dependencies for $$pkg"; \
+		/usr/bin/pkgdepend generate -d $(PKGROOT) -m -D 'PLATFORM=i86pc' \
+		-D 'ISALIST=amd64'  -D 'ISALIST=i386' $$mog  > $(MANIFESTDIR)/$$pkg.dep 2>&1; \
+	done
+
+$(DEBDIR)/%.deb-stamp: $(MANIFESTDIR)/%.mog $(DEBDIR)/.dir-stamp $(DEBDEP)/.dep-stamp
+	/opt/onbld/bin/ips2deb.pl --noverbose \
+	-p $< \
+	-d $(PKGROOT) \
+	-d $(TOOLSROOT) \
+	-o "$(DEBDIR)" \
+	--mfg "$(MANIFESTDIR)" \
+	--mfe "mog" \
+	--maintainer "$(DEB_MAINTAINER)" \
+	--pv "$(DEB_VERSION)" \
+	--category "illumos" || (echo "Error while processing: $<"; exit 1)
+
+	d=`echo $(<F:%.mog=%)` ; \
+	if [ -d "$(DEBDIR)/$$d" ]; then \
+	    echo "Building pkg: $$d" ; \
+	    cd "$(DEBDIR)/$$d" ; \
+	    PATH=/usr/gnu/bin:/usr/bin:$$PATH \
+			dpkg-buildpackage $(DPKG_BUILD_FLAGS) > ../$$d.build.log 2>&1 ; \
+	fi
+
+	touch  $@
+
+$(DEBDIR)/.deb-commit-stamp: $(PKGDEB) $(APTDIR)/conf/distributions
+	for p in $(DEBDIR)/*.deb; do \
+		echo "processing $$p"; \
+		/usr/bin/reprepro -b $(APTDIR) includedeb nza-kernel $$p > $$p.log;  \
+	done
+	touch $@
+
+$(DEBDIR)/.apt-stamp: $(DEBDIR)/.deb-commit-stamp
+	/usr/bin/reprepro -b $(APTDIR) export
+	touch $@
+
+$(APTDIR)/conf/distributions: /opt/onbld/etc/distributions.apt
+	mkdir -p $(@D)
+	cp -f $< $@
+
+$(DEBDIR)/.dir-stamp:
+	mkdir -p $(@D)
+	touch $@
+
