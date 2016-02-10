@@ -7,6 +7,11 @@ case "$1" in
 	    mkdir -p /export/home/collectd
 	    chown collectd:staff /export/home/collectd
         fi
+
+	if grep -q XXX_HOSTNAME_XXX /etc/collectd.conf; then
+	    sed -i -e "s/XXX_HOSTNAME_XXX/$(hostname)/" /etc/collectd.conf > /dev/null 2>&1
+	fi
+
         echo "Starting $prog "
         /usr/sbin/collectd
         ;;
