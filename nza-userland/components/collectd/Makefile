@@ -31,7 +31,7 @@ COMPONENT_SRC          := collectd-$(COMPONENT_VERSION)
 COMPONENT_ARCHIVE      := collectd-$(COMPONENT_VERSION).tar.bz2
 COMPONENT_ARCHIVE_HASH := sha1:cea47e3936ed081bd71efacf7ba825fc837dc347
 COMPONENT_ARCHIVE_URL  := http://collectd.org/files/$(COMPONENT_ARCHIVE)
-DEBVERSION:=40-0-2
+DEBVERSION:=40-0-3
 
 include $(WS_TOP)/make-rules/prep.mk
 include $(WS_TOP)/make-rules/configure.mk
