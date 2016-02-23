@@ -8,9 +8,7 @@ case "$1" in
 	    chown collectd:staff /export/home/collectd
         fi
 
-	if grep -q XXX_HOSTNAME_XXX /etc/collectd.conf; then
-	    sed -i -e "s/XXX_HOSTNAME_XXX/$(hostname)/" /etc/collectd.conf > /dev/null 2>&1
-	fi
+	sed -i -e "s/Prefix \"nexenta.\(.*\).\"/Prefix \"nexenta.$(hostname).\"/" /etc/collectd.conf > /dev/null 2>&1
 
         echo "Starting $prog "
         /usr/sbin/collectd
