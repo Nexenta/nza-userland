@@ -35,6 +35,7 @@ COMPONENT_ARCHIVE_HASH= \
     sha256:42c54fd5cc5f05e5df909757d62307102a8ff1dfaf5c2626b1cb5f2ecd009e57
 COMPONENT_ARCHIVE_URL=  $(COMPONENT_PROJECT_URL)dist/$(COMPONENT_ARCHIVE)
 COMPONENT_BUGDB=	utility/nmap
+DEBVERSION:=40-0-2
 
 include ../../make-rules/prep.mk
 include ../../make-rules/configure.mk
