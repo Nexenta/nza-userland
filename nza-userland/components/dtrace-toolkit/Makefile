@@ -29,7 +29,8 @@ COMPONENT_VERSION=	0.99
 COMPONENT_SRC=		$(COMPONENT_NAME)-$(COMPONENT_VERSION)
 COMPONENT_ARCHIVE=	$(COMPONENT_SRC).tar.gz
 COMPONENT_ARCHIVE_HASH=	sha1:c00cdefb539e499927490a8778d643a9659d4b30
-COMPONENT_ARCHIVE_URL=	http://www.brendangregg.com/$(COMPONENT_ARCHIVE)
+COMPONENT_ARCHIVE_URL=	http://www.brendangregg.com/DTraceToolkit/$(COMPONENT_ARCHIVE)
+DEBVERSION:=40-0-10
 
 include ../../make-rules/prep.mk
 include ../../make-rules/ips.mk

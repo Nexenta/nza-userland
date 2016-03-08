@@ -1104,6 +1104,8 @@ file custom/timein.sh path=opt/DTT/Bin/timein.sh mode=0755
 file custom/txg_monitor.v3.d path=opt/DTT/Bin/txg_monitor.v3.d mode=0755
 file custom/txg_realtime.d path=opt/DTT/Bin/txg_realtime.d mode=0755
 file custom/zfsio.d path=opt/DTT/Bin/zfsio.d mode=0755
+file custom/resilver_v4.d path=opt/DTT/Bin/resilver_v4.d mode=0755
+file custom/scrub_v4.d path=opt/DTT/Bin/scrub_v4.d mode=0755
 
 
 
