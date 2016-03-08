@@ -64,22 +64,22 @@ file path=usr/lib/gettext/hostname mode=0555
 file path=usr/lib/gettext/project-id mode=0555
 file path=usr/lib/gettext/urlget mode=0555
 file path=usr/lib/gettext/user-email mode=0555
-file path=usr/lib/libgettextlib-0.16.1.so mode=0555
-link path=usr/lib/libgettextlib.so target=libgettextlib-0.16.1.so
-link path=usr/lib/libgettextpo.so target=libgettextpo.so.0.3.0
-link path=usr/lib/libgettextpo.so.0 target=libgettextpo.so.0.3.0
-file path=usr/lib/libgettextpo.so.0.3.0 mode=0555
-file path=usr/lib/libgettextsrc-0.16.1.so mode=0555
-link path=usr/lib/libgettextsrc.so target=libgettextsrc-0.16.1.so
+file path=usr/lib/libgettextlib-0.19.6.so mode=0555
+link path=usr/lib/libgettextlib.so target=libgettextlib-0.19.6.so
+link path=usr/lib/libgettextpo.so target=libgettextpo.so.0.5.3
+link path=usr/lib/libgettextpo.so.0 target=libgettextpo.so.0.5.3
+file path=usr/lib/libgettextpo.so.0.5.3 mode=0555
+file path=usr/lib/libgettextsrc-0.19.6.so mode=0555
+link path=usr/lib/libgettextsrc.so target=libgettextsrc-0.19.6.so
 
 # Compatibility 
 dir  path=usr/lib/intltool/gettext-tools
 dir  path=usr/lib/intltool/gettext-tools/lib
 file usr/lib/charset.alias path=usr/lib/intltool/gettext-tools/lib/charset.alias
-link path=usr/lib/intltool/gettext-tools/lib/libgettextlib.so target=../../../libgettextlib-0.16.1.so
-link path=usr/lib/intltool/gettext-tools/lib/libgettextlib-0.16.1.so target=../../../libgettextlib-0.16.1.so
-link path=usr/lib/intltool/gettext-tools/lib/libgettextsrc.so target=../../../libgettextsrc-0.16.1.so
-link path=usr/lib/intltool/gettext-tools/lib/libgettextsrc-0.16.1.so target=../../../libgettextsrc-0.16.1.so
+link path=usr/lib/intltool/gettext-tools/lib/libgettextlib.so target=../../../libgettextlib-0.19.6.so
+link path=usr/lib/intltool/gettext-tools/lib/libgettextlib-0.19.6.so target=../../../libgettextlib-0.19.6.so
+link path=usr/lib/intltool/gettext-tools/lib/libgettextsrc.so target=../../../libgettextsrc-0.19.6.so
+link path=usr/lib/intltool/gettext-tools/lib/libgettextsrc-0.19.6.so target=../../../libgettextsrc-0.19.6.so
 link path=usr/lib/intltool/gettext-tools/msgmerge target=../../../bin/msgmerge
 link path=usr/lib/intltool/gettext-tools/recode-sr-latin target=../../../bin/recode-sr-latin
 link path=usr/lib/intltool/gettext-tools/xgettext target=../../../gnu/bin/xgettext
@@ -100,7 +100,6 @@ file path=usr/share/aclocal/lib-ld.m4
 file path=usr/share/aclocal/lib-link.m4
 file path=usr/share/aclocal/lib-prefix.m4
 file path=usr/share/aclocal/lock.m4
-file path=usr/share/aclocal/longdouble.m4
 file path=usr/share/aclocal/longlong.m4
 file path=usr/share/aclocal/nls.m4
 file path=usr/share/aclocal/po.m4
@@ -109,7 +108,6 @@ file path=usr/share/aclocal/progtest.m4
 file path=usr/share/aclocal/size_max.m4
 file path=usr/share/aclocal/stdint_h.m4
 file path=usr/share/aclocal/uintmax_t.m4
-file path=usr/share/aclocal/ulonglong.m4
 file path=usr/share/aclocal/visibility.m4
 file path=usr/share/aclocal/wchar_t.m4
 file path=usr/share/aclocal/wint_t.m4
@@ -1256,33 +1254,6 @@ file path=usr/share/doc/gettext/gettext_9.html
 file path=usr/share/doc/gettext/gettext_foot.html
 file path=usr/share/doc/gettext/gettext_toc.html
 file path=usr/share/doc/gettext/gettextize.1.html
-file path=usr/share/doc/gettext/javadoc1/AllNames.html
-file path=usr/share/doc/gettext/javadoc1/gnu.gettext.GettextResource.html
-file path=usr/share/doc/gettext/javadoc1/images/blue-ball-small.gif
-file path=usr/share/doc/gettext/javadoc1/images/blue-ball.gif
-file path=usr/share/doc/gettext/javadoc1/images/class-index.gif
-file path=usr/share/doc/gettext/javadoc1/images/constructor-index.gif
-file path=usr/share/doc/gettext/javadoc1/images/constructors.gif
-file path=usr/share/doc/gettext/javadoc1/images/cyan-ball-small.gif
-file path=usr/share/doc/gettext/javadoc1/images/cyan-ball.gif
-file path=usr/share/doc/gettext/javadoc1/images/error-index.gif
-file path=usr/share/doc/gettext/javadoc1/images/exception-index.gif
-file path=usr/share/doc/gettext/javadoc1/images/green-ball-small.gif
-file path=usr/share/doc/gettext/javadoc1/images/green-ball.gif
-file path=usr/share/doc/gettext/javadoc1/images/interface-index.gif
-file path=usr/share/doc/gettext/javadoc1/images/magenta-ball-small.gif
-file path=usr/share/doc/gettext/javadoc1/images/magenta-ball.gif
-file path=usr/share/doc/gettext/javadoc1/images/method-index.gif
-file path=usr/share/doc/gettext/javadoc1/images/methods.gif
-file path=usr/share/doc/gettext/javadoc1/images/package-index.gif
-file path=usr/share/doc/gettext/javadoc1/images/red-ball-small.gif
-file path=usr/share/doc/gettext/javadoc1/images/red-ball.gif
-file path=usr/share/doc/gettext/javadoc1/images/variable-index.gif
-file path=usr/share/doc/gettext/javadoc1/images/variables.gif
-file path=usr/share/doc/gettext/javadoc1/images/yellow-ball-small.gif
-file path=usr/share/doc/gettext/javadoc1/images/yellow-ball.gif
-file path=usr/share/doc/gettext/javadoc1/packages.html
-file path=usr/share/doc/gettext/javadoc1/tree.html
 file path=usr/share/doc/gettext/javadoc2/allclasses-frame.html
 file path=usr/share/doc/gettext/javadoc2/deprecated-list.html
 file path=usr/share/doc/gettext/javadoc2/gnu/gettext/GettextResource.html
@@ -1317,12 +1288,10 @@ file path=usr/share/doc/gettext/textdomain.3.html
 file path=usr/share/doc/gettext/tutorial.html
 file path=usr/share/doc/gettext/xgettext.1.html
 file path=usr/share/gettext/ABOUT-NLS
-file path=usr/share/gettext/archive.tar.gz
+file path=usr/share/gettext/archive.git.tar.gz
 file path=usr/share/gettext/config.rpath mode=0555
 file path=usr/share/gettext/gettext.h
-file path=usr/share/gettext/intl/COPYING.LIB-2.0
-file path=usr/share/gettext/intl/COPYING.LIB-2.1
-file path=usr/share/gettext/intl/ChangeLog
+file path=usr/share/gettext/intl/COPYING.LIB
 file path=usr/share/gettext/intl/Makefile.in
 file path=usr/share/gettext/intl/VERSION
 file path=usr/share/gettext/intl/bindtextdom.c
@@ -1345,7 +1314,7 @@ file path=usr/share/gettext/intl/intl-compat.c
 file path=usr/share/gettext/intl/intl-exports.c
 file path=usr/share/gettext/intl/l10nflist.c
 file path=usr/share/gettext/intl/langprefs.c
-file path=usr/share/gettext/intl/libgnuintl.h.in
+file path=usr/share/gettext/intl/libgnuintl.in.h
 file path=usr/share/gettext/intl/loadinfo.h
 file path=usr/share/gettext/intl/loadmsgcat.c
 file path=usr/share/gettext/intl/localcharset.c
@@ -1445,8 +1414,6 @@ file path=usr/share/locale/nl/LC_MESSAGES/gettext-runtime.mo
 file path=usr/share/locale/nl/LC_MESSAGES/gettext-tools.mo
 file path=usr/share/locale/nn/LC_MESSAGES/gettext-runtime.mo
 file path=usr/share/locale/nn/LC_MESSAGES/gettext-tools.mo
-file path=usr/share/locale/no/LC_MESSAGES/gettext-runtime.mo
-file path=usr/share/locale/no/LC_MESSAGES/gettext-tools.mo
 file path=usr/share/locale/pl/LC_MESSAGES/gettext-runtime.mo
 file path=usr/share/locale/pl/LC_MESSAGES/gettext-tools.mo
 file path=usr/share/locale/pt/LC_MESSAGES/gettext-runtime.mo
