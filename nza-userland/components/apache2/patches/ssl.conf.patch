@@ -1,6 +1,6 @@
---- docs/conf/extra/httpd-ssl.conf.in.orig	2013-11-11 06:00:57.000000000 -0800
-+++ docs/conf/extra/httpd-ssl.conf.in	2014-05-26 03:59:07.000000000 -0700
-@@ -22,9 +22,14 @@
+--- docs/conf/extra/httpd-ssl.conf.in.orig	2016-04-04 14:11:29.480689321 -0700
++++ docs/conf/extra/httpd-ssl.conf.in	2016-04-04 14:24:02.642819989 -0700
+@@ -22,9 +22,9 @@
  # Manual for more details.
  #
  #SSLRandomSeed startup file:/dev/random  512
@@ -9,15 +9,10 @@
  #SSLRandomSeed connect file:/dev/random  512
 -#SSLRandomSeed connect file:/dev/urandom 512
 +SSLRandomSeed connect file:/dev/urandom 512
-+
-+#
-+# Enable Solaris crypto framework
-+#
-+SSLCryptoDevice pkcs11
-
-
+ 
+ 
  #
-@@ -32,9 +37,9 @@
+@@ -32,9 +32,9 @@
  # standard HTTP port (see above) and to the HTTPS port
  #
  # Note: Configurations that use IPv6 but not IPv4-mapped addresses need two
@@ -26,32 +21,54 @@
  #
 -Listen @@SSLPort@@
 +#Listen 443
-
+ 
  ##
  ##  SSL Global Context
-@@ -58,41 +63,41 @@
+@@ -56,8 +56,8 @@
+ #   ensure these follow appropriate best practices for this deployment.
+ #   httpd 2.2.30, 2.4.13 and later force-disable aNULL, eNULL and EXP ciphers,
+ #   while OpenSSL disabled these by default in 0.9.8zf/1.0.0r/1.0.1m/1.0.2a.
+-SSLCipherSuite HIGH:MEDIUM:!MD5:!RC4
+-SSLProxyCipherSuite HIGH:MEDIUM:!MD5:!RC4
++#SSLCipherSuite HIGH:MEDIUM:!MD5:!RC4
++#SSLProxyCipherSuite HIGH:MEDIUM:!MD5:!RC4
+ 
+ #  By the end of 2016, only TLSv1.2 ciphers should remain in use.
+ #  Older ciphers should be disallowed as soon as possible, while the
+@@ -83,8 +83,8 @@
+ #   Disable SSLv2 and SSLv3 by default (cf. RFC 7525 3.1.1).  TLSv1 (1.0)
+ #   should be disabled as quickly as practical.  By the end of 2016, only
+ #   the TLSv1.2 protocol or later should remain in use.
+-SSLProtocol all -SSLv2 -SSLv3
+-SSLProxyProtocol all -SSLv2 -SSLv3
++#SSLProtocol all -SSLv2 -SSLv3
++#SSLProxyProtocol all -SSLv2 -SSLv3
+ 
+ #   Pass Phrase Dialog:
+ #   Configure the pass phrase gathering process.
+@@ -95,31 +95,31 @@
  #   Inter-Process Session Cache:
- #   Configure the SSL Session Cache: First the mechanism
+ #   Configure the SSL Session Cache: First the mechanism 
  #   to use and second the expiring timeout (in seconds).
 -#SSLSessionCache         "dbm:@exp_runtimedir@/ssl_scache"
 -SSLSessionCache        "shmcb:@exp_runtimedir@/ssl_scache(512000)"
 +#SSLSessionCache         "dbm:/var/run/apache2/2.2/ssl_scache"
 +SSLSessionCache        "shmcb:/var/run/apache2/2.2/ssl_scache(512000)"
  SSLSessionCacheTimeout  300
-
+ 
  #   Semaphore:
  #   Configure the path to the mutual exclusion semaphore the
- #   SSL engine uses internally for inter-process synchronization.
+ #   SSL engine uses internally for inter-process synchronization. 
 -SSLMutex  "file:@exp_runtimedir@/ssl_mutex"
 +SSLMutex  "file:/var/run/apache2/2.2/ssl_mutex"
-
+ 
  ##
  ## SSL Virtual Host Context
  ##
-
+ 
 -<VirtualHost _default_:@@SSLPort@@>
 +#<VirtualHost _default_:443>
-
+ 
  #   General setup for the virtual host
 -DocumentRoot "@exp_htdocsdir@"
 -ServerName www.example.com:@@SSLPort@@
@@ -63,27 +80,15 @@
 +#ServerAdmin you@example.com
 +#ErrorLog "/var/apache2/2.2/logs/error_log"
 +#TransferLog "/var/apache2/2.2/logs/access_log"
-
+ 
  #   SSL Engine Switch:
  #   Enable/Disable SSL for this virtual host.
 -SSLEngine on
 +#SSLEngine on
-
- #   SSL Protocol support:
- #   List the protocol versions which clients are allowed to
- #   connect with. Disable SSLv2 by default (cf. RFC 6176).
--SSLProtocol all -SSLv2
-+#SSLProtocol all -SSLv2
-
- #   SSL Cipher Suite:
- #   List the ciphers that the client is permitted to negotiate.
- #   See the mod_ssl documentation for a complete list.
--SSLCipherSuite HIGH:MEDIUM:!aNULL:!MD5
-+#SSLCipherSuite HIGH:MEDIUM:!aNULL:!MD5
-
- #   Speed-optimized SSL Cipher configuration:
- #   If speed is your main concern (on busy HTTPS servers e.g.),
-@@ -117,9 +122,9 @@
+ 
+ #   Server Certificate:
+ #   Point SSLCertificateFile at a PEM encoded certificate.  If
+@@ -131,9 +131,9 @@
  #   Some ECC cipher suites (http://www.ietf.org/rfc/rfc4492.txt)
  #   require an ECC certificate which can also be configured in
  #   parallel.
@@ -93,10 +98,10 @@
 +#SSLCertificateFile "/etc/apache2/2.2/server.crt"
 +#SSLCertificateFile "/etc/apache2/2.2/server-dsa.crt"
 +#SSLCertificateFile "/etc/apache2/2.2/server-ecc.crt"
-
+ 
  #   Server Private Key:
  #   If the key is not combined with the certificate, use this
-@@ -127,9 +132,9 @@
+@@ -141,9 +141,9 @@
  #   you've both a RSA and a DSA private key you can configure
  #   both in parallel (to also allow the use of DSA ciphers, etc.)
  #   ECC keys, when in use, can also be configured in parallel
@@ -106,19 +111,19 @@
 +#SSLCertificateKeyFile "/etc/apache2/2.2/server.key"
 +#SSLCertificateKeyFile "/etc/apache2/2.2/server-dsa.key"
 +#SSLCertificateKeyFile "/etc/apache2/2.2/server-ecc.key"
-
+ 
  #   Server Certificate Chain:
  #   Point SSLCertificateChainFile at a file containing the
-@@ -138,7 +143,7 @@
+@@ -152,7 +152,7 @@
  #   the referenced file can be the same as SSLCertificateFile
  #   when the CA certificates are directly appended to the server
  #   certificate for convenience.
 -#SSLCertificateChainFile "@exp_sysconfdir@/server-ca.crt"
 +#SSLCertificateChainFile "/etc/apache2/2.2/server-ca.crt"
-
+ 
  #   Certificate Authority (CA):
  #   Set the CA certificate verification path where to find CA
-@@ -147,8 +152,8 @@
+@@ -161,8 +161,8 @@
  #   Note: Inside SSLCACertificatePath you need hash symlinks
  #         to point to the certificate files. Use the provided
  #         Makefile to update the hash symlinks after changes.
@@ -126,10 +131,10 @@
 -#SSLCACertificateFile "@exp_sysconfdir@/ssl.crt/ca-bundle.crt"
 +#SSLCACertificatePath "/etc/apache2/2.2/ssl.crt"
 +#SSLCACertificateFile "/etc/apache2/2.2/ssl.crt/ca-bundle.crt"
-
+ 
  #   Certificate Revocation Lists (CRL):
  #   Set the CA revocation path where to find CA CRLs for client
-@@ -157,8 +162,8 @@
+@@ -171,8 +171,8 @@
  #   Note: Inside SSLCARevocationPath you need hash symlinks
  #         to point to the certificate files. Use the provided
  #         Makefile to update the hash symlinks after changes.
@@ -137,12 +142,12 @@
 -#SSLCARevocationFile "@exp_sysconfdir@/ssl.crl/ca-bundle.crl"
 +#SSLCARevocationPath "/etc/apache2/2.2/ssl.crl"
 +#SSLCARevocationFile "/etc/apache2/2.2/ssl.crl/ca-bundle.crl"
-
+ 
  #   Client Authentication (Type):
  #   Client certificate verification type and depth.  Types are
-@@ -211,12 +216,12 @@
+@@ -225,12 +225,12 @@
  #     This enables optimized SSL connection renegotiation handling when SSL
- #     directives are used in per-directory context.
+ #     directives are used in per-directory context. 
  #SSLOptions +FakeBasicAuth +ExportCertData +StrictRequire
 -<FilesMatch "\.(cgi|shtml|phtml|php)$">
 -    SSLOptions +StdEnvVars
@@ -153,34 +158,33 @@
 +#<FilesMatch "\.(cgi|shtml|phtml|php)$">
 +#    SSLOptions +StdEnvVars
 +#</FilesMatch>
-+#<Directory "/var/apache2/2.2/cgi-bin">
++#<Directory "@exp_cgidir@">
 +#    SSLOptions +StdEnvVars
 +#</Directory>
-
+ 
  #   SSL Protocol Adjustments:
  #   The safe and default but still SSL/TLS standard compliant shutdown
-@@ -242,14 +247,18 @@
+@@ -256,14 +256,20 @@
  #   Similarly, one has to force some clients to use HTTP/1.0 to workaround
  #   their broken HTTP/1.1 implementation. Use variables "downgrade-1.0" and
  #   "force-response-1.0" for this.
 -BrowserMatch "MSIE [2-5]" \
--         nokeepalive ssl-unclean-shutdown \
--         downgrade-1.0 force-response-1.0
 +#BrowserMatch "MSIE [2-5]" \
-+#         nokeepalive ssl-unclean-shutdown \
-+#         downgrade-1.0 force-response-1.0
-
+          nokeepalive ssl-unclean-shutdown \
+          downgrade-1.0 force-response-1.0
+ 
  #   Per-Server Logging:
  #   The home of a custom SSL log file. Use this when you want a
  #   compact non-error SSL logfile on a virtual host basis.
 -CustomLog "@exp_logfiledir@/ssl_request_log" \
--          "%t %h %{SSL_PROTOCOL}x %{SSL_CIPHER}x \"%r\" %b"
-+#CustomLog "/var/apache2/2.2/logs/ssl_request_log" \
-+#          "%t %h %{SSL_PROTOCOL}x %{SSL_CIPHER}x \"%r\" %b"
-+#
-+#</VirtualHost>
-
--</VirtualHost>
++#CustomLog "@exp_logfiledir@/ssl_request_log" \
+           "%t %h %{SSL_PROTOCOL}x %{SSL_CIPHER}x \"%r\" %b"
+ 
+-</VirtualHost>                                  
++#</VirtualHost>                                  
++
 +# Disable Weak Ciphers
-+SSLProtocol -ALL +TLSv1
-+SSLCipherSuite TLSv1:!ADH:!NULL:!RC4:+HIGH:+MEDIUM:!LOW:!EXPORT
++SSLProtocol all -SSLv3 -SSLv2
++SSLProxyProtocol all -SSLv2 -SSLv3
++SSLCipherSuite ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA
++SSLProxyCipherSuite ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA
