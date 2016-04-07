@@ -28,7 +28,7 @@ COMPONENT_NAME =	openssl
 # When upgrading OpenSSL, please, DON'T FORGET TO TEST WANBOOT too. 
 # For more information about wanboot-openssl testing, please refer to
 # ../README.
-COMPONENT_VERSION =	1.0.1q
+COMPONENT_VERSION =	1.0.1s
 # Version for IPS. It is easier to do it manually than convert the letter to a
 # number while taking into account that there might be no letter at all.
 IPS_COMPONENT_VERSION = 1.0.1.8
@@ -36,9 +36,10 @@ COMPONENT_PROJECT_URL=	http://www.openssl.org/
 COMPONENT_SRC =		$(COMPONENT_NAME)-$(COMPONENT_VERSION)
 COMPONENT_ARCHIVE =	$(COMPONENT_SRC).tar.gz
 COMPONENT_ARCHIVE_HASH=	\
-    sha256:b3658b84e9ea606a5ded3c972a5517cd785282e7ea86b20c78aa4b773a047fb7
+    sha256:e7e81d82f3cd538ab0cdba494006d44aab9dd96b7f6233ce9971fb7c7916d511
 COMPONENT_ARCHIVE_URL =	$(COMPONENT_PROJECT_URL)source/$(COMPONENT_ARCHIVE)
 COMPONENT_BUGDB=	utility/openssl
+DEBVERSION = 40-0-14
 
 # Architecture-specific patches
 EXTRA_PATCHES.sparc = $(PATCH_DIR)/openssl-t4-inline.sparc-patch
@@ -190,18 +191,18 @@ COMPONENT_PRE_BUILD_ACTION = \
       $(LN) -fs $(COMPONENT_DIR)/inline-t4/sparct4-mont.pl	$(@D)/crypto/bn/asm; )
 
 # Build openssl-0.9.8 if not yet built.
-#$(COMPONENT_DIR)/../openssl-0.9.8/build/$(MACH32)/.built \
-#$(COMPONENT_DIR)/../openssl-0.9.8/build/$(MACH64)/.built:
-#	$(GMAKE) -C $(COMPONENT_DIR)/../openssl-0.9.8 build
+$(COMPONENT_DIR)/../openssl-0.9.8/build/$(MACH32)/.built \
+$(COMPONENT_DIR)/../openssl-0.9.8/build/$(MACH64)/.built:
+	$(GMAKE) -C $(COMPONENT_DIR)/../openssl-0.9.8 build
 
-#$(PROTO_DIR)/.openssl-0.9.8:	$(COMPONENT_DIR)/../openssl-0.9.8/build/$(MACH32)/.built \
-#				$(COMPONENT_DIR)/../openssl-0.9.8/build/$(MACH64)/.built
-#	$(MKDIR) $(PROTO_DIR)/lib/$(MACH64)
-#	$(CP) -a $(COMPONENT_DIR)/../openssl-0.9.8/build/$(MACH32)/libssl.so.0.9.8 $(PROTO_DIR)/lib
-#	$(CP) -a $(COMPONENT_DIR)/../openssl-0.9.8/build/$(MACH32)/libcrypto.so.0.9.8 $(PROTO_DIR)/lib
-#	$(CP) -a $(COMPONENT_DIR)/../openssl-0.9.8/build/$(MACH64)/libssl.so.0.9.8 $(PROTO_DIR)/lib/$(MACH64)
-#	$(CP) -a $(COMPONENT_DIR)/../openssl-0.9.8/build/$(MACH64)/libcrypto.so.0.9.8 $(PROTO_DIR)/lib/$(MACH64)
-#	$(TOUCH) $@
+$(PROTO_DIR)/.openssl-0.9.8:	$(COMPONENT_DIR)/../openssl-0.9.8/build/$(MACH32)/.built \
+				$(COMPONENT_DIR)/../openssl-0.9.8/build/$(MACH64)/.built
+	$(MKDIR) $(PROTO_DIR)/lib/$(MACH64)
+	$(CP) -a $(COMPONENT_DIR)/../openssl-0.9.8/build/$(MACH32)/libssl.so.0.9.8 $(PROTO_DIR)/lib
+	$(CP) -a $(COMPONENT_DIR)/../openssl-0.9.8/build/$(MACH32)/libcrypto.so.0.9.8 $(PROTO_DIR)/lib
+	$(CP) -a $(COMPONENT_DIR)/../openssl-0.9.8/build/$(MACH64)/libssl.so.0.9.8 $(PROTO_DIR)/lib/$(MACH64)
+	$(CP) -a $(COMPONENT_DIR)/../openssl-0.9.8/build/$(MACH64)/libcrypto.so.0.9.8 $(PROTO_DIR)/lib/$(MACH64)
+	$(TOUCH) $@
 	
 
 # Enable ASLR for this component
