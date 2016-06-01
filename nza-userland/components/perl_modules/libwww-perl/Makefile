@@ -1,10 +1,11 @@
 include ../../../make-rules/shared-macros.mk
 COMPONENT_NAME     =  libwww-perl
 COMPONENT_VERSION  =  6
-COMPONENT_SRC      =  $(COMPONENT_NAME)-$(COMPONENT_VERSION).03
+COMPONENT_SRC      =  $(COMPONENT_NAME)-$(COMPONENT_VERSION).13
 COMPONENT_ARCHIVE  =  $(COMPONENT_SRC).tar.gz
-COMPONENT_ARCHIVE_HASH = sha1:1431c0c474329a7447430f5f5362963f1ba09be8
-COMPONENT_ARCHIVE_URL  = http://search.cpan.org/CPAN/authors/id/G/GA/GAAS/$(COMPONENT_ARCHIVE)
+COMPONENT_ARCHIVE_HASH = sha256:5fbd13eebd1933e5a203fceb2c1629efbccff3efc8fab6ec0285c79d0a95f8b2
+COMPONENT_ARCHIVE_URL  = http://search.cpan.org/CPAN/authors/id/E/ET/ETHER/$(COMPONENT_ARCHIVE)
+DEBVERSION:=40-0-4
 
 include $(WS_TOP)/make-rules/prep.mk
 include $(WS_TOP)/make-rules/ips.mk

@@ -18,34 +18,44 @@
 #
 # CDDL HEADER END
 #
-# Copyright (c) 2011, Oracle and/or its affiliates. All rights reserved.
+
+#
+# Copyright (c) 2011, 2013, Oracle and/or its affiliates. All rights reserved.
 #
 
 include ../../../make-rules/shared-macros.mk
 
-COMPONENT_NAME=		IO-Socket-SSL
-COMPONENT_VERSION=	1
-COMPONENT_SRC=		$(COMPONENT_NAME)-$(COMPONENT_VERSION).54
+COMPONENT_NAME=		Net-SSLeay
+COMPONENT_VERSION=	1.52
+COMPONENT_REVISION=	1
+COMPONENT_SRC=		$(COMPONENT_NAME)-$(COMPONENT_VERSION)
 COMPONENT_ARCHIVE=	$(COMPONENT_SRC).tar.gz
-COMPONENT_ARCHIVE_HASH=	sha1:0df8aab08d5014c74a31dd03eea27757363831ef
-COMPONENT_ARCHIVE_URL=	http://www.cpan.org/authors/id/S/SU/SULLR/$(COMPONENT_ARCHIVE)
-COMPONENT_PROJECT_URL=	http://search.cpan.org/~sullr/
-DEBVERSION:=40-0-4
+COMPONENT_PROJECT_URL=	http://search.cpan.org/dist/Net-SSLeay/
+COMPONENT_ARCHIVE_HASH=	\
+    sha256:48ece32f8f1b4c20acedfcaefd5d66f0ab8818ae6f994ab7c02da7f42e6d77ba
+COMPONENT_ARCHIVE_URL=	http://search.cpan.org/CPAN/authors/id/M/MI/MIKEM/$(COMPONENT_ARCHIVE)
+COMPONENT_BUGDB=	perl-mod/net-ssleay
+DEBVERSION:=40-0-1
+
 
 include $(WS_TOP)/make-rules/prep.mk
-include $(WS_TOP)/make-rules/ips.mk
 include $(WS_TOP)/make-rules/makemaker.mk
+include $(WS_TOP)/make-rules/ips.mk
 
-COMPILER = gcc
-CONFIGURE_OPTIONS<----->+=CC=cc
+# Enable ASLR for this component
+ASLR_MODE = $(ASLR_ENABLE)
+
+# The component Makefile.PL file will ask some questions on whether we want
+# to run external tests, to which we want to answer with "n".
+COMPONENT_CONFIGURE_ENV += ; echo "n" |
+COMPONENT_TEST_TARGETS = test
 
 build:		$(BUILD_32)
 
 install:	$(INSTALL_32)
 
-COMPONENT_TEST_TARGETS = test
 test:		$(TEST_32)
 
-BUILD_PKG_DEPENDENCIES =        $(BUILD_TOOLS)
+BUILD_PKG_DEPENDENCIES =	$(BUILD_TOOLS)
 
 include $(WS_TOP)/make-rules/depend.mk
