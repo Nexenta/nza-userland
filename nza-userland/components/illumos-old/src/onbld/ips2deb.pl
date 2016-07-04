@@ -688,7 +688,7 @@ sub saveDirs
         my $path = $$line{'path'}[0];
 
 	mkpath("$$tmpl{'SAVETO'}/$$tmpl{'PKGNAME'}/$path", 
-		{mode => oct($mode), uwner => $owner, group => $group});
+		{mode => oct($mode), owner => $owner, group => $group});
 
         push(@$fixperms, "chmod $mode \$DEST/$path");
         push(@$fixperms, "chown $owner:$group \$DEST/$path");
