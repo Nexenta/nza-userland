@@ -1,0 +1,511 @@
+diff -uNr rsync-3.0.9.orig/acls.c rsync-3.0.9/acls.c
+--- rsync-3.0.9.orig/acls.c	2011-05-31 00:39:07.000000000 +0900
++++ rsync-3.0.9/acls.c	2012-06-05 11:05:42.000000000 +0900
+@@ -33,6 +33,7 @@
+ extern int inc_recurse;
+ extern int preserve_devices;
+ extern int preserve_specials;
++extern int protocol_version;
+ 
+ /* Flags used to indicate what items are being transmitted for an entry. */
+ #define XMIT_USER_OBJ (1<<0)
+@@ -52,6 +53,9 @@
+ #define XFLAG_NAME_FOLLOWS 0x0001u
+ #define XFLAG_NAME_IS_USER 0x0002u
+ 
++ /* ordinary ACLs have this code; NFSv4 ACLs have a platform-specific code */
++#define SMB_ACL_TYPE 1
++
+ /* === ACL structures === */
+ 
+ typedef struct {
+@@ -76,6 +80,10 @@
+ 	uchar group_obj;
+ 	uchar mask_obj;
+ 	uchar other_obj;
++#ifdef SUPPORT_NFS4_ACLS
++	size_t nfs4_acl_len;
++	char *nfs4_acl_data;
++#endif
+ } rsync_acl;
+ 
+ typedef struct {
+@@ -84,7 +92,11 @@
+ } acl_duo;
+ 
+ static const rsync_acl empty_rsync_acl = {
++#ifdef SUPPORT_NFS4_ACLS
++	{NULL, 0}, NO_ENTRY, NO_ENTRY, NO_ENTRY, NO_ENTRY, 0, NULL
++#else
+ 	{NULL, 0}, NO_ENTRY, NO_ENTRY, NO_ENTRY, NO_ENTRY
++#endif
+ };
+ 
+ static item_list access_acl_list = EMPTY_ITEM_LIST;
+@@ -192,6 +204,11 @@
+ 
+ static BOOL rsync_acl_equal(const rsync_acl *racl1, const rsync_acl *racl2)
+ {
++#ifdef SUPPORT_NFS4_ACLS
++	if (racl1->nfs4_acl_len || racl2->nfs4_acl_len)
++		return racl1->nfs4_acl_len == racl2->nfs4_acl_len
++		  && !memcmp(racl1->nfs4_acl_data, racl2->nfs4_acl_data, racl1->nfs4_acl_len);
++#endif
+ 	return racl1->user_obj == racl2->user_obj
+ 	    && racl1->group_obj == racl2->group_obj
+ 	    && racl1->mask_obj == racl2->mask_obj
+@@ -207,6 +224,12 @@
+ static BOOL rsync_acl_equal_enough(const rsync_acl *racl1,
+ 				   const rsync_acl *racl2, mode_t m)
+ {
++
++#ifdef SUPPORT_NFS4_ACLS
++	if (racl1->nfs4_acl_len || racl2->nfs4_acl_len)
++		return racl1->nfs4_acl_len == racl2->nfs4_acl_len
++		    && !memcmp(racl1->nfs4_acl_data, racl2->nfs4_acl_data, racl1->nfs4_acl_len);
++#endif
+ 	if ((racl1->mask_obj ^ racl2->mask_obj) & NO_ENTRY)
+ 		return False; /* One has a mask and the other doesn't */
+ 
+@@ -229,6 +252,10 @@
+ {
+ 	if (racl->names.idas)
+ 		free(racl->names.idas);
++#ifdef SUPPORT_NFS4_ACLS
++	if (racl->nfs4_acl_data)
++		free(racl->nfs4_acl_data);
++#endif
+ 	*racl = empty_rsync_acl;
+ }
+ 
+@@ -541,6 +568,60 @@
+ 	return 0;
+ }
+ 
++#ifdef SUPPORT_NFS4_ACLS
++#ifdef HAVE_LINUX_XATTRS
++#define NFS4_ACL_TYPE 2
++#define NFS4_ACL_ATTR "system.nfs4_acl"
++#include "lib/sysxattrs.h"
++static int sys_nfs4acl_get_file(const char* fname, rsync_acl *racl)
++{
++	size_t len = 0; /* no extra data alloc needed from get_xattr_data() */
++	if ((racl->nfs4_acl_data = get_xattr_data(fname, NFS4_ACL_ATTR, &len, 1)) != NULL) {
++		racl->nfs4_acl_len = len;
++		return 0;
++	}
++	return errno == ENOTSUP ? 1 : -1;
++}
++
++static int sys_nfs4acl_set_file(const char* fname, const rsync_acl *racl)
++{
++	return sys_lsetxattr(fname, NFS4_ACL_ATTR, racl->nfs4_acl_data, racl->nfs4_acl_len);
++}
++
++#elif defined(HAVE_SOLARIS_ACLS)
++#define NFS4_ACL_TYPE 3
++static int sys_nfs4acl_get_file(const char* fname, rsync_acl *racl)
++{
++	acl_t *aclp;
++	char *acltextp;
++
++	if (acl(fname, ACE_GETACLCNT, 0, NULL) == -1)
++		return errno = EINVAL ? 1 : -1;
++	if (acl_get(fname, 0, &aclp))
++		return errno == ENOSYS ? 1 : -1;
++	acltextp = acl_totext(aclp, ACL_COMPACT_FMT);
++	racl->nfs4_acl_data = acltextp;
++	racl->nfs4_acl_len = strlen(acltextp) + 1;
++	acl_free(aclp);
++	return 0;
++}
++
++static int sys_nfs4acl_set_file(const char* fname, const rsync_acl *racl)
++{
++	acl_t *aclp;
++	int rc;
++
++	if (acl_fromtext(racl->nfs4_acl_data, &aclp)) {
++		errno = EINVAL;
++		return -1;
++	}
++	rc = acl_set(fname, aclp);
++	acl_free(aclp);
++	return rc;
++}
++#endif /* HAVE_LINUX_XATTRS */
++#endif /* SUPPORT_NFS4_ACLS */
++
+ /* Return the Access Control List for the given filename. */
+ int get_acl(const char *fname, stat_x *sxp)
+ {
+@@ -562,6 +643,25 @@
+ 			return 0;
+ 	}
+ 
++#ifdef SUPPORT_NFS4_ACLS
++#ifdef SUPPORT_XATTRS
++	/* --fake-super support: load ACLs from an xattr. */
++	if (am_root < 0) {
++		sxp->acc_acl->nfs4_acl_data = get_xattr_nfs4acl(fname, &sxp->acc_acl->nfs4_acl_len);
++		return 0;
++	}
++#endif
++	switch (sys_nfs4acl_get_file(fname, sxp->acc_acl)) {
++	case -1:
++		rsyserr(FERROR_XFER, errno, "get_acl: sys_nfs4acl_get_file(%s)",
++			fname);
++		free_acl(sxp);
++		return -1;
++	case 0:
++		return 0;
++	/* default: 1 - NFSv4 ACLs not supported so fall through to standard ACLs */
++	}
++#endif
+ 	if (get_rsync_acl(fname, sxp->acc_acl, SMB_ACL_TYPE_ACCESS,
+ 			  sxp->st.st_mode) < 0) {
+ 		free_acl(sxp);
+@@ -609,7 +709,7 @@
+ 	}
+ }
+ 
+-static void send_rsync_acl(int f, rsync_acl *racl, SMB_ACL_TYPE_T type,
++static void send_rsync_acl(int f, int acl_type, rsync_acl *racl, SMB_ACL_TYPE_T type,
+ 			   item_list *racl_list)
+ {
+ 	int ndx = find_matching_rsync_acl(racl, type, racl_list);
+@@ -621,30 +721,36 @@
+ 		rsync_acl *new_racl = EXPAND_ITEM_LIST(racl_list, rsync_acl, 1000);
+ 		uchar flags = 0;
+ 
+-		if (racl->user_obj != NO_ENTRY)
+-			flags |= XMIT_USER_OBJ;
+-		if (racl->group_obj != NO_ENTRY)
+-			flags |= XMIT_GROUP_OBJ;
+-		if (racl->mask_obj != NO_ENTRY)
+-			flags |= XMIT_MASK_OBJ;
+-		if (racl->other_obj != NO_ENTRY)
+-			flags |= XMIT_OTHER_OBJ;
+-		if (racl->names.count)
+-			flags |= XMIT_NAME_LIST;
+-
+-		write_byte(f, flags);
+-
+-		if (flags & XMIT_USER_OBJ)
+-			write_varint(f, racl->user_obj);
+-		if (flags & XMIT_GROUP_OBJ)
+-			write_varint(f, racl->group_obj);
+-		if (flags & XMIT_MASK_OBJ)
+-			write_varint(f, racl->mask_obj);
+-		if (flags & XMIT_OTHER_OBJ)
+-			write_varint(f, racl->other_obj);
+-		if (flags & XMIT_NAME_LIST)
+-			send_ida_entries(f, &racl->names);
+-
++		if (acl_type == SMB_ACL_TYPE) {
++			if (racl->user_obj != NO_ENTRY)
++				flags |= XMIT_USER_OBJ;
++			if (racl->group_obj != NO_ENTRY)
++				flags |= XMIT_GROUP_OBJ;
++			if (racl->mask_obj != NO_ENTRY)
++				flags |= XMIT_MASK_OBJ;
++			if (racl->other_obj != NO_ENTRY)
++				flags |= XMIT_OTHER_OBJ;
++			if (racl->names.count)
++				flags |= XMIT_NAME_LIST;
++
++			write_byte(f, flags);
++
++			if (flags & XMIT_USER_OBJ)
++				write_varint(f, racl->user_obj);
++			if (flags & XMIT_GROUP_OBJ)
++				write_varint(f, racl->group_obj);
++			if (flags & XMIT_MASK_OBJ)
++				write_varint(f, racl->mask_obj);
++			if (flags & XMIT_OTHER_OBJ)
++				write_varint(f, racl->other_obj);
++			if (flags & XMIT_NAME_LIST)
++				send_ida_entries(f, &racl->names);
++#ifdef SUPPORT_NFS4_ACLS
++		} else {
++			write_varint(f, racl->nfs4_acl_len);
++			write_buf(f, racl->nfs4_acl_data, racl->nfs4_acl_len);
++#endif
++		}
+ 		/* Give the allocated data to the new list object. */
+ 		*new_racl = *racl;
+ 		*racl = empty_rsync_acl;
+@@ -658,17 +764,30 @@
+ 	if (!sxp->acc_acl) {
+ 		sxp->acc_acl = create_racl();
+ 		rsync_acl_fake_perms(sxp->acc_acl, sxp->st.st_mode);
++#ifdef SUPPORT_NFS4_ACLS
++	} else if (sxp->acc_acl->nfs4_acl_data) {
++		if (protocol_version >= 31) {
++			write_byte(f, NFS4_ACL_TYPE);
++			send_rsync_acl(f, NFS4_ACL_TYPE, sxp->acc_acl, SMB_ACL_TYPE_ACCESS, &access_acl_list);
++		} else {
++			rprintf(FERROR, "send_acl: nfs4 acls require protocol XX or higher (negotiated %d).\n", protocol_version);
++			exit_cleanup(RERR_PROTOCOL);
++		}
++		return;
++#endif
+ 	}
+ 	/* Avoid sending values that can be inferred from other data. */
+ 	rsync_acl_strip_perms(sxp);
+ 
+-	send_rsync_acl(f, sxp->acc_acl, SMB_ACL_TYPE_ACCESS, &access_acl_list);
++	if (protocol_version >= 31)
++		write_byte(f, SMB_ACL_TYPE);
++	send_rsync_acl(f, SMB_ACL_TYPE, sxp->acc_acl, SMB_ACL_TYPE_ACCESS, &access_acl_list);
+ 
+ 	if (S_ISDIR(sxp->st.st_mode)) {
+ 		if (!sxp->def_acl)
+ 			sxp->def_acl = create_racl();
+ 
+-		send_rsync_acl(f, sxp->def_acl, SMB_ACL_TYPE_DEFAULT, &default_acl_list);
++		send_rsync_acl(f, SMB_ACL_TYPE, sxp->def_acl, SMB_ACL_TYPE_DEFAULT, &default_acl_list);
+ 	}
+ }
+ 
+@@ -738,7 +857,7 @@
+ 	return computed_mask_bits & ~NO_ENTRY;
+ }
+ 
+-static int recv_rsync_acl(int f, item_list *racl_list, SMB_ACL_TYPE_T type, mode_t mode)
++static int recv_rsync_acl(int f, int acl_type, item_list *racl_list, SMB_ACL_TYPE_T type, mode_t mode)
+ {
+ 	uchar computed_mask_bits = 0;
+ 	acl_duo *duo_item;
+@@ -758,33 +877,42 @@
+ 	duo_item = EXPAND_ITEM_LIST(racl_list, acl_duo, 1000);
+ 	duo_item->racl = empty_rsync_acl;
+ 
+-	flags = read_byte(f);
++	if (acl_type == SMB_ACL_TYPE) {
++		flags = read_byte(f);
+ 
+-	if (flags & XMIT_USER_OBJ)
+-		duo_item->racl.user_obj = recv_acl_access(f, NULL);
+-	if (flags & XMIT_GROUP_OBJ)
+-		duo_item->racl.group_obj = recv_acl_access(f, NULL);
+-	if (flags & XMIT_MASK_OBJ)
+-		duo_item->racl.mask_obj = recv_acl_access(f, NULL);
+-	if (flags & XMIT_OTHER_OBJ)
+-		duo_item->racl.other_obj = recv_acl_access(f, NULL);
+-	if (flags & XMIT_NAME_LIST)
+-		computed_mask_bits |= recv_ida_entries(f, &duo_item->racl.names);
++		if (flags & XMIT_USER_OBJ)
++			duo_item->racl.user_obj = recv_acl_access(f, NULL);
++		if (flags & XMIT_GROUP_OBJ)
++			duo_item->racl.group_obj = recv_acl_access(f, NULL);
++		if (flags & XMIT_MASK_OBJ)
++			duo_item->racl.mask_obj = recv_acl_access(f, NULL);
++		if (flags & XMIT_OTHER_OBJ)
++			duo_item->racl.other_obj = recv_acl_access(f, NULL);
++		if (flags & XMIT_NAME_LIST)
++			computed_mask_bits |= recv_ida_entries(f, &duo_item->racl.names);
+ 
+ #ifdef HAVE_OSX_ACLS
+-	/* If we received a superfluous mask, throw it away. */
+-	duo_item->racl.mask_obj = NO_ENTRY;
++		/* If we received a superfluous mask, throw it away. */
++		duo_item->racl.mask_obj = NO_ENTRY;
+ #else
+-	if (duo_item->racl.names.count && duo_item->racl.mask_obj == NO_ENTRY) {
+-		/* Mask must be non-empty with lists. */
+-		if (type == SMB_ACL_TYPE_ACCESS)
+-			computed_mask_bits = (mode >> 3) & 7;
+-		else
+-			computed_mask_bits |= duo_item->racl.group_obj & ~NO_ENTRY;
+-		duo_item->racl.mask_obj = computed_mask_bits;
+-	}
++		if (duo_item->racl.names.count && duo_item->racl.mask_obj == NO_ENTRY) {
++			/* Mask must be non-empty with lists. */
++			if (type == SMB_ACL_TYPE_ACCESS)
++				computed_mask_bits = (mode >> 3) & 7;
++			else
++				computed_mask_bits |= duo_item->racl.group_obj & ~NO_ENTRY;
++			duo_item->racl.mask_obj = computed_mask_bits;
++		}
+ #endif
+-
++#ifdef SUPPORT_NFS4_ACLS
++	} else if (acl_type == NFS4_ACL_TYPE) {
++		duo_item->racl.nfs4_acl_len = read_varint(f);
++		duo_item->racl.nfs4_acl_data = new_array(char, duo_item->racl.nfs4_acl_len);
++		if (!duo_item->racl.nfs4_acl_data)
++			out_of_memory("recv_rsync_acl");
++		read_buf(f, duo_item->racl.nfs4_acl_data, duo_item->racl.nfs4_acl_len);
++#endif
++	}
+ 	duo_item->sacl = NULL;
+ 
+ 	return ndx;
+@@ -793,10 +921,20 @@
+ /* Receive the ACL info the sender has included for this file-list entry. */
+ void receive_acl(int f, struct file_struct *file)
+ {
+-	F_ACL(file) = recv_rsync_acl(f, &access_acl_list, SMB_ACL_TYPE_ACCESS, file->mode);
++	int acl_type = protocol_version >= 31 ? read_byte(f) : SMB_ACL_TYPE;
+ 
+-	if (S_ISDIR(file->mode))
+-		F_DIR_DEFACL(file) = recv_rsync_acl(f, &default_acl_list, SMB_ACL_TYPE_DEFAULT, 0);
++	if (acl_type == SMB_ACL_TYPE) {
++		F_ACL(file) = recv_rsync_acl(f, acl_type, &access_acl_list, SMB_ACL_TYPE_ACCESS, file->mode);
++		if (S_ISDIR(file->mode))
++			F_DIR_DEFACL(file) = recv_rsync_acl(f, acl_type, &default_acl_list, SMB_ACL_TYPE_DEFAULT, 0);
++#ifdef SUPPORT_NFS4_ACLS
++	} else if (acl_type == NFS4_ACL_TYPE) {
++		F_ACL(file) = recv_rsync_acl(f, acl_type, &access_acl_list, SMB_ACL_TYPE_ACCESS, file->mode);
++#endif
++	} else {
++		rprintf(FERROR, "receive_acl: unsupported ACL type (%u)\n", acl_type);
++		exit_cleanup(RERR_UNSUPPORTED);
++	}
+ }
+ 
+ static int cache_rsync_acl(rsync_acl *racl, SMB_ACL_TYPE_T type, item_list *racl_list)
+@@ -943,18 +1081,59 @@
+ }
+ #endif
+ 
++#ifdef SUPPORT_NFS4_ACLS
++#define NFS4_ACL_NOTREADY(racl) (!(racl) || !(racl)->nfs4_acl_data)
++#else
++#define NFS4_ACL_NOTREADY(racl) (1)
++#endif
++
+ static int set_rsync_acl(const char *fname, acl_duo *duo_item,
+ 			 SMB_ACL_TYPE_T type, stat_x *sxp, mode_t mode)
+ {
++#ifdef SUPPORT_NFS4_ACLS
++	if (duo_item->racl.nfs4_acl_data) {
++#ifdef SUPPORT_XATTRS
++		if (am_root < 0)
++			/* --fake-super support: store ACL in an xattr. */
++			return set_xattr_nfs4acl(fname, duo_item->racl.nfs4_acl_data,
++						 duo_item->racl.nfs4_acl_len);
++#endif
++#ifdef HAVE_CHMOD
++		/* prefer chmod to equalize the ACLs - don't create redundant security descriptors
++		   - unfortunately ACLs can still compare unequal on Linux simply due to padding
++		 */
++		if (!BITS_EQUAL(sxp->st.st_mode, mode, CHMOD_BITS)) {
++			static rsync_acl temp_racl;
++
++			if (!do_chmod(fname, mode)) {
++				sxp->st.st_mode = mode;
++				if (!sys_nfs4acl_get_file(fname, &temp_racl)) {
++					if (rsync_acl_equal(&temp_racl, &duo_item->racl)) {
++						free(temp_racl.nfs4_acl_data);
++						return 0;
++					}
++					free(temp_racl.nfs4_acl_data);
++				}
++			}
++		}
++#endif
++		if (sys_nfs4acl_set_file(fname, &duo_item->racl)) {
++			rsyserr(FERROR_XFER, errno, "set_acl: sys_nfs4acl_set_file(%s)", fname);
++			return -1;
++		}
++		return 0;
++	}
++#endif
+ 	if (type == SMB_ACL_TYPE_DEFAULT
+ 	 && duo_item->racl.user_obj == NO_ENTRY) {
+-		int rc;
++		int rc = 0;
+ #ifdef SUPPORT_XATTRS
+ 		/* --fake-super support: delete default ACL from xattrs. */
+ 		if (am_root < 0)
+ 			rc = del_def_xattr_acl(fname);
+ 		else
+ #endif
++		if (NFS4_ACL_NOTREADY(sxp->acc_acl))
+ 			rc = sys_acl_delete_def_file(fname);
+ 		if (rc < 0) {
+ 			rsyserr(FERROR_XFER, errno, "set_acl: sys_acl_delete_def_file(%s)",
+@@ -986,7 +1165,7 @@
+ 		free(buf);
+ 		return rc;
+ #endif
+-	} else {
++	} else if (NFS4_ACL_NOTREADY(sxp->acc_acl)) {
+ 		mode_t cur_mode = sxp->st.st_mode;
+ 		if (!duo_item->sacl
+ 		 && !pack_smb_acl(&duo_item->sacl, &duo_item->racl))
+diff -uNr rsync-3.0.9.orig/rsync.h rsync-3.0.9/rsync.h
+--- rsync-3.0.9.orig/rsync.h	2011-02-22 04:32:51.000000000 +0900
++++ rsync-3.0.9/rsync.h	2012-05-14 13:50:38.000000000 +0900
+@@ -96,7 +96,8 @@
+ 			     == ((unsigned)(b2) & (unsigned)(mask)))
+ 
+ /* update this if you make incompatible changes */
+-#define PROTOCOL_VERSION 30
++#define PROTOCOL_VERSION 31
++#define SUPPORT_NFS4_ACLS 1
+ 
+ /* This is used when working on a new protocol version in CVS, and should
+  * be a new non-zero value for each CVS change that affects the protocol.
+diff -uNr rsync-3.0.9.orig/xattrs.c rsync-3.0.9/xattrs.c
+--- rsync-3.0.9.orig/xattrs.c	2011-09-23 01:02:21.000000000 +0900
++++ rsync-3.0.9/xattrs.c	2012-05-14 13:50:38.000000000 +0900
+@@ -71,6 +71,10 @@
+ #define XACC_ACL_ATTR RSYNC_PREFIX "%" XACC_ACL_SUFFIX
+ #define XDEF_ACL_SUFFIX "dacl"
+ #define XDEF_ACL_ATTR RSYNC_PREFIX "%" XDEF_ACL_SUFFIX
++#ifdef SUPPORT_NFS4_ACLS
++#define XNFS4ACL_SUFFIX "nfs4acl"
++#define XNFS4ACL_ATTR RSYNC_PREFIX "%" XNFS4ACL_SUFFIX
++#endif
+ 
+ typedef struct {
+ 	char *datum, *name;
+@@ -166,8 +170,8 @@
+ /* On entry, the *len_ptr parameter contains the size of the extra space we
+  * should allocate when we create a buffer for the data.  On exit, it contains
+  * the length of the datum. */
+-static char *get_xattr_data(const char *fname, const char *name, size_t *len_ptr,
+-			    int no_missing_error)
++char *get_xattr_data(const char *fname, const char *name, size_t *len_ptr,
++		     int no_missing_error)
+ {
+ 	size_t datum_len = sys_lgetxattr(fname, name, NULL, 0);
+ 	size_t extra_len = *len_ptr;
+@@ -938,6 +942,14 @@
+ 	return get_xattr_data(fname, name, len_p, 1);
+ }
+ 
++#ifdef SUPPORT_NFS4_ACLS
++char *get_xattr_nfs4acl(const char *fname, size_t *len_p)
++{
++	*len_p = 0; /* no extra data alloc needed from get_xattr_data() */
++	return get_xattr_data(fname, XNFS4ACL_ATTR, len_p, 1);
++}
++#endif
++
+ int set_xattr_acl(const char *fname, int is_access_acl, const char *buf, size_t buf_len)
+ {
+ 	const char *name = is_access_acl ? XACC_ACL_ATTR : XDEF_ACL_ATTR;
+@@ -950,6 +962,19 @@
+ 	return 0;
+ }
+ 
++#ifdef SUPPORT_NFS4_ACLS
++int set_xattr_nfs4acl(const char *fname, const char *buf, size_t buf_len)
++{
++	if (sys_lsetxattr(fname, XNFS4ACL_ATTR, buf, buf_len) < 0) {
++		rsyserr(FERROR_XFER, errno,
++			"set_xattr_nfs4acl: lsetxattr(\"%s\",\"%s\") failed",
++			full_fname(fname), XNFS4ACL_ATTR);
++		return -1;
++	}
++	return 0;
++}
++#endif
++
+ int del_def_xattr_acl(const char *fname)
+ {
+ 	return sys_lremovexattr(fname, XDEF_ACL_ATTR);
