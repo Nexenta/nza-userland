@@ -468,7 +468,14 @@ sub get_shlib {
     my $libs = get_output "gfind $dir -type f -name '*.so.*'";
     if (@$libs) {
         my $sonames = get_output "elfdump -d @$libs | ggrep SONAME | awk '{print \$4}' | sort -u";
-        $res = join "\n", map { /^(.+)\.so\.(.+)$/; "$1 $2 $pkg" } @$sonames;
+	my $i;
+	for (@$sonames) {
+		if(!/.so\./){
+			@$sonames[$i]="$_".".1";
+		}
+		$i++;
+	}
+	$res = join "\n", map { /^(.+)\.so\.(.+)$/; "$1 $2 $pkg" } @$sonames;
     }
     return $res;
 }
