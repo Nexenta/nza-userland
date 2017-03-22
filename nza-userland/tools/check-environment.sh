@@ -116,6 +116,7 @@ check_pkg_list()
 		developer-build-ant \
 		developer-build-autoconf \
 		developer-build-automake-110 \
+		developer-gnu-binutils \
 		developer-build-gnu-make \
 		developer-build-libtool \
 		developer-build-make \
